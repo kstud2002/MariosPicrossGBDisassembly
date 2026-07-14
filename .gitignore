@@ -1,0 +1,6 @@
+*.gb
+*.sav
+__pycache__/
+disassembly/game.map
+disassembly/game.o
+disassembly/game.sym
