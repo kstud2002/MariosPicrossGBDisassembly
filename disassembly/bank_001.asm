@@ -922,17 +922,17 @@ SECTION "ROM Bank $001", ROMX[$4000], BANK[$1]
     ld hl, $5000                                  ; $43b7: $21 $00 $50
     ld de, $8000                                  ; $43ba: $11 $00 $80
     ld bc, $0300                                  ; $43bd: $01 $00 $03
-    call Call_000_04e4                            ; $43c0: $cd $e4 $04
+    call CopyTileData                             ; $43c0: $cd $e4 $04
     ld a, $07                                     ; $43c3: $3e $07
     ld hl, $7b00                                  ; $43c5: $21 $00 $7b
     ld de, $8300                                  ; $43c8: $11 $00 $83
     ld bc, $0200                                  ; $43cb: $01 $00 $02
-    call Call_000_04e4                            ; $43ce: $cd $e4 $04
+    call CopyTileData                             ; $43ce: $cd $e4 $04
     ld a, $0a                                     ; $43d1: $3e $0a
     ld hl, $6000                                  ; $43d3: $21 $00 $60
     ld de, $8800                                  ; $43d6: $11 $00 $88
     ld bc, $1000                                  ; $43d9: $01 $00 $10
-    call Call_000_04e4                            ; $43dc: $cd $e4 $04
+    call CopyTileData                             ; $43dc: $cd $e4 $04
     call Call_001_49a2                            ; $43df: $cd $a2 $49
     call Call_001_4a80                            ; $43e2: $cd $80 $4a
     call Call_001_4c0a                            ; $43e5: $cd $0a $4c
@@ -968,17 +968,17 @@ SECTION "ROM Bank $001", ROMX[$4000], BANK[$1]
     ld hl, $5000                                  ; $442d: $21 $00 $50
     ld de, $8000                                  ; $4430: $11 $00 $80
     ld bc, $0300                                  ; $4433: $01 $00 $03
-    call Call_000_04e4                            ; $4436: $cd $e4 $04
+    call CopyTileData                             ; $4436: $cd $e4 $04
     ld a, $07                                     ; $4439: $3e $07
     ld hl, $7b00                                  ; $443b: $21 $00 $7b
     ld de, $8300                                  ; $443e: $11 $00 $83
     ld bc, $0200                                  ; $4441: $01 $00 $02
-    call Call_000_04e4                            ; $4444: $cd $e4 $04
+    call CopyTileData                             ; $4444: $cd $e4 $04
     ld a, $0a                                     ; $4447: $3e $0a
     ld hl, $6000                                  ; $4449: $21 $00 $60
     ld de, $8800                                  ; $444c: $11 $00 $88
     ld bc, $1000                                  ; $444f: $01 $00 $10
-    call Call_000_04e4                            ; $4452: $cd $e4 $04
+    call CopyTileData                             ; $4452: $cd $e4 $04
     call Call_001_49a2                            ; $4455: $cd $a2 $49
     call Call_001_4a80                            ; $4458: $cd $80 $4a
     call Call_001_4c3b                            ; $445b: $cd $3b $4c
@@ -1923,17 +1923,17 @@ Call_001_4a80:
     ld hl, $7000                                  ; $4a90: $21 $00 $70
     ld de, $9300                                  ; $4a93: $11 $00 $93
     ld bc, $0500                                  ; $4a96: $01 $00 $05
-    call Call_000_04e4                            ; $4a99: $cd $e4 $04
+    call CopyTileData                             ; $4a99: $cd $e4 $04
     ld a, $0a                                     ; $4a9c: $3e $0a
     ld hl, $7500                                  ; $4a9e: $21 $00 $75
     ld de, $8800                                  ; $4aa1: $11 $00 $88
     ld bc, $0100                                  ; $4aa4: $01 $00 $01
-    call Call_000_04e4                            ; $4aa7: $cd $e4 $04
+    call CopyTileData                             ; $4aa7: $cd $e4 $04
     ld a, $0c                                     ; $4aaa: $3e $0c
     ld hl, $7000                                  ; $4aac: $21 $00 $70
     ld de, $9800                                  ; $4aaf: $11 $00 $98
     ld bc, $0400                                  ; $4ab2: $01 $00 $04
-    call Call_000_04e4                            ; $4ab5: $cd $e4 $04
+    call CopyTileData                             ; $4ab5: $cd $e4 $04
     ret                                           ; $4ab8: $c9
 
 
@@ -1942,17 +1942,17 @@ jr_001_4ab9:
     ld hl, $7600                                  ; $4abb: $21 $00 $76
     ld de, $9300                                  ; $4abe: $11 $00 $93
     ld bc, $0500                                  ; $4ac1: $01 $00 $05
-    call Call_000_04e4                            ; $4ac4: $cd $e4 $04
+    call CopyTileData                             ; $4ac4: $cd $e4 $04
     ld a, $0a                                     ; $4ac7: $3e $0a
     ld hl, $7b00                                  ; $4ac9: $21 $00 $7b
     ld de, $8800                                  ; $4acc: $11 $00 $88
     ld bc, $0100                                  ; $4acf: $01 $00 $01
-    call Call_000_04e4                            ; $4ad2: $cd $e4 $04
+    call CopyTileData                             ; $4ad2: $cd $e4 $04
     ld a, $0c                                     ; $4ad5: $3e $0c
     ld hl, $7400                                  ; $4ad7: $21 $00 $74
     ld de, $9800                                  ; $4ada: $11 $00 $98
     ld bc, $0400                                  ; $4add: $01 $00 $04
-    call Call_000_04e4                            ; $4ae0: $cd $e4 $04
+    call CopyTileData                             ; $4ae0: $cd $e4 $04
     ret                                           ; $4ae3: $c9
 
 
@@ -1969,17 +1969,17 @@ jr_001_4ab9:
     ld hl, $7000                                  ; $4af4: $21 $00 $70
     ld de, $9300                                  ; $4af7: $11 $00 $93
     ld bc, $0500                                  ; $4afa: $01 $00 $05
-    call Call_000_04e4                            ; $4afd: $cd $e4 $04
+    call CopyTileData                             ; $4afd: $cd $e4 $04
     ld a, $0a                                     ; $4b00: $3e $0a
     ld hl, $7500                                  ; $4b02: $21 $00 $75
     ld de, $8800                                  ; $4b05: $11 $00 $88
     ld bc, $0100                                  ; $4b08: $01 $00 $01
-    call Call_000_04e4                            ; $4b0b: $cd $e4 $04
+    call CopyTileData                             ; $4b0b: $cd $e4 $04
     ld a, $04                                     ; $4b0e: $3e $04
     ld hl, $6c00                                  ; $4b10: $21 $00 $6c
     ld de, $9800                                  ; $4b13: $11 $00 $98
     ld bc, $0400                                  ; $4b16: $01 $00 $04
-    call Call_000_04e4                            ; $4b19: $cd $e4 $04
+    call CopyTileData                             ; $4b19: $cd $e4 $04
     jp Jump_000_05ea                              ; $4b1c: $c3 $ea $05
 
 
@@ -1988,22 +1988,22 @@ jr_001_4b1f:
     ld hl, $7600                                  ; $4b21: $21 $00 $76
     ld de, $9300                                  ; $4b24: $11 $00 $93
     ld bc, $0500                                  ; $4b27: $01 $00 $05
-    call Call_000_04e4                            ; $4b2a: $cd $e4 $04
+    call CopyTileData                             ; $4b2a: $cd $e4 $04
     ld a, $0a                                     ; $4b2d: $3e $0a
     ld hl, $7b00                                  ; $4b2f: $21 $00 $7b
     ld de, $8800                                  ; $4b32: $11 $00 $88
     ld bc, $0100                                  ; $4b35: $01 $00 $01
-    call Call_000_04e4                            ; $4b38: $cd $e4 $04
+    call CopyTileData                             ; $4b38: $cd $e4 $04
     ld a, $0a                                     ; $4b3b: $3e $0a
     ld hl, $7c00                                  ; $4b3d: $21 $00 $7c
     ld de, $9100                                  ; $4b40: $11 $00 $91
     ld bc, $0100                                  ; $4b43: $01 $00 $01
-    call Call_000_04e4                            ; $4b46: $cd $e4 $04
+    call CopyTileData                             ; $4b46: $cd $e4 $04
     ld a, $04                                     ; $4b49: $3e $04
     ld hl, $7000                                  ; $4b4b: $21 $00 $70
     ld de, $9800                                  ; $4b4e: $11 $00 $98
     ld bc, $0400                                  ; $4b51: $01 $00 $04
-    call Call_000_04e4                            ; $4b54: $cd $e4 $04
+    call CopyTileData                             ; $4b54: $cd $e4 $04
     jp Jump_000_05ea                              ; $4b57: $c3 $ea $05
 
 
@@ -3186,22 +3186,22 @@ jr_001_5252:
     ld hl, $5000                                  ; $529a: $21 $00 $50
     ld de, $8000                                  ; $529d: $11 $00 $80
     ld bc, $0300                                  ; $52a0: $01 $00 $03
-    call Call_000_04e4                            ; $52a3: $cd $e4 $04
+    call CopyTileData                             ; $52a3: $cd $e4 $04
     ld a, $07                                     ; $52a6: $3e $07
     ld hl, $7b00                                  ; $52a8: $21 $00 $7b
     ld de, $8300                                  ; $52ab: $11 $00 $83
     ld bc, $0200                                  ; $52ae: $01 $00 $02
-    call Call_000_04e4                            ; $52b1: $cd $e4 $04
+    call CopyTileData                             ; $52b1: $cd $e4 $04
     ld a, $0a                                     ; $52b4: $3e $0a
     ld hl, $6000                                  ; $52b6: $21 $00 $60
     ld de, $8800                                  ; $52b9: $11 $00 $88
     ld bc, $1000                                  ; $52bc: $01 $00 $10
-    call Call_000_04e4                            ; $52bf: $cd $e4 $04
+    call CopyTileData                             ; $52bf: $cd $e4 $04
     ld a, $0c                                     ; $52c2: $3e $0c
     ld hl, $6c00                                  ; $52c4: $21 $00 $6c
     ld de, $9800                                  ; $52c7: $11 $00 $98
     ld bc, $0400                                  ; $52ca: $01 $00 $04
-    call Call_000_04e4                            ; $52cd: $cd $e4 $04
+    call CopyTileData                             ; $52cd: $cd $e4 $04
     call Call_001_5732                            ; $52d0: $cd $32 $57
     call Call_001_57c0                            ; $52d3: $cd $c0 $57
     call Call_000_05b6                            ; $52d6: $cd $b6 $05
@@ -3246,22 +3246,22 @@ jr_001_5252:
     ld hl, $5000                                  ; $5333: $21 $00 $50
     ld de, $8000                                  ; $5336: $11 $00 $80
     ld bc, $0300                                  ; $5339: $01 $00 $03
-    call Call_000_04e4                            ; $533c: $cd $e4 $04
+    call CopyTileData                             ; $533c: $cd $e4 $04
     ld a, $07                                     ; $533f: $3e $07
     ld hl, $7b00                                  ; $5341: $21 $00 $7b
     ld de, $8300                                  ; $5344: $11 $00 $83
     ld bc, $0200                                  ; $5347: $01 $00 $02
-    call Call_000_04e4                            ; $534a: $cd $e4 $04
+    call CopyTileData                             ; $534a: $cd $e4 $04
     ld a, $0a                                     ; $534d: $3e $0a
     ld hl, $6000                                  ; $534f: $21 $00 $60
     ld de, $8800                                  ; $5352: $11 $00 $88
     ld bc, $1000                                  ; $5355: $01 $00 $10
-    call Call_000_04e4                            ; $5358: $cd $e4 $04
+    call CopyTileData                             ; $5358: $cd $e4 $04
     ld a, $0c                                     ; $535b: $3e $0c
     ld hl, $6c00                                  ; $535d: $21 $00 $6c
     ld de, $9800                                  ; $5360: $11 $00 $98
     ld bc, $0400                                  ; $5363: $01 $00 $04
-    call Call_000_04e4                            ; $5366: $cd $e4 $04
+    call CopyTileData                             ; $5366: $cd $e4 $04
     call Call_001_5732                            ; $5369: $cd $32 $57
     call Call_001_57e8                            ; $536c: $cd $e8 $57
     ld a, [$d84c]                                 ; $536f: $fa $4c $d8
@@ -3357,7 +3357,7 @@ jr_001_539e:
     ld hl, $7800                                  ; $5429: $21 $00 $78
     ld de, $9800                                  ; $542c: $11 $00 $98
     ld bc, $0400                                  ; $542f: $01 $00 $04
-    call Call_000_04e4                            ; $5432: $cd $e4 $04
+    call CopyTileData                             ; $5432: $cd $e4 $04
     ld a, $7e                                     ; $5435: $3e $7e
     ld [$cd63], a                                 ; $5437: $ea $63 $cd
     ld a, $16                                     ; $543a: $3e $16
@@ -4928,7 +4928,7 @@ jr_001_5c93:
     ld hl, $7800                                  ; $5dce: $21 $00 $78
     ld de, $8500                                  ; $5dd1: $11 $00 $85
     ld bc, $0200                                  ; $5dd4: $01 $00 $02
-    call Call_000_04e4                            ; $5dd7: $cd $e4 $04
+    call CopyTileData                             ; $5dd7: $cd $e4 $04
     ld a, $2f                                     ; $5dda: $3e $2f
     ld [$c336], a                                 ; $5ddc: $ea $36 $c3
     ld hl, $c337                                  ; $5ddf: $21 $37 $c3
@@ -5143,7 +5143,7 @@ jr_001_5f68:
     ld hl, $7a00                                  ; $5f90: $21 $00 $7a
     ld de, $8500                                  ; $5f93: $11 $00 $85
     ld bc, $0300                                  ; $5f96: $01 $00 $03
-    call Call_000_0538                            ; $5f99: $cd $38 $05
+    call CopyTileData2                            ; $5f99: $cd $38 $05
     call Call_001_7dcb                            ; $5f9c: $cd $cb $7d
     ld a, $06                                     ; $5f9f: $3e $06
     ld [$d635], a                                 ; $5fa1: $ea $35 $d6
@@ -5484,7 +5484,7 @@ jr_001_61da:
     ld hl, $7a00                                  ; $6224: $21 $00 $7a
     ld de, $8500                                  ; $6227: $11 $00 $85
     ld bc, $0300                                  ; $622a: $01 $00 $03
-    call Call_000_0538                            ; $622d: $cd $38 $05
+    call CopyTileData2                            ; $622d: $cd $38 $05
     call Call_001_70a1                            ; $6230: $cd $a1 $70
     ld hl, $d635                                  ; $6233: $21 $35 $d6
     inc [hl]                                      ; $6236: $34
@@ -5669,7 +5669,7 @@ jr_001_6364:
     ld hl, $4500                                  ; $6382: $21 $00 $45
     ld de, $8500                                  ; $6385: $11 $00 $85
     ld bc, $0300                                  ; $6388: $01 $00 $03
-    call Call_000_0538                            ; $638b: $cd $38 $05
+    call CopyTileData2                            ; $638b: $cd $38 $05
     ld a, [$d800]                                 ; $638e: $fa $00 $d8
     cp $05                                        ; $6391: $fe $05
     jr nz, jr_001_63a5                            ; $6393: $20 $10
@@ -5718,7 +5718,7 @@ jr_001_63a5:
     ld hl, $4500                                  ; $63de: $21 $00 $45
     ld de, $8500                                  ; $63e1: $11 $00 $85
     ld bc, $0300                                  ; $63e4: $01 $00 $03
-    call Call_000_0538                            ; $63e7: $cd $38 $05
+    call CopyTileData2                            ; $63e7: $cd $38 $05
     call Call_001_6fb9                            ; $63ea: $cd $b9 $6f
     call Call_001_7c04                            ; $63ed: $cd $04 $7c
     ld a, $03                                     ; $63f0: $3e $03
@@ -5891,7 +5891,7 @@ jr_001_63a5:
     ld hl, $7a00                                  ; $6557: $21 $00 $7a
     ld de, $8500                                  ; $655a: $11 $00 $85
     ld bc, $0300                                  ; $655d: $01 $00 $03
-    call Call_000_0538                            ; $6560: $cd $38 $05
+    call CopyTileData2                            ; $6560: $cd $38 $05
     call Call_001_7dcb                            ; $6563: $cd $cb $7d
     ld a, $04                                     ; $6566: $3e $04
     ld [$d635], a                                 ; $6568: $ea $35 $d6
@@ -6049,7 +6049,7 @@ jr_001_65fe:
     ld hl, $7a00                                  ; $669f: $21 $00 $7a
     ld de, $8500                                  ; $66a2: $11 $00 $85
     ld bc, $0300                                  ; $66a5: $01 $00 $03
-    call Call_000_0538                            ; $66a8: $cd $38 $05
+    call CopyTileData2                            ; $66a8: $cd $38 $05
     call Call_001_70a1                            ; $66ab: $cd $a1 $70
     ld hl, $d635                                  ; $66ae: $21 $35 $d6
     inc [hl]                                      ; $66b1: $34
@@ -6244,7 +6244,7 @@ jr_001_67b9:
     ld hl, $4500                                  ; $6811: $21 $00 $45
     ld de, $8500                                  ; $6814: $11 $00 $85
     ld bc, $0300                                  ; $6817: $01 $00 $03
-    call Call_000_0538                            ; $681a: $cd $38 $05
+    call CopyTileData2                            ; $681a: $cd $38 $05
     call Call_001_6fb9                            ; $681d: $cd $b9 $6f
     call Call_001_7c04                            ; $6820: $cd $04 $7c
     ld a, $01                                     ; $6823: $3e $01
@@ -6343,7 +6343,7 @@ jr_001_6841:
     ld hl, $7800                                  ; $68bd: $21 $00 $78
     ld de, $8500                                  ; $68c0: $11 $00 $85
     ld bc, $0200                                  ; $68c3: $01 $00 $02
-    call Call_000_04e4                            ; $68c6: $cd $e4 $04
+    call CopyTileData                             ; $68c6: $cd $e4 $04
     ld a, $2f                                     ; $68c9: $3e $2f
     ld [$c336], a                                 ; $68cb: $ea $36 $c3
     ld hl, $c337                                  ; $68ce: $21 $37 $c3
@@ -6386,7 +6386,7 @@ jr_001_6841:
     ld hl, $7800                                  ; $692a: $21 $00 $78
     ld de, $8500                                  ; $692d: $11 $00 $85
     ld bc, $0200                                  ; $6930: $01 $00 $02
-    call Call_000_04e4                            ; $6933: $cd $e4 $04
+    call CopyTileData                             ; $6933: $cd $e4 $04
     ld a, $2f                                     ; $6936: $3e $2f
     ld [$c336], a                                 ; $6938: $ea $36 $c3
     ld hl, $c337                                  ; $693b: $21 $37 $c3
@@ -6438,7 +6438,7 @@ jr_001_6841:
     ld hl, $7a00                                  ; $69a4: $21 $00 $7a
     ld de, $8500                                  ; $69a7: $11 $00 $85
     ld bc, $0300                                  ; $69aa: $01 $00 $03
-    call Call_000_0538                            ; $69ad: $cd $38 $05
+    call CopyTileData2                            ; $69ad: $cd $38 $05
     call Call_001_7dcb                            ; $69b0: $cd $cb $7d
     ld a, $06                                     ; $69b3: $3e $06
     ld [$d635], a                                 ; $69b5: $ea $35 $d6
@@ -6454,17 +6454,17 @@ Call_001_69b9:
     ld hl, $4000                                  ; $69c2: $21 $00 $40
     ld de, $8000                                  ; $69c5: $11 $00 $80
     ld bc, $1800                                  ; $69c8: $01 $00 $18
-    call Call_000_04e4                            ; $69cb: $cd $e4 $04
+    call CopyTileData                             ; $69cb: $cd $e4 $04
     ld a, $06                                     ; $69ce: $3e $06
     ld hl, $4800                                  ; $69d0: $21 $00 $48
     ld de, $8800                                  ; $69d3: $11 $00 $88
     ld bc, $0200                                  ; $69d6: $01 $00 $02
-    call Call_000_04e4                            ; $69d9: $cd $e4 $04
+    call CopyTileData                             ; $69d9: $cd $e4 $04
     ld a, $0b                                     ; $69dc: $3e $0b
     ld hl, $6000                                  ; $69de: $21 $00 $60
     ld de, $9800                                  ; $69e1: $11 $00 $98
     ld bc, $0400                                  ; $69e4: $01 $00 $04
-    call Call_000_04e4                            ; $69e7: $cd $e4 $04
+    call CopyTileData                             ; $69e7: $cd $e4 $04
     ld a, $96                                     ; $69ea: $3e $96
     ld [$cd63], a                                 ; $69ec: $ea $63 $cd
     ld a, $10                                     ; $69ef: $3e $10
@@ -6479,12 +6479,12 @@ jr_001_69f6:
     ld hl, $4000                                  ; $69fc: $21 $00 $40
     ld de, $8000                                  ; $69ff: $11 $00 $80
     ld bc, $1800                                  ; $6a02: $01 $00 $18
-    call Call_000_04e4                            ; $6a05: $cd $e4 $04
+    call CopyTileData                             ; $6a05: $cd $e4 $04
     ld a, $0b                                     ; $6a08: $3e $0b
     ld hl, $6400                                  ; $6a0a: $21 $00 $64
     ld de, $9800                                  ; $6a0d: $11 $00 $98
     ld bc, $0400                                  ; $6a10: $01 $00 $04
-    call Call_000_04e4                            ; $6a13: $cd $e4 $04
+    call CopyTileData                             ; $6a13: $cd $e4 $04
     ld a, $8a                                     ; $6a16: $3e $8a
     ld [$cd63], a                                 ; $6a18: $ea $63 $cd
     ld a, $13                                     ; $6a1b: $3e $13
@@ -6496,12 +6496,12 @@ jr_001_6a22:
     ld hl, $4000                                  ; $6a24: $21 $00 $40
     ld de, $8000                                  ; $6a27: $11 $00 $80
     ld bc, $1800                                  ; $6a2a: $01 $00 $18
-    call Call_000_04e4                            ; $6a2d: $cd $e4 $04
+    call CopyTileData                             ; $6a2d: $cd $e4 $04
     ld a, $0b                                     ; $6a30: $3e $0b
     ld hl, $5c00                                  ; $6a32: $21 $00 $5c
     ld de, $9800                                  ; $6a35: $11 $00 $98
     ld bc, $0400                                  ; $6a38: $01 $00 $04
-    call Call_000_04e4                            ; $6a3b: $cd $e4 $04
+    call CopyTileData                             ; $6a3b: $cd $e4 $04
     ld a, $a2                                     ; $6a3e: $3e $a2
     ld [$cd63], a                                 ; $6a40: $ea $63 $cd
     ld a, $0d                                     ; $6a43: $3e $0d
@@ -6614,7 +6614,7 @@ jr_001_6b05:
     ld hl, $4500                                  ; $6b15: $21 $00 $45
     ld de, $8500                                  ; $6b18: $11 $00 $85
     ld bc, $0200                                  ; $6b1b: $01 $00 $02
-    call Call_000_0538                            ; $6b1e: $cd $38 $05
+    call CopyTileData2                            ; $6b1e: $cd $38 $05
     ret                                           ; $6b21: $c9
 
 
@@ -6626,7 +6626,7 @@ jr_001_6b22:
     ld hl, $4500                                  ; $6b28: $21 $00 $45
     ld de, $8500                                  ; $6b2b: $11 $00 $85
     ld bc, $0200                                  ; $6b2e: $01 $00 $02
-    call Call_000_0538                            ; $6b31: $cd $38 $05
+    call CopyTileData2                            ; $6b31: $cd $38 $05
     ret                                           ; $6b34: $c9
 
 
@@ -6635,7 +6635,7 @@ jr_001_6b35:
     ld hl, $4500                                  ; $6b37: $21 $00 $45
     ld de, $8500                                  ; $6b3a: $11 $00 $85
     ld bc, $0200                                  ; $6b3d: $01 $00 $02
-    call Call_000_0538                            ; $6b40: $cd $38 $05
+    call CopyTileData2                            ; $6b40: $cd $38 $05
     ret                                           ; $6b43: $c9
 
 
@@ -6972,7 +6972,7 @@ jr_001_6cde:
     ld hl, $7a00                                  ; $6d88: $21 $00 $7a
     ld de, $8500                                  ; $6d8b: $11 $00 $85
     ld bc, $0300                                  ; $6d8e: $01 $00 $03
-    call Call_000_0538                            ; $6d91: $cd $38 $05
+    call CopyTileData2                            ; $6d91: $cd $38 $05
     call Call_001_70a1                            ; $6d94: $cd $a1 $70
     ld hl, $d635                                  ; $6d97: $21 $35 $d6
     inc [hl]                                      ; $6d9a: $34
@@ -7178,7 +7178,7 @@ jr_001_6eaa:
     ld hl, $4500                                  ; $6f12: $21 $00 $45
     ld de, $8500                                  ; $6f15: $11 $00 $85
     ld bc, $0300                                  ; $6f18: $01 $00 $03
-    call Call_000_0538                            ; $6f1b: $cd $38 $05
+    call CopyTileData2                            ; $6f1b: $cd $38 $05
     call Call_001_6fb9                            ; $6f1e: $cd $b9 $6f
     call Call_001_7c04                            ; $6f21: $cd $04 $7c
     ld a, $03                                     ; $6f24: $3e $03
@@ -8492,7 +8492,7 @@ jr_001_763e:
     ld hl, $5a00                                  ; $7644: $21 $00 $5a
     ld de, $8800                                  ; $7647: $11 $00 $88
     ld bc, $0200                                  ; $764a: $01 $00 $02
-    call Call_000_0538                            ; $764d: $cd $38 $05
+    call CopyTileData2                            ; $764d: $cd $38 $05
     jr jr_001_7660                                ; $7650: $18 $0e
 
 jr_001_7652:
@@ -8500,7 +8500,7 @@ jr_001_7652:
     ld hl, $7200                                  ; $7654: $21 $00 $72
     ld de, $8800                                  ; $7657: $11 $00 $88
     ld bc, $0200                                  ; $765a: $01 $00 $02
-    call Call_000_0538                            ; $765d: $cd $38 $05
+    call CopyTileData2                            ; $765d: $cd $38 $05
 
 jr_001_7660:
     ld hl, $d640                                  ; $7660: $21 $40 $d6
@@ -9691,7 +9691,7 @@ Jump_001_7d19:
     ld hl, $5c00                                  ; $7d1b: $21 $00 $5c
     ld de, $8800                                  ; $7d1e: $11 $00 $88
     ld bc, $0200                                  ; $7d21: $01 $00 $02
-    call Call_000_0538                            ; $7d24: $cd $38 $05
+    call CopyTileData2                            ; $7d24: $cd $38 $05
     ld a, $00                                     ; $7d27: $3e $00
     ld [$c355], a                                 ; $7d29: $ea $55 $c3
     ld a, $5b                                     ; $7d2c: $3e $5b
@@ -9714,7 +9714,7 @@ Jump_001_7d4d:
     ld hl, $7400                                  ; $7d4f: $21 $00 $74
     ld de, $8800                                  ; $7d52: $11 $00 $88
     ld bc, $0200                                  ; $7d55: $01 $00 $02
-    call Call_000_0538                            ; $7d58: $cd $38 $05
+    call CopyTileData2                            ; $7d58: $cd $38 $05
     ld a, $00                                     ; $7d5b: $3e $00
     ld [$c355], a                                 ; $7d5d: $ea $55 $c3
     ld a, $5b                                     ; $7d60: $3e $5b
@@ -9964,22 +9964,22 @@ jr_001_7e95:
     ld hl, $58b0                                  ; $7e9b: $21 $b0 $58
     ld de, $88b0                                  ; $7e9e: $11 $b0 $88
     ld bc, $0020                                  ; $7ea1: $01 $20 $00
-    call Call_000_0538                            ; $7ea4: $cd $38 $05
+    call CopyTileData2                            ; $7ea4: $cd $38 $05
     ld a, $08                                     ; $7ea7: $3e $08
     ld hl, $5900                                  ; $7ea9: $21 $00 $59
     ld de, $8900                                  ; $7eac: $11 $00 $89
     ld bc, $0020                                  ; $7eaf: $01 $20 $00
-    call Call_000_0538                            ; $7eb2: $cd $38 $05
+    call CopyTileData2                            ; $7eb2: $cd $38 $05
     ld a, $08                                     ; $7eb5: $3e $08
     ld hl, $5960                                  ; $7eb7: $21 $60 $59
     ld de, $8960                                  ; $7eba: $11 $60 $89
     ld bc, $0020                                  ; $7ebd: $01 $20 $00
-    call Call_000_0538                            ; $7ec0: $cd $38 $05
+    call CopyTileData2                            ; $7ec0: $cd $38 $05
     ld a, $08                                     ; $7ec3: $3e $08
     ld hl, $59c0                                  ; $7ec5: $21 $c0 $59
     ld de, $89c0                                  ; $7ec8: $11 $c0 $89
     ld bc, $0020                                  ; $7ecb: $01 $20 $00
-    call Call_000_0538                            ; $7ece: $cd $38 $05
+    call CopyTileData2                            ; $7ece: $cd $38 $05
     jr jr_001_7f0b                                ; $7ed1: $18 $38
 
 jr_001_7ed3:
@@ -9987,22 +9987,22 @@ jr_001_7ed3:
     ld hl, $70b0                                  ; $7ed5: $21 $b0 $70
     ld de, $88b0                                  ; $7ed8: $11 $b0 $88
     ld bc, $0020                                  ; $7edb: $01 $20 $00
-    call Call_000_0538                            ; $7ede: $cd $38 $05
+    call CopyTileData2                            ; $7ede: $cd $38 $05
     ld a, $06                                     ; $7ee1: $3e $06
     ld hl, $7100                                  ; $7ee3: $21 $00 $71
     ld de, $8900                                  ; $7ee6: $11 $00 $89
     ld bc, $0020                                  ; $7ee9: $01 $20 $00
-    call Call_000_0538                            ; $7eec: $cd $38 $05
+    call CopyTileData2                            ; $7eec: $cd $38 $05
     ld a, $06                                     ; $7eef: $3e $06
     ld hl, $7160                                  ; $7ef1: $21 $60 $71
     ld de, $8960                                  ; $7ef4: $11 $60 $89
     ld bc, $0020                                  ; $7ef7: $01 $20 $00
-    call Call_000_0538                            ; $7efa: $cd $38 $05
+    call CopyTileData2                            ; $7efa: $cd $38 $05
     ld a, $06                                     ; $7efd: $3e $06
     ld hl, $71c0                                  ; $7eff: $21 $c0 $71
     ld de, $89c0                                  ; $7f02: $11 $c0 $89
     ld bc, $0020                                  ; $7f05: $01 $20 $00
-    call Call_000_0538                            ; $7f08: $cd $38 $05
+    call CopyTileData2                            ; $7f08: $cd $38 $05
 
 jr_001_7f0b:
     ret                                           ; $7f0b: $c9

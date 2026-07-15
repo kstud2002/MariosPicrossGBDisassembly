@@ -4,6 +4,7 @@
 ; https://github.com/mattcurrie/mgbdis
 
 INCLUDE "hardware.inc"
+INCLUDE "ram.inc"
 INCLUDE "charmap.asm"
 SETCHARMAP main
 INCLUDE "bank_000.asm"

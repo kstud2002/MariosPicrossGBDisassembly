@@ -229,8 +229,6 @@ Call_000_00c0:
     nop                                           ; $00c0: $00
     nop                                           ; $00c1: $00
     nop                                           ; $00c2: $00
-
-Jump_000_00c3:
     nop                                           ; $00c3: $00
 
 Call_000_00c4:
@@ -247,8 +245,6 @@ Call_000_00cc:
 Jump_000_00cc:
     nop                                           ; $00cc: $00
     nop                                           ; $00cd: $00
-
-Call_000_00ce:
     nop                                           ; $00ce: $00
     nop                                           ; $00cf: $00
     nop                                           ; $00d0: $00
@@ -272,8 +268,6 @@ Call_000_00dc:
     nop                                           ; $00dc: $00
     nop                                           ; $00dd: $00
     nop                                           ; $00de: $00
-
-Call_000_00df:
     nop                                           ; $00df: $00
     nop                                           ; $00e0: $00
     nop                                           ; $00e1: $00
@@ -298,14 +292,10 @@ Call_000_00df:
     nop                                           ; $00f4: $00
     nop                                           ; $00f5: $00
     nop                                           ; $00f6: $00
-
-Jump_000_00f7:
     nop                                           ; $00f7: $00
     nop                                           ; $00f8: $00
     nop                                           ; $00f9: $00
     nop                                           ; $00fa: $00
-
-Jump_000_00fb:
     nop                                           ; $00fb: $00
     nop                                           ; $00fc: $00
     nop                                           ; $00fd: $00
@@ -704,8 +694,6 @@ Call_000_0373:
     inc hl                                        ; $037c: $23
     ld d, [hl]                                    ; $037d: $56
     inc hl                                        ; $037e: $23
-
-Jump_000_037f:
     ld a, [$c312]                                 ; $037f: $fa $12 $c3
     push af                                       ; $0382: $f5
     ld a, [hl]                                    ; $0383: $7e
@@ -1001,11 +989,11 @@ Jump_000_04e3:
     ret                                           ; $04e3: $c9
 
 
-Call_000_04e4:
-    ld [$c314], a                                 ; $04e4: $ea $14 $c3
+CopyTileData::
+    ld [CurrentBank], a                           ; $04e4: $ea $14 $c3
     ld a, [$c312]                                 ; $04e7: $fa $12 $c3
     push af                                       ; $04ea: $f5
-    ld a, [$c314]                                 ; $04eb: $fa $14 $c3
+    ld a, [CurrentBank]                           ; $04eb: $fa $14 $c3
     ld [$c312], a                                 ; $04ee: $ea $12 $c3
     ld [$2000], a                                 ; $04f1: $ea $00 $20
 
@@ -1025,10 +1013,10 @@ jr_000_04f4:
 
 
 Call_000_0504:
-    ld [$c314], a                                 ; $0504: $ea $14 $c3
+    ld [CurrentBank], a                           ; $0504: $ea $14 $c3
     ld a, [$c312]                                 ; $0507: $fa $12 $c3
     push af                                       ; $050a: $f5
-    ld a, [$c314]                                 ; $050b: $fa $14 $c3
+    ld a, [CurrentBank]                           ; $050b: $fa $14 $c3
     ld [$c312], a                                 ; $050e: $ea $12 $c3
     ld [$2000], a                                 ; $0511: $ea $00 $20
     srl b                                         ; $0514: $cb $38
@@ -1064,11 +1052,11 @@ jr_000_0518:
     ret                                           ; $0537: $c9
 
 
-Call_000_0538:
-    ld [$c314], a                                 ; $0538: $ea $14 $c3
+CopyTileData2::
+    ld [CurrentBank], a                           ; $0538: $ea $14 $c3
     ld a, [$c312]                                 ; $053b: $fa $12 $c3
     push af                                       ; $053e: $f5
-    ld a, [$c314]                                 ; $053f: $fa $14 $c3
+    ld a, [CurrentBank]                           ; $053f: $fa $14 $c3
     ld [$c312], a                                 ; $0542: $ea $12 $c3
     ld [$2000], a                                 ; $0545: $ea $00 $20
     ldh a, [rIE]                                  ; $0548: $f0 $ff
@@ -3106,8 +3094,6 @@ jr_000_0f1d:
     ld [hl], b                                    ; $0f2e: $70
     adc d                                         ; $0f2f: $8a
     ldh [$ff8a], a                                ; $0f30: $e0 $8a
-
-Call_000_0f32:
     ldh a, [$ff8a]                                ; $0f32: $f0 $8a
     nop                                           ; $0f34: $00
     adc a                                         ; $0f35: $8f
@@ -6591,7 +6577,7 @@ Call_000_1d22:
     ld hl, $5000                                  ; $1d30: $21 $00 $50
     ld de, $8000                                  ; $1d33: $11 $00 $80
     ld bc, $0300                                  ; $1d36: $01 $00 $03
-    call Call_000_04e4                            ; $1d39: $cd $e4 $04
+    call CopyTileData                             ; $1d39: $cd $e4 $04
     xor a                                         ; $1d3c: $af
     ld [$d63c], a                                 ; $1d3d: $ea $3c $d6
     ld [$d63d], a                                 ; $1d40: $ea $3d $d6
@@ -6676,10 +6662,10 @@ jr_000_1db9:
 
 
 Call_000_1ddb:
-    ld [$c314], a                                 ; $1ddb: $ea $14 $c3
+    ld [CurrentBank], a                           ; $1ddb: $ea $14 $c3
     ld a, [$c312]                                 ; $1dde: $fa $12 $c3
     push af                                       ; $1de1: $f5
-    ld a, [$c314]                                 ; $1de2: $fa $14 $c3
+    ld a, [CurrentBank]                           ; $1de2: $fa $14 $c3
     ld [$c312], a                                 ; $1de5: $ea $12 $c3
     ld [$2000], a                                 ; $1de8: $ea $00 $20
     call Call_000_1df6                            ; $1deb: $cd $f6 $1d
@@ -6814,10 +6800,10 @@ jr_000_1e91:
 
 
 Call_000_1e9e:
-    ld [$c314], a                                 ; $1e9e: $ea $14 $c3
+    ld [CurrentBank], a                           ; $1e9e: $ea $14 $c3
     ld a, [$c312]                                 ; $1ea1: $fa $12 $c3
     push af                                       ; $1ea4: $f5
-    ld a, [$c314]                                 ; $1ea5: $fa $14 $c3
+    ld a, [CurrentBank]                           ; $1ea5: $fa $14 $c3
     ld [$c312], a                                 ; $1ea8: $ea $12 $c3
     ld [$2000], a                                 ; $1eab: $ea $00 $20
     di                                            ; $1eae: $f3
@@ -6967,7 +6953,7 @@ Jump_000_1fc8:
     ld hl, $4020                                  ; $1fcd: $21 $20 $40
     ld de, $c340                                  ; $1fd0: $11 $40 $c3
     ld bc, $0010                                  ; $1fd3: $01 $10 $00
-    call Call_000_04e4                            ; $1fd6: $cd $e4 $04
+    call CopyTileData                             ; $1fd6: $cd $e4 $04
     ld a, $00                                     ; $1fd9: $3e $00
     ld hl, $c340                                  ; $1fdb: $21 $40 $c3
     call Call_000_1ddb                            ; $1fde: $cd $db $1d
@@ -6989,8 +6975,6 @@ jr_000_1ff1:
     ld a, [hl+]                                   ; $1ff9: $2a
     ld [$c331], a                                 ; $1ffa: $ea $31 $c3
     push bc                                       ; $1ffd: $c5
-
-Call_000_1ffe:
     push hl                                       ; $1ffe: $e5
     ld bc, $0002                                  ; $1fff: $01 $02 $00
     call Call_000_0603                            ; $2002: $cd $03 $06
@@ -7051,7 +7035,7 @@ Jump_000_204a:
     ld hl, $4020                                  ; $204f: $21 $20 $40
     ld de, $c340                                  ; $2052: $11 $40 $c3
     ld bc, $0010                                  ; $2055: $01 $10 $00
-    call Call_000_04e4                            ; $2058: $cd $e4 $04
+    call CopyTileData                             ; $2058: $cd $e4 $04
     pop de                                        ; $205b: $d1
     pop bc                                        ; $205c: $c1
     push bc                                       ; $205d: $c5
@@ -7089,7 +7073,7 @@ jr_000_206c:
     ld hl, $4020                                  ; $208a: $21 $20 $40
     ld de, $c340                                  ; $208d: $11 $40 $c3
     ld bc, $0010                                  ; $2090: $01 $10 $00
-    call Call_000_04e4                            ; $2093: $cd $e4 $04
+    call CopyTileData                             ; $2093: $cd $e4 $04
     ld a, $00                                     ; $2096: $3e $00
     ld hl, $c340                                  ; $2098: $21 $40 $c3
     call Call_000_1ddb                            ; $209b: $cd $db $1d
@@ -7289,12 +7273,12 @@ jr_000_2139:
     ld hl, $4000                                  ; $21a7: $21 $00 $40
     ld de, $8000                                  ; $21aa: $11 $00 $80
     ld bc, $1800                                  ; $21ad: $01 $00 $18
-    call Call_000_04e4                            ; $21b0: $cd $e4 $04
+    call CopyTileData                             ; $21b0: $cd $e4 $04
     ld a, $0b                                     ; $21b3: $3e $0b
     ld hl, $6000                                  ; $21b5: $21 $00 $60
     ld de, $9800                                  ; $21b8: $11 $00 $98
     ld bc, $0400                                  ; $21bb: $01 $00 $04
-    call Call_000_04e4                            ; $21be: $cd $e4 $04
+    call CopyTileData                             ; $21be: $cd $e4 $04
     ld a, $2f                                     ; $21c1: $3e $2f
     ld [$c336], a                                 ; $21c3: $ea $36 $c3
     ld hl, $c337                                  ; $21c6: $21 $37 $c3
@@ -7567,8 +7551,6 @@ Call_000_22ee:
     ld b, b                                       ; $23fd: $40
     ld b, b                                       ; $23fe: $40
     ld b, b                                       ; $23ff: $40
-
-Jump_000_2400:
     ld b, b                                       ; $2400: $40
     stop                                          ; $2401: $10 $00
     nop                                           ; $2403: $00
@@ -8306,7 +8288,7 @@ jr_000_2923:
     ld hl, $7800                                  ; $2947: $21 $00 $78
     ld de, $8500                                  ; $294a: $11 $00 $85
     ld bc, $0200                                  ; $294d: $01 $00 $02
-    call Call_000_0538                            ; $2950: $cd $38 $05
+    call CopyTileData2                            ; $2950: $cd $38 $05
     xor a                                         ; $2953: $af
     ld [$d82f], a                                 ; $2954: $ea $2f $d8
     ld [$d830], a                                 ; $2957: $ea $30 $d8
@@ -8348,7 +8330,7 @@ Jump_000_297a:
     ld hl, $4500                                  ; $299a: $21 $00 $45
     ld de, $8500                                  ; $299d: $11 $00 $85
     ld bc, $0200                                  ; $29a0: $01 $00 $02
-    call Call_000_0538                            ; $29a3: $cd $38 $05
+    call CopyTileData2                            ; $29a3: $cd $38 $05
     ret                                           ; $29a6: $c9
 
 
@@ -10356,8 +10338,6 @@ Call_000_3424:
     nop                                           ; $3431: $00
     nop                                           ; $3432: $00
     nop                                           ; $3433: $00
-
-Jump_000_3434:
     nop                                           ; $3434: $00
     nop                                           ; $3435: $00
     nop                                           ; $3436: $00
@@ -12034,8 +12014,6 @@ jr_000_3ae2:
     cp a                                          ; $3afe: $bf
     rst RST_38                                    ; $3aff: $ff
     nop                                           ; $3b00: $00
-
-Jump_000_3b01:
     jr nz, jr_000_3b43                            ; $3b01: $20 $40
 
     ld h, b                                       ; $3b03: $60
@@ -12585,7 +12563,6 @@ jr_000_3d2e:
     reti                                          ; $3d3b: $d9
 
 
-Jump_000_3d3c:
     pop hl                                        ; $3d3c: $e1
     jp hl                                         ; $3d3d: $e9
 
@@ -13004,8 +12981,6 @@ jr_000_3e4c:
     rst RST_30                                    ; $3efd: $f7
     ei                                            ; $3efe: $fb
     rst RST_38                                    ; $3eff: $ff
-
-Jump_000_3f00:
     nop                                           ; $3f00: $00
     ld [bc], a                                    ; $3f01: $02
     inc b                                         ; $3f02: $04

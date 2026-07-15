@@ -3,3 +3,134 @@
 ; =============================================================================
 ; RAM ADDRESS LABELS (HRAM, WRAM, ECHO)
 ; =============================================================================
+
+00:c314 CurrentBank
+00:04e4 CopyTileData
+00:0538 CopyTileData2
+
+; Tile Data
+06:4000 Picross15x15GameBoardTileData
+06:4000 .image:1800:pe1
+06:4500 Picross15x15CursorTileData
+;06:4500 .image:0300:pe1
+06:4800 Picross15x15MarioIdleTileData
+;06:4800 .image:0200:pe1,w64
+
+06:70b0 Picross15x15MarioAnimationRow1
+06:70b0 .image:0020:pe1
+
+06:7100 Picross15x15MarioAnimationRow2
+06:7100 .image:0020:pe1
+
+06:7160 Picross15x15MarioAnimationRow3
+06:7160 .image:0020:pe1
+
+06:71c0 Picross15x15MarioAnimationRow4
+06:71c0 .image:0020:pe1
+
+06:7200 Picross15x15MarioClearTileData
+06:7200 .image:0200:pe1,w64
+
+06:7400 Picross15x15MarioGameOverTileData
+06:7400 .image:0200:pe1,w64
+
+06:7800 HintMessageTileData
+06:7800 .image:0200:pe1,w64
+
+06:7a00 PauseMenuTileData
+06:7a00 .image:0300:pe1,w64
+
+07:4000 Picross5x5GameBoardTileData
+07:4000 .image:1800:pe1
+07:4500 Picross5x5CursorTileData
+;07:4500 .image:0200:pe1
+
+07:7b00 SmallMarioTileData
+07:7b00 .image:0200:pe1
+
+08:4000 Picross10x10GameBoardTileData
+08:4000 .image:1800:pe1
+08:4500 Picross10x10CursorTileData
+;08:4500 .image:0200:pe1
+
+08:58b0 Picross10x10MarioAnimationRow1
+08:58b0 .image:0020:pe1
+
+08:5900 Picross10x10MarioAnimationRow2
+08:5900 .image:0020:pe1
+
+08:5960 Picross10x10MarioAnimationRow3
+08:5960 .image:0020:pe1
+
+08:59c0 Picross10x10MarioAnimationRow4
+08:59c0 .image:0020:pe1
+
+08:5a00 Picross10x10MarioClearTileData
+08:5a00 .image:0200:pe1
+
+08:5c00 Picross10x10MarioGameOverTileData
+08:5c00 .image:0200:pe1
+
+08:6800 TitleScreenTileData
+08:6800 .image:1000
+
+08:7800 TitleScreenBlinkAnimationTileData
+08:7800 .image:0800:w64
+
+09:4000 CourseSelectScreenTileData
+09:4000 .image:1800:pe1
+09:5000 CourseSelectStarTopTileData
+;09:5000 .image:00a0:pe1
+09:5100 CourseSelectStarBottomTileData
+;09:5100 .image:00a0:pe1
+09:5200 CourseSelectTimeTrialTopTileData
+;09:5200 .image:00a0:pe1
+09:5300 CourseSelectTimeTrialBottomTileData
+;09:5300 .image:00a0:pe1
+
+09:5800 DataSelectScreenTileData
+09:5800 .image:1000:pe1
+
+09:6800 TimeTrialLevelSelectTileData
+09:6800 .image:1000:pe1
+
+09:7800 GameSavedScreenTileData
+09:7800 .image:0800:pe1
+
+0b:4000 TimeTrialLevelSelectV2TileData
+0b:4000 .image:1000:pe1
+
+0b:5000 PromptFontTileData
+0b:5000 .image:0300:pe1
+
+
+; =============================================================================
+; BANK 00A
+; =============================================================================
+
+0a:4000 .padding:300
+
+0a:4300 GameSelectScreenTileData
+0a:4300 .image:1500:pe1
+
+0a:5800 .padding:800
+
+0a:6000 EasyPicrossLevelSelectTileData
+0a:6000 .image:1000:pe1
+
+0a:7000 KinokoCourseLevelSelectTileData
+0a:7000 .image:0500:pe1,w64
+
+0a:7500 KinokoCourseSignTileData
+0a:7500 .image:0100:pe1,w64
+
+0a:7600 StarCourseLevelSelectTileData
+0a:7600 .image:0500:pe1,w64
+
+0a:7b00 StarCourseSignTileData
+0a:7b00 .image:0100:pe1,w64
+
+0a:7c00 SelectAProblemBottomTileData
+0a:7c00 .image:0100:pe1
+
+0a:7d00 .padding:300
