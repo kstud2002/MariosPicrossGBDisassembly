@@ -35,9 +35,9 @@ SECTION "ROM Bank $001", ROMX[$4000], BANK[$1]
     jp nc, $d700                                  ; $401a: $d2 $00 $d7
 
     nop                                           ; $401d: $00
-    rst RST_20                                    ; $401e: $e7
+    rst $20                                       ; $401e: $e7
     nop                                           ; $401f: $00
-    rst RST_20                                    ; $4020: $e7
+    rst $20                                       ; $4020: $e7
     nop                                           ; $4021: $00
     cp $ff                                        ; $4022: $fe $ff
     jp $d300                                      ; $4024: $c3 $00 $d3
@@ -57,7 +57,7 @@ SECTION "ROM Bank $001", ROMX[$4000], BANK[$1]
     nop                                           ; $4033: $00
     rst RST_18                                    ; $4034: $df
     nop                                           ; $4035: $00
-    rst RST_10                                    ; $4036: $d7
+    rst $10                                       ; $4036: $d7
     nop                                           ; $4037: $00
     db $d3                                        ; $4038: $d3
     nop                                           ; $4039: $00
@@ -99,7 +99,7 @@ SECTION "ROM Bank $001", ROMX[$4000], BANK[$1]
 
 
     nop                                           ; $405f: $00
-    rst RST_10                                    ; $4060: $d7
+    rst $10                                       ; $4060: $d7
     nop                                           ; $4061: $00
     cp $ff                                        ; $4062: $fe $ff
     call $d200                                    ; $4064: $cd $00 $d2
@@ -133,10 +133,10 @@ SECTION "ROM Bank $001", ROMX[$4000], BANK[$1]
     cp l                                          ; $4082: $bd
     nop                                           ; $4083: $00
     and $00                                       ; $4084: $e6 $00
-    rst RST_20                                    ; $4086: $e7
+    rst $20                                       ; $4086: $e7
     nop                                           ; $4087: $00
-    rst RST_38                                    ; $4088: $ff
-    rst RST_38                                    ; $4089: $ff
+    rst $38                                       ; $4088: $ff
+    rst $38                                       ; $4089: $ff
     xor l                                         ; $408a: $ad
     nop                                           ; $408b: $00
     db $d3                                        ; $408c: $d3
@@ -167,9 +167,9 @@ SECTION "ROM Bank $001", ROMX[$4000], BANK[$1]
     jp nc, $d700                                  ; $40a4: $d2 $00 $d7
 
     nop                                           ; $40a7: $00
-    rst RST_20                                    ; $40a8: $e7
+    rst $20                                       ; $40a8: $e7
     nop                                           ; $40a9: $00
-    rst RST_20                                    ; $40aa: $e7
+    rst $20                                       ; $40aa: $e7
     nop                                           ; $40ab: $00
     cp $ff                                        ; $40ac: $fe $ff
     or [hl]                                       ; $40ae: $b6
@@ -183,7 +183,7 @@ SECTION "ROM Bank $001", ROMX[$4000], BANK[$1]
     nop                                           ; $40b3: $00
     pop af                                        ; $40b4: $f1
     nop                                           ; $40b5: $00
-    rst RST_10                                    ; $40b6: $d7
+    rst $10                                       ; $40b6: $d7
     nop                                           ; $40b7: $00
     rst RST_18                                    ; $40b8: $df
     nop                                           ; $40b9: $00
@@ -200,7 +200,7 @@ SECTION "ROM Bank $001", ROMX[$4000], BANK[$1]
     nop                                           ; $40c5: $00
     jp nc, $fe00                                  ; $40c6: $d2 $00 $fe
 
-    rst RST_38                                    ; $40c9: $ff
+    rst $38                                       ; $40c9: $ff
     push bc                                       ; $40ca: $c5
     nop                                           ; $40cb: $00
     jp nc, $c800                                  ; $40cc: $d2 $00 $c8
@@ -262,10 +262,10 @@ SECTION "ROM Bank $001", ROMX[$4000], BANK[$1]
     xor a                                         ; $4104: $af
     nop                                           ; $4105: $00
     and $00                                       ; $4106: $e6 $00
-    rst RST_20                                    ; $4108: $e7
+    rst $20                                       ; $4108: $e7
     nop                                           ; $4109: $00
-    rst RST_38                                    ; $410a: $ff
-    rst RST_38                                    ; $410b: $ff
+    rst $38                                       ; $410a: $ff
+    rst $38                                       ; $410b: $ff
     xor l                                         ; $410c: $ad
     nop                                           ; $410d: $00
     db $d3                                        ; $410e: $d3
@@ -296,9 +296,9 @@ SECTION "ROM Bank $001", ROMX[$4000], BANK[$1]
     jp nc, $d700                                  ; $4126: $d2 $00 $d7
 
     nop                                           ; $4129: $00
-    rst RST_20                                    ; $412a: $e7
+    rst $20                                       ; $412a: $e7
     nop                                           ; $412b: $00
-    rst RST_20                                    ; $412c: $e7
+    rst $20                                       ; $412c: $e7
     nop                                           ; $412d: $00
     cp $ff                                        ; $412e: $fe $ff
     or [hl]                                       ; $4130: $b6
@@ -312,7 +312,7 @@ SECTION "ROM Bank $001", ROMX[$4000], BANK[$1]
     nop                                           ; $4135: $00
     pop af                                        ; $4136: $f1
     nop                                           ; $4137: $00
-    rst RST_10                                    ; $4138: $d7
+    rst $10                                       ; $4138: $d7
     nop                                           ; $4139: $00
     rst RST_18                                    ; $413a: $df
     nop                                           ; $413b: $00
@@ -329,7 +329,7 @@ SECTION "ROM Bank $001", ROMX[$4000], BANK[$1]
     nop                                           ; $4147: $00
     jp nc, $fe00                                  ; $4148: $d2 $00 $fe
 
-    rst RST_38                                    ; $414b: $ff
+    rst $38                                       ; $414b: $ff
     push bc                                       ; $414c: $c5
     nop                                           ; $414d: $00
     jp nc, $c800                                  ; $414e: $d2 $00 $c8
@@ -391,10 +391,10 @@ SECTION "ROM Bank $001", ROMX[$4000], BANK[$1]
     xor a                                         ; $4186: $af
     nop                                           ; $4187: $00
     and $00                                       ; $4188: $e6 $00
-    rst RST_20                                    ; $418a: $e7
+    rst $20                                       ; $418a: $e7
     nop                                           ; $418b: $00
-    rst RST_38                                    ; $418c: $ff
-    rst RST_38                                    ; $418d: $ff
+    rst $38                                       ; $418c: $ff
+    rst $38                                       ; $418d: $ff
     xor l                                         ; $418e: $ad
     nop                                           ; $418f: $00
     db $d3                                        ; $4190: $d3
@@ -425,9 +425,9 @@ SECTION "ROM Bank $001", ROMX[$4000], BANK[$1]
     jp nc, $d700                                  ; $41a8: $d2 $00 $d7
 
     nop                                           ; $41ab: $00
-    rst RST_20                                    ; $41ac: $e7
+    rst $20                                       ; $41ac: $e7
     nop                                           ; $41ad: $00
-    rst RST_20                                    ; $41ae: $e7
+    rst $20                                       ; $41ae: $e7
     nop                                           ; $41af: $00
     cp $ff                                        ; $41b0: $fe $ff
     jp $d300                                      ; $41b2: $c3 $00 $d3
@@ -447,7 +447,7 @@ SECTION "ROM Bank $001", ROMX[$4000], BANK[$1]
     nop                                           ; $41c1: $00
     rst RST_18                                    ; $41c2: $df
     nop                                           ; $41c3: $00
-    rst RST_10                                    ; $41c4: $d7
+    rst $10                                       ; $41c4: $d7
     nop                                           ; $41c5: $00
     db $d3                                        ; $41c6: $d3
     nop                                           ; $41c7: $00
@@ -506,10 +506,10 @@ SECTION "ROM Bank $001", ROMX[$4000], BANK[$1]
     cp l                                          ; $4200: $bd
     nop                                           ; $4201: $00
     and $00                                       ; $4202: $e6 $00
-    rst RST_20                                    ; $4204: $e7
+    rst $20                                       ; $4204: $e7
     nop                                           ; $4205: $00
-    rst RST_38                                    ; $4206: $ff
-    rst RST_38                                    ; $4207: $ff
+    rst $38                                       ; $4206: $ff
+    rst $38                                       ; $4207: $ff
     cp b                                          ; $4208: $b8
     nop                                           ; $4209: $00
     db $d3                                        ; $420a: $d3
@@ -536,7 +536,7 @@ SECTION "ROM Bank $001", ROMX[$4000], BANK[$1]
     nop                                           ; $421d: $00
     rst RST_18                                    ; $421e: $df
     nop                                           ; $421f: $00
-    rst RST_10                                    ; $4220: $d7
+    rst $10                                       ; $4220: $d7
     nop                                           ; $4221: $00
     ret                                           ; $4222: $c9
 
@@ -594,8 +594,8 @@ SECTION "ROM Bank $001", ROMX[$4000], BANK[$1]
     nop                                           ; $4253: $00
     db $ec                                        ; $4254: $ec
     nop                                           ; $4255: $00
-    rst RST_38                                    ; $4256: $ff
-    rst RST_38                                    ; $4257: $ff
+    rst $38                                       ; $4256: $ff
+    rst $38                                       ; $4257: $ff
     cp [hl]                                       ; $4258: $be
     nop                                           ; $4259: $00
     call z, $c900                                 ; $425a: $cc $00 $c9
@@ -632,7 +632,7 @@ SECTION "ROM Bank $001", ROMX[$4000], BANK[$1]
     nop                                           ; $427b: $00
     call $d100                                    ; $427c: $cd $00 $d1
     nop                                           ; $427f: $00
-    call $d800                                    ; $4280: $cd $00 $d8
+    call CurrentGridSize                          ; $4280: $cd $00 $d8
     nop                                           ; $4283: $00
     db $eb                                        ; $4284: $eb
     nop                                           ; $4285: $00
@@ -644,10 +644,10 @@ SECTION "ROM Bank $001", ROMX[$4000], BANK[$1]
     cp $ff                                        ; $428c: $fe $ff
     call z, $cd00                                 ; $428e: $cc $00 $cd
     nop                                           ; $4291: $00
-    jp nc, $d800                                  ; $4292: $d2 $00 $d8
+    jp nc, CurrentGridSize                        ; $4292: $d2 $00 $d8
 
     nop                                           ; $4295: $00
-    rst RST_10                                    ; $4296: $d7
+    rst $10                                       ; $4296: $d7
     nop                                           ; $4297: $00
     rst RST_18                                    ; $4298: $df
     nop                                           ; $4299: $00
@@ -684,7 +684,7 @@ SECTION "ROM Bank $001", ROMX[$4000], BANK[$1]
 
 
     nop                                           ; $42b9: $00
-    rst RST_10                                    ; $42ba: $d7
+    rst $10                                       ; $42ba: $d7
     nop                                           ; $42bb: $00
     cp $ff                                        ; $42bc: $fe $ff
     db $db                                        ; $42be: $db
@@ -810,13 +810,13 @@ SECTION "ROM Bank $001", ROMX[$4000], BANK[$1]
     nop                                           ; $4335: $00
     db $ec                                        ; $4336: $ec
     nop                                           ; $4337: $00
-    rst RST_38                                    ; $4338: $ff
-    rst RST_38                                    ; $4339: $ff
+    rst $38                                       ; $4338: $ff
+    rst $38                                       ; $4339: $ff
     cp [hl]                                       ; $433a: $be
     nop                                           ; $433b: $00
     call z, $cd00                                 ; $433c: $cc $00 $cd
     nop                                           ; $433f: $00
-    rst RST_10                                    ; $4340: $d7
+    rst $10                                       ; $4340: $d7
     nop                                           ; $4341: $00
     rst RST_18                                    ; $4342: $df
     nop                                           ; $4343: $00
@@ -890,10 +890,10 @@ SECTION "ROM Bank $001", ROMX[$4000], BANK[$1]
 
 
     nop                                           ; $4385: $00
-    rst RST_20                                    ; $4386: $e7
+    rst $20                                       ; $4386: $e7
     nop                                           ; $4387: $00
-    rst RST_38                                    ; $4388: $ff
-    rst RST_38                                    ; $4389: $ff
+    rst $38                                       ; $4388: $ff
+    rst $38                                       ; $4389: $ff
     ld a, [$d635]                                 ; $438a: $fa $35 $d6
     rst RST_18                                    ; $438d: $df
     sbc d                                         ; $438e: $9a
@@ -3167,7 +3167,7 @@ jr_001_5252:
     ld d, l                                       ; $5274: $55
     dec de                                        ; $5275: $1b
     ld d, [hl]                                    ; $5276: $56
-    rst RST_30                                    ; $5277: $f7
+    rst $30                                       ; $5277: $f7
     ld d, [hl]                                    ; $5278: $56
     ld d, $53                                     ; $5279: $16 $53
     cp a                                          ; $527b: $bf
@@ -4679,7 +4679,7 @@ jr_001_5c93:
     nop                                           ; $5caf: $00
     pop af                                        ; $5cb0: $f1
     nop                                           ; $5cb1: $00
-    rst RST_10                                    ; $5cb2: $d7
+    rst $10                                       ; $5cb2: $d7
     nop                                           ; $5cb3: $00
     rst RST_18                                    ; $5cb4: $df
     nop                                           ; $5cb5: $00
@@ -4696,7 +4696,7 @@ jr_001_5c93:
     nop                                           ; $5cbf: $00
     call z, $cd00                                 ; $5cc0: $cc $00 $cd
     nop                                           ; $5cc3: $00
-    rst RST_10                                    ; $5cc4: $d7
+    rst $10                                       ; $5cc4: $d7
     nop                                           ; $5cc5: $00
     rst RST_18                                    ; $5cc6: $df
     nop                                           ; $5cc7: $00
@@ -4707,8 +4707,8 @@ jr_001_5c93:
     nop                                           ; $5ccd: $00
     db $ec                                        ; $5cce: $ec
     nop                                           ; $5ccf: $00
-    rst RST_38                                    ; $5cd0: $ff
-    rst RST_38                                    ; $5cd1: $ff
+    rst $38                                       ; $5cd0: $ff
+    rst $38                                       ; $5cd1: $ff
     ret nz                                        ; $5cd2: $c0
 
     nop                                           ; $5cd3: $00
@@ -4731,8 +4731,8 @@ jr_001_5c93:
     nop                                           ; $5ce3: $00
     db $ec                                        ; $5ce4: $ec
     nop                                           ; $5ce5: $00
-    rst RST_38                                    ; $5ce6: $ff
-    rst RST_38                                    ; $5ce7: $ff
+    rst $38                                       ; $5ce6: $ff
+    rst $38                                       ; $5ce7: $ff
     or [hl]                                       ; $5ce8: $b6
     nop                                           ; $5ce9: $00
     ret                                           ; $5cea: $c9
@@ -4744,7 +4744,7 @@ jr_001_5c93:
     nop                                           ; $5ced: $00
     pop af                                        ; $5cee: $f1
     nop                                           ; $5cef: $00
-    rst RST_10                                    ; $5cf0: $d7
+    rst $10                                       ; $5cf0: $d7
     nop                                           ; $5cf1: $00
     rst RST_18                                    ; $5cf2: $df
     nop                                           ; $5cf3: $00
@@ -4765,8 +4765,8 @@ jr_001_5c93:
     nop                                           ; $5d05: $00
     db $ec                                        ; $5d06: $ec
     nop                                           ; $5d07: $00
-    rst RST_38                                    ; $5d08: $ff
-    rst RST_38                                    ; $5d09: $ff
+    rst $38                                       ; $5d08: $ff
+    rst $38                                       ; $5d09: $ff
     cp $ff                                        ; $5d0a: $fe $ff
     or e                                          ; $5d0c: $b3
     nop                                           ; $5d0d: $00
@@ -4775,7 +4775,7 @@ jr_001_5c93:
     nop                                           ; $5d0f: $00
     pop af                                        ; $5d10: $f1
     nop                                           ; $5d11: $00
-    rst RST_10                                    ; $5d12: $d7
+    rst $10                                       ; $5d12: $d7
     nop                                           ; $5d13: $00
     rst RST_18                                    ; $5d14: $df
     nop                                           ; $5d15: $00
@@ -4806,8 +4806,8 @@ jr_001_5c93:
     sub $00                                       ; $5d28: $d6 $00
     rst RST_18                                    ; $5d2a: $df
     nop                                           ; $5d2b: $00
-    rst RST_38                                    ; $5d2c: $ff
-    rst RST_38                                    ; $5d2d: $ff
+    rst $38                                       ; $5d2c: $ff
+    rst $38                                       ; $5d2d: $ff
     push hl                                       ; $5d2e: $e5
     nop                                           ; $5d2f: $00
     or [hl]                                       ; $5d30: $b6
@@ -4815,8 +4815,8 @@ jr_001_5c93:
     and $00                                       ; $5d32: $e6 $00
     db $ec                                        ; $5d34: $ec
     nop                                           ; $5d35: $00
-    rst RST_38                                    ; $5d36: $ff
-    rst RST_38                                    ; $5d37: $ff
+    rst $38                                       ; $5d36: $ff
+    rst $38                                       ; $5d37: $ff
     push hl                                       ; $5d38: $e5
     nop                                           ; $5d39: $00
     xor a                                         ; $5d3a: $af
@@ -4824,8 +4824,8 @@ jr_001_5c93:
     and $00                                       ; $5d3c: $e6 $00
     db $ec                                        ; $5d3e: $ec
     nop                                           ; $5d3f: $00
-    rst RST_38                                    ; $5d40: $ff
-    rst RST_38                                    ; $5d41: $ff
+    rst $38                                       ; $5d40: $ff
+    rst $38                                       ; $5d41: $ff
     push hl                                       ; $5d42: $e5
     nop                                           ; $5d43: $00
     cp [hl]                                       ; $5d44: $be
@@ -4833,8 +4833,8 @@ jr_001_5c93:
     and $00                                       ; $5d46: $e6 $00
     db $ec                                        ; $5d48: $ec
     nop                                           ; $5d49: $00
-    rst RST_38                                    ; $5d4a: $ff
-    rst RST_38                                    ; $5d4b: $ff
+    rst $38                                       ; $5d4a: $ff
+    rst $38                                       ; $5d4b: $ff
     push hl                                       ; $5d4c: $e5
     nop                                           ; $5d4d: $00
     cp l                                          ; $5d4e: $bd
@@ -4842,8 +4842,8 @@ jr_001_5c93:
     and $00                                       ; $5d50: $e6 $00
     db $ec                                        ; $5d52: $ec
     nop                                           ; $5d53: $00
-    rst RST_38                                    ; $5d54: $ff
-    rst RST_38                                    ; $5d55: $ff
+    rst $38                                       ; $5d54: $ff
+    rst $38                                       ; $5d55: $ff
     push hl                                       ; $5d56: $e5
     nop                                           ; $5d57: $00
     pop bc                                        ; $5d58: $c1
@@ -4851,8 +4851,8 @@ jr_001_5c93:
     and $00                                       ; $5d5a: $e6 $00
     db $ec                                        ; $5d5c: $ec
     nop                                           ; $5d5d: $00
-    rst RST_38                                    ; $5d5e: $ff
-    rst RST_38                                    ; $5d5f: $ff
+    rst $38                                       ; $5d5e: $ff
+    rst $38                                       ; $5d5f: $ff
     push hl                                       ; $5d60: $e5
     nop                                           ; $5d61: $00
     cp c                                          ; $5d62: $b9
@@ -4860,8 +4860,8 @@ jr_001_5c93:
     and $00                                       ; $5d64: $e6 $00
     db $ec                                        ; $5d66: $ec
     nop                                           ; $5d67: $00
-    rst RST_38                                    ; $5d68: $ff
-    rst RST_38                                    ; $5d69: $ff
+    rst $38                                       ; $5d68: $ff
+    rst $38                                       ; $5d69: $ff
     push hl                                       ; $5d6a: $e5
     nop                                           ; $5d6b: $00
     cp h                                          ; $5d6c: $bc
@@ -4869,8 +4869,8 @@ jr_001_5c93:
     and $00                                       ; $5d6e: $e6 $00
     db $ec                                        ; $5d70: $ec
     nop                                           ; $5d71: $00
-    rst RST_38                                    ; $5d72: $ff
-    rst RST_38                                    ; $5d73: $ff
+    rst $38                                       ; $5d72: $ff
+    rst $38                                       ; $5d73: $ff
     push hl                                       ; $5d74: $e5
     nop                                           ; $5d75: $00
     or l                                          ; $5d76: $b5
@@ -4878,8 +4878,8 @@ jr_001_5c93:
     and $00                                       ; $5d78: $e6 $00
     db $ec                                        ; $5d7a: $ec
     nop                                           ; $5d7b: $00
-    rst RST_38                                    ; $5d7c: $ff
-    rst RST_38                                    ; $5d7d: $ff
+    rst $38                                       ; $5d7c: $ff
+    rst $38                                       ; $5d7d: $ff
     ld a, [$d635]                                 ; $5d7e: $fa $35 $d6
     rst RST_18                                    ; $5d81: $df
     sbc d                                         ; $5d82: $9a
@@ -4916,7 +4916,7 @@ jr_001_5c93:
     call Call_000_05a0                            ; $5daf: $cd $a0 $05
     call Call_000_05ab                            ; $5db2: $cd $ab $05
     call Call_000_07f1                            ; $5db5: $cd $f1 $07
-    call Call_001_69b9                            ; $5db8: $cd $b9 $69
+    call LoadGameBoardTileData                    ; $5db8: $cd $b9 $69
     xor a                                         ; $5dbb: $af
     ld [$d636], a                                 ; $5dbc: $ea $36 $d6
     ld [$d637], a                                 ; $5dbf: $ea $37 $d6
@@ -4966,7 +4966,7 @@ jr_001_5df7:
     ld a, $01                                     ; $5e22: $3e $01
     call Call_000_03b6                            ; $5e24: $cd $b6 $03
     call Call_000_04a2                            ; $5e27: $cd $a2 $04
-    ld a, [$d800]                                 ; $5e2a: $fa $00 $d8
+    ld a, [CurrentGridSize]                       ; $5e2a: $fa $00 $d8
     cp $05                                        ; $5e2d: $fe $05
     jr nz, jr_001_5e40                            ; $5e2f: $20 $0f
 
@@ -4996,7 +4996,7 @@ jr_001_5e53:
     call Call_000_040d                            ; $5e5d: $cd $0d $04
 
 jr_001_5e60:
-    ld a, [$d800]                                 ; $5e60: $fa $00 $d8
+    ld a, [CurrentGridSize]                       ; $5e60: $fa $00 $d8
     cp $05                                        ; $5e63: $fe $05
     jr nz, jr_001_5e8e                            ; $5e65: $20 $27
 
@@ -5033,7 +5033,7 @@ jr_001_5e8e:
     call Call_000_05a0                            ; $5ea8: $cd $a0 $05
     call Call_000_05ab                            ; $5eab: $cd $ab $05
     call Call_000_1c96                            ; $5eae: $cd $96 $1c
-    call Call_001_69b9                            ; $5eb1: $cd $b9 $69
+    call LoadGameBoardTileData                    ; $5eb1: $cd $b9 $69
     ld a, $2f                                     ; $5eb4: $3e $2f
     ld [$c336], a                                 ; $5eb6: $ea $36 $c3
     ld hl, $c337                                  ; $5eb9: $21 $37 $c3
@@ -5069,7 +5069,7 @@ jr_001_5e8e:
     ld a, $01                                     ; $5efc: $3e $01
     call Call_000_03b6                            ; $5efe: $cd $b6 $03
     call Call_000_04a2                            ; $5f01: $cd $a2 $04
-    ld a, [$d800]                                 ; $5f04: $fa $00 $d8
+    ld a, [CurrentGridSize]                       ; $5f04: $fa $00 $d8
     cp $05                                        ; $5f07: $fe $05
     jr nz, jr_001_5f1a                            ; $5f09: $20 $0f
 
@@ -5099,7 +5099,7 @@ jr_001_5f2d:
     call Call_000_040d                            ; $5f37: $cd $0d $04
 
 jr_001_5f3a:
-    ld a, [$d800]                                 ; $5f3a: $fa $00 $d8
+    ld a, [CurrentGridSize]                       ; $5f3a: $fa $00 $d8
     cp $05                                        ; $5f3d: $fe $05
     jr nz, jr_001_5f68                            ; $5f3f: $20 $27
 
@@ -5179,7 +5179,7 @@ jr_001_5fbb:
     rst RST_08                                    ; $5fc8: $cf
     jr jr_001_5fbb                                ; $5fc9: $18 $f0
 
-    ld a, [$d800]                                 ; $5fcb: $fa $00 $d8
+    ld a, [CurrentGridSize]                       ; $5fcb: $fa $00 $d8
     cp $05                                        ; $5fce: $fe $05
     jp z, Jump_001_607a                           ; $5fd0: $ca $7a $60
 
@@ -5415,7 +5415,7 @@ Jump_001_613a:
     ld c, $00                                     ; $619d: $0e $00
     ld a, $01                                     ; $619f: $3e $01
     call Call_000_03b6                            ; $61a1: $cd $b6 $03
-    ld a, [$d800]                                 ; $61a4: $fa $00 $d8
+    ld a, [CurrentGridSize]                       ; $61a4: $fa $00 $d8
     cp $05                                        ; $61a7: $fe $05
     jr nz, jr_001_61ba                            ; $61a9: $20 $0f
 
@@ -5562,7 +5562,7 @@ jr_001_6291:
     ld c, $00                                     ; $62b5: $0e $00
     ld a, $01                                     ; $62b7: $3e $01
     call Call_000_03b6                            ; $62b9: $cd $b6 $03
-    ld a, [$d800]                                 ; $62bc: $fa $00 $d8
+    ld a, [CurrentGridSize]                       ; $62bc: $fa $00 $d8
     cp $05                                        ; $62bf: $fe $05
     jr nz, jr_001_62d2                            ; $62c1: $20 $0f
 
@@ -5670,7 +5670,7 @@ jr_001_6364:
     ld de, $8500                                  ; $6385: $11 $00 $85
     ld bc, $0300                                  ; $6388: $01 $00 $03
     call CopyTileData2                            ; $638b: $cd $38 $05
-    ld a, [$d800]                                 ; $638e: $fa $00 $d8
+    ld a, [CurrentGridSize]                       ; $638e: $fa $00 $d8
     cp $05                                        ; $6391: $fe $05
     jr nz, jr_001_63a5                            ; $6393: $20 $10
 
@@ -5760,7 +5760,7 @@ jr_001_63a5:
     call Call_000_05a0                            ; $6429: $cd $a0 $05
     call Call_000_05ab                            ; $642c: $cd $ab $05
     call Call_000_07f1                            ; $642f: $cd $f1 $07
-    call Call_001_69b9                            ; $6432: $cd $b9 $69
+    call LoadGameBoardTileData                    ; $6432: $cd $b9 $69
     xor a                                         ; $6435: $af
     ld [$d636], a                                 ; $6436: $ea $36 $d6
     ld [$d637], a                                 ; $6439: $ea $37 $d6
@@ -5827,7 +5827,7 @@ jr_001_63a5:
     call Call_000_05a0                            ; $64c6: $cd $a0 $05
     call Call_000_05ab                            ; $64c9: $cd $ab $05
     call Call_000_1c96                            ; $64cc: $cd $96 $1c
-    call Call_001_69b9                            ; $64cf: $cd $b9 $69
+    call LoadGameBoardTileData                    ; $64cf: $cd $b9 $69
     ld a, $2f                                     ; $64d2: $3e $2f
     ld [$c336], a                                 ; $64d4: $ea $36 $c3
     ld hl, $c337                                  ; $64d7: $21 $37 $c3
@@ -6306,7 +6306,7 @@ jr_001_6841:
     ld l, e                                       ; $6876: $6b
     ld b, c                                       ; $6877: $41
     ld l, h                                       ; $6878: $6c
-    rst RST_38                                    ; $6879: $ff
+    rst $38                                       ; $6879: $ff
     ld l, h                                       ; $687a: $6c
     ld d, a                                       ; $687b: $57
     ld l, l                                       ; $687c: $6d
@@ -6316,7 +6316,7 @@ jr_001_6841:
     ld l, [hl]                                    ; $6882: $6e
     adc c                                         ; $6883: $89
     ld l, [hl]                                    ; $6884: $6e
-    rst RST_28                                    ; $6885: $ef
+    rst $28                                       ; $6885: $ef
     ld l, [hl]                                    ; $6886: $6e
     rlca                                          ; $6887: $07
     ld l, c                                       ; $6888: $69
@@ -6331,7 +6331,7 @@ jr_001_6841:
     call Call_000_05a0                            ; $689e: $cd $a0 $05
     call Call_000_05ab                            ; $68a1: $cd $ab $05
     call Call_000_07f1                            ; $68a4: $cd $f1 $07
-    call Call_001_69b9                            ; $68a7: $cd $b9 $69
+    call LoadGameBoardTileData                    ; $68a7: $cd $b9 $69
     xor a                                         ; $68aa: $af
     ld [$d636], a                                 ; $68ab: $ea $36 $d6
     ld [$d637], a                                 ; $68ae: $ea $37 $d6
@@ -6381,7 +6381,7 @@ jr_001_6841:
     call Call_000_05a0                            ; $691c: $cd $a0 $05
     call Call_000_05ab                            ; $691f: $cd $ab $05
     call Call_000_1c96                            ; $6922: $cd $96 $1c
-    call Call_001_69b9                            ; $6925: $cd $b9 $69
+    call LoadGameBoardTileData                    ; $6925: $cd $b9 $69
     ld a, $06                                     ; $6928: $3e $06
     ld hl, $7800                                  ; $692a: $21 $00 $78
     ld de, $8500                                  ; $692d: $11 $00 $85
@@ -6445,10 +6445,10 @@ jr_001_6841:
     ret                                           ; $69b8: $c9
 
 
-Call_001_69b9:
-    ld a, [$d800]                                 ; $69b9: $fa $00 $d8
+LoadGameBoardTileData::
+    ld a, [CurrentGridSize]                       ; $69b9: $fa $00 $d8
     cp $05                                        ; $69bc: $fe $05
-    jr nz, jr_001_69f6                            ; $69be: $20 $36
+    jr nz, Load10x10GameBoardTileData             ; $69be: $20 $36
 
     ld a, $07                                     ; $69c0: $3e $07
     ld hl, $4000                                  ; $69c2: $21 $00 $40
@@ -6471,9 +6471,9 @@ Call_001_69b9:
     ld [$cd64], a                                 ; $69f1: $ea $64 $cd
     jr jr_001_6a48                                ; $69f4: $18 $52
 
-jr_001_69f6:
+Load10x10GameBoardTileData::
     cp $0a                                        ; $69f6: $fe $0a
-    jr nz, jr_001_6a22                            ; $69f8: $20 $28
+    jr nz, Load15x15GameBoardTileData             ; $69f8: $20 $28
 
     ld a, $08                                     ; $69fa: $3e $08
     ld hl, $4000                                  ; $69fc: $21 $00 $40
@@ -6491,7 +6491,7 @@ jr_001_69f6:
     ld [$cd64], a                                 ; $6a1d: $ea $64 $cd
     jr jr_001_6a48                                ; $6a20: $18 $26
 
-jr_001_6a22:
+Load15x15GameBoardTileData::
     ld a, $06                                     ; $6a22: $3e $06
     ld hl, $4000                                  ; $6a24: $21 $00 $40
     ld de, $8000                                  ; $6a27: $11 $00 $80
@@ -6606,7 +6606,7 @@ jr_001_6b05:
     call Call_000_05b6                            ; $6b05: $cd $b6 $05
     rst RST_08                                    ; $6b08: $cf
     call Call_001_6fb9                            ; $6b09: $cd $b9 $6f
-    ld a, [$d800]                                 ; $6b0c: $fa $00 $d8
+    ld a, [CurrentGridSize]                       ; $6b0c: $fa $00 $d8
     cp $05                                        ; $6b0f: $fe $05
     jr nz, jr_001_6b22                            ; $6b11: $20 $0f
 
@@ -6660,7 +6660,7 @@ Jump_001_6b44:
 jr_001_6b5d:
     ld a, [$d636]                                 ; $6b5d: $fa $36 $d6
     inc a                                         ; $6b60: $3c
-    ld hl, $d800                                  ; $6b61: $21 $00 $d8
+    ld hl, CurrentGridSize                        ; $6b61: $21 $00 $d8
     cp [hl]                                       ; $6b64: $be
     jr nz, jr_001_6b68                            ; $6b65: $20 $01
 
@@ -7381,7 +7381,7 @@ Call_001_6fed:
     ld hl, $d7a0                                  ; $6fed: $21 $a0 $d7
     ld e, $00                                     ; $6ff0: $1e $00
     ld c, $3a                                     ; $6ff2: $0e $3a
-    ld a, [$d800]                                 ; $6ff4: $fa $00 $d8
+    ld a, [CurrentGridSize]                       ; $6ff4: $fa $00 $d8
 
 jr_001_6ff7:
     push af                                       ; $6ff7: $f5
@@ -7581,7 +7581,7 @@ Call_001_70d5:
     ld hl, $d7a0                                  ; $70d5: $21 $a0 $d7
     ld e, $00                                     ; $70d8: $1e $00
     ld c, $3a                                     ; $70da: $0e $3a
-    ld a, [$d800]                                 ; $70dc: $fa $00 $d8
+    ld a, [CurrentGridSize]                       ; $70dc: $fa $00 $d8
 
 jr_001_70df:
     push af                                       ; $70df: $f5
@@ -7770,7 +7770,7 @@ jr_001_71ef:
     bit 4, [hl]                                   ; $71ef: $cb $66
     jr z, jr_001_7201                             ; $71f1: $28 $0e
 
-    ld a, [$d800]                                 ; $71f3: $fa $00 $d8
+    ld a, [CurrentGridSize]                       ; $71f3: $fa $00 $d8
     ld c, a                                       ; $71f6: $4f
     ld a, [$d636]                                 ; $71f7: $fa $36 $d6
     inc a                                         ; $71fa: $3c
@@ -8476,7 +8476,7 @@ jr_001_760f:
 
 
 Call_001_7635:
-    ld a, [$d800]                                 ; $7635: $fa $00 $d8
+    ld a, [CurrentGridSize]                       ; $7635: $fa $00 $d8
 
 jr_001_7638:
     cp $05                                        ; $7638: $fe $05
@@ -8512,7 +8512,7 @@ jr_001_766a:
     push af                                       ; $766a: $f5
     ld b, $3b                                     ; $766b: $06 $3b
     ld d, $05                                     ; $766d: $16 $05
-    ld a, [$d800]                                 ; $766f: $fa $00 $d8
+    ld a, [CurrentGridSize]                       ; $766f: $fa $00 $d8
 
 jr_001_7672:
     push af                                       ; $7672: $f5
@@ -8535,7 +8535,7 @@ jr_001_7688:
     and a                                         ; $7688: $a7
     jr nz, jr_001_7672                            ; $7689: $20 $e7
 
-    ld a, [$d800]                                 ; $768b: $fa $00 $d8
+    ld a, [CurrentGridSize]                       ; $768b: $fa $00 $d8
     sub $11                                       ; $768e: $d6 $11
     xor $ff                                       ; $7690: $ee $ff
     add l                                         ; $7692: $85
@@ -8562,7 +8562,7 @@ jr_001_76a5:
 
 
 Call_001_76a9:
-    ld a, [$d800]                                 ; $76a9: $fa $00 $d8
+    ld a, [CurrentGridSize]                       ; $76a9: $fa $00 $d8
     cp $05                                        ; $76ac: $fe $05
     jp z, Jump_001_76b9                           ; $76ae: $ca $b9 $76
 
@@ -8874,11 +8874,11 @@ jr_001_7875:
     swap a                                        ; $7880: $cb $37
     call Call_001_7549                            ; $7882: $cd $49 $75
     inc b                                         ; $7885: $04
-    ld a, [$d800]                                 ; $7886: $fa $00 $d8
+    ld a, [CurrentGridSize]                       ; $7886: $fa $00 $d8
     cp b                                          ; $7889: $b8
     jr nz, jr_001_7875                            ; $788a: $20 $e9
 
-    ld a, [$d800]                                 ; $788c: $fa $00 $d8
+    ld a, [CurrentGridSize]                       ; $788c: $fa $00 $d8
     sub $11                                       ; $788f: $d6 $11
     xor $ff                                       ; $7891: $ee $ff
     add l                                         ; $7893: $85
@@ -8978,7 +8978,7 @@ jr_001_790b:
 jr_001_790f:
     inc hl                                        ; $790f: $23
     inc c                                         ; $7910: $0c
-    ld a, [$d800]                                 ; $7911: $fa $00 $d8
+    ld a, [CurrentGridSize]                       ; $7911: $fa $00 $d8
     cp c                                          ; $7914: $b9
     jr nz, jr_001_78ed                            ; $7915: $20 $d6
 
@@ -9026,19 +9026,19 @@ jr_001_793e:
 
     ret nz                                        ; $794e: $c0
 
-    rst RST_38                                    ; $794f: $ff
+    rst $38                                       ; $794f: $ff
     inc b                                         ; $7950: $04
     nop                                           ; $7951: $00
     inc b                                         ; $7952: $04
     ld bc, $0002                                  ; $7953: $01 $02 $00
     add b                                         ; $7956: $80
-    rst RST_38                                    ; $7957: $ff
+    rst $38                                       ; $7957: $ff
     inc bc                                        ; $7958: $03
     nop                                           ; $7959: $00
     dec b                                         ; $795a: $05
     ld bc, $0002                                  ; $795b: $01 $02 $00
     inc bc                                        ; $795e: $03
-    rst RST_38                                    ; $795f: $ff
+    rst $38                                       ; $795f: $ff
     inc bc                                        ; $7960: $03
     nop                                           ; $7961: $00
     dec b                                         ; $7962: $05
@@ -9191,7 +9191,7 @@ jr_001_79eb:
 
 jr_001_7a2f:
     dec de                                        ; $7a2f: $1b
-    rst RST_38                                    ; $7a30: $ff
+    rst $38                                       ; $7a30: $ff
     nop                                           ; $7a31: $00
     ld bc, $010e                                  ; $7a32: $01 $0e $01
     ld a, [hl+]                                   ; $7a35: $2a
@@ -9216,7 +9216,7 @@ jr_001_7a2f:
     ld a, [de]                                    ; $7a4d: $1a
     inc b                                         ; $7a4e: $04
     dec de                                        ; $7a4f: $1b
-    rst RST_38                                    ; $7a50: $ff
+    rst $38                                       ; $7a50: $ff
     nop                                           ; $7a51: $00
     inc bc                                        ; $7a52: $03
     inc e                                         ; $7a53: $1c
@@ -9280,7 +9280,7 @@ jr_001_7a8d:
     ld hl, $2004                                  ; $7a93: $21 $04 $20
 
 jr_001_7a96:
-    rst RST_38                                    ; $7a96: $ff
+    rst $38                                       ; $7a96: $ff
     nop                                           ; $7a97: $00
 
 Call_001_7a98:
@@ -9658,7 +9658,7 @@ Call_001_7cc8:
 
 
 Call_001_7ce3:
-    ld a, [$d800]                                 ; $7ce3: $fa $00 $d8
+    ld a, [CurrentGridSize]                       ; $7ce3: $fa $00 $d8
     cp $05                                        ; $7ce6: $fe $05
     jp z, Jump_001_7cf3                           ; $7ce8: $ca $f3 $7c
 
@@ -9950,7 +9950,7 @@ Call_001_7e77:
 
     ld a, $01                                     ; $7e87: $3e $01
     ld [$d81d], a                                 ; $7e89: $ea $1d $d8
-    ld a, [$d800]                                 ; $7e8c: $fa $00 $d8
+    ld a, [CurrentGridSize]                       ; $7e8c: $fa $00 $d8
     cp $05                                        ; $7e8f: $fe $05
     jr nz, jr_001_7e95                            ; $7e91: $20 $02
 

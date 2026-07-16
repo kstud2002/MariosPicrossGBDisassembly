@@ -4038,7 +4038,7 @@ jr_00e_4eb0:
     db $10                                        ; $4fcb: $10
     jr z, jr_00e_4ff6                             ; $4fcc: $28 $28
 
-    call nz, Call_000_00c4                        ; $4fce: $c4 $c4 $00
+    call nz, $00c4                                ; $4fce: $c4 $c4 $00
     nop                                           ; $4fd1: $00
     nop                                           ; $4fd2: $00
     nop                                           ; $4fd3: $00
@@ -4639,7 +4639,7 @@ jr_00e_51d4:
     db $10                                        ; $5223: $10
     jr z, jr_00e_524e                             ; $5224: $28 $28
 
-    call nz, Call_000_00c4                        ; $5226: $c4 $c4 $00
+    call nz, $00c4                                ; $5226: $c4 $c4 $00
     nop                                           ; $5229: $00
 
 jr_00e_522a:
@@ -4775,7 +4775,7 @@ jr_00e_5264:
     nop                                           ; $52ab: $00
     nop                                           ; $52ac: $00
     nop                                           ; $52ad: $00
-    call nz, Call_000_00c4                        ; $52ae: $c4 $c4 $00
+    call nz, $00c4                                ; $52ae: $c4 $c4 $00
     nop                                           ; $52b1: $00
     nop                                           ; $52b2: $00
     nop                                           ; $52b3: $00
@@ -6148,7 +6148,7 @@ jr_00e_57d8:
     nop                                           ; $583e: $00
     nop                                           ; $583f: $00
     db $fd                                        ; $5840: $fd
-    rst RST_38                                    ; $5841: $ff
+    rst $38                                       ; $5841: $ff
     db $10                                        ; $5842: $10
     db $10                                        ; $5843: $10
     ld d, h                                       ; $5844: $54
@@ -6880,7 +6880,7 @@ jr_00e_5a1b:
     call z, $c0cc                                 ; $5b2a: $cc $cc $c0
     ret nz                                        ; $5b2d: $c0
 
-    call c, Call_000_00dc                         ; $5b2e: $dc $dc $00
+    call c, $00dc                                 ; $5b2e: $dc $dc $00
     nop                                           ; $5b31: $00
     nop                                           ; $5b32: $00
     nop                                           ; $5b33: $00
@@ -6906,7 +6906,7 @@ jr_00e_5a1b:
     nop                                           ; $5b47: $00
     call z, $cccc                                 ; $5b48: $cc $cc $cc
     call z, $fcfc                                 ; $5b4b: $cc $fc $fc
-    call z, Call_000_00cc                         ; $5b4e: $cc $cc $00
+    call z, $00cc                                 ; $5b4e: $cc $cc $00
     nop                                           ; $5b51: $00
     nop                                           ; $5b52: $00
     nop                                           ; $5b53: $00
@@ -6976,7 +6976,7 @@ jr_00e_5a1b:
     inc c                                         ; $5b8b: $0c
     inc c                                         ; $5b8c: $0c
     inc c                                         ; $5b8d: $0c
-    call z, Call_000_00cc                         ; $5b8e: $cc $cc $00
+    call z, $00cc                                 ; $5b8e: $cc $cc $00
     nop                                           ; $5b91: $00
     nop                                           ; $5b92: $00
     nop                                           ; $5b93: $00
@@ -7073,7 +7073,7 @@ jr_00e_5a1b:
     db $ec                                        ; $5beb: $ec
     db $fc                                        ; $5bec: $fc
     db $fc                                        ; $5bed: $fc
-    call nc, Call_000_00d4                        ; $5bee: $d4 $d4 $00
+    call nc, $00d4                                ; $5bee: $d4 $d4 $00
     nop                                           ; $5bf1: $00
     nop                                           ; $5bf2: $00
     nop                                           ; $5bf3: $00
@@ -7135,7 +7135,7 @@ jr_00e_5a1b:
     nop                                           ; $5c2b: $00
     ld a, b                                       ; $5c2c: $78
     ld a, b                                       ; $5c2d: $78
-    call z, Call_000_00cc                         ; $5c2e: $cc $cc $00
+    call z, $00cc                                 ; $5c2e: $cc $cc $00
     nop                                           ; $5c31: $00
     nop                                           ; $5c32: $00
     nop                                           ; $5c33: $00
@@ -7160,7 +7160,7 @@ jr_00e_5a1b:
     nop                                           ; $5c4a: $00
     nop                                           ; $5c4b: $00
     ld hl, sp-$08                                 ; $5c4c: $f8 $f8
-    call z, Call_000_00cc                         ; $5c4e: $cc $cc $00
+    call z, $00cc                                 ; $5c4e: $cc $cc $00
     nop                                           ; $5c51: $00
     nop                                           ; $5c52: $00
     nop                                           ; $5c53: $00
@@ -7194,7 +7194,7 @@ jr_00e_5a1b:
     nop                                           ; $5c6b: $00
     ld a, b                                       ; $5c6c: $78
     ld a, b                                       ; $5c6d: $78
-    call z, Call_000_00cc                         ; $5c6e: $cc $cc $00
+    call z, $00cc                                 ; $5c6e: $cc $cc $00
     nop                                           ; $5c71: $00
     nop                                           ; $5c72: $00
     nop                                           ; $5c73: $00
@@ -7221,7 +7221,7 @@ jr_00e_5a1b:
     nop                                           ; $5c8a: $00
     nop                                           ; $5c8b: $00
     ld hl, sp-$08                                 ; $5c8c: $f8 $f8
-    call z, Call_000_00cc                         ; $5c8e: $cc $cc $00
+    call z, $00cc                                 ; $5c8e: $cc $cc $00
     nop                                           ; $5c91: $00
     nop                                           ; $5c92: $00
     nop                                           ; $5c93: $00
@@ -7241,7 +7241,7 @@ jr_00e_5a1b:
 
     ret c                                         ; $5ca1: $d8
 
-    call z, Call_000_00cc                         ; $5ca2: $cc $cc $00
+    call z, $00cc                                 ; $5ca2: $cc $cc $00
     nop                                           ; $5ca5: $00
     nop                                           ; $5ca6: $00
     nop                                           ; $5ca7: $00
@@ -8537,7 +8537,7 @@ jr_00e_5fe8:
     nop                                           ; $616b: $00
     nop                                           ; $616c: $00
     nop                                           ; $616d: $00
-    call nc, Call_000_00d4                        ; $616e: $d4 $d4 $00
+    call nc, $00d4                                ; $616e: $d4 $d4 $00
     nop                                           ; $6171: $00
     nop                                           ; $6172: $00
     nop                                           ; $6173: $00

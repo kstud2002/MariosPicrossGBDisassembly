@@ -51,7 +51,7 @@ README_FLOW.md              – detailed game-flow, state-machine, and internals
 After editing the symbol map, regenerate `bank_00X.asm` with:
 
 ```sh
-mgbdis --print-hex --character-map-path "charmap.asm" --exclude-default-symbols "" --overwrite "Mario's Picross (USA, Europe) (SGB Enhanced).gb"
+mgbdis --print-hex --character-map-path "charmap.asm" --exclude-default-symbols "RST_10,RST_20,RST_28,RST_30,RST_38" --overwrite "Mario's Picross (USA, Europe) (SGB Enhanced).gb"
 ```
 
 (Note: mgbdis.py is included in this repository with enhancements for:

@@ -8,38 +8,38 @@ SECTION "ROM Bank $006", ROMX[$4000], BANK[$6]
 Picross15x15GameBoardTileData::
     INCBIN "gfx/Picross15x15GameBoardTileData.2bpp"
 
-    rst RST_38                                    ; $5800: $ff
+    rst $38                                       ; $5800: $ff
     nop                                           ; $5801: $00
-    rst RST_38                                    ; $5802: $ff
+    rst $38                                       ; $5802: $ff
     nop                                           ; $5803: $00
-    rst RST_38                                    ; $5804: $ff
+    rst $38                                       ; $5804: $ff
     nop                                           ; $5805: $00
-    rst RST_38                                    ; $5806: $ff
+    rst $38                                       ; $5806: $ff
     nop                                           ; $5807: $00
-    rst RST_38                                    ; $5808: $ff
+    rst $38                                       ; $5808: $ff
     nop                                           ; $5809: $00
-    rst RST_38                                    ; $580a: $ff
+    rst $38                                       ; $580a: $ff
     nop                                           ; $580b: $00
-    rst RST_38                                    ; $580c: $ff
+    rst $38                                       ; $580c: $ff
     nop                                           ; $580d: $00
-    rst RST_38                                    ; $580e: $ff
+    rst $38                                       ; $580e: $ff
     nop                                           ; $580f: $00
     ld hl, sp-$01                                 ; $5810: $f8 $ff
     add b                                         ; $5812: $80
-    rst RST_38                                    ; $5813: $ff
+    rst $38                                       ; $5813: $ff
     add b                                         ; $5814: $80
-    rst RST_38                                    ; $5815: $ff
+    rst $38                                       ; $5815: $ff
     add b                                         ; $5816: $80
-    rst RST_38                                    ; $5817: $ff
+    rst $38                                       ; $5817: $ff
     add b                                         ; $5818: $80
-    rst RST_38                                    ; $5819: $ff
+    rst $38                                       ; $5819: $ff
     nop                                           ; $581a: $00
-    rst RST_38                                    ; $581b: $ff
+    rst $38                                       ; $581b: $ff
     nop                                           ; $581c: $00
-    rst RST_38                                    ; $581d: $ff
+    rst $38                                       ; $581d: $ff
     nop                                           ; $581e: $00
-    rst RST_38                                    ; $581f: $ff
-    rst RST_38                                    ; $5820: $ff
+    rst $38                                       ; $581f: $ff
+    rst $38                                       ; $5820: $ff
     nop                                           ; $5821: $00
     xor a                                         ; $5822: $af
     ld d, b                                       ; $5823: $50
@@ -47,41 +47,41 @@ Picross15x15GameBoardTileData::
     jr nz, @-$4f                                  ; $5825: $20 $af
 
     ld d, b                                       ; $5827: $50
-    rst RST_38                                    ; $5828: $ff
+    rst $38                                       ; $5828: $ff
     nop                                           ; $5829: $00
-    rst RST_38                                    ; $582a: $ff
+    rst $38                                       ; $582a: $ff
     nop                                           ; $582b: $00
-    rst RST_38                                    ; $582c: $ff
+    rst $38                                       ; $582c: $ff
     nop                                           ; $582d: $00
-    rst RST_38                                    ; $582e: $ff
+    rst $38                                       ; $582e: $ff
     nop                                           ; $582f: $00
     nop                                           ; $5830: $00
-    rst RST_38                                    ; $5831: $ff
+    rst $38                                       ; $5831: $ff
     nop                                           ; $5832: $00
-    rst RST_38                                    ; $5833: $ff
+    rst $38                                       ; $5833: $ff
     nop                                           ; $5834: $00
-    rst RST_38                                    ; $5835: $ff
+    rst $38                                       ; $5835: $ff
     nop                                           ; $5836: $00
-    rst RST_38                                    ; $5837: $ff
+    rst $38                                       ; $5837: $ff
     nop                                           ; $5838: $00
-    rst RST_38                                    ; $5839: $ff
+    rst $38                                       ; $5839: $ff
     nop                                           ; $583a: $00
-    rst RST_38                                    ; $583b: $ff
+    rst $38                                       ; $583b: $ff
     nop                                           ; $583c: $00
-    rst RST_38                                    ; $583d: $ff
+    rst $38                                       ; $583d: $ff
     nop                                           ; $583e: $00
-    rst RST_38                                    ; $583f: $ff
+    rst $38                                       ; $583f: $ff
     inc a                                         ; $5840: $3c
-    rst RST_38                                    ; $5841: $ff
+    rst $38                                       ; $5841: $ff
     ld a, [hl]                                    ; $5842: $7e
     ld b, d                                       ; $5843: $42
-    rst RST_38                                    ; $5844: $ff
+    rst $38                                       ; $5844: $ff
     sbc c                                         ; $5845: $99
-    rst RST_38                                    ; $5846: $ff
+    rst $38                                       ; $5846: $ff
     sbc c                                         ; $5847: $99
-    rst RST_38                                    ; $5848: $ff
+    rst $38                                       ; $5848: $ff
     sbc c                                         ; $5849: $99
-    rst RST_38                                    ; $584a: $ff
+    rst $38                                       ; $584a: $ff
     sbc c                                         ; $584b: $99
     ld a, [hl]                                    ; $584c: $7e
     jp $ff3c                                      ; $584d: $c3 $3c $ff
@@ -91,133 +91,133 @@ Picross15x15GameBoardTileData::
 
     inc a                                         ; $5852: $3c
     inc h                                         ; $5853: $24
-    rst RST_38                                    ; $5854: $ff
+    rst $38                                       ; $5854: $ff
     ld b, h                                       ; $5855: $44
-    rst RST_38                                    ; $5856: $ff
+    rst $38                                       ; $5856: $ff
     inc h                                         ; $5857: $24
     inc a                                         ; $5858: $3c
     inc h                                         ; $5859: $24
     inc a                                         ; $585a: $3c
     inc h                                         ; $585b: $24
     inc a                                         ; $585c: $3c
-    rst RST_20                                    ; $585d: $e7
+    rst $20                                       ; $585d: $e7
     jr @+$01                                      ; $585e: $18 $ff
 
     inc a                                         ; $5860: $3c
-    rst RST_38                                    ; $5861: $ff
+    rst $38                                       ; $5861: $ff
     ld a, [hl]                                    ; $5862: $7e
     ld b, d                                       ; $5863: $42
-    rst RST_38                                    ; $5864: $ff
+    rst $38                                       ; $5864: $ff
     sbc c                                         ; $5865: $99
-    rst RST_38                                    ; $5866: $ff
+    rst $38                                       ; $5866: $ff
     ld a, c                                       ; $5867: $79
     ld a, [hl]                                    ; $5868: $7e
     ld b, d                                       ; $5869: $42
     cp $9e                                        ; $586a: $fe $9e
-    rst RST_38                                    ; $586c: $ff
+    rst $38                                       ; $586c: $ff
     add c                                         ; $586d: $81
     ld a, [hl]                                    ; $586e: $7e
-    rst RST_38                                    ; $586f: $ff
+    rst $38                                       ; $586f: $ff
     inc a                                         ; $5870: $3c
-    rst RST_38                                    ; $5871: $ff
+    rst $38                                       ; $5871: $ff
     ld a, [hl]                                    ; $5872: $7e
     ld b, d                                       ; $5873: $42
-    rst RST_38                                    ; $5874: $ff
+    rst $38                                       ; $5874: $ff
     sbc c                                         ; $5875: $99
-    rst RST_38                                    ; $5876: $ff
+    rst $38                                       ; $5876: $ff
     ld [hl], d                                    ; $5877: $72
     ld a, a                                       ; $5878: $7f
     ld a, c                                       ; $5879: $79
-    rst RST_38                                    ; $587a: $ff
+    rst $38                                       ; $587a: $ff
     sbc c                                         ; $587b: $99
     ld a, [hl]                                    ; $587c: $7e
     jp $ff3c                                      ; $587d: $c3 $3c $ff
 
 
     inc e                                         ; $5880: $1c
-    rst RST_38                                    ; $5881: $ff
+    rst $38                                       ; $5881: $ff
     ld a, $22                                     ; $5882: $3e $22
-    rst RST_38                                    ; $5884: $ff
+    rst $38                                       ; $5884: $ff
     ld b, d                                       ; $5885: $42
-    rst RST_38                                    ; $5886: $ff
+    rst $38                                       ; $5886: $ff
     sub d                                         ; $5887: $92
     cp $92                                        ; $5888: $fe $92
-    rst RST_38                                    ; $588a: $ff
+    rst $38                                       ; $588a: $ff
     add c                                         ; $588b: $81
     ld a, [hl]                                    ; $588c: $7e
     di                                            ; $588d: $f3
     inc c                                         ; $588e: $0c
-    rst RST_38                                    ; $588f: $ff
+    rst $38                                       ; $588f: $ff
     ld a, [hl]                                    ; $5890: $7e
-    rst RST_38                                    ; $5891: $ff
-    rst RST_38                                    ; $5892: $ff
+    rst $38                                       ; $5891: $ff
+    rst $38                                       ; $5892: $ff
     add c                                         ; $5893: $81
-    rst RST_38                                    ; $5894: $ff
+    rst $38                                       ; $5894: $ff
     sbc [hl]                                      ; $5895: $9e
-    rst RST_38                                    ; $5896: $ff
+    rst $38                                       ; $5896: $ff
     add d                                         ; $5897: $82
     ld a, a                                       ; $5898: $7f
     ld a, c                                       ; $5899: $79
-    rst RST_38                                    ; $589a: $ff
+    rst $38                                       ; $589a: $ff
     sbc c                                         ; $589b: $99
     ld a, [hl]                                    ; $589c: $7e
     jp $ff3c                                      ; $589d: $c3 $3c $ff
 
 
     inc a                                         ; $58a0: $3c
-    rst RST_38                                    ; $58a1: $ff
+    rst $38                                       ; $58a1: $ff
     ld a, [hl]                                    ; $58a2: $7e
     ld b, d                                       ; $58a3: $42
-    rst RST_38                                    ; $58a4: $ff
+    rst $38                                       ; $58a4: $ff
     sbc h                                         ; $58a5: $9c
-    rst RST_38                                    ; $58a6: $ff
+    rst $38                                       ; $58a6: $ff
     add d                                         ; $58a7: $82
-    rst RST_38                                    ; $58a8: $ff
+    rst $38                                       ; $58a8: $ff
     sbc c                                         ; $58a9: $99
-    rst RST_38                                    ; $58aa: $ff
+    rst $38                                       ; $58aa: $ff
     sbc c                                         ; $58ab: $99
     ld a, [hl]                                    ; $58ac: $7e
     jp $ff3c                                      ; $58ad: $c3 $3c $ff
 
 
     ld a, [hl]                                    ; $58b0: $7e
-    rst RST_38                                    ; $58b1: $ff
-    rst RST_38                                    ; $58b2: $ff
+    rst $38                                       ; $58b1: $ff
+    rst $38                                       ; $58b2: $ff
     add c                                         ; $58b3: $81
-    rst RST_38                                    ; $58b4: $ff
+    rst $38                                       ; $58b4: $ff
     sbc c                                         ; $58b5: $99
-    rst RST_38                                    ; $58b6: $ff
+    rst $38                                       ; $58b6: $ff
     ld l, c                                       ; $58b7: $69
     ld e, $12                                     ; $58b8: $1e $12
     inc a                                         ; $58ba: $3c
     inc h                                         ; $58bb: $24
     inc a                                         ; $58bc: $3c
-    rst RST_20                                    ; $58bd: $e7
+    rst $20                                       ; $58bd: $e7
     jr @+$01                                      ; $58be: $18 $ff
 
     inc a                                         ; $58c0: $3c
-    rst RST_38                                    ; $58c1: $ff
+    rst $38                                       ; $58c1: $ff
     ld a, [hl]                                    ; $58c2: $7e
     ld b, d                                       ; $58c3: $42
-    rst RST_38                                    ; $58c4: $ff
+    rst $38                                       ; $58c4: $ff
     sbc c                                         ; $58c5: $99
-    rst RST_38                                    ; $58c6: $ff
+    rst $38                                       ; $58c6: $ff
     ld b, d                                       ; $58c7: $42
-    rst RST_38                                    ; $58c8: $ff
+    rst $38                                       ; $58c8: $ff
     sbc c                                         ; $58c9: $99
-    rst RST_38                                    ; $58ca: $ff
+    rst $38                                       ; $58ca: $ff
     sbc c                                         ; $58cb: $99
     ld a, [hl]                                    ; $58cc: $7e
     jp $ff3c                                      ; $58cd: $c3 $3c $ff
 
 
     inc a                                         ; $58d0: $3c
-    rst RST_38                                    ; $58d1: $ff
+    rst $38                                       ; $58d1: $ff
     ld a, [hl]                                    ; $58d2: $7e
     ld b, d                                       ; $58d3: $42
-    rst RST_38                                    ; $58d4: $ff
+    rst $38                                       ; $58d4: $ff
     sbc c                                         ; $58d5: $99
-    rst RST_38                                    ; $58d6: $ff
+    rst $38                                       ; $58d6: $ff
     sbc c                                         ; $58d7: $99
     ld a, a                                       ; $58d8: $7f
     ld b, c                                       ; $58d9: $41
@@ -227,21 +227,21 @@ Picross15x15GameBoardTileData::
     jp $ff3c                                      ; $58dd: $c3 $3c $ff
 
 
-    rst RST_38                                    ; $58e0: $ff
+    rst $38                                       ; $58e0: $ff
     nop                                           ; $58e1: $00
-    rst RST_38                                    ; $58e2: $ff
+    rst $38                                       ; $58e2: $ff
     nop                                           ; $58e3: $00
-    rst RST_38                                    ; $58e4: $ff
+    rst $38                                       ; $58e4: $ff
     nop                                           ; $58e5: $00
-    rst RST_38                                    ; $58e6: $ff
+    rst $38                                       ; $58e6: $ff
     nop                                           ; $58e7: $00
-    rst RST_38                                    ; $58e8: $ff
+    rst $38                                       ; $58e8: $ff
     nop                                           ; $58e9: $00
-    rst RST_38                                    ; $58ea: $ff
+    rst $38                                       ; $58ea: $ff
     nop                                           ; $58eb: $00
-    rst RST_38                                    ; $58ec: $ff
+    rst $38                                       ; $58ec: $ff
     nop                                           ; $58ed: $00
-    rst RST_38                                    ; $58ee: $ff
+    rst $38                                       ; $58ee: $ff
     nop                                           ; $58ef: $00
     nop                                           ; $58f0: $00
     nop                                           ; $58f1: $00
@@ -259,253 +259,253 @@ Picross15x15GameBoardTileData::
     nop                                           ; $58fd: $00
     nop                                           ; $58fe: $00
     nop                                           ; $58ff: $00
-    rst RST_38                                    ; $5900: $ff
+    rst $38                                       ; $5900: $ff
     nop                                           ; $5901: $00
     rst RST_18                                    ; $5902: $df
     jr nc, @+$01                                  ; $5903: $30 $ff
 
     db $10                                        ; $5905: $10
-    rst RST_38                                    ; $5906: $ff
+    rst $38                                       ; $5906: $ff
     db $10                                        ; $5907: $10
-    rst RST_38                                    ; $5908: $ff
+    rst $38                                       ; $5908: $ff
     db $10                                        ; $5909: $10
-    rst RST_38                                    ; $590a: $ff
+    rst $38                                       ; $590a: $ff
     db $10                                        ; $590b: $10
-    rst RST_38                                    ; $590c: $ff
+    rst $38                                       ; $590c: $ff
     nop                                           ; $590d: $00
-    rst RST_38                                    ; $590e: $ff
+    rst $38                                       ; $590e: $ff
     nop                                           ; $590f: $00
-    rst RST_38                                    ; $5910: $ff
+    rst $38                                       ; $5910: $ff
     nop                                           ; $5911: $00
-    rst RST_28                                    ; $5912: $ef
+    rst $28                                       ; $5912: $ef
     ld [hl], b                                    ; $5913: $70
-    rst RST_38                                    ; $5914: $ff
+    rst $38                                       ; $5914: $ff
     db $10                                        ; $5915: $10
     xor a                                         ; $5916: $af
     ld [hl], b                                    ; $5917: $70
-    rst RST_38                                    ; $5918: $ff
+    rst $38                                       ; $5918: $ff
     ld b, b                                       ; $5919: $40
-    rst RST_38                                    ; $591a: $ff
+    rst $38                                       ; $591a: $ff
     ld a, b                                       ; $591b: $78
-    rst RST_38                                    ; $591c: $ff
+    rst $38                                       ; $591c: $ff
     nop                                           ; $591d: $00
-    rst RST_38                                    ; $591e: $ff
+    rst $38                                       ; $591e: $ff
     nop                                           ; $591f: $00
-    rst RST_38                                    ; $5920: $ff
+    rst $38                                       ; $5920: $ff
     nop                                           ; $5921: $00
-    rst RST_38                                    ; $5922: $ff
+    rst $38                                       ; $5922: $ff
     ld [hl], b                                    ; $5923: $70
-    rst RST_38                                    ; $5924: $ff
+    rst $38                                       ; $5924: $ff
     db $10                                        ; $5925: $10
     cp a                                          ; $5926: $bf
     ld a, b                                       ; $5927: $78
-    rst RST_38                                    ; $5928: $ff
+    rst $38                                       ; $5928: $ff
     ld [$78ff], sp                                ; $5929: $08 $ff $78
-    rst RST_38                                    ; $592c: $ff
+    rst $38                                       ; $592c: $ff
     nop                                           ; $592d: $00
-    rst RST_38                                    ; $592e: $ff
+    rst $38                                       ; $592e: $ff
     nop                                           ; $592f: $00
-    rst RST_38                                    ; $5930: $ff
+    rst $38                                       ; $5930: $ff
     nop                                           ; $5931: $00
-    rst RST_38                                    ; $5932: $ff
+    rst $38                                       ; $5932: $ff
     ld d, b                                       ; $5933: $50
-    rst RST_38                                    ; $5934: $ff
+    rst $38                                       ; $5934: $ff
     ld d, b                                       ; $5935: $50
-    rst RST_38                                    ; $5936: $ff
+    rst $38                                       ; $5936: $ff
     ld d, b                                       ; $5937: $50
-    rst RST_38                                    ; $5938: $ff
+    rst $38                                       ; $5938: $ff
     ld a, b                                       ; $5939: $78
-    rst RST_38                                    ; $593a: $ff
+    rst $38                                       ; $593a: $ff
     db $10                                        ; $593b: $10
-    rst RST_38                                    ; $593c: $ff
+    rst $38                                       ; $593c: $ff
     nop                                           ; $593d: $00
-    rst RST_38                                    ; $593e: $ff
+    rst $38                                       ; $593e: $ff
     nop                                           ; $593f: $00
-    rst RST_38                                    ; $5940: $ff
+    rst $38                                       ; $5940: $ff
     nop                                           ; $5941: $00
-    rst RST_38                                    ; $5942: $ff
+    rst $38                                       ; $5942: $ff
     ld [hl], b                                    ; $5943: $70
-    rst RST_38                                    ; $5944: $ff
+    rst $38                                       ; $5944: $ff
     ld b, b                                       ; $5945: $40
-    rst RST_38                                    ; $5946: $ff
+    rst $38                                       ; $5946: $ff
     ld a, b                                       ; $5947: $78
-    rst RST_38                                    ; $5948: $ff
+    rst $38                                       ; $5948: $ff
     ld [$78ff], sp                                ; $5949: $08 $ff $78
-    rst RST_38                                    ; $594c: $ff
+    rst $38                                       ; $594c: $ff
     nop                                           ; $594d: $00
-    rst RST_38                                    ; $594e: $ff
+    rst $38                                       ; $594e: $ff
     nop                                           ; $594f: $00
-    rst RST_38                                    ; $5950: $ff
+    rst $38                                       ; $5950: $ff
     nop                                           ; $5951: $00
-    rst RST_38                                    ; $5952: $ff
+    rst $38                                       ; $5952: $ff
     ld b, b                                       ; $5953: $40
-    rst RST_38                                    ; $5954: $ff
+    rst $38                                       ; $5954: $ff
     ld b, b                                       ; $5955: $40
-    rst RST_38                                    ; $5956: $ff
+    rst $38                                       ; $5956: $ff
     ld a, b                                       ; $5957: $78
-    rst RST_38                                    ; $5958: $ff
+    rst $38                                       ; $5958: $ff
     ld c, b                                       ; $5959: $48
-    rst RST_38                                    ; $595a: $ff
+    rst $38                                       ; $595a: $ff
     ld a, b                                       ; $595b: $78
-    rst RST_38                                    ; $595c: $ff
+    rst $38                                       ; $595c: $ff
     nop                                           ; $595d: $00
-    rst RST_38                                    ; $595e: $ff
+    rst $38                                       ; $595e: $ff
     nop                                           ; $595f: $00
-    rst RST_38                                    ; $5960: $ff
+    rst $38                                       ; $5960: $ff
     nop                                           ; $5961: $00
-    rst RST_38                                    ; $5962: $ff
+    rst $38                                       ; $5962: $ff
     ld a, b                                       ; $5963: $78
-    rst RST_38                                    ; $5964: $ff
+    rst $38                                       ; $5964: $ff
     ld [$10ff], sp                                ; $5965: $08 $ff $10
-    rst RST_38                                    ; $5968: $ff
+    rst $38                                       ; $5968: $ff
     db $10                                        ; $5969: $10
-    rst RST_38                                    ; $596a: $ff
+    rst $38                                       ; $596a: $ff
     db $10                                        ; $596b: $10
-    rst RST_38                                    ; $596c: $ff
+    rst $38                                       ; $596c: $ff
     nop                                           ; $596d: $00
-    rst RST_38                                    ; $596e: $ff
+    rst $38                                       ; $596e: $ff
     nop                                           ; $596f: $00
-    rst RST_38                                    ; $5970: $ff
+    rst $38                                       ; $5970: $ff
     nop                                           ; $5971: $00
-    rst RST_38                                    ; $5972: $ff
+    rst $38                                       ; $5972: $ff
     jr c, @+$01                                   ; $5973: $38 $ff
 
     jr z, @+$01                                   ; $5975: $28 $ff
 
     ld a, b                                       ; $5977: $78
-    rst RST_38                                    ; $5978: $ff
+    rst $38                                       ; $5978: $ff
     ld c, b                                       ; $5979: $48
-    rst RST_38                                    ; $597a: $ff
+    rst $38                                       ; $597a: $ff
     ld a, b                                       ; $597b: $78
-    rst RST_38                                    ; $597c: $ff
+    rst $38                                       ; $597c: $ff
     nop                                           ; $597d: $00
-    rst RST_38                                    ; $597e: $ff
+    rst $38                                       ; $597e: $ff
     nop                                           ; $597f: $00
-    rst RST_38                                    ; $5980: $ff
+    rst $38                                       ; $5980: $ff
     nop                                           ; $5981: $00
-    rst RST_38                                    ; $5982: $ff
+    rst $38                                       ; $5982: $ff
     ld a, b                                       ; $5983: $78
-    rst RST_38                                    ; $5984: $ff
+    rst $38                                       ; $5984: $ff
     ld c, b                                       ; $5985: $48
-    rst RST_38                                    ; $5986: $ff
+    rst $38                                       ; $5986: $ff
     ld a, b                                       ; $5987: $78
-    rst RST_38                                    ; $5988: $ff
+    rst $38                                       ; $5988: $ff
     ld [$08ff], sp                                ; $5989: $08 $ff $08
-    rst RST_38                                    ; $598c: $ff
+    rst $38                                       ; $598c: $ff
     nop                                           ; $598d: $00
-    rst RST_38                                    ; $598e: $ff
+    rst $38                                       ; $598e: $ff
     nop                                           ; $598f: $00
-    rst RST_38                                    ; $5990: $ff
+    rst $38                                       ; $5990: $ff
     nop                                           ; $5991: $00
-    rst RST_38                                    ; $5992: $ff
+    rst $38                                       ; $5992: $ff
     ld e, h                                       ; $5993: $5c
-    rst RST_38                                    ; $5994: $ff
+    rst $38                                       ; $5994: $ff
     ld d, h                                       ; $5995: $54
-    rst RST_38                                    ; $5996: $ff
+    rst $38                                       ; $5996: $ff
     ld d, h                                       ; $5997: $54
-    rst RST_38                                    ; $5998: $ff
+    rst $38                                       ; $5998: $ff
     ld d, h                                       ; $5999: $54
-    rst RST_38                                    ; $599a: $ff
+    rst $38                                       ; $599a: $ff
     ld e, h                                       ; $599b: $5c
-    rst RST_38                                    ; $599c: $ff
+    rst $38                                       ; $599c: $ff
     nop                                           ; $599d: $00
-    rst RST_38                                    ; $599e: $ff
+    rst $38                                       ; $599e: $ff
     nop                                           ; $599f: $00
-    rst RST_38                                    ; $59a0: $ff
+    rst $38                                       ; $59a0: $ff
     nop                                           ; $59a1: $00
-    rst RST_38                                    ; $59a2: $ff
+    rst $38                                       ; $59a2: $ff
     ld c, b                                       ; $59a3: $48
-    rst RST_38                                    ; $59a4: $ff
+    rst $38                                       ; $59a4: $ff
     ld c, b                                       ; $59a5: $48
-    rst RST_38                                    ; $59a6: $ff
+    rst $38                                       ; $59a6: $ff
     ld c, b                                       ; $59a7: $48
-    rst RST_38                                    ; $59a8: $ff
+    rst $38                                       ; $59a8: $ff
     ld c, b                                       ; $59a9: $48
-    rst RST_38                                    ; $59aa: $ff
+    rst $38                                       ; $59aa: $ff
     ld c, b                                       ; $59ab: $48
-    rst RST_38                                    ; $59ac: $ff
+    rst $38                                       ; $59ac: $ff
     nop                                           ; $59ad: $00
-    rst RST_38                                    ; $59ae: $ff
+    rst $38                                       ; $59ae: $ff
     nop                                           ; $59af: $00
-    rst RST_38                                    ; $59b0: $ff
+    rst $38                                       ; $59b0: $ff
     nop                                           ; $59b1: $00
-    rst RST_38                                    ; $59b2: $ff
+    rst $38                                       ; $59b2: $ff
     ld e, h                                       ; $59b3: $5c
-    rst RST_38                                    ; $59b4: $ff
+    rst $38                                       ; $59b4: $ff
     ld b, h                                       ; $59b5: $44
-    rst RST_38                                    ; $59b6: $ff
+    rst $38                                       ; $59b6: $ff
     ld e, h                                       ; $59b7: $5c
-    rst RST_38                                    ; $59b8: $ff
+    rst $38                                       ; $59b8: $ff
     ld d, b                                       ; $59b9: $50
-    rst RST_38                                    ; $59ba: $ff
+    rst $38                                       ; $59ba: $ff
     ld e, h                                       ; $59bb: $5c
-    rst RST_38                                    ; $59bc: $ff
+    rst $38                                       ; $59bc: $ff
     nop                                           ; $59bd: $00
-    rst RST_38                                    ; $59be: $ff
+    rst $38                                       ; $59be: $ff
     nop                                           ; $59bf: $00
-    rst RST_38                                    ; $59c0: $ff
+    rst $38                                       ; $59c0: $ff
     nop                                           ; $59c1: $00
-    rst RST_38                                    ; $59c2: $ff
+    rst $38                                       ; $59c2: $ff
     ld e, h                                       ; $59c3: $5c
-    rst RST_38                                    ; $59c4: $ff
+    rst $38                                       ; $59c4: $ff
     ld b, h                                       ; $59c5: $44
-    rst RST_38                                    ; $59c6: $ff
+    rst $38                                       ; $59c6: $ff
     ld e, h                                       ; $59c7: $5c
-    rst RST_38                                    ; $59c8: $ff
+    rst $38                                       ; $59c8: $ff
     ld b, h                                       ; $59c9: $44
-    rst RST_38                                    ; $59ca: $ff
+    rst $38                                       ; $59ca: $ff
     ld e, h                                       ; $59cb: $5c
-    rst RST_38                                    ; $59cc: $ff
+    rst $38                                       ; $59cc: $ff
     nop                                           ; $59cd: $00
-    rst RST_38                                    ; $59ce: $ff
+    rst $38                                       ; $59ce: $ff
     nop                                           ; $59cf: $00
-    rst RST_38                                    ; $59d0: $ff
+    rst $38                                       ; $59d0: $ff
     nop                                           ; $59d1: $00
-    rst RST_38                                    ; $59d2: $ff
+    rst $38                                       ; $59d2: $ff
     ld d, h                                       ; $59d3: $54
-    rst RST_38                                    ; $59d4: $ff
+    rst $38                                       ; $59d4: $ff
     ld d, h                                       ; $59d5: $54
-    rst RST_38                                    ; $59d6: $ff
+    rst $38                                       ; $59d6: $ff
     ld d, h                                       ; $59d7: $54
-    rst RST_38                                    ; $59d8: $ff
+    rst $38                                       ; $59d8: $ff
     ld e, h                                       ; $59d9: $5c
-    rst RST_38                                    ; $59da: $ff
+    rst $38                                       ; $59da: $ff
     ld b, h                                       ; $59db: $44
-    rst RST_38                                    ; $59dc: $ff
+    rst $38                                       ; $59dc: $ff
     nop                                           ; $59dd: $00
-    rst RST_38                                    ; $59de: $ff
+    rst $38                                       ; $59de: $ff
     nop                                           ; $59df: $00
-    rst RST_38                                    ; $59e0: $ff
+    rst $38                                       ; $59e0: $ff
     nop                                           ; $59e1: $00
-    rst RST_38                                    ; $59e2: $ff
+    rst $38                                       ; $59e2: $ff
     ld e, h                                       ; $59e3: $5c
-    rst RST_38                                    ; $59e4: $ff
+    rst $38                                       ; $59e4: $ff
     ld d, b                                       ; $59e5: $50
-    rst RST_38                                    ; $59e6: $ff
+    rst $38                                       ; $59e6: $ff
     ld e, h                                       ; $59e7: $5c
-    rst RST_38                                    ; $59e8: $ff
+    rst $38                                       ; $59e8: $ff
     ld b, h                                       ; $59e9: $44
-    rst RST_38                                    ; $59ea: $ff
+    rst $38                                       ; $59ea: $ff
     ld e, h                                       ; $59eb: $5c
-    rst RST_38                                    ; $59ec: $ff
+    rst $38                                       ; $59ec: $ff
     nop                                           ; $59ed: $00
-    rst RST_38                                    ; $59ee: $ff
+    rst $38                                       ; $59ee: $ff
     nop                                           ; $59ef: $00
-    rst RST_38                                    ; $59f0: $ff
+    rst $38                                       ; $59f0: $ff
     nop                                           ; $59f1: $00
     or a                                          ; $59f2: $b7
     ld a, b                                       ; $59f3: $78
-    rst RST_38                                    ; $59f4: $ff
+    rst $38                                       ; $59f4: $ff
     ld c, b                                       ; $59f5: $48
-    rst RST_38                                    ; $59f6: $ff
+    rst $38                                       ; $59f6: $ff
     ld c, b                                       ; $59f7: $48
-    rst RST_38                                    ; $59f8: $ff
+    rst $38                                       ; $59f8: $ff
     ld c, b                                       ; $59f9: $48
     or a                                          ; $59fa: $b7
     ld a, b                                       ; $59fb: $78
-    rst RST_38                                    ; $59fc: $ff
+    rst $38                                       ; $59fc: $ff
     nop                                           ; $59fd: $00
-    rst RST_38                                    ; $59fe: $ff
+    rst $38                                       ; $59fe: $ff
     nop                                           ; $59ff: $00
     nop                                           ; $5a00: $00
     nop                                           ; $5a01: $00
@@ -762,114 +762,114 @@ jr_006_5aac:
     nop                                           ; $5afd: $00
     nop                                           ; $5afe: $00
     nop                                           ; $5aff: $00
-    rst RST_38                                    ; $5b00: $ff
-    rst RST_38                                    ; $5b01: $ff
+    rst $38                                       ; $5b00: $ff
+    rst $38                                       ; $5b01: $ff
     add b                                         ; $5b02: $80
     add b                                         ; $5b03: $80
     add b                                         ; $5b04: $80
-    rst RST_38                                    ; $5b05: $ff
+    rst $38                                       ; $5b05: $ff
     add b                                         ; $5b06: $80
-    rst RST_38                                    ; $5b07: $ff
+    rst $38                                       ; $5b07: $ff
     adc a                                         ; $5b08: $8f
-    rst RST_38                                    ; $5b09: $ff
+    rst $38                                       ; $5b09: $ff
     sbc a                                         ; $5b0a: $9f
     ldh a, [$ffbf]                                ; $5b0b: $f0 $bf
     and $bf                                       ; $5b0d: $e6 $bf
-    rst RST_20                                    ; $5b0f: $e7
-    rst RST_38                                    ; $5b10: $ff
-    rst RST_38                                    ; $5b11: $ff
+    rst $20                                       ; $5b0f: $e7
+    rst $38                                       ; $5b10: $ff
+    rst $38                                       ; $5b11: $ff
     nop                                           ; $5b12: $00
     nop                                           ; $5b13: $00
     nop                                           ; $5b14: $00
-    rst RST_38                                    ; $5b15: $ff
+    rst $38                                       ; $5b15: $ff
     nop                                           ; $5b16: $00
-    rst RST_38                                    ; $5b17: $ff
+    rst $38                                       ; $5b17: $ff
     ld e, $ff                                     ; $5b18: $1e $ff
     cp a                                          ; $5b1a: $bf
     pop hl                                        ; $5b1b: $e1
-    rst RST_38                                    ; $5b1c: $ff
+    rst $38                                       ; $5b1c: $ff
     ld c, h                                       ; $5b1d: $4c
-    rst RST_38                                    ; $5b1e: $ff
+    rst $38                                       ; $5b1e: $ff
     call z, rIE                                   ; $5b1f: $cc $ff $ff
     nop                                           ; $5b22: $00
     nop                                           ; $5b23: $00
     nop                                           ; $5b24: $00
-    rst RST_38                                    ; $5b25: $ff
+    rst $38                                       ; $5b25: $ff
     nop                                           ; $5b26: $00
-    rst RST_38                                    ; $5b27: $ff
+    rst $38                                       ; $5b27: $ff
     ld h, d                                       ; $5b28: $62
-    rst RST_38                                    ; $5b29: $ff
-    rst RST_30                                    ; $5b2a: $f7
+    rst $38                                       ; $5b29: $ff
+    rst $30                                       ; $5b2a: $f7
     sbc l                                         ; $5b2b: $9d
-    rst RST_38                                    ; $5b2c: $ff
+    rst $38                                       ; $5b2c: $ff
     adc c                                         ; $5b2d: $89
-    rst RST_38                                    ; $5b2e: $ff
+    rst $38                                       ; $5b2e: $ff
     add c                                         ; $5b2f: $81
-    rst RST_38                                    ; $5b30: $ff
-    rst RST_38                                    ; $5b31: $ff
+    rst $38                                       ; $5b30: $ff
+    rst $38                                       ; $5b31: $ff
     nop                                           ; $5b32: $00
     nop                                           ; $5b33: $00
     nop                                           ; $5b34: $00
-    rst RST_38                                    ; $5b35: $ff
+    rst $38                                       ; $5b35: $ff
     nop                                           ; $5b36: $00
-    rst RST_38                                    ; $5b37: $ff
+    rst $38                                       ; $5b37: $ff
     db $fc                                        ; $5b38: $fc
-    rst RST_38                                    ; $5b39: $ff
+    rst $38                                       ; $5b39: $ff
     cp $03                                        ; $5b3a: $fe $03
     db $fc                                        ; $5b3c: $fc
     ccf                                           ; $5b3d: $3f
     ld hl, sp+$0f                                 ; $5b3e: $f8 $0f
-    rst RST_38                                    ; $5b40: $ff
-    rst RST_38                                    ; $5b41: $ff
+    rst $38                                       ; $5b40: $ff
+    rst $38                                       ; $5b41: $ff
     nop                                           ; $5b42: $00
     nop                                           ; $5b43: $00
     nop                                           ; $5b44: $00
-    rst RST_38                                    ; $5b45: $ff
+    rst $38                                       ; $5b45: $ff
     nop                                           ; $5b46: $00
-    rst RST_38                                    ; $5b47: $ff
+    rst $38                                       ; $5b47: $ff
     ld e, $ff                                     ; $5b48: $1e $ff
     ccf                                           ; $5b4a: $3f
     pop hl                                        ; $5b4b: $e1
     ld a, a                                       ; $5b4c: $7f
     call z, $cc7f                                 ; $5b4d: $cc $7f $cc
-    rst RST_38                                    ; $5b50: $ff
-    rst RST_38                                    ; $5b51: $ff
+    rst $38                                       ; $5b50: $ff
+    rst $38                                       ; $5b51: $ff
     nop                                           ; $5b52: $00
     nop                                           ; $5b53: $00
     nop                                           ; $5b54: $00
-    rst RST_38                                    ; $5b55: $ff
+    rst $38                                       ; $5b55: $ff
     nop                                           ; $5b56: $00
-    rst RST_38                                    ; $5b57: $ff
+    rst $38                                       ; $5b57: $ff
     ld h, d                                       ; $5b58: $62
-    rst RST_38                                    ; $5b59: $ff
-    rst RST_30                                    ; $5b5a: $f7
+    rst $38                                       ; $5b59: $ff
+    rst $30                                       ; $5b5a: $f7
     sbc l                                         ; $5b5b: $9d
-    rst RST_30                                    ; $5b5c: $f7
+    rst $30                                       ; $5b5c: $f7
     sbc l                                         ; $5b5d: $9d
-    rst RST_30                                    ; $5b5e: $f7
+    rst $30                                       ; $5b5e: $f7
     sbc l                                         ; $5b5f: $9d
-    rst RST_38                                    ; $5b60: $ff
-    rst RST_38                                    ; $5b61: $ff
+    rst $38                                       ; $5b60: $ff
+    rst $38                                       ; $5b61: $ff
     nop                                           ; $5b62: $00
     nop                                           ; $5b63: $00
     nop                                           ; $5b64: $00
-    rst RST_38                                    ; $5b65: $ff
+    rst $38                                       ; $5b65: $ff
     nop                                           ; $5b66: $00
-    rst RST_38                                    ; $5b67: $ff
+    rst $38                                       ; $5b67: $ff
     db $fd                                        ; $5b68: $fd
-    rst RST_38                                    ; $5b69: $ff
-    rst RST_38                                    ; $5b6a: $ff
+    rst $38                                       ; $5b69: $ff
+    rst $38                                       ; $5b6a: $ff
     ld [bc], a                                    ; $5b6b: $02
 
 jr_006_5b6c:
-    rst RST_38                                    ; $5b6c: $ff
+    rst $38                                       ; $5b6c: $ff
     ld a, $fb                                     ; $5b6d: $3e $fb
     ld c, $ff                                     ; $5b6f: $0e $ff
-    rst RST_38                                    ; $5b71: $ff
+    rst $38                                       ; $5b71: $ff
     ld bc, $0101                                  ; $5b72: $01 $01 $01
-    rst RST_38                                    ; $5b75: $ff
+    rst $38                                       ; $5b75: $ff
     ld bc, $f1ff                                  ; $5b76: $01 $ff $f1
-    rst RST_38                                    ; $5b79: $ff
+    rst $38                                       ; $5b79: $ff
     ld sp, hl                                     ; $5b7a: $f9
     rrca                                          ; $5b7b: $0f
     db $fd                                        ; $5b7c: $fd
@@ -911,55 +911,55 @@ jr_006_5b6c:
     ld a, a                                       ; $5ba0: $7f
     ld a, a                                       ; $5ba1: $7f
     and b                                         ; $5ba2: $a0
-    rst RST_38                                    ; $5ba3: $ff
+    rst $38                                       ; $5ba3: $ff
     and b                                         ; $5ba4: $a0
     and b                                         ; $5ba5: $a0
     cp a                                          ; $5ba6: $bf
     and b                                         ; $5ba7: $a0
-    rst RST_38                                    ; $5ba8: $ff
+    rst $38                                       ; $5ba8: $ff
     and b                                         ; $5ba9: $a0
     ldh [$ffa0], a                                ; $5baa: $e0 $a0
     and b                                         ; $5bac: $a0
     and b                                         ; $5bad: $a0
     and b                                         ; $5bae: $a0
-    rst RST_38                                    ; $5baf: $ff
-    rst RST_38                                    ; $5bb0: $ff
-    rst RST_38                                    ; $5bb1: $ff
+    rst $38                                       ; $5baf: $ff
+    rst $38                                       ; $5bb0: $ff
+    rst $38                                       ; $5bb1: $ff
     nop                                           ; $5bb2: $00
-    rst RST_38                                    ; $5bb3: $ff
+    rst $38                                       ; $5bb3: $ff
     nop                                           ; $5bb4: $00
     nop                                           ; $5bb5: $00
-    rst RST_38                                    ; $5bb6: $ff
+    rst $38                                       ; $5bb6: $ff
     nop                                           ; $5bb7: $00
-    rst RST_38                                    ; $5bb8: $ff
+    rst $38                                       ; $5bb8: $ff
     nop                                           ; $5bb9: $00
     nop                                           ; $5bba: $00
     nop                                           ; $5bbb: $00
     nop                                           ; $5bbc: $00
     nop                                           ; $5bbd: $00
     nop                                           ; $5bbe: $00
-    rst RST_38                                    ; $5bbf: $ff
-    rst RST_38                                    ; $5bc0: $ff
-    rst RST_38                                    ; $5bc1: $ff
+    rst $38                                       ; $5bbf: $ff
+    rst $38                                       ; $5bc0: $ff
+    rst $38                                       ; $5bc1: $ff
     ld bc, $03ff                                  ; $5bc2: $01 $ff $03
     ld [bc], a                                    ; $5bc5: $02
-    rst RST_38                                    ; $5bc6: $ff
+    rst $38                                       ; $5bc6: $ff
     ld [bc], a                                    ; $5bc7: $02
-    rst RST_38                                    ; $5bc8: $ff
+    rst $38                                       ; $5bc8: $ff
     ld bc, $0101                                  ; $5bc9: $01 $01 $01
     inc bc                                        ; $5bcc: $03
     ld [bc], a                                    ; $5bcd: $02
     inc bc                                        ; $5bce: $03
     cp $ff                                        ; $5bcf: $fe $ff
-    rst RST_38                                    ; $5bd1: $ff
+    rst $38                                       ; $5bd1: $ff
     add b                                         ; $5bd2: $80
-    rst RST_38                                    ; $5bd3: $ff
+    rst $38                                       ; $5bd3: $ff
     ret nz                                        ; $5bd4: $c0
 
     ld b, b                                       ; $5bd5: $40
-    rst RST_38                                    ; $5bd6: $ff
+    rst $38                                       ; $5bd6: $ff
     ld b, b                                       ; $5bd7: $40
-    rst RST_38                                    ; $5bd8: $ff
+    rst $38                                       ; $5bd8: $ff
     add b                                         ; $5bd9: $80
     add b                                         ; $5bda: $80
     add b                                         ; $5bdb: $80
@@ -969,137 +969,137 @@ jr_006_5b6c:
     ret nz                                        ; $5bde: $c0
 
     ld a, a                                       ; $5bdf: $7f
-    rst RST_38                                    ; $5be0: $ff
-    rst RST_38                                    ; $5be1: $ff
+    rst $38                                       ; $5be0: $ff
+    rst $38                                       ; $5be1: $ff
     nop                                           ; $5be2: $00
-    rst RST_38                                    ; $5be3: $ff
+    rst $38                                       ; $5be3: $ff
     nop                                           ; $5be4: $00
     nop                                           ; $5be5: $00
-    rst RST_38                                    ; $5be6: $ff
+    rst $38                                       ; $5be6: $ff
     nop                                           ; $5be7: $00
-    rst RST_38                                    ; $5be8: $ff
+    rst $38                                       ; $5be8: $ff
     nop                                           ; $5be9: $00
     nop                                           ; $5bea: $00
     nop                                           ; $5beb: $00
     nop                                           ; $5bec: $00
     nop                                           ; $5bed: $00
     nop                                           ; $5bee: $00
-    rst RST_38                                    ; $5bef: $ff
+    rst $38                                       ; $5bef: $ff
     cp $fe                                        ; $5bf0: $fe $fe
     inc bc                                        ; $5bf2: $03
-    rst RST_38                                    ; $5bf3: $ff
+    rst $38                                       ; $5bf3: $ff
     dec b                                         ; $5bf4: $05
     dec b                                         ; $5bf5: $05
     db $fd                                        ; $5bf6: $fd
     dec b                                         ; $5bf7: $05
-    rst RST_38                                    ; $5bf8: $ff
+    rst $38                                       ; $5bf8: $ff
     dec b                                         ; $5bf9: $05
     rlca                                          ; $5bfa: $07
     dec b                                         ; $5bfb: $05
     dec b                                         ; $5bfc: $05
     dec b                                         ; $5bfd: $05
     dec b                                         ; $5bfe: $05
-    rst RST_38                                    ; $5bff: $ff
+    rst $38                                       ; $5bff: $ff
     cp a                                          ; $5c00: $bf
     db $e4                                        ; $5c01: $e4
     cp a                                          ; $5c02: $bf
     and $9f                                       ; $5c03: $e6 $9f
     ldh a, [$ff8f]                                ; $5c05: $f0 $8f
-    rst RST_38                                    ; $5c07: $ff
+    rst $38                                       ; $5c07: $ff
     add b                                         ; $5c08: $80
-    rst RST_38                                    ; $5c09: $ff
+    rst $38                                       ; $5c09: $ff
     add b                                         ; $5c0a: $80
-    rst RST_38                                    ; $5c0b: $ff
+    rst $38                                       ; $5c0b: $ff
     add b                                         ; $5c0c: $80
     add b                                         ; $5c0d: $80
-    rst RST_38                                    ; $5c0e: $ff
-    rst RST_38                                    ; $5c0f: $ff
-    rst RST_38                                    ; $5c10: $ff
+    rst $38                                       ; $5c0e: $ff
+    rst $38                                       ; $5c0f: $ff
+    rst $38                                       ; $5c10: $ff
     ld b, b                                       ; $5c11: $40
-    rst RST_38                                    ; $5c12: $ff
+    rst $38                                       ; $5c12: $ff
     ld c, h                                       ; $5c13: $4c
-    rst RST_38                                    ; $5c14: $ff
+    rst $38                                       ; $5c14: $ff
     call z, $ff33                                 ; $5c15: $cc $33 $ff
     nop                                           ; $5c18: $00
-    rst RST_38                                    ; $5c19: $ff
+    rst $38                                       ; $5c19: $ff
     nop                                           ; $5c1a: $00
-    rst RST_38                                    ; $5c1b: $ff
+    rst $38                                       ; $5c1b: $ff
     nop                                           ; $5c1c: $00
     nop                                           ; $5c1d: $00
-    rst RST_38                                    ; $5c1e: $ff
-    rst RST_38                                    ; $5c1f: $ff
-    rst RST_38                                    ; $5c20: $ff
+    rst $38                                       ; $5c1e: $ff
+    rst $38                                       ; $5c1f: $ff
+    rst $38                                       ; $5c20: $ff
     sub l                                         ; $5c21: $95
-    rst RST_38                                    ; $5c22: $ff
+    rst $38                                       ; $5c22: $ff
     sbc l                                         ; $5c23: $9d
-    rst RST_30                                    ; $5c24: $f7
+    rst $30                                       ; $5c24: $f7
     sbc l                                         ; $5c25: $9d
     ld h, d                                       ; $5c26: $62
-    rst RST_38                                    ; $5c27: $ff
+    rst $38                                       ; $5c27: $ff
     nop                                           ; $5c28: $00
-    rst RST_38                                    ; $5c29: $ff
+    rst $38                                       ; $5c29: $ff
     nop                                           ; $5c2a: $00
-    rst RST_38                                    ; $5c2b: $ff
+    rst $38                                       ; $5c2b: $ff
     nop                                           ; $5c2c: $00
     nop                                           ; $5c2d: $00
-    rst RST_38                                    ; $5c2e: $ff
-    rst RST_38                                    ; $5c2f: $ff
+    rst $38                                       ; $5c2e: $ff
+    rst $38                                       ; $5c2f: $ff
     ldh a, [$ff3f]                                ; $5c30: $f0 $3f
     db $fc                                        ; $5c32: $fc
     ccf                                           ; $5c33: $3f
     cp $03                                        ; $5c34: $fe $03
     db $fc                                        ; $5c36: $fc
-    rst RST_38                                    ; $5c37: $ff
+    rst $38                                       ; $5c37: $ff
     nop                                           ; $5c38: $00
-    rst RST_38                                    ; $5c39: $ff
+    rst $38                                       ; $5c39: $ff
     nop                                           ; $5c3a: $00
-    rst RST_38                                    ; $5c3b: $ff
+    rst $38                                       ; $5c3b: $ff
     nop                                           ; $5c3c: $00
     nop                                           ; $5c3d: $00
-    rst RST_38                                    ; $5c3e: $ff
-    rst RST_38                                    ; $5c3f: $ff
+    rst $38                                       ; $5c3e: $ff
+    rst $38                                       ; $5c3f: $ff
     ld a, a                                       ; $5c40: $7f
     call z, $cc7f                                 ; $5c41: $cc $7f $cc
     ccf                                           ; $5c44: $3f
     pop hl                                        ; $5c45: $e1
     ld e, $ff                                     ; $5c46: $1e $ff
     nop                                           ; $5c48: $00
-    rst RST_38                                    ; $5c49: $ff
+    rst $38                                       ; $5c49: $ff
     nop                                           ; $5c4a: $00
-    rst RST_38                                    ; $5c4b: $ff
+    rst $38                                       ; $5c4b: $ff
     nop                                           ; $5c4c: $00
     nop                                           ; $5c4d: $00
-    rst RST_38                                    ; $5c4e: $ff
-    rst RST_38                                    ; $5c4f: $ff
-    rst RST_30                                    ; $5c50: $f7
+    rst $38                                       ; $5c4e: $ff
+    rst $38                                       ; $5c4f: $ff
+    rst $30                                       ; $5c50: $f7
     sbc l                                         ; $5c51: $9d
-    rst RST_38                                    ; $5c52: $ff
+    rst $38                                       ; $5c52: $ff
     srl l                                         ; $5c53: $cb $3d
-    rst RST_20                                    ; $5c55: $e7
+    rst $20                                       ; $5c55: $e7
     jr @+$01                                      ; $5c56: $18 $ff
 
     nop                                           ; $5c58: $00
-    rst RST_38                                    ; $5c59: $ff
+    rst $38                                       ; $5c59: $ff
     nop                                           ; $5c5a: $00
-    rst RST_38                                    ; $5c5b: $ff
+    rst $38                                       ; $5c5b: $ff
     nop                                           ; $5c5c: $00
     nop                                           ; $5c5d: $00
-    rst RST_38                                    ; $5c5e: $ff
-    rst RST_38                                    ; $5c5f: $ff
+    rst $38                                       ; $5c5e: $ff
+    rst $38                                       ; $5c5f: $ff
     di                                            ; $5c60: $f3
     ld a, $ff                                     ; $5c61: $3e $ff
     ld a, $ff                                     ; $5c63: $3e $ff
     ld [bc], a                                    ; $5c65: $02
     db $fd                                        ; $5c66: $fd
-    rst RST_38                                    ; $5c67: $ff
+    rst $38                                       ; $5c67: $ff
     nop                                           ; $5c68: $00
-    rst RST_38                                    ; $5c69: $ff
+    rst $38                                       ; $5c69: $ff
     nop                                           ; $5c6a: $00
-    rst RST_38                                    ; $5c6b: $ff
+    rst $38                                       ; $5c6b: $ff
     nop                                           ; $5c6c: $00
     nop                                           ; $5c6d: $00
-    rst RST_38                                    ; $5c6e: $ff
-    rst RST_38                                    ; $5c6f: $ff
+    rst $38                                       ; $5c6e: $ff
+    rst $38                                       ; $5c6f: $ff
     ld sp, hl                                     ; $5c70: $f9
     rrca                                          ; $5c71: $0f
     db $fd                                        ; $5c72: $fd
@@ -1107,11 +1107,11 @@ jr_006_5b6c:
     db $fd                                        ; $5c74: $fd
     ld h, a                                       ; $5c75: $67
     sbc c                                         ; $5c76: $99
-    rst RST_38                                    ; $5c77: $ff
+    rst $38                                       ; $5c77: $ff
     ld bc, $01ff                                  ; $5c78: $01 $ff $01
-    rst RST_38                                    ; $5c7b: $ff
+    rst $38                                       ; $5c7b: $ff
     ld bc, rSB                                    ; $5c7c: $01 $01 $ff
-    rst RST_38                                    ; $5c7f: $ff
+    rst $38                                       ; $5c7f: $ff
     nop                                           ; $5c80: $00
     nop                                           ; $5c81: $00
     nop                                           ; $5c82: $00
@@ -1145,7 +1145,7 @@ jr_006_5b6c:
     nop                                           ; $5c9e: $00
     nop                                           ; $5c9f: $00
     and b                                         ; $5ca0: $a0
-    rst RST_38                                    ; $5ca1: $ff
+    rst $38                                       ; $5ca1: $ff
     ld a, a                                       ; $5ca2: $7f
     ld a, a                                       ; $5ca3: $7f
     nop                                           ; $5ca4: $00
@@ -1161,9 +1161,9 @@ jr_006_5b6c:
     nop                                           ; $5cae: $00
     nop                                           ; $5caf: $00
     nop                                           ; $5cb0: $00
-    rst RST_38                                    ; $5cb1: $ff
-    rst RST_38                                    ; $5cb2: $ff
-    rst RST_38                                    ; $5cb3: $ff
+    rst $38                                       ; $5cb1: $ff
+    rst $38                                       ; $5cb2: $ff
+    rst $38                                       ; $5cb3: $ff
     nop                                           ; $5cb4: $00
     nop                                           ; $5cb5: $00
     nop                                           ; $5cb6: $00
@@ -1177,7 +1177,7 @@ jr_006_5b6c:
     nop                                           ; $5cbe: $00
     nop                                           ; $5cbf: $00
     ld bc, rIE                                    ; $5cc0: $01 $ff $ff
-    rst RST_38                                    ; $5cc3: $ff
+    rst $38                                       ; $5cc3: $ff
     nop                                           ; $5cc4: $00
     nop                                           ; $5cc5: $00
     nop                                           ; $5cc6: $00
@@ -1191,9 +1191,9 @@ jr_006_5b6c:
     nop                                           ; $5cce: $00
     nop                                           ; $5ccf: $00
     add b                                         ; $5cd0: $80
-    rst RST_38                                    ; $5cd1: $ff
-    rst RST_38                                    ; $5cd2: $ff
-    rst RST_38                                    ; $5cd3: $ff
+    rst $38                                       ; $5cd1: $ff
+    rst $38                                       ; $5cd2: $ff
+    rst $38                                       ; $5cd3: $ff
     nop                                           ; $5cd4: $00
     nop                                           ; $5cd5: $00
     nop                                           ; $5cd6: $00
@@ -1207,9 +1207,9 @@ jr_006_5b6c:
     nop                                           ; $5cde: $00
     nop                                           ; $5cdf: $00
     nop                                           ; $5ce0: $00
-    rst RST_38                                    ; $5ce1: $ff
-    rst RST_38                                    ; $5ce2: $ff
-    rst RST_38                                    ; $5ce3: $ff
+    rst $38                                       ; $5ce1: $ff
+    rst $38                                       ; $5ce2: $ff
+    rst $38                                       ; $5ce3: $ff
     nop                                           ; $5ce4: $00
     nop                                           ; $5ce5: $00
     nop                                           ; $5ce6: $00
@@ -1223,7 +1223,7 @@ jr_006_5b6c:
     nop                                           ; $5cee: $00
     nop                                           ; $5cef: $00
     dec b                                         ; $5cf0: $05
-    rst RST_38                                    ; $5cf1: $ff
+    rst $38                                       ; $5cf1: $ff
     cp $fe                                        ; $5cf2: $fe $fe
     nop                                           ; $5cf4: $00
     nop                                           ; $5cf5: $00
@@ -1513,13 +1513,13 @@ jr_006_5b6c:
     adc h                                         ; $5e13: $8c
     rst RST_18                                    ; $5e14: $df
     ld d, e                                       ; $5e15: $53
-    rst RST_38                                    ; $5e16: $ff
+    rst $38                                       ; $5e16: $ff
     xor l                                         ; $5e17: $ad
-    rst RST_38                                    ; $5e18: $ff
+    rst $38                                       ; $5e18: $ff
     db $ed                                        ; $5e19: $ed
-    rst RST_38                                    ; $5e1a: $ff
+    rst $38                                       ; $5e1a: $ff
     db $ed                                        ; $5e1b: $ed
-    rst RST_38                                    ; $5e1c: $ff
+    rst $38                                       ; $5e1c: $ff
     xor l                                         ; $5e1d: $ad
     rst RST_18                                    ; $5e1e: $df
     ld d, e                                       ; $5e1f: $53
@@ -1527,17 +1527,17 @@ jr_006_5b6c:
     nop                                           ; $5e21: $00
     sub e                                         ; $5e22: $93
     sub e                                         ; $5e23: $93
-    rst RST_38                                    ; $5e24: $ff
+    rst $38                                       ; $5e24: $ff
     ld l, h                                       ; $5e25: $6c
-    rst RST_38                                    ; $5e26: $ff
+    rst $38                                       ; $5e26: $ff
     dec hl                                        ; $5e27: $2b
-    rst RST_38                                    ; $5e28: $ff
+    rst $38                                       ; $5e28: $ff
     ld c, e                                       ; $5e29: $4b
-    rst RST_38                                    ; $5e2a: $ff
+    rst $38                                       ; $5e2a: $ff
     ld l, d                                       ; $5e2b: $6a
-    rst RST_38                                    ; $5e2c: $ff
+    rst $38                                       ; $5e2c: $ff
     ld l, e                                       ; $5e2d: $6b
-    rst RST_38                                    ; $5e2e: $ff
+    rst $38                                       ; $5e2e: $ff
     ld l, h                                       ; $5e2f: $6c
     nop                                           ; $5e30: $00
     nop                                           ; $5e31: $00
@@ -1545,37 +1545,37 @@ jr_006_5b6c:
 
     db $fd                                        ; $5e34: $fd
     push bc                                       ; $5e35: $c5
-    rst RST_38                                    ; $5e36: $ff
+    rst $38                                       ; $5e36: $ff
     ld e, d                                       ; $5e37: $5a
-    rst RST_38                                    ; $5e38: $ff
+    rst $38                                       ; $5e38: $ff
     jp c, $46ff                                   ; $5e39: $da $ff $46
 
-    rst RST_38                                    ; $5e3c: $ff
+    rst $38                                       ; $5e3c: $ff
     ld e, d                                       ; $5e3d: $5a
-    rst RST_38                                    ; $5e3e: $ff
+    rst $38                                       ; $5e3e: $ff
     jp c, RST_00                                  ; $5e3f: $da $00 $00
 
     rst RST_08                                    ; $5e42: $cf
     rst RST_08                                    ; $5e43: $cf
-    rst RST_38                                    ; $5e44: $ff
+    rst $38                                       ; $5e44: $ff
     jr nc, @+$01                                  ; $5e45: $30 $ff
 
     db $dd                                        ; $5e47: $dd
-    rst RST_30                                    ; $5e48: $f7
+    rst $30                                       ; $5e48: $f7
     push de                                       ; $5e49: $d5
-    rst RST_30                                    ; $5e4a: $f7
+    rst $30                                       ; $5e4a: $f7
     dec d                                         ; $5e4b: $15
-    rst RST_30                                    ; $5e4c: $f7
+    rst $30                                       ; $5e4c: $f7
     push de                                       ; $5e4d: $d5
-    rst RST_30                                    ; $5e4e: $f7
+    rst $30                                       ; $5e4e: $f7
     push de                                       ; $5e4f: $d5
     nop                                           ; $5e50: $00
     nop                                           ; $5e51: $00
     and l                                         ; $5e52: $a5
     and l                                         ; $5e53: $a5
-    rst RST_38                                    ; $5e54: $ff
+    rst $38                                       ; $5e54: $ff
     ld e, d                                       ; $5e55: $5a
-    rst RST_38                                    ; $5e56: $ff
+    rst $38                                       ; $5e56: $ff
     jp c, Jump_006_5a7f                           ; $5e57: $da $7f $5a
 
     ld a, a                                       ; $5e5a: $7f
@@ -1596,15 +1596,15 @@ jr_006_5b6c:
     sub b                                         ; $5e6b: $90
 
 jr_006_5e6c:
-    rst RST_38                                    ; $5e6c: $ff
+    rst $38                                       ; $5e6c: $ff
     or $ff                                        ; $5e6d: $f6 $ff
     ld d, $00                                     ; $5e6f: $16 $00
     nop                                           ; $5e71: $00
     ld a, l                                       ; $5e72: $7d
     ld a, l                                       ; $5e73: $7d
-    rst RST_38                                    ; $5e74: $ff
+    rst $38                                       ; $5e74: $ff
     add d                                         ; $5e75: $82
-    rst RST_38                                    ; $5e76: $ff
+    rst $38                                       ; $5e76: $ff
     xor $bb                                       ; $5e77: $ee $bb
     xor d                                         ; $5e79: $aa
     cp e                                          ; $5e7a: $bb
@@ -1617,25 +1617,25 @@ jr_006_5e6c:
     nop                                           ; $5e81: $00
     ld [hl-], a                                   ; $5e82: $32
     ld [hl-], a                                   ; $5e83: $32
-    rst RST_38                                    ; $5e84: $ff
+    rst $38                                       ; $5e84: $ff
     call $b4ff                                    ; $5e85: $cd $ff $b4
-    rst RST_38                                    ; $5e88: $ff
+    rst $38                                       ; $5e88: $ff
     or l                                          ; $5e89: $b5
-    rst RST_38                                    ; $5e8a: $ff
+    rst $38                                       ; $5e8a: $ff
     or l                                          ; $5e8b: $b5
-    rst RST_38                                    ; $5e8c: $ff
+    rst $38                                       ; $5e8c: $ff
     or l                                          ; $5e8d: $b5
-    rst RST_38                                    ; $5e8e: $ff
+    rst $38                                       ; $5e8e: $ff
     call RST_00                                   ; $5e8f: $cd $00 $00
     ld c, [hl]                                    ; $5e92: $4e
     ld c, [hl]                                    ; $5e93: $4e
-    rst RST_38                                    ; $5e94: $ff
+    rst $38                                       ; $5e94: $ff
     or c                                          ; $5e95: $b1
     cp $ae                                        ; $5e96: $fe $ae
     cp $32                                        ; $5e98: $fe $32
-    rst RST_38                                    ; $5e9a: $ff
+    rst $38                                       ; $5e9a: $ff
     cp l                                          ; $5e9b: $bd
-    rst RST_38                                    ; $5e9c: $ff
+    rst $38                                       ; $5e9c: $ff
     xor l                                         ; $5e9d: $ad
     cp $b2                                        ; $5e9e: $fe $b2
     nop                                           ; $5ea0: $00
@@ -1806,7 +1806,7 @@ jr_006_5e6c:
     nop                                           ; $5f4c: $00
     nop                                           ; $5f4d: $00
     nop                                           ; $5f4e: $00
-    rst RST_38                                    ; $5f4f: $ff
+    rst $38                                       ; $5f4f: $ff
     add hl, de                                    ; $5f50: $19
     add hl, de                                    ; $5f51: $19
     nop                                           ; $5f52: $00
@@ -1822,7 +1822,7 @@ jr_006_5e6c:
     nop                                           ; $5f5c: $00
     nop                                           ; $5f5d: $00
     nop                                           ; $5f5e: $00
-    rst RST_38                                    ; $5f5f: $ff
+    rst $38                                       ; $5f5f: $ff
     jp hl                                         ; $5f60: $e9
 
 
@@ -1842,7 +1842,7 @@ jr_006_5e6c:
     nop                                           ; $5f6c: $00
     nop                                           ; $5f6d: $00
     nop                                           ; $5f6e: $00
-    rst RST_38                                    ; $5f6f: $ff
+    rst $38                                       ; $5f6f: $ff
     ld de, $0011                                  ; $5f70: $11 $11 $00
     nop                                           ; $5f73: $00
     nop                                           ; $5f74: $00
@@ -2050,51 +2050,51 @@ jr_006_5e6c:
     rlca                                          ; $603e: $07
     stop                                          ; $603f: $10 $00
     nop                                           ; $6041: $00
-    rst RST_38                                    ; $6042: $ff
+    rst $38                                       ; $6042: $ff
     nop                                           ; $6043: $00
-    rst RST_38                                    ; $6044: $ff
+    rst $38                                       ; $6044: $ff
     nop                                           ; $6045: $00
-    rst RST_38                                    ; $6046: $ff
+    rst $38                                       ; $6046: $ff
     nop                                           ; $6047: $00
-    rst RST_38                                    ; $6048: $ff
+    rst $38                                       ; $6048: $ff
     nop                                           ; $6049: $00
-    rst RST_38                                    ; $604a: $ff
+    rst $38                                       ; $604a: $ff
     nop                                           ; $604b: $00
-    rst RST_38                                    ; $604c: $ff
+    rst $38                                       ; $604c: $ff
     nop                                           ; $604d: $00
-    rst RST_38                                    ; $604e: $ff
+    rst $38                                       ; $604e: $ff
     nop                                           ; $604f: $00
     nop                                           ; $6050: $00
     nop                                           ; $6051: $00
-    rst RST_38                                    ; $6052: $ff
+    rst $38                                       ; $6052: $ff
     nop                                           ; $6053: $00
-    rst RST_38                                    ; $6054: $ff
+    rst $38                                       ; $6054: $ff
     nop                                           ; $6055: $00
-    rst RST_38                                    ; $6056: $ff
+    rst $38                                       ; $6056: $ff
     nop                                           ; $6057: $00
-    rst RST_38                                    ; $6058: $ff
+    rst $38                                       ; $6058: $ff
     nop                                           ; $6059: $00
-    rst RST_38                                    ; $605a: $ff
+    rst $38                                       ; $605a: $ff
     nop                                           ; $605b: $00
-    rst RST_38                                    ; $605c: $ff
+    rst $38                                       ; $605c: $ff
     nop                                           ; $605d: $00
-    rst RST_38                                    ; $605e: $ff
+    rst $38                                       ; $605e: $ff
     nop                                           ; $605f: $00
     nop                                           ; $6060: $00
     nop                                           ; $6061: $00
-    rst RST_38                                    ; $6062: $ff
+    rst $38                                       ; $6062: $ff
     nop                                           ; $6063: $00
-    rst RST_38                                    ; $6064: $ff
+    rst $38                                       ; $6064: $ff
     nop                                           ; $6065: $00
-    rst RST_38                                    ; $6066: $ff
+    rst $38                                       ; $6066: $ff
     nop                                           ; $6067: $00
-    rst RST_38                                    ; $6068: $ff
+    rst $38                                       ; $6068: $ff
     nop                                           ; $6069: $00
-    rst RST_38                                    ; $606a: $ff
+    rst $38                                       ; $606a: $ff
     nop                                           ; $606b: $00
-    rst RST_38                                    ; $606c: $ff
+    rst $38                                       ; $606c: $ff
     nop                                           ; $606d: $00
-    rst RST_38                                    ; $606e: $ff
+    rst $38                                       ; $606e: $ff
     nop                                           ; $606f: $00
     nop                                           ; $6070: $00
     ld [bc], a                                    ; $6071: $02
@@ -2297,53 +2297,53 @@ jr_006_5e6c:
     db $10                                        ; $613d: $10
     rlca                                          ; $613e: $07
     db $10                                        ; $613f: $10
-    rst RST_38                                    ; $6140: $ff
+    rst $38                                       ; $6140: $ff
     nop                                           ; $6141: $00
-    rst RST_38                                    ; $6142: $ff
+    rst $38                                       ; $6142: $ff
     nop                                           ; $6143: $00
-    rst RST_38                                    ; $6144: $ff
+    rst $38                                       ; $6144: $ff
     nop                                           ; $6145: $00
-    rst RST_38                                    ; $6146: $ff
+    rst $38                                       ; $6146: $ff
     nop                                           ; $6147: $00
-    rst RST_38                                    ; $6148: $ff
+    rst $38                                       ; $6148: $ff
     nop                                           ; $6149: $00
-    rst RST_38                                    ; $614a: $ff
+    rst $38                                       ; $614a: $ff
     nop                                           ; $614b: $00
-    rst RST_38                                    ; $614c: $ff
+    rst $38                                       ; $614c: $ff
     nop                                           ; $614d: $00
-    rst RST_38                                    ; $614e: $ff
+    rst $38                                       ; $614e: $ff
     nop                                           ; $614f: $00
-    rst RST_38                                    ; $6150: $ff
+    rst $38                                       ; $6150: $ff
     nop                                           ; $6151: $00
-    rst RST_38                                    ; $6152: $ff
+    rst $38                                       ; $6152: $ff
     nop                                           ; $6153: $00
-    rst RST_38                                    ; $6154: $ff
+    rst $38                                       ; $6154: $ff
     nop                                           ; $6155: $00
-    rst RST_38                                    ; $6156: $ff
+    rst $38                                       ; $6156: $ff
     nop                                           ; $6157: $00
-    rst RST_38                                    ; $6158: $ff
+    rst $38                                       ; $6158: $ff
     nop                                           ; $6159: $00
-    rst RST_38                                    ; $615a: $ff
+    rst $38                                       ; $615a: $ff
     nop                                           ; $615b: $00
-    rst RST_38                                    ; $615c: $ff
+    rst $38                                       ; $615c: $ff
     nop                                           ; $615d: $00
-    rst RST_38                                    ; $615e: $ff
+    rst $38                                       ; $615e: $ff
     nop                                           ; $615f: $00
-    rst RST_38                                    ; $6160: $ff
+    rst $38                                       ; $6160: $ff
     nop                                           ; $6161: $00
-    rst RST_38                                    ; $6162: $ff
+    rst $38                                       ; $6162: $ff
     nop                                           ; $6163: $00
-    rst RST_38                                    ; $6164: $ff
+    rst $38                                       ; $6164: $ff
     nop                                           ; $6165: $00
-    rst RST_38                                    ; $6166: $ff
+    rst $38                                       ; $6166: $ff
     nop                                           ; $6167: $00
-    rst RST_38                                    ; $6168: $ff
+    rst $38                                       ; $6168: $ff
     nop                                           ; $6169: $00
-    rst RST_38                                    ; $616a: $ff
+    rst $38                                       ; $616a: $ff
     nop                                           ; $616b: $00
-    rst RST_38                                    ; $616c: $ff
+    rst $38                                       ; $616c: $ff
     nop                                           ; $616d: $00
-    rst RST_38                                    ; $616e: $ff
+    rst $38                                       ; $616e: $ff
     nop                                           ; $616f: $00
     ld hl, sp+$02                                 ; $6170: $f8 $02
     ld hl, sp+$02                                 ; $6172: $f8 $02
@@ -2545,53 +2545,53 @@ jr_006_5e6c:
     db $10                                        ; $623d: $10
     rlca                                          ; $623e: $07
     db $10                                        ; $623f: $10
-    rst RST_38                                    ; $6240: $ff
+    rst $38                                       ; $6240: $ff
     nop                                           ; $6241: $00
-    rst RST_38                                    ; $6242: $ff
+    rst $38                                       ; $6242: $ff
     nop                                           ; $6243: $00
-    rst RST_38                                    ; $6244: $ff
+    rst $38                                       ; $6244: $ff
     nop                                           ; $6245: $00
-    rst RST_38                                    ; $6246: $ff
+    rst $38                                       ; $6246: $ff
     nop                                           ; $6247: $00
-    rst RST_38                                    ; $6248: $ff
+    rst $38                                       ; $6248: $ff
     nop                                           ; $6249: $00
-    rst RST_38                                    ; $624a: $ff
+    rst $38                                       ; $624a: $ff
     nop                                           ; $624b: $00
-    rst RST_38                                    ; $624c: $ff
+    rst $38                                       ; $624c: $ff
     nop                                           ; $624d: $00
-    rst RST_38                                    ; $624e: $ff
+    rst $38                                       ; $624e: $ff
     nop                                           ; $624f: $00
-    rst RST_38                                    ; $6250: $ff
+    rst $38                                       ; $6250: $ff
     nop                                           ; $6251: $00
-    rst RST_38                                    ; $6252: $ff
+    rst $38                                       ; $6252: $ff
     nop                                           ; $6253: $00
-    rst RST_38                                    ; $6254: $ff
+    rst $38                                       ; $6254: $ff
     nop                                           ; $6255: $00
-    rst RST_38                                    ; $6256: $ff
+    rst $38                                       ; $6256: $ff
     nop                                           ; $6257: $00
-    rst RST_38                                    ; $6258: $ff
+    rst $38                                       ; $6258: $ff
     nop                                           ; $6259: $00
-    rst RST_38                                    ; $625a: $ff
+    rst $38                                       ; $625a: $ff
     nop                                           ; $625b: $00
-    rst RST_38                                    ; $625c: $ff
+    rst $38                                       ; $625c: $ff
     nop                                           ; $625d: $00
-    rst RST_38                                    ; $625e: $ff
+    rst $38                                       ; $625e: $ff
     nop                                           ; $625f: $00
-    rst RST_38                                    ; $6260: $ff
+    rst $38                                       ; $6260: $ff
     nop                                           ; $6261: $00
-    rst RST_38                                    ; $6262: $ff
+    rst $38                                       ; $6262: $ff
     nop                                           ; $6263: $00
-    rst RST_38                                    ; $6264: $ff
+    rst $38                                       ; $6264: $ff
     nop                                           ; $6265: $00
-    rst RST_38                                    ; $6266: $ff
+    rst $38                                       ; $6266: $ff
     nop                                           ; $6267: $00
-    rst RST_38                                    ; $6268: $ff
+    rst $38                                       ; $6268: $ff
     nop                                           ; $6269: $00
-    rst RST_38                                    ; $626a: $ff
+    rst $38                                       ; $626a: $ff
     nop                                           ; $626b: $00
-    rst RST_38                                    ; $626c: $ff
+    rst $38                                       ; $626c: $ff
     nop                                           ; $626d: $00
-    rst RST_38                                    ; $626e: $ff
+    rst $38                                       ; $626e: $ff
     nop                                           ; $626f: $00
     ld hl, sp+$02                                 ; $6270: $f8 $02
     ld hl, sp+$02                                 ; $6272: $f8 $02
@@ -2793,53 +2793,53 @@ jr_006_5e6c:
     db $10                                        ; $633d: $10
     rlca                                          ; $633e: $07
     db $10                                        ; $633f: $10
-    rst RST_38                                    ; $6340: $ff
+    rst $38                                       ; $6340: $ff
     nop                                           ; $6341: $00
-    rst RST_38                                    ; $6342: $ff
+    rst $38                                       ; $6342: $ff
     nop                                           ; $6343: $00
-    rst RST_38                                    ; $6344: $ff
+    rst $38                                       ; $6344: $ff
     nop                                           ; $6345: $00
-    rst RST_38                                    ; $6346: $ff
+    rst $38                                       ; $6346: $ff
     nop                                           ; $6347: $00
-    rst RST_38                                    ; $6348: $ff
+    rst $38                                       ; $6348: $ff
     nop                                           ; $6349: $00
-    rst RST_38                                    ; $634a: $ff
+    rst $38                                       ; $634a: $ff
     nop                                           ; $634b: $00
-    rst RST_38                                    ; $634c: $ff
+    rst $38                                       ; $634c: $ff
     nop                                           ; $634d: $00
-    rst RST_38                                    ; $634e: $ff
+    rst $38                                       ; $634e: $ff
     nop                                           ; $634f: $00
-    rst RST_38                                    ; $6350: $ff
+    rst $38                                       ; $6350: $ff
     nop                                           ; $6351: $00
-    rst RST_38                                    ; $6352: $ff
+    rst $38                                       ; $6352: $ff
     nop                                           ; $6353: $00
-    rst RST_38                                    ; $6354: $ff
+    rst $38                                       ; $6354: $ff
     nop                                           ; $6355: $00
-    rst RST_38                                    ; $6356: $ff
+    rst $38                                       ; $6356: $ff
     nop                                           ; $6357: $00
-    rst RST_38                                    ; $6358: $ff
+    rst $38                                       ; $6358: $ff
     nop                                           ; $6359: $00
-    rst RST_38                                    ; $635a: $ff
+    rst $38                                       ; $635a: $ff
     nop                                           ; $635b: $00
-    rst RST_38                                    ; $635c: $ff
+    rst $38                                       ; $635c: $ff
     nop                                           ; $635d: $00
-    rst RST_38                                    ; $635e: $ff
+    rst $38                                       ; $635e: $ff
     nop                                           ; $635f: $00
-    rst RST_38                                    ; $6360: $ff
+    rst $38                                       ; $6360: $ff
     nop                                           ; $6361: $00
-    rst RST_38                                    ; $6362: $ff
+    rst $38                                       ; $6362: $ff
     nop                                           ; $6363: $00
-    rst RST_38                                    ; $6364: $ff
+    rst $38                                       ; $6364: $ff
     nop                                           ; $6365: $00
-    rst RST_38                                    ; $6366: $ff
+    rst $38                                       ; $6366: $ff
     nop                                           ; $6367: $00
-    rst RST_38                                    ; $6368: $ff
+    rst $38                                       ; $6368: $ff
     nop                                           ; $6369: $00
-    rst RST_38                                    ; $636a: $ff
+    rst $38                                       ; $636a: $ff
     nop                                           ; $636b: $00
-    rst RST_38                                    ; $636c: $ff
+    rst $38                                       ; $636c: $ff
     nop                                           ; $636d: $00
-    rst RST_38                                    ; $636e: $ff
+    rst $38                                       ; $636e: $ff
     nop                                           ; $636f: $00
     ld hl, sp+$02                                 ; $6370: $f8 $02
     ld hl, sp+$02                                 ; $6372: $f8 $02
@@ -3039,12 +3039,12 @@ jr_006_5e6c:
     nop                                           ; $643d: $00
     nop                                           ; $643e: $00
     nop                                           ; $643f: $00
-    rst RST_38                                    ; $6440: $ff
+    rst $38                                       ; $6440: $ff
     nop                                           ; $6441: $00
     nop                                           ; $6442: $00
     nop                                           ; $6443: $00
     nop                                           ; $6444: $00
-    rst RST_38                                    ; $6445: $ff
+    rst $38                                       ; $6445: $ff
     nop                                           ; $6446: $00
     nop                                           ; $6447: $00
     nop                                           ; $6448: $00
@@ -3055,12 +3055,12 @@ jr_006_5e6c:
     nop                                           ; $644d: $00
     nop                                           ; $644e: $00
     nop                                           ; $644f: $00
-    rst RST_38                                    ; $6450: $ff
+    rst $38                                       ; $6450: $ff
     nop                                           ; $6451: $00
     nop                                           ; $6452: $00
     nop                                           ; $6453: $00
     nop                                           ; $6454: $00
-    rst RST_38                                    ; $6455: $ff
+    rst $38                                       ; $6455: $ff
     nop                                           ; $6456: $00
     nop                                           ; $6457: $00
     nop                                           ; $6458: $00
@@ -3071,12 +3071,12 @@ jr_006_5e6c:
     nop                                           ; $645d: $00
     nop                                           ; $645e: $00
     nop                                           ; $645f: $00
-    rst RST_38                                    ; $6460: $ff
+    rst $38                                       ; $6460: $ff
     nop                                           ; $6461: $00
     nop                                           ; $6462: $00
     nop                                           ; $6463: $00
     nop                                           ; $6464: $00
-    rst RST_38                                    ; $6465: $ff
+    rst $38                                       ; $6465: $ff
     nop                                           ; $6466: $00
     nop                                           ; $6467: $00
     nop                                           ; $6468: $00
@@ -5953,7 +5953,7 @@ jr_006_7046:
 
     jr @-$43                                      ; $7055: $18 $bb
 
-    rst RST_38                                    ; $7057: $ff
+    rst $38                                       ; $7057: $ff
     inc bc                                        ; $7058: $03
     add e                                         ; $7059: $83
     ld b, $84                                     ; $705a: $06 $84
@@ -5970,7 +5970,7 @@ jr_006_7063:
 jr_006_7065:
     add hl, de                                    ; $7065: $19
     cp [hl]                                       ; $7066: $be
-    rst RST_38                                    ; $7067: $ff
+    rst $38                                       ; $7067: $ff
     or c                                          ; $7068: $b1
     cp b                                          ; $7069: $b8
     rst RST_00                                    ; $706a: $c7
@@ -5984,18 +5984,18 @@ jr_006_7065:
 jr_006_7073:
     jr @+$01                                      ; $7073: $18 $ff
 
-    rst RST_38                                    ; $7075: $ff
+    rst $38                                       ; $7075: $ff
 
 jr_006_7076:
     nop                                           ; $7076: $00
     add e                                         ; $7077: $83
-    rst RST_38                                    ; $7078: $ff
+    rst $38                                       ; $7078: $ff
     nop                                           ; $7079: $00
-    rst RST_38                                    ; $707a: $ff
+    rst $38                                       ; $707a: $ff
     nop                                           ; $707b: $00
-    rst RST_38                                    ; $707c: $ff
+    rst $38                                       ; $707c: $ff
     nop                                           ; $707d: $00
-    rst RST_38                                    ; $707e: $ff
+    rst $38                                       ; $707e: $ff
     nop                                           ; $707f: $00
     db $10                                        ; $7080: $10
     jr jr_006_7093                                ; $7081: $18 $10
@@ -6005,7 +6005,7 @@ jr_006_7083:
 
     jr @-$03                                      ; $7085: $18 $fb
 
-    rst RST_38                                    ; $7087: $ff
+    rst $38                                       ; $7087: $ff
     ld sp, $8971                                  ; $7088: $31 $71 $89
     add hl, de                                    ; $708b: $19
     sub l                                         ; $708c: $95
@@ -6081,9 +6081,9 @@ Picross15x15MarioAnimationRow1::
     ccf                                           ; $70ea: $3f
     ld a, a                                       ; $70eb: $7f
     ld a, a                                       ; $70ec: $7f
-    rst RST_38                                    ; $70ed: $ff
-    rst RST_38                                    ; $70ee: $ff
-    rst RST_38                                    ; $70ef: $ff
+    rst $38                                       ; $70ed: $ff
+    rst $38                                       ; $70ee: $ff
+    rst $38                                       ; $70ef: $ff
     push af                                       ; $70f0: $f5
     add hl, bc                                    ; $70f1: $09
     di                                            ; $70f2: $f3
@@ -6092,7 +6092,7 @@ Picross15x15MarioAnimationRow1::
     dec c                                         ; $70f5: $0d
     db $eb                                        ; $70f6: $eb
     ld [$18d7], sp                                ; $70f7: $08 $d7 $18
-    rst RST_20                                    ; $70fa: $e7
+    rst $20                                       ; $70fa: $e7
     ldh a, [$ffd1]                                ; $70fb: $f0 $d1
     db $f4                                        ; $70fd: $f4
     add c                                         ; $70fe: $81
@@ -6139,7 +6139,7 @@ Picross15x15MarioAnimationRow2::
 
 jr_006_7140:
     ld sp, hl                                     ; $7140: $f9
-    rst RST_38                                    ; $7141: $ff
+    rst $38                                       ; $7141: $ff
     ld hl, sp-$07                                 ; $7142: $f8 $f9
     ld a, [$f1f9]                                 ; $7144: $fa $f9 $f1
     db $f4                                        ; $7147: $f4
@@ -6204,7 +6204,7 @@ Picross15x15MarioAnimationRow3::
     ld a, a                                       ; $71ac: $7f
     ld a, a                                       ; $71ad: $7f
     and b                                         ; $71ae: $a0
-    rst RST_38                                    ; $71af: $ff
+    rst $38                                       ; $71af: $ff
     ld a, b                                       ; $71b0: $78
     ld [bc], a                                    ; $71b1: $02
     db $ec                                        ; $71b2: $ec
@@ -6216,10 +6216,10 @@ Picross15x15MarioAnimationRow3::
     inc bc                                        ; $71b9: $03
     di                                            ; $71ba: $f3
     inc b                                         ; $71bb: $04
-    rst RST_38                                    ; $71bc: $ff
-    rst RST_38                                    ; $71bd: $ff
+    rst $38                                       ; $71bc: $ff
+    rst $38                                       ; $71bd: $ff
     nop                                           ; $71be: $00
-    rst RST_38                                    ; $71bf: $ff
+    rst $38                                       ; $71bf: $ff
 
 Picross15x15MarioAnimationRow4::
     INCBIN "gfx/Picross15x15MarioAnimationRow4.2bpp"
@@ -6232,10 +6232,10 @@ Picross15x15MarioAnimationRow4::
     ld l, e                                       ; $71e9: $6b
     sbc e                                         ; $71ea: $9b
     add hl, sp                                    ; $71eb: $39
-    rst RST_38                                    ; $71ec: $ff
-    rst RST_38                                    ; $71ed: $ff
+    rst $38                                       ; $71ec: $ff
+    rst $38                                       ; $71ed: $ff
     nop                                           ; $71ee: $00
-    rst RST_38                                    ; $71ef: $ff
+    rst $38                                       ; $71ef: $ff
     cp [hl]                                       ; $71f0: $be
     add c                                         ; $71f1: $81
     ld a, [hl]                                    ; $71f2: $7e
@@ -6248,7 +6248,7 @@ Picross15x15MarioAnimationRow4::
     add a                                         ; $71fb: $87
     cp $fe                                        ; $71fc: $fe $fe
     inc bc                                        ; $71fe: $03
-    rst RST_38                                    ; $71ff: $ff
+    rst $38                                       ; $71ff: $ff
 
 Picross15x15MarioClearTileData::
     INCBIN "gfx/Picross15x15MarioClearTileData.2bpp"
@@ -7527,19 +7527,19 @@ PauseMenuTileData::
     nop                                           ; $7fed: $00
     nop                                           ; $7fee: $00
     nop                                           ; $7fef: $00
-    rst RST_38                                    ; $7ff0: $ff
-    rst RST_38                                    ; $7ff1: $ff
-    rst RST_38                                    ; $7ff2: $ff
-    rst RST_38                                    ; $7ff3: $ff
-    rst RST_38                                    ; $7ff4: $ff
-    rst RST_38                                    ; $7ff5: $ff
-    rst RST_38                                    ; $7ff6: $ff
-    rst RST_38                                    ; $7ff7: $ff
-    rst RST_38                                    ; $7ff8: $ff
-    rst RST_38                                    ; $7ff9: $ff
-    rst RST_38                                    ; $7ffa: $ff
-    rst RST_38                                    ; $7ffb: $ff
-    rst RST_38                                    ; $7ffc: $ff
-    rst RST_38                                    ; $7ffd: $ff
-    rst RST_38                                    ; $7ffe: $ff
-    rst RST_38                                    ; $7fff: $ff
+    rst $38                                       ; $7ff0: $ff
+    rst $38                                       ; $7ff1: $ff
+    rst $38                                       ; $7ff2: $ff
+    rst $38                                       ; $7ff3: $ff
+    rst $38                                       ; $7ff4: $ff
+    rst $38                                       ; $7ff5: $ff
+    rst $38                                       ; $7ff6: $ff
+    rst $38                                       ; $7ff7: $ff
+    rst $38                                       ; $7ff8: $ff
+    rst $38                                       ; $7ff9: $ff
+    rst $38                                       ; $7ffa: $ff
+    rst $38                                       ; $7ffb: $ff
+    rst $38                                       ; $7ffc: $ff
+    rst $38                                       ; $7ffd: $ff
+    rst $38                                       ; $7ffe: $ff
+    rst $38                                       ; $7fff: $ff

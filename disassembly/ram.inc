@@ -4,3 +4,6 @@
 ; https://github.com/mattcurrie/mgbdis
 
 DEF CurrentBank EQU $c314
+DEF CurrentGridSize EQU $d800
+DEF LevelSelectColumn EQU $f635
+DEF LevelSelectRow EQU $f636

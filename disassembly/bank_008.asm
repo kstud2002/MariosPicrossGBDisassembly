@@ -82,26 +82,26 @@ jr_008_5846:
     nop                                           ; $584d: $00
     nop                                           ; $584e: $00
     nop                                           ; $584f: $00
-    rst RST_38                                    ; $5850: $ff
-    rst RST_38                                    ; $5851: $ff
+    rst $38                                       ; $5850: $ff
+    rst $38                                       ; $5851: $ff
     xor d                                         ; $5852: $aa
-    rst RST_38                                    ; $5853: $ff
+    rst $38                                       ; $5853: $ff
     dec d                                         ; $5854: $15
-    rst RST_38                                    ; $5855: $ff
+    rst $38                                       ; $5855: $ff
     jp c, $a3ff                                   ; $5856: $da $ff $a3
 
-    rst RST_38                                    ; $5859: $ff
+    rst $38                                       ; $5859: $ff
     cp $fc                                        ; $585a: $fe $fc
     ld sp, hl                                     ; $585c: $f9
     add hl, bc                                    ; $585d: $09
 
 jr_008_585e:
     ld a, [rIE]                                   ; $585e: $fa $ff $ff
-    rst RST_38                                    ; $5861: $ff
+    rst $38                                       ; $5861: $ff
     xor d                                         ; $5862: $aa
-    rst RST_38                                    ; $5863: $ff
+    rst $38                                       ; $5863: $ff
     dec d                                         ; $5864: $15
-    rst RST_38                                    ; $5865: $ff
+    rst $38                                       ; $5865: $ff
     sbc $ff                                       ; $5866: $de $ff
     or c                                          ; $5868: $b1
     ld hl, sp-$39                                 ; $5869: $f8 $c7
@@ -109,30 +109,30 @@ jr_008_585e:
     add b                                         ; $586d: $80
     ld a, a                                       ; $586e: $7f
     nop                                           ; $586f: $00
-    rst RST_38                                    ; $5870: $ff
-    rst RST_38                                    ; $5871: $ff
+    rst $38                                       ; $5870: $ff
+    rst $38                                       ; $5871: $ff
     xor d                                         ; $5872: $aa
 
 jr_008_5873:
-    rst RST_38                                    ; $5873: $ff
-    rst RST_38                                    ; $5874: $ff
-    rst RST_38                                    ; $5875: $ff
+    rst $38                                       ; $5873: $ff
+    rst $38                                       ; $5874: $ff
+    rst $38                                       ; $5875: $ff
     nop                                           ; $5876: $00
     add e                                         ; $5877: $83
-    rst RST_38                                    ; $5878: $ff
+    rst $38                                       ; $5878: $ff
     nop                                           ; $5879: $00
-    rst RST_38                                    ; $587a: $ff
+    rst $38                                       ; $587a: $ff
     nop                                           ; $587b: $00
-    rst RST_38                                    ; $587c: $ff
+    rst $38                                       ; $587c: $ff
     nop                                           ; $587d: $00
-    rst RST_38                                    ; $587e: $ff
+    rst $38                                       ; $587e: $ff
     nop                                           ; $587f: $00
-    rst RST_38                                    ; $5880: $ff
-    rst RST_38                                    ; $5881: $ff
+    rst $38                                       ; $5880: $ff
+    rst $38                                       ; $5881: $ff
     xor d                                         ; $5882: $aa
-    rst RST_38                                    ; $5883: $ff
+    rst $38                                       ; $5883: $ff
     dec d                                         ; $5884: $15
-    rst RST_38                                    ; $5885: $ff
+    rst $38                                       ; $5885: $ff
     jp c, Jump_000_32ff                           ; $5886: $da $ff $32
 
     ld a, a                                       ; $5889: $7f
@@ -204,9 +204,9 @@ Picross10x10MarioAnimationRow1::
     ccf                                           ; $58ea: $3f
     ld a, a                                       ; $58eb: $7f
     ld a, a                                       ; $58ec: $7f
-    rst RST_38                                    ; $58ed: $ff
-    rst RST_38                                    ; $58ee: $ff
-    rst RST_38                                    ; $58ef: $ff
+    rst $38                                       ; $58ed: $ff
+    rst $38                                       ; $58ee: $ff
+    rst $38                                       ; $58ef: $ff
     push af                                       ; $58f0: $f5
     add hl, bc                                    ; $58f1: $09
     di                                            ; $58f2: $f3
@@ -215,7 +215,7 @@ Picross10x10MarioAnimationRow1::
     dec c                                         ; $58f5: $0d
     db $eb                                        ; $58f6: $eb
     ld [$18d7], sp                                ; $58f7: $08 $d7 $18
-    rst RST_20                                    ; $58fa: $e7
+    rst $20                                       ; $58fa: $e7
     ldh a, [$ffd1]                                ; $58fb: $f0 $d1
     db $f4                                        ; $58fd: $f4
     add c                                         ; $58fe: $81
@@ -262,7 +262,7 @@ Picross10x10MarioAnimationRow2::
 
 jr_008_5940:
     ld sp, hl                                     ; $5940: $f9
-    rst RST_38                                    ; $5941: $ff
+    rst $38                                       ; $5941: $ff
     ld hl, sp-$07                                 ; $5942: $f8 $f9
     ld a, [$f1f9]                                 ; $5944: $fa $f9 $f1
     db $f4                                        ; $5947: $f4
@@ -327,7 +327,7 @@ Picross10x10MarioAnimationRow3::
     ld a, a                                       ; $59ac: $7f
     ld a, a                                       ; $59ad: $7f
     and b                                         ; $59ae: $a0
-    rst RST_38                                    ; $59af: $ff
+    rst $38                                       ; $59af: $ff
     ld a, b                                       ; $59b0: $78
     ld [bc], a                                    ; $59b1: $02
     db $ec                                        ; $59b2: $ec
@@ -339,10 +339,10 @@ Picross10x10MarioAnimationRow3::
     inc bc                                        ; $59b9: $03
     di                                            ; $59ba: $f3
     inc b                                         ; $59bb: $04
-    rst RST_38                                    ; $59bc: $ff
-    rst RST_38                                    ; $59bd: $ff
+    rst $38                                       ; $59bc: $ff
+    rst $38                                       ; $59bd: $ff
     nop                                           ; $59be: $00
-    rst RST_38                                    ; $59bf: $ff
+    rst $38                                       ; $59bf: $ff
 
 Picross10x10MarioAnimationRow4::
     INCBIN "gfx/Picross10x10MarioAnimationRow4.2bpp"
@@ -355,10 +355,10 @@ Picross10x10MarioAnimationRow4::
     ld l, e                                       ; $59e9: $6b
     sbc e                                         ; $59ea: $9b
     add hl, sp                                    ; $59eb: $39
-    rst RST_38                                    ; $59ec: $ff
-    rst RST_38                                    ; $59ed: $ff
+    rst $38                                       ; $59ec: $ff
+    rst $38                                       ; $59ed: $ff
     nop                                           ; $59ee: $00
-    rst RST_38                                    ; $59ef: $ff
+    rst $38                                       ; $59ef: $ff
     cp [hl]                                       ; $59f0: $be
     add c                                         ; $59f1: $81
     ld a, [hl]                                    ; $59f2: $7e
@@ -371,7 +371,7 @@ Picross10x10MarioAnimationRow4::
     add a                                         ; $59fb: $87
     cp $fe                                        ; $59fc: $fe $fe
     inc bc                                        ; $59fe: $03
-    rst RST_38                                    ; $59ff: $ff
+    rst $38                                       ; $59ff: $ff
 
 Picross10x10MarioClearTileData::
     INCBIN "gfx/Picross10x10MarioClearTileData.2bpp"
@@ -929,13 +929,13 @@ Picross10x10MarioGameOverTileData::
     nop                                           ; $6025: $00
     sbc h                                         ; $6026: $9c
     sbc h                                         ; $6027: $9c
-    rst RST_38                                    ; $6028: $ff
+    rst $38                                       ; $6028: $ff
     ld h, e                                       ; $6029: $63
-    rst RST_38                                    ; $602a: $ff
+    rst $38                                       ; $602a: $ff
     xor l                                         ; $602b: $ad
-    rst RST_38                                    ; $602c: $ff
+    rst $38                                       ; $602c: $ff
     db $ed                                        ; $602d: $ed
-    rst RST_38                                    ; $602e: $ff
+    rst $38                                       ; $602e: $ff
     inc hl                                        ; $602f: $23
     nop                                           ; $6030: $00
     nop                                           ; $6031: $00
@@ -945,13 +945,13 @@ Picross10x10MarioGameOverTileData::
     nop                                           ; $6035: $00
     di                                            ; $6036: $f3
     di                                            ; $6037: $f3
-    rst RST_38                                    ; $6038: $ff
+    rst $38                                       ; $6038: $ff
     inc c                                         ; $6039: $0c
-    rst RST_38                                    ; $603a: $ff
+    rst $38                                       ; $603a: $ff
     ld a, e                                       ; $603b: $7b
-    rst RST_38                                    ; $603c: $ff
+    rst $38                                       ; $603c: $ff
     dec bc                                        ; $603d: $0b
-    rst RST_38                                    ; $603e: $ff
+    rst $38                                       ; $603e: $ff
     ld a, b                                       ; $603f: $78
     nop                                           ; $6040: $00
     nop                                           ; $6041: $00
@@ -960,7 +960,7 @@ Picross10x10MarioGameOverTileData::
     nop                                           ; $6044: $00
     nop                                           ; $6045: $00
     ld a, $3e                                     ; $6046: $3e $3e
-    rst RST_38                                    ; $6048: $ff
+    rst $38                                       ; $6048: $ff
     pop bc                                        ; $6049: $c1
     cp $76                                        ; $604a: $fe $76
     call c, $dc54                                 ; $604c: $dc $54 $dc
@@ -1166,9 +1166,9 @@ Picross10x10MarioGameOverTileData::
     nop                                           ; $611d: $00
     nop                                           ; $611e: $00
     nop                                           ; $611f: $00
-    rst RST_38                                    ; $6120: $ff
+    rst $38                                       ; $6120: $ff
     xor l                                         ; $6121: $ad
-    rst RST_38                                    ; $6122: $ff
+    rst $38                                       ; $6122: $ff
     ld l, l                                       ; $6123: $6d
     sub d                                         ; $6124: $92
     sub d                                         ; $6125: $92
@@ -1182,9 +1182,9 @@ Picross10x10MarioGameOverTileData::
     add b                                         ; $612d: $80
     ccf                                           ; $612e: $3f
     add b                                         ; $612f: $80
-    rst RST_38                                    ; $6130: $ff
+    rst $38                                       ; $6130: $ff
     ld a, e                                       ; $6131: $7b
-    rst RST_38                                    ; $6132: $ff
+    rst $38                                       ; $6132: $ff
     dec bc                                        ; $6133: $0b
     db $f4                                        ; $6134: $f4
     db $f4                                        ; $6135: $f4
@@ -1193,10 +1193,10 @@ Picross10x10MarioGameOverTileData::
     nop                                           ; $6138: $00
     nop                                           ; $6139: $00
     nop                                           ; $613a: $00
-    rst RST_38                                    ; $613b: $ff
+    rst $38                                       ; $613b: $ff
     nop                                           ; $613c: $00
     nop                                           ; $613d: $00
-    rst RST_38                                    ; $613e: $ff
+    rst $38                                       ; $613e: $ff
     nop                                           ; $613f: $00
     call c, $dc54                                 ; $6140: $dc $54 $dc
     ld d, h                                       ; $6143: $54
@@ -1207,10 +1207,10 @@ Picross10x10MarioGameOverTileData::
     nop                                           ; $6148: $00
     nop                                           ; $6149: $00
     nop                                           ; $614a: $00
-    rst RST_38                                    ; $614b: $ff
+    rst $38                                       ; $614b: $ff
     nop                                           ; $614c: $00
     nop                                           ; $614d: $00
-    rst RST_38                                    ; $614e: $ff
+    rst $38                                       ; $614e: $ff
     nop                                           ; $614f: $00
     ld [hl], b                                    ; $6150: $70
     ld [hl], b                                    ; $6151: $70
@@ -1434,37 +1434,37 @@ Picross10x10MarioGameOverTileData::
     add b                                         ; $622d: $80
     ccf                                           ; $622e: $3f
     add b                                         ; $622f: $80
-    rst RST_38                                    ; $6230: $ff
+    rst $38                                       ; $6230: $ff
     nop                                           ; $6231: $00
-    rst RST_38                                    ; $6232: $ff
+    rst $38                                       ; $6232: $ff
     nop                                           ; $6233: $00
-    rst RST_38                                    ; $6234: $ff
+    rst $38                                       ; $6234: $ff
     nop                                           ; $6235: $00
-    rst RST_38                                    ; $6236: $ff
+    rst $38                                       ; $6236: $ff
     nop                                           ; $6237: $00
-    rst RST_38                                    ; $6238: $ff
+    rst $38                                       ; $6238: $ff
     nop                                           ; $6239: $00
-    rst RST_38                                    ; $623a: $ff
+    rst $38                                       ; $623a: $ff
     nop                                           ; $623b: $00
-    rst RST_38                                    ; $623c: $ff
+    rst $38                                       ; $623c: $ff
     nop                                           ; $623d: $00
-    rst RST_38                                    ; $623e: $ff
+    rst $38                                       ; $623e: $ff
     nop                                           ; $623f: $00
-    rst RST_38                                    ; $6240: $ff
+    rst $38                                       ; $6240: $ff
     nop                                           ; $6241: $00
-    rst RST_38                                    ; $6242: $ff
+    rst $38                                       ; $6242: $ff
     nop                                           ; $6243: $00
-    rst RST_38                                    ; $6244: $ff
+    rst $38                                       ; $6244: $ff
     nop                                           ; $6245: $00
-    rst RST_38                                    ; $6246: $ff
+    rst $38                                       ; $6246: $ff
     nop                                           ; $6247: $00
-    rst RST_38                                    ; $6248: $ff
+    rst $38                                       ; $6248: $ff
     nop                                           ; $6249: $00
-    rst RST_38                                    ; $624a: $ff
+    rst $38                                       ; $624a: $ff
     nop                                           ; $624b: $00
-    rst RST_38                                    ; $624c: $ff
+    rst $38                                       ; $624c: $ff
     nop                                           ; $624d: $00
-    rst RST_38                                    ; $624e: $ff
+    rst $38                                       ; $624e: $ff
     nop                                           ; $624f: $00
     nop                                           ; $6250: $00
     ld b, b                                       ; $6251: $40
@@ -1689,37 +1689,37 @@ Picross10x10MarioGameOverTileData::
     add b                                         ; $632d: $80
     ccf                                           ; $632e: $3f
     add b                                         ; $632f: $80
-    rst RST_38                                    ; $6330: $ff
+    rst $38                                       ; $6330: $ff
     nop                                           ; $6331: $00
-    rst RST_38                                    ; $6332: $ff
+    rst $38                                       ; $6332: $ff
     nop                                           ; $6333: $00
-    rst RST_38                                    ; $6334: $ff
+    rst $38                                       ; $6334: $ff
     nop                                           ; $6335: $00
-    rst RST_38                                    ; $6336: $ff
+    rst $38                                       ; $6336: $ff
     nop                                           ; $6337: $00
-    rst RST_38                                    ; $6338: $ff
+    rst $38                                       ; $6338: $ff
     nop                                           ; $6339: $00
-    rst RST_38                                    ; $633a: $ff
+    rst $38                                       ; $633a: $ff
     nop                                           ; $633b: $00
-    rst RST_38                                    ; $633c: $ff
+    rst $38                                       ; $633c: $ff
     nop                                           ; $633d: $00
-    rst RST_38                                    ; $633e: $ff
+    rst $38                                       ; $633e: $ff
     nop                                           ; $633f: $00
-    rst RST_38                                    ; $6340: $ff
+    rst $38                                       ; $6340: $ff
     nop                                           ; $6341: $00
-    rst RST_38                                    ; $6342: $ff
+    rst $38                                       ; $6342: $ff
     nop                                           ; $6343: $00
-    rst RST_38                                    ; $6344: $ff
+    rst $38                                       ; $6344: $ff
     nop                                           ; $6345: $00
-    rst RST_38                                    ; $6346: $ff
+    rst $38                                       ; $6346: $ff
     nop                                           ; $6347: $00
-    rst RST_38                                    ; $6348: $ff
+    rst $38                                       ; $6348: $ff
     nop                                           ; $6349: $00
-    rst RST_38                                    ; $634a: $ff
+    rst $38                                       ; $634a: $ff
     nop                                           ; $634b: $00
-    rst RST_38                                    ; $634c: $ff
+    rst $38                                       ; $634c: $ff
     nop                                           ; $634d: $00
-    rst RST_38                                    ; $634e: $ff
+    rst $38                                       ; $634e: $ff
     nop                                           ; $634f: $00
     nop                                           ; $6350: $00
     ld b, b                                       ; $6351: $40
@@ -1944,36 +1944,36 @@ Picross10x10MarioGameOverTileData::
     ld a, a                                       ; $642d: $7f
     nop                                           ; $642e: $00
     nop                                           ; $642f: $00
-    rst RST_38                                    ; $6430: $ff
+    rst $38                                       ; $6430: $ff
     nop                                           ; $6431: $00
-    rst RST_38                                    ; $6432: $ff
+    rst $38                                       ; $6432: $ff
     nop                                           ; $6433: $00
-    rst RST_38                                    ; $6434: $ff
+    rst $38                                       ; $6434: $ff
     nop                                           ; $6435: $00
-    rst RST_38                                    ; $6436: $ff
+    rst $38                                       ; $6436: $ff
     nop                                           ; $6437: $00
-    rst RST_38                                    ; $6438: $ff
+    rst $38                                       ; $6438: $ff
     nop                                           ; $6439: $00
     nop                                           ; $643a: $00
     nop                                           ; $643b: $00
     nop                                           ; $643c: $00
-    rst RST_38                                    ; $643d: $ff
+    rst $38                                       ; $643d: $ff
     nop                                           ; $643e: $00
     nop                                           ; $643f: $00
-    rst RST_38                                    ; $6440: $ff
+    rst $38                                       ; $6440: $ff
     nop                                           ; $6441: $00
-    rst RST_38                                    ; $6442: $ff
+    rst $38                                       ; $6442: $ff
     nop                                           ; $6443: $00
-    rst RST_38                                    ; $6444: $ff
+    rst $38                                       ; $6444: $ff
     nop                                           ; $6445: $00
-    rst RST_38                                    ; $6446: $ff
+    rst $38                                       ; $6446: $ff
     nop                                           ; $6447: $00
-    rst RST_38                                    ; $6448: $ff
+    rst $38                                       ; $6448: $ff
     nop                                           ; $6449: $00
     nop                                           ; $644a: $00
     nop                                           ; $644b: $00
     nop                                           ; $644c: $00
-    rst RST_38                                    ; $644d: $ff
+    rst $38                                       ; $644d: $ff
     nop                                           ; $644e: $00
     nop                                           ; $644f: $00
     nop                                           ; $6450: $00
@@ -2667,8 +2667,8 @@ Picross10x10MarioGameOverTileData::
     nop                                           ; $6703: $00
     nop                                           ; $6704: $00
     nop                                           ; $6705: $00
-    rst RST_38                                    ; $6706: $ff
-    rst RST_38                                    ; $6707: $ff
+    rst $38                                       ; $6706: $ff
+    rst $38                                       ; $6707: $ff
     nop                                           ; $6708: $00
     nop                                           ; $6709: $00
     nop                                           ; $670a: $00
@@ -2683,8 +2683,8 @@ Picross10x10MarioGameOverTileData::
     nop                                           ; $6713: $00
     nop                                           ; $6714: $00
     nop                                           ; $6715: $00
-    rst RST_38                                    ; $6716: $ff
-    rst RST_38                                    ; $6717: $ff
+    rst $38                                       ; $6716: $ff
+    rst $38                                       ; $6717: $ff
     nop                                           ; $6718: $00
     nop                                           ; $6719: $00
     nop                                           ; $671a: $00
@@ -2699,8 +2699,8 @@ Picross10x10MarioGameOverTileData::
     nop                                           ; $6723: $00
     nop                                           ; $6724: $00
     nop                                           ; $6725: $00
-    rst RST_38                                    ; $6726: $ff
-    rst RST_38                                    ; $6727: $ff
+    rst $38                                       ; $6726: $ff
+    rst $38                                       ; $6727: $ff
     nop                                           ; $6728: $00
     nop                                           ; $6729: $00
     nop                                           ; $672a: $00
@@ -2715,8 +2715,8 @@ Picross10x10MarioGameOverTileData::
     nop                                           ; $6733: $00
     nop                                           ; $6734: $00
     nop                                           ; $6735: $00
-    rst RST_38                                    ; $6736: $ff
-    rst RST_38                                    ; $6737: $ff
+    rst $38                                       ; $6736: $ff
+    rst $38                                       ; $6737: $ff
     nop                                           ; $6738: $00
     nop                                           ; $6739: $00
     nop                                           ; $673a: $00
@@ -2731,8 +2731,8 @@ Picross10x10MarioGameOverTileData::
     nop                                           ; $6743: $00
     nop                                           ; $6744: $00
     nop                                           ; $6745: $00
-    rst RST_38                                    ; $6746: $ff
-    rst RST_38                                    ; $6747: $ff
+    rst $38                                       ; $6746: $ff
+    rst $38                                       ; $6747: $ff
     nop                                           ; $6748: $00
     nop                                           ; $6749: $00
     nop                                           ; $674a: $00
@@ -2747,8 +2747,8 @@ Picross10x10MarioGameOverTileData::
     nop                                           ; $6753: $00
     nop                                           ; $6754: $00
     nop                                           ; $6755: $00
-    rst RST_38                                    ; $6756: $ff
-    rst RST_38                                    ; $6757: $ff
+    rst $38                                       ; $6756: $ff
+    rst $38                                       ; $6757: $ff
     nop                                           ; $6758: $00
     nop                                           ; $6759: $00
     nop                                           ; $675a: $00
@@ -2763,8 +2763,8 @@ Picross10x10MarioGameOverTileData::
     nop                                           ; $6763: $00
     nop                                           ; $6764: $00
     nop                                           ; $6765: $00
-    rst RST_38                                    ; $6766: $ff
-    rst RST_38                                    ; $6767: $ff
+    rst $38                                       ; $6766: $ff
+    rst $38                                       ; $6767: $ff
     nop                                           ; $6768: $00
     nop                                           ; $6769: $00
     nop                                           ; $676a: $00
