@@ -161,11 +161,11 @@ jr_000_0167:
     ld a, $0a                                     ; $0181: $3e $0a
     ld [$0000], a                                 ; $0183: $ea $00 $00
     ld a, $01                                     ; $0186: $3e $01
-    ld [$2000], a                                 ; $0188: $ea $00 $20
+    ld [BankSwitchTrigger], a                     ; $0188: $ea $00 $20
     ld a, $00                                     ; $018b: $3e $00
     ld [$4000], a                                 ; $018d: $ea $00 $40
     ld a, $01                                     ; $0190: $3e $01
-    ld [$c312], a                                 ; $0192: $ea $12 $c3
+    ld [ActiveROMBank], a                         ; $0192: $ea $12 $c3
     ld hl, $c000                                  ; $0195: $21 $00 $c0
     ld bc, $1fff                                  ; $0198: $01 $ff $1f
     call Call_000_04d3                            ; $019b: $cd $d3 $04
@@ -251,11 +251,11 @@ jr_000_01e9:
     ld a, $0a                                     ; $024d: $3e $0a
     ld [$0000], a                                 ; $024f: $ea $00 $00
     ld a, $01                                     ; $0252: $3e $01
-    ld [$2000], a                                 ; $0254: $ea $00 $20
+    ld [BankSwitchTrigger], a                     ; $0254: $ea $00 $20
     ld a, $00                                     ; $0257: $3e $00
     ld [$4000], a                                 ; $0259: $ea $00 $40
     ld a, $01                                     ; $025c: $3e $01
-    ld [$c312], a                                 ; $025e: $ea $12 $c3
+    ld [ActiveROMBank], a                         ; $025e: $ea $12 $c3
     ld sp, $dfff                                  ; $0261: $31 $ff $df
     call Call_000_04bb                            ; $0264: $cd $bb $04
     call Call_000_05b6                            ; $0267: $cd $b6 $05
@@ -472,11 +472,11 @@ Call_000_0373:
     inc hl                                        ; $037c: $23
     ld d, [hl]                                    ; $037d: $56
     inc hl                                        ; $037e: $23
-    ld a, [$c312]                                 ; $037f: $fa $12 $c3
+    ld a, [ActiveROMBank]                         ; $037f: $fa $12 $c3
     push af                                       ; $0382: $f5
     ld a, [hl]                                    ; $0383: $7e
-    ld [$c312], a                                 ; $0384: $ea $12 $c3
-    ld [$2000], a                                 ; $0387: $ea $00 $20
+    ld [ActiveROMBank], a                         ; $0384: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $0387: $ea $00 $20
     ld l, e                                       ; $038a: $6b
     ld h, d                                       ; $038b: $62
     ld de, $0391                                  ; $038c: $11 $91 $03
@@ -485,8 +485,8 @@ Call_000_0373:
 
 
     pop af                                        ; $0391: $f1
-    ld [$c312], a                                 ; $0392: $ea $12 $c3
-    ld [$2000], a                                 ; $0395: $ea $00 $20
+    ld [ActiveROMBank], a                         ; $0392: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $0395: $ea $00 $20
     ret                                           ; $0398: $c9
 
 
@@ -533,11 +533,11 @@ Call_000_03b6:
     push af                                       ; $03bd: $f5
     res 0, a                                      ; $03be: $cb $87
     ldh [rIE], a                                  ; $03c0: $e0 $ff
-    ld a, [$c312]                                 ; $03c2: $fa $12 $c3
+    ld a, [ActiveROMBank]                         ; $03c2: $fa $12 $c3
     push af                                       ; $03c5: $f5
     ld a, $0f                                     ; $03c6: $3e $0f
-    ld [$c312], a                                 ; $03c8: $ea $12 $c3
-    ld [$2000], a                                 ; $03cb: $ea $00 $20
+    ld [ActiveROMBank], a                         ; $03c8: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $03cb: $ea $00 $20
 
 jr_000_03ce:
     push bc                                       ; $03ce: $c5
@@ -557,8 +557,8 @@ jr_000_03ce:
 
 jr_000_03df:
     pop af                                        ; $03df: $f1
-    ld [$c312], a                                 ; $03e0: $ea $12 $c3
-    ld [$2000], a                                 ; $03e3: $ea $00 $20
+    ld [ActiveROMBank], a                         ; $03e0: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $03e3: $ea $00 $20
     pop af                                        ; $03e6: $f1
     ldh [rIE], a                                  ; $03e7: $e0 $ff
     pop hl                                        ; $03e9: $e1
@@ -578,15 +578,15 @@ Jump_000_03f1:
     push hl                                       ; $03f1: $e5
 
 Jump_000_03f2:
-    ld a, [$c312]                                 ; $03f2: $fa $12 $c3
+    ld a, [ActiveROMBank]                         ; $03f2: $fa $12 $c3
     push af                                       ; $03f5: $f5
     ld a, $0f                                     ; $03f6: $3e $0f
-    ld [$c312], a                                 ; $03f8: $ea $12 $c3
-    ld [$2000], a                                 ; $03fb: $ea $00 $20
+    ld [ActiveROMBank], a                         ; $03f8: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $03fb: $ea $00 $20
     call $4003                                    ; $03fe: $cd $03 $40
     pop af                                        ; $0401: $f1
-    ld [$c312], a                                 ; $0402: $ea $12 $c3
-    ld [$2000], a                                 ; $0405: $ea $00 $20
+    ld [ActiveROMBank], a                         ; $0402: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $0405: $ea $00 $20
     pop hl                                        ; $0408: $e1
     pop de                                        ; $0409: $d1
     pop bc                                        ; $040a: $c1
@@ -599,11 +599,11 @@ Call_000_040d:
     and a                                         ; $0410: $a7
     jp nz, Jump_000_1fc8                          ; $0411: $c2 $c8 $1f
 
-    ld a, [$c312]                                 ; $0414: $fa $12 $c3
+    ld a, [ActiveROMBank]                         ; $0414: $fa $12 $c3
     push af                                       ; $0417: $f5
     ld a, b                                       ; $0418: $78
-    ld [$c312], a                                 ; $0419: $ea $12 $c3
-    ld [$2000], a                                 ; $041c: $ea $00 $20
+    ld [ActiveROMBank], a                         ; $0419: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $041c: $ea $00 $20
     ld b, $04                                     ; $041f: $06 $04
 
 jr_000_0421:
@@ -627,8 +627,8 @@ jr_000_0421:
     ld [$d63e], a                                 ; $0440: $ea $3e $d6
     ld [$d63f], a                                 ; $0443: $ea $3f $d6
     pop af                                        ; $0446: $f1
-    ld [$c312], a                                 ; $0447: $ea $12 $c3
-    ld [$2000], a                                 ; $044a: $ea $00 $20
+    ld [ActiveROMBank], a                         ; $0447: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $044a: $ea $00 $20
     ret                                           ; $044d: $c9
 
 
@@ -637,11 +637,11 @@ Call_000_044e:
     and a                                         ; $0451: $a7
     jp nz, Jump_000_204a                          ; $0452: $c2 $4a $20
 
-    ld a, [$c312]                                 ; $0455: $fa $12 $c3
+    ld a, [ActiveROMBank]                         ; $0455: $fa $12 $c3
     push af                                       ; $0458: $f5
     ld a, b                                       ; $0459: $78
-    ld [$c312], a                                 ; $045a: $ea $12 $c3
-    ld [$2000], a                                 ; $045d: $ea $00 $20
+    ld [ActiveROMBank], a                         ; $045a: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $045d: $ea $00 $20
     ld b, $04                                     ; $0460: $06 $04
 
 jr_000_0462:
@@ -661,8 +661,8 @@ jr_000_0462:
     jr nz, jr_000_0462                            ; $0479: $20 $e7
 
     pop af                                        ; $047b: $f1
-    ld [$c312], a                                 ; $047c: $ea $12 $c3
-    ld [$2000], a                                 ; $047f: $ea $00 $20
+    ld [ActiveROMBank], a                         ; $047c: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $047f: $ea $00 $20
     ret                                           ; $0482: $c9
 
 
@@ -767,13 +767,13 @@ Jump_000_04e3:
     ret                                           ; $04e3: $c9
 
 
-CopyTileData::
-    ld [CurrentBank], a                           ; $04e4: $ea $14 $c3
-    ld a, [$c312]                                 ; $04e7: $fa $12 $c3
+BankedTileCopy::
+    ld [RequestedROMBank], a                      ; $04e4: $ea $14 $c3
+    ld a, [ActiveROMBank]                         ; $04e7: $fa $12 $c3
     push af                                       ; $04ea: $f5
-    ld a, [CurrentBank]                           ; $04eb: $fa $14 $c3
-    ld [$c312], a                                 ; $04ee: $ea $12 $c3
-    ld [$2000], a                                 ; $04f1: $ea $00 $20
+    ld a, [RequestedROMBank]                      ; $04eb: $fa $14 $c3
+    ld [ActiveROMBank], a                         ; $04ee: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $04f1: $ea $00 $20
 
 jr_000_04f4:
     ld a, [hl+]                                   ; $04f4: $2a
@@ -785,18 +785,18 @@ jr_000_04f4:
     jr nz, jr_000_04f4                            ; $04fa: $20 $f8
 
     pop af                                        ; $04fc: $f1
-    ld [$c312], a                                 ; $04fd: $ea $12 $c3
-    ld [$2000], a                                 ; $0500: $ea $00 $20
+    ld [ActiveROMBank], a                         ; $04fd: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $0500: $ea $00 $20
     ret                                           ; $0503: $c9
 
 
 Call_000_0504:
-    ld [CurrentBank], a                           ; $0504: $ea $14 $c3
-    ld a, [$c312]                                 ; $0507: $fa $12 $c3
+    ld [RequestedROMBank], a                      ; $0504: $ea $14 $c3
+    ld a, [ActiveROMBank]                         ; $0507: $fa $12 $c3
     push af                                       ; $050a: $f5
-    ld a, [CurrentBank]                           ; $050b: $fa $14 $c3
-    ld [$c312], a                                 ; $050e: $ea $12 $c3
-    ld [$2000], a                                 ; $0511: $ea $00 $20
+    ld a, [RequestedROMBank]                      ; $050b: $fa $14 $c3
+    ld [ActiveROMBank], a                         ; $050e: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $0511: $ea $00 $20
     srl b                                         ; $0514: $cb $38
     rr c                                          ; $0516: $cb $19
 
@@ -825,18 +825,18 @@ jr_000_0518:
     jr nz, jr_000_0518                            ; $052e: $20 $e8
 
     pop af                                        ; $0530: $f1
-    ld [$c312], a                                 ; $0531: $ea $12 $c3
-    ld [$2000], a                                 ; $0534: $ea $00 $20
+    ld [ActiveROMBank], a                         ; $0531: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $0534: $ea $00 $20
     ret                                           ; $0537: $c9
 
 
-CopyTileData2::
-    ld [CurrentBank], a                           ; $0538: $ea $14 $c3
-    ld a, [$c312]                                 ; $053b: $fa $12 $c3
+BankedTileCopyVRAMSafe::
+    ld [RequestedROMBank], a                      ; $0538: $ea $14 $c3
+    ld a, [ActiveROMBank]                         ; $053b: $fa $12 $c3
     push af                                       ; $053e: $f5
-    ld a, [CurrentBank]                           ; $053f: $fa $14 $c3
-    ld [$c312], a                                 ; $0542: $ea $12 $c3
-    ld [$2000], a                                 ; $0545: $ea $00 $20
+    ld a, [RequestedROMBank]                      ; $053f: $fa $14 $c3
+    ld [ActiveROMBank], a                         ; $0542: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $0545: $ea $00 $20
     ldh a, [rIE]                                  ; $0548: $f0 $ff
     push af                                       ; $054a: $f5
 
@@ -904,8 +904,8 @@ jr_000_0595:
     pop af                                        ; $0595: $f1
     ldh [rIE], a                                  ; $0596: $e0 $ff
     pop af                                        ; $0598: $f1
-    ld [$c312], a                                 ; $0599: $ea $12 $c3
-    ld [$2000], a                                 ; $059c: $ea $00 $20
+    ld [ActiveROMBank], a                         ; $0599: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $059c: $ea $00 $20
     ret                                           ; $059f: $c9
 
 
@@ -964,19 +964,19 @@ jr_000_05cd:
 
 
 Call_000_05d7:
-    ld [$c312], a                                 ; $05d7: $ea $12 $c3
+    ld [ActiveROMBank], a                         ; $05d7: $ea $12 $c3
 
 Jump_000_05da:
-    ld [$2000], a                                 ; $05da: $ea $00 $20
+    ld [BankSwitchTrigger], a                     ; $05da: $ea $00 $20
     jp hl                                         ; $05dd: $e9
 
 
 Call_000_05de:
-    ld a, [$c312]                                 ; $05de: $fa $12 $c3
+    ld a, [ActiveROMBank]                         ; $05de: $fa $12 $c3
     push af                                       ; $05e1: $f5
     ld a, b                                       ; $05e2: $78
-    ld [$c312], a                                 ; $05e3: $ea $12 $c3
-    ld [$2000], a                                 ; $05e6: $ea $00 $20
+    ld [ActiveROMBank], a                         ; $05e3: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $05e6: $ea $00 $20
     jp hl                                         ; $05e9: $e9
 
 
@@ -985,8 +985,8 @@ Jump_000_05ea:
     push hl                                       ; $05eb: $e5
     ld hl, sp+$05                                 ; $05ec: $f8 $05
     ld a, [hl]                                    ; $05ee: $7e
-    ld [$c312], a                                 ; $05ef: $ea $12 $c3
-    ld [$2000], a                                 ; $05f2: $ea $00 $20
+    ld [ActiveROMBank], a                         ; $05ef: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $05f2: $ea $00 $20
     pop hl                                        ; $05f5: $e1
     pop af                                        ; $05f6: $f1
 
@@ -1295,16 +1295,16 @@ jr_000_0772:
     inc l                                         ; $0778: $2c
     ld d, [hl]                                    ; $0779: $56
     inc l                                         ; $077a: $2c
-    ld a, [$c312]                                 ; $077b: $fa $12 $c3
+    ld a, [ActiveROMBank]                         ; $077b: $fa $12 $c3
     push af                                       ; $077e: $f5
     ld a, [hl]                                    ; $077f: $7e
-    ld [$c312], a                                 ; $0780: $ea $12 $c3
-    ld [$2000], a                                 ; $0783: $ea $00 $20
+    ld [ActiveROMBank], a                         ; $0780: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $0783: $ea $00 $20
     inc l                                         ; $0786: $2c
     call Call_000_0798                            ; $0787: $cd $98 $07
     pop af                                        ; $078a: $f1
-    ld [$c312], a                                 ; $078b: $ea $12 $c3
-    ld [$2000], a                                 ; $078e: $ea $00 $20
+    ld [ActiveROMBank], a                         ; $078b: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $078e: $ea $00 $20
     jr jr_000_0772                                ; $0791: $18 $df
 
 jr_000_0793:
@@ -1419,23 +1419,23 @@ Call_000_07f1:
     sla c                                         ; $0802: $cb $21
     rl b                                          ; $0804: $cb $10
     ld hl, $552e                                  ; $0806: $21 $2e $55
-    ld a, [$c312]                                 ; $0809: $fa $12 $c3
+    ld a, [ActiveROMBank]                         ; $0809: $fa $12 $c3
     push af                                       ; $080c: $f5
     ld a, $03                                     ; $080d: $3e $03
-    ld [$c312], a                                 ; $080f: $ea $12 $c3
-    ld [$2000], a                                 ; $0812: $ea $00 $20
+    ld [ActiveROMBank], a                         ; $080f: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $0812: $ea $00 $20
     add hl, bc                                    ; $0815: $09
     ld e, [hl]                                    ; $0816: $5e
     inc hl                                        ; $0817: $23
     ld d, [hl]                                    ; $0818: $56
     pop af                                        ; $0819: $f1
-    ld [$c312], a                                 ; $081a: $ea $12 $c3
-    ld [$2000], a                                 ; $081d: $ea $00 $20
-    ld a, [$c312]                                 ; $0820: $fa $12 $c3
+    ld [ActiveROMBank], a                         ; $081a: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $081d: $ea $00 $20
+    ld a, [ActiveROMBank]                         ; $0820: $fa $12 $c3
     push af                                       ; $0823: $f5
     ld a, $02                                     ; $0824: $3e $02
-    ld [$c312], a                                 ; $0826: $ea $12 $c3
-    ld [$2000], a                                 ; $0829: $ea $00 $20
+    ld [ActiveROMBank], a                         ; $0826: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $0829: $ea $00 $20
     ld b, $1e                                     ; $082c: $06 $1e
     ld hl, $d640                                  ; $082e: $21 $40 $d6
 
@@ -1475,8 +1475,8 @@ jr_000_0831:
     ld a, [de]                                    ; $0863: $1a
     ld [$d801], a                                 ; $0864: $ea $01 $d8
     pop af                                        ; $0867: $f1
-    ld [$c312], a                                 ; $0868: $ea $12 $c3
-    ld [$2000], a                                 ; $086b: $ea $00 $20
+    ld [ActiveROMBank], a                         ; $0868: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $086b: $ea $00 $20
     ret                                           ; $086e: $c9
 
 
@@ -1586,11 +1586,11 @@ Jump_000_08b3:
     ld c, a                                       ; $091a: $4f
     ld a, [$c356]                                 ; $091b: $fa $56 $c3
     ld b, a                                       ; $091e: $47
-    ld a, [$c312]                                 ; $091f: $fa $12 $c3
+    ld a, [ActiveROMBank]                         ; $091f: $fa $12 $c3
     push af                                       ; $0922: $f5
     ld a, [$c357]                                 ; $0923: $fa $57 $c3
-    ld [$c312], a                                 ; $0926: $ea $12 $c3
-    ld [$2000], a                                 ; $0929: $ea $00 $20
+    ld [ActiveROMBank], a                         ; $0926: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $0929: $ea $00 $20
     ld de, $c363                                  ; $092c: $11 $63 $c3
     ld a, [$c352]                                 ; $092f: $fa $52 $c3
     ld l, a                                       ; $0932: $6f
@@ -1920,8 +1920,8 @@ Call_000_0ae9:
 Jump_000_0ae9:
     ldh [rIE], a                                  ; $0ae9: $e0 $ff
     pop af                                        ; $0aeb: $f1
-    ld [$c312], a                                 ; $0aec: $ea $12 $c3
-    ld [$2000], a                                 ; $0aef: $ea $00 $20
+    ld [ActiveROMBank], a                         ; $0aec: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $0aef: $ea $00 $20
     ret                                           ; $0af2: $c9
 
 
@@ -2007,11 +2007,11 @@ Jump_000_0b0d:
     ld c, a                                       ; $0b74: $4f
     ld a, [$c356]                                 ; $0b75: $fa $56 $c3
     ld b, a                                       ; $0b78: $47
-    ld a, [$c312]                                 ; $0b79: $fa $12 $c3
+    ld a, [ActiveROMBank]                         ; $0b79: $fa $12 $c3
     push af                                       ; $0b7c: $f5
     ld a, [$c357]                                 ; $0b7d: $fa $57 $c3
-    ld [$c312], a                                 ; $0b80: $ea $12 $c3
-    ld [$2000], a                                 ; $0b83: $ea $00 $20
+    ld [ActiveROMBank], a                         ; $0b80: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $0b83: $ea $00 $20
     ld de, $c363                                  ; $0b86: $11 $63 $c3
     ld a, [$c352]                                 ; $0b89: $fa $52 $c3
     ld l, a                                       ; $0b8c: $6f
@@ -2336,8 +2336,8 @@ jr_000_0d34:
     pop af                                        ; $0d34: $f1
     ldh [rIE], a                                  ; $0d35: $e0 $ff
     pop af                                        ; $0d37: $f1
-    ld [$c312], a                                 ; $0d38: $ea $12 $c3
-    ld [$2000], a                                 ; $0d3b: $ea $00 $20
+    ld [ActiveROMBank], a                         ; $0d38: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $0d3b: $ea $00 $20
     ret                                           ; $0d3e: $c9
 
 
@@ -5790,11 +5790,11 @@ Call_000_19bd:
     rl d                                          ; $19ca: $cb $12
     ld hl, $cda9                                  ; $19cc: $21 $a9 $cd
     add hl, de                                    ; $19cf: $19
-    ld a, [$c312]                                 ; $19d0: $fa $12 $c3
+    ld a, [ActiveROMBank]                         ; $19d0: $fa $12 $c3
     push af                                       ; $19d3: $f5
     ld a, [hl]                                    ; $19d4: $7e
-    ld [$c312], a                                 ; $19d5: $ea $12 $c3
-    ld [$2000], a                                 ; $19d8: $ea $00 $20
+    ld [ActiveROMBank], a                         ; $19d5: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $19d8: $ea $00 $20
     ld hl, $cda5                                  ; $19db: $21 $a5 $cd
     add hl, de                                    ; $19de: $19
     ld a, [hl]                                    ; $19df: $7e
@@ -5871,17 +5871,17 @@ jr_000_1a23:
     ld c, [hl]                                    ; $1a39: $4e
     call Call_000_20ce                            ; $1a3a: $cd $ce $20
     pop af                                        ; $1a3d: $f1
-    ld [$c312], a                                 ; $1a3e: $ea $12 $c3
-    ld [$2000], a                                 ; $1a41: $ea $00 $20
+    ld [ActiveROMBank], a                         ; $1a3e: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $1a41: $ea $00 $20
     ret                                           ; $1a44: $c9
 
 
 Call_000_1a45:
-    ld a, [$c312]                                 ; $1a45: $fa $12 $c3
+    ld a, [ActiveROMBank]                         ; $1a45: $fa $12 $c3
     push af                                       ; $1a48: $f5
     ld a, $03                                     ; $1a49: $3e $03
-    ld [$c312], a                                 ; $1a4b: $ea $12 $c3
-    ld [$2000], a                                 ; $1a4e: $ea $00 $20
+    ld [ActiveROMBank], a                         ; $1a4b: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $1a4e: $ea $00 $20
     ld a, [$d807]                                 ; $1a51: $fa $07 $d8
     ld c, a                                       ; $1a54: $4f
     ld a, [$d808]                                 ; $1a55: $fa $08 $d8
@@ -5924,17 +5924,17 @@ jr_000_1a6b:
 
 jr_000_1a80:
     pop af                                        ; $1a80: $f1
-    ld [$c312], a                                 ; $1a81: $ea $12 $c3
-    ld [$2000], a                                 ; $1a84: $ea $00 $20
+    ld [ActiveROMBank], a                         ; $1a81: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $1a84: $ea $00 $20
     ret                                           ; $1a87: $c9
 
 
 Call_000_1a88:
-    ld a, [$c312]                                 ; $1a88: $fa $12 $c3
+    ld a, [ActiveROMBank]                         ; $1a88: $fa $12 $c3
     push af                                       ; $1a8b: $f5
     ld a, $00                                     ; $1a8c: $3e $00
-    ld [$c312], a                                 ; $1a8e: $ea $12 $c3
-    ld [$2000], a                                 ; $1a91: $ea $00 $20
+    ld [ActiveROMBank], a                         ; $1a8e: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $1a91: $ea $00 $20
     push de                                       ; $1a94: $d5
     sla e                                         ; $1a95: $cb $23
     rl d                                          ; $1a97: $cb $12
@@ -5973,8 +5973,8 @@ Call_000_1a88:
 jr_000_1ad0:
     ld e, a                                       ; $1ad0: $5f
     pop af                                        ; $1ad1: $f1
-    ld [$c312], a                                 ; $1ad2: $ea $12 $c3
-    ld [$2000], a                                 ; $1ad5: $ea $00 $20
+    ld [ActiveROMBank], a                         ; $1ad2: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $1ad5: $ea $00 $20
     ld a, e                                       ; $1ad8: $7b
     ret                                           ; $1ad9: $c9
 
@@ -6355,7 +6355,7 @@ Call_000_1d22:
     ld hl, $5000                                  ; $1d30: $21 $00 $50
     ld de, $8000                                  ; $1d33: $11 $00 $80
     ld bc, $0300                                  ; $1d36: $01 $00 $03
-    call CopyTileData                             ; $1d39: $cd $e4 $04
+    call BankedTileCopy                           ; $1d39: $cd $e4 $04
     xor a                                         ; $1d3c: $af
     ld [$d63c], a                                 ; $1d3d: $ea $3c $d6
     ld [$d63d], a                                 ; $1d40: $ea $3d $d6
@@ -6440,16 +6440,16 @@ jr_000_1db9:
 
 
 Call_000_1ddb:
-    ld [CurrentBank], a                           ; $1ddb: $ea $14 $c3
-    ld a, [$c312]                                 ; $1dde: $fa $12 $c3
+    ld [RequestedROMBank], a                      ; $1ddb: $ea $14 $c3
+    ld a, [ActiveROMBank]                         ; $1dde: $fa $12 $c3
     push af                                       ; $1de1: $f5
-    ld a, [CurrentBank]                           ; $1de2: $fa $14 $c3
-    ld [$c312], a                                 ; $1de5: $ea $12 $c3
-    ld [$2000], a                                 ; $1de8: $ea $00 $20
+    ld a, [RequestedROMBank]                      ; $1de2: $fa $14 $c3
+    ld [ActiveROMBank], a                         ; $1de5: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $1de8: $ea $00 $20
     call Call_000_1df6                            ; $1deb: $cd $f6 $1d
     pop af                                        ; $1dee: $f1
-    ld [$c312], a                                 ; $1def: $ea $12 $c3
-    ld [$2000], a                                 ; $1df2: $ea $00 $20
+    ld [ActiveROMBank], a                         ; $1def: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $1df2: $ea $00 $20
     ret                                           ; $1df5: $c9
 
 
@@ -6578,12 +6578,12 @@ jr_000_1e91:
 
 
 Call_000_1e9e:
-    ld [CurrentBank], a                           ; $1e9e: $ea $14 $c3
-    ld a, [$c312]                                 ; $1ea1: $fa $12 $c3
+    ld [RequestedROMBank], a                      ; $1e9e: $ea $14 $c3
+    ld a, [ActiveROMBank]                         ; $1ea1: $fa $12 $c3
     push af                                       ; $1ea4: $f5
-    ld a, [CurrentBank]                           ; $1ea5: $fa $14 $c3
-    ld [$c312], a                                 ; $1ea8: $ea $12 $c3
-    ld [$2000], a                                 ; $1eab: $ea $00 $20
+    ld a, [RequestedROMBank]                      ; $1ea5: $fa $14 $c3
+    ld [ActiveROMBank], a                         ; $1ea8: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $1eab: $ea $00 $20
     di                                            ; $1eae: $f3
     push hl                                       ; $1eaf: $e5
     ld a, $e4                                     ; $1eb0: $3e $e4
@@ -6625,8 +6625,8 @@ jr_000_1ecd:
     ldh [rLCDC], a                                ; $1ef2: $e0 $40
     ei                                            ; $1ef4: $fb
     pop af                                        ; $1ef5: $f1
-    ld [$c312], a                                 ; $1ef6: $ea $12 $c3
-    ld [$2000], a                                 ; $1ef9: $ea $00 $20
+    ld [ActiveROMBank], a                         ; $1ef6: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $1ef9: $ea $00 $20
     ret                                           ; $1efc: $c9
 
 
@@ -6731,18 +6731,18 @@ Jump_000_1fc8:
     ld hl, $4020                                  ; $1fcd: $21 $20 $40
     ld de, $c340                                  ; $1fd0: $11 $40 $c3
     ld bc, $0010                                  ; $1fd3: $01 $10 $00
-    call CopyTileData                             ; $1fd6: $cd $e4 $04
+    call BankedTileCopy                           ; $1fd6: $cd $e4 $04
     ld a, $00                                     ; $1fd9: $3e $00
     ld hl, $c340                                  ; $1fdb: $21 $40 $c3
     call Call_000_1ddb                            ; $1fde: $cd $db $1d
     pop hl                                        ; $1fe1: $e1
     pop bc                                        ; $1fe2: $c1
     push bc                                       ; $1fe3: $c5
-    ld a, [$c312]                                 ; $1fe4: $fa $12 $c3
+    ld a, [ActiveROMBank]                         ; $1fe4: $fa $12 $c3
     push af                                       ; $1fe7: $f5
     ld a, b                                       ; $1fe8: $78
-    ld [$c312], a                                 ; $1fe9: $ea $12 $c3
-    ld [$2000], a                                 ; $1fec: $ea $00 $20
+    ld [ActiveROMBank], a                         ; $1fe9: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $1fec: $ea $00 $20
     ld b, $04                                     ; $1fef: $06 $04
 
 jr_000_1ff1:
@@ -6768,8 +6768,8 @@ Call_000_2008:
     ld [$d63e], a                                 ; $2010: $ea $3e $d6
     ld [$d63f], a                                 ; $2013: $ea $3f $d6
     pop af                                        ; $2016: $f1
-    ld [$c312], a                                 ; $2017: $ea $12 $c3
-    ld [$2000], a                                 ; $201a: $ea $00 $20
+    ld [ActiveROMBank], a                         ; $2017: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $201a: $ea $00 $20
     pop bc                                        ; $201d: $c1
     pop de                                        ; $201e: $d1
     ld a, c                                       ; $201f: $79
@@ -6813,7 +6813,7 @@ Jump_000_204a:
     ld hl, $4020                                  ; $204f: $21 $20 $40
     ld de, $c340                                  ; $2052: $11 $40 $c3
     ld bc, $0010                                  ; $2055: $01 $10 $00
-    call CopyTileData                             ; $2058: $cd $e4 $04
+    call BankedTileCopy                           ; $2058: $cd $e4 $04
     pop de                                        ; $205b: $d1
     pop bc                                        ; $205c: $c1
     push bc                                       ; $205d: $c5
@@ -6851,17 +6851,17 @@ jr_000_206c:
     ld hl, $4020                                  ; $208a: $21 $20 $40
     ld de, $c340                                  ; $208d: $11 $40 $c3
     ld bc, $0010                                  ; $2090: $01 $10 $00
-    call CopyTileData                             ; $2093: $cd $e4 $04
+    call BankedTileCopy                           ; $2093: $cd $e4 $04
     ld a, $00                                     ; $2096: $3e $00
     ld hl, $c340                                  ; $2098: $21 $40 $c3
     call Call_000_1ddb                            ; $209b: $cd $db $1d
     pop bc                                        ; $209e: $c1
     pop hl                                        ; $209f: $e1
-    ld a, [$c312]                                 ; $20a0: $fa $12 $c3
+    ld a, [ActiveROMBank]                         ; $20a0: $fa $12 $c3
     push af                                       ; $20a3: $f5
     ld a, b                                       ; $20a4: $78
-    ld [$c312], a                                 ; $20a5: $ea $12 $c3
-    ld [$2000], a                                 ; $20a8: $ea $00 $20
+    ld [ActiveROMBank], a                         ; $20a5: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $20a8: $ea $00 $20
     ld b, $04                                     ; $20ab: $06 $04
 
 jr_000_20ad:
@@ -6881,8 +6881,8 @@ jr_000_20ad:
     jr nz, jr_000_20ad                            ; $20c4: $20 $e7
 
     pop af                                        ; $20c6: $f1
-    ld [$c312], a                                 ; $20c7: $ea $12 $c3
-    ld [$2000], a                                 ; $20ca: $ea $00 $20
+    ld [ActiveROMBank], a                         ; $20c7: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $20ca: $ea $00 $20
     ret                                           ; $20cd: $c9
 
 
@@ -6893,11 +6893,11 @@ Jump_000_20ce:
     ld d, $00                                     ; $20d0: $16 $00
     sla e                                         ; $20d2: $cb $23
     rl d                                          ; $20d4: $cb $12
-    ld a, [$c312]                                 ; $20d6: $fa $12 $c3
+    ld a, [ActiveROMBank]                         ; $20d6: $fa $12 $c3
     push af                                       ; $20d9: $f5
     ld a, $03                                     ; $20da: $3e $03
-    ld [$c312], a                                 ; $20dc: $ea $12 $c3
-    ld [$2000], a                                 ; $20df: $ea $00 $20
+    ld [ActiveROMBank], a                         ; $20dc: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $20df: $ea $00 $20
     ld hl, $6c63                                  ; $20e2: $21 $63 $6c
     add hl, de                                    ; $20e5: $19
     ld a, [hl+]                                   ; $20e6: $2a
@@ -6934,8 +6934,8 @@ jr_000_2104:
     ld a, l                                       ; $2104: $7d
     ld [$c311], a                                 ; $2105: $ea $11 $c3
     pop af                                        ; $2108: $f1
-    ld [$c312], a                                 ; $2109: $ea $12 $c3
-    ld [$2000], a                                 ; $210c: $ea $00 $20
+    ld [ActiveROMBank], a                         ; $2109: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $210c: $ea $00 $20
     pop hl                                        ; $210f: $e1
     ret                                           ; $2110: $c9
 
@@ -7106,12 +7106,12 @@ b00_Unknown_State_00::
     ld hl, $4000                                  ; $21a7: $21 $00 $40
     ld de, $8000                                  ; $21aa: $11 $00 $80
     ld bc, $1800                                  ; $21ad: $01 $00 $18
-    call CopyTileData                             ; $21b0: $cd $e4 $04
+    call BankedTileCopy                           ; $21b0: $cd $e4 $04
     ld a, $0b                                     ; $21b3: $3e $0b
     ld hl, $6000                                  ; $21b5: $21 $00 $60
     ld de, $9800                                  ; $21b8: $11 $00 $98
     ld bc, $0400                                  ; $21bb: $01 $00 $04
-    call CopyTileData                             ; $21be: $cd $e4 $04
+    call BankedTileCopy                           ; $21be: $cd $e4 $04
     ld a, $2f                                     ; $21c1: $3e $2f
     ld [$c336], a                                 ; $21c3: $ea $36 $c3
     ld hl, $c337                                  ; $21c6: $21 $37 $c3
@@ -8157,7 +8157,7 @@ b00_Unknown_State_23::
     ld hl, $7800                                  ; $2947: $21 $00 $78
     ld de, $8500                                  ; $294a: $11 $00 $85
     ld bc, $0200                                  ; $294d: $01 $00 $02
-    call CopyTileData2                            ; $2950: $cd $38 $05
+    call BankedTileCopyVRAMSafe                   ; $2950: $cd $38 $05
     xor a                                         ; $2953: $af
     ld [$d82f], a                                 ; $2954: $ea $2f $d8
     ld [$d830], a                                 ; $2957: $ea $30 $d8
@@ -8200,7 +8200,7 @@ b00_Unknown_State_24::
     ld hl, $4500                                  ; $299a: $21 $00 $45
     ld de, $8500                                  ; $299d: $11 $00 $85
     ld bc, $0200                                  ; $29a0: $01 $00 $02
-    call CopyTileData2                            ; $29a3: $cd $38 $05
+    call BankedTileCopyVRAMSafe                   ; $29a3: $cd $38 $05
     ret                                           ; $29a6: $c9
 
 
@@ -8429,17 +8429,17 @@ b00_Unknown_State_2a::
 
 
 Call_000_2b6e:
-    ld a, [$c312]                                 ; $2b6e: $fa $12 $c3
+    ld a, [ActiveROMBank]                         ; $2b6e: $fa $12 $c3
     push af                                       ; $2b71: $f5
     ld a, $05                                     ; $2b72: $3e $05
-    ld [$c312], a                                 ; $2b74: $ea $12 $c3
-    ld [$2000], a                                 ; $2b77: $ea $00 $20
+    ld [ActiveROMBank], a                         ; $2b74: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $2b77: $ea $00 $20
     call Call_000_2b88                            ; $2b7a: $cd $88 $2b
     pop bc                                        ; $2b7d: $c1
     push af                                       ; $2b7e: $f5
     ld a, b                                       ; $2b7f: $78
-    ld [$c312], a                                 ; $2b80: $ea $12 $c3
-    ld [$2000], a                                 ; $2b83: $ea $00 $20
+    ld [ActiveROMBank], a                         ; $2b80: $ea $12 $c3
+    ld [BankSwitchTrigger], a                     ; $2b83: $ea $00 $20
     pop af                                        ; $2b86: $f1
     ret                                           ; $2b87: $c9
 

@@ -7,14 +7,20 @@ SECTION "ROM Bank $002", ROMX[$4000], BANK[$2]
 
     ld a, [Unknown_State]                         ; $4000: $fa $35 $d6
     rst RST_18                                    ; $4003: $df
-    inc c                                         ; $4004: $0c
-    ld b, b                                       ; $4005: $40
-    rst $38                                       ; $4006: $ff
-    ld b, b                                       ; $4007: $40
-    jr nc, jr_002_404b                            ; $4008: $30 $41
 
-    sbc e                                         ; $400a: $9b
-    ld b, c                                       ; $400b: $41
+b02_Unknown1_StatePointer_00::
+    db $0c, $40
+
+b02_Unknown1_StatePointer_01::
+    db $ff, $40
+
+b02_Unknown1_StatePointer_02::
+    db $30, $41
+
+b02_Unknown1_StatePointer_03::
+    db $9b, $41
+
+b02_Unknown1_State_00::
     ld a, $43                                     ; $400c: $3e $43
     ld [$c32e], a                                 ; $400e: $ea $2e $c3
     xor a                                         ; $4011: $af
@@ -29,19 +35,17 @@ SECTION "ROM Bank $002", ROMX[$4000], BANK[$2]
     ld hl, $5000                                  ; $4029: $21 $00 $50
     ld de, $8000                                  ; $402c: $11 $00 $80
     ld bc, $0300                                  ; $402f: $01 $00 $03
-    call CopyTileData                             ; $4032: $cd $e4 $04
+    call BankedTileCopy                           ; $4032: $cd $e4 $04
     ld a, $09                                     ; $4035: $3e $09
     ld hl, $4000                                  ; $4037: $21 $00 $40
     ld de, $8800                                  ; $403a: $11 $00 $88
     ld bc, $1000                                  ; $403d: $01 $00 $10
-    call CopyTileData                             ; $4040: $cd $e4 $04
+    call BankedTileCopy                           ; $4040: $cd $e4 $04
     ld a, $0b                                     ; $4043: $3e $0b
     ld hl, $7c00                                  ; $4045: $21 $00 $7c
     ld de, $9800                                  ; $4048: $11 $00 $98
-
-jr_002_404b:
     ld bc, $0400                                  ; $404b: $01 $00 $04
-    call CopyTileData                             ; $404e: $cd $e4 $04
+    call BankedTileCopy                           ; $404e: $cd $e4 $04
     ld a, [$a065]                                 ; $4051: $fa $65 $a0
     ld c, a                                       ; $4054: $4f
     ld b, $00                                     ; $4055: $06 $00
@@ -57,12 +61,12 @@ jr_002_404b:
     ld hl, $5000                                  ; $4065: $21 $00 $50
     ld de, $9200                                  ; $4068: $11 $00 $92
     ld bc, $00a0                                  ; $406b: $01 $a0 $00
-    call CopyTileData                             ; $406e: $cd $e4 $04
+    call BankedTileCopy                           ; $406e: $cd $e4 $04
     ld a, $09                                     ; $4071: $3e $09
     ld hl, $5100                                  ; $4073: $21 $00 $51
     ld de, $9300                                  ; $4076: $11 $00 $93
     ld bc, $00a0                                  ; $4079: $01 $a0 $00
-    call CopyTileData                             ; $407c: $cd $e4 $04
+    call BankedTileCopy                           ; $407c: $cd $e4 $04
     pop af                                        ; $407f: $f1
     dec a                                         ; $4080: $3d
     jr z, jr_002_409f                             ; $4081: $28 $1c
@@ -71,12 +75,12 @@ jr_002_404b:
     ld hl, $5200                                  ; $4085: $21 $00 $52
     ld de, $9400                                  ; $4088: $11 $00 $94
     ld bc, $00a0                                  ; $408b: $01 $a0 $00
-    call CopyTileData                             ; $408e: $cd $e4 $04
+    call BankedTileCopy                           ; $408e: $cd $e4 $04
     ld a, $09                                     ; $4091: $3e $09
     ld hl, $5300                                  ; $4093: $21 $00 $53
     ld de, $9500                                  ; $4096: $11 $00 $95
     ld bc, $00a0                                  ; $4099: $01 $a0 $00
-    call CopyTileData                             ; $409c: $cd $e4 $04
+    call BankedTileCopy                           ; $409c: $cd $e4 $04
 
 jr_002_409f:
     ld a, [$a065]                                 ; $409f: $fa $65 $a0
@@ -128,6 +132,7 @@ jr_002_40fa:
     ret                                           ; $40fe: $c9
 
 
+b02_Unknown1_State_01::
     ld b, $03                                     ; $40ff: $06 $03
     ld hl, $4ec2                                  ; $4101: $21 $c2 $4e
     call Call_000_05de                            ; $4104: $cd $de $05
@@ -157,6 +162,7 @@ jr_002_411d:
     ret                                           ; $412f: $c9
 
 
+b02_Unknown1_State_02::
     ld bc, $003c                                  ; $4130: $01 $3c $00
     call Call_000_05fa                            ; $4133: $cd $fa $05
     ld a, $05                                     ; $4136: $3e $05
@@ -213,6 +219,7 @@ jr_002_418f:
     jp Jump_000_1b1f                              ; $4198: $c3 $1f $1b
 
 
+b02_Unknown1_State_03::
     ld bc, $003c                                  ; $419b: $01 $3c $00
     call Call_000_05fa                            ; $419e: $cd $fa $05
     ld a, $05                                     ; $41a1: $3e $05
@@ -500,13 +507,20 @@ jr_002_42f9:
 
     ld a, [Unknown_State]                         ; $4300: $fa $35 $d6
     rst RST_18                                    ; $4303: $df
-    inc c                                         ; $4304: $0c
-    ld b, e                                       ; $4305: $43
-    cp l                                          ; $4306: $bd
-    ld b, e                                       ; $4307: $43
-    xor $43                                       ; $4308: $ee $43
-    ld e, b                                       ; $430a: $58
-    ld b, h                                       ; $430b: $44
+
+b02_Unknown2_StatePointer_00::
+    db $0c, $43
+
+b02_Unknown2_StatePointer_01::
+    db $bd, $43
+
+b02_Unknown2_StatePointer_02::
+    db $ee, $43
+
+b02_Unknown2_StatePointer_03::
+    db $58, $44
+
+b02_Unknown2_State_00::
     ld a, $43                                     ; $430c: $3e $43
     ld [$c32e], a                                 ; $430e: $ea $2e $c3
     xor a                                         ; $4311: $af
@@ -521,17 +535,17 @@ jr_002_42f9:
     ld hl, $5000                                  ; $4329: $21 $00 $50
     ld de, $8000                                  ; $432c: $11 $00 $80
     ld bc, $0300                                  ; $432f: $01 $00 $03
-    call CopyTileData                             ; $4332: $cd $e4 $04
+    call BankedTileCopy                           ; $4332: $cd $e4 $04
     ld a, $0a                                     ; $4335: $3e $0a
     ld hl, $4300                                  ; $4337: $21 $00 $43
     ld de, $8300                                  ; $433a: $11 $00 $83
     ld bc, $1500                                  ; $433d: $01 $00 $15
-    call CopyTileData                             ; $4340: $cd $e4 $04
+    call BankedTileCopy                           ; $4340: $cd $e4 $04
     ld a, $0b                                     ; $4343: $3e $0b
     ld hl, $7400                                  ; $4345: $21 $00 $74
     ld de, $9800                                  ; $4348: $11 $00 $98
     ld bc, $0400                                  ; $434b: $01 $00 $04
-    call CopyTileData                             ; $434e: $cd $e4 $04
+    call BankedTileCopy                           ; $434e: $cd $e4 $04
     ld a, $2f                                     ; $4351: $3e $2f
     ld [$c336], a                                 ; $4353: $ea $36 $c3
     ld hl, $c337                                  ; $4356: $21 $37 $c3
@@ -578,6 +592,7 @@ jr_002_42f9:
     ret                                           ; $43bc: $c9
 
 
+b02_Unknown2_State_01::
     ld b, $03                                     ; $43bd: $06 $03
     ld hl, $4ec2                                  ; $43bf: $21 $c2 $4e
     call Call_000_05de                            ; $43c2: $cd $de $05
@@ -607,6 +622,7 @@ jr_002_43db:
     ret                                           ; $43ed: $c9
 
 
+b02_Unknown2_State_02::
     ld bc, $003c                                  ; $43ee: $01 $3c $00
     call Call_000_05fa                            ; $43f1: $cd $fa $05
     ld a, $05                                     ; $43f4: $3e $05
@@ -641,7 +657,7 @@ jr_002_43db:
     ld [hl], a                                    ; $443b: $77
     ld c, a                                       ; $443c: $4f
     ld b, $00                                     ; $443d: $06 $00
-    ld hl, $4455                                  ; $443f: $21 $55 $44
+    ld hl, b02_Unknown2_State_02_Data             ; $443f: $21 $55 $44
     add hl, bc                                    ; $4442: $09
     xor a                                         ; $4443: $af
     ld [$d835], a                                 ; $4444: $ea $35 $d8
@@ -653,8 +669,10 @@ jr_002_43db:
     jp Jump_000_1b1f                              ; $4452: $c3 $1f $1b
 
 
-    ld b, $05                                     ; $4455: $06 $05
-    inc bc                                        ; $4457: $03
+b02_Unknown2_State_02_Data::
+    db $06, $05, $03
+
+b02_Unknown2_State_03::
     ld bc, $003c                                  ; $4458: $01 $3c $00
     call Call_000_05fa                            ; $445b: $cd $fa $05
     ld a, $05                                     ; $445e: $3e $05
@@ -1194,12 +1212,17 @@ jr_002_474c:
 
     ld a, [Unknown_State]                         ; $474f: $fa $35 $d6
     rst RST_18                                    ; $4752: $df
-    ld e, c                                       ; $4753: $59
-    ld b, a                                       ; $4754: $47
-    pop af                                        ; $4755: $f1
-    ld b, a                                       ; $4756: $47
-    ld b, b                                       ; $4757: $40
-    ld c, c                                       ; $4758: $49
+
+b02_Unknown3_StatePointer_00::
+    db $59, $47
+
+b02_Unknown3_StatePointer_01::
+    db $f1, $47
+
+b02_Unknown3_StatePointer_02::
+    db $40, $49
+
+b02_Unknown3_State_00::
     ld a, $43                                     ; $4759: $3e $43
     ld [$c32e], a                                 ; $475b: $ea $2e $c3
     xor a                                         ; $475e: $af
@@ -1214,17 +1237,17 @@ jr_002_474c:
     ld hl, $5000                                  ; $4776: $21 $00 $50
     ld de, $8000                                  ; $4779: $11 $00 $80
     ld bc, $0300                                  ; $477c: $01 $00 $03
-    call CopyTileData                             ; $477f: $cd $e4 $04
+    call BankedTileCopy                           ; $477f: $cd $e4 $04
     ld a, $09                                     ; $4782: $3e $09
     ld hl, $5800                                  ; $4784: $21 $00 $58
     ld de, $8800                                  ; $4787: $11 $00 $88
     ld bc, $1000                                  ; $478a: $01 $00 $10
-    call CopyTileData                             ; $478d: $cd $e4 $04
+    call BankedTileCopy                           ; $478d: $cd $e4 $04
     ld a, $0b                                     ; $4790: $3e $0b
     ld hl, $7800                                  ; $4792: $21 $00 $78
     ld de, $9800                                  ; $4795: $11 $00 $98
     ld bc, $0400                                  ; $4798: $01 $00 $04
-    call CopyTileData                             ; $479b: $cd $e4 $04
+    call BankedTileCopy                           ; $479b: $cd $e4 $04
     xor a                                         ; $479e: $af
     call $4ad5                                    ; $479f: $cd $d5 $4a
     ld a, $01                                     ; $47a2: $3e $01
@@ -1260,6 +1283,7 @@ jr_002_474c:
     ret                                           ; $47f0: $c9
 
 
+b02_Unknown3_State_01::
     ld b, $03                                     ; $47f1: $06 $03
     ld hl, $4ea6                                  ; $47f3: $21 $a6 $4e
     call Call_000_05de                            ; $47f6: $cd $de $05
@@ -1540,6 +1564,8 @@ jr_002_4898:
     ret nz                                        ; $493e: $c0
 
     nop                                           ; $493f: $00
+
+b02_Unknown3_State_02::
     ld bc, $003c                                  ; $4940: $01 $3c $00
     call Call_000_05fa                            ; $4943: $cd $fa $05
     ld a, $05                                     ; $4946: $3e $05
@@ -1592,7 +1618,7 @@ Jump_002_498e:
     ld a, $02                                     ; $4998: $3e $02
     ld de, $c100                                  ; $499a: $11 $00 $c1
     ld bc, $0023                                  ; $499d: $01 $23 $00
-    call CopyTileData                             ; $49a0: $cd $e4 $04
+    call BankedTileCopy                           ; $49a0: $cd $e4 $04
     pop af                                        ; $49a3: $f1
     ld c, a                                       ; $49a4: $4f
     ld b, $00                                     ; $49a5: $06 $00
@@ -1842,7 +1868,7 @@ Jump_002_4aa6:
     ld a, $02                                     ; $4adf: $3e $02
     ld de, $c100                                  ; $4ae1: $11 $00 $c1
     ld bc, $0023                                  ; $4ae4: $01 $23 $00
-    call CopyTileData                             ; $4ae7: $cd $e4 $04
+    call BankedTileCopy                           ; $4ae7: $cd $e4 $04
     pop af                                        ; $4aea: $f1
     ld c, a                                       ; $4aeb: $4f
     ld b, $00                                     ; $4aec: $06 $00
@@ -2119,16 +2145,26 @@ jr_002_4c4f:
 
     ld a, [Unknown_State]                         ; $4c55: $fa $35 $d6
     rst RST_18                                    ; $4c58: $df
-    ld h, l                                       ; $4c59: $65
-    ld c, h                                       ; $4c5a: $4c
-    adc [hl]                                      ; $4c5b: $8e
-    ld c, l                                       ; $4c5c: $4d
-    ld l, c                                       ; $4c5d: $69
-    ld c, a                                       ; $4c5e: $4f
-    ld [hl], h                                    ; $4c5f: $74
-    ld d, b                                       ; $4c60: $50
-    call nz, $ff4c                                ; $4c61: $c4 $4c $ff
-    ld c, l                                       ; $4c64: $4d
+
+b02_Unknown4_StatePointer_00::
+    db $65, $4c
+
+b02_Unknown4_StatePointer_01::
+    db $8e, $4d
+
+b02_Unknown4_StatePointer_02::
+    db $69, $4f
+
+b02_Unknown4_StatePointer_03::
+    db $74, $50
+
+b02_Unknown4_StatePointer_04::
+    db $c4, $4c
+
+b02_Unknown4_StatePointer_05::
+    db $ff, $4d
+
+b02_Unknown4_State_00::
     ld a, $43                                     ; $4c65: $3e $43
     ld [$c32e], a                                 ; $4c67: $ea $2e $c3
     xor a                                         ; $4c6a: $af
@@ -2168,6 +2204,7 @@ jr_002_4c4f:
     ret                                           ; $4cc3: $c9
 
 
+b02_Unknown4_State_04::
     ld a, $43                                     ; $4cc4: $3e $43
     ld [$c32e], a                                 ; $4cc6: $ea $2e $c3
     xor a                                         ; $4cc9: $af
@@ -2257,20 +2294,21 @@ Call_002_4d63:
     ld hl, $5000                                  ; $4d65: $21 $00 $50
     ld de, $8000                                  ; $4d68: $11 $00 $80
     ld bc, $0300                                  ; $4d6b: $01 $00 $03
-    call CopyTileData                             ; $4d6e: $cd $e4 $04
+    call BankedTileCopy                           ; $4d6e: $cd $e4 $04
     ld a, $09                                     ; $4d71: $3e $09
     ld hl, $6800                                  ; $4d73: $21 $00 $68
     ld de, $8800                                  ; $4d76: $11 $00 $88
     ld bc, $1000                                  ; $4d79: $01 $00 $10
-    call CopyTileData                             ; $4d7c: $cd $e4 $04
+    call BankedTileCopy                           ; $4d7c: $cd $e4 $04
     ld a, $0c                                     ; $4d7f: $3e $0c
     ld hl, $7c00                                  ; $4d81: $21 $00 $7c
     ld de, $9800                                  ; $4d84: $11 $00 $98
     ld bc, $0400                                  ; $4d87: $01 $00 $04
-    call CopyTileData                             ; $4d8a: $cd $e4 $04
+    call BankedTileCopy                           ; $4d8a: $cd $e4 $04
     ret                                           ; $4d8d: $c9
 
 
+b02_Unknown4_State_01::
     call Call_002_5298                            ; $4d8e: $cd $98 $52
     call Call_002_4ddc                            ; $4d91: $cd $dc $4d
     ld a, [$c31e]                                 ; $4d94: $fa $1e $c3
@@ -2338,6 +2376,7 @@ jr_002_4dea:
     ret                                           ; $4dfe: $c9
 
 
+b02_Unknown4_State_05::
     ld b, $03                                     ; $4dff: $06 $03
     ld hl, $4ec2                                  ; $4e01: $21 $c2 $4e
     call Call_000_05de                            ; $4e04: $cd $de $05
@@ -2621,6 +2660,7 @@ Call_002_4f40:
     ret                                           ; $4f68: $c9
 
 
+b02_Unknown4_State_02::
     ld bc, $003c                                  ; $4f69: $01 $3c $00
     call Call_000_05fa                            ; $4f6c: $cd $fa $05
     ld a, $05                                     ; $4f6f: $3e $05
@@ -2666,7 +2706,7 @@ jr_002_4f95:
 jr_002_4fc6:
     sla a                                         ; $4fc6: $cb $27
     ld c, a                                       ; $4fc8: $4f
-    ld hl, $4ff4                                  ; $4fc9: $21 $f4 $4f
+    ld hl, b02_Unknown4_State_02_Data             ; $4fc9: $21 $f4 $4f
     add hl, bc                                    ; $4fcc: $09
     ld a, [hl+]                                   ; $4fcd: $2a
     ld [$d807], a                                 ; $4fce: $ea $07 $d8
@@ -2690,116 +2730,19 @@ jr_002_4fe8:
     jp Jump_000_1b1f                              ; $4ff1: $c3 $1f $1b
 
 
-    pop bc                                        ; $4ff4: $c1
-    nop                                           ; $4ff5: $00
-    jp nz, $c300                                  ; $4ff6: $c2 $00 $c3
+b02_Unknown4_State_02_Data::
+    db $c1, $00, $c2, $00, $c3, $00, $c4, $00, $c5, $00, $c6, $00, $c7, $00, $c8, $00
+    db $c9, $00, $ca, $00, $cb, $00, $cc, $00, $cd, $00, $ce, $00, $cf, $00, $d0, $00
+    db $d1, $00, $d2, $00, $d3, $00, $d4, $00, $d5, $00, $d6, $00, $d7, $00, $d8, $00
+    db $d9, $00, $da, $00, $db, $00, $dc, $00, $dd, $00, $de, $00, $df, $00, $e0, $00
+    db $e1, $00, $e2, $00, $e3, $00, $e4, $00, $e5, $00, $e6, $00, $e7, $00, $e8, $00
+    db $e9, $00, $ea, $00, $eb, $00, $ec, $00, $ed, $00, $ee, $00, $ef, $00, $f0, $00
+    db $f1, $00, $f2, $00, $f3, $00, $f4, $00, $f5, $00, $f6, $00, $f7, $00, $f8, $00
+    db $f9, $00, $fa, $00, $fb, $00, $fc, $00, $fd, $00, $fe, $00, $ff, $00, $00, $01
 
-    nop                                           ; $4ff9: $00
-    call nz, $c500                                ; $4ffa: $c4 $00 $c5
-    nop                                           ; $4ffd: $00
-    add $00                                       ; $4ffe: $c6 $00
-    rst RST_00                                    ; $5000: $c7
-    nop                                           ; $5001: $00
-    ret z                                         ; $5002: $c8
-
-    nop                                           ; $5003: $00
-    ret                                           ; $5004: $c9
-
-
-    nop                                           ; $5005: $00
-    jp z, $cb00                                   ; $5006: $ca $00 $cb
-
-    nop                                           ; $5009: $00
-    call z, $cd00                                 ; $500a: $cc $00 $cd
-    nop                                           ; $500d: $00
-    adc $00                                       ; $500e: $ce $00
-    rst RST_08                                    ; $5010: $cf
-    nop                                           ; $5011: $00
-    ret nc                                        ; $5012: $d0
-
-    nop                                           ; $5013: $00
-    pop de                                        ; $5014: $d1
-    nop                                           ; $5015: $00
-    jp nc, $d300                                  ; $5016: $d2 $00 $d3
-
-    nop                                           ; $5019: $00
-    call nc, $d500                                ; $501a: $d4 $00 $d5
-    nop                                           ; $501d: $00
-    sub $00                                       ; $501e: $d6 $00
-    rst $10                                       ; $5020: $d7
-    nop                                           ; $5021: $00
-    ret c                                         ; $5022: $d8
-
-    nop                                           ; $5023: $00
-    reti                                          ; $5024: $d9
-
-
-    nop                                           ; $5025: $00
-    jp c, $db00                                   ; $5026: $da $00 $db
-
-    nop                                           ; $5029: $00
-    call c, $dd00                                 ; $502a: $dc $00 $dd
-    nop                                           ; $502d: $00
-    sbc $00                                       ; $502e: $de $00
-    rst RST_18                                    ; $5030: $df
-    nop                                           ; $5031: $00
-    ldh [rP1], a                                  ; $5032: $e0 $00
-    pop hl                                        ; $5034: $e1
-    nop                                           ; $5035: $00
-    ldh [c], a                                    ; $5036: $e2
-    nop                                           ; $5037: $00
-    db $e3                                        ; $5038: $e3
-    nop                                           ; $5039: $00
-    db $e4                                        ; $503a: $e4
-    nop                                           ; $503b: $00
-    push hl                                       ; $503c: $e5
-    nop                                           ; $503d: $00
-    and $00                                       ; $503e: $e6 $00
-    rst $20                                       ; $5040: $e7
-    nop                                           ; $5041: $00
-    add sp, $00                                   ; $5042: $e8 $00
-    jp hl                                         ; $5044: $e9
-
-
-    nop                                           ; $5045: $00
-    ld [$eb00], a                                 ; $5046: $ea $00 $eb
-    nop                                           ; $5049: $00
-    db $ec                                        ; $504a: $ec
-    nop                                           ; $504b: $00
-    db $ed                                        ; $504c: $ed
-    nop                                           ; $504d: $00
-    xor $00                                       ; $504e: $ee $00
-    rst $28                                       ; $5050: $ef
-    nop                                           ; $5051: $00
-    ldh a, [rP1]                                  ; $5052: $f0 $00
-    pop af                                        ; $5054: $f1
-    nop                                           ; $5055: $00
-    ldh a, [c]                                    ; $5056: $f2
-    nop                                           ; $5057: $00
-    di                                            ; $5058: $f3
-    nop                                           ; $5059: $00
-    db $f4                                        ; $505a: $f4
-    nop                                           ; $505b: $00
-    push af                                       ; $505c: $f5
-    nop                                           ; $505d: $00
-    or $00                                        ; $505e: $f6 $00
-    rst $30                                       ; $5060: $f7
-    nop                                           ; $5061: $00
-    ld hl, sp+$00                                 ; $5062: $f8 $00
-    ld sp, hl                                     ; $5064: $f9
-    nop                                           ; $5065: $00
-    ld a, [$fb00]                                 ; $5066: $fa $00 $fb
-    nop                                           ; $5069: $00
-    db $fc                                        ; $506a: $fc
-    nop                                           ; $506b: $00
-    db $fd                                        ; $506c: $fd
-    nop                                           ; $506d: $00
-    cp $00                                        ; $506e: $fe $00
-    rst $38                                       ; $5070: $ff
-    nop                                           ; $5071: $00
-    nop                                           ; $5072: $00
-    ld bc, $eaaf                                  ; $5073: $01 $af $ea
-    ld a, $d6                                     ; $5076: $3e $d6
+b02_Unknown4_State_03::
+    xor a                                         ; $5074: $af
+    ld [$d63e], a                                 ; $5075: $ea $3e $d6
     call Call_002_4ddc                            ; $5078: $cd $dc $4d
     ld bc, $003c                                  ; $507b: $01 $3c $00
     call Call_000_05fa                            ; $507e: $cd $fa $05
