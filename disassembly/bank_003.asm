@@ -3657,7 +3657,7 @@ jr_003_4f21:
     nop                                           ; $4f84: $00
     rst $38                                       ; $4f85: $ff
     rst $38                                       ; $4f86: $ff
-    ld a, [$d635]                                 ; $4f87: $fa $35 $d6
+    ld a, [Unknown_State]                         ; $4f87: $fa $35 $d6
     rst RST_18                                    ; $4f8a: $df
     sub l                                         ; $4f8b: $95
     ld c, a                                       ; $4f8c: $4f
@@ -3737,7 +3737,7 @@ jr_003_4fd1:
     ld c, $10                                     ; $503c: $0e $10
     ld de, $00b4                                  ; $503e: $11 $b4 $00
     call Call_000_040d                            ; $5041: $cd $0d $04
-    ld hl, $d635                                  ; $5044: $21 $35 $d6
+    ld hl, Unknown_State                          ; $5044: $21 $35 $d6
     inc [hl]                                      ; $5047: $34
     ret                                           ; $5048: $c9
 
@@ -3774,7 +3774,7 @@ jr_003_5072:
     ld c, $03                                     ; $5078: $0e $03
     ld a, $02                                     ; $507a: $3e $02
     call Call_000_03b6                            ; $507c: $cd $b6 $03
-    ld hl, $d635                                  ; $507f: $21 $35 $d6
+    ld hl, Unknown_State                          ; $507f: $21 $35 $d6
     inc [hl]                                      ; $5082: $34
     ret                                           ; $5083: $c9
 
@@ -3933,7 +3933,7 @@ jr_003_51b6:
     jr z, jr_003_51d1                             ; $51c6: $28 $09
 
     xor a                                         ; $51c8: $af
-    ld [$d635], a                                 ; $51c9: $ea $35 $d6
+    ld [Unknown_State], a                         ; $51c9: $ea $35 $d6
     ld hl, $d634                                  ; $51cc: $21 $34 $d6
     inc [hl]                                      ; $51cf: $34
     ret                                           ; $51d0: $c9
@@ -3951,14 +3951,14 @@ jr_003_51d1:
     add hl, bc                                    ; $51e0: $09
     ld [hl], a                                    ; $51e1: $77
     xor a                                         ; $51e2: $af
-    ld [$d635], a                                 ; $51e3: $ea $35 $d6
+    ld [Unknown_State], a                         ; $51e3: $ea $35 $d6
     ld a, $02                                     ; $51e6: $3e $02
     ld [$d634], a                                 ; $51e8: $ea $34 $d6
     jp Jump_000_1b1f                              ; $51eb: $c3 $1f $1b
 
 
 jr_003_51ee:
-    ld hl, $d635                                  ; $51ee: $21 $35 $d6
+    ld hl, Unknown_State                          ; $51ee: $21 $35 $d6
     inc [hl]                                      ; $51f1: $34
     ret                                           ; $51f2: $c9
 
@@ -4128,7 +4128,7 @@ jr_003_534b:
     ld hl, $5366                                  ; $5355: $21 $66 $53
     add hl, bc                                    ; $5358: $09
     ld a, [hl]                                    ; $5359: $7e
-    ld [$d635], a                                 ; $535a: $ea $35 $d6
+    ld [Unknown_State], a                         ; $535a: $ea $35 $d6
     ld hl, $5369                                  ; $535d: $21 $69 $53
     add hl, bc                                    ; $5360: $09
     ld a, [hl]                                    ; $5361: $7e
@@ -4210,7 +4210,7 @@ jr_003_53d4:
     call Call_000_044e                            ; $5414: $cd $4e $04
     call Call_000_0483                            ; $5417: $cd $83 $04
     xor a                                         ; $541a: $af
-    ld [$d635], a                                 ; $541b: $ea $35 $d6
+    ld [Unknown_State], a                         ; $541b: $ea $35 $d6
     ret                                           ; $541e: $c9
 
 

@@ -4,8 +4,9 @@
 ; RAM ADDRESS LABELS (HRAM, WRAM, ECHO)
 ; =============================================================================
 
-00:d800 CurrentGridSize
 00:c314 CurrentBank
+00:d635 Unknown_State
+00:d800 CurrentGridSize
 00:f635 LevelSelectColumn
 00:f636 LevelSelectRow
 
@@ -34,9 +35,395 @@
 00:04e4 CopyTileData
 00:0538 CopyTileData2
 
+; State pointer table entries (accessed via RST_18 dispatcher):
+; Offset calculation: state_value * 2, added to return address $2134 yields pointer location
+; State $00: $00 * 2 = $00 bytes -> pointer at $2134 + $00 = $2134
+00:2134 b00_Unknown_StatePointer_00
+00:2134 .data:2
+; State $01: $01 * 2 = $02 bytes -> pointer at $2134 + $02 = $2136
+00:2136 b00_Unknown_StatePointer_01
+00:2136 .data:2
+; State $02: $02 * 2 = $04 bytes -> pointer at $2134 + $04 = $2138
+00:2138 b00_Unknown_StatePointer_02
+00:2138 .data:2
+; State $03: $03 * 2 = $06 bytes -> pointer at $2134 + $06 = $213a
+00:213a b00_Unknown_StatePointer_03
+00:213a .data:2
+; State $04: $04 * 2 = $08 bytes -> pointer at $2134 + $08 = $213c
+00:213c b00_Unknown_StatePointer_04
+00:213c .data:2
+; State $05: $05 * 2 = $0a bytes -> pointer at $2134 + $0a = $213e
+00:213e b00_Unknown_StatePointer_05
+00:213e .data:2
+; State $06: $06 * 2 = $0c bytes -> pointer at $2134 + $0c = $2140
+00:2140 b00_Unknown_StatePointer_06
+00:2140 .data:2
+; State $07: $07 * 2 = $0e bytes -> pointer at $2134 + $0e = $2142
+00:2142 b00_Unknown_StatePointer_07
+00:2142 .data:2
+; State $08: $08 * 2 = $10 bytes -> pointer at $2134 + $10 = $2144
+00:2144 b00_Unknown_StatePointer_08
+00:2144 .data:2
+; State $09: $09 * 2 = $12 bytes -> pointer at $2134 + $12 = $2146
+00:2146 b00_Unknown_StatePointer_09
+00:2146 .data:2
+; State $0a: $0a * 2 = $14 bytes -> pointer at $2134 + $14 = $2148
+00:2148 b00_Unknown_StatePointer_0a
+00:2148 .data:2
+; State $0b: $0b * 2 = $16 bytes -> pointer at $2134 + $16 = $214a
+00:214a b00_Unknown_StatePointer_0b
+00:214a .data:2
+; State $0c: $0c * 2 = $18 bytes -> pointer at $2134 + $18 = $214c
+00:214c b00_Unknown_StatePointer_0c
+00:214c .data:2
+; State $0d: $0d * 2 = $1a bytes -> pointer at $2134 + $1a = $214e
+00:214e b00_Unknown_StatePointer_0d
+00:214e .data:2
+; State $0e: $0e * 2 = $1c bytes -> pointer at $2134 + $1c = $2150
+00:2150 b00_Unknown_StatePointer_0e
+00:2150 .data:2
+; State $0f: $0f * 2 = $1e bytes -> pointer at $2134 + $1e = $2152
+00:2152 b00_Unknown_StatePointer_0f
+00:2152 .data:2
+; State $10: $10 * 2 = $20 bytes -> pointer at $2134 + $20 = $2154
+00:2154 b00_Unknown_StatePointer_10
+00:2154 .data:2
+; State $11: $11 * 2 = $22 bytes -> pointer at $2134 + $22 = $2156
+00:2156 b00_Unknown_StatePointer_11
+00:2156 .data:2
+; State $12: $12 * 2 = $24 bytes -> pointer at $2134 + $24 = $2158
+00:2158 b00_Unknown_StatePointer_12
+00:2158 .data:2
+; State $13: $13 * 2 = $26 bytes -> pointer at $2134 + $26 = $215a
+00:215a b00_Unknown_StatePointer_13
+00:215a .data:2
+; State $14: $14 * 2 = $28 bytes -> pointer at $2134 + $28 = $215c
+00:215c b00_Unknown_StatePointer_14
+00:215c .data:2
+; State $15: $15 * 2 = $2a bytes -> pointer at $2134 + $2a = $215e
+00:215e b00_Unknown_StatePointer_15
+00:215e .data:2
+; State $16: $16 * 2 = $2c bytes -> pointer at $2134 + $2c = $2160
+00:2160 b00_Unknown_StatePointer_16
+00:2160 .data:2
+; State $17: $17 * 2 = $2e bytes -> pointer at $2134 + $2e = $2162
+00:2162 b00_Unknown_StatePointer_17
+00:2162 .data:2
+; State $18: $18 * 2 = $30 bytes -> pointer at $2134 + $30 = $2164
+00:2164 b00_Unknown_StatePointer_18
+00:2164 .data:2
+; State $19: $19 * 2 = $32 bytes -> pointer at $2134 + $32 = $2166
+00:2166 b00_Unknown_StatePointer_19
+00:2166 .data:2
+; State $1a: $1a * 2 = $34 bytes -> pointer at $2134 + $34 = $2168
+00:2168 b00_Unknown_StatePointer_1a
+00:2168 .data:2
+; State $1b: $1b * 2 = $36 bytes -> pointer at $2134 + $36 = $216a
+00:216a b00_Unknown_StatePointer_1b
+00:216a .data:2
+; State $1c: $1c * 2 = $38 bytes -> pointer at $2134 + $38 = $216c
+00:216c b00_Unknown_StatePointer_1c
+00:216c .data:2
+; State $1d: $1d * 2 = $3a bytes -> pointer at $2134 + $3a = $216e
+00:216e b00_Unknown_StatePointer_1d
+00:216e .data:2
+; State $1e: $1e * 2 = $3c bytes -> pointer at $2134 + $3c = $2170
+00:2170 b00_Unknown_StatePointer_1e
+00:2170 .data:2
+; State $1f: $1f * 2 = $3e bytes -> pointer at $2134 + $3e = $2172
+00:2172 b00_Unknown_StatePointer_1f
+00:2172 .data:2
+; State $20: $20 * 2 = $40 bytes -> pointer at $2134 + $40 = $2174
+00:2174 b00_Unknown_StatePointer_20
+00:2174 .data:2
+; State $21: $21 * 2 = $42 bytes -> pointer at $2134 + $42 = $2176
+00:2176 b00_Unknown_StatePointer_21
+00:2176 .data:2
+; State $22: $22 * 2 = $44 bytes -> pointer at $2134 + $44 = $2178
+00:2178 b00_Unknown_StatePointer_22
+00:2178 .data:2
+; State $23: $23 * 2 = $46 bytes -> pointer at $2134 + $46 = $217a
+00:217a b00_Unknown_StatePointer_23
+00:217a .data:2
+; State $24: $24 * 2 = $48 bytes -> pointer at $2134 + $48 = $217c
+00:217c b00_Unknown_StatePointer_24
+00:217c .data:2
+; State $25: $25 * 2 = $4a bytes -> pointer at $2134 + $4a = $217e
+00:217e b00_Unknown_StatePointer_25
+00:217e .data:2
+; State $26: $26 * 2 = $4c bytes -> pointer at $2134 + $4c = $2180
+00:2180 b00_Unknown_StatePointer_26
+00:2180 .data:2
+; State $27: $27 * 2 = $4e bytes -> pointer at $2134 + $4e = $2182
+00:2182 b00_Unknown_StatePointer_27
+00:2182 .data:2
+; State $28: $28 * 2 = $50 bytes -> pointer at $2134 + $50 = $2184
+00:2184 b00_Unknown_StatePointer_28
+00:2184 .data:2
+; State $29: $29 * 2 = $52 bytes -> pointer at $2134 + $52 = $2186
+00:2186 b00_Unknown_StatePointer_29
+00:2186 .data:2
+; State $2a: $2a * 2 = $54 bytes -> pointer at $2134 + $54 = $2188
+00:2188 b00_Unknown_StatePointer_2a
+00:2188 .data:2
+
+00:218a b00_Unknown_State_00
+00:2282 b00_Unknown_State_01
+00:22aa b00_Unknown_State_02
+00:22f2 b00_Unknown_State_03
+00:2310 b00_Unknown_State_04
+00:2358 b00_Unknown_State_05
+00:2376 b00_Unknown_State_06
+00:239e b00_Unknown_State_07
+00:23c6 b00_Unknown_State_08
+00:246d b00_Unknown_State_09
+00:2492 b00_Unknown_State_0a
+00:24ab b00_Unknown_State_0b
+00:24d3 b00_Unknown_State_0c
+00:2501 b00_Unknown_State_0d
+00:2549 b00_Unknown_State_0e
+00:2567 b00_Unknown_State_0f
+00:258f b00_Unknown_State_10
+00:25d7 b00_Unknown_State_11
+00:25f5 b00_Unknown_State_12
+00:262f b00_Unknown_State_13
+00:266b b00_Unknown_State_14
+00:26b3 b00_Unknown_State_15
+00:26d1 b00_Unknown_State_16
+00:26f9 b00_Unknown_State_17
+00:2741 b00_Unknown_State_18
+00:275f b00_Unknown_State_19
+00:279e b00_Unknown_State_1a
+00:27d4 b00_Unknown_State_1b
+00:27e6 b00_Unknown_State_1c
+00:280a b00_Unknown_State_1d
+00:283b b00_Unknown_State_1e
+00:2870 b00_Unknown_State_1f
+00:289a b00_Unknown_State_20
+00:28c2 b00_Unknown_State_21
+00:28f7 b00_Unknown_State_22
+00:2936 b00_Unknown_State_23
+00:2972 b00_Unknown_State_24
+00:29cc b00_Unknown_State_25
+00:29f4 b00_Unknown_State_26
+00:2a33 b00_Unknown_State_27
+00:2a7b b00_Unknown_State_28
+00:2aac b00_Unknown_State_29
+00:2b24 b00_Unknown_State_2a
+
 ; =============================================================================
 ; BANK 001
 ; =============================================================================
+
+; State pointer table entries (accessed via RST_18 dispatcher):
+; Offset calculation: state_value * 2, added to return address $438e yields pointer location
+; State $00: $00 * 2 = $00 bytes -> pointer at $438e + $00 = $438e
+01:438e b01_Unknown_StatePointer_00
+01:438e .data:2
+; State $01: $01 * 2 = $02 bytes -> pointer at $438e + $02 = $4390
+01:4390 b01_Unknown_StatePointer_01
+01:4390 .data:2
+; State $02: $02 * 2 = $04 bytes -> pointer at $438e + $04 = $4392
+01:4392 b01_Unknown_StatePointer_02
+01:4392 .data:2
+; State $03: $03 * 2 = $06 bytes -> pointer at $438e + $06 = $4394
+01:4394 b01_Unknown_StatePointer_03
+01:4394 .data:2
+; State $04: $04 * 2 = $08 bytes -> pointer at $438e + $08 = $4396
+01:4396 b01_Unknown_StatePointer_04
+01:4396 .data:2
+; State $05: $05 * 2 = $0a bytes -> pointer at $438e + $0a = $4398
+01:4398 b01_Unknown_StatePointer_05
+01:4398 .data:2
+
+01:439a b01_Unknown_State_00
+01:477d b01_Unknown_State_01
+01:4809 b01_Unknown_State_02
+01:4972 b01_Unknown_State_03
+01:4410 b01_Unknown_State_04
+01:47b7 b01_Unknown_State_05
+
+; State pointer table entries (accessed via RST_18 dispatcher):
+; Offset calculation: state_value * 2, added to return address $5271 yields pointer location
+; State $00: $00 * 2 = $00 bytes -> pointer at $5271 + $00 = $5271
+01:5271 b01_Unknown2_StatePointer_00
+01:5271 .data:2
+; State $01: $01 * 2 = $02 bytes -> pointer at $5271 + $02 = $5273
+01:5273 b01_Unknown2_StatePointer_01
+01:5273 .data:2
+; State $02: $02 * 2 = $04 bytes -> pointer at $5271 + $04 = $5275
+01:5275 b01_Unknown2_StatePointer_02
+01:5275 .data:2
+; State $03: $03 * 2 = $06 bytes -> pointer at $5271 + $06 = $5277
+01:5277 b01_Unknown2_StatePointer_03
+01:5277 .data:2
+; State $04: $04 * 2 = $08 bytes -> pointer at $5271 + $08 = $5279
+01:5279 b01_Unknown2_StatePointer_04
+01:5279 .data:2
+; State $05: $05 * 2 = $0a bytes -> pointer at $5271 + $0a = $527b
+01:527b b01_Unknown2_StatePointer_05
+01:527b .data:2
+
+01:527d b01_Unknown2_State_00
+01:5585 b01_Unknown2_State_01
+01:561b b01_Unknown2_State_02
+01:56f7 b01_Unknown2_State_03
+01:5316 b01_Unknown2_State_04
+01:55bf b01_Unknown2_State_05
+
+; State pointer table entries (accessed via RST_18 dispatcher):
+; Offset calculation: state_value * 2, added to return address $5d82 yields pointer location
+; State $00: $00 * 2 = $00 bytes -> pointer at $5d82 + $00 = $5d82
+01:5d82 b01_Unknown3_StatePointer_00
+01:5d82 .data:2
+; State $01: $01 * 2 = $02 bytes -> pointer at $5d82 + $02 = $5d84
+01:5d84 b01_Unknown3_StatePointer_01
+01:5d84 .data:2
+; State $02: $02 * 2 = $04 bytes -> pointer at $5d82 + $04 = $5d86
+01:5d86 b01_Unknown3_StatePointer_02
+01:5d86 .data:2
+; State $03: $03 * 2 = $06 bytes -> pointer at $5d82 + $06 = $5d88
+01:5d88 b01_Unknown3_StatePointer_03
+01:5d88 .data:2
+; State $04: $04 * 2 = $08 bytes -> pointer at $5d82 + $08 = $5d8a
+01:5d8a b01_Unknown3_StatePointer_04
+01:5d8a .data:2
+; State $05: $05 * 2 = $0a bytes -> pointer at $5d82 + $0a = $5d8c
+01:5d8c b01_Unknown3_StatePointer_05
+01:5d8c .data:2
+; State $06: $06 * 2 = $0c bytes -> pointer at $5d82 + $0c = $5d8e
+01:5d8e b01_Unknown3_StatePointer_06
+01:5d8e .data:2
+; State $07: $07 * 2 = $0e bytes -> pointer at $5d82 + $0e = $5d90
+01:5d90 b01_Unknown3_StatePointer_07
+01:5d90 .data:2
+; State $08: $08 * 2 = $10 bytes -> pointer at $5d82 + $10 = $5d92
+01:5d92 b01_Unknown3_StatePointer_08
+01:5d92 .data:2
+; State $09: $09 * 2 = $12 bytes -> pointer at $5d82 + $12 = $5d94
+01:5d94 b01_Unknown3_StatePointer_09
+01:5d94 .data:2
+; State $0a: $0a * 2 = $14 bytes -> pointer at $5d82 + $14 = $5d96
+01:5d96 b01_Unknown3_StatePointer_0a
+01:5d96 .data:2
+; State $0b: $0b * 2 = $16 bytes -> pointer at $5d82 + $16 = $5d98
+01:5d98 b01_Unknown3_StatePointer_0b
+01:5d98 .data:2
+
+01:5d9a b01_Unknown3_State_00
+01:5fa5 b01_Unknown3_State_01
+01:5fa8 b01_Unknown3_State_02
+01:5fcb b01_Unknown3_State_03
+01:617b b01_Unknown3_State_04
+01:61fc b01_Unknown3_State_05
+01:6238 b01_Unknown3_State_06
+01:626d b01_Unknown3_State_06_Data
+01:626d .data:3
+01:6270 b01_Unknown3_State_07
+01:6328 b01_Unknown3_State_08
+01:6343 b01_Unknown3_State_09
+01:63c3 b01_Unknown3_State_0a
+01:5e93 b01_Unknown3_State_0b
+
+; State pointer table entries (accessed via RST_18 dispatcher):
+; Offset calculation: state_value * 2, added to return address $6400 yields pointer location
+; State $00: $00 * 2 = $00 bytes -> pointer at $6400 + $00 = $6400
+01:6400 b01_Unknown4_StatePointer_00
+01:6400 .data:2
+; State $01: $01 * 2 = $02 bytes -> pointer at $6400 + $02 = $6402
+01:6402 b01_Unknown4_StatePointer_01
+01:6402 .data:2
+; State $02: $02 * 2 = $04 bytes -> pointer at $6400 + $04 = $6404
+01:6404 b01_Unknown4_StatePointer_02
+01:6404 .data:2
+; State $03: $03 * 2 = $06 bytes -> pointer at $6400 + $06 = $6406
+01:6406 b01_Unknown4_StatePointer_03
+01:6406 .data:2
+; State $04: $04 * 2 = $08 bytes -> pointer at $6400 + $08 = $6408
+01:6408 b01_Unknown4_StatePointer_04
+01:6408 .data:2
+; State $05: $05 * 2 = $0a bytes -> pointer at $6400 + $0a = $640a
+01:640a b01_Unknown4_StatePointer_05
+01:640a .data:2
+; State $06: $06 * 2 = $0c bytes -> pointer at $6400 + $0c = $640c
+01:640c b01_Unknown4_StatePointer_06
+01:640c .data:2
+; State $07: $07 * 2 = $0e bytes -> pointer at $6400 + $0e = $640e
+01:640e b01_Unknown4_StatePointer_07
+01:640e .data:2
+; State $08: $08 * 2 = $10 bytes -> pointer at $6400 + $10 = $6410
+01:6410 b01_Unknown4_StatePointer_08
+01:6410 .data:2
+; State $09: $09 * 2 = $12 bytes -> pointer at $6400 + $12 = $6412
+01:6412 b01_Unknown4_StatePointer_09
+01:6412 .data:2
+
+01:6414 b01_Unknown4_State_00
+01:656c b01_Unknown4_State_01
+01:661f b01_Unknown4_State_02
+01:6677 b01_Unknown4_State_03
+01:66b3 b01_Unknown4_State_04
+01:66e8 b01_Unknown4_State_04_Data
+01:66e8 .data:3
+01:66eb b01_Unknown4_State_05
+01:677d b01_Unknown4_State_06
+01:6798 b01_Unknown4_State_07
+01:67f6 b01_Unknown4_State_08
+01:64b1 b01_Unknown4_State_09
+
+; State pointer table entries (accessed via RST_18 dispatcher):
+; Offset calculation: state_value * 2, added to return address $6871 yields pointer location
+; State $00: $00 * 2 = $00 bytes -> pointer at $6871 + $00 = $6871
+01:6871 b01_Unknown5_StatePointer_00
+01:6871 .data:2
+; State $01: $01 * 2 = $02 bytes -> pointer at $6871 + $02 = $6873
+01:6873 b01_Unknown5_StatePointer_01
+01:6873 .data:2
+; State $02: $02 * 2 = $04 bytes -> pointer at $6871 + $04 = $6875
+01:6875 b01_Unknown5_StatePointer_02
+01:6875 .data:2
+; State $03: $03 * 2 = $06 bytes -> pointer at $6871 + $06 = $6877
+01:6877 b01_Unknown5_StatePointer_03
+01:6877 .data:2
+; State $04: $04 * 2 = $08 bytes -> pointer at $6871 + $08 = $6879
+01:6879 b01_Unknown5_StatePointer_04
+01:6879 .data:2
+; State $05: $05 * 2 = $0a bytes -> pointer at $6871 + $0a = $687b
+01:687b b01_Unknown5_StatePointer_05
+01:687b .data:2
+; State $06: $06 * 2 = $0c bytes -> pointer at $6871 + $0c = $687d
+01:687d b01_Unknown5_StatePointer_06
+01:687d .data:2
+; State $07: $07 * 2 = $0e bytes -> pointer at $6871 + $0e = $687f
+01:687f b01_Unknown5_StatePointer_07
+01:687f .data:2
+; State $08: $08 * 2 = $10 bytes -> pointer at $6871 + $10 = $6881
+01:6881 b01_Unknown5_StatePointer_08
+01:6881 .data:2
+; State $09: $09 * 2 = $12 bytes -> pointer at $6871 + $12 = $6883
+01:6883 b01_Unknown5_StatePointer_09
+01:6883 .data:2
+; State $0a: $0a * 2 = $12 bytes -> pointer at $6871 + $12 = $6885
+01:6885 b01_Unknown5_StatePointer_0a
+01:6885 .data:2
+; State $0b: $0b * 2 = $12 bytes -> pointer at $6871 + $12 = $6887
+01:6887 b01_Unknown5_StatePointer_0b
+01:6887 .data:2
+
+01:6889 b01_Unknown5_State_00
+01:6a92 b01_Unknown5_State_01
+01:6b44 b01_Unknown5_State_02
+01:6c41 b01_Unknown5_State_03
+01:6cff b01_Unknown5_State_04
+01:6d57 b01_Unknown5_State_05
+01:6d9c b01_Unknown5_State_06
+01:6dd1 b01_Unknown5_State_06_Data
+01:6dd1 .data:3
+01:6dd4 b01_Unknown5_State_07
+01:6e6e b01_Unknown5_State_08
+01:6e89 b01_Unknown5_State_09
+01:6eef b01_Unknown5_State_0a
+01:6907 b01_Unknown5_State_0b
 
 01:69b9 LoadGameBoardTileData
 01:69f6 Load10x10GameBoardTileData
@@ -234,3 +621,13 @@
 
 0c:7c00 _TileMap_uncertain
 0c:7c00 .data:0400:20
+
+; =============================================================================
+; BANK 00F
+; =============================================================================
+
+0f:51ee .data:3
+0f:5208 .data:3
+0f:564d .data:3
+0f:6396 .data:3
+0f:6a99 .data:3

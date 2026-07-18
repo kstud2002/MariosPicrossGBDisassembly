@@ -4023,7 +4023,9 @@ jr_00f_4e77:
     ld a, [bc]                                    ; $51eb: $0a
     sbc d                                         ; $51ec: $9a
     ld a, l                                       ; $51ed: $7d
-    call z, Call_000_27e9                         ; $51ee: $cc $e9 $27
+
+    db $cc, $e9, $27
+
     ld a, a                                       ; $51f1: $7f
     jp c, $eeea                                   ; $51f2: $da $ea $ee
 
@@ -4042,7 +4044,9 @@ jr_00f_4e77:
     rst $10                                       ; $5205: $d7
     rlca                                          ; $5206: $07
     rlca                                          ; $5207: $07
-    call c, Call_000_2707                         ; $5208: $dc $07 $27
+
+    db $dc, $07, $27
+
     rlca                                          ; $520b: $07
     daa                                           ; $520c: $27
     rlca                                          ; $520d: $07
@@ -4966,7 +4970,9 @@ jr_00f_54dc:
     inc h                                         ; $5648: $24
     inc [hl]                                      ; $5649: $34
     ld a, [$5454]                                 ; $564a: $fa $54 $54
-    call Call_000_22ee                            ; $564d: $cd $ee $22
+
+    db $cd, $ee, $22
+
     ld d, [hl]                                    ; $5650: $56
     ld sp, hl                                     ; $5651: $f9
     ld a, b                                       ; $5652: $78
@@ -7914,7 +7920,9 @@ Call_00f_60ee:
     inc h                                         ; $6393: $24
     inc b                                         ; $6394: $04
     ld d, h                                       ; $6395: $54
-    call nc, Call_000_2474                        ; $6396: $d4 $74 $24
+
+    db $d4, $74, $24
+
     inc b                                         ; $6399: $04
     ld [hl], h                                    ; $639a: $74
     inc h                                         ; $639b: $24
@@ -9317,7 +9325,8 @@ Call_00f_60ee:
     ld b, d                                       ; $6a96: $42
     ld [hl+], a                                   ; $6a97: $22
     ld a, [bc]                                    ; $6a98: $0a
-    jp c, Jump_000_297a                           ; $6a99: $da $7a $29
+
+    db $da, $7a, $29
 
     ld b, h                                       ; $6a9c: $44
     ld a, [hl+]                                   ; $6a9d: $2a
