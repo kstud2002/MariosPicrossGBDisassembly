@@ -6,6 +6,7 @@
 
 00:c312 ActiveROMBank
 00:c314 RequestedROMBank
+00:d634 Unknown_StateCategory
 00:d635 Unknown_State
 00:d800 CurrentGridSize
 00:f635 LevelSelectColumn
@@ -477,6 +478,22 @@
 02:4455 b02_Unknown2_State_02_Data
 02:4455 .data:3
 02:4458 b02_Unknown2_State_03
+
+; StateCategory handling
+02:4611 StateCategoryHandlerPointerTable
+02:4611 .data:0021:3
+
+03:4f87 b03_Unknown_StateDispatcher
+02:474f b02_Unknown3_StateDispatcher
+02:4300 b02_Unknown2_StateDispatcher
+02:4000 b02_Unknown1_StateDispatcher
+01:438a b01_Unknown1_StateDispatcher
+01:526d b01_Unknown2_StateDispatcher
+00:2111 b00_Unknown_StateDispatcher
+02:4c55 b02_Unknown4_StateDispatcher
+01:5d7e b01_Unknown3_StateDispatcher
+01:63fc b01_Unknown4_StateDispatcher
+01:686d b01_Unknown5_StateDispatcher
 
 ; State pointer table entries (accessed via RST_18 dispatcher):
 ; Offset calculation: state_value * 2, added to return address $4753 yields pointer location

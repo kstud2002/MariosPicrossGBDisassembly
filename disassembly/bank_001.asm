@@ -894,6 +894,8 @@ SECTION "ROM Bank $001", ROMX[$4000], BANK[$1]
     nop                                           ; $4387: $00
     rst $38                                       ; $4388: $ff
     rst $38                                       ; $4389: $ff
+
+b01_Unknown1_StateDispatcher::
     ld a, [Unknown_State]                         ; $438a: $fa $35 $d6
     rst RST_18                                    ; $438d: $df
 
@@ -1144,7 +1146,7 @@ jr_001_448d:
     call Call_001_49c8                            ; $45ad: $cd $c8 $49
     xor a                                         ; $45b0: $af
     ld [Unknown_State], a                         ; $45b1: $ea $35 $d6
-    ld hl, $d634                                  ; $45b4: $21 $34 $d6
+    ld hl, Unknown_StateCategory                  ; $45b4: $21 $34 $d6
     dec [hl]                                      ; $45b7: $35
     jp Jump_000_1b1f                              ; $45b8: $c3 $1f $1b
 
@@ -1260,7 +1262,7 @@ Jump_001_45bb:
     call Call_001_49c8                            ; $46ce: $cd $c8 $49
     xor a                                         ; $46d1: $af
     ld [Unknown_State], a                         ; $46d2: $ea $35 $d6
-    ld hl, $d634                                  ; $46d5: $21 $34 $d6
+    ld hl, Unknown_StateCategory                  ; $46d5: $21 $34 $d6
     dec [hl]                                      ; $46d8: $35
     jp Jump_000_1b1f                              ; $46d9: $c3 $1f $1b
 
@@ -1491,7 +1493,7 @@ b01_Unknown1_State_02::
     xor a                                         ; $4862: $af
     ld [Unknown_State], a                         ; $4863: $ea $35 $d6
     ld a, $0a                                     ; $4866: $3e $0a
-    ld [$d634], a                                 ; $4868: $ea $34 $d6
+    ld [Unknown_StateCategory], a                 ; $4868: $ea $34 $d6
     jp Jump_000_1b1f                              ; $486b: $c3 $1f $1b
 
 
@@ -1774,7 +1776,7 @@ b01_Unknown1_State_03::
     call Call_001_49c8                            ; $4994: $cd $c8 $49
     xor a                                         ; $4997: $af
     ld [Unknown_State], a                         ; $4998: $ea $35 $d6
-    ld hl, $d634                                  ; $499b: $21 $34 $d6
+    ld hl, Unknown_StateCategory                  ; $499b: $21 $34 $d6
     dec [hl]                                      ; $499e: $35
     jp Jump_000_1b1f                              ; $499f: $c3 $1f $1b
 
@@ -3173,6 +3175,7 @@ jr_001_5252:
     ret                                           ; $526c: $c9
 
 
+b01_Unknown2_StateDispatcher::
     ld a, [Unknown_State]                         ; $526d: $fa $35 $d6
     rst RST_18                                    ; $5270: $df
 
@@ -3452,7 +3455,7 @@ jr_001_539e:
     xor a                                         ; $54e1: $af
     ld [Unknown_State], a                         ; $54e2: $ea $35 $d6
     ld a, $02                                     ; $54e5: $3e $02
-    ld [$d634], a                                 ; $54e7: $ea $34 $d6
+    ld [Unknown_StateCategory], a                 ; $54e7: $ea $34 $d6
     jp Jump_000_1b1f                              ; $54ea: $c3 $1f $1b
 
 
@@ -3670,7 +3673,7 @@ b01_Unknown2_State_02::
     xor a                                         ; $566b: $af
     ld [Unknown_State], a                         ; $566c: $ea $35 $d6
     ld a, $08                                     ; $566f: $3e $08
-    ld [$d634], a                                 ; $5671: $ea $34 $d6
+    ld [Unknown_StateCategory], a                 ; $5671: $ea $34 $d6
     jp Jump_000_1b1f                              ; $5674: $c3 $1f $1b
 
 
@@ -3811,7 +3814,7 @@ b01_Unknown2_State_03::
     xor a                                         ; $5726: $af
     ld [Unknown_State], a                         ; $5727: $ea $35 $d6
     ld a, $02                                     ; $572a: $3e $02
-    ld [$d634], a                                 ; $572c: $ea $34 $d6
+    ld [Unknown_StateCategory], a                 ; $572c: $ea $34 $d6
     jp Jump_000_1b1f                              ; $572f: $c3 $1f $1b
 
 
@@ -4909,6 +4912,8 @@ jr_001_5c93:
     nop                                           ; $5d7b: $00
     rst $38                                       ; $5d7c: $ff
     rst $38                                       ; $5d7d: $ff
+
+b01_Unknown3_StateDispatcher::
     ld a, [Unknown_State]                         ; $5d7e: $fa $35 $d6
     rst RST_18                                    ; $5d81: $df
 
@@ -5505,7 +5510,7 @@ jr_001_61da:
     ld a, $04                                     ; $61f1: $3e $04
     ld [Unknown_State], a                         ; $61f3: $ea $35 $d6
     ld a, $05                                     ; $61f6: $3e $05
-    ld [$d634], a                                 ; $61f8: $ea $34 $d6
+    ld [Unknown_StateCategory], a                 ; $61f8: $ea $34 $d6
     ret                                           ; $61fb: $c9
 
 
@@ -5667,7 +5672,7 @@ jr_001_62f2:
     ld a, $04                                     ; $631b: $3e $04
     ld [Unknown_State], a                         ; $631d: $ea $35 $d6
     ld a, $00                                     ; $6320: $3e $00
-    ld [$d634], a                                 ; $6322: $ea $34 $d6
+    ld [Unknown_StateCategory], a                 ; $6322: $ea $34 $d6
     jp Jump_000_1b1f                              ; $6325: $c3 $1f $1b
 
 
@@ -5783,6 +5788,7 @@ b01_Unknown3_State_0a::
     jp Jump_000_1b1f                              ; $63f9: $c3 $1f $1b
 
 
+b01_Unknown4_StateDispatcher::
     ld a, [Unknown_State]                         ; $63fc: $fa $35 $d6
     rst RST_18                                    ; $63ff: $df
 
@@ -6093,7 +6099,7 @@ b01_Unknown4_State_02::
     ld a, $04                                     ; $666c: $3e $04
     ld [Unknown_State], a                         ; $666e: $ea $35 $d6
     ld a, $07                                     ; $6671: $3e $07
-    ld [$d634], a                                 ; $6673: $ea $34 $d6
+    ld [Unknown_StateCategory], a                 ; $6673: $ea $34 $d6
     ret                                           ; $6676: $c9
 
 
@@ -6231,7 +6237,7 @@ jr_001_670c:
     ld a, $04                                     ; $6770: $3e $04
     ld [Unknown_State], a                         ; $6772: $ea $35 $d6
     ld a, $00                                     ; $6775: $3e $00
-    ld [$d634], a                                 ; $6777: $ea $34 $d6
+    ld [Unknown_StateCategory], a                 ; $6777: $ea $34 $d6
     jp Jump_000_1b1f                              ; $677a: $c3 $1f $1b
 
 
@@ -6373,6 +6379,7 @@ jr_001_6841:
     ret                                           ; $686c: $c9
 
 
+b01_Unknown5_StateDispatcher::
     ld a, [Unknown_State]                         ; $686d: $fa $35 $d6
     rst RST_18                                    ; $6870: $df
 
@@ -7036,7 +7043,7 @@ b01_Unknown5_State_04::
     ld a, $04                                     ; $6d4c: $3e $04
     ld [Unknown_State], a                         ; $6d4e: $ea $35 $d6
     ld a, $04                                     ; $6d51: $3e $04
-    ld [$d634], a                                 ; $6d53: $ea $34 $d6
+    ld [Unknown_StateCategory], a                 ; $6d53: $ea $34 $d6
     ret                                           ; $6d56: $c9
 
 
@@ -7183,7 +7190,7 @@ jr_001_6df5:
     ld a, $04                                     ; $6e61: $3e $04
     ld [Unknown_State], a                         ; $6e63: $ea $35 $d6
     ld a, $00                                     ; $6e66: $3e $00
-    ld [$d634], a                                 ; $6e68: $ea $34 $d6
+    ld [Unknown_StateCategory], a                 ; $6e68: $ea $34 $d6
     jp Jump_000_1b1f                              ; $6e6b: $c3 $1f $1b
 
 
@@ -8059,7 +8066,7 @@ Jump_001_72e5:
     bit 0, [hl]                                   ; $72eb: $cb $46
     jp nz, Jump_001_739f                          ; $72ed: $c2 $9f $73
 
-    ld a, [$d634]                                 ; $72f0: $fa $34 $d6
+    ld a, [Unknown_StateCategory]                 ; $72f0: $fa $34 $d6
     cp $09                                        ; $72f3: $fe $09
     jp z, Jump_001_739f                           ; $72f5: $ca $9f $73
 
@@ -8119,7 +8126,7 @@ jr_001_735a:
     rst RST_08                                    ; $735e: $cf
     call Call_001_7d81                            ; $735f: $cd $81 $7d
     call Call_001_713e                            ; $7362: $cd $3e $71
-    ld a, [$d634]                                 ; $7365: $fa $34 $d6
+    ld a, [Unknown_StateCategory]                 ; $7365: $fa $34 $d6
     cp $06                                        ; $7368: $fe $06
     jr z, jr_001_736f                             ; $736a: $28 $03
 
@@ -9462,7 +9469,7 @@ Call_001_7aea:
     xor a                                         ; $7af0: $af
     ld [$d80d], a                                 ; $7af1: $ea $0d $d8
     ld [$d80e], a                                 ; $7af4: $ea $0e $d8
-    ld a, [$d634]                                 ; $7af7: $fa $34 $d6
+    ld a, [Unknown_StateCategory]                 ; $7af7: $fa $34 $d6
     cp $09                                        ; $7afa: $fe $09
     jr z, jr_001_7b6e                             ; $7afc: $28 $70
 
@@ -9631,7 +9638,7 @@ Call_001_7beb:
     ld [$d80b], a                                 ; $7bef: $ea $0b $d8
     ld [$d80c], a                                 ; $7bf2: $ea $0c $d8
     ld [$d809], a                                 ; $7bf5: $ea $09 $d8
-    ld a, [$d634]                                 ; $7bf8: $fa $34 $d6
+    ld a, [Unknown_StateCategory]                 ; $7bf8: $fa $34 $d6
     sub $09                                       ; $7bfb: $d6 $09
     jr z, jr_001_7c01                             ; $7bfd: $28 $02
 

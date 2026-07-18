@@ -6940,6 +6940,7 @@ jr_000_2104:
     ret                                           ; $2110: $c9
 
 
+b00_Unknown_StateDispatcher::
     ld a, [$c31e]                                 ; $2111: $fa $1e $c3
     ld [$d834], a                                 ; $2114: $ea $34 $d8
     ld a, [$d837]                                 ; $2117: $fa $37 $d8
@@ -8424,7 +8425,7 @@ b00_Unknown_State_2a::
     xor a                                         ; $2b64: $af
     ld [Unknown_State], a                         ; $2b65: $ea $35 $d6
     ld a, $02                                     ; $2b68: $3e $02
-    ld [$d634], a                                 ; $2b6a: $ea $34 $d6
+    ld [Unknown_StateCategory], a                 ; $2b6a: $ea $34 $d6
     ret                                           ; $2b6d: $c9
 
 
@@ -12149,7 +12150,7 @@ jr_000_3bfa:
     ret nc                                        ; $3c0d: $d0
 
     ldh [$fff0], a                                ; $3c0e: $e0 $f0
-    ld bc, $2111                                  ; $3c10: $01 $11 $21
+    ld bc, b00_Unknown_StateDispatcher            ; $3c10: $01 $11 $21
     ld sp, $5141                                  ; $3c13: $31 $41 $51
     ld h, c                                       ; $3c16: $61
     ld [hl], c                                    ; $3c17: $71
