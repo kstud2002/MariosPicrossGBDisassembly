@@ -5,8 +5,8 @@
 
 DEF ActiveROMBank EQU $c312
 DEF RequestedROMBank EQU $c314
-DEF Unknown_StateCategory EQU $d634
-DEF Unknown_State EQU $d635
+DEF GameMode_Current EQU $d634
+DEF GameState_Current EQU $d635
 DEF CurrentGridSize EQU $d800
 DEF LevelSelectColumn EQU $f635
 DEF LevelSelectRow EQU $f636

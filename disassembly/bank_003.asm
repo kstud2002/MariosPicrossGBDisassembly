@@ -3658,26 +3658,26 @@ jr_003_4f21:
     rst $38                                       ; $4f85: $ff
     rst $38                                       ; $4f86: $ff
 
-b03_Unknown_StateDispatcher::
-    ld a, [Unknown_State]                         ; $4f87: $fa $35 $d6
+GameMode_00_TitleScreen_StateDispatcher::
+    ld a, [GameState_Current]                     ; $4f87: $fa $35 $d6
     rst RST_18                                    ; $4f8a: $df
 
-b03_Unknown_StatePointer_00::
+GM00_StatePointer_00::
     db $95, $4f
 
-b03_Unknown_StatePointer_01::
+GM00_StatePointer_01::
     db $49, $50
 
-b03_Unknown_StatePointer_02::
+GM00_StatePointer_02::
     db $84, $50
 
-b03_Unknown_StatePointer_03::
+GM00_StatePointer_03::
     db $f3, $51
 
-b03_Unknown_StatePointer_04::
+GM00_StatePointer_04::
     db $6c, $53
 
-b03_Unknown_State_00::
+GM00_GameState_00_TitleScreenInit::
     ld a, $43                                     ; $4f95: $3e $43
     ld [$c32e], a                                 ; $4f97: $ea $2e $c3
     xor a                                         ; $4f9a: $af
@@ -3746,12 +3746,12 @@ jr_003_4fd1:
     ld c, $10                                     ; $503c: $0e $10
     ld de, $00b4                                  ; $503e: $11 $b4 $00
     call Call_000_040d                            ; $5041: $cd $0d $04
-    ld hl, Unknown_State                          ; $5044: $21 $35 $d6
+    ld hl, GameState_Current                      ; $5044: $21 $35 $d6
     inc [hl]                                      ; $5047: $34
     ret                                           ; $5048: $c9
 
 
-b03_Unknown_State_01::
+GM00_GameState_01_TitleScreenIdle::
     call Call_003_5425                            ; $5049: $cd $25 $54
     ld a, [$c31e]                                 ; $504c: $fa $1e $c3
     ld hl, $d848                                  ; $504f: $21 $48 $d8
@@ -3784,12 +3784,12 @@ jr_003_5072:
     ld c, $03                                     ; $5078: $0e $03
     ld a, $02                                     ; $507a: $3e $02
     call Call_000_03b6                            ; $507c: $cd $b6 $03
-    ld hl, Unknown_State                          ; $507f: $21 $35 $d6
+    ld hl, GameState_Current                      ; $507f: $21 $35 $d6
     inc [hl]                                      ; $5082: $34
     ret                                           ; $5083: $c9
 
 
-b03_Unknown_State_02::
+GM00_GameState_02_TitleScreenTransition::
     ld bc, $003c                                  ; $5084: $01 $3c $00
     call Call_000_05fa                            ; $5087: $cd $fa $05
     ld a, $05                                     ; $508a: $3e $05
@@ -3944,8 +3944,8 @@ jr_003_51b6:
     jr z, jr_003_51d1                             ; $51c6: $28 $09
 
     xor a                                         ; $51c8: $af
-    ld [Unknown_State], a                         ; $51c9: $ea $35 $d6
-    ld hl, Unknown_StateCategory                  ; $51cc: $21 $34 $d6
+    ld [GameState_Current], a                     ; $51c9: $ea $35 $d6
+    ld hl, GameMode_Current                       ; $51cc: $21 $34 $d6
     inc [hl]                                      ; $51cf: $34
     ret                                           ; $51d0: $c9
 
@@ -3962,19 +3962,19 @@ jr_003_51d1:
     add hl, bc                                    ; $51e0: $09
     ld [hl], a                                    ; $51e1: $77
     xor a                                         ; $51e2: $af
-    ld [Unknown_State], a                         ; $51e3: $ea $35 $d6
+    ld [GameState_Current], a                     ; $51e3: $ea $35 $d6
     ld a, $02                                     ; $51e6: $3e $02
-    ld [Unknown_StateCategory], a                 ; $51e8: $ea $34 $d6
+    ld [GameMode_Current], a                      ; $51e8: $ea $34 $d6
     jp Jump_000_1b1f                              ; $51eb: $c3 $1f $1b
 
 
 jr_003_51ee:
-    ld hl, Unknown_State                          ; $51ee: $21 $35 $d6
+    ld hl, GameState_Current                      ; $51ee: $21 $35 $d6
     inc [hl]                                      ; $51f1: $34
     ret                                           ; $51f2: $c9
 
 
-b03_Unknown_State_03::
+GM00_GameState_03_ContinueSavedGameScreenInit::
     ld a, $43                                     ; $51f3: $3e $43
     ld [$c32e], a                                 ; $51f5: $ea $2e $c3
     xor a                                         ; $51f8: $af
@@ -4137,21 +4137,24 @@ jr_003_534b:
     dec a                                         ; $5351: $3d
     ld c, a                                       ; $5352: $4f
     ld b, $00                                     ; $5353: $06 $00
-    ld hl, b03_Unknown_State_03_Data              ; $5355: $21 $66 $53
+    ld hl, GM00_GS03_ContinueSavedGameScreen_GameStateLookupTable; $5355: $21 $66 $53
     add hl, bc                                    ; $5358: $09
     ld a, [hl]                                    ; $5359: $7e
-    ld [Unknown_State], a                         ; $535a: $ea $35 $d6
-    ld hl, $5369                                  ; $535d: $21 $69 $53
+    ld [GameState_Current], a                     ; $535a: $ea $35 $d6
+    ld hl, GM00_GS03_ContinueSavedGameScreen_GameModeLookupTable; $535d: $21 $69 $53
     add hl, bc                                    ; $5360: $09
     ld a, [hl]                                    ; $5361: $7e
-    ld [Unknown_StateCategory], a                 ; $5362: $ea $34 $d6
+    ld [GameMode_Current], a                      ; $5362: $ea $34 $d6
     ret                                           ; $5365: $c9
 
 
-b03_Unknown_State_03_Data::
-    db $0b, $0b, $09, $08, $0a, $09
+GM00_GS03_ContinueSavedGameScreen_GameStateLookupTable::
+    db $0b, $0b, $09
 
-b03_Unknown_State_04::
+GM00_GS03_ContinueSavedGameScreen_GameModeLookupTable::
+    db $08, $0a, $09
+
+GM00_GameState_04_ContinueSavedGameScreenIdle::
     ld a, $43                                     ; $536c: $3e $43
     ld [$c32e], a                                 ; $536e: $ea $2e $c3
     xor a                                         ; $5371: $af
@@ -4222,7 +4225,7 @@ jr_003_53d4:
     call Call_000_044e                            ; $5414: $cd $4e $04
     call Call_000_0483                            ; $5417: $cd $83 $04
     xor a                                         ; $541a: $af
-    ld [Unknown_State], a                         ; $541b: $ea $35 $d6
+    ld [GameState_Current], a                     ; $541b: $ea $35 $d6
     ret                                           ; $541e: $c9
 
 

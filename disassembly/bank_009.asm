@@ -14,5 +14,5 @@ DataSelectScreenTileData::
 TimeTrialLevelSelectTileData::
     INCBIN "gfx/TimeTrialLevelSelectTileData.2bpp"
 
-GameSavedScreenTileData::
-    INCBIN "gfx/GameSavedScreenTileData.2bpp"
+ContinueSavedGameScreenTileData::
+    INCBIN "gfx/ContinueSavedGameScreenTileData.2bpp"
