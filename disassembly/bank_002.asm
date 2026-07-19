@@ -5,23 +5,23 @@
 
 SECTION "ROM Bank $002", ROMX[$4000], BANK[$2]
 
-GameMode_03_TODO_StateDispatcher::
-    ld a, [GameState_Current]                     ; $4000: $fa $35 $d6
+GameState_03_TODO_PhaseDispatcher::
+    ld a, [StatePhase_Current]                    ; $4000: $fa $35 $d6
     rst RST_18                                    ; $4003: $df
 
-GM03_StatePointer_00::
+GS03_PhasePointer_00::
     db $0c, $40
 
-GM03_StatePointer_01::
+GS03_PhasePointer_01::
     db $ff, $40
 
-GM03_StatePointer_02::
+GS03_PhasePointer_02::
     db $30, $41
 
-GM03_StatePointer_03::
+GS03_PhasePointer_03::
     db $9b, $41
 
-GM03_GameState_00_TODO::
+GS03_StatePhase_00_TODO::
     ld a, $43                                     ; $400c: $3e $43
     ld [$c32e], a                                 ; $400e: $ea $2e $c3
     xor a                                         ; $4011: $af
@@ -38,7 +38,7 @@ GM03_GameState_00_TODO::
     ld bc, $0300                                  ; $402f: $01 $00 $03
     call BankedTileCopy                           ; $4032: $cd $e4 $04
     ld a, $09                                     ; $4035: $3e $09
-    ld hl, GameMode_03_TODO_StateDispatcher       ; $4037: $21 $00 $40
+    ld hl, GameState_03_TODO_PhaseDispatcher      ; $4037: $21 $00 $40
     ld de, $8800                                  ; $403a: $11 $00 $88
     ld bc, $1000                                  ; $403d: $01 $00 $10
     call BankedTileCopy                           ; $4040: $cd $e4 $04
@@ -128,12 +128,12 @@ jr_002_40ed:
     call Call_000_040d                            ; $40f7: $cd $0d $04
 
 jr_002_40fa:
-    ld hl, GameState_Current                      ; $40fa: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $40fa: $21 $35 $d6
     inc [hl]                                      ; $40fd: $34
     ret                                           ; $40fe: $c9
 
 
-GM03_GameState_01_TODO::
+GS03_StatePhase_01_TODO::
     ld b, $03                                     ; $40ff: $06 $03
     ld hl, $4ec2                                  ; $4101: $21 $c2 $4e
     call Call_000_05de                            ; $4104: $cd $de $05
@@ -145,7 +145,7 @@ GM03_GameState_01_TODO::
     ld c, $03                                     ; $4111: $0e $03
     ld a, $02                                     ; $4113: $3e $02
     call Call_000_03b6                            ; $4115: $cd $b6 $03
-    ld hl, GameState_Current                      ; $4118: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $4118: $21 $35 $d6
     inc [hl]                                      ; $411b: $34
     ret                                           ; $411c: $c9
 
@@ -159,11 +159,11 @@ jr_002_411d:
     ld a, $02                                     ; $4125: $3e $02
     call Call_000_03b6                            ; $4127: $cd $b6 $03
     ld a, $03                                     ; $412a: $3e $03
-    ld [GameState_Current], a                     ; $412c: $ea $35 $d6
+    ld [StatePhase_Current], a                    ; $412c: $ea $35 $d6
     ret                                           ; $412f: $c9
 
 
-GM03_GameState_02_TODO::
+GS03_StatePhase_02_TODO::
     ld bc, $003c                                  ; $4130: $01 $3c $00
     call Call_000_05fa                            ; $4133: $cd $fa $05
     ld a, $05                                     ; $4136: $3e $05
@@ -206,21 +206,21 @@ jr_002_416f:
     jr z, jr_002_418f                             ; $4182: $28 $0b
 
     xor a                                         ; $4184: $af
-    ld [GameState_Current], a                     ; $4185: $ea $35 $d6
-    ld hl, GameMode_Current                       ; $4188: $21 $34 $d6
+    ld [StatePhase_Current], a                    ; $4185: $ea $35 $d6
+    ld hl, GameState_Current                      ; $4188: $21 $34 $d6
     inc [hl]                                      ; $418b: $34
     jp Jump_000_1b1f                              ; $418c: $c3 $1f $1b
 
 
 jr_002_418f:
     xor a                                         ; $418f: $af
-    ld [GameState_Current], a                     ; $4190: $ea $35 $d6
+    ld [StatePhase_Current], a                    ; $4190: $ea $35 $d6
     ld a, $07                                     ; $4193: $3e $07
-    ld [GameMode_Current], a                      ; $4195: $ea $34 $d6
+    ld [GameState_Current], a                     ; $4195: $ea $34 $d6
     jp Jump_000_1b1f                              ; $4198: $c3 $1f $1b
 
 
-GM03_GameState_03_TODO::
+GS03_StatePhase_03_TODO::
     ld bc, $003c                                  ; $419b: $01 $3c $00
     call Call_000_05fa                            ; $419e: $cd $fa $05
     ld a, $05                                     ; $41a1: $3e $05
@@ -260,8 +260,8 @@ jr_002_41da:
     ld a, [$d637]                                 ; $41e7: $fa $37 $d6
     ld [hl], a                                    ; $41ea: $77
     xor a                                         ; $41eb: $af
-    ld [GameState_Current], a                     ; $41ec: $ea $35 $d6
-    ld hl, GameMode_Current                       ; $41ef: $21 $34 $d6
+    ld [StatePhase_Current], a                    ; $41ec: $ea $35 $d6
+    ld hl, GameState_Current                      ; $41ef: $21 $34 $d6
     dec [hl]                                      ; $41f2: $35
     jp Jump_000_1b1f                              ; $41f3: $c3 $1f $1b
 
@@ -506,23 +506,23 @@ jr_002_42f9:
     jp Jump_002_41f6                              ; $42fd: $c3 $f6 $41
 
 
-GameMode_02_TODO_StateDispatcher::
-    ld a, [GameState_Current]                     ; $4300: $fa $35 $d6
+GameState_02_TODO_PhaseDispatcher::
+    ld a, [StatePhase_Current]                    ; $4300: $fa $35 $d6
     rst RST_18                                    ; $4303: $df
 
-GM02_StatePointer_00::
+GS02_PhasePointer_00::
     db $0c, $43
 
-GM02_StatePointer_01::
+GS02_PhasePointer_01::
     db $bd, $43
 
-GM02_StatePointer_02::
+GS02_PhasePointer_02::
     db $ee, $43
 
-GM02_StatePointer_03::
+GS02_PhasePointer_03::
     db $58, $44
 
-GM02_GameState_00_TODO::
+GS02_StatePhase_00_TODO::
     ld a, $43                                     ; $430c: $3e $43
     ld [$c32e], a                                 ; $430e: $ea $2e $c3
     xor a                                         ; $4311: $af
@@ -539,7 +539,7 @@ GM02_GameState_00_TODO::
     ld bc, $0300                                  ; $432f: $01 $00 $03
     call BankedTileCopy                           ; $4332: $cd $e4 $04
     ld a, $0a                                     ; $4335: $3e $0a
-    ld hl, GameMode_02_TODO_StateDispatcher       ; $4337: $21 $00 $43
+    ld hl, GameState_02_TODO_PhaseDispatcher      ; $4337: $21 $00 $43
     ld de, $8300                                  ; $433a: $11 $00 $83
     ld bc, $1500                                  ; $433d: $01 $00 $15
     call BankedTileCopy                           ; $4340: $cd $e4 $04
@@ -589,12 +589,12 @@ GM02_GameState_00_TODO::
     ld c, $06                                     ; $43b0: $0e $06
     ld de, $0054                                  ; $43b2: $11 $54 $00
     call Call_000_040d                            ; $43b5: $cd $0d $04
-    ld hl, GameState_Current                      ; $43b8: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $43b8: $21 $35 $d6
     inc [hl]                                      ; $43bb: $34
     ret                                           ; $43bc: $c9
 
 
-GM02_GameState_01_TODO::
+GS02_StatePhase_01_TODO::
     ld b, $03                                     ; $43bd: $06 $03
     ld hl, $4ec2                                  ; $43bf: $21 $c2 $4e
     call Call_000_05de                            ; $43c2: $cd $de $05
@@ -606,7 +606,7 @@ GM02_GameState_01_TODO::
     ld c, $03                                     ; $43cf: $0e $03
     ld a, $02                                     ; $43d1: $3e $02
     call Call_000_03b6                            ; $43d3: $cd $b6 $03
-    ld hl, GameState_Current                      ; $43d6: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $43d6: $21 $35 $d6
     inc [hl]                                      ; $43d9: $34
     ret                                           ; $43da: $c9
 
@@ -620,11 +620,11 @@ jr_002_43db:
     ld a, $02                                     ; $43e3: $3e $02
     call Call_000_03b6                            ; $43e5: $cd $b6 $03
     ld a, $03                                     ; $43e8: $3e $03
-    ld [GameState_Current], a                     ; $43ea: $ea $35 $d6
+    ld [StatePhase_Current], a                    ; $43ea: $ea $35 $d6
     ret                                           ; $43ed: $c9
 
 
-GM02_GameState_02_TODO::
+GS02_StatePhase_02_TODO::
     ld bc, $003c                                  ; $43ee: $01 $3c $00
     call Call_000_05fa                            ; $43f1: $cd $fa $05
     ld a, $05                                     ; $43f4: $3e $05
@@ -659,22 +659,22 @@ GM02_GameState_02_TODO::
     ld [hl], a                                    ; $443b: $77
     ld c, a                                       ; $443c: $4f
     ld b, $00                                     ; $443d: $06 $00
-    ld hl, GM02_GameState_02_TODO_Data            ; $443f: $21 $55 $44
+    ld hl, GS02_StatePhase_02_TODO_Data           ; $443f: $21 $55 $44
     add hl, bc                                    ; $4442: $09
     xor a                                         ; $4443: $af
     ld [$d835], a                                 ; $4444: $ea $35 $d8
     ld [$d837], a                                 ; $4447: $ea $37 $d8
     xor a                                         ; $444a: $af
-    ld [GameState_Current], a                     ; $444b: $ea $35 $d6
+    ld [StatePhase_Current], a                    ; $444b: $ea $35 $d6
     ld a, [hl]                                    ; $444e: $7e
-    ld [GameMode_Current], a                      ; $444f: $ea $34 $d6
+    ld [GameState_Current], a                     ; $444f: $ea $34 $d6
     jp Jump_000_1b1f                              ; $4452: $c3 $1f $1b
 
 
-GM02_GameState_02_TODO_Data::
+GS02_StatePhase_02_TODO_Data::
     db $06, $05, $03
 
-GM02_GameState_03_TODO::
+GS02_StatePhase_03_TODO::
     ld bc, $003c                                  ; $4458: $01 $3c $00
     call Call_000_05fa                            ; $445b: $cd $fa $05
     ld a, $05                                     ; $445e: $3e $05
@@ -708,8 +708,8 @@ GM02_GameState_03_TODO::
     ld a, [$d637]                                 ; $44a2: $fa $37 $d6
     ld [hl], a                                    ; $44a5: $77
     xor a                                         ; $44a6: $af
-    ld [GameState_Current], a                     ; $44a7: $ea $35 $d6
-    ld hl, GameMode_Current                       ; $44aa: $21 $34 $d6
+    ld [StatePhase_Current], a                    ; $44a7: $ea $35 $d6
+    ld hl, GameState_Current                      ; $44aa: $21 $34 $d6
     dec [hl]                                      ; $44ad: $35
     jp Jump_000_1b1f                              ; $44ae: $c3 $1f $1b
 
@@ -990,8 +990,8 @@ jr_002_45e7:
     ld a, $04                                     ; $45f3: $3e $04
     ld [$c319], a                                 ; $45f5: $ea $19 $c3
     xor a                                         ; $45f8: $af
-    ld [GameMode_Current], a                      ; $45f9: $ea $34 $d6
-    ld [GameState_Current], a                     ; $45fc: $ea $35 $d6
+    ld [GameState_Current], a                     ; $45f9: $ea $34 $d6
+    ld [StatePhase_Current], a                    ; $45fc: $ea $35 $d6
     ld [$c310], a                                 ; $45ff: $ea $10 $c3
 
 jr_002_4602:
@@ -1001,40 +1001,40 @@ jr_002_4602:
     jr jr_002_4602                                ; $4609: $18 $f7
 
 Call_002_460b:
-    ld a, [GameMode_Current]                      ; $460b: $fa $34 $d6
-    call GameModeDispatcher                       ; $460e: $cd $73 $03
+    ld a, [GameState_Current]                     ; $460b: $fa $34 $d6
+    call GameStateDispatcher                      ; $460e: $cd $73 $03
 
-ModePointer_00::
+StatePointer_00::
     db $87, $4f, $03
 
-ModePointer_01::
+StatePointer_01::
     db $4f, $47, $02
 
-ModePointer_02::
+StatePointer_02::
     db $00, $43, $02
 
-ModePointer_03::
+StatePointer_03::
     db $00, $40, $02
 
-ModePointer_04::
+StatePointer_04::
     db $8a, $43, $01
 
-ModePointer_05::
+StatePointer_05::
     db $6d, $52, $01
 
-ModePointer_06::
+StatePointer_06::
     db $11, $21, $00
 
-ModePointer_07::
+StatePointer_07::
     db $55, $4c, $02
 
-ModePointer_08::
+StatePointer_08::
     db $7e, $5d, $01
 
-ModePointer_09::
+StatePointer_09::
     db $fc, $63, $01
 
-ModePointer_0a::
+StatePointer_0a::
     db $6d, $68, $01
 
     ld a, [$d83a]                                 ; $4632: $fa $3a $d8
@@ -1220,20 +1220,20 @@ jr_002_474c:
     jp Jump_000_05ea                              ; $474c: $c3 $ea $05
 
 
-GameMode_01_DataSelectScreen_StateDispatcher::
-    ld a, [GameState_Current]                     ; $474f: $fa $35 $d6
+GameState_01_DataSelectScreen_PhaseDispatcher::
+    ld a, [StatePhase_Current]                    ; $474f: $fa $35 $d6
     rst RST_18                                    ; $4752: $df
 
-GM01_StatePointer_00::
+GS01_PhasePointer_00::
     db $59, $47
 
-GM01_StatePointer_01::
+GS01_PhasePointer_01::
     db $f1, $47
 
-GM01_StatePointer_02::
+GS01_PhasePointer_02::
     db $40, $49
 
-GM01_GameState_00_DataSelectScreenInit::
+GS01_StatePhase_00_DataSelectScreenInit::
     ld a, $43                                     ; $4759: $3e $43
     ld [$c32e], a                                 ; $475b: $ea $2e $c3
     xor a                                         ; $475e: $af
@@ -1289,12 +1289,12 @@ GM01_GameState_00_DataSelectScreenInit::
     ld c, $05                                     ; $47e4: $0e $05
     ld de, $0044                                  ; $47e6: $11 $44 $00
     call Call_000_040d                            ; $47e9: $cd $0d $04
-    ld hl, GameState_Current                      ; $47ec: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $47ec: $21 $35 $d6
     inc [hl]                                      ; $47ef: $34
     ret                                           ; $47f0: $c9
 
 
-GM01_GameState_01_DataSelectScreenIdle::
+GS01_StatePhase_01_DataSelectScreenIdle::
     ld b, $03                                     ; $47f1: $06 $03
     ld hl, $4ea6                                  ; $47f3: $21 $a6 $4e
     call Call_000_05de                            ; $47f6: $cd $de $05
@@ -1317,7 +1317,7 @@ jr_002_4809:
     ld c, $03                                     ; $4810: $0e $03
     ld a, $02                                     ; $4812: $3e $02
     call Call_000_03b6                            ; $4814: $cd $b6 $03
-    ld hl, GameState_Current                      ; $4817: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $4817: $21 $35 $d6
     inc [hl]                                      ; $481a: $34
     ret                                           ; $481b: $c9
 
@@ -1576,7 +1576,7 @@ jr_002_4898:
 
     nop                                           ; $493f: $00
 
-GM01_GameState_02_DataSelectScreenFinish::
+GS01_StatePhase_02_DataSelectScreenFinish::
     ld bc, $003c                                  ; $4940: $01 $3c $00
     call Call_000_05fa                            ; $4943: $cd $fa $05
     ld a, $05                                     ; $4946: $3e $05
@@ -1611,8 +1611,8 @@ GM01_GameState_02_DataSelectScreenFinish::
 
 jr_002_4983:
     xor a                                         ; $4983: $af
-    ld [GameState_Current], a                     ; $4984: $ea $35 $d6
-    ld hl, GameMode_Current                       ; $4987: $21 $34 $d6
+    ld [StatePhase_Current], a                    ; $4984: $ea $35 $d6
+    ld hl, GameState_Current                      ; $4987: $21 $34 $d6
     inc [hl]                                      ; $498a: $34
     jp Jump_000_1b1f                              ; $498b: $c3 $1f $1b
 
@@ -2149,29 +2149,29 @@ jr_002_4c4f:
     jp LoadPuzzleData                             ; $4c52: $c3 $8e $49
 
 
-GameMode_07_TODO_StateDispatcher::
-    ld a, [GameState_Current]                     ; $4c55: $fa $35 $d6
+GameState_07_TODO_PhaseDispatcher::
+    ld a, [StatePhase_Current]                    ; $4c55: $fa $35 $d6
     rst RST_18                                    ; $4c58: $df
 
-GM07_StatePointer_00::
+GS07_PhasePointer_00::
     db $65, $4c
 
-GM07_StatePointer_01::
+GS07_PhasePointer_01::
     db $8e, $4d
 
-GM07_StatePointer_02::
+GS07_PhasePointer_02::
     db $69, $4f
 
-GM07_StatePointer_03::
+GS07_PhasePointer_03::
     db $74, $50
 
-GM07_StatePointer_04::
+GS07_PhasePointer_04::
     db $c4, $4c
 
-GM07_StatePointer_05::
+GS07_PhasePointer_05::
     db $ff, $4d
 
-GM07_GameState_00_TODO::
+GS07_StatePhase_00_TODO::
     ld a, $43                                     ; $4c65: $3e $43
     ld [$c32e], a                                 ; $4c67: $ea $2e $c3
     xor a                                         ; $4c6a: $af
@@ -2206,12 +2206,12 @@ GM07_GameState_00_TODO::
     ld c, $0e                                     ; $4cb7: $0e $0e
     ld de, $00a4                                  ; $4cb9: $11 $a4 $00
     call Call_000_040d                            ; $4cbc: $cd $0d $04
-    ld hl, GameState_Current                      ; $4cbf: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $4cbf: $21 $35 $d6
     inc [hl]                                      ; $4cc2: $34
     ret                                           ; $4cc3: $c9
 
 
-GM07_GameState_04_TODO::
+GS07_StatePhase_04_TODO::
     ld a, $43                                     ; $4cc4: $3e $43
     ld [$c32e], a                                 ; $4cc6: $ea $2e $c3
     xor a                                         ; $4cc9: $af
@@ -2286,13 +2286,13 @@ jr_002_4d23:
     ld [$d840], a                                 ; $4d51: $ea $40 $d8
     ld [$d841], a                                 ; $4d54: $ea $41 $d8
     ld a, $05                                     ; $4d57: $3e $05
-    ld [GameState_Current], a                     ; $4d59: $ea $35 $d6
+    ld [StatePhase_Current], a                    ; $4d59: $ea $35 $d6
     ret                                           ; $4d5c: $c9
 
 
 jr_002_4d5d:
     ld a, $01                                     ; $4d5d: $3e $01
-    ld [GameState_Current], a                     ; $4d5f: $ea $35 $d6
+    ld [StatePhase_Current], a                    ; $4d5f: $ea $35 $d6
     ret                                           ; $4d62: $c9
 
 
@@ -2315,7 +2315,7 @@ Call_002_4d63:
     ret                                           ; $4d8d: $c9
 
 
-GM07_GameState_01_TODO::
+GS07_StatePhase_01_TODO::
     call Call_002_5298                            ; $4d8e: $cd $98 $52
     call Call_002_4ddc                            ; $4d91: $cd $dc $4d
     ld a, [$c31e]                                 ; $4d94: $fa $1e $c3
@@ -2332,7 +2332,7 @@ GM07_GameState_01_TODO::
     call Call_002_4ddc                            ; $4daa: $cd $dc $4d
     call Call_000_05c5                            ; $4dad: $cd $c5 $05
     call Call_002_4ddc                            ; $4db0: $cd $dc $4d
-    ld hl, GameState_Current                      ; $4db3: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $4db3: $21 $35 $d6
     inc [hl]                                      ; $4db6: $34
     ret                                           ; $4db7: $c9
 
@@ -2353,7 +2353,7 @@ jr_002_4db8:
     call Call_000_05c5                            ; $4dd0: $cd $c5 $05
     call Call_002_4ddc                            ; $4dd3: $cd $dc $4d
     ld a, $03                                     ; $4dd6: $3e $03
-    ld [GameState_Current], a                     ; $4dd8: $ea $35 $d6
+    ld [StatePhase_Current], a                    ; $4dd8: $ea $35 $d6
     ret                                           ; $4ddb: $c9
 
 
@@ -2383,7 +2383,7 @@ jr_002_4dea:
     ret                                           ; $4dfe: $c9
 
 
-GM07_GameState_05_TODO::
+GS07_StatePhase_05_TODO::
     ld b, $03                                     ; $4dff: $06 $03
     ld hl, $4ec2                                  ; $4e01: $21 $c2 $4e
     call Call_000_05de                            ; $4e04: $cd $de $05
@@ -2477,7 +2477,7 @@ jr_002_4e4b:
     ld a, [hl]                                    ; $4e83: $7e
     ld [de], a                                    ; $4e84: $12
     ld a, $01                                     ; $4e85: $3e $01
-    ld [GameState_Current], a                     ; $4e87: $ea $35 $d6
+    ld [StatePhase_Current], a                    ; $4e87: $ea $35 $d6
     jp Jump_000_1b1f                              ; $4e8a: $c3 $1f $1b
 
 
@@ -2667,7 +2667,7 @@ Call_002_4f40:
     ret                                           ; $4f68: $c9
 
 
-GM07_GameState_02_TODO::
+GS07_StatePhase_02_TODO::
     ld bc, $003c                                  ; $4f69: $01 $3c $00
     call Call_000_05fa                            ; $4f6c: $cd $fa $05
     ld a, $05                                     ; $4f6f: $3e $05
@@ -2713,7 +2713,7 @@ jr_002_4f95:
 jr_002_4fc6:
     sla a                                         ; $4fc6: $cb $27
     ld c, a                                       ; $4fc8: $4f
-    ld hl, GM07_GameState_02_TODO_Data            ; $4fc9: $21 $f4 $4f
+    ld hl, GS07_StatePhase_02_TODO_Data           ; $4fc9: $21 $f4 $4f
     add hl, bc                                    ; $4fcc: $09
     ld a, [hl+]                                   ; $4fcd: $2a
     ld [$d807], a                                 ; $4fce: $ea $07 $d8
@@ -2731,13 +2731,13 @@ jr_002_4fc6:
 
 jr_002_4fe8:
     xor a                                         ; $4fe8: $af
-    ld [GameState_Current], a                     ; $4fe9: $ea $35 $d6
+    ld [StatePhase_Current], a                    ; $4fe9: $ea $35 $d6
     ld a, $09                                     ; $4fec: $3e $09
-    ld [GameMode_Current], a                      ; $4fee: $ea $34 $d6
+    ld [GameState_Current], a                     ; $4fee: $ea $34 $d6
     jp Jump_000_1b1f                              ; $4ff1: $c3 $1f $1b
 
 
-GM07_GameState_02_TODO_Data::
+GS07_StatePhase_02_TODO_Data::
     db $c1, $00, $c2, $00, $c3, $00, $c4, $00, $c5, $00, $c6, $00, $c7, $00, $c8, $00
     db $c9, $00, $ca, $00, $cb, $00, $cc, $00, $cd, $00, $ce, $00, $cf, $00, $d0, $00
     db $d1, $00, $d2, $00, $d3, $00, $d4, $00, $d5, $00, $d6, $00, $d7, $00, $d8, $00
@@ -2747,7 +2747,7 @@ GM07_GameState_02_TODO_Data::
     db $f1, $00, $f2, $00, $f3, $00, $f4, $00, $f5, $00, $f6, $00, $f7, $00, $f8, $00
     db $f9, $00, $fa, $00, $fb, $00, $fc, $00, $fd, $00, $fe, $00, $ff, $00, $00, $01
 
-GM07_GameState_03_TODO::
+GS07_StatePhase_03_TODO::
     xor a                                         ; $5074: $af
     ld [$d63e], a                                 ; $5075: $ea $3e $d6
     call Call_002_4ddc                            ; $5078: $cd $dc $4d
@@ -2769,9 +2769,9 @@ GM07_GameState_03_TODO::
     call Call_000_044e                            ; $50a1: $cd $4e $04
     call Call_000_0483                            ; $50a4: $cd $83 $04
     xor a                                         ; $50a7: $af
-    ld [GameState_Current], a                     ; $50a8: $ea $35 $d6
+    ld [StatePhase_Current], a                    ; $50a8: $ea $35 $d6
     ld a, $03                                     ; $50ab: $3e $03
-    ld [GameMode_Current], a                      ; $50ad: $ea $34 $d6
+    ld [GameState_Current], a                     ; $50ad: $ea $34 $d6
     jp Jump_000_1b1f                              ; $50b0: $c3 $1f $1b
 
 
@@ -7853,7 +7853,7 @@ jr_002_665f:
     nop                                           ; $6691: $00
     nop                                           ; $6692: $00
     add b                                         ; $6693: $80
-    ld bc, GM06_StatePointer_06                   ; $6694: $01 $40 $21
+    ld bc, GS06_PhasePointer_06                   ; $6694: $01 $40 $21
     ld b, d                                       ; $6697: $42
     ld [hl-], a                                   ; $6698: $32
     ld h, $2a                                     ; $6699: $26 $2a

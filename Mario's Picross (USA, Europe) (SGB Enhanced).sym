@@ -6,8 +6,8 @@
 
 00:c312 ActiveROMBank
 00:c314 RequestedROMBank
-00:d634 GameMode_Current
-00:d635 GameState_Current
+00:d634 GameState_Current
+00:d635 StatePhase_Current
 00:d800 CurrentGridSize
 00:f635 LevelSelectColumn
 00:f636 LevelSelectRow
@@ -40,402 +40,402 @@
 00:036e TODO
 00:036e .data:0005
 
-00:0373 GameModeDispatcher
+00:0373 GameStateDispatcher
 
 00:04e4 BankedTileCopy
 00:0538 BankedTileCopyVRAMSafe
 
 00:2000 BankSwitchTrigger
 
-; GameMode 06 State pointer table entries (accessed via RST_18 dispatcher):
-; Offset calculation: state_value * 2, added to return address $2134 yields pointer location
-; State $00: $00 * 2 = $00 bytes -> pointer at $2134 + $00 = $2134
-00:2134 GM06_StatePointer_00
+; GameState 06 Phase pointer table entries (accessed via RST_18 dispatcher):
+; Offset calculation: Phase_value * 2, added to return address $2134 yields pointer location
+; Phase $00: $00 * 2 = $00 bytes -> pointer at $2134 + $00 = $2134
+00:2134 GS06_PhasePointer_00
 00:2134 .data:2
-; State $01: $01 * 2 = $02 bytes -> pointer at $2134 + $02 = $2136
-00:2136 GM06_StatePointer_01
+; Phase $01: $01 * 2 = $02 bytes -> pointer at $2134 + $02 = $2136
+00:2136 GS06_PhasePointer_01
 00:2136 .data:2
-; State $02: $02 * 2 = $04 bytes -> pointer at $2134 + $04 = $2138
-00:2138 GM06_StatePointer_02
+; Phase $02: $02 * 2 = $04 bytes -> pointer at $2134 + $04 = $2138
+00:2138 GS06_PhasePointer_02
 00:2138 .data:2
-; State $03: $03 * 2 = $06 bytes -> pointer at $2134 + $06 = $213a
-00:213a GM06_StatePointer_03
+; Phase $03: $03 * 2 = $06 bytes -> pointer at $2134 + $06 = $213a
+00:213a GS06_PhasePointer_03
 00:213a .data:2
-; State $04: $04 * 2 = $08 bytes -> pointer at $2134 + $08 = $213c
-00:213c GM06_StatePointer_04
+; Phase $04: $04 * 2 = $08 bytes -> pointer at $2134 + $08 = $213c
+00:213c GS06_PhasePointer_04
 00:213c .data:2
-; State $05: $05 * 2 = $0a bytes -> pointer at $2134 + $0a = $213e
-00:213e GM06_StatePointer_05
+; Phase $05: $05 * 2 = $0a bytes -> pointer at $2134 + $0a = $213e
+00:213e GS06_PhasePointer_05
 00:213e .data:2
-; State $06: $06 * 2 = $0c bytes -> pointer at $2134 + $0c = $2140
-00:2140 GM06_StatePointer_06
+; Phase $06: $06 * 2 = $0c bytes -> pointer at $2134 + $0c = $2140
+00:2140 GS06_PhasePointer_06
 00:2140 .data:2
-; State $07: $07 * 2 = $0e bytes -> pointer at $2134 + $0e = $2142
-00:2142 GM06_StatePointer_07
+; Phase $07: $07 * 2 = $0e bytes -> pointer at $2134 + $0e = $2142
+00:2142 GS06_PhasePointer_07
 00:2142 .data:2
-; State $08: $08 * 2 = $10 bytes -> pointer at $2134 + $10 = $2144
-00:2144 GM06_StatePointer_08
+; Phase $08: $08 * 2 = $10 bytes -> pointer at $2134 + $10 = $2144
+00:2144 GS06_PhasePointer_08
 00:2144 .data:2
-; State $09: $09 * 2 = $12 bytes -> pointer at $2134 + $12 = $2146
-00:2146 GM06_StatePointer_09
+; Phase $09: $09 * 2 = $12 bytes -> pointer at $2134 + $12 = $2146
+00:2146 GS06_PhasePointer_09
 00:2146 .data:2
-; State $0a: $0a * 2 = $14 bytes -> pointer at $2134 + $14 = $2148
-00:2148 GM06_StatePointer_0a
+; Phase $0a: $0a * 2 = $14 bytes -> pointer at $2134 + $14 = $2148
+00:2148 GS06_PhasePointer_0a
 00:2148 .data:2
-; State $0b: $0b * 2 = $16 bytes -> pointer at $2134 + $16 = $214a
-00:214a GM06_StatePointer_0b
+; Phase $0b: $0b * 2 = $16 bytes -> pointer at $2134 + $16 = $214a
+00:214a GS06_PhasePointer_0b
 00:214a .data:2
-; State $0c: $0c * 2 = $18 bytes -> pointer at $2134 + $18 = $214c
-00:214c GM06_StatePointer_0c
+; Phase $0c: $0c * 2 = $18 bytes -> pointer at $2134 + $18 = $214c
+00:214c GS06_PhasePointer_0c
 00:214c .data:2
-; State $0d: $0d * 2 = $1a bytes -> pointer at $2134 + $1a = $214e
-00:214e GM06_StatePointer_0d
+; Phase $0d: $0d * 2 = $1a bytes -> pointer at $2134 + $1a = $214e
+00:214e GS06_PhasePointer_0d
 00:214e .data:2
-; State $0e: $0e * 2 = $1c bytes -> pointer at $2134 + $1c = $2150
-00:2150 GM06_StatePointer_0e
+; Phase $0e: $0e * 2 = $1c bytes -> pointer at $2134 + $1c = $2150
+00:2150 GS06_PhasePointer_0e
 00:2150 .data:2
-; State $0f: $0f * 2 = $1e bytes -> pointer at $2134 + $1e = $2152
-00:2152 GM06_StatePointer_0f
+; Phase $0f: $0f * 2 = $1e bytes -> pointer at $2134 + $1e = $2152
+00:2152 GS06_PhasePointer_0f
 00:2152 .data:2
-; State $10: $10 * 2 = $20 bytes -> pointer at $2134 + $20 = $2154
-00:2154 GM06_StatePointer_10
+; Phase $10: $10 * 2 = $20 bytes -> pointer at $2134 + $20 = $2154
+00:2154 GS06_PhasePointer_10
 00:2154 .data:2
-; State $11: $11 * 2 = $22 bytes -> pointer at $2134 + $22 = $2156
-00:2156 GM06_StatePointer_11
+; Phase $11: $11 * 2 = $22 bytes -> pointer at $2134 + $22 = $2156
+00:2156 GS06_PhasePointer_11
 00:2156 .data:2
-; State $12: $12 * 2 = $24 bytes -> pointer at $2134 + $24 = $2158
-00:2158 GM06_StatePointer_12
+; Phase $12: $12 * 2 = $24 bytes -> pointer at $2134 + $24 = $2158
+00:2158 GS06_PhasePointer_12
 00:2158 .data:2
-; State $13: $13 * 2 = $26 bytes -> pointer at $2134 + $26 = $215a
-00:215a GM06_StatePointer_13
+; Phase $13: $13 * 2 = $26 bytes -> pointer at $2134 + $26 = $215a
+00:215a GS06_PhasePointer_13
 00:215a .data:2
-; State $14: $14 * 2 = $28 bytes -> pointer at $2134 + $28 = $215c
-00:215c GM06_StatePointer_14
+; Phase $14: $14 * 2 = $28 bytes -> pointer at $2134 + $28 = $215c
+00:215c GS06_PhasePointer_14
 00:215c .data:2
-; State $15: $15 * 2 = $2a bytes -> pointer at $2134 + $2a = $215e
-00:215e GM06_StatePointer_15
+; Phase $15: $15 * 2 = $2a bytes -> pointer at $2134 + $2a = $215e
+00:215e GS06_PhasePointer_15
 00:215e .data:2
-; State $16: $16 * 2 = $2c bytes -> pointer at $2134 + $2c = $2160
-00:2160 GM06_StatePointer_16
+; Phase $16: $16 * 2 = $2c bytes -> pointer at $2134 + $2c = $2160
+00:2160 GS06_PhasePointer_16
 00:2160 .data:2
-; State $17: $17 * 2 = $2e bytes -> pointer at $2134 + $2e = $2162
-00:2162 GM06_StatePointer_17
+; Phase $17: $17 * 2 = $2e bytes -> pointer at $2134 + $2e = $2162
+00:2162 GS06_PhasePointer_17
 00:2162 .data:2
-; State $18: $18 * 2 = $30 bytes -> pointer at $2134 + $30 = $2164
-00:2164 GM06_StatePointer_18
+; Phase $18: $18 * 2 = $30 bytes -> pointer at $2134 + $30 = $2164
+00:2164 GS06_PhasePointer_18
 00:2164 .data:2
-; State $19: $19 * 2 = $32 bytes -> pointer at $2134 + $32 = $2166
-00:2166 GM06_StatePointer_19
+; Phase $19: $19 * 2 = $32 bytes -> pointer at $2134 + $32 = $2166
+00:2166 GS06_PhasePointer_19
 00:2166 .data:2
-; State $1a: $1a * 2 = $34 bytes -> pointer at $2134 + $34 = $2168
-00:2168 GM06_StatePointer_1a
+; Phase $1a: $1a * 2 = $34 bytes -> pointer at $2134 + $34 = $2168
+00:2168 GS06_PhasePointer_1a
 00:2168 .data:2
-; State $1b: $1b * 2 = $36 bytes -> pointer at $2134 + $36 = $216a
-00:216a GM06_StatePointer_1b
+; Phase $1b: $1b * 2 = $36 bytes -> pointer at $2134 + $36 = $216a
+00:216a GS06_PhasePointer_1b
 00:216a .data:2
-; State $1c: $1c * 2 = $38 bytes -> pointer at $2134 + $38 = $216c
-00:216c GM06_StatePointer_1c
+; Phase $1c: $1c * 2 = $38 bytes -> pointer at $2134 + $38 = $216c
+00:216c GS06_PhasePointer_1c
 00:216c .data:2
-; State $1d: $1d * 2 = $3a bytes -> pointer at $2134 + $3a = $216e
-00:216e GM06_StatePointer_1d
+; Phase $1d: $1d * 2 = $3a bytes -> pointer at $2134 + $3a = $216e
+00:216e GS06_PhasePointer_1d
 00:216e .data:2
-; State $1e: $1e * 2 = $3c bytes -> pointer at $2134 + $3c = $2170
-00:2170 GM06_StatePointer_1e
+; Phase $1e: $1e * 2 = $3c bytes -> pointer at $2134 + $3c = $2170
+00:2170 GS06_PhasePointer_1e
 00:2170 .data:2
-; State $1f: $1f * 2 = $3e bytes -> pointer at $2134 + $3e = $2172
-00:2172 GM06_StatePointer_1f
+; Phase $1f: $1f * 2 = $3e bytes -> pointer at $2134 + $3e = $2172
+00:2172 GS06_PhasePointer_1f
 00:2172 .data:2
-; State $20: $20 * 2 = $40 bytes -> pointer at $2134 + $40 = $2174
-00:2174 GM06_StatePointer_20
+; Phase $20: $20 * 2 = $40 bytes -> pointer at $2134 + $40 = $2174
+00:2174 GS06_PhasePointer_20
 00:2174 .data:2
-; State $21: $21 * 2 = $42 bytes -> pointer at $2134 + $42 = $2176
-00:2176 GM06_StatePointer_21
+; Phase $21: $21 * 2 = $42 bytes -> pointer at $2134 + $42 = $2176
+00:2176 GS06_PhasePointer_21
 00:2176 .data:2
-; State $22: $22 * 2 = $44 bytes -> pointer at $2134 + $44 = $2178
-00:2178 GM06_StatePointer_22
+; Phase $22: $22 * 2 = $44 bytes -> pointer at $2134 + $44 = $2178
+00:2178 GS06_PhasePointer_22
 00:2178 .data:2
-; State $23: $23 * 2 = $46 bytes -> pointer at $2134 + $46 = $217a
-00:217a GM06_StatePointer_23
+; Phase $23: $23 * 2 = $46 bytes -> pointer at $2134 + $46 = $217a
+00:217a GS06_PhasePointer_23
 00:217a .data:2
-; State $24: $24 * 2 = $48 bytes -> pointer at $2134 + $48 = $217c
-00:217c GM06_StatePointer_24
+; Phase $24: $24 * 2 = $48 bytes -> pointer at $2134 + $48 = $217c
+00:217c GS06_PhasePointer_24
 00:217c .data:2
-; State $25: $25 * 2 = $4a bytes -> pointer at $2134 + $4a = $217e
-00:217e GM06_StatePointer_25
+; Phase $25: $25 * 2 = $4a bytes -> pointer at $2134 + $4a = $217e
+00:217e GS06_PhasePointer_25
 00:217e .data:2
-; State $26: $26 * 2 = $4c bytes -> pointer at $2134 + $4c = $2180
-00:2180 GM06_StatePointer_26
+; Phase $26: $26 * 2 = $4c bytes -> pointer at $2134 + $4c = $2180
+00:2180 GS06_PhasePointer_26
 00:2180 .data:2
-; State $27: $27 * 2 = $4e bytes -> pointer at $2134 + $4e = $2182
-00:2182 GM06_StatePointer_27
+; Phase $27: $27 * 2 = $4e bytes -> pointer at $2134 + $4e = $2182
+00:2182 GS06_PhasePointer_27
 00:2182 .data:2
-; State $28: $28 * 2 = $50 bytes -> pointer at $2134 + $50 = $2184
-00:2184 GM06_StatePointer_28
+; Phase $28: $28 * 2 = $50 bytes -> pointer at $2134 + $50 = $2184
+00:2184 GS06_PhasePointer_28
 00:2184 .data:2
-; State $29: $29 * 2 = $52 bytes -> pointer at $2134 + $52 = $2186
-00:2186 GM06_StatePointer_29
+; Phase $29: $29 * 2 = $52 bytes -> pointer at $2134 + $52 = $2186
+00:2186 GS06_PhasePointer_29
 00:2186 .data:2
-; State $2a: $2a * 2 = $54 bytes -> pointer at $2134 + $54 = $2188
-00:2188 GM06_StatePointer_2a
+; Phase $2a: $2a * 2 = $54 bytes -> pointer at $2134 + $54 = $2188
+00:2188 GS06_PhasePointer_2a
 00:2188 .data:2
 
-00:218a GM06_GameState_00_TODO
-00:2282 GM06_GameState_01_TODO
-00:22aa GM06_GameState_02_TODO
-00:22f2 GM06_GameState_03_TODO
-00:2310 GM06_GameState_04_TODO
-00:2358 GM06_GameState_05_TODO
-00:2376 GM06_GameState_06_TODO
-00:239e GM06_GameState_07_TODO
-00:23c6 GM06_GameState_08_TODO
-00:246d GM06_GameState_09_TODO
-00:2492 GM06_GameState_0a_TODO
-00:24ab GM06_GameState_0b_TODO
-00:24d3 GM06_GameState_0c_TODO
-00:2501 GM06_GameState_0d_TODO
-00:2549 GM06_GameState_0e_TODO
-00:2567 GM06_GameState_0f_TODO
-00:258f GM06_GameState_10_TODO
-00:25d7 GM06_GameState_11_TODO
-00:25f5 GM06_GameState_12_TODO
-00:262f GM06_GameState_13_TODO
-00:266b GM06_GameState_14_TODO
-00:26b3 GM06_GameState_15_TODO
-00:26d1 GM06_GameState_16_TODO
-00:26f9 GM06_GameState_17_TODO
-00:2741 GM06_GameState_18_TODO
-00:275f GM06_GameState_19_TODO
-00:279e GM06_GameState_1a_TODO
-00:27d4 GM06_GameState_1b_TODO
-00:27e6 GM06_GameState_1c_TODO
-00:280a GM06_GameState_1d_TODO
-00:283b GM06_GameState_1e_TODO
-00:2870 GM06_GameState_1f_TODO
-00:289a GM06_GameState_20_TODO
-00:28c2 GM06_GameState_21_TODO
-00:28f7 GM06_GameState_22_TODO
-00:2936 GM06_GameState_23_TODO
-00:2972 GM06_GameState_24_TODO
-00:29cc GM06_GameState_25_TODO
-00:29f4 GM06_GameState_26_TODO
-00:2a33 GM06_GameState_27_TODO
-00:2a7b GM06_GameState_28_TODO
-00:2aac GM06_GameState_29_TODO
-00:2b24 GM06_GameState_2a_TODO
+00:218a GS06_StatePhase_00_TODO
+00:2282 GS06_StatePhase_01_TODO
+00:22aa GS06_StatePhase_02_TODO
+00:22f2 GS06_StatePhase_03_TODO
+00:2310 GS06_StatePhase_04_TODO
+00:2358 GS06_StatePhase_05_TODO
+00:2376 GS06_StatePhase_06_TODO
+00:239e GS06_StatePhase_07_TODO
+00:23c6 GS06_StatePhase_08_TODO
+00:246d GS06_StatePhase_09_TODO
+00:2492 GS06_StatePhase_0a_TODO
+00:24ab GS06_StatePhase_0b_TODO
+00:24d3 GS06_StatePhase_0c_TODO
+00:2501 GS06_StatePhase_0d_TODO
+00:2549 GS06_StatePhase_0e_TODO
+00:2567 GS06_StatePhase_0f_TODO
+00:258f GS06_StatePhase_10_TODO
+00:25d7 GS06_StatePhase_11_TODO
+00:25f5 GS06_StatePhase_12_TODO
+00:262f GS06_StatePhase_13_TODO
+00:266b GS06_StatePhase_14_TODO
+00:26b3 GS06_StatePhase_15_TODO
+00:26d1 GS06_StatePhase_16_TODO
+00:26f9 GS06_StatePhase_17_TODO
+00:2741 GS06_StatePhase_18_TODO
+00:275f GS06_StatePhase_19_TODO
+00:279e GS06_StatePhase_1a_TODO
+00:27d4 GS06_StatePhase_1b_TODO
+00:27e6 GS06_StatePhase_1c_TODO
+00:280a GS06_StatePhase_1d_TODO
+00:283b GS06_StatePhase_1e_TODO
+00:2870 GS06_StatePhase_1f_TODO
+00:289a GS06_StatePhase_20_TODO
+00:28c2 GS06_StatePhase_21_TODO
+00:28f7 GS06_StatePhase_22_TODO
+00:2936 GS06_StatePhase_23_TODO
+00:2972 GS06_StatePhase_24_TODO
+00:29cc GS06_StatePhase_25_TODO
+00:29f4 GS06_StatePhase_26_TODO
+00:2a33 GS06_StatePhase_27_TODO
+00:2a7b GS06_StatePhase_28_TODO
+00:2aac GS06_StatePhase_29_TODO
+00:2b24 GS06_StatePhase_2a_TODO
 
 ; =============================================================================
 ; BANK 001
 ; =============================================================================
 
-; GameMode 04 State pointer table entries (accessed via RST_18 dispatcher):
-; Offset calculation: state_value * 2, added to return address $438e yields pointer location
-; State $00: $00 * 2 = $00 bytes -> pointer at $438e + $00 = $438e
-01:438e GM04_StatePointer_00
+; GameState 04 Phase pointer table entries (accessed via RST_18 dispatcher):
+; Offset calculation: Phase_value * 2, added to return address $438e yields pointer location
+; Phase $00: $00 * 2 = $00 bytes -> pointer at $438e + $00 = $438e
+01:438e GS04_PhasePointer_00
 01:438e .data:2
-; State $01: $01 * 2 = $02 bytes -> pointer at $438e + $02 = $4390
-01:4390 GM04_StatePointer_01
+; Phase $01: $01 * 2 = $02 bytes -> pointer at $438e + $02 = $4390
+01:4390 GS04_PhasePointer_01
 01:4390 .data:2
-; State $02: $02 * 2 = $04 bytes -> pointer at $438e + $04 = $4392
-01:4392 GM04_StatePointer_02
+; Phase $02: $02 * 2 = $04 bytes -> pointer at $438e + $04 = $4392
+01:4392 GS04_PhasePointer_02
 01:4392 .data:2
-; State $03: $03 * 2 = $06 bytes -> pointer at $438e + $06 = $4394
-01:4394 GM04_StatePointer_03
+; Phase $03: $03 * 2 = $06 bytes -> pointer at $438e + $06 = $4394
+01:4394 GS04_PhasePointer_03
 01:4394 .data:2
-; State $04: $04 * 2 = $08 bytes -> pointer at $438e + $08 = $4396
-01:4396 GM04_StatePointer_04
+; Phase $04: $04 * 2 = $08 bytes -> pointer at $438e + $08 = $4396
+01:4396 GS04_PhasePointer_04
 01:4396 .data:2
-; State $05: $05 * 2 = $0a bytes -> pointer at $438e + $0a = $4398
-01:4398 GM04_StatePointer_05
+; Phase $05: $05 * 2 = $0a bytes -> pointer at $438e + $0a = $4398
+01:4398 GS04_PhasePointer_05
 01:4398 .data:2
 
-01:439a GM04_GameState_00_TODO
-01:477d GM04_GameState_01_TODO
-01:4809 GM04_GameState_02_TODO
-01:4972 GM04_GameState_03_TODO
-01:4410 GM04_GameState_04_TODO
-01:47b7 GM04_GameState_05_TODO
+01:439a GS04_StatePhase_00_TODO
+01:477d GS04_StatePhase_01_TODO
+01:4809 GS04_StatePhase_02_TODO
+01:4972 GS04_StatePhase_03_TODO
+01:4410 GS04_StatePhase_04_TODO
+01:47b7 GS04_StatePhase_05_TODO
 
-; GameMode 05 State pointer table entries (accessed via RST_18 dispatcher):
-; Offset calculation: state_value * 2, added to return address $5271 yields pointer location
-; State $00: $00 * 2 = $00 bytes -> pointer at $5271 + $00 = $5271
-01:5271 GM05_StatePointer_00
+; GameState 05 Phase pointer table entries (accessed via RST_18 dispatcher):
+; Offset calculation: Phase_value * 2, added to return address $5271 yields pointer location
+; Phase $00: $00 * 2 = $00 bytes -> pointer at $5271 + $00 = $5271
+01:5271 GS05_PhasePointer_00
 01:5271 .data:2
-; State $01: $01 * 2 = $02 bytes -> pointer at $5271 + $02 = $5273
-01:5273 GM05_StatePointer_01
+; Phase $01: $01 * 2 = $02 bytes -> pointer at $5271 + $02 = $5273
+01:5273 GS05_PhasePointer_01
 01:5273 .data:2
-; State $02: $02 * 2 = $04 bytes -> pointer at $5271 + $04 = $5275
-01:5275 GM05_StatePointer_02
+; Phase $02: $02 * 2 = $04 bytes -> pointer at $5271 + $04 = $5275
+01:5275 GS05_PhasePointer_02
 01:5275 .data:2
-; State $03: $03 * 2 = $06 bytes -> pointer at $5271 + $06 = $5277
-01:5277 GM05_StatePointer_03
+; Phase $03: $03 * 2 = $06 bytes -> pointer at $5271 + $06 = $5277
+01:5277 GS05_PhasePointer_03
 01:5277 .data:2
-; State $04: $04 * 2 = $08 bytes -> pointer at $5271 + $08 = $5279
-01:5279 GM05_StatePointer_04
+; Phase $04: $04 * 2 = $08 bytes -> pointer at $5271 + $08 = $5279
+01:5279 GS05_PhasePointer_04
 01:5279 .data:2
-; State $05: $05 * 2 = $0a bytes -> pointer at $5271 + $0a = $527b
-01:527b GM05_StatePointer_05
+; Phase $05: $05 * 2 = $0a bytes -> pointer at $5271 + $0a = $527b
+01:527b GS05_PhasePointer_05
 01:527b .data:2
 
-01:527d GM05_GameState_00_TODO
-01:5585 GM05_GameState_01_TODO
-01:561b GM05_GameState_02_TODO
-01:56f7 GM05_GameState_03_TODO
-01:5316 GM05_GameState_04_TODO
-01:55bf GM05_GameState_05_TODO
+01:527d GS05_StatePhase_00_TODO
+01:5585 GS05_StatePhase_01_TODO
+01:561b GS05_StatePhase_02_TODO
+01:56f7 GS05_StatePhase_03_TODO
+01:5316 GS05_StatePhase_04_TODO
+01:55bf GS05_StatePhase_05_TODO
 
-; GameMode 08 State pointer table entries (accessed via RST_18 dispatcher):
-; Offset calculation: state_value * 2, added to return address $5d82 yields pointer location
-; State $00: $00 * 2 = $00 bytes -> pointer at $5d82 + $00 = $5d82
-01:5d82 GM08_StatePointer_00
+; GameState 08 Phase pointer table entries (accessed via RST_18 dispatcher):
+; Offset calculation: Phase_value * 2, added to return address $5d82 yields pointer location
+; Phase $00: $00 * 2 = $00 bytes -> pointer at $5d82 + $00 = $5d82
+01:5d82 GS08_PhasePointer_00
 01:5d82 .data:2
-; State $01: $01 * 2 = $02 bytes -> pointer at $5d82 + $02 = $5d84
-01:5d84 GM08_StatePointer_01
+; Phase $01: $01 * 2 = $02 bytes -> pointer at $5d82 + $02 = $5d84
+01:5d84 GS08_PhasePointer_01
 01:5d84 .data:2
-; State $02: $02 * 2 = $04 bytes -> pointer at $5d82 + $04 = $5d86
-01:5d86 GM08_StatePointer_02
+; Phase $02: $02 * 2 = $04 bytes -> pointer at $5d82 + $04 = $5d86
+01:5d86 GS08_PhasePointer_02
 01:5d86 .data:2
-; State $03: $03 * 2 = $06 bytes -> pointer at $5d82 + $06 = $5d88
-01:5d88 GM08_StatePointer_03
+; Phase $03: $03 * 2 = $06 bytes -> pointer at $5d82 + $06 = $5d88
+01:5d88 GS08_PhasePointer_03
 01:5d88 .data:2
-; State $04: $04 * 2 = $08 bytes -> pointer at $5d82 + $08 = $5d8a
-01:5d8a GM08_StatePointer_04
+; Phase $04: $04 * 2 = $08 bytes -> pointer at $5d82 + $08 = $5d8a
+01:5d8a GS08_PhasePointer_04
 01:5d8a .data:2
-; State $05: $05 * 2 = $0a bytes -> pointer at $5d82 + $0a = $5d8c
-01:5d8c GM08_StatePointer_05
+; Phase $05: $05 * 2 = $0a bytes -> pointer at $5d82 + $0a = $5d8c
+01:5d8c GS08_PhasePointer_05
 01:5d8c .data:2
-; State $06: $06 * 2 = $0c bytes -> pointer at $5d82 + $0c = $5d8e
-01:5d8e GM08_StatePointer_06
+; Phase $06: $06 * 2 = $0c bytes -> pointer at $5d82 + $0c = $5d8e
+01:5d8e GS08_PhasePointer_06
 01:5d8e .data:2
-; State $07: $07 * 2 = $0e bytes -> pointer at $5d82 + $0e = $5d90
-01:5d90 GM08_StatePointer_07
+; Phase $07: $07 * 2 = $0e bytes -> pointer at $5d82 + $0e = $5d90
+01:5d90 GS08_PhasePointer_07
 01:5d90 .data:2
-; State $08: $08 * 2 = $10 bytes -> pointer at $5d82 + $10 = $5d92
-01:5d92 GM08_StatePointer_08
+; Phase $08: $08 * 2 = $10 bytes -> pointer at $5d82 + $10 = $5d92
+01:5d92 GS08_PhasePointer_08
 01:5d92 .data:2
-; State $09: $09 * 2 = $12 bytes -> pointer at $5d82 + $12 = $5d94
-01:5d94 GM08_StatePointer_09
+; Phase $09: $09 * 2 = $12 bytes -> pointer at $5d82 + $12 = $5d94
+01:5d94 GS08_PhasePointer_09
 01:5d94 .data:2
-; State $0a: $0a * 2 = $14 bytes -> pointer at $5d82 + $14 = $5d96
-01:5d96 GM08_StatePointer_0a
+; Phase $0a: $0a * 2 = $14 bytes -> pointer at $5d82 + $14 = $5d96
+01:5d96 GS08_PhasePointer_0a
 01:5d96 .data:2
-; State $0b: $0b * 2 = $16 bytes -> pointer at $5d82 + $16 = $5d98
-01:5d98 GM08_StatePointer_0b
+; Phase $0b: $0b * 2 = $16 bytes -> pointer at $5d82 + $16 = $5d98
+01:5d98 GS08_PhasePointer_0b
 01:5d98 .data:2
 
-01:5d9a GM08_GameState_00_TODO
-01:5fa5 GM08_GameState_01_TODO
-01:5fa8 GM08_GameState_02_TODO
-01:5fcb GM08_GameState_03_TODO
-01:617b GM08_GameState_04_TODO
-01:61fc GM08_GameState_05_TODO
-01:6238 GM08_GameState_06_TODO
-01:626d GM08_GameState_06_TODO_Data
+01:5d9a GS08_StatePhase_00_TODO
+01:5fa5 GS08_StatePhase_01_TODO
+01:5fa8 GS08_StatePhase_02_TODO
+01:5fcb GS08_StatePhase_03_TODO
+01:617b GS08_StatePhase_04_TODO
+01:61fc GS08_StatePhase_05_TODO
+01:6238 GS08_StatePhase_06_TODO
+01:626d GS08_StatePhase_06_TODO_Data
 01:626d .data:3
-01:6270 GM08_GameState_07_TODO
-01:6328 GM08_GameState_08_TODO
-01:6343 GM08_GameState_09_TODO
-01:63c3 GM08_GameState_0a_TODO
-01:5e93 GM08_GameState_0b_TODO
+01:6270 GS08_StatePhase_07_TODO
+01:6328 GS08_StatePhase_08_TODO
+01:6343 GS08_StatePhase_09_TODO
+01:63c3 GS08_StatePhase_0a_TODO
+01:5e93 GS08_StatePhase_0b_TODO
 
-; GameMode 09 State pointer table entries (accessed via RST_18 dispatcher):
-; Offset calculation: state_value * 2, added to return address $6400 yields pointer location
-; State $00: $00 * 2 = $00 bytes -> pointer at $6400 + $00 = $6400
-01:6400 GM09_StatePointer_00
+; GameState 09 Phase pointer table entries (accessed via RST_18 dispatcher):
+; Offset calculation: Phase_value * 2, added to return address $6400 yields pointer location
+; Phase $00: $00 * 2 = $00 bytes -> pointer at $6400 + $00 = $6400
+01:6400 GS09_PhasePointer_00
 01:6400 .data:2
-; State $01: $01 * 2 = $02 bytes -> pointer at $6400 + $02 = $6402
-01:6402 GM09_StatePointer_01
+; Phase $01: $01 * 2 = $02 bytes -> pointer at $6400 + $02 = $6402
+01:6402 GS09_PhasePointer_01
 01:6402 .data:2
-; State $02: $02 * 2 = $04 bytes -> pointer at $6400 + $04 = $6404
-01:6404 GM09_StatePointer_02
+; Phase $02: $02 * 2 = $04 bytes -> pointer at $6400 + $04 = $6404
+01:6404 GS09_PhasePointer_02
 01:6404 .data:2
-; State $03: $03 * 2 = $06 bytes -> pointer at $6400 + $06 = $6406
-01:6406 GM09_StatePointer_03
+; Phase $03: $03 * 2 = $06 bytes -> pointer at $6400 + $06 = $6406
+01:6406 GS09_PhasePointer_03
 01:6406 .data:2
-; State $04: $04 * 2 = $08 bytes -> pointer at $6400 + $08 = $6408
-01:6408 GM09_StatePointer_04
+; Phase $04: $04 * 2 = $08 bytes -> pointer at $6400 + $08 = $6408
+01:6408 GS09_PhasePointer_04
 01:6408 .data:2
-; State $05: $05 * 2 = $0a bytes -> pointer at $6400 + $0a = $640a
-01:640a GM09_StatePointer_05
+; Phase $05: $05 * 2 = $0a bytes -> pointer at $6400 + $0a = $640a
+01:640a GS09_PhasePointer_05
 01:640a .data:2
-; State $06: $06 * 2 = $0c bytes -> pointer at $6400 + $0c = $640c
-01:640c GM09_StatePointer_06
+; Phase $06: $06 * 2 = $0c bytes -> pointer at $6400 + $0c = $640c
+01:640c GS09_PhasePointer_06
 01:640c .data:2
-; State $07: $07 * 2 = $0e bytes -> pointer at $6400 + $0e = $640e
-01:640e GM09_StatePointer_07
+; Phase $07: $07 * 2 = $0e bytes -> pointer at $6400 + $0e = $640e
+01:640e GS09_PhasePointer_07
 01:640e .data:2
-; State $08: $08 * 2 = $10 bytes -> pointer at $6400 + $10 = $6410
-01:6410 GM09_StatePointer_08
+; Phase $08: $08 * 2 = $10 bytes -> pointer at $6400 + $10 = $6410
+01:6410 GS09_PhasePointer_08
 01:6410 .data:2
-; State $09: $09 * 2 = $12 bytes -> pointer at $6400 + $12 = $6412
-01:6412 GM09_StatePointer_09
+; Phase $09: $09 * 2 = $12 bytes -> pointer at $6400 + $12 = $6412
+01:6412 GS09_PhasePointer_09
 01:6412 .data:2
 
-01:6414 GM09_GameState_00_TODO
-01:656c GM09_GameState_01_TODO
-01:661f GM09_GameState_02_TODO
-01:6677 GM09_GameState_03_TODO
-01:66b3 GM09_GameState_04_TODO
-01:66e8 GM09_GameState_04_TODO_Data
+01:6414 GS09_StatePhase_00_TODO
+01:656c GS09_StatePhase_01_TODO
+01:661f GS09_StatePhase_02_TODO
+01:6677 GS09_StatePhase_03_TODO
+01:66b3 GS09_StatePhase_04_TODO
+01:66e8 GS09_StatePhase_04_TODO_Data
 01:66e8 .data:3
-01:66eb GM09_GameState_05_TODO
-01:677d GM09_GameState_06_TODO
-01:6798 GM09_GameState_07_TODO
-01:67f6 GM09_GameState_08_TODO
-01:64b1 GM09_GameState_09_TODO
+01:66eb GS09_StatePhase_05_TODO
+01:677d GS09_StatePhase_06_TODO
+01:6798 GS09_StatePhase_07_TODO
+01:67f6 GS09_StatePhase_08_TODO
+01:64b1 GS09_StatePhase_09_TODO
 
-; GameMode 0A State pointer table entries (accessed via RST_18 dispatcher):
-; Offset calculation: state_value * 2, added to return address $6871 yields pointer location
-; State $00: $00 * 2 = $00 bytes -> pointer at $6871 + $00 = $6871
-01:6871 GM0A_StatePointer_00
+; GameState 0A Phase pointer table entries (accessed via RST_18 dispatcher):
+; Offset calculation: Phase_value * 2, added to return address $6871 yields pointer location
+; Phase $00: $00 * 2 = $00 bytes -> pointer at $6871 + $00 = $6871
+01:6871 GS0A_PhasePointer_00
 01:6871 .data:2
-; State $01: $01 * 2 = $02 bytes -> pointer at $6871 + $02 = $6873
-01:6873 GM0A_StatePointer_01
+; Phase $01: $01 * 2 = $02 bytes -> pointer at $6871 + $02 = $6873
+01:6873 GS0A_PhasePointer_01
 01:6873 .data:2
-; State $02: $02 * 2 = $04 bytes -> pointer at $6871 + $04 = $6875
-01:6875 GM0A_StatePointer_02
+; Phase $02: $02 * 2 = $04 bytes -> pointer at $6871 + $04 = $6875
+01:6875 GS0A_PhasePointer_02
 01:6875 .data:2
-; State $03: $03 * 2 = $06 bytes -> pointer at $6871 + $06 = $6877
-01:6877 GM0A_StatePointer_03
+; Phase $03: $03 * 2 = $06 bytes -> pointer at $6871 + $06 = $6877
+01:6877 GS0A_PhasePointer_03
 01:6877 .data:2
-; State $04: $04 * 2 = $08 bytes -> pointer at $6871 + $08 = $6879
-01:6879 GM0A_StatePointer_04
+; Phase $04: $04 * 2 = $08 bytes -> pointer at $6871 + $08 = $6879
+01:6879 GS0A_PhasePointer_04
 01:6879 .data:2
-; State $05: $05 * 2 = $0a bytes -> pointer at $6871 + $0a = $687b
-01:687b GM0A_StatePointer_05
+; Phase $05: $05 * 2 = $0a bytes -> pointer at $6871 + $0a = $687b
+01:687b GS0A_PhasePointer_05
 01:687b .data:2
-; State $06: $06 * 2 = $0c bytes -> pointer at $6871 + $0c = $687d
-01:687d GM0A_StatePointer_06
+; Phase $06: $06 * 2 = $0c bytes -> pointer at $6871 + $0c = $687d
+01:687d GS0A_PhasePointer_06
 01:687d .data:2
-; State $07: $07 * 2 = $0e bytes -> pointer at $6871 + $0e = $687f
-01:687f GM0A_StatePointer_07
+; Phase $07: $07 * 2 = $0e bytes -> pointer at $6871 + $0e = $687f
+01:687f GS0A_PhasePointer_07
 01:687f .data:2
-; State $08: $08 * 2 = $10 bytes -> pointer at $6871 + $10 = $6881
-01:6881 GM0A_StatePointer_08
+; Phase $08: $08 * 2 = $10 bytes -> pointer at $6871 + $10 = $6881
+01:6881 GS0A_PhasePointer_08
 01:6881 .data:2
-; State $09: $09 * 2 = $12 bytes -> pointer at $6871 + $12 = $6883
-01:6883 GM0A_StatePointer_09
+; Phase $09: $09 * 2 = $12 bytes -> pointer at $6871 + $12 = $6883
+01:6883 GS0A_PhasePointer_09
 01:6883 .data:2
-; State $0a: $0a * 2 = $14 bytes -> pointer at $6871 + $14 = $6885
-01:6885 GM0A_StatePointer_0a
+; Phase $0a: $0a * 2 = $14 bytes -> pointer at $6871 + $14 = $6885
+01:6885 GS0A_PhasePointer_0a
 01:6885 .data:2
-; State $0b: $0b * 2 = $16 bytes -> pointer at $6871 + $16 = $6887
-01:6887 GM0A_StatePointer_0b
+; Phase $0b: $0b * 2 = $16 bytes -> pointer at $6871 + $16 = $6887
+01:6887 GS0A_PhasePointer_0b
 01:6887 .data:2
 
-01:6889 GM0A_GameState_00_TODO
-01:6a92 GM0A_GameState_01_TODO
-01:6b44 GM0A_GameState_02_TODO
-01:6c41 GM0A_GameState_03_TODO
-01:6cff GM0A_GameState_04_TODO
-01:6d57 GM0A_GameState_05_TODO
-01:6d9c GM0A_GameState_06_TODO
-01:6dd1 GM0A_GameState_06_TODO_Data
+01:6889 GS0A_StatePhase_00_TODO
+01:6a92 GS0A_StatePhase_01_TODO
+01:6b44 GS0A_StatePhase_02_TODO
+01:6c41 GS0A_StatePhase_03_TODO
+01:6cff GS0A_StatePhase_04_TODO
+01:6d57 GS0A_StatePhase_05_TODO
+01:6d9c GS0A_StatePhase_06_TODO
+01:6dd1 GS0A_StatePhase_06_TODO_Data
 01:6dd1 .data:3
-01:6dd4 GM0A_GameState_07_TODO
-01:6e6e GM0A_GameState_08_TODO
-01:6e89 GM0A_GameState_09_TODO
-01:6eef GM0A_GameState_0a_TODO
-01:6907 GM0A_GameState_0b_TODO
+01:6dd4 GS0A_StatePhase_07_TODO
+01:6e6e GS0A_StatePhase_08_TODO
+01:6e89 GS0A_StatePhase_09_TODO
+01:6eef GS0A_StatePhase_0a_TODO
+01:6907 GS0A_StatePhase_0b_TODO
 
 01:69b9 LoadGameBoardTileData
 01:69f6 Load10x10GameBoardTileData
@@ -445,146 +445,146 @@
 ; BANK 002
 ; =============================================================================
 
-; GameMode 03 State pointer table entries (accessed via RST_18 dispatcher):
-; Offset calculation: state_value * 2, added to return address $4004 yields pointer location
-; State $00: $00 * 2 = $00 bytes -> pointer at $4004 + $00 = $4004
-02:4004 GM03_StatePointer_00
+; GameState 03 Phase pointer table entries (accessed via RST_18 dispatcher):
+; Offset calculation: Phase_value * 2, added to return address $4004 yields pointer location
+; Phase $00: $00 * 2 = $00 bytes -> pointer at $4004 + $00 = $4004
+02:4004 GS03_PhasePointer_00
 02:4004 .data:2
-; State $01: $01 * 2 = $02 bytes -> pointer at $4004 + $02 = $4006
-02:4006 GM03_StatePointer_01
+; Phase $01: $01 * 2 = $02 bytes -> pointer at $4004 + $02 = $4006
+02:4006 GS03_PhasePointer_01
 02:4006 .data:2
-; State $02: $02 * 2 = $04 bytes -> pointer at $4004 + $04 = $4008
-02:4008 GM03_StatePointer_02
+; Phase $02: $02 * 2 = $04 bytes -> pointer at $4004 + $04 = $4008
+02:4008 GS03_PhasePointer_02
 02:4008 .data:2
-; State $03: $03 * 2 = $06 bytes -> pointer at $4004 + $06 = $400a
-02:400a GM03_StatePointer_03
+; Phase $03: $03 * 2 = $06 bytes -> pointer at $4004 + $06 = $400a
+02:400a GS03_PhasePointer_03
 02:400a .data:2
 
-02:400c GM03_GameState_00_TODO
-02:40ff GM03_GameState_01_TODO
-02:4130 GM03_GameState_02_TODO
-02:419b GM03_GameState_03_TODO
+02:400c GS03_StatePhase_00_TODO
+02:40ff GS03_StatePhase_01_TODO
+02:4130 GS03_StatePhase_02_TODO
+02:419b GS03_StatePhase_03_TODO
 
-; GameMode 02 State pointer table entries (accessed via RST_18 dispatcher):
-; Offset calculation: state_value * 2, added to return address $4304 yields pointer location
-; State $00: $00 * 2 = $00 bytes -> pointer at $4304 + $00 = $4304
-02:4304 GM02_StatePointer_00
+; GameState 02 Phase pointer table entries (accessed via RST_18 dispatcher):
+; Offset calculation: Phase_value * 2, added to return address $4304 yields pointer location
+; Phase $00: $00 * 2 = $00 bytes -> pointer at $4304 + $00 = $4304
+02:4304 GS02_PhasePointer_00
 02:4304 .data:2
-; State $01: $01 * 2 = $02 bytes -> pointer at $4304 + $02 = $4306
-02:4306 GM02_StatePointer_01
+; Phase $01: $01 * 2 = $02 bytes -> pointer at $4304 + $02 = $4306
+02:4306 GS02_PhasePointer_01
 02:4306 .data:2
-; State $02: $02 * 2 = $04 bytes -> pointer at $4304 + $04 = $4308
-02:4308 GM02_StatePointer_02
+; Phase $02: $02 * 2 = $04 bytes -> pointer at $4304 + $04 = $4308
+02:4308 GS02_PhasePointer_02
 02:4308 .data:2
-; State $03: $03 * 2 = $06 bytes -> pointer at $4304 + $06 = $430a
-02:430a GM02_StatePointer_03
+; Phase $03: $03 * 2 = $06 bytes -> pointer at $4304 + $06 = $430a
+02:430a GS02_PhasePointer_03
 02:430a .data:2
 
-02:430c GM02_GameState_00_TODO
-02:43bd GM02_GameState_01_TODO
-02:43ee GM02_GameState_02_TODO
-02:4455 GM02_GameState_02_TODO_Data
+02:430c GS02_StatePhase_00_TODO
+02:43bd GS02_StatePhase_01_TODO
+02:43ee GS02_StatePhase_02_TODO
+02:4455 GS02_StatePhase_02_TODO_Data
 02:4455 .data:3
-02:4458 GM02_GameState_03_TODO
+02:4458 GS02_StatePhase_03_TODO
 
-; GameMode handling
-; Mode pointer table entries (accessed via Call_000_0373 dispatcher)
-; Offset calculation: state_value * 3, added to return address $4611 yields pointer location
-; State $00: $00 * 3 = $00 bytes -> pointer at $4611 + $00 = $4611
-02:4611 ModePointer_00
+; GameState handling
+; State pointer table entries (accessed via Call_000_0373 dispatcher)
+; Offset calculation: Phase_value * 3, added to return address $4611 yields pointer location
+; Phase $00: $00 * 3 = $00 bytes -> pointer at $4611 + $00 = $4611
+02:4611 StatePointer_00
 02:4611 .data:0003
-; State $01: $01 * 3 = $03 bytes -> pointer at $4611 + $03 = $4614
-02:4614 ModePointer_01
+; Phase $01: $01 * 3 = $03 bytes -> pointer at $4611 + $03 = $4614
+02:4614 StatePointer_01
 02:4614 .data:0003
-; State $02: $02 * 3 = $06 bytes -> pointer at $4611 + $06 = $4617
-02:4617 ModePointer_02
+; Phase $02: $02 * 3 = $06 bytes -> pointer at $4611 + $06 = $4617
+02:4617 StatePointer_02
 02:4617 .data:0003
-; State $03: $03 * 3 = $09 bytes -> pointer at $4611 + $09 = $461a
-02:461a ModePointer_03
+; Phase $03: $03 * 3 = $09 bytes -> pointer at $4611 + $09 = $461a
+02:461a StatePointer_03
 02:461a .data:0003
-; State $04: $04 * 3 = $0c bytes -> pointer at $4611 + $0c = $461d
-02:461d ModePointer_04
+; Phase $04: $04 * 3 = $0c bytes -> pointer at $4611 + $0c = $461d
+02:461d StatePointer_04
 02:461d .data:0003
-; State $05: $05 * 3 = $0f bytes -> pointer at $4611 + $0f = $4620
-02:4620 ModePointer_05
+; Phase $05: $05 * 3 = $0f bytes -> pointer at $4611 + $0f = $4620
+02:4620 StatePointer_05
 02:4620 .data:0003
-; State $06: $06 * 3 = $12 bytes -> pointer at $4611 + $12 = $4623
-02:4623 ModePointer_06
+; Phase $06: $06 * 3 = $12 bytes -> pointer at $4611 + $12 = $4623
+02:4623 StatePointer_06
 02:4623 .data:0003
-; State $07: $07 * 3 = $15 bytes -> pointer at $4611 + $15 = $4626
-02:4626 ModePointer_07
+; Phase $07: $07 * 3 = $15 bytes -> pointer at $4611 + $15 = $4626
+02:4626 StatePointer_07
 02:4626 .data:0003
-; State $08: $08 * 3 = $18 bytes -> pointer at $4611 + $18 = $4629
-02:4629 ModePointer_08
+; Phase $08: $08 * 3 = $18 bytes -> pointer at $4611 + $18 = $4629
+02:4629 StatePointer_08
 02:4629 .data:0003
-; State $09: $09 * 3 = $1b bytes -> pointer at $4611 + $1b = $462c
-02:462c ModePointer_09
+; Phase $09: $09 * 3 = $1b bytes -> pointer at $4611 + $1b = $462c
+02:462c StatePointer_09
 02:462c .data:0003
-; State $0a: $0a * 3 = $0e bytes -> pointer at $4611 + $0e = $462f
-02:462f ModePointer_0a
+; Phase $0a: $0a * 3 = $0e bytes -> pointer at $4611 + $0e = $462f
+02:462f StatePointer_0a
 02:462f .data:0003
 
-03:4f87 GameMode_00_TitleScreen_StateDispatcher
-02:474f GameMode_01_DataSelectScreen_StateDispatcher
-02:4300 GameMode_02_TODO_StateDispatcher
-02:4000 GameMode_03_TODO_StateDispatcher
-01:438a GameMode_04_TODO_StateDispatcher
-01:526d GameMode_05_TODO_StateDispatcher
-00:2111 GameMode_06_TODO_StateDispatcher
-02:4c55 GameMode_07_TODO_StateDispatcher
-01:5d7e GameMode_08_TODO_StateDispatcher
-01:63fc GameMode_09_TODO_StateDispatcher
-01:686d GameMode_0A_TODO_StateDispatcher
+03:4f87 GameState_00_TitleScreen_PhaseDispatcher
+02:474f GameState_01_DataSelectScreen_PhaseDispatcher
+02:4300 GameState_02_TODO_PhaseDispatcher
+02:4000 GameState_03_TODO_PhaseDispatcher
+01:438a GameState_04_TODO_PhaseDispatcher
+01:526d GameState_05_TODO_PhaseDispatcher
+00:2111 GameState_06_TODO_PhaseDispatcher
+02:4c55 GameState_07_TODO_PhaseDispatcher
+01:5d7e GameState_08_TODO_PhaseDispatcher
+01:63fc GameState_09_TODO_PhaseDispatcher
+01:686d GameState_0A_TODO_PhaseDispatcher
 
 02:498e LoadPuzzleData
 02:4a57 PuzzleDataOffsetTable
 02:4a57 .data:8
 
-; GameMode 01 State pointer table entries (accessed via RST_18 dispatcher):
-; Offset calculation: state_value * 2, added to return address $4753 yields pointer location
-; State $00: $00 * 2 = $00 bytes -> pointer at $4753 + $00 = $4753
-02:4753 GM01_StatePointer_00
+; GameState 01 Phase pointer table entries (accessed via RST_18 dispatcher):
+; Offset calculation: Phase_value * 2, added to return address $4753 yields pointer location
+; Phase $00: $00 * 2 = $00 bytes -> pointer at $4753 + $00 = $4753
+02:4753 GS01_PhasePointer_00
 02:4753 .data:2
-; State $01: $01 * 2 = $02 bytes -> pointer at $4753 + $02 = $4755
-02:4755 GM01_StatePointer_01
+; Phase $01: $01 * 2 = $02 bytes -> pointer at $4753 + $02 = $4755
+02:4755 GS01_PhasePointer_01
 02:4755 .data:2
-; State $02: $02 * 2 = $04 bytes -> pointer at $4753 + $04 = $4757
-02:4757 GM01_StatePointer_02
+; Phase $02: $02 * 2 = $04 bytes -> pointer at $4753 + $04 = $4757
+02:4757 GS01_PhasePointer_02
 02:4757 .data:2
 
-02:4759 GM01_GameState_00_DataSelectScreenInit
-02:47f1 GM01_GameState_01_DataSelectScreenIdle
-02:4940 GM01_GameState_02_DataSelectScreenFinish
+02:4759 GS01_StatePhase_00_DataSelectScreenInit
+02:47f1 GS01_StatePhase_01_DataSelectScreenIdle
+02:4940 GS01_StatePhase_02_DataSelectScreenFinish
 
-; GameMode 07 State pointer table entries (accessed via RST_18 dispatcher):
-; Offset calculation: state_value * 2, added to return address $4c59 yields pointer location
-; State $00: $00 * 2 = $00 bytes -> pointer at $4c59 + $00 = $4c59
-02:4c59 GM07_StatePointer_00
+; GameState 07 Phase pointer table entries (accessed via RST_18 dispatcher):
+; Offset calculation: Phase_value * 2, added to return address $4c59 yields pointer location
+; Phase $00: $00 * 2 = $00 bytes -> pointer at $4c59 + $00 = $4c59
+02:4c59 GS07_PhasePointer_00
 02:4c59 .data:2
-; State $01: $01 * 2 = $02 bytes -> pointer at $4c59 + $02 = $4c5b
-02:4c5b GM07_StatePointer_01
+; Phase $01: $01 * 2 = $02 bytes -> pointer at $4c59 + $02 = $4c5b
+02:4c5b GS07_PhasePointer_01
 02:4c5b .data:2
-; State $02: $02 * 2 = $04 bytes -> pointer at $4c59 + $04 = $4c5d
-02:4c5d GM07_StatePointer_02
+; Phase $02: $02 * 2 = $04 bytes -> pointer at $4c59 + $04 = $4c5d
+02:4c5d GS07_PhasePointer_02
 02:4c5d .data:2
-; State $03: $03 * 2 = $06 bytes -> pointer at $4c59 + $06 = $4c5f
-02:4c5f GM07_StatePointer_03
+; Phase $03: $03 * 2 = $06 bytes -> pointer at $4c59 + $06 = $4c5f
+02:4c5f GS07_PhasePointer_03
 02:4c5f .data:2
-; State $04: $04 * 2 = $08 bytes -> pointer at $4c59 + $08 = $4c61
-02:4c61 GM07_StatePointer_04
+; Phase $04: $04 * 2 = $08 bytes -> pointer at $4c59 + $08 = $4c61
+02:4c61 GS07_PhasePointer_04
 02:4c61 .data:2
-; State $05: $05 * 2 = $0a bytes -> pointer at $4c59 + $0a = $4c63
-02:4c63 GM07_StatePointer_05
+; Phase $05: $05 * 2 = $0a bytes -> pointer at $4c59 + $0a = $4c63
+02:4c63 GS07_PhasePointer_05
 02:4c63 .data:2
 
-02:4c65 GM07_GameState_00_TODO
-02:4d8e GM07_GameState_01_TODO
-02:4f69 GM07_GameState_02_TODO
-02:4ff4 GM07_GameState_02_TODO_Data
+02:4c65 GS07_StatePhase_00_TODO
+02:4d8e GS07_StatePhase_01_TODO
+02:4f69 GS07_StatePhase_02_TODO
+02:4ff4 GS07_StatePhase_02_TODO_Data
 02:4ff4 .data:80
-02:5074 GM07_GameState_03_TODO
-02:4cc4 GM07_GameState_04_TODO
-02:4dff GM07_GameState_05_TODO
+02:5074 GS07_StatePhase_03_TODO
+02:4cc4 GS07_StatePhase_04_TODO
+02:4dff GS07_StatePhase_05_TODO
 
 ; Puzzle data
 02:52b0 DemoPuzzle
@@ -594,33 +594,33 @@
 ; BANK 003
 ; =============================================================================
 
-; GameMode 00 State pointer table entries (accessed via RST_18 dispatcher):
-; Offset calculation: state_value * 2, added to return address $4f8b yields pointer location
-; State $00: $00 * 2 = $00 bytes -> pointer at $4f8b + $00 = $4f8b
-03:4f8b GM00_StatePointer_00
+; GameState 00 Phase pointer table entries (accessed via RST_18 dispatcher):
+; Offset calculation: Phase_value * 2, added to return address $4f8b yields pointer location
+; Phase $00: $00 * 2 = $00 bytes -> pointer at $4f8b + $00 = $4f8b
+03:4f8b GS00_PhasePointer_00
 03:4f8b .data:2
-; State $01: $01 * 2 = $02 bytes -> pointer at $4f8b + $02 = $4f8d
-03:4f8d GM00_StatePointer_01
+; Phase $01: $01 * 2 = $02 bytes -> pointer at $4f8b + $02 = $4f8d
+03:4f8d GS00_PhasePointer_01
 03:4f8d .data:2
-; State $02: $02 * 2 = $04 bytes -> pointer at $4f8b + $04 = $4f8f
-03:4f8f GM00_StatePointer_02
+; Phase $02: $02 * 2 = $04 bytes -> pointer at $4f8b + $04 = $4f8f
+03:4f8f GS00_PhasePointer_02
 03:4f8f .data:2
-; State $03: $03 * 2 = $06 bytes -> pointer at $4f8b + $06 = $4f91
-03:4f91 GM00_StatePointer_03
+; Phase $03: $03 * 2 = $06 bytes -> pointer at $4f8b + $06 = $4f91
+03:4f91 GS00_PhasePointer_03
 03:4f91 .data:2
-; State $04: $04 * 2 = $08 bytes -> pointer at $4f8b + $08 = $4f93
-03:4f93 GM00_StatePointer_04
+; Phase $04: $04 * 2 = $08 bytes -> pointer at $4f8b + $08 = $4f93
+03:4f93 GS00_PhasePointer_04
 03:4f93 .data:2
 
-03:4f95 GM00_GameState_00_TitleScreenInit
-03:5049 GM00_GameState_01_TitleScreenIdle
-03:5084 GM00_GameState_02_TitleScreenTransition
-03:51f3 GM00_GameState_03_ContinueSavedGameScreenInit
-03:5366 GM00_GS03_ContinueSavedGameScreen_GameStateLookupTable
+03:4f95 GS00_StatePhase_00_TitleScreenInit
+03:5049 GS00_StatePhase_01_TitleScreenIdle
+03:5084 GS00_StatePhase_02_TitleScreenTransition
+03:51f3 GS00_StatePhase_03_ContinueSavedGameScreenInit
+03:5366 GS00_SP03_ContinueSavedGameScreen_StatePhaseLookupTable
 03:5366 .data:3
-03:5369 GM00_GS03_ContinueSavedGameScreen_GameModeLookupTable
+03:5369 GS00_SP03_ContinueSavedGameScreen_GameStateLookupTable
 03:5369 .data:3
-03:536c GM00_GameState_04_ContinueSavedGameScreenIdle
+03:536c GS00_StatePhase_04_ContinueSavedGameScreenIdle
 
 ; =============================================================================
 ; BANK 006

@@ -8209,7 +8209,7 @@ jr_00c_6170:
 jr_00c_6174:
     ld bc, $0110                                  ; $6174: $01 $10 $01
     db $10                                        ; $6177: $10
-    ld bc, GM06_GameState_04_TODO                 ; $6178: $01 $10 $23
+    ld bc, GS06_StatePhase_04_TODO                ; $6178: $01 $10 $23
     stop                                          ; $617b: $10 $00
     inc d                                         ; $617d: $14
     nop                                           ; $617e: $00
@@ -8262,7 +8262,7 @@ jr_00c_6174:
     db $10                                        ; $61b3: $10
     ld bc, $0110                                  ; $61b4: $01 $10 $01
     db $10                                        ; $61b7: $10
-    ld bc, GM06_GameState_04_TODO                 ; $61b8: $01 $10 $23
+    ld bc, GS06_StatePhase_04_TODO                ; $61b8: $01 $10 $23
     stop                                          ; $61bb: $10 $00
     inc d                                         ; $61bd: $14
     nop                                           ; $61be: $00
@@ -8315,7 +8315,7 @@ jr_00c_6174:
     db $10                                        ; $61f3: $10
     ld bc, $0110                                  ; $61f4: $01 $10 $01
     db $10                                        ; $61f7: $10
-    ld bc, GM06_GameState_04_TODO                 ; $61f8: $01 $10 $23
+    ld bc, GS06_StatePhase_04_TODO                ; $61f8: $01 $10 $23
     stop                                          ; $61fb: $10 $00
     inc d                                         ; $61fd: $14
     nop                                           ; $61fe: $00
@@ -8368,7 +8368,7 @@ jr_00c_6174:
     db $10                                        ; $6233: $10
     ld bc, $0110                                  ; $6234: $01 $10 $01
     db $10                                        ; $6237: $10
-    ld bc, GM06_GameState_04_TODO                 ; $6238: $01 $10 $23
+    ld bc, GS06_StatePhase_04_TODO                ; $6238: $01 $10 $23
     stop                                          ; $623b: $10 $00
     inc d                                         ; $623d: $14
     nop                                           ; $623e: $00
@@ -8423,7 +8423,7 @@ jr_00c_6174:
     db $10                                        ; $6273: $10
     ld bc, $0110                                  ; $6274: $01 $10 $01
     db $10                                        ; $6277: $10
-    ld bc, GM06_GameState_04_TODO                 ; $6278: $01 $10 $23
+    ld bc, GS06_StatePhase_04_TODO                ; $6278: $01 $10 $23
     stop                                          ; $627b: $10 $00
     inc d                                         ; $627d: $14
     nop                                           ; $627e: $00
@@ -8480,7 +8480,7 @@ jr_00c_6286:
     db $10                                        ; $62b3: $10
     ld bc, $0110                                  ; $62b4: $01 $10 $01
     db $10                                        ; $62b7: $10
-    ld bc, GM06_GameState_04_TODO                 ; $62b8: $01 $10 $23
+    ld bc, GS06_StatePhase_04_TODO                ; $62b8: $01 $10 $23
     stop                                          ; $62bb: $10 $00
     inc d                                         ; $62bd: $14
     nop                                           ; $62be: $00
@@ -8539,7 +8539,7 @@ jr_00c_62c6:
     db $10                                        ; $62f5: $10
     dec hl                                        ; $62f6: $2b
     db $10                                        ; $62f7: $10
-    ld bc, GM06_GameState_04_TODO                 ; $62f8: $01 $10 $23
+    ld bc, GS06_StatePhase_04_TODO                ; $62f8: $01 $10 $23
     stop                                          ; $62fb: $10 $00
     inc d                                         ; $62fd: $14
     nop                                           ; $62fe: $00
@@ -8655,7 +8655,7 @@ jr_00c_634a:
     db $10                                        ; $6373: $10
     ld bc, $0110                                  ; $6374: $01 $10 $01
     db $10                                        ; $6377: $10
-    ld bc, GM06_GameState_04_TODO                 ; $6378: $01 $10 $23
+    ld bc, GS06_StatePhase_04_TODO                ; $6378: $01 $10 $23
     stop                                          ; $637b: $10 $00
     inc d                                         ; $637d: $14
     nop                                           ; $637e: $00
@@ -8710,7 +8710,7 @@ jr_00c_634a:
     db $10                                        ; $63b3: $10
     ld bc, $0110                                  ; $63b4: $01 $10 $01
     db $10                                        ; $63b7: $10
-    ld bc, GM06_GameState_04_TODO                 ; $63b8: $01 $10 $23
+    ld bc, GS06_StatePhase_04_TODO                ; $63b8: $01 $10 $23
     stop                                          ; $63bb: $10 $00
     inc d                                         ; $63bd: $14
     nop                                           ; $63be: $00
@@ -8767,7 +8767,7 @@ jr_00c_63c6:
     db $10                                        ; $63f3: $10
     ld bc, $0110                                  ; $63f4: $01 $10 $01
     db $10                                        ; $63f7: $10
-    ld bc, GM06_GameState_04_TODO                 ; $63f8: $01 $10 $23
+    ld bc, GS06_StatePhase_04_TODO                ; $63f8: $01 $10 $23
     stop                                          ; $63fb: $10 $00
     inc d                                         ; $63fd: $14
     nop                                           ; $63fe: $00
@@ -8824,7 +8824,7 @@ jr_00c_6406:
     db $10                                        ; $6433: $10
     ld bc, $0110                                  ; $6434: $01 $10 $01
     db $10                                        ; $6437: $10
-    ld bc, GM06_GameState_04_TODO                 ; $6438: $01 $10 $23
+    ld bc, GS06_StatePhase_04_TODO                ; $6438: $01 $10 $23
     stop                                          ; $643b: $10 $00
     inc d                                         ; $643d: $14
     nop                                           ; $643e: $00
@@ -8881,7 +8881,7 @@ jr_00c_6444:
     db $10                                        ; $6473: $10
     ld bc, $0110                                  ; $6474: $01 $10 $01
     db $10                                        ; $6477: $10
-    ld bc, GM06_GameState_04_TODO                 ; $6478: $01 $10 $23
+    ld bc, GS06_StatePhase_04_TODO                ; $6478: $01 $10 $23
     stop                                          ; $647b: $10 $00
     inc d                                         ; $647d: $14
     nop                                           ; $647e: $00
@@ -8938,7 +8938,7 @@ jr_00c_6484:
     db $10                                        ; $64b3: $10
     ld bc, $0110                                  ; $64b4: $01 $10 $01
     db $10                                        ; $64b7: $10
-    ld bc, GM06_GameState_04_TODO                 ; $64b8: $01 $10 $23
+    ld bc, GS06_StatePhase_04_TODO                ; $64b8: $01 $10 $23
     stop                                          ; $64bb: $10 $00
     inc d                                         ; $64bd: $14
     nop                                           ; $64be: $00
@@ -8997,7 +8997,7 @@ jr_00c_64c6:
     db $10                                        ; $64f3: $10
     ld bc, $0110                                  ; $64f4: $01 $10 $01
     db $10                                        ; $64f7: $10
-    ld bc, GM06_GameState_04_TODO                 ; $64f8: $01 $10 $23
+    ld bc, GS06_StatePhase_04_TODO                ; $64f8: $01 $10 $23
     stop                                          ; $64fb: $10 $00
     inc d                                         ; $64fd: $14
     nop                                           ; $64fe: $00
@@ -9056,7 +9056,7 @@ jr_00c_6506:
     db $10                                        ; $6533: $10
     ld bc, $0110                                  ; $6534: $01 $10 $01
     db $10                                        ; $6537: $10
-    ld bc, GM06_GameState_04_TODO                 ; $6538: $01 $10 $23
+    ld bc, GS06_StatePhase_04_TODO                ; $6538: $01 $10 $23
     stop                                          ; $653b: $10 $00
     inc d                                         ; $653d: $14
     nop                                           ; $653e: $00
@@ -9115,7 +9115,7 @@ jr_00c_6546:
     db $10                                        ; $6573: $10
     ld bc, $0110                                  ; $6574: $01 $10 $01
     db $10                                        ; $6577: $10
-    ld bc, GM06_GameState_04_TODO                 ; $6578: $01 $10 $23
+    ld bc, GS06_StatePhase_04_TODO                ; $6578: $01 $10 $23
     stop                                          ; $657b: $10 $00
     inc d                                         ; $657d: $14
     nop                                           ; $657e: $00
@@ -9174,7 +9174,7 @@ jr_00c_6586:
     db $10                                        ; $65b3: $10
     ld bc, $0110                                  ; $65b4: $01 $10 $01
     db $10                                        ; $65b7: $10
-    ld bc, GM06_GameState_04_TODO                 ; $65b8: $01 $10 $23
+    ld bc, GS06_StatePhase_04_TODO                ; $65b8: $01 $10 $23
     stop                                          ; $65bb: $10 $00
     inc d                                         ; $65bd: $14
     nop                                           ; $65be: $00

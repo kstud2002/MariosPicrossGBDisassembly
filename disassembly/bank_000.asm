@@ -444,7 +444,7 @@ HiddenProgrammerCredits::
 TODO::
     db $5f, $02, $03, $0f, $00
 
-GameModeDispatcher::
+GameStateDispatcher::
     ld e, a                                       ; $0373: $5f
     add a                                         ; $0374: $87
     add e                                         ; $0375: $83
@@ -6924,7 +6924,7 @@ jr_000_2104:
     ret                                           ; $2110: $c9
 
 
-GameMode_06_TODO_StateDispatcher::
+GameState_06_TODO_PhaseDispatcher::
     ld a, [$c31e]                                 ; $2111: $fa $1e $c3
     ld [$d834], a                                 ; $2114: $ea $34 $d8
     ld a, [$d837]                                 ; $2117: $fa $37 $d8
@@ -6941,142 +6941,142 @@ GameMode_06_TODO_StateDispatcher::
 
 jr_000_212b:
     ld a, $2a                                     ; $212b: $3e $2a
-    ld [GameState_Current], a                     ; $212d: $ea $35 $d6
+    ld [StatePhase_Current], a                    ; $212d: $ea $35 $d6
 
 jr_000_2130:
-    ld a, [GameState_Current]                     ; $2130: $fa $35 $d6
+    ld a, [StatePhase_Current]                    ; $2130: $fa $35 $d6
     rst RST_18                                    ; $2133: $df
 
-GM06_StatePointer_00::
+GS06_PhasePointer_00::
     db $8a, $21
 
-GM06_StatePointer_01::
+GS06_PhasePointer_01::
     db $82, $22
 
-GM06_StatePointer_02::
+GS06_PhasePointer_02::
     db $aa, $22
 
-GM06_StatePointer_03::
+GS06_PhasePointer_03::
     db $f2, $22
 
-GM06_StatePointer_04::
+GS06_PhasePointer_04::
     db $10, $23
 
-GM06_StatePointer_05::
+GS06_PhasePointer_05::
     db $58, $23
 
-GM06_StatePointer_06::
+GS06_PhasePointer_06::
     db $76, $23
 
-GM06_StatePointer_07::
+GS06_PhasePointer_07::
     db $9e, $23
 
-GM06_StatePointer_08::
+GS06_PhasePointer_08::
     db $c6, $23
 
-GM06_StatePointer_09::
+GS06_PhasePointer_09::
     db $6d, $24
 
-GM06_StatePointer_0a::
+GS06_PhasePointer_0a::
     db $92, $24
 
-GM06_StatePointer_0b::
+GS06_PhasePointer_0b::
     db $ab, $24
 
-GM06_StatePointer_0c::
+GS06_PhasePointer_0c::
     db $d3, $24
 
-GM06_StatePointer_0d::
+GS06_PhasePointer_0d::
     db $01, $25
 
-GM06_StatePointer_0e::
+GS06_PhasePointer_0e::
     db $49, $25
 
-GM06_StatePointer_0f::
+GS06_PhasePointer_0f::
     db $67, $25
 
-GM06_StatePointer_10::
+GS06_PhasePointer_10::
     db $8f, $25
 
-GM06_StatePointer_11::
+GS06_PhasePointer_11::
     db $d7, $25
 
-GM06_StatePointer_12::
+GS06_PhasePointer_12::
     db $f5, $25
 
-GM06_StatePointer_13::
+GS06_PhasePointer_13::
     db $2f, $26
 
-GM06_StatePointer_14::
+GS06_PhasePointer_14::
     db $6b, $26
 
-GM06_StatePointer_15::
+GS06_PhasePointer_15::
     db $b3, $26
 
-GM06_StatePointer_16::
+GS06_PhasePointer_16::
     db $d1, $26
 
-GM06_StatePointer_17::
+GS06_PhasePointer_17::
     db $f9, $26
 
-GM06_StatePointer_18::
+GS06_PhasePointer_18::
     db $41, $27
 
-GM06_StatePointer_19::
+GS06_PhasePointer_19::
     db $5f, $27
 
-GM06_StatePointer_1a::
+GS06_PhasePointer_1a::
     db $9e, $27
 
-GM06_StatePointer_1b::
+GS06_PhasePointer_1b::
     db $d4, $27
 
-GM06_StatePointer_1c::
+GS06_PhasePointer_1c::
     db $e6, $27
 
-GM06_StatePointer_1d::
+GS06_PhasePointer_1d::
     db $0a, $28
 
-GM06_StatePointer_1e::
+GS06_PhasePointer_1e::
     db $3b, $28
 
-GM06_StatePointer_1f::
+GS06_PhasePointer_1f::
     db $70, $28
 
-GM06_StatePointer_20::
+GS06_PhasePointer_20::
     db $9a, $28
 
-GM06_StatePointer_21::
+GS06_PhasePointer_21::
     db $c2, $28
 
-GM06_StatePointer_22::
+GS06_PhasePointer_22::
     db $f7, $28
 
-GM06_StatePointer_23::
+GS06_PhasePointer_23::
     db $36, $29
 
-GM06_StatePointer_24::
+GS06_PhasePointer_24::
     db $72, $29
 
-GM06_StatePointer_25::
+GS06_PhasePointer_25::
     db $cc, $29
 
-GM06_StatePointer_26::
+GS06_PhasePointer_26::
     db $f4, $29
 
-GM06_StatePointer_27::
+GS06_PhasePointer_27::
     db $33, $2a
 
-GM06_StatePointer_28::
+GS06_PhasePointer_28::
     db $7b, $2a
 
-GM06_StatePointer_29::
+GS06_PhasePointer_29::
     db $ac, $2a
 
-GM06_StatePointer_2a::
+GS06_PhasePointer_2a::
     db $24, $2b
 
-GM06_GameState_00_TODO::
+GS06_StatePhase_00_TODO::
     ld a, $43                                     ; $218a: $3e $43
     ld [$c32e], a                                 ; $218c: $ea $2e $c3
     xor a                                         ; $218f: $af
@@ -7167,13 +7167,13 @@ GM06_GameState_00_TODO::
     ld c, $01                                     ; $2272: $0e $01
     ld de, $0014                                  ; $2274: $11 $14 $00
     call Call_000_040d                            ; $2277: $cd $0d $04
-    ld hl, GameState_Current                      ; $227a: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $227a: $21 $35 $d6
     inc [hl]                                      ; $227d: $34
     call $6fb9                                    ; $227e: $cd $b9 $6f
     ret                                           ; $2281: $c9
 
 
-GM06_GameState_01_TODO::
+GS06_StatePhase_01_TODO::
     call $7918                                    ; $2282: $cd $18 $79
     call Call_000_3093                            ; $2285: $cd $93 $30
     call Call_000_2b6e                            ; $2288: $cd $6e $2b
@@ -7188,12 +7188,12 @@ GM06_GameState_01_TODO::
     ld a, $6a                                     ; $229d: $3e $6a
     ld [$d82e], a                                 ; $229f: $ea $2e $d8
     call Call_000_323e                            ; $22a2: $cd $3e $32
-    ld hl, GameState_Current                      ; $22a5: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $22a5: $21 $35 $d6
     inc [hl]                                      ; $22a8: $34
     ret                                           ; $22a9: $c9
 
 
-GM06_GameState_02_TODO::
+GS06_StatePhase_02_TODO::
     call $7918                                    ; $22aa: $cd $18 $79
     call Call_000_3093                            ; $22ad: $cd $93 $30
     call Call_000_2b6e                            ; $22b0: $cd $6e $2b
@@ -7217,7 +7217,7 @@ Jump_000_22ca:
     ld a, $78                                     ; $22d4: $3e $78
     ld [$d63c], a                                 ; $22d6: $ea $3c $d6
     call Call_000_323e                            ; $22d9: $cd $3e $32
-    ld hl, GameState_Current                      ; $22dc: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $22dc: $21 $35 $d6
     inc [hl]                                      ; $22df: $34
     ret                                           ; $22e0: $c9
 
@@ -7233,7 +7233,7 @@ Jump_000_22ca:
     dec [hl]                                      ; $22f0: $35
     nop                                           ; $22f1: $00
 
-GM06_GameState_03_TODO::
+GS06_StatePhase_03_TODO::
     call $7918                                    ; $22f2: $cd $18 $79
     ld a, $00                                     ; $22f5: $3e $00
     call Call_000_19bd                            ; $22f7: $cd $bd $19
@@ -7245,12 +7245,12 @@ GM06_GameState_03_TODO::
     ld a, $6b                                     ; $2303: $3e $6b
     ld [$d82e], a                                 ; $2305: $ea $2e $d8
     call Call_000_323e                            ; $2308: $cd $3e $32
-    ld hl, GameState_Current                      ; $230b: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $230b: $21 $35 $d6
     inc [hl]                                      ; $230e: $34
     ret                                           ; $230f: $c9
 
 
-GM06_GameState_04_TODO::
+GS06_StatePhase_04_TODO::
     call $7918                                    ; $2310: $cd $18 $79
     call Call_000_3093                            ; $2313: $cd $93 $30
     call Call_000_2b6e                            ; $2316: $cd $6e $2b
@@ -7272,7 +7272,7 @@ GM06_GameState_04_TODO::
     ld a, $78                                     ; $233a: $3e $78
     ld [$d63c], a                                 ; $233c: $ea $3c $d6
     call Call_000_323e                            ; $233f: $cd $3e $32
-    ld hl, GameState_Current                      ; $2342: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $2342: $21 $35 $d6
     inc [hl]                                      ; $2345: $34
     ret                                           ; $2346: $c9
 
@@ -7288,7 +7288,7 @@ GM06_GameState_04_TODO::
     dec [hl]                                      ; $2356: $35
     nop                                           ; $2357: $00
 
-GM06_GameState_05_TODO::
+GS06_StatePhase_05_TODO::
     call $7918                                    ; $2358: $cd $18 $79
     ld a, $00                                     ; $235b: $3e $00
     call Call_000_19bd                            ; $235d: $cd $bd $19
@@ -7300,12 +7300,12 @@ GM06_GameState_05_TODO::
     ld a, $6b                                     ; $2369: $3e $6b
     ld [$d82e], a                                 ; $236b: $ea $2e $d8
     call Call_000_323e                            ; $236e: $cd $3e $32
-    ld hl, GameState_Current                      ; $2371: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $2371: $21 $35 $d6
     inc [hl]                                      ; $2374: $34
     ret                                           ; $2375: $c9
 
 
-GM06_GameState_06_TODO::
+GS06_StatePhase_06_TODO::
     call $7918                                    ; $2376: $cd $18 $79
     call Call_000_3093                            ; $2379: $cd $93 $30
     call Call_000_2b6e                            ; $237c: $cd $6e $2b
@@ -7320,12 +7320,12 @@ GM06_GameState_06_TODO::
     ld a, $6b                                     ; $2391: $3e $6b
     ld [$d82e], a                                 ; $2393: $ea $2e $d8
     call Call_000_323e                            ; $2396: $cd $3e $32
-    ld hl, GameState_Current                      ; $2399: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $2399: $21 $35 $d6
     inc [hl]                                      ; $239c: $34
     ret                                           ; $239d: $c9
 
 
-GM06_GameState_07_TODO::
+GS06_StatePhase_07_TODO::
     call $7918                                    ; $239e: $cd $18 $79
     call Call_000_3093                            ; $23a1: $cd $93 $30
     call Call_000_2b6e                            ; $23a4: $cd $6e $2b
@@ -7340,12 +7340,12 @@ GM06_GameState_07_TODO::
     ld a, $6b                                     ; $23b9: $3e $6b
     ld [$d82e], a                                 ; $23bb: $ea $2e $d8
     call Call_000_323e                            ; $23be: $cd $3e $32
-    ld hl, GameState_Current                      ; $23c1: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $23c1: $21 $35 $d6
     inc [hl]                                      ; $23c4: $34
     ret                                           ; $23c5: $c9
 
 
-GM06_GameState_08_TODO::
+GS06_StatePhase_08_TODO::
     call $7918                                    ; $23c6: $cd $18 $79
     call Call_000_3093                            ; $23c9: $cd $93 $30
     call Call_000_2b6e                            ; $23cc: $cd $6e $2b
@@ -7362,7 +7362,7 @@ GM06_GameState_08_TODO::
     ld a, $23                                     ; $23e3: $3e $23
     ld [$d832], a                                 ; $23e5: $ea $32 $d8
     call Call_000_323e                            ; $23e8: $cd $3e $32
-    ld hl, GameState_Current                      ; $23eb: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $23eb: $21 $35 $d6
     inc [hl]                                      ; $23ee: $34
     ret                                           ; $23ef: $c9
 
@@ -7437,7 +7437,7 @@ Call_000_2414:
     ld bc, $0110                                  ; $2445: $01 $10 $01
     stop                                          ; $2448: $10 $00
     nop                                           ; $244a: $00
-    jr nz, GM06_GameState_09_TODO                 ; $244b: $20 $20
+    jr nz, GS06_StatePhase_09_TODO                ; $244b: $20 $20
 
     jr nz, @+$22                                  ; $244d: $20 $20
 
@@ -7470,14 +7470,14 @@ jr_000_245e:
     nop                                           ; $246b: $00
     rst $38                                       ; $246c: $ff
 
-GM06_GameState_09_TODO::
+GS06_StatePhase_09_TODO::
     call Call_000_30d6                            ; $246d: $cd $d6 $30
     jr nz, jr_000_247f                            ; $2470: $20 $0d
 
     ld a, $0a                                     ; $2472: $3e $0a
     ld [$d63c], a                                 ; $2474: $ea $3c $d6
     call Call_000_323e                            ; $2477: $cd $3e $32
-    ld hl, GameState_Current                      ; $247a: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $247a: $21 $35 $d6
     inc [hl]                                      ; $247d: $34
 
 jr_000_247e:
@@ -7494,7 +7494,7 @@ jr_000_247f:
     ret                                           ; $2491: $c9
 
 
-GM06_GameState_0a_TODO::
+GS06_StatePhase_0a_TODO::
     call Call_000_3012                            ; $2492: $cd $12 $30
     ret nz                                        ; $2495: $c0
 
@@ -7504,12 +7504,12 @@ GM06_GameState_0a_TODO::
     ld a, $6c                                     ; $249e: $3e $6c
     ld [$d82e], a                                 ; $24a0: $ea $2e $d8
     call Call_000_323e                            ; $24a3: $cd $3e $32
-    ld hl, GameState_Current                      ; $24a6: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $24a6: $21 $35 $d6
     inc [hl]                                      ; $24a9: $34
     ret                                           ; $24aa: $c9
 
 
-GM06_GameState_0b_TODO::
+GS06_StatePhase_0b_TODO::
     call $7918                                    ; $24ab: $cd $18 $79
     call Call_000_3093                            ; $24ae: $cd $93 $30
     call Call_000_2b6e                            ; $24b1: $cd $6e $2b
@@ -7524,12 +7524,12 @@ GM06_GameState_0b_TODO::
     ld a, $6c                                     ; $24c6: $3e $6c
     ld [$d82e], a                                 ; $24c8: $ea $2e $d8
     call Call_000_323e                            ; $24cb: $cd $3e $32
-    ld hl, GameState_Current                      ; $24ce: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $24ce: $21 $35 $d6
     inc [hl]                                      ; $24d1: $34
     ret                                           ; $24d2: $c9
 
 
-GM06_GameState_0c_TODO::
+GS06_StatePhase_0c_TODO::
     call $7918                                    ; $24d3: $cd $18 $79
     call Call_000_3093                            ; $24d6: $cd $93 $30
     call Call_000_2b6e                            ; $24d9: $cd $6e $2b
@@ -7546,12 +7546,12 @@ GM06_GameState_0c_TODO::
     ld a, $6c                                     ; $24f4: $3e $6c
     ld [$d82e], a                                 ; $24f6: $ea $2e $d8
     call Call_000_323e                            ; $24f9: $cd $3e $32
-    ld hl, GameState_Current                      ; $24fc: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $24fc: $21 $35 $d6
     inc [hl]                                      ; $24ff: $34
     ret                                           ; $2500: $c9
 
 
-GM06_GameState_0d_TODO::
+GS06_StatePhase_0d_TODO::
     call $7918                                    ; $2501: $cd $18 $79
     call Call_000_3093                            ; $2504: $cd $93 $30
     call Call_000_2b6e                            ; $2507: $cd $6e $2b
@@ -7573,7 +7573,7 @@ GM06_GameState_0d_TODO::
     ld a, $78                                     ; $252b: $3e $78
     ld [$d63c], a                                 ; $252d: $ea $3c $d6
     call Call_000_323e                            ; $2530: $cd $3e $32
-    ld hl, GameState_Current                      ; $2533: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $2533: $21 $35 $d6
     inc [hl]                                      ; $2536: $34
     ret                                           ; $2537: $c9
 
@@ -7589,7 +7589,7 @@ GM06_GameState_0d_TODO::
     dec [hl]                                      ; $2547: $35
     nop                                           ; $2548: $00
 
-GM06_GameState_0e_TODO::
+GS06_StatePhase_0e_TODO::
     call $7918                                    ; $2549: $cd $18 $79
     ld a, $00                                     ; $254c: $3e $00
     call Call_000_19bd                            ; $254e: $cd $bd $19
@@ -7601,12 +7601,12 @@ GM06_GameState_0e_TODO::
     ld a, $6d                                     ; $255a: $3e $6d
     ld [$d82e], a                                 ; $255c: $ea $2e $d8
     call Call_000_323e                            ; $255f: $cd $3e $32
-    ld hl, GameState_Current                      ; $2562: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $2562: $21 $35 $d6
     inc [hl]                                      ; $2565: $34
     ret                                           ; $2566: $c9
 
 
-GM06_GameState_0f_TODO::
+GS06_StatePhase_0f_TODO::
     call $7918                                    ; $2567: $cd $18 $79
     call Call_000_3093                            ; $256a: $cd $93 $30
     call Call_000_2b6e                            ; $256d: $cd $6e $2b
@@ -7621,12 +7621,12 @@ GM06_GameState_0f_TODO::
     ld a, $6d                                     ; $2582: $3e $6d
     ld [$d82e], a                                 ; $2584: $ea $2e $d8
     call Call_000_323e                            ; $2587: $cd $3e $32
-    ld hl, GameState_Current                      ; $258a: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $258a: $21 $35 $d6
     inc [hl]                                      ; $258d: $34
     ret                                           ; $258e: $c9
 
 
-GM06_GameState_10_TODO::
+GS06_StatePhase_10_TODO::
     call $7918                                    ; $258f: $cd $18 $79
     call Call_000_3093                            ; $2592: $cd $93 $30
     call Call_000_2b6e                            ; $2595: $cd $6e $2b
@@ -7648,7 +7648,7 @@ GM06_GameState_10_TODO::
     ld a, $78                                     ; $25b9: $3e $78
     ld [$d63c], a                                 ; $25bb: $ea $3c $d6
     call Call_000_323e                            ; $25be: $cd $3e $32
-    ld hl, GameState_Current                      ; $25c1: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $25c1: $21 $35 $d6
     inc [hl]                                      ; $25c4: $34
     ret                                           ; $25c5: $c9
 
@@ -7666,7 +7666,7 @@ GM06_GameState_10_TODO::
     cpl                                           ; $25d5: $2f
     nop                                           ; $25d6: $00
 
-GM06_GameState_11_TODO::
+GS06_StatePhase_11_TODO::
     call $7918                                    ; $25d7: $cd $18 $79
     ld a, $00                                     ; $25da: $3e $00
     call Call_000_19bd                            ; $25dc: $cd $bd $19
@@ -7678,12 +7678,12 @@ GM06_GameState_11_TODO::
     ld a, $6d                                     ; $25e8: $3e $6d
     ld [$d82e], a                                 ; $25ea: $ea $2e $d8
     call Call_000_323e                            ; $25ed: $cd $3e $32
-    ld hl, GameState_Current                      ; $25f0: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $25f0: $21 $35 $d6
     inc [hl]                                      ; $25f3: $34
     ret                                           ; $25f4: $c9
 
 
-GM06_GameState_12_TODO::
+GS06_StatePhase_12_TODO::
     call $7918                                    ; $25f5: $cd $18 $79
     call Call_000_3093                            ; $25f8: $cd $93 $30
     call Call_000_2b6e                            ; $25fb: $cd $6e $2b
@@ -7700,7 +7700,7 @@ GM06_GameState_12_TODO::
     ld a, $26                                     ; $2612: $3e $26
     ld [$d832], a                                 ; $2614: $ea $32 $d8
     call Call_000_323e                            ; $2617: $cd $3e $32
-    ld hl, GameState_Current                      ; $261a: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $261a: $21 $35 $d6
     inc [hl]                                      ; $261d: $34
     ret                                           ; $261e: $c9
 
@@ -7716,7 +7716,7 @@ GM06_GameState_12_TODO::
     nop                                           ; $262d: $00
     rst $38                                       ; $262e: $ff
 
-GM06_GameState_13_TODO::
+GS06_StatePhase_13_TODO::
     call Call_000_30d6                            ; $262f: $cd $d6 $30
     jr nz, jr_000_2658                            ; $2632: $20 $24
 
@@ -7731,7 +7731,7 @@ GM06_GameState_13_TODO::
     ld a, $6e                                     ; $264b: $3e $6e
     ld [$d82e], a                                 ; $264d: $ea $2e $d8
     call Call_000_323e                            ; $2650: $cd $3e $32
-    ld hl, GameState_Current                      ; $2653: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $2653: $21 $35 $d6
     inc [hl]                                      ; $2656: $34
     ret                                           ; $2657: $c9
 
@@ -7746,7 +7746,7 @@ jr_000_2658:
     ret                                           ; $266a: $c9
 
 
-GM06_GameState_14_TODO::
+GS06_StatePhase_14_TODO::
     call $7918                                    ; $266b: $cd $18 $79
     call Call_000_3093                            ; $266e: $cd $93 $30
     call Call_000_2b6e                            ; $2671: $cd $6e $2b
@@ -7768,7 +7768,7 @@ GM06_GameState_14_TODO::
     ld a, $78                                     ; $2695: $3e $78
     ld [$d63c], a                                 ; $2697: $ea $3c $d6
     call Call_000_323e                            ; $269a: $cd $3e $32
-    ld hl, GameState_Current                      ; $269d: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $269d: $21 $35 $d6
     inc [hl]                                      ; $26a0: $34
     ret                                           ; $26a1: $c9
 
@@ -7784,7 +7784,7 @@ GM06_GameState_14_TODO::
     dec [hl]                                      ; $26b1: $35
     nop                                           ; $26b2: $00
 
-GM06_GameState_15_TODO::
+GS06_StatePhase_15_TODO::
     call $7918                                    ; $26b3: $cd $18 $79
     ld a, $00                                     ; $26b6: $3e $00
     call Call_000_19bd                            ; $26b8: $cd $bd $19
@@ -7796,12 +7796,12 @@ GM06_GameState_15_TODO::
     ld a, $6e                                     ; $26c4: $3e $6e
     ld [$d82e], a                                 ; $26c6: $ea $2e $d8
     call Call_000_323e                            ; $26c9: $cd $3e $32
-    ld hl, GameState_Current                      ; $26cc: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $26cc: $21 $35 $d6
     inc [hl]                                      ; $26cf: $34
     ret                                           ; $26d0: $c9
 
 
-GM06_GameState_16_TODO::
+GS06_StatePhase_16_TODO::
     call $7918                                    ; $26d1: $cd $18 $79
     call Call_000_3093                            ; $26d4: $cd $93 $30
     call Call_000_2b6e                            ; $26d7: $cd $6e $2b
@@ -7816,12 +7816,12 @@ GM06_GameState_16_TODO::
     ld a, $6f                                     ; $26ec: $3e $6f
     ld [$d82e], a                                 ; $26ee: $ea $2e $d8
     call Call_000_323e                            ; $26f1: $cd $3e $32
-    ld hl, GameState_Current                      ; $26f4: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $26f4: $21 $35 $d6
     inc [hl]                                      ; $26f7: $34
     ret                                           ; $26f8: $c9
 
 
-GM06_GameState_17_TODO::
+GS06_StatePhase_17_TODO::
     call $7918                                    ; $26f9: $cd $18 $79
     call Call_000_3093                            ; $26fc: $cd $93 $30
     call Call_000_2b6e                            ; $26ff: $cd $6e $2b
@@ -7843,7 +7843,7 @@ GM06_GameState_17_TODO::
     ld a, $78                                     ; $2723: $3e $78
     ld [$d63c], a                                 ; $2725: $ea $3c $d6
     call Call_000_323e                            ; $2728: $cd $3e $32
-    ld hl, GameState_Current                      ; $272b: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $272b: $21 $35 $d6
     inc [hl]                                      ; $272e: $34
     ret                                           ; $272f: $c9
 
@@ -7858,7 +7858,7 @@ GM06_GameState_17_TODO::
     ld [hl-], a                                   ; $273f: $32
     nop                                           ; $2740: $00
 
-GM06_GameState_18_TODO::
+GS06_StatePhase_18_TODO::
     call $7918                                    ; $2741: $cd $18 $79
     ld a, $00                                     ; $2744: $3e $00
     call Call_000_19bd                            ; $2746: $cd $bd $19
@@ -7870,12 +7870,12 @@ GM06_GameState_18_TODO::
     ld a, $6f                                     ; $2752: $3e $6f
     ld [$d82e], a                                 ; $2754: $ea $2e $d8
     call Call_000_323e                            ; $2757: $cd $3e $32
-    ld hl, GameState_Current                      ; $275a: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $275a: $21 $35 $d6
     inc [hl]                                      ; $275d: $34
     ret                                           ; $275e: $c9
 
 
-GM06_GameState_19_TODO::
+GS06_StatePhase_19_TODO::
     call $7918                                    ; $275f: $cd $18 $79
     call Call_000_3093                            ; $2762: $cd $93 $30
     call Call_000_2b6e                            ; $2765: $cd $6e $2b
@@ -7893,7 +7893,7 @@ GM06_GameState_19_TODO::
     ld a, $27                                     ; $277e: $3e $27
     ld [$d832], a                                 ; $2780: $ea $32 $d8
     call Call_000_323e                            ; $2783: $cd $3e $32
-    ld hl, GameState_Current                      ; $2786: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $2786: $21 $35 $d6
     inc [hl]                                      ; $2789: $34
     ret                                           ; $278a: $c9
 
@@ -7911,7 +7911,7 @@ GM06_GameState_19_TODO::
     nop                                           ; $279c: $00
     rst $38                                       ; $279d: $ff
 
-GM06_GameState_1a_TODO::
+GS06_StatePhase_1a_TODO::
     call Call_000_30d6                            ; $279e: $cd $d6 $30
     jr nz, jr_000_27c1                            ; $27a1: $20 $1e
 
@@ -7924,7 +7924,7 @@ GM06_GameState_1a_TODO::
     ld a, $6f                                     ; $27b4: $3e $6f
     ld [$d82e], a                                 ; $27b6: $ea $2e $d8
     call Call_000_323e                            ; $27b9: $cd $3e $32
-    ld hl, GameState_Current                      ; $27bc: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $27bc: $21 $35 $d6
     inc [hl]                                      ; $27bf: $34
     ret                                           ; $27c0: $c9
 
@@ -7939,19 +7939,19 @@ jr_000_27c1:
     ret                                           ; $27d3: $c9
 
 
-GM06_GameState_1b_TODO::
+GS06_StatePhase_1b_TODO::
     call $7918                                    ; $27d4: $cd $18 $79
     call Call_000_3093                            ; $27d7: $cd $93 $30
     call Call_000_2b6e                            ; $27da: $cd $6e $2b
     ret nz                                        ; $27dd: $c0
 
     call Call_000_323e                            ; $27de: $cd $3e $32
-    ld hl, GameState_Current                      ; $27e1: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $27e1: $21 $35 $d6
     inc [hl]                                      ; $27e4: $34
     ret                                           ; $27e5: $c9
 
 
-GM06_GameState_1c_TODO::
+GS06_StatePhase_1c_TODO::
     call $7918                                    ; $27e6: $cd $18 $79
     call Call_000_3012                            ; $27e9: $cd $12 $30
     call Call_000_3160                            ; $27ec: $cd $60 $31
@@ -7965,12 +7965,12 @@ GM06_GameState_1c_TODO::
     ld a, $70                                     ; $27fd: $3e $70
     ld [$d82e], a                                 ; $27ff: $ea $2e $d8
     call Call_000_323e                            ; $2802: $cd $3e $32
-    ld hl, GameState_Current                      ; $2805: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $2805: $21 $35 $d6
     inc [hl]                                      ; $2808: $34
     ret                                           ; $2809: $c9
 
 
-GM06_GameState_1d_TODO::
+GS06_StatePhase_1d_TODO::
     call $7918                                    ; $280a: $cd $18 $79
     call Call_000_3093                            ; $280d: $cd $93 $30
     call Call_000_2b6e                            ; $2810: $cd $6e $2b
@@ -7988,12 +7988,12 @@ GM06_GameState_1d_TODO::
     ld a, $70                                     ; $282e: $3e $70
     ld [$d82e], a                                 ; $2830: $ea $2e $d8
     call Call_000_323e                            ; $2833: $cd $3e $32
-    ld hl, GameState_Current                      ; $2836: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $2836: $21 $35 $d6
     inc [hl]                                      ; $2839: $34
     ret                                           ; $283a: $c9
 
 
-GM06_GameState_1e_TODO::
+GS06_StatePhase_1e_TODO::
     call $7918                                    ; $283b: $cd $18 $79
     call Call_000_3093                            ; $283e: $cd $93 $30
     call Call_000_2b6e                            ; $2841: $cd $6e $2b
@@ -8011,7 +8011,7 @@ GM06_GameState_1e_TODO::
     ld a, $28                                     ; $285b: $3e $28
     ld [$d832], a                                 ; $285d: $ea $32 $d8
     call Call_000_323e                            ; $2860: $cd $3e $32
-    ld hl, GameState_Current                      ; $2863: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $2863: $21 $35 $d6
     inc [hl]                                      ; $2866: $34
     ret                                           ; $2867: $c9
 
@@ -8023,7 +8023,7 @@ GM06_GameState_1e_TODO::
     nop                                           ; $286e: $00
     rst $38                                       ; $286f: $ff
 
-GM06_GameState_1f_TODO::
+GS06_StatePhase_1f_TODO::
     call Call_000_30d6                            ; $2870: $cd $d6 $30
     jr nz, jr_000_2887                            ; $2873: $20 $12
 
@@ -8032,7 +8032,7 @@ GM06_GameState_1f_TODO::
     ld a, $71                                     ; $287a: $3e $71
     ld [$d82e], a                                 ; $287c: $ea $2e $d8
     call Call_000_323e                            ; $287f: $cd $3e $32
-    ld hl, GameState_Current                      ; $2882: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $2882: $21 $35 $d6
     inc [hl]                                      ; $2885: $34
     ret                                           ; $2886: $c9
 
@@ -8047,7 +8047,7 @@ jr_000_2887:
     ret                                           ; $2899: $c9
 
 
-GM06_GameState_20_TODO::
+GS06_StatePhase_20_TODO::
     call $7918                                    ; $289a: $cd $18 $79
     call Call_000_3093                            ; $289d: $cd $93 $30
     call Call_000_2b6e                            ; $28a0: $cd $6e $2b
@@ -8062,12 +8062,12 @@ GM06_GameState_20_TODO::
     ld a, $71                                     ; $28b5: $3e $71
     ld [$d82e], a                                 ; $28b7: $ea $2e $d8
     call Call_000_323e                            ; $28ba: $cd $3e $32
-    ld hl, GameState_Current                      ; $28bd: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $28bd: $21 $35 $d6
     inc [hl]                                      ; $28c0: $34
     ret                                           ; $28c1: $c9
 
 
-GM06_GameState_21_TODO::
+GS06_StatePhase_21_TODO::
     call $7918                                    ; $28c2: $cd $18 $79
     call Call_000_3093                            ; $28c5: $cd $93 $30
     call Call_000_2b6e                            ; $28c8: $cd $6e $2b
@@ -8085,7 +8085,7 @@ GM06_GameState_21_TODO::
     ld a, $28                                     ; $28e2: $3e $28
     ld [$d832], a                                 ; $28e4: $ea $32 $d8
     call Call_000_323e                            ; $28e7: $cd $3e $32
-    ld hl, GameState_Current                      ; $28ea: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $28ea: $21 $35 $d6
     inc [hl]                                      ; $28ed: $34
     ret                                           ; $28ee: $c9
 
@@ -8099,7 +8099,7 @@ GM06_GameState_21_TODO::
     nop                                           ; $28f5: $00
     rst $38                                       ; $28f6: $ff
 
-GM06_GameState_22_TODO::
+GS06_StatePhase_22_TODO::
     call Call_000_30d6                            ; $28f7: $cd $d6 $30
     jr nz, jr_000_2923                            ; $28fa: $20 $27
 
@@ -8115,7 +8115,7 @@ GM06_GameState_22_TODO::
     ld a, $71                                     ; $2916: $3e $71
     ld [$d82e], a                                 ; $2918: $ea $2e $d8
     call Call_000_323e                            ; $291b: $cd $3e $32
-    ld hl, GameState_Current                      ; $291e: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $291e: $21 $35 $d6
     inc [hl]                                      ; $2921: $34
     ret                                           ; $2922: $c9
 
@@ -8130,7 +8130,7 @@ jr_000_2923:
     ret                                           ; $2935: $c9
 
 
-GM06_GameState_23_TODO::
+GS06_StatePhase_23_TODO::
     call $7918                                    ; $2936: $cd $18 $79
     call Call_000_3093                            ; $2939: $cd $93 $30
     call Call_000_2b6e                            ; $293c: $cd $6e $2b
@@ -8151,7 +8151,7 @@ GM06_GameState_23_TODO::
     ld a, $29                                     ; $295f: $3e $29
     ld [$d832], a                                 ; $2961: $ea $32 $d8
     call Call_000_323e                            ; $2964: $cd $3e $32
-    ld hl, GameState_Current                      ; $2967: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $2967: $21 $35 $d6
     inc [hl]                                      ; $296a: $34
     ret                                           ; $296b: $c9
 
@@ -8164,7 +8164,7 @@ jr_000_2970:
     nop                                           ; $2970: $00
     rst $38                                       ; $2971: $ff
 
-GM06_GameState_24_TODO::
+GS06_StatePhase_24_TODO::
     call Call_000_29c0                            ; $2972: $cd $c0 $29
     call Call_000_30d6                            ; $2975: $cd $d6 $30
     jr nz, jr_000_29a7                            ; $2978: $20 $2d
@@ -8178,7 +8178,7 @@ GM06_GameState_24_TODO::
     ld a, $72                                     ; $298b: $3e $72
     ld [$d82e], a                                 ; $298d: $ea $2e $d8
     call Call_000_323e                            ; $2990: $cd $3e $32
-    ld hl, GameState_Current                      ; $2993: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $2993: $21 $35 $d6
     inc [hl]                                      ; $2996: $34
     rst RST_08                                    ; $2997: $cf
     ld a, $07                                     ; $2998: $3e $07
@@ -8212,7 +8212,7 @@ Call_000_29c0:
     ret                                           ; $29cb: $c9
 
 
-GM06_GameState_25_TODO::
+GS06_StatePhase_25_TODO::
     call $7918                                    ; $29cc: $cd $18 $79
     call Call_000_3093                            ; $29cf: $cd $93 $30
     call Call_000_2b6e                            ; $29d2: $cd $6e $2b
@@ -8227,12 +8227,12 @@ GM06_GameState_25_TODO::
     ld a, $73                                     ; $29e7: $3e $73
     ld [$d82e], a                                 ; $29e9: $ea $2e $d8
     call Call_000_323e                            ; $29ec: $cd $3e $32
-    ld hl, GameState_Current                      ; $29ef: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $29ef: $21 $35 $d6
     inc [hl]                                      ; $29f2: $34
     ret                                           ; $29f3: $c9
 
 
-GM06_GameState_26_TODO::
+GS06_StatePhase_26_TODO::
     call Call_000_31ca                            ; $29f4: $cd $ca $31
     call $7918                                    ; $29f7: $cd $18 $79
     call Call_000_3093                            ; $29fa: $cd $93 $30
@@ -8260,12 +8260,12 @@ jr_000_2a10:
     ld a, $73                                     ; $2a26: $3e $73
     ld [$d82e], a                                 ; $2a28: $ea $2e $d8
     call Call_000_323e                            ; $2a2b: $cd $3e $32
-    ld hl, GameState_Current                      ; $2a2e: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $2a2e: $21 $35 $d6
     inc [hl]                                      ; $2a31: $34
     ret                                           ; $2a32: $c9
 
 
-GM06_GameState_27_TODO::
+GS06_StatePhase_27_TODO::
     call Call_000_31ca                            ; $2a33: $cd $ca $31
     call $7918                                    ; $2a36: $cd $18 $79
     call Call_000_3093                            ; $2a39: $cd $93 $30
@@ -8296,12 +8296,12 @@ jr_000_2a4f:
     ld a, $73                                     ; $2a6e: $3e $73
     ld [$d82e], a                                 ; $2a70: $ea $2e $d8
     call Call_000_323e                            ; $2a73: $cd $3e $32
-    ld hl, GameState_Current                      ; $2a76: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $2a76: $21 $35 $d6
     inc [hl]                                      ; $2a79: $34
     ret                                           ; $2a7a: $c9
 
 
-GM06_GameState_28_TODO::
+GS06_StatePhase_28_TODO::
     call Call_000_31ca                            ; $2a7b: $cd $ca $31
     call $7918                                    ; $2a7e: $cd $18 $79
     call Call_000_3093                            ; $2a81: $cd $93 $30
@@ -8319,12 +8319,12 @@ GM06_GameState_28_TODO::
     ld a, $74                                     ; $2a9f: $3e $74
     ld [$d82e], a                                 ; $2aa1: $ea $2e $d8
     call Call_000_323e                            ; $2aa4: $cd $3e $32
-    ld hl, GameState_Current                      ; $2aa7: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $2aa7: $21 $35 $d6
     inc [hl]                                      ; $2aaa: $34
     ret                                           ; $2aab: $c9
 
 
-GM06_GameState_29_TODO::
+GS06_StatePhase_29_TODO::
     call $7918                                    ; $2aac: $cd $18 $79
     call Call_000_3093                            ; $2aaf: $cd $93 $30
     call Call_000_2b6e                            ; $2ab2: $cd $6e $2b
@@ -8346,7 +8346,7 @@ GM06_GameState_29_TODO::
     bit 0, a                                      ; $2ad7: $cb $47
     jr z, jr_000_2ae0                             ; $2ad9: $28 $05
 
-    ld hl, GameState_Current                      ; $2adb: $21 $35 $d6
+    ld hl, StatePhase_Current                     ; $2adb: $21 $35 $d6
     inc [hl]                                      ; $2ade: $34
     ret                                           ; $2adf: $c9
 
@@ -8376,11 +8376,11 @@ jr_000_2ae0:
     ld [$d82e], a                                 ; $2b18: $ea $2e $d8
     call $7beb                                    ; $2b1b: $cd $eb $7b
     ld a, $01                                     ; $2b1e: $3e $01
-    ld [GameState_Current], a                     ; $2b20: $ea $35 $d6
+    ld [StatePhase_Current], a                    ; $2b20: $ea $35 $d6
     ret                                           ; $2b23: $c9
 
 
-GM06_GameState_2a_TODO::
+GS06_StatePhase_2a_TODO::
     ld bc, $003c                                  ; $2b24: $01 $3c $00
     call Call_000_05fa                            ; $2b27: $cd $fa $05
     ld a, $05                                     ; $2b2a: $3e $05
@@ -8407,9 +8407,9 @@ GM06_GameState_2a_TODO::
     ld [$c33c], a                                 ; $2b5e: $ea $3c $c3
     ld [$c350], a                                 ; $2b61: $ea $50 $c3
     xor a                                         ; $2b64: $af
-    ld [GameState_Current], a                     ; $2b65: $ea $35 $d6
+    ld [StatePhase_Current], a                    ; $2b65: $ea $35 $d6
     ld a, $02                                     ; $2b68: $3e $02
-    ld [GameMode_Current], a                      ; $2b6a: $ea $34 $d6
+    ld [GameState_Current], a                     ; $2b6a: $ea $34 $d6
     ret                                           ; $2b6d: $c9
 
 
@@ -9226,7 +9226,7 @@ jr_000_2f4d:
 
     ld hl, $212c                                  ; $2f67: $21 $2c $21
     ld c, h                                       ; $2f6a: $4c
-    ld hl, GM06_StatePointer_1c                   ; $2f6b: $21 $6c $21
+    ld hl, GS06_PhasePointer_1c                   ; $2f6b: $21 $6c $21
     adc h                                         ; $2f6e: $8c
     ld hl, $21ac                                  ; $2f6f: $21 $ac $21
     call z, $ec21                                 ; $2f72: $cc $21 $ec
@@ -12134,7 +12134,7 @@ jr_000_3bfa:
     ret nc                                        ; $3c0d: $d0
 
     ldh [$fff0], a                                ; $3c0e: $e0 $f0
-    ld bc, GameMode_06_TODO_StateDispatcher       ; $3c10: $01 $11 $21
+    ld bc, GameState_06_TODO_PhaseDispatcher      ; $3c10: $01 $11 $21
     ld sp, $5141                                  ; $3c13: $31 $41 $51
     ld h, c                                       ; $3c16: $61
     ld [hl], c                                    ; $3c17: $71
