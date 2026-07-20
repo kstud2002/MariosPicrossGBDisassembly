@@ -7270,7 +7270,7 @@ jr_002_63c6:
     ld hl, sp+$40                                 ; $6407: $f8 $40
     inc b                                         ; $6409: $04
     ld b, a                                       ; $640a: $47
-    call nz, Call_000_3c78                        ; $640b: $c4 $78 $3c
+    call nz, $3c78                                ; $640b: $c4 $78 $3c
     rrca                                          ; $640e: $0f
     rrca                                          ; $640f: $0f
     rra                                           ; $6410: $1f
@@ -9756,7 +9756,7 @@ jr_002_6edb:
     ld b, d                                       ; $6ee4: $42
     ld d, d                                       ; $6ee5: $52
     ld e, e                                       ; $6ee6: $5b
-    jp nc, Jump_000_3660                          ; $6ee7: $d2 $60 $36
+    jp nc, $3660                                  ; $6ee7: $d2 $60 $36
 
     jr nc, jr_002_6f50                            ; $6eea: $30 $64
 
@@ -9835,7 +9835,7 @@ jr_002_6edb:
     dec bc                                        ; $6f40: $0b
     ld b, d                                       ; $6f41: $42
     ld h, a                                       ; $6f42: $67
-    jp nz, Jump_000_3c93                          ; $6f43: $c2 $93 $3c
+    jp nz, $3c93                                  ; $6f43: $c2 $93 $3c
 
     adc a                                         ; $6f46: $8f
     jr @-$19                                      ; $6f47: $18 $e5

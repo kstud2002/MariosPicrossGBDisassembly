@@ -2600,7 +2600,7 @@ jr_00f_4bca:
     rlca                                          ; $4c26: $07
     ld [$ea0a], sp                                ; $4c27: $08 $0a $ea
     or l                                          ; $4c2a: $b5
-    call Call_000_34ee                            ; $4c2b: $cd $ee $34
+    call $34ee                                    ; $4c2b: $cd $ee $34
     ld c, e                                       ; $4c2e: $4b
     ld a, [bc]                                    ; $4c2f: $0a
     jp c, $da4a                                   ; $4c30: $da $4a $da
@@ -4355,7 +4355,7 @@ Jump_00f_5457:
     ld a, [hl+]                                   ; $5462: $2a
     ld a, [bc]                                    ; $5463: $0a
     ld [$d7b7], a                                 ; $5464: $ea $b7 $d7
-    jp c, Jump_000_37e9                           ; $5467: $da $e9 $37
+    jp c, $37e9                                   ; $5467: $da $e9 $37
 
     rst $10                                       ; $546a: $d7
     scf                                           ; $546b: $37
@@ -4675,7 +4675,7 @@ jr_00f_54dc:
     ld a, [bc]                                    ; $55c0: $0a
     ld a, [de]                                    ; $55c1: $1a
     ld a, [hl+]                                   ; $55c2: $2a
-    jp c, Jump_000_3a0a                           ; $55c3: $da $0a $3a
+    jp c, $3a0a                                   ; $55c3: $da $0a $3a
 
     ld a, d                                       ; $55c6: $7a
     ld [$e99a], a                                 ; $55c7: $ea $9a $e9
@@ -4762,7 +4762,7 @@ jr_00f_54dc:
     ld b, a                                       ; $5637: $47
     ld a, [$3984]                                 ; $5638: $fa $84 $39
     ld a, [$a754]                                 ; $563b: $fa $54 $a7
-    jp c, Jump_000_3437                           ; $563e: $da $37 $34
+    jp c, $3437                                   ; $563e: $da $37 $34
 
     and a                                         ; $5641: $a7
     scf                                           ; $5642: $37
@@ -7074,7 +7074,7 @@ jr_00f_5ee5:
 
 
     ld a, [de]                                    ; $6069: $1a
-    jp c, Jump_000_3444                           ; $606a: $da $44 $34
+    jp c, $3444                                   ; $606a: $da $44 $34
 
     ld b, h                                       ; $606d: $44
     inc [hl]                                      ; $606e: $34
@@ -7780,7 +7780,7 @@ Call_00f_60ee:
     inc b                                         ; $63d1: $04
     inc d                                         ; $63d2: $14
     inc h                                         ; $63d3: $24
-    call nc, Call_000_3424                        ; $63d4: $d4 $24 $34
+    call nc, $3424                                ; $63d4: $d4 $24 $34
     ld b, h                                       ; $63d7: $44
     inc h                                         ; $63d8: $24
     inc [hl]                                      ; $63d9: $34

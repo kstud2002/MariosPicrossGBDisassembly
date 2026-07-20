@@ -45,7 +45,11 @@
 00:04e4 BankedTileCopy
 00:0538 BankedTileCopyVRAMSafe
 
-00:2000 BankSwitchTrigger
+00:0671 TODO_PointerOrOffsetTable
+00:0671 .data:0036:2
+
+00:2000 ROMBankSwitchTrigger
+;00:4000 RAMBankSwitchTrigger
 
 ; GameState 06 Phase pointer table entries (accessed via RST_18 dispatcher):
 ; Offset calculation: Phase_value * 2, added to return address $2134 yields pointer location
@@ -223,6 +227,21 @@
 00:2aac GS06_StatePhase_29_TODO
 00:2b24 GS06_StatePhase_2a_TODO
 
+00:2cb6 TODO_2c6a_1_PointerTable
+00:2cb6 .data:0100:8
+00:2db6 TODO_2c6a_2_PointerTable
+00:2db6 .data:0200:8
+
+00:324f .padding:5b1
+00:3800 .data:100
+00:3900 .data:100
+00:3a00 .data:100
+00:3b00 .data:100
+00:3c00 .data:100
+00:3d00 .data:100
+00:3e00 .data:100
+00:3f00 .data:100
+
 ; =============================================================================
 ; BANK 001
 ; =============================================================================
@@ -282,6 +301,25 @@
 01:56f7 GS05_StatePhase_03_TODO
 01:5316 GS05_StatePhase_04_TODO
 01:55bf GS05_StatePhase_05_TODO
+
+01:5677 GS05_TODO_Data1
+01:5677 .data:0080:8
+01:5c9e GS05_TODO_Data2
+01:5c9e .data:0006:2
+01:5ca4 GS05_TODO_Data3
+01:5ca4 .data:0006:2
+01:5caa .data:0028
+01:5cd2 .data:0016
+01:5ce8 .data:0024
+01:5d0c .data:0022
+01:5d2e .data:000a
+01:5d38 .data:000a
+01:5d42 .data:000a
+01:5d4c .data:000a
+01:5d56 .data:000a
+01:5d60 .data:000a
+01:5d6a .data:000a
+01:5d74 .data:000a
 
 ; GameState 08 Phase pointer table entries (accessed via RST_18 dispatcher):
 ; Offset calculation: Phase_value * 2, added to return address $5d82 yields pointer location
@@ -441,6 +479,8 @@
 01:69f6 Load10x10GameBoardTileData
 01:6a22 Load15x15GameBoardTileData
 
+01:7f0c .padding:f4
+
 ; =============================================================================
 ; BANK 002
 ; =============================================================================
@@ -536,10 +576,6 @@
 01:63fc GameState_09_TODO_PhaseDispatcher
 01:686d GameState_0A_TODO_PhaseDispatcher
 
-02:498e LoadPuzzleData
-02:4a57 PuzzleDataOffsetTable
-02:4a57 .data:8
-
 ; GameState 01 Phase pointer table entries (accessed via RST_18 dispatcher):
 ; Offset calculation: Phase_value * 2, added to return address $4753 yields pointer location
 ; Phase $00: $00 * 2 = $00 bytes -> pointer at $4753 + $00 = $4753
@@ -555,6 +591,10 @@
 02:4759 GS01_StatePhase_00_DataSelectScreenInit
 02:47f1 GS01_StatePhase_01_DataSelectScreenIdle
 02:4940 GS01_StatePhase_02_DataSelectScreenFinish
+
+02:498e LoadPuzzleData
+02:4a57 PuzzleDataOffsetTable
+02:4a57 .data:8
 
 ; GameState 07 Phase pointer table entries (accessed via RST_18 dispatcher):
 ; Offset calculation: Phase_value * 2, added to return address $4c59 yields pointer location

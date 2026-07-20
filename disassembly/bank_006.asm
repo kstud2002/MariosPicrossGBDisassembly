@@ -6227,7 +6227,7 @@ Picross15x15MarioAnimationRow4::
     dec l                                         ; $71e0: $2d
     ld hl, $1311                                  ; $71e1: $21 $11 $13
     ld e, $1e                                     ; $71e4: $1e $1e
-    jp nc, Jump_000_2ed6                          ; $71e6: $d2 $d6 $2e
+    jp nc, $2ed6                                  ; $71e6: $d2 $d6 $2e
 
     ld l, e                                       ; $71e9: $6b
     sbc e                                         ; $71ea: $9b

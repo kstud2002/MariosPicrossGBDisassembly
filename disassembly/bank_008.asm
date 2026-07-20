@@ -133,7 +133,7 @@ jr_008_5873:
     rst $38                                       ; $5883: $ff
     dec d                                         ; $5884: $15
     rst $38                                       ; $5885: $ff
-    jp c, Jump_000_32ff                           ; $5886: $da $ff $32
+    jp c, $32ff                                   ; $5886: $da $ff $32
 
     ld a, a                                       ; $5889: $7f
     adc a                                         ; $588a: $8f
@@ -350,7 +350,7 @@ Picross10x10MarioAnimationRow4::
     dec l                                         ; $59e0: $2d
     ld hl, $1311                                  ; $59e1: $21 $11 $13
     ld e, $1e                                     ; $59e4: $1e $1e
-    jp nc, Jump_000_2ed6                          ; $59e6: $d2 $d6 $2e
+    jp nc, $2ed6                                  ; $59e6: $d2 $d6 $2e
 
     ld l, e                                       ; $59e9: $6b
     sbc e                                         ; $59ea: $9b

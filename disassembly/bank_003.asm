@@ -10409,7 +10409,7 @@ jr_003_5917:
     ld [hl], h                                    ; $6cd6: $74
     ld [hl], c                                    ; $6cd7: $71
     ld [hl], h                                    ; $6cd8: $74
-    jp nc, Jump_000_3374                          ; $6cd9: $d2 $74 $33
+    jp nc, $3374                                  ; $6cd9: $d2 $74 $33
 
     ld [hl], l                                    ; $6cdc: $75
     xor h                                         ; $6cdd: $ac
