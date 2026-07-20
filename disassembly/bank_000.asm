@@ -265,8 +265,6 @@ jr_000_01e9:
     ld [$c317], a                                 ; $0277: $ea $17 $c3
     ld [$c338], a                                 ; $027a: $ea $38 $c3
     ld [$c33c], a                                 ; $027d: $ea $3c $c3
-
-Call_000_0280:
     ld [$c350], a                                 ; $0280: $ea $50 $c3
     ld hl, $c32e                                  ; $0283: $21 $2e $c3
     xor a                                         ; $0286: $af
@@ -303,8 +301,6 @@ VBlankInterruptHandler::
     push af                                       ; $02b9: $f5
     push bc                                       ; $02ba: $c5
     push de                                       ; $02bb: $d5
-
-Jump_000_02bc:
     push hl                                       ; $02bc: $e5
     call $ff80                                    ; $02bd: $cd $80 $ff
     call Call_000_0767                            ; $02c0: $cd $67 $07
@@ -313,7 +309,6 @@ Jump_000_02bc:
     and a                                         ; $02c8: $a7
     jr nz, jr_000_02d2                            ; $02c9: $20 $07
 
-Jump_000_02cb:
     ld a, [$c32e]                                 ; $02cb: $fa $2e $c3
     ldh [rLCDC], a                                ; $02ce: $e0 $40
     jr jr_000_02d9                                ; $02d0: $18 $07
@@ -1731,8 +1726,6 @@ jr_000_0a21:
     or [hl]                                       ; $0a2f: $b6
     ld [de], a                                    ; $0a30: $12
     pop af                                        ; $0a31: $f1
-
-Jump_000_0a32:
     ld hl, $c360                                  ; $0a32: $21 $60 $c3
     and [hl]                                      ; $0a35: $a6
     ld [$c361], a                                 ; $0a36: $ea $61 $c3
@@ -1845,8 +1838,6 @@ jr_000_0aa9:
     xor [hl]                                      ; $0ac0: $ae
     ld [hl], a                                    ; $0ac1: $77
     pop af                                        ; $0ac2: $f1
-
-Call_000_0ac3:
     dec a                                         ; $0ac3: $3d
     jr nz, jr_000_0aa9                            ; $0ac4: $20 $e3
 
@@ -2124,8 +2115,6 @@ jr_000_0c3c:
     ld [$c35d], a                                 ; $0c5e: $ea $5d $c3
     pop af                                        ; $0c61: $f1
     dec a                                         ; $0c62: $3d
-
-Call_000_0c63:
     jr nz, jr_000_0c01                            ; $0c63: $20 $9c
 
 jr_000_0c65:
@@ -2509,8 +2498,6 @@ jr_000_0dff:
     add b                                         ; $0e0f: $80
     and b                                         ; $0e10: $a0
     add b                                         ; $0e11: $80
-
-Jump_000_0e12:
     or b                                          ; $0e12: $b0
     add b                                         ; $0e13: $80
     ld [hl], b                                    ; $0e14: $70
@@ -2793,7 +2780,6 @@ jr_000_0f0d:
     adc [hl]                                      ; $0f0d: $8e
     db $10                                        ; $0f0e: $10
 
-Call_000_0f0f:
 jr_000_0f0f:
     adc [hl]                                      ; $0f0f: $8e
     jr nz, jr_000_0ea0                            ; $0f10: $20 $8e
@@ -6712,8 +6698,6 @@ jr_000_1ff1:
     pop hl                                        ; $2005: $e1
     pop bc                                        ; $2006: $c1
     dec b                                         ; $2007: $05
-
-Call_000_2008:
     jr nz, jr_000_1ff1                            ; $2008: $20 $e7
 
     ld [$d63c], a                                 ; $200a: $ea $3c $d6
