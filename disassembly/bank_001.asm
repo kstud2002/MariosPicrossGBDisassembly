@@ -949,10 +949,10 @@ GS04_StatePhase_00_TODO::
     call Call_000_05b6                            ; $43e8: $cd $b6 $05
     ld b, $03                                     ; $43eb: $06 $03
     ld hl, $4e80                                  ; $43ed: $21 $80 $4e
-    call Call_000_05de                            ; $43f0: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $43f0: $cd $de $05
     ld b, $03                                     ; $43f3: $06 $03
     ld hl, $4ee9                                  ; $43f5: $21 $e9 $4e
-    call Call_000_05de                            ; $43f8: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $43f8: $cd $de $05
     xor a                                         ; $43fb: $af
     call Call_001_49ee                            ; $43fc: $cd $ee $49
     call Call_001_4dde                            ; $43ff: $cd $de $4d
@@ -1008,7 +1008,7 @@ jr_001_4470:
     call Call_001_4f54                            ; $4473: $cd $54 $4f
     ld b, $03                                     ; $4476: $06 $03
     ld hl, $4e80                                  ; $4478: $21 $80 $4e
-    call Call_000_05de                            ; $447b: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $447b: $cd $de $05
     ld a, [$d805]                                 ; $447e: $fa $05 $d8
     and a                                         ; $4481: $a7
     push af                                       ; $4482: $f5
@@ -1016,7 +1016,7 @@ jr_001_4470:
 
     ld b, $03                                     ; $4485: $06 $03
     ld hl, $4ee9                                  ; $4487: $21 $e9 $4e
-    call Call_000_05de                            ; $448a: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $448a: $cd $de $05
 
 jr_001_448d:
     xor a                                         ; $448d: $af
@@ -1071,7 +1071,7 @@ jr_001_448d:
     call Call_000_0483                            ; $44f1: $cd $83 $04
     ld b, $01                                     ; $44f4: $06 $01
     ld hl, $4ae4                                  ; $44f6: $21 $e4 $4a
-    call Call_000_05de                            ; $44f9: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $44f9: $cd $de $05
     ld a, $7e                                     ; $44fc: $3e $7e
     ld [$cd63], a                                 ; $44fe: $ea $63 $cd
     ld a, $16                                     ; $4501: $3e $16
@@ -1095,7 +1095,7 @@ jr_001_448d:
     call Call_000_04a2                            ; $452e: $cd $a2 $04
     ld b, $01                                     ; $4531: $06 $01
     ld hl, $4bae                                  ; $4533: $21 $ae $4b
-    call Call_000_05de                            ; $4536: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $4536: $cd $de $05
     ld a, $10                                     ; $4539: $3e $10
     ld [$d843], a                                 ; $453b: $ea $43 $d8
     ld [$d82b], a                                 ; $453e: $ea $2b $d8
@@ -1128,7 +1128,7 @@ jr_001_448d:
     call Call_000_03b6                            ; $4583: $cd $b6 $03
     ld b, $01                                     ; $4586: $06 $01
     ld hl, $4bdc                                  ; $4588: $21 $dc $4b
-    call Call_000_05de                            ; $458b: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $458b: $cd $de $05
     call Call_000_0483                            ; $458e: $cd $83 $04
     ld hl, $c337                                  ; $4591: $21 $37 $c3
     res 6, [hl]                                   ; $4594: $cb $b6
@@ -1169,7 +1169,7 @@ Jump_001_45bb:
     call Call_000_0483                            ; $45e0: $cd $83 $04
     ld b, $01                                     ; $45e3: $06 $01
     ld hl, $4ae4                                  ; $45e5: $21 $e4 $4a
-    call Call_000_05de                            ; $45e8: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $45e8: $cd $de $05
     ld a, $7e                                     ; $45eb: $3e $7e
     ld [$cd63], a                                 ; $45ed: $ea $63 $cd
     ld a, $16                                     ; $45f0: $3e $16
@@ -1193,7 +1193,7 @@ Jump_001_45bb:
     call Call_000_04a2                            ; $461d: $cd $a2 $04
     ld b, $01                                     ; $4620: $06 $01
     ld hl, $4bae                                  ; $4622: $21 $ae $4b
-    call Call_000_05de                            ; $4625: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $4625: $cd $de $05
     ld a, $10                                     ; $4628: $3e $10
     ld [$d843], a                                 ; $462a: $ea $43 $d8
     ld [$d82b], a                                 ; $462d: $ea $2b $d8
@@ -1244,7 +1244,7 @@ Jump_001_45bb:
     call Call_000_03b6                            ; $46a4: $cd $b6 $03
     ld b, $01                                     ; $46a7: $06 $01
     ld hl, $4bdc                                  ; $46a9: $21 $dc $4b
-    call Call_000_05de                            ; $46ac: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $46ac: $cd $de $05
     call Call_000_0483                            ; $46af: $cd $83 $04
     ld hl, $c337                                  ; $46b2: $21 $37 $c3
     res 6, [hl]                                   ; $46b5: $cb $b6
@@ -1349,7 +1349,7 @@ jr_001_4753:
     call Call_000_05b6                            ; $4754: $cd $b6 $05
     ld b, $03                                     ; $4757: $06 $03
     ld hl, $4ea6                                  ; $4759: $21 $a6 $4e
-    call Call_000_05de                            ; $475c: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $475c: $cd $de $05
     ld a, [$c33a]                                 ; $475f: $fa $3a $c3
     bit 2, a                                      ; $4762: $cb $57
     jr nz, jr_001_476a                            ; $4764: $20 $04
@@ -1377,7 +1377,7 @@ jr_001_477a:
 GS04_StatePhase_01_TODO::
     ld b, $03                                     ; $477d: $06 $03
     ld hl, $4ee9                                  ; $477f: $21 $e9 $4e
-    call Call_000_05de                            ; $4782: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $4782: $cd $de $05
     xor a                                         ; $4785: $af
     call Call_001_49ee                            ; $4786: $cd $ee $49
     call Call_001_4dde                            ; $4789: $cd $de $4d
@@ -3162,7 +3162,7 @@ Call_001_5252:
 jr_001_5252:
     ld b, $03                                     ; $5252: $06 $03
     ld hl, $4ea6                                  ; $5254: $21 $a6 $4e
-    call Call_000_05de                            ; $5257: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $5257: $cd $de $05
     call Call_000_05c5                            ; $525a: $cd $c5 $05
     rst RST_08                                    ; $525d: $cf
     ld a, [$c31e]                                 ; $525e: $fa $1e $c3
@@ -3233,10 +3233,10 @@ GS05_StatePhase_00_TODO::
     call Call_000_05b6                            ; $52d6: $cd $b6 $05
     ld b, $03                                     ; $52d9: $06 $03
     ld hl, $4e80                                  ; $52db: $21 $80 $4e
-    call Call_000_05de                            ; $52de: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $52de: $cd $de $05
     ld b, $03                                     ; $52e1: $06 $03
     ld hl, $4ee9                                  ; $52e3: $21 $e9 $4e
-    call Call_000_05de                            ; $52e6: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $52e6: $cd $de $05
     xor a                                         ; $52e9: $af
     call Call_001_5760                            ; $52ea: $cd $60 $57
     call Call_001_595e                            ; $52ed: $cd $5e $59
@@ -3306,7 +3306,7 @@ jr_001_5381:
     call Call_001_5ab9                            ; $5384: $cd $b9 $5a
     ld b, $03                                     ; $5387: $06 $03
     ld hl, $4e80                                  ; $5389: $21 $80 $4e
-    call Call_000_05de                            ; $538c: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $538c: $cd $de $05
     ld a, [$d805]                                 ; $538f: $fa $05 $d8
     and a                                         ; $5392: $a7
     push af                                       ; $5393: $f5
@@ -3314,7 +3314,7 @@ jr_001_5381:
 
     ld b, $03                                     ; $5396: $06 $03
     ld hl, $4ee9                                  ; $5398: $21 $e9 $4e
-    call Call_000_05de                            ; $539b: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $539b: $cd $de $05
 
 jr_001_539e:
     xor a                                         ; $539e: $af
@@ -3534,7 +3534,7 @@ jr_001_555b:
     call Call_000_05b6                            ; $555c: $cd $b6 $05
     ld b, $03                                     ; $555f: $06 $03
     ld hl, $4ea6                                  ; $5561: $21 $a6 $4e
-    call Call_000_05de                            ; $5564: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $5564: $cd $de $05
     ld a, [$c33a]                                 ; $5567: $fa $3a $c3
     bit 2, a                                      ; $556a: $cb $57
     jr nz, jr_001_5572                            ; $556c: $20 $04
@@ -3562,7 +3562,7 @@ jr_001_5582:
 GS05_StatePhase_01_TODO::
     ld b, $03                                     ; $5585: $06 $03
     ld hl, $4ee9                                  ; $5587: $21 $e9 $4e
-    call Call_000_05de                            ; $558a: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $558a: $cd $de $05
     xor a                                         ; $558d: $af
     call Call_001_5760                            ; $558e: $cd $60 $57
     call Call_001_595e                            ; $5591: $cd $5e $59
@@ -5267,7 +5267,7 @@ GS08_StatePhase_05_TODO::
 GS08_StatePhase_06_TODO::
     ld b, $02                                     ; $6238: $06 $02
     ld hl, $4632                                  ; $623a: $21 $32 $46
-    call Call_000_05de                            ; $623d: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $623d: $cd $de $05
     ld a, [$c31e]                                 ; $6240: $fa $1e $c3
     bit 0, a                                      ; $6243: $cb $47
     jr z, jr_001_625d                             ; $6245: $28 $16
@@ -5303,7 +5303,7 @@ GS08_StatePhase_06_TODO_Data::
 GS08_StatePhase_07_TODO::
     ld b, $02                                     ; $6270: $06 $02
     ld hl, $4672                                  ; $6272: $21 $72 $46
-    call Call_000_05de                            ; $6275: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $6275: $cd $de $05
     ld a, [$c31e]                                 ; $6278: $fa $1e $c3
     and $01                                       ; $627b: $e6 $01
     ret z                                         ; $627d: $c8
@@ -5398,7 +5398,7 @@ jr_001_62f2:
 GS08_StatePhase_08_TODO::
     ld b, $02                                     ; $6328: $06 $02
     ld hl, $46b2                                  ; $632a: $21 $b2 $46
-    call Call_000_05de                            ; $632d: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $632d: $cd $de $05
     ld a, [$c31e]                                 ; $6330: $fa $1e $c3
     and $01                                       ; $6333: $e6 $01
     ret z                                         ; $6335: $c8
@@ -5414,7 +5414,7 @@ GS08_StatePhase_08_TODO::
 GS08_StatePhase_09_TODO::
     ld b, $02                                     ; $6343: $06 $02
     ld hl, $470f                                  ; $6345: $21 $0f $47
-    call Call_000_05de                            ; $6348: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $6348: $cd $de $05
     ld a, [$c31e]                                 ; $634b: $fa $1e $c3
     and $01                                       ; $634e: $e6 $01
     ret z                                         ; $6350: $c8
@@ -5856,7 +5856,7 @@ GS09_StatePhase_03_TODO::
 GS09_StatePhase_04_TODO::
     ld b, $02                                     ; $66b3: $06 $02
     ld hl, $4632                                  ; $66b5: $21 $32 $46
-    call Call_000_05de                            ; $66b8: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $66b8: $cd $de $05
     ld a, [$c31e]                                 ; $66bb: $fa $1e $c3
     bit 0, a                                      ; $66be: $cb $47
     jr z, jr_001_66d8                             ; $66c0: $28 $16
@@ -5892,7 +5892,7 @@ GS09_StatePhase_04_TODO_Data::
 GS09_StatePhase_05_TODO::
     ld b, $02                                     ; $66eb: $06 $02
     ld hl, $4672                                  ; $66ed: $21 $72 $46
-    call Call_000_05de                            ; $66f0: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $66f0: $cd $de $05
     ld a, [$c31e]                                 ; $66f3: $fa $1e $c3
     and $01                                       ; $66f6: $e6 $01
     ret z                                         ; $66f8: $c8
@@ -5963,7 +5963,7 @@ jr_001_670c:
 GS09_StatePhase_06_TODO::
     ld b, $02                                     ; $677d: $06 $02
     ld hl, $46b2                                  ; $677f: $21 $b2 $46
-    call Call_000_05de                            ; $6782: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $6782: $cd $de $05
     ld a, [$c31e]                                 ; $6785: $fa $1e $c3
     and $01                                       ; $6788: $e6 $01
     ret z                                         ; $678a: $c8
@@ -5979,7 +5979,7 @@ GS09_StatePhase_06_TODO::
 GS09_StatePhase_07_TODO::
     ld b, $02                                     ; $6798: $06 $02
     ld hl, $470f                                  ; $679a: $21 $0f $47
-    call Call_000_05de                            ; $679d: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $679d: $cd $de $05
     ld a, [$c31e]                                 ; $67a0: $fa $1e $c3
     and $01                                       ; $67a3: $e6 $01
     ret z                                         ; $67a5: $c8
@@ -6805,7 +6805,7 @@ GS0A_StatePhase_05_TODO::
 GS0A_StatePhase_06_TODO::
     ld b, $02                                     ; $6d9c: $06 $02
     ld hl, $4632                                  ; $6d9e: $21 $32 $46
-    call Call_000_05de                            ; $6da1: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $6da1: $cd $de $05
     ld a, [$c31e]                                 ; $6da4: $fa $1e $c3
     bit 0, a                                      ; $6da7: $cb $47
     jr z, jr_001_6dc1                             ; $6da9: $28 $16
@@ -6841,7 +6841,7 @@ GS0A_StatePhase_06_TODO_Data::
 GS0A_StatePhase_07_TODO::
     ld b, $02                                     ; $6dd4: $06 $02
     ld hl, $4672                                  ; $6dd6: $21 $72 $46
-    call Call_000_05de                            ; $6dd9: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $6dd9: $cd $de $05
     ld a, [$c31e]                                 ; $6ddc: $fa $1e $c3
     and $01                                       ; $6ddf: $e6 $01
     ret z                                         ; $6de1: $c8
@@ -6916,7 +6916,7 @@ jr_001_6df5:
 GS0A_StatePhase_08_TODO::
     ld b, $02                                     ; $6e6e: $06 $02
     ld hl, $46b2                                  ; $6e70: $21 $b2 $46
-    call Call_000_05de                            ; $6e73: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $6e73: $cd $de $05
     ld a, [$c31e]                                 ; $6e76: $fa $1e $c3
     and $01                                       ; $6e79: $e6 $01
     ret z                                         ; $6e7b: $c8
@@ -6932,7 +6932,7 @@ GS0A_StatePhase_08_TODO::
 GS0A_StatePhase_09_TODO::
     ld b, $02                                     ; $6e89: $06 $02
     ld hl, $470f                                  ; $6e8b: $21 $0f $47
-    call Call_000_05de                            ; $6e8e: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $6e8e: $cd $de $05
     ld a, [$c31e]                                 ; $6e91: $fa $1e $c3
     and $01                                       ; $6e94: $e6 $01
     ret z                                         ; $6e96: $c8

@@ -43,7 +43,12 @@
 00:0373 GameStateDispatcher
 
 00:04e4 BankedTileCopy
+00:04f4 .CopyLoop
+00:0504 BankedTransparentTileCopy
+00:0518 .MaskAndCopyLoop
 00:0538 BankedTileCopyVRAMSafe
+
+00:05de SwitchBankToBAndJumpToHL
 
 00:0671 TODO_PointerOrOffsetTable
 00:0671 .data:0036:2
@@ -625,6 +630,20 @@
 02:5074 GS07_StatePhase_03_TODO
 02:4cc4 GS07_StatePhase_04_TODO
 02:4dff GS07_StatePhase_05_TODO
+
+02:51c0 DrawUIFontGlyph
+02:51e7 DrawUIFontGlyph.PromptFontLookup
+02:51e7 .text:10:cm=prompt
+02:51f7 .text:10:cm=prompt
+02:5207 .text:10:cm=prompt
+02:5217 .text:10:cm=prompt
+02:5227 .text:10:cm=prompt
+02:5237 .text:10:cm=prompt
+02:5247 .text:10:cm=prompt
+02:5257 .text:10:cm=prompt
+
+02:5267 TODO_Jump1
+02:5274 TODO_Jump2
 
 ; Puzzle data
 ; How To Play: 52b0-52cf

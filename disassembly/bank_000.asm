@@ -751,14 +751,14 @@ BankedTileCopy::
     ld [ActiveROMBank], a                         ; $04ee: $ea $12 $c3
     ld [ROMBankSwitchTrigger], a                  ; $04f1: $ea $00 $20
 
-jr_000_04f4:
+.CopyLoop:
     ld a, [hl+]                                   ; $04f4: $2a
     ld [de], a                                    ; $04f5: $12
     inc de                                        ; $04f6: $13
     dec bc                                        ; $04f7: $0b
     ld a, c                                       ; $04f8: $79
     or b                                          ; $04f9: $b0
-    jr nz, jr_000_04f4                            ; $04fa: $20 $f8
+    jr nz, .CopyLoop                              ; $04fa: $20 $f8
 
     pop af                                        ; $04fc: $f1
     ld [ActiveROMBank], a                         ; $04fd: $ea $12 $c3
@@ -766,7 +766,7 @@ jr_000_04f4:
     ret                                           ; $0503: $c9
 
 
-Call_000_0504:
+BankedTransparentTileCopy::
     ld [RequestedROMBank], a                      ; $0504: $ea $14 $c3
     ld a, [ActiveROMBank]                         ; $0507: $fa $12 $c3
     push af                                       ; $050a: $f5
@@ -776,7 +776,7 @@ Call_000_0504:
     srl b                                         ; $0514: $cb $38
     rr c                                          ; $0516: $cb $19
 
-jr_000_0518:
+.MaskAndCopyLoop:
     push bc                                       ; $0518: $c5
     ld a, [hl+]                                   ; $0519: $2a
     ld b, a                                       ; $051a: $47
@@ -798,7 +798,7 @@ jr_000_0518:
     dec bc                                        ; $052b: $0b
     ld a, c                                       ; $052c: $79
     or b                                          ; $052d: $b0
-    jr nz, jr_000_0518                            ; $052e: $20 $e8
+    jr nz, .MaskAndCopyLoop                       ; $052e: $20 $e8
 
     pop af                                        ; $0530: $f1
     ld [ActiveROMBank], a                         ; $0531: $ea $12 $c3
@@ -947,7 +947,7 @@ Jump_000_05da:
     jp hl                                         ; $05dd: $e9
 
 
-Call_000_05de:
+SwitchBankToBAndJumpToHL::
     ld a, [ActiveROMBank]                         ; $05de: $fa $12 $c3
     push af                                       ; $05e1: $f5
     ld a, b                                       ; $05e2: $78
@@ -6060,16 +6060,16 @@ jr_000_1b9c:
 
     ld b, $02                                     ; $1ba3: $06 $02
     ld hl, $5267                                  ; $1ba5: $21 $67 $52
-    call Call_000_05de                            ; $1ba8: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $1ba8: $cd $de $05
     ld b, $02                                     ; $1bab: $06 $02
     ld hl, $5274                                  ; $1bad: $21 $74 $52
-    call Call_000_05de                            ; $1bb0: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $1bb0: $cd $de $05
     ld b, $02                                     ; $1bb3: $06 $02
     ld hl, $5274                                  ; $1bb5: $21 $74 $52
-    call Call_000_05de                            ; $1bb8: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $1bb8: $cd $de $05
     ld b, $02                                     ; $1bbb: $06 $02
     ld hl, $5274                                  ; $1bbd: $21 $74 $52
-    call Call_000_05de                            ; $1bc0: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $1bc0: $cd $de $05
     ld hl, $1be2                                  ; $1bc3: $21 $e2 $1b
     ld de, $a042                                  ; $1bc6: $11 $42 $a0
     ld bc, $0023                                  ; $1bc9: $01 $23 $00

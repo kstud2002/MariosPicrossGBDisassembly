@@ -95,10 +95,10 @@ jr_002_409f:
     call Call_000_05b6                            ; $40b0: $cd $b6 $05
     ld b, $03                                     ; $40b3: $06 $03
     ld hl, $4e80                                  ; $40b5: $21 $80 $4e
-    call Call_000_05de                            ; $40b8: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $40b8: $cd $de $05
     ld b, $03                                     ; $40bb: $06 $03
     ld hl, $4ec2                                  ; $40bd: $21 $c2 $4e
-    call Call_000_05de                            ; $40c0: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $40c0: $cd $de $05
     ld c, $00                                     ; $40c3: $0e $00
     ld a, $01                                     ; $40c5: $3e $01
     call Call_000_03b6                            ; $40c7: $cd $b6 $03
@@ -134,7 +134,7 @@ jr_002_40fa:
 GS03_StatePhase_01_TODO::
     ld b, $03                                     ; $40ff: $06 $03
     ld hl, $4ec2                                  ; $4101: $21 $c2 $4e
-    call Call_000_05de                            ; $4104: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $4104: $cd $de $05
     call Call_002_42be                            ; $4107: $cd $be $42
     ld a, [$c31e]                                 ; $410a: $fa $1e $c3
     and $09                                       ; $410d: $e6 $09
@@ -569,10 +569,10 @@ GS02_StatePhase_00_TODO::
     call Call_000_05b6                            ; $4381: $cd $b6 $05
     ld b, $03                                     ; $4384: $06 $03
     ld hl, $4e80                                  ; $4386: $21 $80 $4e
-    call Call_000_05de                            ; $4389: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $4389: $cd $de $05
     ld b, $03                                     ; $438c: $06 $03
     ld hl, $4ec2                                  ; $438e: $21 $c2 $4e
-    call Call_000_05de                            ; $4391: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $4391: $cd $de $05
     ld c, $00                                     ; $4394: $0e $00
     ld a, $01                                     ; $4396: $3e $01
     call Call_000_03b6                            ; $4398: $cd $b6 $03
@@ -595,7 +595,7 @@ GS02_StatePhase_00_TODO::
 GS02_StatePhase_01_TODO::
     ld b, $03                                     ; $43bd: $06 $03
     ld hl, $4ec2                                  ; $43bf: $21 $c2 $4e
-    call Call_000_05de                            ; $43c2: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $43c2: $cd $de $05
     call Call_002_45b1                            ; $43c5: $cd $b1 $45
     ld a, [$c31e]                                 ; $43c8: $fa $1e $c3
     and $09                                       ; $43cb: $e6 $09
@@ -1269,10 +1269,10 @@ GS01_StatePhase_00_DataSelectScreenInit::
     call Call_000_05b6                            ; $47b5: $cd $b6 $05
     ld b, $03                                     ; $47b8: $06 $03
     ld hl, $4e80                                  ; $47ba: $21 $80 $4e
-    call Call_000_05de                            ; $47bd: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $47bd: $cd $de $05
     ld b, $03                                     ; $47c0: $06 $03
     ld hl, $4ea6                                  ; $47c2: $21 $a6 $4e
-    call Call_000_05de                            ; $47c5: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $47c5: $cd $de $05
     ld c, $00                                     ; $47c8: $0e $00
     ld a, $01                                     ; $47ca: $3e $01
     call Call_000_03b6                            ; $47cc: $cd $b6 $03
@@ -1295,7 +1295,7 @@ GS01_StatePhase_00_DataSelectScreenInit::
 GS01_StatePhase_01_DataSelectScreenIdle::
     ld b, $03                                     ; $47f1: $06 $03
     ld hl, $4ea6                                  ; $47f3: $21 $a6 $4e
-    call Call_000_05de                            ; $47f6: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $47f6: $cd $de $05
     call $4c1c                                    ; $47f9: $cd $1c $4c
     ld a, [$c31a]                                 ; $47fc: $fa $1a $c3
     bit 2, a                                      ; $47ff: $cb $57
@@ -1332,7 +1332,7 @@ Jump_002_481d:
 jr_002_4826:
     ld b, $03                                     ; $4826: $06 $03
     ld hl, $4ec2                                  ; $4828: $21 $c2 $4e
-    call Call_000_05de                            ; $482b: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $482b: $cd $de $05
     ld a, [$c33a]                                 ; $482e: $fa $3a $c3
     bit 4, a                                      ; $4831: $cb $67
     jr nz, jr_002_4846                            ; $4833: $20 $11
@@ -2187,7 +2187,7 @@ GS07_StatePhase_00_TODO::
     call Call_000_05b6                            ; $4c90: $cd $b6 $05
     ld b, $03                                     ; $4c93: $06 $03
     ld hl, $4e80                                  ; $4c95: $21 $80 $4e
-    call Call_000_05de                            ; $4c98: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $4c98: $cd $de $05
     call Call_002_5298                            ; $4c9b: $cd $98 $52
     ld c, $00                                     ; $4c9e: $0e $00
     ld a, $01                                     ; $4ca0: $3e $01
@@ -2245,7 +2245,7 @@ jr_002_4d05:
     call Call_000_05b6                            ; $4d05: $cd $b6 $05
     ld b, $03                                     ; $4d08: $06 $03
     ld hl, $4e80                                  ; $4d0a: $21 $80 $4e
-    call Call_000_05de                            ; $4d0d: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $4d0d: $cd $de $05
     ld a, [$d838]                                 ; $4d10: $fa $38 $d8
     and a                                         ; $4d13: $a7
     jr nz, jr_002_4d1b                            ; $4d14: $20 $05
@@ -2256,7 +2256,7 @@ jr_002_4d05:
 jr_002_4d1b:
     ld b, $03                                     ; $4d1b: $06 $03
     ld hl, $4ec2                                  ; $4d1d: $21 $c2 $4e
-    call Call_000_05de                            ; $4d20: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $4d20: $cd $de $05
 
 jr_002_4d23:
     ld c, $00                                     ; $4d23: $0e $00
@@ -2382,7 +2382,7 @@ jr_002_4dea:
 GS07_StatePhase_05_TODO::
     ld b, $03                                     ; $4dff: $06 $03
     ld hl, $4ec2                                  ; $4e01: $21 $c2 $4e
-    call Call_000_05de                            ; $4e04: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $4e04: $cd $de $05
     call Call_002_4ee1                            ; $4e07: $cd $e1 $4e
     ld hl, $c33a                                  ; $4e0a: $21 $3a $c3
     ld a, [$d83e]                                 ; $4e0d: $fa $3e $d8
@@ -2693,17 +2693,17 @@ jr_002_4f95:
     jr c, jr_002_4fc6                             ; $4fa2: $38 $22
 
     ld b, $02                                     ; $4fa4: $06 $02
-    ld hl, $5267                                  ; $4fa6: $21 $67 $52
-    call Call_000_05de                            ; $4fa9: $cd $de $05
+    ld hl, TODO_Jump1                             ; $4fa6: $21 $67 $52
+    call SwitchBankToBAndJumpToHL                 ; $4fa9: $cd $de $05
     ld b, $02                                     ; $4fac: $06 $02
-    ld hl, $5274                                  ; $4fae: $21 $74 $52
-    call Call_000_05de                            ; $4fb1: $cd $de $05
+    ld hl, TODO_Jump2                             ; $4fae: $21 $74 $52
+    call SwitchBankToBAndJumpToHL                 ; $4fb1: $cd $de $05
     ld b, $02                                     ; $4fb4: $06 $02
-    ld hl, $5274                                  ; $4fb6: $21 $74 $52
-    call Call_000_05de                            ; $4fb9: $cd $de $05
+    ld hl, TODO_Jump2                             ; $4fb6: $21 $74 $52
+    call SwitchBankToBAndJumpToHL                 ; $4fb9: $cd $de $05
     ld b, $02                                     ; $4fbc: $06 $02
-    ld hl, $5274                                  ; $4fbe: $21 $74 $52
-    call Call_000_05de                            ; $4fc1: $cd $de $05
+    ld hl, TODO_Jump2                             ; $4fbe: $21 $74 $52
+    call SwitchBankToBAndJumpToHL                 ; $4fc1: $cd $de $05
     jr jr_002_4f95                                ; $4fc4: $18 $cf
 
 jr_002_4fc6:
@@ -2722,8 +2722,8 @@ jr_002_4fc6:
     jr nz, jr_002_4fe8                            ; $4fde: $20 $08
 
     ld b, $02                                     ; $4fe0: $06 $02
-    ld hl, $5274                                  ; $4fe2: $21 $74 $52
-    call Call_000_05de                            ; $4fe5: $cd $de $05
+    ld hl, TODO_Jump2                             ; $4fe2: $21 $74 $52
+    call SwitchBankToBAndJumpToHL                 ; $4fe5: $cd $de $05
 
 jr_002_4fe8:
     xor a                                         ; $4fe8: $af
@@ -2885,10 +2885,10 @@ jr_002_513a:
     push af                                       ; $513a: $f5
     ld a, [hl+]                                   ; $513b: $2a
     or $30                                        ; $513c: $f6 $30
-    call Call_002_51c0                            ; $513e: $cd $c0 $51
+    call DrawUIFontGlyph                          ; $513e: $cd $c0 $51
     ld a, [hl+]                                   ; $5141: $2a
     or $30                                        ; $5142: $f6 $30
-    call Call_002_51c0                            ; $5144: $cd $c0 $51
+    call DrawUIFontGlyph                          ; $5144: $cd $c0 $51
     ld a, $10                                     ; $5147: $3e $10
     add e                                         ; $5149: $83
     ld e, a                                       ; $514a: $5f
@@ -2897,16 +2897,16 @@ jr_002_513a:
     ld d, a                                       ; $514e: $57
     ld a, [hl+]                                   ; $514f: $2a
     or $30                                        ; $5150: $f6 $30
-    call Call_002_51c0                            ; $5152: $cd $c0 $51
+    call DrawUIFontGlyph                          ; $5152: $cd $c0 $51
     ld a, [hl+]                                   ; $5155: $2a
     or $30                                        ; $5156: $f6 $30
-    call Call_002_51c0                            ; $5158: $cd $c0 $51
+    call DrawUIFontGlyph                          ; $5158: $cd $c0 $51
     ld a, [hl+]                                   ; $515b: $2a
-    call Call_002_51c0                            ; $515c: $cd $c0 $51
+    call DrawUIFontGlyph                          ; $515c: $cd $c0 $51
     ld a, [hl+]                                   ; $515f: $2a
-    call Call_002_51c0                            ; $5160: $cd $c0 $51
+    call DrawUIFontGlyph                          ; $5160: $cd $c0 $51
     ld a, [hl+]                                   ; $5163: $2a
-    call Call_002_51c0                            ; $5164: $cd $c0 $51
+    call DrawUIFontGlyph                          ; $5164: $cd $c0 $51
     ld a, $80                                     ; $5167: $3e $80
     add e                                         ; $5169: $83
     ld e, a                                       ; $516a: $5f
@@ -2924,10 +2924,10 @@ Call_002_5174:
     ld de, $8800                                  ; $5174: $11 $00 $88
     ld a, [$d80a]                                 ; $5177: $fa $0a $d8
     or $30                                        ; $517a: $f6 $30
-    call Call_002_51c0                            ; $517c: $cd $c0 $51
+    call DrawUIFontGlyph                          ; $517c: $cd $c0 $51
     ld a, [$d809]                                 ; $517f: $fa $09 $d8
     or $30                                        ; $5182: $f6 $30
-    call Call_002_51c0                            ; $5184: $cd $c0 $51
+    call DrawUIFontGlyph                          ; $5184: $cd $c0 $51
     ld a, $10                                     ; $5187: $3e $10
     add e                                         ; $5189: $83
     ld e, a                                       ; $518a: $5f
@@ -2936,19 +2936,19 @@ Call_002_5174:
     ld d, a                                       ; $518e: $57
     ld a, [$d80c]                                 ; $518f: $fa $0c $d8
     or $30                                        ; $5192: $f6 $30
-    call Call_002_51c0                            ; $5194: $cd $c0 $51
+    call DrawUIFontGlyph                          ; $5194: $cd $c0 $51
     ld a, [$d80b]                                 ; $5197: $fa $0b $d8
     or $30                                        ; $519a: $f6 $30
-    call Call_002_51c0                            ; $519c: $cd $c0 $51
+    call DrawUIFontGlyph                          ; $519c: $cd $c0 $51
     ret                                           ; $519f: $c9
 
 
 Call_002_51a0:
     ld de, $8800                                  ; $51a0: $11 $00 $88
     ld a, $2d                                     ; $51a3: $3e $2d
-    call Call_002_51c0                            ; $51a5: $cd $c0 $51
+    call DrawUIFontGlyph                          ; $51a5: $cd $c0 $51
     ld a, $2d                                     ; $51a8: $3e $2d
-    call Call_002_51c0                            ; $51aa: $cd $c0 $51
+    call DrawUIFontGlyph                          ; $51aa: $cd $c0 $51
     ld a, $10                                     ; $51ad: $3e $10
     add e                                         ; $51af: $83
     ld e, a                                       ; $51b0: $5f
@@ -2956,17 +2956,17 @@ Call_002_51a0:
     adc d                                         ; $51b3: $8a
     ld d, a                                       ; $51b4: $57
     ld a, $2d                                     ; $51b5: $3e $2d
-    call Call_002_51c0                            ; $51b7: $cd $c0 $51
+    call DrawUIFontGlyph                          ; $51b7: $cd $c0 $51
     ld a, $2d                                     ; $51ba: $3e $2d
-    call Call_002_51c0                            ; $51bc: $cd $c0 $51
+    call DrawUIFontGlyph                          ; $51bc: $cd $c0 $51
     ret                                           ; $51bf: $c9
 
 
-Call_002_51c0:
+DrawUIFontGlyph::
     push hl                                       ; $51c0: $e5
     ld c, a                                       ; $51c1: $4f
     ld b, $00                                     ; $51c2: $06 $00
-    ld hl, $51e7                                  ; $51c4: $21 $e7 $51
+    ld hl, DrawUIFontGlyph.PromptFontLookup       ; $51c4: $21 $e7 $51
     add hl, bc                                    ; $51c7: $09
     ld c, [hl]                                    ; $51c8: $4e
     sla c                                         ; $51c9: $cb $21
@@ -2981,132 +2981,31 @@ Call_002_51c0:
     add hl, bc                                    ; $51dc: $09
     ld a, $0b                                     ; $51dd: $3e $0b
     ld bc, $0010                                  ; $51df: $01 $10 $00
-    call Call_000_0504                            ; $51e2: $cd $04 $05
+    call BankedTransparentTileCopy                ; $51e2: $cd $04 $05
     pop hl                                        ; $51e5: $e1
     ret                                           ; $51e6: $c9
 
 
-    rra                                           ; $51e7: $1f
-    rra                                           ; $51e8: $1f
-    rra                                           ; $51e9: $1f
-    rra                                           ; $51ea: $1f
-    rra                                           ; $51eb: $1f
-    rra                                           ; $51ec: $1f
-    rra                                           ; $51ed: $1f
-    rra                                           ; $51ee: $1f
-    rra                                           ; $51ef: $1f
-    rra                                           ; $51f0: $1f
-    rra                                           ; $51f1: $1f
-    rra                                           ; $51f2: $1f
-    rra                                           ; $51f3: $1f
-    rra                                           ; $51f4: $1f
-    rra                                           ; $51f5: $1f
-    rra                                           ; $51f6: $1f
-    rra                                           ; $51f7: $1f
-    rra                                           ; $51f8: $1f
-    rra                                           ; $51f9: $1f
-    rra                                           ; $51fa: $1f
-    rra                                           ; $51fb: $1f
-    rra                                           ; $51fc: $1f
-    rra                                           ; $51fd: $1f
-    rra                                           ; $51fe: $1f
-    rra                                           ; $51ff: $1f
-    rra                                           ; $5200: $1f
-    rra                                           ; $5201: $1f
-    rra                                           ; $5202: $1f
-    ld a, [hl+]                                   ; $5203: $2a
-    rra                                           ; $5204: $1f
-    rra                                           ; $5205: $1f
-    rra                                           ; $5206: $1f
-    rra                                           ; $5207: $1f
-    rra                                           ; $5208: $1f
-    dec de                                        ; $5209: $1b
-    rra                                           ; $520a: $1f
-    rra                                           ; $520b: $1f
-    rra                                           ; $520c: $1f
-    rra                                           ; $520d: $1f
-    ld a, [de]                                    ; $520e: $1a
-    rra                                           ; $520f: $1f
-    rra                                           ; $5210: $1f
-    rra                                           ; $5211: $1f
-    rra                                           ; $5212: $1f
-    ld e, $1c                                     ; $5213: $1e $1c
-    dec e                                         ; $5215: $1d
-    rra                                           ; $5216: $1f
-    jr nz, @+$23                                  ; $5217: $20 $21
+SETCHARMAP prompt
 
-    ld [hl+], a                                   ; $5219: $22
-    inc hl                                        ; $521a: $23
-    inc h                                         ; $521b: $24
-    dec h                                         ; $521c: $25
-    ld h, $27                                     ; $521d: $26 $27
-    jr z, jr_002_524a                             ; $521f: $28 $29
+DrawUIFontGlyph.PromptFontLookup::
+    db "                "
 
-    rra                                           ; $5221: $1f
-    rra                                           ; $5222: $1f
-    rra                                           ; $5223: $1f
-    rra                                           ; $5224: $1f
-    rra                                           ; $5225: $1f
-    rra                                           ; $5226: $1f
-    rra                                           ; $5227: $1f
-    nop                                           ; $5228: $00
-    ld bc, $0302                                  ; $5229: $01 $02 $03
-    inc b                                         ; $522c: $04
-    dec b                                         ; $522d: $05
-    ld b, $07                                     ; $522e: $06 $07
-    ld [$0a09], sp                                ; $5230: $08 $09 $0a
-    dec bc                                        ; $5233: $0b
-    inc c                                         ; $5234: $0c
-    dec c                                         ; $5235: $0d
-    ld c, $0f                                     ; $5236: $0e $0f
-    db $10                                        ; $5238: $10
-    ld de, $1312                                  ; $5239: $11 $12 $13
-    inc d                                         ; $523c: $14
-    dec d                                         ; $523d: $15
-    ld d, $17                                     ; $523e: $16 $17
-    jr jr_002_525b                                ; $5240: $18 $19
+    db "            ➔   "
 
-    rra                                           ; $5242: $1f
-    rra                                           ; $5243: $1f
-    rra                                           ; $5244: $1f
-    rra                                           ; $5245: $1f
-    rra                                           ; $5246: $1f
-    rra                                           ; $5247: $1f
-    rra                                           ; $5248: $1f
-    rra                                           ; $5249: $1f
+    db "  ”    '    ,-. "
 
-jr_002_524a:
-    rra                                           ; $524a: $1f
-    rra                                           ; $524b: $1f
-    rra                                           ; $524c: $1f
-    rra                                           ; $524d: $1f
-    rra                                           ; $524e: $1f
-    rra                                           ; $524f: $1f
-    rra                                           ; $5250: $1f
-    rra                                           ; $5251: $1f
-    rra                                           ; $5252: $1f
-    rra                                           ; $5253: $1f
-    rra                                           ; $5254: $1f
-    rra                                           ; $5255: $1f
-    rra                                           ; $5256: $1f
-    rra                                           ; $5257: $1f
-    rra                                           ; $5258: $1f
-    rra                                           ; $5259: $1f
-    rra                                           ; $525a: $1f
+    db "0123456789      "
 
-jr_002_525b:
-    rra                                           ; $525b: $1f
-    rra                                           ; $525c: $1f
-    rra                                           ; $525d: $1f
-    rra                                           ; $525e: $1f
-    rra                                           ; $525f: $1f
-    rra                                           ; $5260: $1f
-    rra                                           ; $5261: $1f
-    rra                                           ; $5262: $1f
-    rra                                           ; $5263: $1f
-    rra                                           ; $5264: $1f
-    rra                                           ; $5265: $1f
-    rra                                           ; $5266: $1f
+    db " ABCDEFGHIJKLMNO"
+
+    db "PQRSTUVWXYZ     "
+
+    db "                "
+
+    db "                "
+
+TODO_Jump1::
     ld hl, $a002                                  ; $5267: $21 $02 $a0
     xor a                                         ; $526a: $af
 
@@ -3119,6 +3018,7 @@ jr_002_526b:
     jp Jump_000_05ea                              ; $5271: $c3 $ea $05
 
 
+TODO_Jump2::
     ld a, $40                                     ; $5274: $3e $40
     ld de, $a002                                  ; $5276: $11 $02 $a0
 
@@ -3153,14 +3053,14 @@ Call_002_5298:
 
     ld b, $03                                     ; $529e: $06 $03
     ld hl, $4ee9                                  ; $52a0: $21 $e9 $4e
-    call Call_000_05de                            ; $52a3: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $52a3: $cd $de $05
     ret                                           ; $52a6: $c9
 
 
 jr_002_52a7:
     ld b, $03                                     ; $52a7: $06 $03
     ld hl, $4f10                                  ; $52a9: $21 $10 $4f
-    call Call_000_05de                            ; $52ac: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $52ac: $cd $de $05
     ret                                           ; $52af: $c9
 
 

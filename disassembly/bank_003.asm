@@ -4010,7 +4010,7 @@ GS00_StatePhase_03_ContinueSavedGameScreenInit::
 
     ld b, $01                                     ; $5249: $06 $01
     ld hl, $4ae4                                  ; $524b: $21 $e4 $4a
-    call Call_000_05de                            ; $524e: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $524e: $cd $de $05
     jr jr_003_5273                                ; $5251: $18 $20
 
 jr_003_5253:
@@ -4032,10 +4032,10 @@ jr_003_5273:
     call Call_000_05b6                            ; $5273: $cd $b6 $05
     ld b, $03                                     ; $5276: $06 $03
     ld hl, $4e80                                  ; $5278: $21 $80 $4e
-    call Call_000_05de                            ; $527b: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $527b: $cd $de $05
     ld b, $03                                     ; $527e: $06 $03
     ld hl, $4e8a                                  ; $5280: $21 $8a $4e
-    call Call_000_05de                            ; $5283: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $5283: $cd $de $05
     ld a, $10                                     ; $5286: $3e $10
     ld [$d843], a                                 ; $5288: $ea $43 $d8
     ld [$d82b], a                                 ; $528b: $ea $2b $d8
@@ -4059,7 +4059,7 @@ jr_003_5273:
 
     ld b, $01                                     ; $52ba: $06 $01
     ld hl, $4bae                                  ; $52bc: $21 $ae $4b
-    call Call_000_05de                            ; $52bf: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $52bf: $cd $de $05
     jr jr_003_52e4                                ; $52c2: $18 $20
 
 jr_003_52c4:
@@ -4085,7 +4085,7 @@ jr_003_52e4:
     rst RST_08                                    ; $52e7: $cf
     ld b, $03                                     ; $52e8: $06 $03
     ld hl, $4e8a                                  ; $52ea: $21 $8a $4e
-    call Call_000_05de                            ; $52ed: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $52ed: $cd $de $05
     ld a, [$c31e]                                 ; $52f0: $fa $1e $c3
     and $01                                       ; $52f3: $e6 $01
     jr z, jr_003_52e4                             ; $52f5: $28 $ed
@@ -4110,7 +4110,7 @@ jr_003_52e4:
 
     ld b, $01                                     ; $5321: $06 $01
     ld hl, $4bdc                                  ; $5323: $21 $dc $4b
-    call Call_000_05de                            ; $5326: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $5326: $cd $de $05
     jr jr_003_534b                                ; $5329: $18 $20
 
 jr_003_532b:
@@ -4183,10 +4183,10 @@ GS00_StatePhase_04_ContinueSavedGameScreenIdle::
     call Call_000_05b6                            ; $53b1: $cd $b6 $05
     ld b, $03                                     ; $53b4: $06 $03
     ld hl, $4e80                                  ; $53b6: $21 $80 $4e
-    call Call_000_05de                            ; $53b9: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $53b9: $cd $de $05
     ld b, $03                                     ; $53bc: $06 $03
     ld hl, $4ea6                                  ; $53be: $21 $a6 $4e
-    call Call_000_05de                            ; $53c1: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $53c1: $cd $de $05
     call Call_000_04a2                            ; $53c4: $cd $a2 $04
     ld b, $03                                     ; $53c7: $06 $03
     ld hl, $4724                                  ; $53c9: $21 $24 $47
@@ -4199,7 +4199,7 @@ jr_003_53d4:
     rst RST_08                                    ; $53d7: $cf
     ld b, $03                                     ; $53d8: $06 $03
     ld hl, $4ea6                                  ; $53da: $21 $a6 $4e
-    call Call_000_05de                            ; $53dd: $cd $de $05
+    call SwitchBankToBAndJumpToHL                 ; $53dd: $cd $de $05
     ld a, [$c31e]                                 ; $53e0: $fa $1e $c3
     and $01                                       ; $53e3: $e6 $01
     jr z, jr_003_53d4                             ; $53e5: $28 $ed
