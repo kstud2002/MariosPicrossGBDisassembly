@@ -1637,7 +1637,7 @@ jr_004_4663:
     nop                                           ; $46cf: $00
     ld b, b                                       ; $46d0: $40
     ld [hl], b                                    ; $46d1: $70
-    jp nz, Jump_000_03f2                          ; $46d2: $c2 $f2 $03
+    jp nz, TODO_Bank0FCall4003                    ; $46d2: $c2 $f2 $03
 
     di                                            ; $46d5: $f3
     ld [bc], a                                    ; $46d6: $02
@@ -4116,7 +4116,7 @@ jr_004_512f:
     rst $38                                       ; $5143: $ff
     nop                                           ; $5144: $00
     rst $38                                       ; $5145: $ff
-    ld sp, $20ce                                  ; $5146: $31 $ce $20
+    ld sp, TODO_EmitMessageScriptById             ; $5146: $31 $ce $20
     rst RST_18                                    ; $5149: $df
     nop                                           ; $514a: $00
     rst $38                                       ; $514b: $ff

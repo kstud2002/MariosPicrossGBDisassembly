@@ -210,7 +210,7 @@ jr_000_01e9:
     xor a                                         ; $01e9: $af
     ld [$c33e], a                                 ; $01ea: $ea $3e $c3
     ld a, $00                                     ; $01ed: $3e $00
-    call Call_000_03b6                            ; $01ef: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $01ef: $cd $b6 $03
     ld a, $40                                     ; $01f2: $3e $40
     ld [$cd69], a                                 ; $01f4: $ea $69 $cd
     call Call_000_0631                            ; $01f7: $cd $31 $06
@@ -227,14 +227,14 @@ jr_000_01e9:
     ld bc, $003c                                  ; $0217: $01 $3c $00
     call Call_000_0603                            ; $021a: $cd $03 $06
     ld a, $05                                     ; $021d: $3e $05
-    call Call_000_03b6                            ; $021f: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $021f: $cd $b6 $03
     ld c, $00                                     ; $0222: $0e $00
     ld a, $01                                     ; $0224: $3e $01
-    call Call_000_03b6                            ; $0226: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $0226: $cd $b6 $03
     call Call_000_0399                            ; $0229: $cd $99 $03
     ld c, $00                                     ; $022c: $0e $00
     ld a, $01                                     ; $022e: $3e $01
-    call Call_000_03b6                            ; $0230: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $0230: $cd $b6 $03
     xor a                                         ; $0233: $af
     ld [$c32f], a                                 ; $0234: $ea $2f $c3
     ld [$c330], a                                 ; $0237: $ea $30 $c3
@@ -288,7 +288,7 @@ jr_000_01e9:
     xor a                                         ; $029d: $af
     ld [$c33e], a                                 ; $029e: $ea $3e $c3
     ld a, $00                                     ; $02a1: $3e $00
-    call Call_000_03b6                            ; $02a3: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $02a3: $cd $b6 $03
     ld a, $40                                     ; $02a6: $3e $40
     ld [$cd69], a                                 ; $02a8: $ea $69 $cd
     call Call_000_0631                            ; $02ab: $cd $31 $06
@@ -500,7 +500,7 @@ jr_000_03ae:
     ret                                           ; $03b5: $c9
 
 
-Call_000_03b6:
+TODO_Bank0FDispatcher::
     push af                                       ; $03b6: $f5
     push bc                                       ; $03b7: $c5
     push de                                       ; $03b8: $d5
@@ -554,7 +554,7 @@ Call_000_03f1:
 Jump_000_03f1:
     push hl                                       ; $03f1: $e5
 
-Jump_000_03f2:
+TODO_Bank0FCall4003::
     ld a, [ActiveROMBank]                         ; $03f2: $fa $12 $c3
     push af                                       ; $03f5: $f5
     ld a, $0f                                     ; $03f6: $3e $0f
@@ -1493,122 +1493,121 @@ jr_000_08b2:
     ret                                           ; $08b2: $c9
 
 
-Call_000_08b3:
-Jump_000_08b3:
-    ld a, [$c351]                                 ; $08b3: $fa $51 $c3
+PrepareMessageProgressionCopy::
+    ld a, [MessageProgressionCopySourceX]         ; $08b3: $fa $51 $c3
     and $07                                       ; $08b6: $e6 $07
     ld c, a                                       ; $08b8: $4f
     ld b, $00                                     ; $08b9: $06 $00
     ld hl, $0d59                                  ; $08bb: $21 $59 $0d
     add hl, bc                                    ; $08be: $09
     ld a, [hl]                                    ; $08bf: $7e
-    ld [$c359], a                                 ; $08c0: $ea $59 $c3
-    ld a, [$c353]                                 ; $08c3: $fa $53 $c3
+    ld [MessageProgressionCopyMaskHigh], a        ; $08c0: $ea $59 $c3
+    ld a, [MessageProgressionCopyDestX]           ; $08c3: $fa $53 $c3
     and $07                                       ; $08c6: $e6 $07
     ld c, a                                       ; $08c8: $4f
     ld b, $00                                     ; $08c9: $06 $00
     ld hl, $0d62                                  ; $08cb: $21 $62 $0d
     add hl, bc                                    ; $08ce: $09
     ld a, [hl]                                    ; $08cf: $7e
-    ld [$c35a], a                                 ; $08d0: $ea $5a $c3
-    ld a, [$c351]                                 ; $08d3: $fa $51 $c3
+    ld [MessageProgressionCopyValueA], a          ; $08d0: $ea $5a $c3
+    ld a, [MessageProgressionCopySourceX]         ; $08d3: $fa $51 $c3
     and $f8                                       ; $08d6: $e6 $f8
     ld c, a                                       ; $08d8: $4f
-    ld a, [$c353]                                 ; $08d9: $fa $53 $c3
+    ld a, [MessageProgressionCopyDestX]           ; $08d9: $fa $53 $c3
     and $f8                                       ; $08dc: $e6 $f8
     sub c                                         ; $08de: $91
     srl a                                         ; $08df: $cb $3f
     srl a                                         ; $08e1: $cb $3f
     srl a                                         ; $08e3: $cb $3f
-    ld [$c35b], a                                 ; $08e5: $ea $5b $c3
-    ld a, [$c351]                                 ; $08e8: $fa $51 $c3
+    ld [MessageProgressionCopyValueB], a          ; $08e5: $ea $5b $c3
+    ld a, [MessageProgressionCopySourceX]         ; $08e8: $fa $51 $c3
     ld c, a                                       ; $08eb: $4f
-    ld a, [$c353]                                 ; $08ec: $fa $53 $c3
+    ld a, [MessageProgressionCopyDestX]           ; $08ec: $fa $53 $c3
     sub c                                         ; $08ef: $91
     srl a                                         ; $08f0: $cb $3f
     srl a                                         ; $08f2: $cb $3f
     srl a                                         ; $08f4: $cb $3f
     inc a                                         ; $08f6: $3c
-    ld [$c35c], a                                 ; $08f7: $ea $5c $c3
-    ld a, [$c351]                                 ; $08fa: $fa $51 $c3
+    ld [MessageProgressionCopyValueC], a          ; $08f7: $ea $5c $c3
+    ld a, [MessageProgressionCopySourceX]         ; $08fa: $fa $51 $c3
     and $07                                       ; $08fd: $e6 $07
     ld c, a                                       ; $08ff: $4f
     add $38                                       ; $0900: $c6 $38
-    ld [$c35e], a                                 ; $0902: $ea $5e $c3
+    ld [MessageProgressionCopyValueE], a          ; $0902: $ea $5e $c3
     ld b, $00                                     ; $0905: $06 $00
     ld hl, $0d59                                  ; $0907: $21 $59 $0d
     add hl, bc                                    ; $090a: $09
     ld a, [hl]                                    ; $090b: $7e
-    ld [$c35f], a                                 ; $090c: $ea $5f $c3
+    ld [MessageProgressionCopyValueF], a          ; $090c: $ea $5f $c3
     ld hl, $0d61                                  ; $090f: $21 $61 $0d
     add hl, bc                                    ; $0912: $09
     ld a, [hl]                                    ; $0913: $7e
-    ld [$c360], a                                 ; $0914: $ea $60 $c3
-    ld a, [$c355]                                 ; $0917: $fa $55 $c3
+    ld [MessageProgressionCopyValueG], a          ; $0914: $ea $60 $c3
+    ld a, [MessageProgressionCopyBankAddressLow]  ; $0917: $fa $55 $c3
     ld c, a                                       ; $091a: $4f
-    ld a, [$c356]                                 ; $091b: $fa $56 $c3
+    ld a, [MessageProgressionCopyBankAddressHigh] ; $091b: $fa $56 $c3
     ld b, a                                       ; $091e: $47
     ld a, [ActiveROMBank]                         ; $091f: $fa $12 $c3
     push af                                       ; $0922: $f5
-    ld a, [$c357]                                 ; $0923: $fa $57 $c3
+    ld a, [MessageProgressionCopyBank]            ; $0923: $fa $57 $c3
     ld [ActiveROMBank], a                         ; $0926: $ea $12 $c3
     ld [ROMBankSwitchTrigger], a                  ; $0929: $ea $00 $20
     ld de, $c363                                  ; $092c: $11 $63 $c3
-    ld a, [$c352]                                 ; $092f: $fa $52 $c3
+    ld a, [MessageProgressionCopySourceY]         ; $092f: $fa $52 $c3
     ld l, a                                       ; $0932: $6f
-    ld a, [$c351]                                 ; $0933: $fa $51 $c3
+    ld a, [MessageProgressionCopySourceX]         ; $0933: $fa $51 $c3
     and $f8                                       ; $0936: $e6 $f8
     ld h, a                                       ; $0938: $67
 
-Jump_000_0939:
+.PrepareMessageProgressionCopyLoop:
     xor a                                         ; $0939: $af
-    ld [$c361], a                                 ; $093a: $ea $61 $c3
-    ld [$c362], a                                 ; $093d: $ea $62 $c3
-    ld a, [$c35c]                                 ; $0940: $fa $5c $c3
-    ld [$c35d], a                                 ; $0943: $ea $5d $c3
-    ld a, [$c359]                                 ; $0946: $fa $59 $c3
-    ld [$c358], a                                 ; $0949: $ea $58 $c3
+    ld [MessageProgressionCopyValueH], a          ; $093a: $ea $61 $c3
+    ld [MessageProgressionCopyValueI], a          ; $093d: $ea $62 $c3
+    ld a, [MessageProgressionCopyValueC]          ; $0940: $fa $5c $c3
+    ld [MessageProgressionCopyValueD], a          ; $0943: $ea $5d $c3
+    ld a, [MessageProgressionCopyMaskHigh]        ; $0946: $fa $59 $c3
+    ld [MessageProgressionCopyMaskLow], a         ; $0949: $ea $58 $c3
     push bc                                       ; $094c: $c5
     push hl                                       ; $094d: $e5
-    ld a, [$c35b]                                 ; $094e: $fa $5b $c3
+    ld a, [MessageProgressionCopyValueB]          ; $094e: $fa $5b $c3
     and a                                         ; $0951: $a7
-    jr nz, jr_000_0963                            ; $0952: $20 $0f
+    jr nz, .PrepareMessageProgressionCopyRow      ; $0952: $20 $0f
 
     push hl                                       ; $0954: $e5
-    ld a, [$c35a]                                 ; $0955: $fa $5a $c3
-    ld hl, $c359                                  ; $0958: $21 $59 $c3
+    ld a, [MessageProgressionCopyValueA]          ; $0955: $fa $5a $c3
+    ld hl, MessageProgressionCopyMaskHigh         ; $0958: $21 $59 $c3
     and [hl]                                      ; $095b: $a6
-    ld [$c358], a                                 ; $095c: $ea $58 $c3
+    ld [MessageProgressionCopyMaskLow], a         ; $095c: $ea $58 $c3
     pop hl                                        ; $095f: $e1
-    jp Jump_000_0a11                              ; $0960: $c3 $11 $0a
+    jp .PrepareMessageProgressionCopyNextRow      ; $0960: $c3 $11 $0a
 
 
-jr_000_0963:
+.PrepareMessageProgressionCopyRow:
     push hl                                       ; $0963: $e5
     call Call_000_0d6a                            ; $0964: $cd $6a $0d
-    ld a, [$c358]                                 ; $0967: $fa $58 $c3
+    ld a, [MessageProgressionCopyMaskLow]         ; $0967: $fa $58 $c3
     ld [de], a                                    ; $096a: $12
     inc de                                        ; $096b: $13
     ld a, [bc]                                    ; $096c: $0a
     ld l, a                                       ; $096d: $6f
-    ld a, [$c35e]                                 ; $096e: $fa $5e $c3
+    ld a, [MessageProgressionCopyValueE]          ; $096e: $fa $5e $c3
     ld h, a                                       ; $0971: $67
     ld a, [hl]                                    ; $0972: $7e
     ld [de], a                                    ; $0973: $12
-    ld hl, $c360                                  ; $0974: $21 $60 $c3
+    ld hl, MessageProgressionCopyValueG           ; $0974: $21 $60 $c3
     and [hl]                                      ; $0977: $a6
-    ld [$c361], a                                 ; $0978: $ea $61 $c3
+    ld [MessageProgressionCopyValueH], a          ; $0978: $ea $61 $c3
     inc bc                                        ; $097b: $03
     inc de                                        ; $097c: $13
     ld a, [bc]                                    ; $097d: $0a
     ld l, a                                       ; $097e: $6f
-    ld a, [$c35e]                                 ; $097f: $fa $5e $c3
+    ld a, [MessageProgressionCopyValueE]          ; $097f: $fa $5e $c3
     ld h, a                                       ; $0982: $67
     ld a, [hl]                                    ; $0983: $7e
     ld [de], a                                    ; $0984: $12
-    ld hl, $c360                                  ; $0985: $21 $60 $c3
+    ld hl, MessageProgressionCopyValueG           ; $0985: $21 $60 $c3
     and [hl]                                      ; $0988: $a6
-    ld [$c362], a                                 ; $0989: $ea $62 $c3
+    ld [MessageProgressionCopyValueI], a          ; $0989: $ea $62 $c3
     ld a, c                                       ; $098c: $79
     add $0f                                       ; $098d: $c6 $0f
     ld c, a                                       ; $098f: $4f
@@ -1620,12 +1619,12 @@ jr_000_0963:
     ld a, h                                       ; $0996: $7c
     add $08                                       ; $0997: $c6 $08
     ld h, a                                       ; $0999: $67
-    ld a, [$c35d]                                 ; $099a: $fa $5d $c3
+    ld a, [MessageProgressionCopyValueD]          ; $099a: $fa $5d $c3
     dec a                                         ; $099d: $3d
-    ld [$c35d], a                                 ; $099e: $ea $5d $c3
-    ld a, [$c35b]                                 ; $09a1: $fa $5b $c3
+    ld [MessageProgressionCopyValueD], a          ; $099e: $ea $5d $c3
+    ld a, [MessageProgressionCopyValueB]          ; $09a1: $fa $5b $c3
     dec a                                         ; $09a4: $3d
-    jr z, jr_000_0a0b                             ; $09a5: $28 $64
+    jr z, .PrepareMessageProgressionCopyTail      ; $09a5: $28 $64
 
 jr_000_09a7:
     push af                                       ; $09a7: $f5
@@ -1634,7 +1633,7 @@ jr_000_09a7:
     ld a, $ff                                     ; $09ac: $3e $ff
     ld [de], a                                    ; $09ae: $12
     inc de                                        ; $09af: $13
-    ld a, [$c35d]                                 ; $09b0: $fa $5d $c3
+    ld a, [MessageProgressionCopyValueD]          ; $09b0: $fa $5d $c3
     and a                                         ; $09b3: $a7
     jr z, jr_000_09b8                             ; $09b4: $28 $02
 
@@ -1643,21 +1642,21 @@ jr_000_09a7:
 
 jr_000_09b8:
     ld l, a                                       ; $09b8: $6f
-    ld a, [$c35e]                                 ; $09b9: $fa $5e $c3
+    ld a, [MessageProgressionCopyValueE]          ; $09b9: $fa $5e $c3
     ld h, a                                       ; $09bc: $67
     ld a, [hl]                                    ; $09bd: $7e
     push af                                       ; $09be: $f5
-    ld hl, $c35f                                  ; $09bf: $21 $5f $c3
+    ld hl, MessageProgressionCopyValueF           ; $09bf: $21 $5f $c3
     and [hl]                                      ; $09c2: $a6
-    ld hl, $c361                                  ; $09c3: $21 $61 $c3
+    ld hl, MessageProgressionCopyValueH           ; $09c3: $21 $61 $c3
     or [hl]                                       ; $09c6: $b6
     ld [de], a                                    ; $09c7: $12
     pop af                                        ; $09c8: $f1
-    ld hl, $c360                                  ; $09c9: $21 $60 $c3
+    ld hl, MessageProgressionCopyValueG           ; $09c9: $21 $60 $c3
     and [hl]                                      ; $09cc: $a6
-    ld [$c361], a                                 ; $09cd: $ea $61 $c3
+    ld [MessageProgressionCopyValueH], a          ; $09cd: $ea $61 $c3
     inc de                                        ; $09d0: $13
-    ld a, [$c35d]                                 ; $09d1: $fa $5d $c3
+    ld a, [MessageProgressionCopyValueD]          ; $09d1: $fa $5d $c3
     and a                                         ; $09d4: $a7
     jr z, jr_000_09e2                             ; $09d5: $28 $0b
 
@@ -1673,66 +1672,66 @@ jr_000_09b8:
 
 jr_000_09e2:
     ld l, a                                       ; $09e2: $6f
-    ld a, [$c35e]                                 ; $09e3: $fa $5e $c3
+    ld a, [MessageProgressionCopyValueE]          ; $09e3: $fa $5e $c3
     ld h, a                                       ; $09e6: $67
     ld a, [hl]                                    ; $09e7: $7e
     push af                                       ; $09e8: $f5
-    ld hl, $c35f                                  ; $09e9: $21 $5f $c3
+    ld hl, MessageProgressionCopyValueF           ; $09e9: $21 $5f $c3
     and [hl]                                      ; $09ec: $a6
-    ld hl, $c362                                  ; $09ed: $21 $62 $c3
+    ld hl, MessageProgressionCopyValueI           ; $09ed: $21 $62 $c3
     or [hl]                                       ; $09f0: $b6
     ld [de], a                                    ; $09f1: $12
     pop af                                        ; $09f2: $f1
-    ld hl, $c360                                  ; $09f3: $21 $60 $c3
+    ld hl, MessageProgressionCopyValueG           ; $09f3: $21 $60 $c3
     and [hl]                                      ; $09f6: $a6
-    ld [$c362], a                                 ; $09f7: $ea $62 $c3
+    ld [MessageProgressionCopyValueI], a          ; $09f7: $ea $62 $c3
     inc de                                        ; $09fa: $13
     pop hl                                        ; $09fb: $e1
     ld a, h                                       ; $09fc: $7c
     add $08                                       ; $09fd: $c6 $08
     ld h, a                                       ; $09ff: $67
-    ld a, [$c35d]                                 ; $0a00: $fa $5d $c3
+    ld a, [MessageProgressionCopyValueD]          ; $0a00: $fa $5d $c3
     dec a                                         ; $0a03: $3d
-    ld [$c35d], a                                 ; $0a04: $ea $5d $c3
+    ld [MessageProgressionCopyValueD], a          ; $0a04: $ea $5d $c3
     pop af                                        ; $0a07: $f1
     dec a                                         ; $0a08: $3d
     jr nz, jr_000_09a7                            ; $0a09: $20 $9c
 
-jr_000_0a0b:
-    ld a, [$c35a]                                 ; $0a0b: $fa $5a $c3
-    ld [$c358], a                                 ; $0a0e: $ea $58 $c3
+.PrepareMessageProgressionCopyTail:
+    ld a, [MessageProgressionCopyValueA]          ; $0a0b: $fa $5a $c3
+    ld [MessageProgressionCopyMaskLow], a         ; $0a0e: $ea $58 $c3
 
-Jump_000_0a11:
+.PrepareMessageProgressionCopyNextRow:
     call Call_000_0d6a                            ; $0a11: $cd $6a $0d
-    ld a, [$c358]                                 ; $0a14: $fa $58 $c3
+    ld a, [MessageProgressionCopyMaskLow]         ; $0a14: $fa $58 $c3
     ld [de], a                                    ; $0a17: $12
     inc de                                        ; $0a18: $13
-    ld a, [$c35d]                                 ; $0a19: $fa $5d $c3
+    ld a, [MessageProgressionCopyValueD]          ; $0a19: $fa $5d $c3
     and a                                         ; $0a1c: $a7
-    jr z, jr_000_0a21                             ; $0a1d: $28 $02
+    jr z, .PrepareMessageProgressionCopyNextRowPart1; $0a1d: $28 $02
 
     ld a, [bc]                                    ; $0a1f: $0a
     inc bc                                        ; $0a20: $03
 
-jr_000_0a21:
+.PrepareMessageProgressionCopyNextRowPart1:
     ld l, a                                       ; $0a21: $6f
-    ld a, [$c35e]                                 ; $0a22: $fa $5e $c3
+    ld a, [MessageProgressionCopyValueE]          ; $0a22: $fa $5e $c3
     ld h, a                                       ; $0a25: $67
     ld a, [hl]                                    ; $0a26: $7e
     push af                                       ; $0a27: $f5
-    ld hl, $c35f                                  ; $0a28: $21 $5f $c3
+    ld hl, MessageProgressionCopyValueF           ; $0a28: $21 $5f $c3
     and [hl]                                      ; $0a2b: $a6
-    ld hl, $c361                                  ; $0a2c: $21 $61 $c3
+    ld hl, MessageProgressionCopyValueH           ; $0a2c: $21 $61 $c3
     or [hl]                                       ; $0a2f: $b6
     ld [de], a                                    ; $0a30: $12
     pop af                                        ; $0a31: $f1
-    ld hl, $c360                                  ; $0a32: $21 $60 $c3
+    ld hl, MessageProgressionCopyValueG           ; $0a32: $21 $60 $c3
     and [hl]                                      ; $0a35: $a6
-    ld [$c361], a                                 ; $0a36: $ea $61 $c3
+    ld [MessageProgressionCopyValueH], a          ; $0a36: $ea $61 $c3
     inc de                                        ; $0a39: $13
-    ld a, [$c35d]                                 ; $0a3a: $fa $5d $c3
+    ld a, [MessageProgressionCopyValueD]          ; $0a3a: $fa $5d $c3
     and a                                         ; $0a3d: $a7
-    jr z, jr_000_0a4b                             ; $0a3e: $28 $0b
+    jr z, .PrepareMessageProgressionCopyNextRowPart2; $0a3e: $28 $0b
 
     ld a, [bc]                                    ; $0a40: $0a
     push af                                       ; $0a41: $f5
@@ -1744,21 +1743,21 @@ jr_000_0a21:
     ld b, a                                       ; $0a49: $47
     pop af                                        ; $0a4a: $f1
 
-jr_000_0a4b:
+.PrepareMessageProgressionCopyNextRowPart2:
     ld l, a                                       ; $0a4b: $6f
-    ld a, [$c35e]                                 ; $0a4c: $fa $5e $c3
+    ld a, [MessageProgressionCopyValueE]          ; $0a4c: $fa $5e $c3
     ld h, a                                       ; $0a4f: $67
     ld a, [hl]                                    ; $0a50: $7e
     push af                                       ; $0a51: $f5
-    ld hl, $c35f                                  ; $0a52: $21 $5f $c3
+    ld hl, MessageProgressionCopyValueF           ; $0a52: $21 $5f $c3
     and [hl]                                      ; $0a55: $a6
-    ld hl, $c362                                  ; $0a56: $21 $62 $c3
+    ld hl, MessageProgressionCopyValueI           ; $0a56: $21 $62 $c3
     or [hl]                                       ; $0a59: $b6
     ld [de], a                                    ; $0a5a: $12
     pop af                                        ; $0a5b: $f1
-    ld hl, $c360                                  ; $0a5c: $21 $60 $c3
+    ld hl, MessageProgressionCopyValueG           ; $0a5c: $21 $60 $c3
     and [hl]                                      ; $0a5f: $a6
-    ld [$c362], a                                 ; $0a60: $ea $62 $c3
+    ld [MessageProgressionCopyValueI], a          ; $0a60: $ea $62 $c3
     inc de                                        ; $0a63: $13
     pop hl                                        ; $0a64: $e1
     pop bc                                        ; $0a65: $c1
@@ -1766,7 +1765,7 @@ jr_000_0a4b:
     inc bc                                        ; $0a67: $03
     ld a, c                                       ; $0a68: $79
     and $0f                                       ; $0a69: $e6 $0f
-    jr nz, jr_000_0a75                            ; $0a6b: $20 $08
+    jr nz, .PrepareMessageProgressionCopyRowAdvance; $0a6b: $20 $08
 
     ld a, c                                       ; $0a6d: $79
     add $f0                                       ; $0a6e: $c6 $f0
@@ -1775,11 +1774,11 @@ jr_000_0a4b:
     adc $00                                       ; $0a72: $ce $00
     ld b, a                                       ; $0a74: $47
 
-jr_000_0a75:
+.PrepareMessageProgressionCopyRowAdvance:
     inc l                                         ; $0a75: $2c
-    ld a, [$c354]                                 ; $0a76: $fa $54 $c3
+    ld a, [MessageProgressionCopyDestY]           ; $0a76: $fa $54 $c3
     cp l                                          ; $0a79: $bd
-    jp nc, Jump_000_0939                          ; $0a7a: $d2 $39 $09
+    jp nc, .PrepareMessageProgressionCopyLoop     ; $0a7a: $d2 $39 $09
 
     xor a                                         ; $0a7d: $af
     ld [de], a                                    ; $0a7e: $12
@@ -1788,10 +1787,10 @@ jr_000_0a75:
     ldh a, [rIE]                                  ; $0a81: $f0 $ff
     push af                                       ; $0a83: $f5
 
-jr_000_0a84:
+.WaitForVBlank:
     ldh a, [rLY]                                  ; $0a84: $f0 $44
     cp $80                                        ; $0a86: $fe $80
-    jr nc, jr_000_0a84                            ; $0a88: $30 $fa
+    jr nc, .WaitForVBlank                         ; $0a88: $30 $fa
 
     ldh a, [rIE]                                  ; $0a8a: $f0 $ff
     res 0, a                                      ; $0a8c: $cb $87
@@ -1799,19 +1798,19 @@ jr_000_0a84:
     ld bc, $c363                                  ; $0a90: $01 $63 $c3
     ld a, [$c32e]                                 ; $0a93: $fa $2e $c3
     bit 7, a                                      ; $0a96: $cb $7f
-    jr z, jr_000_0af3                             ; $0a98: $28 $59
+    jr z, .CopyTileDataLoopAlt                    ; $0a98: $28 $59
 
-jr_000_0a9a:
+.WaitForDisplayLine:
     ldh a, [rLY]                                  ; $0a9a: $f0 $44
     cp $90                                        ; $0a9c: $fe $90
-    jr c, jr_000_0a9a                             ; $0a9e: $38 $fa
+    jr c, .WaitForDisplayLine                     ; $0a9e: $38 $fa
 
     ld a, [$c32e]                                 ; $0aa0: $fa $2e $c3
     set 4, a                                      ; $0aa3: $cb $e7
     ldh [rLCDC], a                                ; $0aa5: $e0 $40
     ld a, $14                                     ; $0aa7: $3e $14
 
-jr_000_0aa9:
+.CopyTileDataLoop:
     push af                                       ; $0aa9: $f5
     ld a, [bc]                                    ; $0aaa: $0a
     ld l, a                                       ; $0aab: $6f
@@ -1819,7 +1818,7 @@ jr_000_0aa9:
     ld a, [bc]                                    ; $0aad: $0a
     ld h, a                                       ; $0aae: $67
     or l                                          ; $0aaf: $b5
-    jr z, jr_000_0ace                             ; $0ab0: $28 $1c
+    jr z, .RestoreInterruptsAndReturn             ; $0ab0: $28 $1c
 
     inc bc                                        ; $0ab2: $03
     ld a, [bc]                                    ; $0ab3: $0a
@@ -1839,39 +1838,38 @@ jr_000_0aa9:
     ld [hl], a                                    ; $0ac1: $77
     pop af                                        ; $0ac2: $f1
     dec a                                         ; $0ac3: $3d
-    jr nz, jr_000_0aa9                            ; $0ac4: $20 $e3
+    jr nz, .CopyTileDataLoop                      ; $0ac4: $20 $e3
 
-jr_000_0ac6:
+.WaitForDisplayLineLoop:
     ldh a, [rLY]                                  ; $0ac6: $f0 $44
     cp $90                                        ; $0ac8: $fe $90
-    jr c, jr_000_0a9a                             ; $0aca: $38 $ce
+    jr c, .WaitForDisplayLine                     ; $0aca: $38 $ce
 
-    jr jr_000_0ac6                                ; $0acc: $18 $f8
+    jr .WaitForDisplayLineLoop                    ; $0acc: $18 $f8
 
-jr_000_0ace:
+.RestoreInterruptsAndReturn:
     pop af                                        ; $0ace: $f1
 
-Call_000_0acf:
-jr_000_0acf:
+.RestoreInterruptsAndWaitForVBlank:
     ldh a, [rLY]                                  ; $0acf: $f0 $44
     cp $80                                        ; $0ad1: $fe $80
-    jr c, jr_000_0ae8                             ; $0ad3: $38 $13
+    jr c, .RestoreInterrupts                      ; $0ad3: $38 $13
 
-jr_000_0ad5:
+.WaitForDisplayLineAndRestore:
     ldh a, [rLY]                                  ; $0ad5: $f0 $44
     cp $90                                        ; $0ad7: $fe $90
-    jr c, jr_000_0ad5                             ; $0ad9: $38 $fa
+    jr c, .WaitForDisplayLineAndRestore           ; $0ad9: $38 $fa
 
     ld a, [$c32e]                                 ; $0adb: $fa $2e $c3
     set 4, a                                      ; $0ade: $cb $e7
     ldh [rLCDC], a                                ; $0ae0: $e0 $40
 
-jr_000_0ae2:
+.WaitForVBlankLoop:
     ldh a, [rLY]                                  ; $0ae2: $f0 $44
     cp $80                                        ; $0ae4: $fe $80
-    jr nc, jr_000_0ae2                            ; $0ae6: $30 $fa
+    jr nc, .WaitForVBlankLoop                     ; $0ae6: $30 $fa
 
-jr_000_0ae8:
+.RestoreInterrupts:
     pop af                                        ; $0ae8: $f1
 
 Call_000_0ae9:
@@ -1883,14 +1881,14 @@ Jump_000_0ae9:
     ret                                           ; $0af2: $c9
 
 
-jr_000_0af3:
+.CopyTileDataLoopAlt:
     ld a, [bc]                                    ; $0af3: $0a
     ld l, a                                       ; $0af4: $6f
     inc bc                                        ; $0af5: $03
     ld a, [bc]                                    ; $0af6: $0a
     ld h, a                                       ; $0af7: $67
     or l                                          ; $0af8: $b5
-    jr z, jr_000_0acf                             ; $0af9: $28 $d4
+    jr z, .RestoreInterruptsAndWaitForVBlank      ; $0af9: $28 $d4
 
     inc bc                                        ; $0afb: $03
     ld a, [bc]                                    ; $0afc: $0a
@@ -1908,94 +1906,94 @@ jr_000_0af3:
     and e                                         ; $0b08: $a3
     xor [hl]                                      ; $0b09: $ae
     ld [hl], a                                    ; $0b0a: $77
-    jr jr_000_0af3                                ; $0b0b: $18 $e6
+    jr .CopyTileDataLoopAlt                       ; $0b0b: $18 $e6
 
 Call_000_0b0d:
 Jump_000_0b0d:
-    ld a, [$c351]                                 ; $0b0d: $fa $51 $c3
+    ld a, [MessageProgressionCopySourceX]         ; $0b0d: $fa $51 $c3
     and $07                                       ; $0b10: $e6 $07
     ld c, a                                       ; $0b12: $4f
     ld b, $00                                     ; $0b13: $06 $00
     ld hl, $0d59                                  ; $0b15: $21 $59 $0d
     add hl, bc                                    ; $0b18: $09
     ld a, [hl]                                    ; $0b19: $7e
-    ld [$c359], a                                 ; $0b1a: $ea $59 $c3
-    ld a, [$c353]                                 ; $0b1d: $fa $53 $c3
+    ld [MessageProgressionCopyMaskHigh], a        ; $0b1a: $ea $59 $c3
+    ld a, [MessageProgressionCopyDestX]           ; $0b1d: $fa $53 $c3
     and $07                                       ; $0b20: $e6 $07
     ld c, a                                       ; $0b22: $4f
     ld b, $00                                     ; $0b23: $06 $00
     ld hl, $0d62                                  ; $0b25: $21 $62 $0d
     add hl, bc                                    ; $0b28: $09
     ld a, [hl]                                    ; $0b29: $7e
-    ld [$c35a], a                                 ; $0b2a: $ea $5a $c3
-    ld a, [$c351]                                 ; $0b2d: $fa $51 $c3
+    ld [MessageProgressionCopyValueA], a          ; $0b2a: $ea $5a $c3
+    ld a, [MessageProgressionCopySourceX]         ; $0b2d: $fa $51 $c3
     and $f8                                       ; $0b30: $e6 $f8
     ld c, a                                       ; $0b32: $4f
-    ld a, [$c353]                                 ; $0b33: $fa $53 $c3
+    ld a, [MessageProgressionCopyDestX]           ; $0b33: $fa $53 $c3
     and $f8                                       ; $0b36: $e6 $f8
     sub c                                         ; $0b38: $91
     srl a                                         ; $0b39: $cb $3f
     srl a                                         ; $0b3b: $cb $3f
     srl a                                         ; $0b3d: $cb $3f
-    ld [$c35b], a                                 ; $0b3f: $ea $5b $c3
-    ld a, [$c351]                                 ; $0b42: $fa $51 $c3
+    ld [MessageProgressionCopyValueB], a          ; $0b3f: $ea $5b $c3
+    ld a, [MessageProgressionCopySourceX]         ; $0b42: $fa $51 $c3
     ld c, a                                       ; $0b45: $4f
-    ld a, [$c353]                                 ; $0b46: $fa $53 $c3
+    ld a, [MessageProgressionCopyDestX]           ; $0b46: $fa $53 $c3
     sub c                                         ; $0b49: $91
     srl a                                         ; $0b4a: $cb $3f
     srl a                                         ; $0b4c: $cb $3f
     srl a                                         ; $0b4e: $cb $3f
     inc a                                         ; $0b50: $3c
-    ld [$c35c], a                                 ; $0b51: $ea $5c $c3
-    ld a, [$c351]                                 ; $0b54: $fa $51 $c3
+    ld [MessageProgressionCopyValueC], a          ; $0b51: $ea $5c $c3
+    ld a, [MessageProgressionCopySourceX]         ; $0b54: $fa $51 $c3
     and $07                                       ; $0b57: $e6 $07
     ld c, a                                       ; $0b59: $4f
     add $38                                       ; $0b5a: $c6 $38
-    ld [$c35e], a                                 ; $0b5c: $ea $5e $c3
+    ld [MessageProgressionCopyValueE], a          ; $0b5c: $ea $5e $c3
     ld b, $00                                     ; $0b5f: $06 $00
     ld hl, $0d59                                  ; $0b61: $21 $59 $0d
     add hl, bc                                    ; $0b64: $09
     ld a, [hl]                                    ; $0b65: $7e
-    ld [$c35f], a                                 ; $0b66: $ea $5f $c3
+    ld [MessageProgressionCopyValueF], a          ; $0b66: $ea $5f $c3
     ld hl, $0d61                                  ; $0b69: $21 $61 $0d
     add hl, bc                                    ; $0b6c: $09
     ld a, [hl]                                    ; $0b6d: $7e
-    ld [$c360], a                                 ; $0b6e: $ea $60 $c3
-    ld a, [$c355]                                 ; $0b71: $fa $55 $c3
+    ld [MessageProgressionCopyValueG], a          ; $0b6e: $ea $60 $c3
+    ld a, [MessageProgressionCopyBankAddressLow]  ; $0b71: $fa $55 $c3
     ld c, a                                       ; $0b74: $4f
-    ld a, [$c356]                                 ; $0b75: $fa $56 $c3
+    ld a, [MessageProgressionCopyBankAddressHigh] ; $0b75: $fa $56 $c3
     ld b, a                                       ; $0b78: $47
     ld a, [ActiveROMBank]                         ; $0b79: $fa $12 $c3
     push af                                       ; $0b7c: $f5
-    ld a, [$c357]                                 ; $0b7d: $fa $57 $c3
+    ld a, [MessageProgressionCopyBank]            ; $0b7d: $fa $57 $c3
     ld [ActiveROMBank], a                         ; $0b80: $ea $12 $c3
     ld [ROMBankSwitchTrigger], a                  ; $0b83: $ea $00 $20
     ld de, $c363                                  ; $0b86: $11 $63 $c3
-    ld a, [$c352]                                 ; $0b89: $fa $52 $c3
+    ld a, [MessageProgressionCopySourceY]         ; $0b89: $fa $52 $c3
     ld l, a                                       ; $0b8c: $6f
-    ld a, [$c351]                                 ; $0b8d: $fa $51 $c3
+    ld a, [MessageProgressionCopySourceX]         ; $0b8d: $fa $51 $c3
     and $f8                                       ; $0b90: $e6 $f8
     ld h, a                                       ; $0b92: $67
 
 Jump_000_0b93:
     xor a                                         ; $0b93: $af
-    ld [$c361], a                                 ; $0b94: $ea $61 $c3
-    ld [$c362], a                                 ; $0b97: $ea $62 $c3
-    ld a, [$c35c]                                 ; $0b9a: $fa $5c $c3
-    ld [$c35d], a                                 ; $0b9d: $ea $5d $c3
-    ld a, [$c359]                                 ; $0ba0: $fa $59 $c3
-    ld [$c358], a                                 ; $0ba3: $ea $58 $c3
+    ld [MessageProgressionCopyValueH], a          ; $0b94: $ea $61 $c3
+    ld [MessageProgressionCopyValueI], a          ; $0b97: $ea $62 $c3
+    ld a, [MessageProgressionCopyValueC]          ; $0b9a: $fa $5c $c3
+    ld [MessageProgressionCopyValueD], a          ; $0b9d: $ea $5d $c3
+    ld a, [MessageProgressionCopyMaskHigh]        ; $0ba0: $fa $59 $c3
+    ld [MessageProgressionCopyMaskLow], a         ; $0ba3: $ea $58 $c3
     push bc                                       ; $0ba6: $c5
     push hl                                       ; $0ba7: $e5
-    ld a, [$c35b]                                 ; $0ba8: $fa $5b $c3
+    ld a, [MessageProgressionCopyValueB]          ; $0ba8: $fa $5b $c3
     and a                                         ; $0bab: $a7
     jr nz, jr_000_0bbd                            ; $0bac: $20 $0f
 
     push hl                                       ; $0bae: $e5
-    ld a, [$c35a]                                 ; $0baf: $fa $5a $c3
-    ld hl, $c359                                  ; $0bb2: $21 $59 $c3
+    ld a, [MessageProgressionCopyValueA]          ; $0baf: $fa $5a $c3
+    ld hl, MessageProgressionCopyMaskHigh         ; $0bb2: $21 $59 $c3
     and [hl]                                      ; $0bb5: $a6
-    ld [$c358], a                                 ; $0bb6: $ea $58 $c3
+    ld [MessageProgressionCopyMaskLow], a         ; $0bb6: $ea $58 $c3
     pop hl                                        ; $0bb9: $e1
     jp Jump_000_0c6b                              ; $0bba: $c3 $6b $0c
 
@@ -2003,29 +2001,29 @@ Jump_000_0b93:
 jr_000_0bbd:
     push hl                                       ; $0bbd: $e5
     call Call_000_0d6a                            ; $0bbe: $cd $6a $0d
-    ld a, [$c358]                                 ; $0bc1: $fa $58 $c3
+    ld a, [MessageProgressionCopyMaskLow]         ; $0bc1: $fa $58 $c3
     ld [de], a                                    ; $0bc4: $12
     inc de                                        ; $0bc5: $13
     ld a, [bc]                                    ; $0bc6: $0a
     ld l, a                                       ; $0bc7: $6f
-    ld a, [$c35e]                                 ; $0bc8: $fa $5e $c3
+    ld a, [MessageProgressionCopyValueE]          ; $0bc8: $fa $5e $c3
     ld h, a                                       ; $0bcb: $67
     ld a, [hl]                                    ; $0bcc: $7e
     ld [de], a                                    ; $0bcd: $12
-    ld hl, $c360                                  ; $0bce: $21 $60 $c3
+    ld hl, MessageProgressionCopyValueG           ; $0bce: $21 $60 $c3
     and [hl]                                      ; $0bd1: $a6
-    ld [$c361], a                                 ; $0bd2: $ea $61 $c3
+    ld [MessageProgressionCopyValueH], a          ; $0bd2: $ea $61 $c3
     inc bc                                        ; $0bd5: $03
     inc de                                        ; $0bd6: $13
     ld a, [bc]                                    ; $0bd7: $0a
     ld l, a                                       ; $0bd8: $6f
-    ld a, [$c35e]                                 ; $0bd9: $fa $5e $c3
+    ld a, [MessageProgressionCopyValueE]          ; $0bd9: $fa $5e $c3
     ld h, a                                       ; $0bdc: $67
     ld a, [hl]                                    ; $0bdd: $7e
     ld [de], a                                    ; $0bde: $12
-    ld hl, $c360                                  ; $0bdf: $21 $60 $c3
+    ld hl, MessageProgressionCopyValueG           ; $0bdf: $21 $60 $c3
     and [hl]                                      ; $0be2: $a6
-    ld [$c362], a                                 ; $0be3: $ea $62 $c3
+    ld [MessageProgressionCopyValueI], a          ; $0be3: $ea $62 $c3
     ld a, c                                       ; $0be6: $79
     add $0f                                       ; $0be7: $c6 $0f
     ld c, a                                       ; $0be9: $4f
@@ -2039,10 +2037,10 @@ Call_000_0bee:
     ld a, h                                       ; $0bf0: $7c
     add $08                                       ; $0bf1: $c6 $08
     ld h, a                                       ; $0bf3: $67
-    ld a, [$c35d]                                 ; $0bf4: $fa $5d $c3
+    ld a, [MessageProgressionCopyValueD]          ; $0bf4: $fa $5d $c3
     dec a                                         ; $0bf7: $3d
-    ld [$c35d], a                                 ; $0bf8: $ea $5d $c3
-    ld a, [$c35b]                                 ; $0bfb: $fa $5b $c3
+    ld [MessageProgressionCopyValueD], a          ; $0bf8: $ea $5d $c3
+    ld a, [MessageProgressionCopyValueB]          ; $0bfb: $fa $5b $c3
     dec a                                         ; $0bfe: $3d
     jr z, jr_000_0c65                             ; $0bff: $28 $64
 
@@ -2053,7 +2051,7 @@ jr_000_0c01:
     ld a, $ff                                     ; $0c06: $3e $ff
     ld [de], a                                    ; $0c08: $12
     inc de                                        ; $0c09: $13
-    ld a, [$c35d]                                 ; $0c0a: $fa $5d $c3
+    ld a, [MessageProgressionCopyValueD]          ; $0c0a: $fa $5d $c3
     and a                                         ; $0c0d: $a7
     jr z, jr_000_0c12                             ; $0c0e: $28 $02
 
@@ -2062,21 +2060,21 @@ jr_000_0c01:
 
 jr_000_0c12:
     ld l, a                                       ; $0c12: $6f
-    ld a, [$c35e]                                 ; $0c13: $fa $5e $c3
+    ld a, [MessageProgressionCopyValueE]          ; $0c13: $fa $5e $c3
     ld h, a                                       ; $0c16: $67
     ld a, [hl]                                    ; $0c17: $7e
     push af                                       ; $0c18: $f5
-    ld hl, $c35f                                  ; $0c19: $21 $5f $c3
+    ld hl, MessageProgressionCopyValueF           ; $0c19: $21 $5f $c3
     and [hl]                                      ; $0c1c: $a6
-    ld hl, $c361                                  ; $0c1d: $21 $61 $c3
+    ld hl, MessageProgressionCopyValueH           ; $0c1d: $21 $61 $c3
     or [hl]                                       ; $0c20: $b6
     ld [de], a                                    ; $0c21: $12
     pop af                                        ; $0c22: $f1
-    ld hl, $c360                                  ; $0c23: $21 $60 $c3
+    ld hl, MessageProgressionCopyValueG           ; $0c23: $21 $60 $c3
     and [hl]                                      ; $0c26: $a6
-    ld [$c361], a                                 ; $0c27: $ea $61 $c3
+    ld [MessageProgressionCopyValueH], a          ; $0c27: $ea $61 $c3
     inc de                                        ; $0c2a: $13
-    ld a, [$c35d]                                 ; $0c2b: $fa $5d $c3
+    ld a, [MessageProgressionCopyValueD]          ; $0c2b: $fa $5d $c3
     and a                                         ; $0c2e: $a7
     jr z, jr_000_0c3c                             ; $0c2f: $28 $0b
 
@@ -2092,41 +2090,41 @@ jr_000_0c12:
 
 jr_000_0c3c:
     ld l, a                                       ; $0c3c: $6f
-    ld a, [$c35e]                                 ; $0c3d: $fa $5e $c3
+    ld a, [MessageProgressionCopyValueE]          ; $0c3d: $fa $5e $c3
     ld h, a                                       ; $0c40: $67
     ld a, [hl]                                    ; $0c41: $7e
     push af                                       ; $0c42: $f5
-    ld hl, $c35f                                  ; $0c43: $21 $5f $c3
+    ld hl, MessageProgressionCopyValueF           ; $0c43: $21 $5f $c3
     and [hl]                                      ; $0c46: $a6
-    ld hl, $c362                                  ; $0c47: $21 $62 $c3
+    ld hl, MessageProgressionCopyValueI           ; $0c47: $21 $62 $c3
     or [hl]                                       ; $0c4a: $b6
     ld [de], a                                    ; $0c4b: $12
     pop af                                        ; $0c4c: $f1
-    ld hl, $c360                                  ; $0c4d: $21 $60 $c3
+    ld hl, MessageProgressionCopyValueG           ; $0c4d: $21 $60 $c3
     and [hl]                                      ; $0c50: $a6
-    ld [$c362], a                                 ; $0c51: $ea $62 $c3
+    ld [MessageProgressionCopyValueI], a          ; $0c51: $ea $62 $c3
     inc de                                        ; $0c54: $13
     pop hl                                        ; $0c55: $e1
     ld a, h                                       ; $0c56: $7c
     add $08                                       ; $0c57: $c6 $08
     ld h, a                                       ; $0c59: $67
-    ld a, [$c35d]                                 ; $0c5a: $fa $5d $c3
+    ld a, [MessageProgressionCopyValueD]          ; $0c5a: $fa $5d $c3
     dec a                                         ; $0c5d: $3d
-    ld [$c35d], a                                 ; $0c5e: $ea $5d $c3
+    ld [MessageProgressionCopyValueD], a          ; $0c5e: $ea $5d $c3
     pop af                                        ; $0c61: $f1
     dec a                                         ; $0c62: $3d
     jr nz, jr_000_0c01                            ; $0c63: $20 $9c
 
 jr_000_0c65:
-    ld a, [$c35a]                                 ; $0c65: $fa $5a $c3
-    ld [$c358], a                                 ; $0c68: $ea $58 $c3
+    ld a, [MessageProgressionCopyValueA]          ; $0c65: $fa $5a $c3
+    ld [MessageProgressionCopyMaskLow], a         ; $0c68: $ea $58 $c3
 
 Jump_000_0c6b:
     call Call_000_0d6a                            ; $0c6b: $cd $6a $0d
-    ld a, [$c358]                                 ; $0c6e: $fa $58 $c3
+    ld a, [MessageProgressionCopyMaskLow]         ; $0c6e: $fa $58 $c3
     ld [de], a                                    ; $0c71: $12
     inc de                                        ; $0c72: $13
-    ld a, [$c35d]                                 ; $0c73: $fa $5d $c3
+    ld a, [MessageProgressionCopyValueD]          ; $0c73: $fa $5d $c3
     and a                                         ; $0c76: $a7
     jr z, jr_000_0c7b                             ; $0c77: $28 $02
 
@@ -2135,21 +2133,21 @@ Jump_000_0c6b:
 
 jr_000_0c7b:
     ld l, a                                       ; $0c7b: $6f
-    ld a, [$c35e]                                 ; $0c7c: $fa $5e $c3
+    ld a, [MessageProgressionCopyValueE]          ; $0c7c: $fa $5e $c3
     ld h, a                                       ; $0c7f: $67
     ld a, [hl]                                    ; $0c80: $7e
     push af                                       ; $0c81: $f5
-    ld hl, $c35f                                  ; $0c82: $21 $5f $c3
+    ld hl, MessageProgressionCopyValueF           ; $0c82: $21 $5f $c3
     and [hl]                                      ; $0c85: $a6
-    ld hl, $c361                                  ; $0c86: $21 $61 $c3
+    ld hl, MessageProgressionCopyValueH           ; $0c86: $21 $61 $c3
     or [hl]                                       ; $0c89: $b6
     ld [de], a                                    ; $0c8a: $12
     pop af                                        ; $0c8b: $f1
-    ld hl, $c360                                  ; $0c8c: $21 $60 $c3
+    ld hl, MessageProgressionCopyValueG           ; $0c8c: $21 $60 $c3
     and [hl]                                      ; $0c8f: $a6
-    ld [$c361], a                                 ; $0c90: $ea $61 $c3
+    ld [MessageProgressionCopyValueH], a          ; $0c90: $ea $61 $c3
     inc de                                        ; $0c93: $13
-    ld a, [$c35d]                                 ; $0c94: $fa $5d $c3
+    ld a, [MessageProgressionCopyValueD]          ; $0c94: $fa $5d $c3
     and a                                         ; $0c97: $a7
     jr z, jr_000_0ca5                             ; $0c98: $28 $0b
 
@@ -2165,19 +2163,19 @@ jr_000_0c7b:
 
 jr_000_0ca5:
     ld l, a                                       ; $0ca5: $6f
-    ld a, [$c35e]                                 ; $0ca6: $fa $5e $c3
+    ld a, [MessageProgressionCopyValueE]          ; $0ca6: $fa $5e $c3
     ld h, a                                       ; $0ca9: $67
     ld a, [hl]                                    ; $0caa: $7e
     push af                                       ; $0cab: $f5
-    ld hl, $c35f                                  ; $0cac: $21 $5f $c3
+    ld hl, MessageProgressionCopyValueF           ; $0cac: $21 $5f $c3
     and [hl]                                      ; $0caf: $a6
-    ld hl, $c362                                  ; $0cb0: $21 $62 $c3
+    ld hl, MessageProgressionCopyValueI           ; $0cb0: $21 $62 $c3
     or [hl]                                       ; $0cb3: $b6
     ld [de], a                                    ; $0cb4: $12
     pop af                                        ; $0cb5: $f1
-    ld hl, $c360                                  ; $0cb6: $21 $60 $c3
+    ld hl, MessageProgressionCopyValueG           ; $0cb6: $21 $60 $c3
     and [hl]                                      ; $0cb9: $a6
-    ld [$c362], a                                 ; $0cba: $ea $62 $c3
+    ld [MessageProgressionCopyValueI], a          ; $0cba: $ea $62 $c3
     inc de                                        ; $0cbd: $13
     pop hl                                        ; $0cbe: $e1
     pop bc                                        ; $0cbf: $c1
@@ -2198,7 +2196,7 @@ Call_000_0ccc:
 
 jr_000_0ccf:
     inc l                                         ; $0ccf: $2c
-    ld a, [$c354]                                 ; $0cd0: $fa $54 $c3
+    ld a, [MessageProgressionCopyDestY]           ; $0cd0: $fa $54 $c3
     cp l                                          ; $0cd3: $bd
     jp nc, Jump_000_0b93                          ; $0cd4: $d2 $93 $0b
 
@@ -2233,8 +2231,6 @@ jr_000_0cfc:
     push af                                       ; $0cfc: $f5
     ld a, [bc]                                    ; $0cfd: $0a
     ld l, a                                       ; $0cfe: $6f
-
-Call_000_0cff:
     inc bc                                        ; $0cff: $03
     ld a, [bc]                                    ; $0d00: $0a
     ld h, a                                       ; $0d01: $67
@@ -5523,7 +5519,6 @@ Call_000_18cc:
     add e                                         ; $18fd: $83
     ret nc                                        ; $18fe: $d0
 
-Call_000_18ff:
     add e                                         ; $18ff: $83
     ret nc                                        ; $1900: $d0
 
@@ -5810,7 +5805,7 @@ jr_000_1a23:
     ld hl, $cda3                                  ; $1a35: $21 $a3 $cd
     add hl, de                                    ; $1a38: $19
     ld c, [hl]                                    ; $1a39: $4e
-    call Call_000_20ce                            ; $1a3a: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $1a3a: $cd $ce $20
     pop af                                        ; $1a3d: $f1
     ld [ActiveROMBank], a                         ; $1a3e: $ea $12 $c3
     ld [ROMBankSwitchTrigger], a                  ; $1a41: $ea $00 $20
@@ -5887,13 +5882,13 @@ Call_000_1a88:
     ld hl, $4000                                  ; $1aa0: $21 $00 $40
     add hl, de                                    ; $1aa3: $19
     ld a, l                                       ; $1aa4: $7d
-    ld [$c355], a                                 ; $1aa5: $ea $55 $c3
+    ld [MessageProgressionCopyBankAddressLow], a  ; $1aa5: $ea $55 $c3
     ld a, h                                       ; $1aa8: $7c
-    ld [$c356], a                                 ; $1aa9: $ea $56 $c3
+    ld [MessageProgressionCopyBankAddressHigh], a ; $1aa9: $ea $56 $c3
     ld a, $0e                                     ; $1aac: $3e $0e
-    ld [$c357], a                                 ; $1aae: $ea $57 $c3
+    ld [MessageProgressionCopyBank], a            ; $1aae: $ea $57 $c3
     ld a, b                                       ; $1ab1: $78
-    ld [$c351], a                                 ; $1ab2: $ea $51 $c3
+    ld [MessageProgressionCopySourceX], a         ; $1ab2: $ea $51 $c3
     pop de                                        ; $1ab5: $d1
     ld hl, TODO_2c6a_1_PointerTable               ; $1ab6: $21 $b6 $2c
     add hl, de                                    ; $1ab9: $19
@@ -5903,12 +5898,12 @@ Call_000_1a88:
 
     push af                                       ; $1abe: $f5
     add b                                         ; $1abf: $80
-    ld [$c353], a                                 ; $1ac0: $ea $53 $c3
+    ld [MessageProgressionCopyDestX], a           ; $1ac0: $ea $53 $c3
     ld a, c                                       ; $1ac3: $79
-    ld [$c352], a                                 ; $1ac4: $ea $52 $c3
+    ld [MessageProgressionCopySourceY], a         ; $1ac4: $ea $52 $c3
     add $09                                       ; $1ac7: $c6 $09
-    ld [$c354], a                                 ; $1ac9: $ea $54 $c3
-    call Call_000_08b3                            ; $1acc: $cd $b3 $08
+    ld [MessageProgressionCopyDestY], a           ; $1ac9: $ea $54 $c3
+    call PrepareMessageProgressionCopy            ; $1acc: $cd $b3 $08
     pop af                                        ; $1acf: $f1
 
 jr_000_1ad0:
@@ -6317,7 +6312,7 @@ jr_000_1d59:
 
     ld bc, $3040                                  ; $1d64: $01 $40 $30
     ld a, $4b                                     ; $1d67: $3e $4b
-    call Call_000_20ce                            ; $1d69: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $1d69: $cd $ce $20
     ld a, [$d63c]                                 ; $1d6c: $fa $3c $d6
     inc a                                         ; $1d6f: $3c
     cp $46                                        ; $1d70: $fe $46
@@ -6336,7 +6331,7 @@ jr_000_1d7d:
     ld a, [$d63d]                                 ; $1d84: $fa $3d $d6
     add $4c                                       ; $1d87: $c6 $4c
     ld bc, $3050                                  ; $1d89: $01 $50 $30
-    call Call_000_20ce                            ; $1d8c: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $1d8c: $cd $ce $20
 
 jr_000_1d8f:
     call Call_000_05c5                            ; $1d8f: $cd $c5 $05
@@ -6346,7 +6341,7 @@ jr_000_1d8f:
 jr_000_1d95:
     ld c, $04                                     ; $1d95: $0e $04
     ld a, $02                                     ; $1d97: $3e $02
-    call Call_000_03b6                            ; $1d99: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $1d99: $cd $b6 $03
     ld bc, $003c                                  ; $1d9c: $01 $3c $00
     call Call_000_0603                            ; $1d9f: $cd $03 $06
     call Call_000_05b6                            ; $1da2: $cd $b6 $05
@@ -6364,7 +6359,7 @@ jr_000_1d95:
 jr_000_1db9:
     ld c, $03                                     ; $1db9: $0e $03
     ld a, $02                                     ; $1dbb: $3e $02
-    call Call_000_03b6                            ; $1dbd: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $1dbd: $cd $b6 $03
     ld bc, $003c                                  ; $1dc0: $01 $3c $00
     call Call_000_0603                            ; $1dc3: $cd $03 $06
     call Call_000_05b6                            ; $1dc6: $cd $b6 $05
@@ -6823,8 +6818,7 @@ jr_000_20ad:
     ret                                           ; $20cd: $c9
 
 
-Call_000_20ce:
-Jump_000_20ce:
+TODO_EmitMessageScriptById::
     push hl                                       ; $20ce: $e5
     ld e, a                                       ; $20cf: $5f
     ld d, $00                                     ; $20d0: $16 $00
@@ -6845,10 +6839,10 @@ Jump_000_20ce:
     ld l, a                                       ; $20ed: $6f
     ld h, $c0                                     ; $20ee: $26 $c0
 
-jr_000_20f0:
+.CopyMessageScriptLoop:
     ld a, [de]                                    ; $20f0: $1a
     cp $ff                                        ; $20f1: $fe $ff
-    jr z, jr_000_2104                             ; $20f3: $28 $0f
+    jr z, .DoneRestoreBank                        ; $20f3: $28 $0f
 
     add c                                         ; $20f5: $81
     ld [hl+], a                                   ; $20f6: $22
@@ -6865,9 +6859,9 @@ Call_000_20fc:
     ld a, [de]                                    ; $20ff: $1a
     ld [hl+], a                                   ; $2100: $22
     inc de                                        ; $2101: $13
-    jr jr_000_20f0                                ; $2102: $18 $ec
+    jr .CopyMessageScriptLoop                     ; $2102: $18 $ec
 
-jr_000_2104:
+.DoneRestoreBank:
     ld a, l                                       ; $2104: $7d
     ld [$c311], a                                 ; $2105: $ea $11 $c3
     pop af                                        ; $2108: $f1
@@ -6877,7 +6871,7 @@ jr_000_2104:
     ret                                           ; $2110: $c9
 
 
-GameState_06_TODO_PhaseDispatcher::
+GameState_06_HowToPlay_PhaseDispatcher::
     ld a, [$c31e]                                 ; $2111: $fa $1e $c3
     ld [$d834], a                                 ; $2114: $ea $34 $d8
     ld a, [$d837]                                 ; $2117: $fa $37 $d8
@@ -6890,7 +6884,7 @@ GameState_06_TODO_PhaseDispatcher::
 
     ld c, $04                                     ; $2124: $0e $04
     ld a, $02                                     ; $2126: $3e $02
-    call Call_000_03b6                            ; $2128: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $2128: $cd $b6 $03
 
 jr_000_212b:
     ld a, $2a                                     ; $212b: $3e $2a
@@ -7090,30 +7084,30 @@ GS06_StatePhase_00_TODO::
     ld a, $10                                     ; $2224: $3e $10
     ld [$cd64], a                                 ; $2226: $ea $64 $cd
     ld a, $0d                                     ; $2229: $3e $0d
-    ld [$d843], a                                 ; $222b: $ea $43 $d8
-    ld [$d82b], a                                 ; $222e: $ea $2b $d8
+    ld [MessageProgressionResetEntryLow], a       ; $222b: $ea $43 $d8
+    ld [MessageProgressionEntryLow], a            ; $222e: $ea $2b $d8
     ld a, $58                                     ; $2231: $3e $58
-    ld [$d844], a                                 ; $2233: $ea $44 $d8
-    ld [$d82c], a                                 ; $2236: $ea $2c $d8
+    ld [MessageProgressionResetEntryHigh], a      ; $2233: $ea $44 $d8
+    ld [MessageProgressionEntryHigh], a           ; $2236: $ea $2c $d8
     ld a, $93                                     ; $2239: $3e $93
-    ld [$d845], a                                 ; $223b: $ea $45 $d8
+    ld [MessageProgressionCopyLimitLow], a        ; $223b: $ea $45 $d8
     ld a, $89                                     ; $223e: $3e $89
-    ld [$d846], a                                 ; $2240: $ea $46 $d8
+    ld [MessageProgressionCopyLimitHigh], a       ; $2240: $ea $46 $d8
     ld a, $30                                     ; $2243: $3e $30
-    ld [$d82d], a                                 ; $2245: $ea $2d $d8
+    ld [MessageProgressionPointerLow], a          ; $2245: $ea $2d $d8
     ld a, $6a                                     ; $2248: $3e $6a
-    ld [$d82e], a                                 ; $224a: $ea $2e $d8
+    ld [MessageProgressionPointerHigh], a         ; $224a: $ea $2e $d8
     call Call_000_07f1                            ; $224d: $cd $f1 $07
     call $6f30                                    ; $2250: $cd $30 $6f
     call Call_000_05b6                            ; $2253: $cd $b6 $05
     call $7beb                                    ; $2256: $cd $eb $7b
     ld c, $00                                     ; $2259: $0e $00
     ld a, $01                                     ; $225b: $3e $01
-    call Call_000_03b6                            ; $225d: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $225d: $cd $b6 $03
     call Call_000_0399                            ; $2260: $cd $99 $03
     ld c, $02                                     ; $2263: $0e $02
     ld a, $01                                     ; $2265: $3e $01
-    call Call_000_03b6                            ; $2267: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $2267: $cd $b6 $03
     call Call_000_04a2                            ; $226a: $cd $a2 $04
     ld b, $03                                     ; $226d: $06 $03
     ld hl, $46a0                                  ; $226f: $21 $a0 $46
@@ -7128,8 +7122,8 @@ GS06_StatePhase_00_TODO::
 
 GS06_StatePhase_01_TODO::
     call $7918                                    ; $2282: $cd $18 $79
-    call Call_000_3093                            ; $2285: $cd $93 $30
-    call Call_000_2b6e                            ; $2288: $cd $6e $2b
+    call TODO_MessageSequenceTick                 ; $2285: $cd $93 $30
+    call AdvanceMessageProgression                ; $2288: $cd $6e $2b
     ret nz                                        ; $228b: $c0
 
     ld hl, $03ed                                  ; $228c: $21 $ed $03
@@ -7137,9 +7131,9 @@ GS06_StatePhase_01_TODO::
     call Call_000_05b6                            ; $2292: $cd $b6 $05
     call Call_000_302e                            ; $2295: $cd $2e $30
     ld a, $ae                                     ; $2298: $3e $ae
-    ld [$d82d], a                                 ; $229a: $ea $2d $d8
+    ld [MessageProgressionPointerLow], a          ; $229a: $ea $2d $d8
     ld a, $6a                                     ; $229d: $3e $6a
-    ld [$d82e], a                                 ; $229f: $ea $2e $d8
+    ld [MessageProgressionPointerHigh], a         ; $229f: $ea $2e $d8
     call Call_000_323e                            ; $22a2: $cd $3e $32
     ld hl, StatePhase_Current                     ; $22a5: $21 $35 $d6
     inc [hl]                                      ; $22a8: $34
@@ -7148,8 +7142,8 @@ GS06_StatePhase_01_TODO::
 
 GS06_StatePhase_02_TODO::
     call $7918                                    ; $22aa: $cd $18 $79
-    call Call_000_3093                            ; $22ad: $cd $93 $30
-    call Call_000_2b6e                            ; $22b0: $cd $6e $2b
+    call TODO_MessageSequenceTick                 ; $22ad: $cd $93 $30
+    call AdvanceMessageProgression                ; $22b0: $cd $6e $2b
     ret nz                                        ; $22b3: $c0
 
     xor a                                         ; $22b4: $af
@@ -7194,9 +7188,9 @@ GS06_StatePhase_03_TODO::
     ret nz                                        ; $22fd: $c0
 
     ld a, $04                                     ; $22fe: $3e $04
-    ld [$d82d], a                                 ; $2300: $ea $2d $d8
+    ld [MessageProgressionPointerLow], a          ; $2300: $ea $2d $d8
     ld a, $6b                                     ; $2303: $3e $6b
-    ld [$d82e], a                                 ; $2305: $ea $2e $d8
+    ld [MessageProgressionPointerHigh], a         ; $2305: $ea $2e $d8
     call Call_000_323e                            ; $2308: $cd $3e $32
     ld hl, StatePhase_Current                     ; $230b: $21 $35 $d6
     inc [hl]                                      ; $230e: $34
@@ -7205,8 +7199,8 @@ GS06_StatePhase_03_TODO::
 
 GS06_StatePhase_04_TODO::
     call $7918                                    ; $2310: $cd $18 $79
-    call Call_000_3093                            ; $2313: $cd $93 $30
-    call Call_000_2b6e                            ; $2316: $cd $6e $2b
+    call TODO_MessageSequenceTick                 ; $2313: $cd $93 $30
+    call AdvanceMessageProgression                ; $2316: $cd $6e $2b
     ret nz                                        ; $2319: $c0
 
     xor a                                         ; $231a: $af
@@ -7249,9 +7243,9 @@ GS06_StatePhase_05_TODO::
     ret nz                                        ; $2363: $c0
 
     ld a, $2a                                     ; $2364: $3e $2a
-    ld [$d82d], a                                 ; $2366: $ea $2d $d8
+    ld [MessageProgressionPointerLow], a          ; $2366: $ea $2d $d8
     ld a, $6b                                     ; $2369: $3e $6b
-    ld [$d82e], a                                 ; $236b: $ea $2e $d8
+    ld [MessageProgressionPointerHigh], a         ; $236b: $ea $2e $d8
     call Call_000_323e                            ; $236e: $cd $3e $32
     ld hl, StatePhase_Current                     ; $2371: $21 $35 $d6
     inc [hl]                                      ; $2374: $34
@@ -7260,8 +7254,8 @@ GS06_StatePhase_05_TODO::
 
 GS06_StatePhase_06_TODO::
     call $7918                                    ; $2376: $cd $18 $79
-    call Call_000_3093                            ; $2379: $cd $93 $30
-    call Call_000_2b6e                            ; $237c: $cd $6e $2b
+    call TODO_MessageSequenceTick                 ; $2379: $cd $93 $30
+    call AdvanceMessageProgression                ; $237c: $cd $6e $2b
     ret nz                                        ; $237f: $c0
 
     ld hl, $03ed                                  ; $2380: $21 $ed $03
@@ -7269,9 +7263,9 @@ GS06_StatePhase_06_TODO::
     call Call_000_05b6                            ; $2386: $cd $b6 $05
     call Call_000_302e                            ; $2389: $cd $2e $30
     ld a, $4a                                     ; $238c: $3e $4a
-    ld [$d82d], a                                 ; $238e: $ea $2d $d8
+    ld [MessageProgressionPointerLow], a          ; $238e: $ea $2d $d8
     ld a, $6b                                     ; $2391: $3e $6b
-    ld [$d82e], a                                 ; $2393: $ea $2e $d8
+    ld [MessageProgressionPointerHigh], a         ; $2393: $ea $2e $d8
     call Call_000_323e                            ; $2396: $cd $3e $32
     ld hl, StatePhase_Current                     ; $2399: $21 $35 $d6
     inc [hl]                                      ; $239c: $34
@@ -7280,8 +7274,8 @@ GS06_StatePhase_06_TODO::
 
 GS06_StatePhase_07_TODO::
     call $7918                                    ; $239e: $cd $18 $79
-    call Call_000_3093                            ; $23a1: $cd $93 $30
-    call Call_000_2b6e                            ; $23a4: $cd $6e $2b
+    call TODO_MessageSequenceTick                 ; $23a1: $cd $93 $30
+    call AdvanceMessageProgression                ; $23a4: $cd $6e $2b
     ret nz                                        ; $23a7: $c0
 
     ld hl, $03ed                                  ; $23a8: $21 $ed $03
@@ -7289,9 +7283,9 @@ GS06_StatePhase_07_TODO::
     call Call_000_05b6                            ; $23ae: $cd $b6 $05
     call Call_000_302e                            ; $23b1: $cd $2e $30
     ld a, $bc                                     ; $23b4: $3e $bc
-    ld [$d82d], a                                 ; $23b6: $ea $2d $d8
+    ld [MessageProgressionPointerLow], a          ; $23b6: $ea $2d $d8
     ld a, $6b                                     ; $23b9: $3e $6b
-    ld [$d82e], a                                 ; $23bb: $ea $2e $d8
+    ld [MessageProgressionPointerHigh], a         ; $23bb: $ea $2e $d8
     call Call_000_323e                            ; $23be: $cd $3e $32
     ld hl, StatePhase_Current                     ; $23c1: $21 $35 $d6
     inc [hl]                                      ; $23c4: $34
@@ -7300,8 +7294,8 @@ GS06_StatePhase_07_TODO::
 
 GS06_StatePhase_08_TODO::
     call $7918                                    ; $23c6: $cd $18 $79
-    call Call_000_3093                            ; $23c9: $cd $93 $30
-    call Call_000_2b6e                            ; $23cc: $cd $6e $2b
+    call TODO_MessageSequenceTick                 ; $23c9: $cd $93 $30
+    call AdvanceMessageProgression                ; $23cc: $cd $6e $2b
     ret nz                                        ; $23cf: $c0
 
     xor a                                         ; $23d0: $af
@@ -7453,9 +7447,9 @@ GS06_StatePhase_0a_TODO::
 
     call $7635                                    ; $2496: $cd $35 $76
     ld a, $02                                     ; $2499: $3e $02
-    ld [$d82d], a                                 ; $249b: $ea $2d $d8
+    ld [MessageProgressionPointerLow], a          ; $249b: $ea $2d $d8
     ld a, $6c                                     ; $249e: $3e $6c
-    ld [$d82e], a                                 ; $24a0: $ea $2e $d8
+    ld [MessageProgressionPointerHigh], a         ; $24a0: $ea $2e $d8
     call Call_000_323e                            ; $24a3: $cd $3e $32
     ld hl, StatePhase_Current                     ; $24a6: $21 $35 $d6
     inc [hl]                                      ; $24a9: $34
@@ -7464,8 +7458,8 @@ GS06_StatePhase_0a_TODO::
 
 GS06_StatePhase_0b_TODO::
     call $7918                                    ; $24ab: $cd $18 $79
-    call Call_000_3093                            ; $24ae: $cd $93 $30
-    call Call_000_2b6e                            ; $24b1: $cd $6e $2b
+    call TODO_MessageSequenceTick                 ; $24ae: $cd $93 $30
+    call AdvanceMessageProgression                ; $24b1: $cd $6e $2b
     ret nz                                        ; $24b4: $c0
 
     ld hl, $03ed                                  ; $24b5: $21 $ed $03
@@ -7473,9 +7467,9 @@ GS06_StatePhase_0b_TODO::
     call Call_000_05b6                            ; $24bb: $cd $b6 $05
     call Call_000_302e                            ; $24be: $cd $2e $30
     ld a, $76                                     ; $24c1: $3e $76
-    ld [$d82d], a                                 ; $24c3: $ea $2d $d8
+    ld [MessageProgressionPointerLow], a          ; $24c3: $ea $2d $d8
     ld a, $6c                                     ; $24c6: $3e $6c
-    ld [$d82e], a                                 ; $24c8: $ea $2e $d8
+    ld [MessageProgressionPointerHigh], a         ; $24c8: $ea $2e $d8
     call Call_000_323e                            ; $24cb: $cd $3e $32
     ld hl, StatePhase_Current                     ; $24ce: $21 $35 $d6
     inc [hl]                                      ; $24d1: $34
@@ -7484,8 +7478,8 @@ GS06_StatePhase_0b_TODO::
 
 GS06_StatePhase_0c_TODO::
     call $7918                                    ; $24d3: $cd $18 $79
-    call Call_000_3093                            ; $24d6: $cd $93 $30
-    call Call_000_2b6e                            ; $24d9: $cd $6e $2b
+    call TODO_MessageSequenceTick                 ; $24d6: $cd $93 $30
+    call AdvanceMessageProgression                ; $24d9: $cd $6e $2b
     ret nz                                        ; $24dc: $c0
 
     ld hl, $03ed                                  ; $24dd: $21 $ed $03
@@ -7495,9 +7489,9 @@ GS06_StatePhase_0c_TODO::
     call Call_000_3114                            ; $24e9: $cd $14 $31
     call Call_000_07f1                            ; $24ec: $cd $f1 $07
     ld a, $d0                                     ; $24ef: $3e $d0
-    ld [$d82d], a                                 ; $24f1: $ea $2d $d8
+    ld [MessageProgressionPointerLow], a          ; $24f1: $ea $2d $d8
     ld a, $6c                                     ; $24f4: $3e $6c
-    ld [$d82e], a                                 ; $24f6: $ea $2e $d8
+    ld [MessageProgressionPointerHigh], a         ; $24f6: $ea $2e $d8
     call Call_000_323e                            ; $24f9: $cd $3e $32
     ld hl, StatePhase_Current                     ; $24fc: $21 $35 $d6
     inc [hl]                                      ; $24ff: $34
@@ -7506,8 +7500,8 @@ GS06_StatePhase_0c_TODO::
 
 GS06_StatePhase_0d_TODO::
     call $7918                                    ; $2501: $cd $18 $79
-    call Call_000_3093                            ; $2504: $cd $93 $30
-    call Call_000_2b6e                            ; $2507: $cd $6e $2b
+    call TODO_MessageSequenceTick                 ; $2504: $cd $93 $30
+    call AdvanceMessageProgression                ; $2507: $cd $6e $2b
     ret nz                                        ; $250a: $c0
 
     xor a                                         ; $250b: $af
@@ -7550,9 +7544,9 @@ GS06_StatePhase_0e_TODO::
     ret nz                                        ; $2554: $c0
 
     ld a, $0c                                     ; $2555: $3e $0c
-    ld [$d82d], a                                 ; $2557: $ea $2d $d8
+    ld [MessageProgressionPointerLow], a          ; $2557: $ea $2d $d8
     ld a, $6d                                     ; $255a: $3e $6d
-    ld [$d82e], a                                 ; $255c: $ea $2e $d8
+    ld [MessageProgressionPointerHigh], a         ; $255c: $ea $2e $d8
     call Call_000_323e                            ; $255f: $cd $3e $32
     ld hl, StatePhase_Current                     ; $2562: $21 $35 $d6
     inc [hl]                                      ; $2565: $34
@@ -7561,8 +7555,8 @@ GS06_StatePhase_0e_TODO::
 
 GS06_StatePhase_0f_TODO::
     call $7918                                    ; $2567: $cd $18 $79
-    call Call_000_3093                            ; $256a: $cd $93 $30
-    call Call_000_2b6e                            ; $256d: $cd $6e $2b
+    call TODO_MessageSequenceTick                 ; $256a: $cd $93 $30
+    call AdvanceMessageProgression                ; $256d: $cd $6e $2b
     ret nz                                        ; $2570: $c0
 
     ld hl, $03ed                                  ; $2571: $21 $ed $03
@@ -7570,9 +7564,9 @@ GS06_StatePhase_0f_TODO::
     call Call_000_05b6                            ; $2577: $cd $b6 $05
     call Call_000_302e                            ; $257a: $cd $2e $30
     ld a, $9a                                     ; $257d: $3e $9a
-    ld [$d82d], a                                 ; $257f: $ea $2d $d8
+    ld [MessageProgressionPointerLow], a          ; $257f: $ea $2d $d8
     ld a, $6d                                     ; $2582: $3e $6d
-    ld [$d82e], a                                 ; $2584: $ea $2e $d8
+    ld [MessageProgressionPointerHigh], a         ; $2584: $ea $2e $d8
     call Call_000_323e                            ; $2587: $cd $3e $32
     ld hl, StatePhase_Current                     ; $258a: $21 $35 $d6
     inc [hl]                                      ; $258d: $34
@@ -7581,8 +7575,8 @@ GS06_StatePhase_0f_TODO::
 
 GS06_StatePhase_10_TODO::
     call $7918                                    ; $258f: $cd $18 $79
-    call Call_000_3093                            ; $2592: $cd $93 $30
-    call Call_000_2b6e                            ; $2595: $cd $6e $2b
+    call TODO_MessageSequenceTick                 ; $2592: $cd $93 $30
+    call AdvanceMessageProgression                ; $2595: $cd $6e $2b
     ret nz                                        ; $2598: $c0
 
     xor a                                         ; $2599: $af
@@ -7627,9 +7621,9 @@ GS06_StatePhase_11_TODO::
     ret nz                                        ; $25e2: $c0
 
     ld a, $bc                                     ; $25e3: $3e $bc
-    ld [$d82d], a                                 ; $25e5: $ea $2d $d8
+    ld [MessageProgressionPointerLow], a          ; $25e5: $ea $2d $d8
     ld a, $6d                                     ; $25e8: $3e $6d
-    ld [$d82e], a                                 ; $25ea: $ea $2e $d8
+    ld [MessageProgressionPointerHigh], a         ; $25ea: $ea $2e $d8
     call Call_000_323e                            ; $25ed: $cd $3e $32
     ld hl, StatePhase_Current                     ; $25f0: $21 $35 $d6
     inc [hl]                                      ; $25f3: $34
@@ -7638,8 +7632,8 @@ GS06_StatePhase_11_TODO::
 
 GS06_StatePhase_12_TODO::
     call $7918                                    ; $25f5: $cd $18 $79
-    call Call_000_3093                            ; $25f8: $cd $93 $30
-    call Call_000_2b6e                            ; $25fb: $cd $6e $2b
+    call TODO_MessageSequenceTick                 ; $25f8: $cd $93 $30
+    call AdvanceMessageProgression                ; $25fb: $cd $6e $2b
     ret nz                                        ; $25fe: $c0
 
     xor a                                         ; $25ff: $af
@@ -7680,9 +7674,9 @@ GS06_StatePhase_13_TODO::
     call Call_000_3114                            ; $2640: $cd $14 $31
     call Call_000_07f1                            ; $2643: $cd $f1 $07
     ld a, $24                                     ; $2646: $3e $24
-    ld [$d82d], a                                 ; $2648: $ea $2d $d8
+    ld [MessageProgressionPointerLow], a          ; $2648: $ea $2d $d8
     ld a, $6e                                     ; $264b: $3e $6e
-    ld [$d82e], a                                 ; $264d: $ea $2e $d8
+    ld [MessageProgressionPointerHigh], a         ; $264d: $ea $2e $d8
     call Call_000_323e                            ; $2650: $cd $3e $32
     ld hl, StatePhase_Current                     ; $2653: $21 $35 $d6
     inc [hl]                                      ; $2656: $34
@@ -7701,8 +7695,8 @@ jr_000_2658:
 
 GS06_StatePhase_14_TODO::
     call $7918                                    ; $266b: $cd $18 $79
-    call Call_000_3093                            ; $266e: $cd $93 $30
-    call Call_000_2b6e                            ; $2671: $cd $6e $2b
+    call TODO_MessageSequenceTick                 ; $266e: $cd $93 $30
+    call AdvanceMessageProgression                ; $2671: $cd $6e $2b
     ret nz                                        ; $2674: $c0
 
     xor a                                         ; $2675: $af
@@ -7745,9 +7739,9 @@ GS06_StatePhase_15_TODO::
     ret nz                                        ; $26be: $c0
 
     ld a, $6c                                     ; $26bf: $3e $6c
-    ld [$d82d], a                                 ; $26c1: $ea $2d $d8
+    ld [MessageProgressionPointerLow], a          ; $26c1: $ea $2d $d8
     ld a, $6e                                     ; $26c4: $3e $6e
-    ld [$d82e], a                                 ; $26c6: $ea $2e $d8
+    ld [MessageProgressionPointerHigh], a         ; $26c6: $ea $2e $d8
     call Call_000_323e                            ; $26c9: $cd $3e $32
     ld hl, StatePhase_Current                     ; $26cc: $21 $35 $d6
     inc [hl]                                      ; $26cf: $34
@@ -7756,8 +7750,8 @@ GS06_StatePhase_15_TODO::
 
 GS06_StatePhase_16_TODO::
     call $7918                                    ; $26d1: $cd $18 $79
-    call Call_000_3093                            ; $26d4: $cd $93 $30
-    call Call_000_2b6e                            ; $26d7: $cd $6e $2b
+    call TODO_MessageSequenceTick                 ; $26d4: $cd $93 $30
+    call AdvanceMessageProgression                ; $26d7: $cd $6e $2b
     ret nz                                        ; $26da: $c0
 
     ld hl, $03ed                                  ; $26db: $21 $ed $03
@@ -7765,9 +7759,9 @@ GS06_StatePhase_16_TODO::
     call Call_000_05b6                            ; $26e1: $cd $b6 $05
     call Call_000_302e                            ; $26e4: $cd $2e $30
     ld a, $04                                     ; $26e7: $3e $04
-    ld [$d82d], a                                 ; $26e9: $ea $2d $d8
+    ld [MessageProgressionPointerLow], a          ; $26e9: $ea $2d $d8
     ld a, $6f                                     ; $26ec: $3e $6f
-    ld [$d82e], a                                 ; $26ee: $ea $2e $d8
+    ld [MessageProgressionPointerHigh], a         ; $26ee: $ea $2e $d8
     call Call_000_323e                            ; $26f1: $cd $3e $32
     ld hl, StatePhase_Current                     ; $26f4: $21 $35 $d6
     inc [hl]                                      ; $26f7: $34
@@ -7776,8 +7770,8 @@ GS06_StatePhase_16_TODO::
 
 GS06_StatePhase_17_TODO::
     call $7918                                    ; $26f9: $cd $18 $79
-    call Call_000_3093                            ; $26fc: $cd $93 $30
-    call Call_000_2b6e                            ; $26ff: $cd $6e $2b
+    call TODO_MessageSequenceTick                 ; $26fc: $cd $93 $30
+    call AdvanceMessageProgression                ; $26ff: $cd $6e $2b
     ret nz                                        ; $2702: $c0
 
     xor a                                         ; $2703: $af
@@ -7819,9 +7813,9 @@ GS06_StatePhase_18_TODO::
     ret nz                                        ; $274c: $c0
 
     ld a, $36                                     ; $274d: $3e $36
-    ld [$d82d], a                                 ; $274f: $ea $2d $d8
+    ld [MessageProgressionPointerLow], a          ; $274f: $ea $2d $d8
     ld a, $6f                                     ; $2752: $3e $6f
-    ld [$d82e], a                                 ; $2754: $ea $2e $d8
+    ld [MessageProgressionPointerHigh], a         ; $2754: $ea $2e $d8
     call Call_000_323e                            ; $2757: $cd $3e $32
     ld hl, StatePhase_Current                     ; $275a: $21 $35 $d6
     inc [hl]                                      ; $275d: $34
@@ -7830,8 +7824,8 @@ GS06_StatePhase_18_TODO::
 
 GS06_StatePhase_19_TODO::
     call $7918                                    ; $275f: $cd $18 $79
-    call Call_000_3093                            ; $2762: $cd $93 $30
-    call Call_000_2b6e                            ; $2765: $cd $6e $2b
+    call TODO_MessageSequenceTick                 ; $2762: $cd $93 $30
+    call AdvanceMessageProgression                ; $2765: $cd $6e $2b
     ret nz                                        ; $2768: $c0
 
     xor a                                         ; $2769: $af
@@ -7873,9 +7867,9 @@ GS06_StatePhase_1a_TODO::
     call Call_000_05b6                            ; $27a9: $cd $b6 $05
     call Call_000_302e                            ; $27ac: $cd $2e $30
     ld a, $fe                                     ; $27af: $3e $fe
-    ld [$d82d], a                                 ; $27b1: $ea $2d $d8
+    ld [MessageProgressionPointerLow], a          ; $27b1: $ea $2d $d8
     ld a, $6f                                     ; $27b4: $3e $6f
-    ld [$d82e], a                                 ; $27b6: $ea $2e $d8
+    ld [MessageProgressionPointerHigh], a         ; $27b6: $ea $2e $d8
     call Call_000_323e                            ; $27b9: $cd $3e $32
     ld hl, StatePhase_Current                     ; $27bc: $21 $35 $d6
     inc [hl]                                      ; $27bf: $34
@@ -7894,8 +7888,8 @@ jr_000_27c1:
 
 GS06_StatePhase_1b_TODO::
     call $7918                                    ; $27d4: $cd $18 $79
-    call Call_000_3093                            ; $27d7: $cd $93 $30
-    call Call_000_2b6e                            ; $27da: $cd $6e $2b
+    call TODO_MessageSequenceTick                 ; $27d7: $cd $93 $30
+    call AdvanceMessageProgression                ; $27da: $cd $6e $2b
     ret nz                                        ; $27dd: $c0
 
     call Call_000_323e                            ; $27de: $cd $3e $32
@@ -7914,9 +7908,9 @@ GS06_StatePhase_1c_TODO::
     ret nz                                        ; $27f7: $c0
 
     ld a, $6a                                     ; $27f8: $3e $6a
-    ld [$d82d], a                                 ; $27fa: $ea $2d $d8
+    ld [MessageProgressionPointerLow], a          ; $27fa: $ea $2d $d8
     ld a, $70                                     ; $27fd: $3e $70
-    ld [$d82e], a                                 ; $27ff: $ea $2e $d8
+    ld [MessageProgressionPointerHigh], a         ; $27ff: $ea $2e $d8
     call Call_000_323e                            ; $2802: $cd $3e $32
     ld hl, StatePhase_Current                     ; $2805: $21 $35 $d6
     inc [hl]                                      ; $2808: $34
@@ -7925,8 +7919,8 @@ GS06_StatePhase_1c_TODO::
 
 GS06_StatePhase_1d_TODO::
     call $7918                                    ; $280a: $cd $18 $79
-    call Call_000_3093                            ; $280d: $cd $93 $30
-    call Call_000_2b6e                            ; $2810: $cd $6e $2b
+    call TODO_MessageSequenceTick                 ; $280d: $cd $93 $30
+    call AdvanceMessageProgression                ; $2810: $cd $6e $2b
     ret nz                                        ; $2813: $c0
 
     call $7ce3                                    ; $2814: $cd $e3 $7c
@@ -7937,9 +7931,9 @@ GS06_StatePhase_1d_TODO::
     call Call_000_313a                            ; $2823: $cd $3a $31
     call $7beb                                    ; $2826: $cd $eb $7b
     ld a, $9c                                     ; $2829: $3e $9c
-    ld [$d82d], a                                 ; $282b: $ea $2d $d8
+    ld [MessageProgressionPointerLow], a          ; $282b: $ea $2d $d8
     ld a, $70                                     ; $282e: $3e $70
-    ld [$d82e], a                                 ; $2830: $ea $2e $d8
+    ld [MessageProgressionPointerHigh], a         ; $2830: $ea $2e $d8
     call Call_000_323e                            ; $2833: $cd $3e $32
     ld hl, StatePhase_Current                     ; $2836: $21 $35 $d6
     inc [hl]                                      ; $2839: $34
@@ -7948,8 +7942,8 @@ GS06_StatePhase_1d_TODO::
 
 GS06_StatePhase_1e_TODO::
     call $7918                                    ; $283b: $cd $18 $79
-    call Call_000_3093                            ; $283e: $cd $93 $30
-    call Call_000_2b6e                            ; $2841: $cd $6e $2b
+    call TODO_MessageSequenceTick                 ; $283e: $cd $93 $30
+    call AdvanceMessageProgression                ; $2841: $cd $6e $2b
     ret nz                                        ; $2844: $c0
 
     ld a, $03                                     ; $2845: $3e $03
@@ -7981,9 +7975,9 @@ GS06_StatePhase_1f_TODO::
     jr nz, jr_000_2887                            ; $2873: $20 $12
 
     ld a, $1a                                     ; $2875: $3e $1a
-    ld [$d82d], a                                 ; $2877: $ea $2d $d8
+    ld [MessageProgressionPointerLow], a          ; $2877: $ea $2d $d8
     ld a, $71                                     ; $287a: $3e $71
-    ld [$d82e], a                                 ; $287c: $ea $2e $d8
+    ld [MessageProgressionPointerHigh], a         ; $287c: $ea $2e $d8
     call Call_000_323e                            ; $287f: $cd $3e $32
     ld hl, StatePhase_Current                     ; $2882: $21 $35 $d6
     inc [hl]                                      ; $2885: $34
@@ -8002,8 +7996,8 @@ jr_000_2887:
 
 GS06_StatePhase_20_TODO::
     call $7918                                    ; $289a: $cd $18 $79
-    call Call_000_3093                            ; $289d: $cd $93 $30
-    call Call_000_2b6e                            ; $28a0: $cd $6e $2b
+    call TODO_MessageSequenceTick                 ; $289d: $cd $93 $30
+    call AdvanceMessageProgression                ; $28a0: $cd $6e $2b
     ret nz                                        ; $28a3: $c0
 
     ld hl, $03ed                                  ; $28a4: $21 $ed $03
@@ -8011,9 +8005,9 @@ GS06_StatePhase_20_TODO::
     call Call_000_05b6                            ; $28aa: $cd $b6 $05
     call Call_000_302e                            ; $28ad: $cd $2e $30
     ld a, $48                                     ; $28b0: $3e $48
-    ld [$d82d], a                                 ; $28b2: $ea $2d $d8
+    ld [MessageProgressionPointerLow], a          ; $28b2: $ea $2d $d8
     ld a, $71                                     ; $28b5: $3e $71
-    ld [$d82e], a                                 ; $28b7: $ea $2e $d8
+    ld [MessageProgressionPointerHigh], a         ; $28b7: $ea $2e $d8
     call Call_000_323e                            ; $28ba: $cd $3e $32
     ld hl, StatePhase_Current                     ; $28bd: $21 $35 $d6
     inc [hl]                                      ; $28c0: $34
@@ -8022,8 +8016,8 @@ GS06_StatePhase_20_TODO::
 
 GS06_StatePhase_21_TODO::
     call $7918                                    ; $28c2: $cd $18 $79
-    call Call_000_3093                            ; $28c5: $cd $93 $30
-    call Call_000_2b6e                            ; $28c8: $cd $6e $2b
+    call TODO_MessageSequenceTick                 ; $28c5: $cd $93 $30
+    call AdvanceMessageProgression                ; $28c8: $cd $6e $2b
     ret nz                                        ; $28cb: $c0
 
     ld a, $03                                     ; $28cc: $3e $03
@@ -8064,9 +8058,9 @@ GS06_StatePhase_22_TODO::
     call Call_000_07f1                            ; $290b: $cd $f1 $07
     call $7beb                                    ; $290e: $cd $eb $7b
     ld a, $ca                                     ; $2911: $3e $ca
-    ld [$d82d], a                                 ; $2913: $ea $2d $d8
+    ld [MessageProgressionPointerLow], a          ; $2913: $ea $2d $d8
     ld a, $71                                     ; $2916: $3e $71
-    ld [$d82e], a                                 ; $2918: $ea $2e $d8
+    ld [MessageProgressionPointerHigh], a         ; $2918: $ea $2e $d8
     call Call_000_323e                            ; $291b: $cd $3e $32
     ld hl, StatePhase_Current                     ; $291e: $21 $35 $d6
     inc [hl]                                      ; $2921: $34
@@ -8085,8 +8079,8 @@ jr_000_2923:
 
 GS06_StatePhase_23_TODO::
     call $7918                                    ; $2936: $cd $18 $79
-    call Call_000_3093                            ; $2939: $cd $93 $30
-    call Call_000_2b6e                            ; $293c: $cd $6e $2b
+    call TODO_MessageSequenceTick                 ; $2939: $cd $93 $30
+    call AdvanceMessageProgression                ; $293c: $cd $6e $2b
     ret nz                                        ; $293f: $c0
 
     ld a, $01                                     ; $2940: $3e $01
@@ -8127,9 +8121,9 @@ GS06_StatePhase_24_TODO::
     call Call_000_05b6                            ; $2980: $cd $b6 $05
     call Call_000_302e                            ; $2983: $cd $2e $30
     ld a, $88                                     ; $2986: $3e $88
-    ld [$d82d], a                                 ; $2988: $ea $2d $d8
+    ld [MessageProgressionPointerLow], a          ; $2988: $ea $2d $d8
     ld a, $72                                     ; $298b: $3e $72
-    ld [$d82e], a                                 ; $298d: $ea $2e $d8
+    ld [MessageProgressionPointerHigh], a         ; $298d: $ea $2e $d8
     call Call_000_323e                            ; $2990: $cd $3e $32
     ld hl, StatePhase_Current                     ; $2993: $21 $35 $d6
     inc [hl]                                      ; $2996: $34
@@ -8150,7 +8144,7 @@ jr_000_29a7:
 
     ld c, $0a                                     ; $29b0: $0e $0a
     ld a, $02                                     ; $29b2: $3e $02
-    call Call_000_03b6                            ; $29b4: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $29b4: $cd $b6 $03
     ld a, [$d833]                                 ; $29b7: $fa $33 $d8
     xor $01                                       ; $29ba: $ee $01
     ld [$d833], a                                 ; $29bc: $ea $33 $d8
@@ -8161,14 +8155,14 @@ Call_000_29c0:
     ld a, [$d833]                                 ; $29c0: $fa $33 $d8
     add $3a                                       ; $29c3: $c6 $3a
     ld bc, $2a36                                  ; $29c5: $01 $36 $2a
-    call Call_000_20ce                            ; $29c8: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $29c8: $cd $ce $20
     ret                                           ; $29cb: $c9
 
 
 GS06_StatePhase_25_TODO::
     call $7918                                    ; $29cc: $cd $18 $79
-    call Call_000_3093                            ; $29cf: $cd $93 $30
-    call Call_000_2b6e                            ; $29d2: $cd $6e $2b
+    call TODO_MessageSequenceTick                 ; $29cf: $cd $93 $30
+    call AdvanceMessageProgression                ; $29d2: $cd $6e $2b
     ret nz                                        ; $29d5: $c0
 
     ld hl, $03ed                                  ; $29d6: $21 $ed $03
@@ -8176,9 +8170,9 @@ GS06_StatePhase_25_TODO::
     call Call_000_05b6                            ; $29dc: $cd $b6 $05
     call Call_000_302e                            ; $29df: $cd $2e $30
     ld a, $24                                     ; $29e2: $3e $24
-    ld [$d82d], a                                 ; $29e4: $ea $2d $d8
+    ld [MessageProgressionPointerLow], a          ; $29e4: $ea $2d $d8
     ld a, $73                                     ; $29e7: $3e $73
-    ld [$d82e], a                                 ; $29e9: $ea $2e $d8
+    ld [MessageProgressionPointerHigh], a         ; $29e9: $ea $2e $d8
     call Call_000_323e                            ; $29ec: $cd $3e $32
     ld hl, StatePhase_Current                     ; $29ef: $21 $35 $d6
     inc [hl]                                      ; $29f2: $34
@@ -8188,8 +8182,8 @@ GS06_StatePhase_25_TODO::
 GS06_StatePhase_26_TODO::
     call Call_000_31ca                            ; $29f4: $cd $ca $31
     call $7918                                    ; $29f7: $cd $18 $79
-    call Call_000_3093                            ; $29fa: $cd $93 $30
-    call Call_000_2b6e                            ; $29fd: $cd $6e $2b
+    call TODO_MessageSequenceTick                 ; $29fa: $cd $93 $30
+    call AdvanceMessageProgression                ; $29fd: $cd $6e $2b
     ret nz                                        ; $2a00: $c0
 
     ld hl, $31ca                                  ; $2a01: $21 $ca $31
@@ -8209,9 +8203,9 @@ jr_000_2a10:
     jr c, jr_000_2a10                             ; $2a1f: $38 $ef
 
     ld a, $78                                     ; $2a21: $3e $78
-    ld [$d82d], a                                 ; $2a23: $ea $2d $d8
+    ld [MessageProgressionPointerLow], a          ; $2a23: $ea $2d $d8
     ld a, $73                                     ; $2a26: $3e $73
-    ld [$d82e], a                                 ; $2a28: $ea $2e $d8
+    ld [MessageProgressionPointerHigh], a         ; $2a28: $ea $2e $d8
     call Call_000_323e                            ; $2a2b: $cd $3e $32
     ld hl, StatePhase_Current                     ; $2a2e: $21 $35 $d6
     inc [hl]                                      ; $2a31: $34
@@ -8221,8 +8215,8 @@ jr_000_2a10:
 GS06_StatePhase_27_TODO::
     call Call_000_31ca                            ; $2a33: $cd $ca $31
     call $7918                                    ; $2a36: $cd $18 $79
-    call Call_000_3093                            ; $2a39: $cd $93 $30
-    call Call_000_2b6e                            ; $2a3c: $cd $6e $2b
+    call TODO_MessageSequenceTick                 ; $2a39: $cd $93 $30
+    call AdvanceMessageProgression                ; $2a3c: $cd $6e $2b
     ret nz                                        ; $2a3f: $c0
 
     ld hl, $31ca                                  ; $2a40: $21 $ca $31
@@ -8245,9 +8239,9 @@ jr_000_2a4f:
     call Call_000_31ca                            ; $2a63: $cd $ca $31
     call Call_000_302e                            ; $2a66: $cd $2e $30
     ld a, $ca                                     ; $2a69: $3e $ca
-    ld [$d82d], a                                 ; $2a6b: $ea $2d $d8
+    ld [MessageProgressionPointerLow], a          ; $2a6b: $ea $2d $d8
     ld a, $73                                     ; $2a6e: $3e $73
-    ld [$d82e], a                                 ; $2a70: $ea $2e $d8
+    ld [MessageProgressionPointerHigh], a         ; $2a70: $ea $2e $d8
     call Call_000_323e                            ; $2a73: $cd $3e $32
     ld hl, StatePhase_Current                     ; $2a76: $21 $35 $d6
     inc [hl]                                      ; $2a79: $34
@@ -8257,8 +8251,8 @@ jr_000_2a4f:
 GS06_StatePhase_28_TODO::
     call Call_000_31ca                            ; $2a7b: $cd $ca $31
     call $7918                                    ; $2a7e: $cd $18 $79
-    call Call_000_3093                            ; $2a81: $cd $93 $30
-    call Call_000_2b6e                            ; $2a84: $cd $6e $2b
+    call TODO_MessageSequenceTick                 ; $2a81: $cd $93 $30
+    call AdvanceMessageProgression                ; $2a84: $cd $6e $2b
     ret nz                                        ; $2a87: $c0
 
     call $78a2                                    ; $2a88: $cd $a2 $78
@@ -8268,9 +8262,9 @@ GS06_StatePhase_28_TODO::
     call $7185                                    ; $2a94: $cd $85 $71
     call Call_000_302e                            ; $2a97: $cd $2e $30
     ld a, $34                                     ; $2a9a: $3e $34
-    ld [$d82d], a                                 ; $2a9c: $ea $2d $d8
+    ld [MessageProgressionPointerLow], a          ; $2a9c: $ea $2d $d8
     ld a, $74                                     ; $2a9f: $3e $74
-    ld [$d82e], a                                 ; $2aa1: $ea $2e $d8
+    ld [MessageProgressionPointerHigh], a         ; $2aa1: $ea $2e $d8
     call Call_000_323e                            ; $2aa4: $cd $3e $32
     ld hl, StatePhase_Current                     ; $2aa7: $21 $35 $d6
     inc [hl]                                      ; $2aaa: $34
@@ -8279,8 +8273,8 @@ GS06_StatePhase_28_TODO::
 
 GS06_StatePhase_29_TODO::
     call $7918                                    ; $2aac: $cd $18 $79
-    call Call_000_3093                            ; $2aaf: $cd $93 $30
-    call Call_000_2b6e                            ; $2ab2: $cd $6e $2b
+    call TODO_MessageSequenceTick                 ; $2aaf: $cd $93 $30
+    call AdvanceMessageProgression                ; $2ab2: $cd $6e $2b
     ret nz                                        ; $2ab5: $c0
 
     ld a, $01                                     ; $2ab6: $3e $01
@@ -8319,14 +8313,14 @@ jr_000_2ae0:
     ld [$d813], a                                 ; $2afd: $ea $13 $d8
     ld a, $05                                     ; $2b00: $3e $05
     ld [$d82a], a                                 ; $2b02: $ea $2a $d8
-    ld a, [$d843]                                 ; $2b05: $fa $43 $d8
-    ld [$d82b], a                                 ; $2b08: $ea $2b $d8
-    ld a, [$d844]                                 ; $2b0b: $fa $44 $d8
-    ld [$d82c], a                                 ; $2b0e: $ea $2c $d8
+    ld a, [MessageProgressionResetEntryLow]       ; $2b05: $fa $43 $d8
+    ld [MessageProgressionEntryLow], a            ; $2b08: $ea $2b $d8
+    ld a, [MessageProgressionResetEntryHigh]      ; $2b0b: $fa $44 $d8
+    ld [MessageProgressionEntryHigh], a           ; $2b0e: $ea $2c $d8
     ld a, $30                                     ; $2b11: $3e $30
-    ld [$d82d], a                                 ; $2b13: $ea $2d $d8
+    ld [MessageProgressionPointerLow], a          ; $2b13: $ea $2d $d8
     ld a, $6a                                     ; $2b16: $3e $6a
-    ld [$d82e], a                                 ; $2b18: $ea $2e $d8
+    ld [MessageProgressionPointerHigh], a         ; $2b18: $ea $2e $d8
     call $7beb                                    ; $2b1b: $cd $eb $7b
     ld a, $01                                     ; $2b1e: $3e $01
     ld [StatePhase_Current], a                    ; $2b20: $ea $35 $d6
@@ -8337,14 +8331,14 @@ GS06_StatePhase_2a_TODO::
     ld bc, $003c                                  ; $2b24: $01 $3c $00
     call Call_000_05fa                            ; $2b27: $cd $fa $05
     ld a, $05                                     ; $2b2a: $3e $05
-    call Call_000_03b6                            ; $2b2c: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $2b2c: $cd $b6 $03
     ld c, $00                                     ; $2b2f: $0e $00
     ld a, $01                                     ; $2b31: $3e $01
-    call Call_000_03b6                            ; $2b33: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $2b33: $cd $b6 $03
     call Call_000_0399                            ; $2b36: $cd $99 $03
     ld c, $00                                     ; $2b39: $0e $00
     ld a, $01                                     ; $2b3b: $3e $01
-    call Call_000_03b6                            ; $2b3d: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $2b3d: $cd $b6 $03
     ld b, $03                                     ; $2b40: $06 $03
     ld hl, $46ab                                  ; $2b42: $21 $ab $46
     ld c, $01                                     ; $2b45: $0e $01
@@ -8366,13 +8360,13 @@ GS06_StatePhase_2a_TODO::
     ret                                           ; $2b6d: $c9
 
 
-Call_000_2b6e:
+AdvanceMessageProgression::
     ld a, [ActiveROMBank]                         ; $2b6e: $fa $12 $c3
     push af                                       ; $2b71: $f5
     ld a, $05                                     ; $2b72: $3e $05
     ld [ActiveROMBank], a                         ; $2b74: $ea $12 $c3
     ld [ROMBankSwitchTrigger], a                  ; $2b77: $ea $00 $20
-    call Call_000_2b88                            ; $2b7a: $cd $88 $2b
+    call AdvanceMessageProgressionHelper          ; $2b7a: $cd $88 $2b
     pop bc                                        ; $2b7d: $c1
     push af                                       ; $2b7e: $f5
     ld a, b                                       ; $2b7f: $78
@@ -8382,14 +8376,14 @@ Call_000_2b6e:
     ret                                           ; $2b87: $c9
 
 
-Call_000_2b88:
-    ld a, [$d82d]                                 ; $2b88: $fa $2d $d8
+AdvanceMessageProgressionHelper::
+    ld a, [MessageProgressionPointerLow]          ; $2b88: $fa $2d $d8
     ld l, a                                       ; $2b8b: $6f
-    ld a, [$d82e]                                 ; $2b8c: $fa $2e $d8
+    ld a, [MessageProgressionPointerHigh]         ; $2b8c: $fa $2e $d8
     ld h, a                                       ; $2b8f: $67
-    ld a, [$d82b]                                 ; $2b90: $fa $2b $d8
+    ld a, [MessageProgressionEntryLow]            ; $2b90: $fa $2b $d8
     ld b, a                                       ; $2b93: $47
-    ld a, [$d82c]                                 ; $2b94: $fa $2c $d8
+    ld a, [MessageProgressionEntryHigh]           ; $2b94: $fa $2c $d8
     ld c, a                                       ; $2b97: $4f
     ld a, [hl+]                                   ; $2b98: $2a
     ld e, a                                       ; $2b99: $5f
@@ -8402,40 +8396,40 @@ Call_000_2b88:
     push hl                                       ; $2ba0: $e5
     ld a, e                                       ; $2ba1: $7b
     cp $fe                                        ; $2ba2: $fe $fe
-    jr nz, jr_000_2bab                            ; $2ba4: $20 $05
+    jr nz, .AdvanceMessageProgressionEntry        ; $2ba4: $20 $05
 
     ld a, d                                       ; $2ba6: $7a
     cp $ff                                        ; $2ba7: $fe $ff
-    jr z, jr_000_2bb7                             ; $2ba9: $28 $0c
+    jr z, .ResetMessageProgressionEntry           ; $2ba9: $28 $0c
 
-jr_000_2bab:
-    call Call_000_2bd3                            ; $2bab: $cd $d3 $2b
-    ld hl, $d82b                                  ; $2bae: $21 $2b $d8
+.AdvanceMessageProgressionEntry:
+    call PrepareMessageProgressionCopySetup       ; $2bab: $cd $d3 $2b
+    ld hl, MessageProgressionEntryLow             ; $2bae: $21 $2b $d8
     add $01                                       ; $2bb1: $c6 $01
     add [hl]                                      ; $2bb3: $86
     ld [hl], a                                    ; $2bb4: $77
-    jr jr_000_2bc5                                ; $2bb5: $18 $0e
+    jr .StoreMessageProgressionPointer            ; $2bb5: $18 $0e
 
-jr_000_2bb7:
-    ld a, [$d843]                                 ; $2bb7: $fa $43 $d8
-    ld [$d82b], a                                 ; $2bba: $ea $2b $d8
-    ld a, [$d82c]                                 ; $2bbd: $fa $2c $d8
+.ResetMessageProgressionEntry:
+    ld a, [MessageProgressionResetEntryLow]       ; $2bb7: $fa $43 $d8
+    ld [MessageProgressionEntryLow], a            ; $2bba: $ea $2b $d8
+    ld a, [MessageProgressionEntryHigh]           ; $2bbd: $fa $2c $d8
     add $0a                                       ; $2bc0: $c6 $0a
-    ld [$d82c], a                                 ; $2bc2: $ea $2c $d8
+    ld [MessageProgressionEntryHigh], a           ; $2bc2: $ea $2c $d8
 
-jr_000_2bc5:
+.StoreMessageProgressionPointer:
     pop hl                                        ; $2bc5: $e1
     ld a, l                                       ; $2bc6: $7d
-    ld [$d82d], a                                 ; $2bc7: $ea $2d $d8
+    ld [MessageProgressionPointerLow], a          ; $2bc7: $ea $2d $d8
     ld a, h                                       ; $2bca: $7c
-    ld [$d82e], a                                 ; $2bcb: $ea $2e $d8
+    ld [MessageProgressionPointerHigh], a         ; $2bcb: $ea $2e $d8
     ld a, [hl+]                                   ; $2bce: $2a
     and [hl]                                      ; $2bcf: $a6
     cp $ff                                        ; $2bd0: $fe $ff
     ret                                           ; $2bd2: $c9
 
 
-Call_000_2bd3:
+PrepareMessageProgressionCopySetup::
     push de                                       ; $2bd3: $d5
     sla e                                         ; $2bd4: $cb $23
     rl d                                          ; $2bd6: $cb $12
@@ -8447,13 +8441,13 @@ Call_000_2bd3:
     ld hl, $4000                                  ; $2bdf: $21 $00 $40
     add hl, de                                    ; $2be2: $19
     ld a, l                                       ; $2be3: $7d
-    ld [$c355], a                                 ; $2be4: $ea $55 $c3
+    ld [MessageProgressionCopyBankAddressLow], a  ; $2be4: $ea $55 $c3
     ld a, h                                       ; $2be7: $7c
-    ld [$c356], a                                 ; $2be8: $ea $56 $c3
+    ld [MessageProgressionCopyBankAddressHigh], a ; $2be8: $ea $56 $c3
     ld a, $0d                                     ; $2beb: $3e $0d
-    ld [$c357], a                                 ; $2bed: $ea $57 $c3
+    ld [MessageProgressionCopyBank], a            ; $2bed: $ea $57 $c3
     ld a, b                                       ; $2bf0: $78
-    ld [$c351], a                                 ; $2bf1: $ea $51 $c3
+    ld [MessageProgressionCopySourceX], a         ; $2bf1: $ea $51 $c3
     pop de                                        ; $2bf4: $d1
     ld hl, TODO_2c6a_1_PointerTable               ; $2bf5: $21 $b6 $2c
     add hl, de                                    ; $2bf8: $19
@@ -8463,42 +8457,42 @@ Call_000_2bd3:
 
     push af                                       ; $2bfc: $f5
     add b                                         ; $2bfd: $80
-    ld hl, $d845                                  ; $2bfe: $21 $45 $d8
+    ld hl, MessageProgressionCopyLimitLow         ; $2bfe: $21 $45 $d8
     cp [hl]                                       ; $2c01: $be
-    jr c, jr_000_2c06                             ; $2c02: $38 $02
+    jr c, .PrepareMessageProgressionCopyParams    ; $2c02: $38 $02
 
     pop af                                        ; $2c04: $f1
     ret                                           ; $2c05: $c9
 
 
-jr_000_2c06:
-    ld [$c353], a                                 ; $2c06: $ea $53 $c3
+.PrepareMessageProgressionCopyParams:
+    ld [MessageProgressionCopyDestX], a           ; $2c06: $ea $53 $c3
     ld a, c                                       ; $2c09: $79
-    ld [$c352], a                                 ; $2c0a: $ea $52 $c3
+    ld [MessageProgressionCopySourceY], a         ; $2c0a: $ea $52 $c3
     add $08                                       ; $2c0d: $c6 $08
-    ld hl, $d846                                  ; $2c0f: $21 $46 $d8
+    ld hl, MessageProgressionCopyLimitHigh        ; $2c0f: $21 $46 $d8
     cp [hl]                                       ; $2c12: $be
-    jr c, jr_000_2c17                             ; $2c13: $38 $02
+    jr c, .ApplyMessageProgressionCopyParams      ; $2c13: $38 $02
 
     pop af                                        ; $2c15: $f1
     ret                                           ; $2c16: $c9
 
 
-jr_000_2c17:
-    ld [$c354], a                                 ; $2c17: $ea $54 $c3
-    call Call_000_08b3                            ; $2c1a: $cd $b3 $08
+.ApplyMessageProgressionCopyParams:
+    ld [MessageProgressionCopyDestY], a           ; $2c17: $ea $54 $c3
+    call PrepareMessageProgressionCopy            ; $2c1a: $cd $b3 $08
     pop af                                        ; $2c1d: $f1
     ret                                           ; $2c1e: $c9
 
 
 Call_000_2c1f:
-    ld a, [$d82d]                                 ; $2c1f: $fa $2d $d8
+    ld a, [MessageProgressionPointerLow]          ; $2c1f: $fa $2d $d8
     ld l, a                                       ; $2c22: $6f
-    ld a, [$d82e]                                 ; $2c23: $fa $2e $d8
+    ld a, [MessageProgressionPointerHigh]         ; $2c23: $fa $2e $d8
     ld h, a                                       ; $2c26: $67
-    ld a, [$d82b]                                 ; $2c27: $fa $2b $d8
+    ld a, [MessageProgressionEntryLow]            ; $2c27: $fa $2b $d8
     ld b, a                                       ; $2c2a: $47
-    ld a, [$d82c]                                 ; $2c2b: $fa $2c $d8
+    ld a, [MessageProgressionEntryHigh]           ; $2c2b: $fa $2c $d8
     ld c, a                                       ; $2c2e: $4f
     ld a, [hl+]                                   ; $2c2f: $2a
     ld e, a                                       ; $2c30: $5f
@@ -8519,25 +8513,25 @@ Call_000_2c1f:
 
 jr_000_2c42:
     call Call_000_2c6a                            ; $2c42: $cd $6a $2c
-    ld hl, $d82b                                  ; $2c45: $21 $2b $d8
+    ld hl, MessageProgressionEntryLow             ; $2c45: $21 $2b $d8
     add $01                                       ; $2c48: $c6 $01
     add [hl]                                      ; $2c4a: $86
     ld [hl], a                                    ; $2c4b: $77
     jr jr_000_2c5c                                ; $2c4c: $18 $0e
 
 jr_000_2c4e:
-    ld a, [$d843]                                 ; $2c4e: $fa $43 $d8
-    ld [$d82b], a                                 ; $2c51: $ea $2b $d8
-    ld a, [$d82c]                                 ; $2c54: $fa $2c $d8
+    ld a, [MessageProgressionResetEntryLow]       ; $2c4e: $fa $43 $d8
+    ld [MessageProgressionEntryLow], a            ; $2c51: $ea $2b $d8
+    ld a, [MessageProgressionEntryHigh]           ; $2c54: $fa $2c $d8
     add $0a                                       ; $2c57: $c6 $0a
-    ld [$d82c], a                                 ; $2c59: $ea $2c $d8
+    ld [MessageProgressionEntryHigh], a           ; $2c59: $ea $2c $d8
 
 jr_000_2c5c:
     pop hl                                        ; $2c5c: $e1
     ld a, l                                       ; $2c5d: $7d
-    ld [$d82d], a                                 ; $2c5e: $ea $2d $d8
+    ld [MessageProgressionPointerLow], a          ; $2c5e: $ea $2d $d8
     ld a, h                                       ; $2c61: $7c
-    ld [$d82e], a                                 ; $2c62: $ea $2e $d8
+    ld [MessageProgressionPointerHigh], a         ; $2c62: $ea $2e $d8
     ld a, [hl+]                                   ; $2c65: $2a
     and [hl]                                      ; $2c66: $a6
     cp $ff                                        ; $2c67: $fe $ff
@@ -8556,13 +8550,13 @@ Call_000_2c6a:
     ld hl, $4000                                  ; $2c76: $21 $00 $40
     add hl, de                                    ; $2c79: $19
     ld a, l                                       ; $2c7a: $7d
-    ld [$c355], a                                 ; $2c7b: $ea $55 $c3
+    ld [MessageProgressionCopyBankAddressLow], a  ; $2c7b: $ea $55 $c3
     ld a, h                                       ; $2c7e: $7c
-    ld [$c356], a                                 ; $2c7f: $ea $56 $c3
+    ld [MessageProgressionCopyBankAddressHigh], a ; $2c7f: $ea $56 $c3
     ld a, $0d                                     ; $2c82: $3e $0d
-    ld [$c357], a                                 ; $2c84: $ea $57 $c3
+    ld [MessageProgressionCopyBank], a            ; $2c84: $ea $57 $c3
     ld a, b                                       ; $2c87: $78
-    ld [$c351], a                                 ; $2c88: $ea $51 $c3
+    ld [MessageProgressionCopySourceX], a         ; $2c88: $ea $51 $c3
     pop de                                        ; $2c8b: $d1
     ld hl, TODO_2c6a_1_PointerTable               ; $2c8c: $21 $b6 $2c
     add hl, de                                    ; $2c8f: $19
@@ -8572,7 +8566,7 @@ Call_000_2c6a:
 
     push af                                       ; $2c93: $f5
     add b                                         ; $2c94: $80
-    ld hl, $d845                                  ; $2c95: $21 $45 $d8
+    ld hl, MessageProgressionCopyLimitLow         ; $2c95: $21 $45 $d8
     cp [hl]                                       ; $2c98: $be
     jr c, jr_000_2c9d                             ; $2c99: $38 $02
 
@@ -8581,11 +8575,11 @@ Call_000_2c6a:
 
 
 jr_000_2c9d:
-    ld [$c353], a                                 ; $2c9d: $ea $53 $c3
+    ld [MessageProgressionCopyDestX], a           ; $2c9d: $ea $53 $c3
     ld a, c                                       ; $2ca0: $79
-    ld [$c352], a                                 ; $2ca1: $ea $52 $c3
+    ld [MessageProgressionCopySourceY], a         ; $2ca1: $ea $52 $c3
     add $08                                       ; $2ca4: $c6 $08
-    ld hl, $d846                                  ; $2ca6: $21 $46 $d8
+    ld hl, MessageProgressionCopyLimitHigh        ; $2ca6: $21 $46 $d8
     cp [hl]                                       ; $2ca9: $be
     jr c, jr_000_2cae                             ; $2caa: $38 $02
 
@@ -8594,7 +8588,7 @@ jr_000_2c9d:
 
 
 jr_000_2cae:
-    ld [$c354], a                                 ; $2cae: $ea $54 $c3
+    ld [MessageProgressionCopyDestY], a           ; $2cae: $ea $54 $c3
     call Call_000_0b0d                            ; $2cb1: $cd $0d $0b
     pop af                                        ; $2cb4: $f1
     ret                                           ; $2cb5: $c9
@@ -8722,7 +8716,7 @@ jr_000_2fc9:
 
     ld c, $03                                     ; $2fd0: $0e $03
     ld a, $02                                     ; $2fd2: $3e $02
-    call Call_000_03b6                            ; $2fd4: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $2fd4: $cd $b6 $03
     ret                                           ; $2fd7: $c9
 
 
@@ -8734,7 +8728,7 @@ jr_000_2fd8:
     ld [$d837], a                                 ; $2fdf: $ea $37 $d8
     ld c, $04                                     ; $2fe2: $0e $04
     ld a, $02                                     ; $2fe4: $3e $02
-    call Call_000_03b6                            ; $2fe6: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $2fe6: $cd $b6 $03
     ret                                           ; $2fe9: $c9
 
 
@@ -8747,14 +8741,14 @@ jr_000_2fea:
     bit 4, a                                      ; $2ff5: $cb $67
     jr nz, jr_000_3008                            ; $2ff7: $20 $0f
 
-    ld a, [$d82b]                                 ; $2ff9: $fa $2b $d8
+    ld a, [MessageProgressionEntryLow]            ; $2ff9: $fa $2b $d8
     inc a                                         ; $2ffc: $3c
     ld b, a                                       ; $2ffd: $47
-    ld a, [$d82c]                                 ; $2ffe: $fa $2c $d8
+    ld a, [MessageProgressionEntryHigh]           ; $2ffe: $fa $2c $d8
     inc a                                         ; $3001: $3c
     ld c, a                                       ; $3002: $4f
     ld a, $37                                     ; $3003: $3e $37
-    call Call_000_20ce                            ; $3005: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $3005: $cd $ce $20
 
 jr_000_3008:
     pop hl                                        ; $3008: $e1
@@ -8772,14 +8766,14 @@ Call_000_3012:
     bit 4, a                                      ; $3015: $cb $67
     jr nz, jr_000_3029                            ; $3017: $20 $10
 
-    ld a, [$d82b]                                 ; $3019: $fa $2b $d8
+    ld a, [MessageProgressionEntryLow]            ; $3019: $fa $2b $d8
     sub $03                                       ; $301c: $d6 $03
     ld b, a                                       ; $301e: $47
-    ld a, [$d82c]                                 ; $301f: $fa $2c $d8
+    ld a, [MessageProgressionEntryHigh]           ; $301f: $fa $2c $d8
     inc a                                         ; $3022: $3c
     ld c, a                                       ; $3023: $4f
     ld a, $38                                     ; $3024: $3e $38
-    call Call_000_20ce                            ; $3026: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $3026: $cd $ce $20
 
 jr_000_3029:
     ld hl, $d63c                                  ; $3029: $21 $3c $d6
@@ -8806,51 +8800,51 @@ Call_000_302e:
     ld bc, $0d80                                  ; $305b: $01 $80 $0d
     ld de, $8507                                  ; $305e: $11 $07 $85
     call Call_000_3071                            ; $3061: $cd $71 $30
-    ld a, [$d843]                                 ; $3064: $fa $43 $d8
-    ld [$d82b], a                                 ; $3067: $ea $2b $d8
-    ld a, [$d844]                                 ; $306a: $fa $44 $d8
-    ld [$d82c], a                                 ; $306d: $ea $2c $d8
+    ld a, [MessageProgressionResetEntryLow]       ; $3064: $fa $43 $d8
+    ld [MessageProgressionEntryLow], a            ; $3067: $ea $2b $d8
+    ld a, [MessageProgressionResetEntryHigh]      ; $306a: $fa $44 $d8
+    ld [MessageProgressionEntryHigh], a           ; $306d: $ea $2c $d8
     ret                                           ; $3070: $c9
 
 
 Call_000_3071:
     ld a, $00                                     ; $3071: $3e $00
-    ld [$c355], a                                 ; $3073: $ea $55 $c3
+    ld [MessageProgressionCopyBankAddressLow], a  ; $3073: $ea $55 $c3
     ld a, $6c                                     ; $3076: $3e $6c
-    ld [$c356], a                                 ; $3078: $ea $56 $c3
+    ld [MessageProgressionCopyBankAddressHigh], a ; $3078: $ea $56 $c3
     ld a, $07                                     ; $307b: $3e $07
-    ld [$c357], a                                 ; $307d: $ea $57 $c3
+    ld [MessageProgressionCopyBank], a            ; $307d: $ea $57 $c3
     ld a, b                                       ; $3080: $78
-    ld [$c351], a                                 ; $3081: $ea $51 $c3
+    ld [MessageProgressionCopySourceX], a         ; $3081: $ea $51 $c3
     add d                                         ; $3084: $82
-    ld [$c353], a                                 ; $3085: $ea $53 $c3
+    ld [MessageProgressionCopyDestX], a           ; $3085: $ea $53 $c3
     ld a, c                                       ; $3088: $79
-    ld [$c352], a                                 ; $3089: $ea $52 $c3
+    ld [MessageProgressionCopySourceY], a         ; $3089: $ea $52 $c3
     add e                                         ; $308c: $83
-    ld [$c354], a                                 ; $308d: $ea $54 $c3
-    jp Jump_000_08b3                              ; $3090: $c3 $b3 $08
+    ld [MessageProgressionCopyDestY], a           ; $308d: $ea $54 $c3
+    jp PrepareMessageProgressionCopy              ; $3090: $c3 $b3 $08
 
 
-Call_000_3093:
+TODO_MessageSequenceTick::
     ld a, [$d81a]                                 ; $3093: $fa $1a $d8
     and a                                         ; $3096: $a7
-    jr nz, jr_000_30b9                            ; $3097: $20 $20
+    jr nz, .TickAndEmitCurrentEntry               ; $3097: $20 $20
 
     ld a, [$d81b]                                 ; $3099: $fa $1b $d8
     ld c, a                                       ; $309c: $4f
     ld b, $00                                     ; $309d: $06 $00
 
-jr_000_309f:
-    ld hl, $30c9                                  ; $309f: $21 $c9 $30
+.NextPatternEntry:
+    ld hl, PatternData                            ; $309f: $21 $c9 $30
     add hl, bc                                    ; $30a2: $09
     ld a, [hl+]                                   ; $30a3: $2a
     and a                                         ; $30a4: $a7
-    jr nz, jr_000_30ac                            ; $30a5: $20 $05
+    jr nz, .LoadPatternEntry                      ; $30a5: $20 $05
 
     ld bc, $0000                                  ; $30a7: $01 $00 $00
-    jr jr_000_309f                                ; $30aa: $18 $f3
+    jr .NextPatternEntry                          ; $30aa: $18 $f3
 
-jr_000_30ac:
+.LoadPatternEntry:
     ld [$d81a], a                                 ; $30ac: $ea $1a $d8
     ld a, [hl]                                    ; $30af: $7e
     ld [$d819], a                                 ; $30b0: $ea $19 $d8
@@ -8859,7 +8853,7 @@ jr_000_30ac:
     ld a, c                                       ; $30b5: $79
     ld [$d81b], a                                 ; $30b6: $ea $1b $d8
 
-jr_000_30b9:
+.TickAndEmitCurrentEntry:
     ld hl, $d81a                                  ; $30b9: $21 $1a $d8
     dec [hl]                                      ; $30bc: $35
     ld a, [$d819]                                 ; $30bd: $fa $19 $d8
@@ -8867,22 +8861,14 @@ jr_000_30b9:
     ret z                                         ; $30c2: $c8
 
     ld bc, $1d20                                  ; $30c3: $01 $20 $1d
-    jp Jump_000_20ce                              ; $30c6: $c3 $ce $20
+    jp TODO_EmitMessageScriptById                 ; $30c6: $c3 $ce $20
 
 
-    ld [bc], a                                    ; $30c9: $02
-    add hl, sp                                    ; $30ca: $39
-    inc b                                         ; $30cb: $04
-    rst $38                                       ; $30cc: $ff
-    inc bc                                        ; $30cd: $03
-    add hl, sp                                    ; $30ce: $39
-    inc bc                                        ; $30cf: $03
-    rst $38                                       ; $30d0: $ff
-    ld [bc], a                                    ; $30d1: $02
-    add hl, sp                                    ; $30d2: $39
-    dec b                                         ; $30d3: $05
-    rst $38                                       ; $30d4: $ff
-    nop                                           ; $30d5: $00
+PatternData::
+    db $02, $39, $04, $ff
+    db $03, $39, $03, $ff
+    db $02, $39, $05, $ff
+    db $00
 
 Call_000_30d6:
     xor a                                         ; $30d6: $af
@@ -8926,38 +8912,38 @@ jr_000_310c:
 
 Call_000_3114:
     ld a, $40                                     ; $3114: $3e $40
-    ld [$c355], a                                 ; $3116: $ea $55 $c3
+    ld [MessageProgressionCopyBankAddressLow], a  ; $3116: $ea $55 $c3
     ld a, $4c                                     ; $3119: $3e $4c
-    ld [$c356], a                                 ; $311b: $ea $56 $c3
+    ld [MessageProgressionCopyBankAddressHigh], a ; $311b: $ea $56 $c3
     ld a, $07                                     ; $311e: $3e $07
-    ld [$c357], a                                 ; $3120: $ea $57 $c3
+    ld [MessageProgressionCopyBank], a            ; $3120: $ea $57 $c3
     ld a, $38                                     ; $3123: $3e $38
-    ld [$c351], a                                 ; $3125: $ea $51 $c3
+    ld [MessageProgressionCopySourceX], a         ; $3125: $ea $51 $c3
     add $1f                                       ; $3128: $c6 $1f
-    ld [$c353], a                                 ; $312a: $ea $53 $c3
+    ld [MessageProgressionCopyDestX], a           ; $312a: $ea $53 $c3
     ld a, $30                                     ; $312d: $3e $30
-    ld [$c352], a                                 ; $312f: $ea $52 $c3
+    ld [MessageProgressionCopySourceY], a         ; $312f: $ea $52 $c3
     add $1f                                       ; $3132: $c6 $1f
-    ld [$c354], a                                 ; $3134: $ea $54 $c3
-    jp Jump_000_08b3                              ; $3137: $c3 $b3 $08
+    ld [MessageProgressionCopyDestY], a           ; $3134: $ea $54 $c3
+    jp PrepareMessageProgressionCopy              ; $3137: $c3 $b3 $08
 
 
 Call_000_313a:
     ld a, $00                                     ; $313a: $3e $00
-    ld [$c355], a                                 ; $313c: $ea $55 $c3
+    ld [MessageProgressionCopyBankAddressLow], a  ; $313c: $ea $55 $c3
     ld a, $68                                     ; $313f: $3e $68
-    ld [$c356], a                                 ; $3141: $ea $56 $c3
+    ld [MessageProgressionCopyBankAddressHigh], a ; $3141: $ea $56 $c3
     ld a, $07                                     ; $3144: $3e $07
-    ld [$c357], a                                 ; $3146: $ea $57 $c3
+    ld [MessageProgressionCopyBank], a            ; $3146: $ea $57 $c3
     ld a, $38                                     ; $3149: $3e $38
-    ld [$c351], a                                 ; $314b: $ea $51 $c3
+    ld [MessageProgressionCopySourceX], a         ; $314b: $ea $51 $c3
     add $1f                                       ; $314e: $c6 $1f
-    ld [$c353], a                                 ; $3150: $ea $53 $c3
+    ld [MessageProgressionCopyDestX], a           ; $3150: $ea $53 $c3
     ld a, $30                                     ; $3153: $3e $30
-    ld [$c352], a                                 ; $3155: $ea $52 $c3
+    ld [MessageProgressionCopySourceY], a         ; $3155: $ea $52 $c3
     add $1f                                       ; $3158: $c6 $1f
-    ld [$c354], a                                 ; $315a: $ea $54 $c3
-    jp Jump_000_08b3                              ; $315d: $c3 $b3 $08
+    ld [MessageProgressionCopyDestY], a           ; $315a: $ea $54 $c3
+    jp PrepareMessageProgressionCopy              ; $315d: $c3 $b3 $08
 
 
 Call_000_3160:

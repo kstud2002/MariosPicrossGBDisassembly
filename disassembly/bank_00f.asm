@@ -5,10 +5,12 @@
 
 SECTION "ROM Bank $00f", ROMX[$4000], BANK[$f]
 
-    jp Jump_00f_4258                              ; $4000: $c3 $58 $42
+TODO_Jumpvector_4258::
+    jp TODO_Dispatcher1                           ; $4000: $c3 $58 $42
 
 
-    jp Jump_00f_43ca                              ; $4003: $c3 $ca $43
+TODO_Jumpvector_43ca::
+    jp TODO_FunctionCalledFromBank00              ; $4003: $c3 $ca $43
 
 
     ; padding
@@ -24,7 +26,7 @@ HiddenMusicComposerCredits::
     ; padding
     ds $30, $ff
 
-TODO_PointerTable::
+TODO_Dispatcher1PointerTable::
     db $64, $42
     db $a5, $42
     db $dd, $42
@@ -378,8 +380,8 @@ Call_00f_41fc:
     xor d                                         ; $4256: $aa
     xor a                                         ; $4257: $af
 
-Jump_00f_4258:
-    ld hl, TODO_PointerTable                      ; $4258: $21 $80 $40
+TODO_Dispatcher1::
+    ld hl, TODO_Dispatcher1PointerTable           ; $4258: $21 $80 $40
     push af                                       ; $425b: $f5
     add a                                         ; $425c: $87
     add l                                         ; $425d: $85
@@ -391,7 +393,8 @@ Jump_00f_4258:
     jp hl                                         ; $4263: $e9
 
 
-    ld hl, $4286                                  ; $4264: $21 $86 $42
+TODO_Dispatcher1_Event00::
+    ld hl, TODO_Dispatcher1_Event00_Data          ; $4264: $21 $86 $42
 
 jr_00f_4267:
     ld a, [hl+]                                   ; $4267: $2a
@@ -420,33 +423,25 @@ jr_00f_4276:
     ret                                           ; $4285: $c9
 
 
-    ld h, $80                                     ; $4286: $26 $80
-    inc h                                         ; $4288: $24
-    ld [hl], a                                    ; $4289: $77
-    dec h                                         ; $428a: $25
-    rst $38                                       ; $428b: $ff
-    db $10                                        ; $428c: $10
-    ld [$0012], sp                                ; $428d: $08 $12 $00
-    rla                                           ; $4290: $17
-    nop                                           ; $4291: $00
-    ld hl, $1400                                  ; $4292: $21 $00 $14
-    add b                                         ; $4295: $80
-    add hl, de                                    ; $4296: $19
-    add b                                         ; $4297: $80
-    inc hl                                        ; $4298: $23
-    add b                                         ; $4299: $80
-    inc e                                         ; $429a: $1c
-    nop                                           ; $429b: $00
-    ld de, $1600                                  ; $429c: $11 $00 $16
-    nop                                           ; $429f: $00
-    dec de                                        ; $42a0: $1b
-    nop                                           ; $42a1: $00
-    jr nz, jr_00f_42a4                            ; $42a2: $20 $00
+TODO_Dispatcher1_Event00_Data::
+    db $26, $80
+    db $24, $77
+    db $25, $ff
+    db $10, $08
+    db $12, $00
+    db $17, $00
+    db $21, $00
+    db $14, $80
+    db $19, $80
+    db $23, $80
+    db $1c, $00
+    db $11, $00
+    db $16, $00
+    db $1b, $00
+    db $20, $00
+    db $00
 
-jr_00f_42a4:
-    nop                                           ; $42a4: $00
-
-Jump_00f_42a5:
+TODO_Dispatcher1_Event01::
     ld a, c                                       ; $42a5: $79
     ld [$dd00], a                                 ; $42a6: $ea $00 $dd
     ld de, $4a7d                                  ; $42a9: $11 $7d $4a
@@ -464,7 +459,7 @@ jr_00f_42b7:
     ld a, $f0                                     ; $42c0: $3e $f0
     or [hl]                                       ; $42c2: $b6
     ld [hl], a                                    ; $42c3: $77
-    ld hl, $436b                                  ; $42c4: $21 $6b $43
+    ld hl, TODO_Dispatcher1_Event02_Data          ; $42c4: $21 $6b $43
 
 jr_00f_42c7:
     ld c, [hl]                                    ; $42c7: $4e
@@ -486,7 +481,7 @@ jr_00f_42c7:
     pop hl                                        ; $42da: $e1
     jr jr_00f_42c7                                ; $42db: $18 $ea
 
-Jump_00f_42dd:
+TODO_Dispatcher1_Event02::
     push bc                                       ; $42dd: $c5
     ld hl, $dd02                                  ; $42de: $21 $02 $dd
     xor a                                         ; $42e1: $af
@@ -575,12 +570,10 @@ jr_00f_4346:
     ld [$dd04], a                                 ; $434f: $ea $04 $dd
 
 jr_00f_4352:
-    ld hl, $436b                                  ; $4352: $21 $6b $43
+    ld hl, TODO_Dispatcher1_Event02_Data          ; $4352: $21 $6b $43
 
 jr_00f_4355:
     ld c, [hl]                                    ; $4355: $4e
-
-jr_00f_4356:
     inc hl                                        ; $4356: $23
     ld a, [hl]                                    ; $4357: $7e
     inc hl                                        ; $4358: $23
@@ -599,68 +592,25 @@ jr_00f_4356:
     pop hl                                        ; $4368: $e1
     jr jr_00f_4355                                ; $4369: $18 $ea
 
-    ld b, b                                       ; $436b: $40
-    db $dd                                        ; $436c: $dd
-    nop                                           ; $436d: $00
-    nop                                           ; $436e: $00
+TODO_Dispatcher1_Event02_Data::
+    db $40, $dd, $00, $00
+    db $70, $dd, $00, $00
+    db $80, $dd, $00, $00
+    db $30, $dd, $00, $00
+    db $c0, $dd, $00, $00
+    db $b0, $dd, $00, $00
+    db $f0, $dd, $00, $00
+    db $00, $de, $00, $00
+    db $10, $de, $00, $00
+    db $20, $de, $00, $00
+    db $30, $de, $00, $00
+    db $40, $de, $00, $00
+    db $e0, $dd, $00, $90
+    db $50, $dd, $00, $00
+    db $a0, $dd, $0f, $ff
+    db $00, $00
 
-jr_00f_436f:
-    ld [hl], b                                    ; $436f: $70
-    db $dd                                        ; $4370: $dd
-    nop                                           ; $4371: $00
-    nop                                           ; $4372: $00
-
-jr_00f_4373:
-    add b                                         ; $4373: $80
-    db $dd                                        ; $4374: $dd
-    nop                                           ; $4375: $00
-    nop                                           ; $4376: $00
-    jr nc, jr_00f_4356                            ; $4377: $30 $dd
-
-    nop                                           ; $4379: $00
-    nop                                           ; $437a: $00
-    ret nz                                        ; $437b: $c0
-
-    db $dd                                        ; $437c: $dd
-    nop                                           ; $437d: $00
-    nop                                           ; $437e: $00
-    or b                                          ; $437f: $b0
-    db $dd                                        ; $4380: $dd
-    nop                                           ; $4381: $00
-    nop                                           ; $4382: $00
-    ldh a, [$ffdd]                                ; $4383: $f0 $dd
-    nop                                           ; $4385: $00
-    nop                                           ; $4386: $00
-    nop                                           ; $4387: $00
-    sbc $00                                       ; $4388: $de $00
-    nop                                           ; $438a: $00
-    db $10                                        ; $438b: $10
-    sbc $00                                       ; $438c: $de $00
-    nop                                           ; $438e: $00
-    jr nz, jr_00f_436f                            ; $438f: $20 $de
-
-    nop                                           ; $4391: $00
-    nop                                           ; $4392: $00
-    jr nc, jr_00f_4373                            ; $4393: $30 $de
-
-    nop                                           ; $4395: $00
-    nop                                           ; $4396: $00
-    ld b, b                                       ; $4397: $40
-    sbc $00                                       ; $4398: $de $00
-    nop                                           ; $439a: $00
-    ldh [$ffdd], a                                ; $439b: $e0 $dd
-    nop                                           ; $439d: $00
-    sub b                                         ; $439e: $90
-    ld d, b                                       ; $439f: $50
-    db $dd                                        ; $43a0: $dd
-    nop                                           ; $43a1: $00
-    nop                                           ; $43a2: $00
-    and b                                         ; $43a3: $a0
-    db $dd                                        ; $43a4: $dd
-    rrca                                          ; $43a5: $0f
-    rst $38                                       ; $43a6: $ff
-    nop                                           ; $43a7: $00
-    nop                                           ; $43a8: $00
+TODO_Dispatcher1_Event03::
     ld hl, $dd0e                                  ; $43a9: $21 $0e $dd
     ld [hl], $41                                  ; $43ac: $36 $41
     inc hl                                        ; $43ae: $23
@@ -674,18 +624,22 @@ jr_00f_4373:
     ret                                           ; $43b6: $c9
 
 
+TODO_Dispatcher1_Event04::
     ld c, $ff                                     ; $43b7: $0e $ff
-    jp Jump_00f_42a5                              ; $43b9: $c3 $a5 $42
+    jp TODO_Dispatcher1_Event01                   ; $43b9: $c3 $a5 $42
 
 
+TODO_Dispatcher1_Event05::
     ld c, $ff                                     ; $43bc: $0e $ff
-    jp Jump_00f_42dd                              ; $43be: $c3 $dd $42
+    jp TODO_Dispatcher1_Event02                   ; $43be: $c3 $dd $42
 
 
+TODO_Dispatcher1_Event06::
     ld a, [$dd00]                                 ; $43c1: $fa $00 $dd
     ret                                           ; $43c4: $c9
 
 
+TODO_Dispatcher1_Event07::
     ld a, [$dd01]                                 ; $43c5: $fa $01 $dd
     ret                                           ; $43c8: $c9
 
@@ -693,7 +647,7 @@ jr_00f_4373:
     ret                                           ; $43c9: $c9
 
 
-Jump_00f_43ca:
+TODO_FunctionCalledFromBank00::
     ld a, [$dd0e]                                 ; $43ca: $fa $0e $dd
     inc a                                         ; $43cd: $3c
     jr z, jr_00f_43d8                             ; $43ce: $28 $08
@@ -896,6 +850,7 @@ jr_00f_44b3:
     jp Jump_00f_4652                              ; $44c2: $c3 $52 $46
 
 
+TODO_Dispatcher1_Event15::
     ld a, c                                       ; $44c5: $79
     ld hl, $dd0c                                  ; $44c6: $21 $0c $dd
     srl a                                         ; $44c9: $cb $3f
@@ -909,9 +864,10 @@ jr_00f_44b3:
     ld a, $0f                                     ; $44d4: $3e $0f
     sub b                                         ; $44d6: $90
     ld [hl], a                                    ; $44d7: $77
-    jp Jump_00f_464d                              ; $44d8: $c3 $4d $46
+    jp TODO_Dispatcher1_Event13_14_1b_20_25_27    ; $44d8: $c3 $4d $46
 
 
+TODO_Dispatcher1_Event16::
     ld h, d                                       ; $44db: $62
     ld l, e                                       ; $44dc: $6b
     inc hl                                        ; $44dd: $23
@@ -921,6 +877,7 @@ jr_00f_44b3:
     jp Jump_00f_464e                              ; $44e1: $c3 $4e $46
 
 
+TODO_Dispatcher1_Event17::
     ld hl, $de40                                  ; $44e4: $21 $40 $de
     ld a, c                                       ; $44e7: $79
     add a                                         ; $44e8: $87
@@ -999,6 +956,7 @@ jr_00f_4544:
     ret                                           ; $4544: $c9
 
 
+TODO_Dispatcher1_Event26::
     ld hl, $de40                                  ; $4545: $21 $40 $de
     ld a, c                                       ; $4548: $79
     add a                                         ; $4549: $87
@@ -1020,6 +978,7 @@ jr_00f_4544:
     jp Jump_00f_464e                              ; $4559: $c3 $4e $46
 
 
+TODO_Dispatcher1_Event18::
     ld hl, $ddb0                                  ; $455c: $21 $b0 $dd
     ld a, c                                       ; $455f: $79
     add a                                         ; $4560: $87
@@ -1037,9 +996,10 @@ jr_00f_4544:
     ld a, [de]                                    ; $456e: $1a
     inc de                                        ; $456f: $13
     ld [hl], a                                    ; $4570: $77
-    jp Jump_00f_464d                              ; $4571: $c3 $4d $46
+    jp TODO_Dispatcher1_Event13_14_1b_20_25_27    ; $4571: $c3 $4d $46
 
 
+TODO_Dispatcher1_Event1d::
     ld hl, $de00                                  ; $4574: $21 $00 $de
     ld a, c                                       ; $4577: $79
     add a                                         ; $4578: $87
@@ -1063,9 +1023,10 @@ jr_00f_4544:
     ld a, [de]                                    ; $458d: $1a
     pop hl                                        ; $458e: $e1
     ld [hl], a                                    ; $458f: $77
-    jp Jump_00f_464d                              ; $4590: $c3 $4d $46
+    jp TODO_Dispatcher1_Event13_14_1b_20_25_27    ; $4590: $c3 $4d $46
 
 
+TODO_Dispatcher1_Event19::
     ld hl, $de20                                  ; $4593: $21 $20 $de
     ld a, c                                       ; $4596: $79
     add a                                         ; $4597: $87
@@ -1086,13 +1047,14 @@ jr_00f_4544:
     jp Jump_00f_464e                              ; $45a8: $c3 $4e $46
 
 
+TODO_Dispatcher1_Event1a::
     ld hl, $de20                                  ; $45ab: $21 $20 $de
     ld a, c                                       ; $45ae: $79
     add a                                         ; $45af: $87
     add l                                         ; $45b0: $85
     ld l, a                                       ; $45b1: $6f
     dec [hl]                                      ; $45b2: $35
-    jp z, Jump_00f_464d                           ; $45b3: $ca $4d $46
+    jp z, TODO_Dispatcher1_Event13_14_1b_20_25_27 ; $45b3: $ca $4d $46
 
     ld hl, $de30                                  ; $45b6: $21 $30 $de
     ld a, c                                       ; $45b9: $79
@@ -1105,6 +1067,7 @@ jr_00f_4544:
     jp Jump_00f_464e                              ; $45c0: $c3 $4e $46
 
 
+TODO_Dispatcher1_Event22::
     ld hl, $dd50                                  ; $45c3: $21 $50 $dd
     ld a, c                                       ; $45c6: $79
     add a                                         ; $45c7: $87
@@ -1118,8 +1081,9 @@ jr_00f_4544:
     ld a, [de]                                    ; $45d1: $1a
     and $0f                                       ; $45d2: $e6 $0f
     ld [hl], a                                    ; $45d4: $77
-    jr jr_00f_464d                                ; $45d5: $18 $76
+    jr TODO_Dispatcher1_Event13_14_1b_20_25_27    ; $45d5: $18 $76
 
+TODO_Dispatcher1_Event1f::
     ld hl, $dda0                                  ; $45d7: $21 $a0 $dd
     ld a, c                                       ; $45da: $79
     add a                                         ; $45db: $87
@@ -1130,8 +1094,9 @@ jr_00f_4544:
     and $0f                                       ; $45e0: $e6 $0f
     ld [hl+], a                                   ; $45e2: $22
     ld [hl], a                                    ; $45e3: $77
-    jr jr_00f_464d                                ; $45e4: $18 $67
+    jr TODO_Dispatcher1_Event13_14_1b_20_25_27    ; $45e4: $18 $67
 
+TODO_Dispatcher1_Event1e::
     ld hl, $de10                                  ; $45e6: $21 $10 $de
     ld a, c                                       ; $45e9: $79
     add a                                         ; $45ea: $87
@@ -1141,8 +1106,9 @@ jr_00f_4544:
     inc de                                        ; $45ee: $13
     ld a, [de]                                    ; $45ef: $1a
     ld [hl], a                                    ; $45f0: $77
-    jr jr_00f_464d                                ; $45f1: $18 $5a
+    jr TODO_Dispatcher1_Event13_14_1b_20_25_27    ; $45f1: $18 $5a
 
+TODO_Dispatcher1_Event21::
     ld hl, $dde0                                  ; $45f3: $21 $e0 $dd
     ld a, c                                       ; $45f6: $79
     add a                                         ; $45f7: $87
@@ -1154,8 +1120,9 @@ jr_00f_4544:
 Call_00f_45fc:
 Jump_00f_45fc:
     ld [hl], a                                    ; $45fc: $77
-    jr jr_00f_464d                                ; $45fd: $18 $4e
+    jr TODO_Dispatcher1_Event13_14_1b_20_25_27    ; $45fd: $18 $4e
 
+TODO_Dispatcher1_Event1c::
     ld hl, $de10                                  ; $45ff: $21 $10 $de
     ld a, c                                       ; $4602: $79
     add a                                         ; $4603: $87
@@ -1164,8 +1131,9 @@ Jump_00f_45fc:
     inc de                                        ; $4606: $13
     ld a, [de]                                    ; $4607: $1a
     ld [hl], a                                    ; $4608: $77
-    jr jr_00f_464d                                ; $4609: $18 $42
+    jr TODO_Dispatcher1_Event13_14_1b_20_25_27    ; $4609: $18 $42
 
+TODO_Dispatcher1_Event24::
     ld hl, $ddd0                                  ; $460b: $21 $d0 $dd
     ld a, c                                       ; $460e: $79
     add a                                         ; $460f: $87
@@ -1174,8 +1142,9 @@ Jump_00f_45fc:
     inc de                                        ; $4612: $13
     ld a, [de]                                    ; $4613: $1a
     ld [hl], a                                    ; $4614: $77
-    jr jr_00f_464d                                ; $4615: $18 $36
+    jr TODO_Dispatcher1_Event13_14_1b_20_25_27    ; $4615: $18 $36
 
+TODO_Dispatcher1_Event23::
     ld hl, $dd90                                  ; $4617: $21 $90 $dd
     ld a, c                                       ; $461a: $79
     add a                                         ; $461b: $87
@@ -1184,8 +1153,9 @@ Jump_00f_45fc:
     inc de                                        ; $461e: $13
     ld a, [de]                                    ; $461f: $1a
     ld [hl], a                                    ; $4620: $77
-    jr jr_00f_464d                                ; $4621: $18 $2a
+    jr TODO_Dispatcher1_Event13_14_1b_20_25_27    ; $4621: $18 $2a
 
+TODO_Dispatcher1_Event08To10::
     ld hl, $dd30                                  ; $4623: $21 $30 $dd
     ld a, c                                       ; $4626: $79
     add a                                         ; $4627: $87
@@ -1194,8 +1164,9 @@ Jump_00f_45fc:
     ld a, [de]                                    ; $462a: $1a
     and $0f                                       ; $462b: $e6 $0f
     ld [hl], a                                    ; $462d: $77
-    jr jr_00f_464d                                ; $462e: $18 $1d
+    jr TODO_Dispatcher1_Event13_14_1b_20_25_27    ; $462e: $18 $1d
 
+TODO_Dispatcher1_Event11::
     ld hl, $dd30                                  ; $4630: $21 $30 $dd
     ld a, c                                       ; $4633: $79
     add a                                         ; $4634: $87
@@ -1203,11 +1174,12 @@ Jump_00f_45fc:
     ld l, a                                       ; $4636: $6f
     ld a, [hl]                                    ; $4637: $7e
     cp $08                                        ; $4638: $fe $08
-    jr z, jr_00f_464d                             ; $463a: $28 $11
+    jr z, TODO_Dispatcher1_Event13_14_1b_20_25_27 ; $463a: $28 $11
 
     inc [hl]                                      ; $463c: $34
-    jr jr_00f_464d                                ; $463d: $18 $0e
+    jr TODO_Dispatcher1_Event13_14_1b_20_25_27    ; $463d: $18 $0e
 
+TODO_Dispatcher1_Event12::
     ld hl, $dd30                                  ; $463f: $21 $30 $dd
     ld a, c                                       ; $4642: $79
     add a                                         ; $4643: $87
@@ -1215,13 +1187,12 @@ Jump_00f_45fc:
     ld l, a                                       ; $4645: $6f
     ld a, [hl]                                    ; $4646: $7e
     or a                                          ; $4647: $b7
-    jr z, jr_00f_464d                             ; $4648: $28 $03
+    jr z, TODO_Dispatcher1_Event13_14_1b_20_25_27 ; $4648: $28 $03
 
     dec [hl]                                      ; $464a: $35
-    jr jr_00f_464d                                ; $464b: $18 $00
+    jr TODO_Dispatcher1_Event13_14_1b_20_25_27    ; $464b: $18 $00
 
-Jump_00f_464d:
-jr_00f_464d:
+TODO_Dispatcher1_Event13_14_1b_20_25_27::
     inc de                                        ; $464d: $13
 
 Jump_00f_464e:
@@ -5066,7 +5037,7 @@ jr_00f_56e9:
     ld a, [$7a84]                                 ; $5806: $fa $84 $7a
     ld a, [hl+]                                   ; $5809: $2a
     ld a, [$0a44]                                 ; $580a: $fa $44 $0a
-    ld a, [$0a84]                                 ; $580d: $fa $84 $0a
+    ld a, [.WaitForVBlank]                        ; $580d: $fa $84 $0a
     ld [$44fa], a                                 ; $5810: $ea $fa $44
     cp d                                          ; $5813: $ba
     ld a, [$ba84]                                 ; $5814: $fa $84 $ba
@@ -5078,7 +5049,7 @@ jr_00f_56e9:
     dec b                                         ; $581e: $05
     ld a, [hl+]                                   ; $581f: $2a
     ld a, [$0a44]                                 ; $5820: $fa $44 $0a
-    ld a, [$0a84]                                 ; $5823: $fa $84 $0a
+    ld a, [.WaitForVBlank]                        ; $5823: $fa $84 $0a
     ld [$44fa], a                                 ; $5826: $ea $fa $44
     cp d                                          ; $5829: $ba
     ld a, [$9d84]                                 ; $582a: $fa $84 $9d
@@ -8871,7 +8842,7 @@ Call_00f_60ee:
     ld [hl], a                                    ; $6952: $77
     sbc d                                         ; $6953: $9a
     ld a, l                                       ; $6954: $7d
-    call Call_000_0acf                            ; $6955: $cd $cf $0a
+    call .RestoreInterruptsAndWaitForVBlank       ; $6955: $cd $cf $0a
     ld e, l                                       ; $6958: $5d
     call $57cd                                    ; $6959: $cd $cd $57
     ld [hl], a                                    ; $695c: $77
@@ -10485,7 +10456,7 @@ jr_00f_70d6:
     rst $28                                       ; $70ef: $ef
     ld a, [$e465]                                 ; $70f0: $fa $65 $e4
     rst $30                                       ; $70f3: $f7
-    ld [$20f0], sp                                ; $70f4: $08 $f0 $20
+    ld [.CopyMessageScriptLoop], sp               ; $70f4: $08 $f0 $20
     ld [bc], a                                    ; $70f7: $02
     nop                                           ; $70f8: $00
     ei                                            ; $70f9: $fb
@@ -10496,7 +10467,7 @@ jr_00f_70d6:
     rst $28                                       ; $70ff: $ef
     ld a, [$e465]                                 ; $7100: $fa $65 $e4
     rst $30                                       ; $7103: $f7
-    ld [$20f0], sp                                ; $7104: $08 $f0 $20
+    ld [.CopyMessageScriptLoop], sp               ; $7104: $08 $f0 $20
     ld [bc], a                                    ; $7107: $02
     nop                                           ; $7108: $00
     ei                                            ; $7109: $fb
@@ -10507,7 +10478,7 @@ jr_00f_70d6:
     rst $28                                       ; $710f: $ef
     ld a, [$e465]                                 ; $7110: $fa $65 $e4
     rst $30                                       ; $7113: $f7
-    ld [$20f0], sp                                ; $7114: $08 $f0 $20
+    ld [.CopyMessageScriptLoop], sp               ; $7114: $08 $f0 $20
     ld [bc], a                                    ; $7117: $02
     nop                                           ; $7118: $00
     ei                                            ; $7119: $fb
@@ -10519,7 +10490,7 @@ jr_00f_70d6:
     rst $28                                       ; $7120: $ef
     ld a, [$e465]                                 ; $7121: $fa $65 $e4
     rst $30                                       ; $7124: $f7
-    ld [$20f0], sp                                ; $7125: $08 $f0 $20
+    ld [.CopyMessageScriptLoop], sp               ; $7125: $08 $f0 $20
     ld [bc], a                                    ; $7128: $02
     nop                                           ; $7129: $00
     ei                                            ; $712a: $fb

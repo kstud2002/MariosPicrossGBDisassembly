@@ -10,22 +10,22 @@ The ROM is 256 KB with 16 banks:
 
 | Bank | Role |
 |------|------|
-| `bank_000` | |
-| `bank_001` | |
-| `bank_002` | |
-| `bank_003` | |
-| `bank_004` | |
-| `bank_005` | |
-| `bank_006` | |
-| `bank_007` | |
-| `bank_008` | |
-| `bank_009` | |
-| `bank_00a` | |
-| `bank_00b` | |
-| `bank_00c` | |
-| `bank_00d` | |
-| `bank_00e` | |
-| `bank_00f` | |
+| `bank_000` | EntryPoint, InterruptHandlers, GameStateDispatcher, Helpers, GameStateHandlers |
+| `bank_001` | GameStateHandlers, ??? |
+| `bank_002` | StatePhaseDispatcher, GameStateHandlers, ??? |
+| `bank_003` | GameStateHandlers, ??? |
+| `bank_004` | ??? |
+| `bank_005` | ??? |
+| `bank_006` | TileData, ??? |
+| `bank_007` | ??? |
+| `bank_008` | ??? |
+| `bank_009` | TileData |
+| `bank_00a` | TileData |
+| `bank_00b` | TileData, TileMaps, ??? |
+| `bank_00c` | TileMaps, ??? |
+| `bank_00d` | MessageFont-TileData |
+| `bank_00e` | ??? |
+| `bank_00f` | ??? |
 
 ## Repository layout
 

@@ -9,6 +9,32 @@
 00:d634 GameState_Current
 00:d635 StatePhase_Current
 00:d800 CurrentGridSize
+00:d82b MessageProgressionEntryLow
+00:d82c MessageProgressionEntryHigh
+00:d82d MessageProgressionPointerLow
+00:d82e MessageProgressionPointerHigh
+00:d843 MessageProgressionResetEntryLow
+00:d844 MessageProgressionResetEntryHigh
+00:d845 MessageProgressionCopyLimitLow
+00:d846 MessageProgressionCopyLimitHigh
+00:c351 MessageProgressionCopySourceX
+00:c352 MessageProgressionCopySourceY
+00:c353 MessageProgressionCopyDestX
+00:c354 MessageProgressionCopyDestY
+00:c355 MessageProgressionCopyBankAddressLow
+00:c356 MessageProgressionCopyBankAddressHigh
+00:c357 MessageProgressionCopyBank
+00:c358 MessageProgressionCopyMaskLow
+00:c359 MessageProgressionCopyMaskHigh
+00:c35a MessageProgressionCopyValueA
+00:c35b MessageProgressionCopyValueB
+00:c35c MessageProgressionCopyValueC
+00:c35d MessageProgressionCopyValueD
+00:c35e MessageProgressionCopyValueE
+00:c35f MessageProgressionCopyValueF
+00:c360 MessageProgressionCopyValueG
+00:c361 MessageProgressionCopyValueH
+00:c362 MessageProgressionCopyValueI
 00:f635 LevelSelectColumn
 00:f636 LevelSelectRow
 
@@ -42,6 +68,9 @@
 
 00:0373 GameStateDispatcher
 
+00:03b6 TODO_Bank0FDispatcher
+00:03f2 TODO_Bank0FCall4003
+
 00:04e4 BankedTileCopy
 00:04f4 .CopyLoop
 00:0504 BankedTransparentTileCopy
@@ -53,8 +82,31 @@
 00:0671 TODO_PointerOrOffsetTable
 00:0671 .data:0036:2
 
+00:08b3 PrepareMessageProgressionCopy
+00:0939 .PrepareMessageProgressionCopyLoop
+00:0963 .PrepareMessageProgressionCopyRow
+00:0a0b .PrepareMessageProgressionCopyTail
+00:0a11 .PrepareMessageProgressionCopyNextRow
+00:0a21 .PrepareMessageProgressionCopyNextRowPart1
+00:0a4b .PrepareMessageProgressionCopyNextRowPart2
+00:0a75 .PrepareMessageProgressionCopyRowAdvance
+00:0a84 .WaitForVBlank
+00:0a9a .WaitForDisplayLine
+00:0aa9 .CopyTileDataLoop
+00:0ac6 .WaitForDisplayLineLoop
+00:0ace .RestoreInterruptsAndReturn
+00:0acf .RestoreInterruptsAndWaitForVBlank
+00:0ad5 .WaitForDisplayLineAndRestore
+00:0ae2 .WaitForVBlankLoop
+00:0ae8 .RestoreInterrupts
+00:0af3 .CopyTileDataLoopAlt
+
 00:2000 ROMBankSwitchTrigger
 ;00:4000 RAMBankSwitchTrigger
+
+00:20ce TODO_EmitMessageScriptById
+00:20f0 .CopyMessageScriptLoop
+00:2104 .DoneRestoreBank
 
 ; GameState 06 Phase pointer table entries (accessed via RST_18 dispatcher):
 ; Offset calculation: Phase_value * 2, added to return address $2134 yields pointer location
@@ -232,10 +284,26 @@
 00:2aac GS06_StatePhase_29_TODO
 00:2b24 GS06_StatePhase_2a_TODO
 
+00:2b6e AdvanceMessageProgression
+00:2b88 AdvanceMessageProgressionHelper
+00:2bab .AdvanceMessageProgressionEntry
+00:2bb7 .ResetMessageProgressionEntry
+00:2bc5 .StoreMessageProgressionPointer
+00:2bd3 PrepareMessageProgressionCopySetup
+00:2c06 .PrepareMessageProgressionCopyParams
+00:2c17 .ApplyMessageProgressionCopyParams
+
 00:2cb6 TODO_2c6a_1_PointerTable
 00:2cb6 .data:0100:8
 00:2db6 TODO_2c6a_2_PointerTable
 00:2db6 .data:0200:8
+
+00:3093 TODO_MessageSequenceTick
+00:309f .NextPatternEntry
+00:30ac .LoadPatternEntry
+00:30b9 .TickAndEmitCurrentEntry
+00:30c9 PatternData
+00:30c9 .data:000d:4
 
 00:324f .padding:5b1
 00:3800 .data:100
@@ -484,6 +552,13 @@
 01:69f6 Load10x10GameBoardTileData
 01:6a22 Load15x15GameBoardTileData
 
+01:7918 AdvanceMessageScriptDelay
+01:7924 FindNextDelayEntry
+01:7931 LoadDelayEntry
+01:793e .MessageDelayTick
+01:794e MessageScriptDelayTable
+01:794e .data:0019:3
+
 01:7f0c .padding:f4
 
 ; =============================================================================
@@ -575,7 +650,7 @@
 02:4000 GameState_03_TODO_PhaseDispatcher
 01:438a GameState_04_TODO_PhaseDispatcher
 01:526d GameState_05_TODO_PhaseDispatcher
-00:2111 GameState_06_TODO_PhaseDispatcher
+00:2111 GameState_06_HowToPlay_PhaseDispatcher
 02:4c55 GameState_07_TODO_PhaseDispatcher
 01:5d7e GameState_08_TODO_PhaseDispatcher
 01:63fc GameState_09_TODO_PhaseDispatcher
@@ -1199,6 +1274,9 @@
 03:5369 .data:3
 03:536c GS00_StatePhase_04_ContinueSavedGameScreenIdle
 
+03:6c63 MessagePointerTable
+03:6c63 .data:010c:4
+
 ; =============================================================================
 ; BANK 005
 ; =============================================================================
@@ -1220,33 +1298,130 @@
 05:69f2 .data:0020
 05:6a12 .data:001e
 
-05:6a30 .data:007e
-05:6aae .data:0056
-05:6b04 .data:0026
-05:6b2a .data:0020
-05:6b4a .data:0072
-05:6bbc .data:0046
-05:6c02 .data:0074
-05:6c76 .data:005a
-05:6cd0 .data:003c
-05:6d0c .data:008e
-05:6d9a .data:0022
-05:6dbc .data:0068
-05:6e24 .data:0048
-05:6e6c .data:0098
-05:6f04 .data:0032
-05:6f36 .data:00c8
-05:6ffe .data:006c
-05:706a .data:0032
-05:709c .data:007e
-05:711a .data:002e
-05:7148 .data:0082
-05:71ca .data:00be
-05:7288 .data:009c
-05:7324 .data:0054
-05:7378 .data:0052
-05:73ca .data:006a
-05:7434 .data:0018
+05:6a30 HowToPlayText_State01
+05:6a30 .text:0016:cm=messages
+05:6a46 .text:0034:cm=messages
+05:6a7a .text:001e:cm=messages
+05:6a98 .text:0016:cm=messages
+
+05:6aae HowToPlayText_State02
+05:6aae .text:0030:cm=messages
+05:6ade .text:0026:cm=messages
+
+05:6b04 HowToPlayText_State04
+05:6b04 .text:000a:cm=messages
+05:6b0e .text:001c:cm=messages
+
+05:6b2a HowToPlayText_State06
+05:6b2a .text:0010:cm=messages
+05:6b3a .text:0010:cm=messages
+
+05:6b4a HowToPlayText_State07
+05:6b4a .text:0032:cm=messages
+05:6b7c .text:002e:cm=messages
+05:6baa .text:0012:cm=messages
+
+05:6bbc HowToPlayText_State08
+05:6bbc .text:0030:cm=messages
+05:6bec .text:0016:cm=messages
+
+05:6c02 HowToPlayText_State0b
+05:6c02 .text:0018:cm=messages
+05:6c1a .text:002e:cm=messages
+05:6c48 .text:002e:cm=messages
+
+05:6c76 HowToPlayText_State0c
+05:6c76 .text:002c:cm=messages
+05:6ca2 .text:002e:cm=messages
+
+05:6cd0 HowToPlayText_State0d
+05:6cd0 .text:002c:cm=messages
+05:6cfc .text:0010:cm=messages
+
+05:6d0c HowToPlayText_State0f
+05:6d0c .text:001c:cm=messages
+05:6d28 .text:002e:cm=messages
+05:6d56 .text:002e:cm=messages
+05:6d84 .text:0016:cm=messages
+
+05:6d9a HowToPlayText_State10
+05:6d9a .text:0022:cm=messages
+
+05:6dbc HowToPlayText_State12
+05:6dbc .text:0010:cm=messages
+05:6dcc .text:0032:cm=messages
+05:6dfe .text:0026:cm=messages
+
+05:6e24 HowToPlayText_State14
+05:6e24 .text:0030:cm=messages
+05:6e54 .text:0018:cm=messages
+
+05:6e6c HowToPlayText_State16
+05:6e6c .text:0014:cm=messages
+05:6e80 .text:0026:cm=messages
+05:6ea6 .text:002c:cm=messages
+05:6ed2 .text:0032:cm=messages
+
+05:6f04 HowToPlayText_State17
+05:6f04 .text:0032:cm=messages
+
+05:6f36 HowToPlayText_State19
+05:6f36 .text:0008:cm=messages
+05:6f3e .text:0036:cm=messages
+05:6f74 .text:0030:cm=messages
+05:6fa4 .text:0030:cm=messages
+05:6fd4 .text:002a:cm=messages
+
+05:6ffe HowToPlayText_State1b
+05:6ffe .text:0030:cm=messages
+05:702e .text:002a:cm=messages
+05:7058 .text:0012:cm=messages
+
+05:706a HowToPlayText_State1d
+05:706a .text:0020:cm=messages
+05:708a .text:0012:cm=messages
+
+05:709c HowToPlayText_State1e
+05:709c .text:002a:cm=messages
+05:70c6 .text:0032:cm=messages
+05:70f8 .text:0022:cm=messages
+
+05:711a HowToPlayText_State20
+05:711a .text:002e:cm=messages
+
+05:7148 HowToPlayText_State21
+05:7148 .text:0030:cm=messages
+05:7178 .text:002c:cm=messages
+05:71a4 .text:0026:cm=messages
+
+05:71ca HowToPlayText_State23
+05:71ca .text:0034:cm=messages
+05:71fe .text:0028:cm=messages
+05:7226 .text:0034:cm=messages
+05:725a .text:002e:cm=messages
+
+05:7288 HowToPlayText_State25
+05:7288 .text:002a:cm=messages
+05:72b2 .text:0030:cm=messages
+05:72e2 .text:002c:cm=messages
+05:730e .text:0016:cm=messages
+
+05:7324 HowToPlayText_State26
+05:7324 .text:002a:cm=messages
+05:734e .text:002a:cm=messages
+
+05:7378 HowToPlayText_State27
+05:7378 .text:0030:cm=messages
+05:73a8 .text:0022:cm=messages
+
+05:73ca HowToPlayText_State28
+05:73ca .text:002a:cm=messages
+05:73f4 .text:0032:cm=messages
+05:7426 .text:000e:cm=messages
+
+05:7434 HowToPlayText_State29
+05:7434 .text:0018:cm=messages
+
 05:744c .padding:bb4
 
 ; =============================================================================
@@ -1278,11 +1453,16 @@
 06:7400 Picross15x15MarioGameOverTileData
 06:7400 .image:0200:pe1,w64
 
+06:7600 .padding:200
+
 06:7800 HintMessageTileData
 06:7800 .image:0200:pe1,w64
 
 06:7a00 PauseMenuTileData
 06:7a00 .image:0300:pe1,w64
+
+06:7d00 .padding:2f0
+06:7ff0 .padding:10
 
 ; =============================================================================
 ; BANK 007
@@ -1445,8 +1625,20 @@
 0c:7c00 .data:0400:20
 
 ; =============================================================================
+; BANK 00D
+; =============================================================================
+
+0d:4000 MessageFontTileData
+0d:4000 .image:2800
+
+0d:6800 .padding:1800
+
+; =============================================================================
 ; BANK 00F
 ; =============================================================================
+
+0f:4000 TODO_Jumpvector_4258
+0f:4003 TODO_Jumpvector_43ca
 
 0f:4006 .padding:a
 
@@ -1457,10 +1649,45 @@
 
 0f:4050 .padding:30
 
-0f:4080 TODO_PointerTable
+0f:4080 TODO_Dispatcher1PointerTable
 0f:4080 .data:50:2
 
 0f:40d0 .padding:30
+
+0f:4258 TODO_Dispatcher1
+0f:43ca TODO_FunctionCalledFromBank00
+
+0f:4264 TODO_Dispatcher1_Event00
+0f:4286 TODO_Dispatcher1_Event00_Data
+0f:4286 .data:001f:2
+0f:42a5 TODO_Dispatcher1_Event01
+0f:42dd TODO_Dispatcher1_Event02
+0f:436b TODO_Dispatcher1_Event02_Data
+0f:436b .data:003e:4
+0f:43a9 TODO_Dispatcher1_Event03
+0f:43b7 TODO_Dispatcher1_Event04
+0f:43bc TODO_Dispatcher1_Event05
+0f:43c1 TODO_Dispatcher1_Event06
+0f:43c5 TODO_Dispatcher1_Event07
+0f:4623 TODO_Dispatcher1_Event08To10
+0f:4630 TODO_Dispatcher1_Event11
+0f:463f TODO_Dispatcher1_Event12
+0f:464d TODO_Dispatcher1_Event13_14_1b_20_25_27
+0f:44c5 TODO_Dispatcher1_Event15
+0f:44db TODO_Dispatcher1_Event16
+0f:44e4 TODO_Dispatcher1_Event17
+0f:455c TODO_Dispatcher1_Event18
+0f:4593 TODO_Dispatcher1_Event19
+0f:45ab TODO_Dispatcher1_Event1a
+0f:45ff TODO_Dispatcher1_Event1c
+0f:4574 TODO_Dispatcher1_Event1d
+0f:45e6 TODO_Dispatcher1_Event1e
+0f:45d7 TODO_Dispatcher1_Event1f
+0f:45f3 TODO_Dispatcher1_Event21
+0f:45c3 TODO_Dispatcher1_Event22
+0f:4617 TODO_Dispatcher1_Event23
+0f:460b TODO_Dispatcher1_Event24
+0f:4545 TODO_Dispatcher1_Event26
 
 0f:51ee .data:3
 0f:5208 .data:3

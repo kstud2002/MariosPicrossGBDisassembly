@@ -1058,14 +1058,14 @@ jr_001_448d:
     ld bc, $003c                                  ; $44cf: $01 $3c $00
     call Call_000_05fa                            ; $44d2: $cd $fa $05
     ld a, $05                                     ; $44d5: $3e $05
-    call Call_000_03b6                            ; $44d7: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $44d7: $cd $b6 $03
     ld c, $00                                     ; $44da: $0e $00
     ld a, $01                                     ; $44dc: $3e $01
-    call Call_000_03b6                            ; $44de: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $44de: $cd $b6 $03
     call Call_000_0399                            ; $44e1: $cd $99 $03
     ld c, $00                                     ; $44e4: $0e $00
     ld a, $01                                     ; $44e6: $3e $01
-    call Call_000_03b6                            ; $44e8: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $44e8: $cd $b6 $03
     call Call_000_05b6                            ; $44eb: $cd $b6 $05
     call Call_001_4b84                            ; $44ee: $cd $84 $4b
     call Call_000_0483                            ; $44f1: $cd $83 $04
@@ -1078,11 +1078,11 @@ jr_001_448d:
     ld [$cd64], a                                 ; $4503: $ea $64 $cd
     ld c, $00                                     ; $4506: $0e $00
     ld a, $01                                     ; $4508: $3e $01
-    call Call_000_03b6                            ; $450a: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $450a: $cd $b6 $03
     call Call_000_0399                            ; $450d: $cd $99 $03
     ld c, $07                                     ; $4510: $0e $07
     ld a, $01                                     ; $4512: $3e $01
-    call Call_000_03b6                            ; $4514: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $4514: $cd $b6 $03
     ld a, $2f                                     ; $4517: $3e $2f
     ld [$c336], a                                 ; $4519: $ea $36 $c3
     ld hl, $c337                                  ; $451c: $21 $37 $c3
@@ -1097,19 +1097,19 @@ jr_001_448d:
     ld hl, $4bae                                  ; $4533: $21 $ae $4b
     call SwitchBankToBAndJumpToHL                 ; $4536: $cd $de $05
     ld a, $10                                     ; $4539: $3e $10
-    ld [$d843], a                                 ; $453b: $ea $43 $d8
-    ld [$d82b], a                                 ; $453e: $ea $2b $d8
+    ld [MessageProgressionResetEntryLow], a       ; $453b: $ea $43 $d8
+    ld [MessageProgressionEntryLow], a            ; $453e: $ea $2b $d8
     ld a, $20                                     ; $4541: $3e $20
-    ld [$d844], a                                 ; $4543: $ea $44 $d8
-    ld [$d82c], a                                 ; $4546: $ea $2c $d8
+    ld [MessageProgressionResetEntryHigh], a      ; $4543: $ea $44 $d8
+    ld [MessageProgressionEntryHigh], a           ; $4546: $ea $2c $d8
     ld a, $90                                     ; $4549: $3e $90
-    ld [$d845], a                                 ; $454b: $ea $45 $d8
+    ld [MessageProgressionCopyLimitLow], a        ; $454b: $ea $45 $d8
     ld a, $58                                     ; $454e: $3e $58
-    ld [$d846], a                                 ; $4550: $ea $46 $d8
+    ld [MessageProgressionCopyLimitHigh], a       ; $4550: $ea $46 $d8
     ld a, $0c                                     ; $4553: $3e $0c
-    ld [$d82d], a                                 ; $4555: $ea $2d $d8
+    ld [MessageProgressionPointerLow], a          ; $4555: $ea $2d $d8
     ld a, $41                                     ; $4558: $3e $41
-    ld [$d82e], a                                 ; $455a: $ea $2e $d8
+    ld [MessageProgressionPointerHigh], a         ; $455a: $ea $2e $d8
     call Call_001_51dd                            ; $455d: $cd $dd $51
     call Call_001_5252                            ; $4560: $cd $52 $52
     xor a                                         ; $4563: $af
@@ -1118,14 +1118,14 @@ jr_001_448d:
     ld bc, $003c                                  ; $456a: $01 $3c $00
     call Call_000_05fa                            ; $456d: $cd $fa $05
     ld a, $05                                     ; $4570: $3e $05
-    call Call_000_03b6                            ; $4572: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $4572: $cd $b6 $03
     ld c, $00                                     ; $4575: $0e $00
     ld a, $01                                     ; $4577: $3e $01
-    call Call_000_03b6                            ; $4579: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $4579: $cd $b6 $03
     call Call_000_0399                            ; $457c: $cd $99 $03
     ld c, $00                                     ; $457f: $0e $00
     ld a, $01                                     ; $4581: $3e $01
-    call Call_000_03b6                            ; $4583: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $4583: $cd $b6 $03
     ld b, $01                                     ; $4586: $06 $01
     ld hl, $4bdc                                  ; $4588: $21 $dc $4b
     call SwitchBankToBAndJumpToHL                 ; $458b: $cd $de $05
@@ -1156,14 +1156,14 @@ Jump_001_45bb:
     ld bc, $003c                                  ; $45be: $01 $3c $00
     call Call_000_05fa                            ; $45c1: $cd $fa $05
     ld a, $05                                     ; $45c4: $3e $05
-    call Call_000_03b6                            ; $45c6: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $45c6: $cd $b6 $03
     ld c, $00                                     ; $45c9: $0e $00
     ld a, $01                                     ; $45cb: $3e $01
-    call Call_000_03b6                            ; $45cd: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $45cd: $cd $b6 $03
     call Call_000_0399                            ; $45d0: $cd $99 $03
     ld c, $00                                     ; $45d3: $0e $00
     ld a, $01                                     ; $45d5: $3e $01
-    call Call_000_03b6                            ; $45d7: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $45d7: $cd $b6 $03
     call Call_000_05b6                            ; $45da: $cd $b6 $05
     call Call_001_4b84                            ; $45dd: $cd $84 $4b
     call Call_000_0483                            ; $45e0: $cd $83 $04
@@ -1176,11 +1176,11 @@ Jump_001_45bb:
     ld [$cd64], a                                 ; $45f2: $ea $64 $cd
     ld c, $00                                     ; $45f5: $0e $00
     ld a, $01                                     ; $45f7: $3e $01
-    call Call_000_03b6                            ; $45f9: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $45f9: $cd $b6 $03
     call Call_000_0399                            ; $45fc: $cd $99 $03
     ld c, $06                                     ; $45ff: $0e $06
     ld a, $01                                     ; $4601: $3e $01
-    call Call_000_03b6                            ; $4603: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $4603: $cd $b6 $03
     ld a, $2f                                     ; $4606: $3e $2f
     ld [$c336], a                                 ; $4608: $ea $36 $c3
     ld hl, $c337                                  ; $460b: $21 $37 $c3
@@ -1195,53 +1195,53 @@ Jump_001_45bb:
     ld hl, $4bae                                  ; $4622: $21 $ae $4b
     call SwitchBankToBAndJumpToHL                 ; $4625: $cd $de $05
     ld a, $10                                     ; $4628: $3e $10
-    ld [$d843], a                                 ; $462a: $ea $43 $d8
-    ld [$d82b], a                                 ; $462d: $ea $2b $d8
+    ld [MessageProgressionResetEntryLow], a       ; $462a: $ea $43 $d8
+    ld [MessageProgressionEntryLow], a            ; $462d: $ea $2b $d8
     ld a, $20                                     ; $4630: $3e $20
-    ld [$d844], a                                 ; $4632: $ea $44 $d8
-    ld [$d82c], a                                 ; $4635: $ea $2c $d8
+    ld [MessageProgressionResetEntryHigh], a      ; $4632: $ea $44 $d8
+    ld [MessageProgressionEntryHigh], a           ; $4635: $ea $2c $d8
     ld a, $90                                     ; $4638: $3e $90
-    ld [$d845], a                                 ; $463a: $ea $45 $d8
+    ld [MessageProgressionCopyLimitLow], a        ; $463a: $ea $45 $d8
     ld a, $58                                     ; $463d: $3e $58
-    ld [$d846], a                                 ; $463f: $ea $46 $d8
+    ld [MessageProgressionCopyLimitHigh], a       ; $463f: $ea $46 $d8
     ld a, $8e                                     ; $4642: $3e $8e
-    ld [$d82d], a                                 ; $4644: $ea $2d $d8
+    ld [MessageProgressionPointerLow], a          ; $4644: $ea $2d $d8
     ld a, $41                                     ; $4647: $3e $41
-    ld [$d82e], a                                 ; $4649: $ea $2e $d8
+    ld [MessageProgressionPointerHigh], a         ; $4649: $ea $2e $d8
     call Call_001_51dd                            ; $464c: $cd $dd $51
     call Call_001_5252                            ; $464f: $cd $52 $52
     call Call_001_51e4                            ; $4652: $cd $e4 $51
     ld a, $08                                     ; $4655: $3e $08
-    ld [$d82d], a                                 ; $4657: $ea $2d $d8
+    ld [MessageProgressionPointerLow], a          ; $4657: $ea $2d $d8
     ld a, $42                                     ; $465a: $3e $42
-    ld [$d82e], a                                 ; $465c: $ea $2e $d8
+    ld [MessageProgressionPointerHigh], a         ; $465c: $ea $2e $d8
     call Call_001_51dd                            ; $465f: $cd $dd $51
     call Call_001_5252                            ; $4662: $cd $52 $52
     call Call_001_51e4                            ; $4665: $cd $e4 $51
     ld a, $58                                     ; $4668: $3e $58
-    ld [$d82d], a                                 ; $466a: $ea $2d $d8
+    ld [MessageProgressionPointerLow], a          ; $466a: $ea $2d $d8
     ld a, $42                                     ; $466d: $3e $42
-    ld [$d82e], a                                 ; $466f: $ea $2e $d8
+    ld [MessageProgressionPointerHigh], a         ; $466f: $ea $2e $d8
     call Call_001_51dd                            ; $4672: $cd $dd $51
     call Call_001_5252                            ; $4675: $cd $52 $52
     call Call_001_51e4                            ; $4678: $cd $e4 $51
     ld a, $3a                                     ; $467b: $3e $3a
-    ld [$d82d], a                                 ; $467d: $ea $2d $d8
+    ld [MessageProgressionPointerLow], a          ; $467d: $ea $2d $d8
     ld a, $43                                     ; $4680: $3e $43
-    ld [$d82e], a                                 ; $4682: $ea $2e $d8
+    ld [MessageProgressionPointerHigh], a         ; $4682: $ea $2e $d8
     call Call_001_51dd                            ; $4685: $cd $dd $51
     call Call_001_5252                            ; $4688: $cd $52 $52
     ld bc, $003c                                  ; $468b: $01 $3c $00
     call Call_000_05fa                            ; $468e: $cd $fa $05
     ld a, $05                                     ; $4691: $3e $05
-    call Call_000_03b6                            ; $4693: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $4693: $cd $b6 $03
     ld c, $00                                     ; $4696: $0e $00
     ld a, $01                                     ; $4698: $3e $01
-    call Call_000_03b6                            ; $469a: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $469a: $cd $b6 $03
     call Call_000_0399                            ; $469d: $cd $99 $03
     ld c, $00                                     ; $46a0: $0e $00
     ld a, $01                                     ; $46a2: $3e $01
-    call Call_000_03b6                            ; $46a4: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $46a4: $cd $b6 $03
     ld b, $01                                     ; $46a7: $06 $01
     ld hl, $4bdc                                  ; $46a9: $21 $dc $4b
     call SwitchBankToBAndJumpToHL                 ; $46ac: $cd $de $05
@@ -1308,7 +1308,7 @@ Call_001_46e4:
 
     ld c, $08                                     ; $4717: $0e $08
     ld a, $02                                     ; $4719: $3e $02
-    call Call_000_03b6                            ; $471b: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $471b: $cd $b6 $03
     ld c, $08                                     ; $471e: $0e $08
 
 jr_001_4720:
@@ -1388,7 +1388,7 @@ GS04_StatePhase_01_TODO::
 
     ld c, $03                                     ; $4796: $0e $03
     ld a, $02                                     ; $4798: $3e $02
-    call Call_000_03b6                            ; $479a: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $479a: $cd $b6 $03
     ld hl, StatePhase_Current                     ; $479d: $21 $35 $d6
     inc [hl]                                      ; $47a0: $34
     ret                                           ; $47a1: $c9
@@ -1401,7 +1401,7 @@ jr_001_47a2:
 
     ld c, $04                                     ; $47a9: $0e $04
     ld a, $02                                     ; $47ab: $3e $02
-    call Call_000_03b6                            ; $47ad: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $47ad: $cd $b6 $03
     ld a, $03                                     ; $47b0: $3e $03
     ld [StatePhase_Current], a                    ; $47b2: $ea $35 $d6
     ret                                           ; $47b5: $c9
@@ -1415,14 +1415,14 @@ GS04_StatePhase_05_TODO::
     ld bc, $003c                                  ; $47b7: $01 $3c $00
     call Call_000_05fa                            ; $47ba: $cd $fa $05
     ld a, $05                                     ; $47bd: $3e $05
-    call Call_000_03b6                            ; $47bf: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $47bf: $cd $b6 $03
     ld c, $00                                     ; $47c2: $0e $00
     ld a, $01                                     ; $47c4: $3e $01
-    call Call_000_03b6                            ; $47c6: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $47c6: $cd $b6 $03
     call Call_000_0399                            ; $47c9: $cd $99 $03
     ld c, $00                                     ; $47cc: $0e $00
     ld a, $01                                     ; $47ce: $3e $01
-    call Call_000_03b6                            ; $47d0: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $47d0: $cd $b6 $03
     call Call_001_4b84                            ; $47d3: $cd $84 $4b
     call Call_000_0483                            ; $47d6: $cd $83 $04
     call Call_001_49c8                            ; $47d9: $cd $c8 $49
@@ -1450,14 +1450,14 @@ GS04_StatePhase_02_TODO::
     ld bc, $003c                                  ; $4809: $01 $3c $00
     call Call_000_05fa                            ; $480c: $cd $fa $05
     ld a, $05                                     ; $480f: $3e $05
-    call Call_000_03b6                            ; $4811: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $4811: $cd $b6 $03
     ld c, $00                                     ; $4814: $0e $00
     ld a, $01                                     ; $4816: $3e $01
-    call Call_000_03b6                            ; $4818: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $4818: $cd $b6 $03
     call Call_000_0399                            ; $481b: $cd $99 $03
     ld c, $00                                     ; $481e: $0e $00
     ld a, $01                                     ; $4820: $3e $01
-    call Call_000_03b6                            ; $4822: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $4822: $cd $b6 $03
     call Call_001_4b84                            ; $4825: $cd $84 $4b
     call Call_000_0483                            ; $4828: $cd $83 $04
     call Call_001_49c8                            ; $482b: $cd $c8 $49
@@ -1763,14 +1763,14 @@ GS04_StatePhase_03_TODO::
     ld bc, $003c                                  ; $4972: $01 $3c $00
     call Call_000_05fa                            ; $4975: $cd $fa $05
     ld a, $05                                     ; $4978: $3e $05
-    call Call_000_03b6                            ; $497a: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $497a: $cd $b6 $03
     ld c, $00                                     ; $497d: $0e $00
     ld a, $01                                     ; $497f: $3e $01
-    call Call_000_03b6                            ; $4981: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $4981: $cd $b6 $03
     call Call_000_0399                            ; $4984: $cd $99 $03
     ld c, $00                                     ; $4987: $0e $00
     ld a, $01                                     ; $4989: $3e $01
-    call Call_000_03b6                            ; $498b: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $498b: $cd $b6 $03
     call Call_001_4b84                            ; $498e: $cd $84 $4b
     call Call_000_0483                            ; $4991: $cd $83 $04
     call Call_001_49c8                            ; $4994: $cd $c8 $49
@@ -1843,7 +1843,7 @@ Call_001_49ee:
     ld c, a                                       ; $4a02: $4f
     pop af                                        ; $4a03: $f1
     add $60                                       ; $4a04: $c6 $60
-    jp Jump_000_20ce                              ; $4a06: $c3 $ce $20
+    jp TODO_EmitMessageScriptById                 ; $4a06: $c3 $ce $20
 
 
 Call_001_4a09:
@@ -1853,7 +1853,7 @@ Call_001_4a09:
 
     ld c, $0a                                     ; $4a0f: $0e $0a
     ld a, $02                                     ; $4a11: $3e $02
-    call Call_000_03b6                            ; $4a13: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $4a13: $cd $b6 $03
     ld hl, $c322                                  ; $4a16: $21 $22 $c3
     bit 5, [hl]                                   ; $4a19: $cb $6e
     jr z, jr_001_4a26                             ; $4a1b: $28 $09
@@ -1906,22 +1906,22 @@ Call_001_4a4e:
 
     ld c, $00                                     ; $4a5c: $0e $00
     ld a, $01                                     ; $4a5e: $3e $01
-    call Call_000_03b6                            ; $4a60: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $4a60: $cd $b6 $03
     call Call_000_0399                            ; $4a63: $cd $99 $03
     ld c, $04                                     ; $4a66: $0e $04
     ld a, $01                                     ; $4a68: $3e $01
-    call Call_000_03b6                            ; $4a6a: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $4a6a: $cd $b6 $03
     ret                                           ; $4a6d: $c9
 
 
 jr_001_4a6e:
     ld c, $00                                     ; $4a6e: $0e $00
     ld a, $01                                     ; $4a70: $3e $01
-    call Call_000_03b6                            ; $4a72: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $4a72: $cd $b6 $03
     call Call_000_0399                            ; $4a75: $cd $99 $03
     ld c, $10                                     ; $4a78: $0e $10
     ld a, $01                                     ; $4a7a: $3e $01
-    call Call_000_03b6                            ; $4a7c: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $4a7c: $cd $b6 $03
     ret                                           ; $4a7f: $c9
 
 
@@ -2501,14 +2501,14 @@ Call_001_4dde:
     call Call_000_1972                            ; $4e0c: $cd $72 $19
     add $51                                       ; $4e0f: $c6 $51
     ld bc, $4818                                  ; $4e11: $01 $18 $48
-    call Call_000_20ce                            ; $4e14: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $4e14: $cd $ce $20
     pop af                                        ; $4e17: $f1
     cp $0a                                        ; $4e18: $fe $0a
     jr z, jr_001_4e24                             ; $4e1a: $28 $08
 
     add $51                                       ; $4e1c: $c6 $51
     ld bc, $4018                                  ; $4e1e: $01 $18 $40
-    call Call_000_20ce                            ; $4e21: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $4e21: $cd $ce $20
 
 jr_001_4e24:
     pop af                                        ; $4e24: $f1
@@ -2555,14 +2555,14 @@ jr_001_4e24:
     swap a                                        ; $4e63: $cb $37
     add $51                                       ; $4e65: $c6 $51
     ld bc, $0818                                  ; $4e67: $01 $18 $08
-    call Call_000_20ce                            ; $4e6a: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $4e6a: $cd $ce $20
     pop bc                                        ; $4e6d: $c1
     push bc                                       ; $4e6e: $c5
     ld a, b                                       ; $4e6f: $78
     and $0f                                       ; $4e70: $e6 $0f
     add $51                                       ; $4e72: $c6 $51
     ld bc, $1018                                  ; $4e74: $01 $18 $10
-    call Call_000_20ce                            ; $4e77: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $4e77: $cd $ce $20
     pop bc                                        ; $4e7a: $c1
     push bc                                       ; $4e7b: $c5
     ld a, c                                       ; $4e7c: $79
@@ -2570,13 +2570,13 @@ jr_001_4e24:
     swap a                                        ; $4e7f: $cb $37
     add $51                                       ; $4e81: $c6 $51
     ld bc, $2018                                  ; $4e83: $01 $18 $20
-    call Call_000_20ce                            ; $4e86: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $4e86: $cd $ce $20
     pop bc                                        ; $4e89: $c1
     ld a, c                                       ; $4e8a: $79
     and $0f                                       ; $4e8b: $e6 $0f
     add $51                                       ; $4e8d: $c6 $51
     ld bc, $2818                                  ; $4e8f: $01 $18 $28
-    call Call_000_20ce                            ; $4e92: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $4e92: $cd $ce $20
     ld a, [hl]                                    ; $4e95: $7e
     call Call_001_50b4                            ; $4e96: $cd $b4 $50
     ld a, [$a065]                                 ; $4e99: $fa $65 $a0
@@ -2621,14 +2621,14 @@ jr_001_4e24:
     swap a                                        ; $4ed6: $cb $37
     add $51                                       ; $4ed8: $c6 $51
     ld bc, $6818                                  ; $4eda: $01 $18 $68
-    call Call_000_20ce                            ; $4edd: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $4edd: $cd $ce $20
     pop bc                                        ; $4ee0: $c1
     push bc                                       ; $4ee1: $c5
     ld a, b                                       ; $4ee2: $78
     and $0f                                       ; $4ee3: $e6 $0f
     add $51                                       ; $4ee5: $c6 $51
     ld bc, $7018                                  ; $4ee7: $01 $18 $70
-    call Call_000_20ce                            ; $4eea: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $4eea: $cd $ce $20
     pop bc                                        ; $4eed: $c1
     push bc                                       ; $4eee: $c5
     ld a, c                                       ; $4eef: $79
@@ -2636,13 +2636,13 @@ jr_001_4e24:
     swap a                                        ; $4ef2: $cb $37
     add $51                                       ; $4ef4: $c6 $51
     ld bc, $8018                                  ; $4ef6: $01 $18 $80
-    call Call_000_20ce                            ; $4ef9: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $4ef9: $cd $ce $20
     pop bc                                        ; $4efc: $c1
     ld a, c                                       ; $4efd: $79
     and $0f                                       ; $4efe: $e6 $0f
     add $51                                       ; $4f00: $c6 $51
     ld bc, $8818                                  ; $4f02: $01 $18 $88
-    call Call_000_20ce                            ; $4f05: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $4f05: $cd $ce $20
     dec hl                                        ; $4f08: $2b
     ld a, [hl]                                    ; $4f09: $7e
     jp Jump_001_50d9                              ; $4f0a: $c3 $d9 $50
@@ -2651,28 +2651,28 @@ jr_001_4e24:
 Jump_001_4f0d:
     ld a, $80                                     ; $4f0d: $3e $80
     ld bc, $0818                                  ; $4f0f: $01 $18 $08
-    call Call_000_20ce                            ; $4f12: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $4f12: $cd $ce $20
     ld a, $80                                     ; $4f15: $3e $80
     ld bc, $1018                                  ; $4f17: $01 $18 $10
-    call Call_000_20ce                            ; $4f1a: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $4f1a: $cd $ce $20
     ld a, $80                                     ; $4f1d: $3e $80
     ld bc, $2018                                  ; $4f1f: $01 $18 $20
-    call Call_000_20ce                            ; $4f22: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $4f22: $cd $ce $20
     ld a, $80                                     ; $4f25: $3e $80
     ld bc, $2818                                  ; $4f27: $01 $18 $28
-    call Call_000_20ce                            ; $4f2a: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $4f2a: $cd $ce $20
     ld a, $80                                     ; $4f2d: $3e $80
     ld bc, $6818                                  ; $4f2f: $01 $18 $68
-    call Call_000_20ce                            ; $4f32: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $4f32: $cd $ce $20
     ld a, $80                                     ; $4f35: $3e $80
     ld bc, $7018                                  ; $4f37: $01 $18 $70
-    call Call_000_20ce                            ; $4f3a: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $4f3a: $cd $ce $20
     ld a, $80                                     ; $4f3d: $3e $80
     ld bc, $8018                                  ; $4f3f: $01 $18 $80
-    call Call_000_20ce                            ; $4f42: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $4f42: $cd $ce $20
     ld a, $80                                     ; $4f45: $3e $80
     ld bc, $8818                                  ; $4f47: $01 $18 $88
-    call Call_000_20ce                            ; $4f4a: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $4f4a: $cd $ce $20
     xor a                                         ; $4f4d: $af
     call Call_001_50b4                            ; $4f4e: $cd $b4 $50
     jp Jump_001_50d9                              ; $4f51: $c3 $d9 $50
@@ -2685,14 +2685,14 @@ Call_001_4f54:
     call Call_000_1972                            ; $4f5a: $cd $72 $19
     add $51                                       ; $4f5d: $c6 $51
     ld bc, $4818                                  ; $4f5f: $01 $18 $48
-    call Call_000_20ce                            ; $4f62: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $4f62: $cd $ce $20
     pop af                                        ; $4f65: $f1
     cp $0a                                        ; $4f66: $fe $0a
     jr z, jr_001_4f72                             ; $4f68: $28 $08
 
     add $51                                       ; $4f6a: $c6 $51
     ld bc, $4018                                  ; $4f6c: $01 $18 $40
-    call Call_000_20ce                            ; $4f6f: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $4f6f: $cd $ce $20
 
 jr_001_4f72:
     pop af                                        ; $4f72: $f1
@@ -2711,14 +2711,14 @@ jr_001_4f72:
     swap a                                        ; $4f86: $cb $37
     add $51                                       ; $4f88: $c6 $51
     ld bc, $0818                                  ; $4f8a: $01 $18 $08
-    call Call_000_20ce                            ; $4f8d: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $4f8d: $cd $ce $20
     pop bc                                        ; $4f90: $c1
     push bc                                       ; $4f91: $c5
     ld a, b                                       ; $4f92: $78
     and $0f                                       ; $4f93: $e6 $0f
     add $51                                       ; $4f95: $c6 $51
     ld bc, $1018                                  ; $4f97: $01 $18 $10
-    call Call_000_20ce                            ; $4f9a: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $4f9a: $cd $ce $20
     pop bc                                        ; $4f9d: $c1
     push bc                                       ; $4f9e: $c5
     ld a, c                                       ; $4f9f: $79
@@ -2726,13 +2726,13 @@ jr_001_4f72:
     swap a                                        ; $4fa2: $cb $37
     add $51                                       ; $4fa4: $c6 $51
     ld bc, $2018                                  ; $4fa6: $01 $18 $20
-    call Call_000_20ce                            ; $4fa9: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $4fa9: $cd $ce $20
     pop bc                                        ; $4fac: $c1
     ld a, c                                       ; $4fad: $79
     and $0f                                       ; $4fae: $e6 $0f
     add $51                                       ; $4fb0: $c6 $51
     ld bc, $2818                                  ; $4fb2: $01 $18 $28
-    call Call_000_20ce                            ; $4fb5: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $4fb5: $cd $ce $20
     ld a, [hl]                                    ; $4fb8: $7e
     call Call_001_50b4                            ; $4fb9: $cd $b4 $50
     ld hl, $d84a                                  ; $4fbc: $21 $4a $d8
@@ -2748,14 +2748,14 @@ jr_001_4f72:
     swap a                                        ; $4fcd: $cb $37
     add $51                                       ; $4fcf: $c6 $51
     ld bc, $6818                                  ; $4fd1: $01 $18 $68
-    call Call_000_20ce                            ; $4fd4: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $4fd4: $cd $ce $20
     pop bc                                        ; $4fd7: $c1
     push bc                                       ; $4fd8: $c5
     ld a, b                                       ; $4fd9: $78
     and $0f                                       ; $4fda: $e6 $0f
     add $51                                       ; $4fdc: $c6 $51
     ld bc, $7018                                  ; $4fde: $01 $18 $70
-    call Call_000_20ce                            ; $4fe1: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $4fe1: $cd $ce $20
     pop bc                                        ; $4fe4: $c1
     push bc                                       ; $4fe5: $c5
     ld a, c                                       ; $4fe6: $79
@@ -2763,13 +2763,13 @@ jr_001_4f72:
     swap a                                        ; $4fe9: $cb $37
     add $51                                       ; $4feb: $c6 $51
     ld bc, $8018                                  ; $4fed: $01 $18 $80
-    call Call_000_20ce                            ; $4ff0: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $4ff0: $cd $ce $20
     pop bc                                        ; $4ff3: $c1
     ld a, c                                       ; $4ff4: $79
     and $0f                                       ; $4ff5: $e6 $0f
     add $51                                       ; $4ff7: $c6 $51
     ld bc, $8818                                  ; $4ff9: $01 $18 $88
-    call Call_000_20ce                            ; $4ffc: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $4ffc: $cd $ce $20
     dec hl                                        ; $4fff: $2b
     ld a, [hl]                                    ; $5000: $7e
     jp Jump_001_50d9                              ; $5001: $c3 $d9 $50
@@ -2778,28 +2778,28 @@ jr_001_4f72:
 Jump_001_5004:
     ld a, $80                                     ; $5004: $3e $80
     ld bc, $0818                                  ; $5006: $01 $18 $08
-    call Call_000_20ce                            ; $5009: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $5009: $cd $ce $20
     ld a, $80                                     ; $500c: $3e $80
     ld bc, $1018                                  ; $500e: $01 $18 $10
-    call Call_000_20ce                            ; $5011: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $5011: $cd $ce $20
     ld a, $80                                     ; $5014: $3e $80
     ld bc, $2018                                  ; $5016: $01 $18 $20
-    call Call_000_20ce                            ; $5019: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $5019: $cd $ce $20
     ld a, $80                                     ; $501c: $3e $80
     ld bc, $2818                                  ; $501e: $01 $18 $28
-    call Call_000_20ce                            ; $5021: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $5021: $cd $ce $20
     ld a, $80                                     ; $5024: $3e $80
     ld bc, $6818                                  ; $5026: $01 $18 $68
-    call Call_000_20ce                            ; $5029: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $5029: $cd $ce $20
     ld a, $80                                     ; $502c: $3e $80
     ld bc, $7018                                  ; $502e: $01 $18 $70
-    call Call_000_20ce                            ; $5031: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $5031: $cd $ce $20
     ld a, $80                                     ; $5034: $3e $80
     ld bc, $8018                                  ; $5036: $01 $18 $80
-    call Call_000_20ce                            ; $5039: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $5039: $cd $ce $20
     ld a, $80                                     ; $503c: $3e $80
     ld bc, $8818                                  ; $503e: $01 $18 $88
-    call Call_000_20ce                            ; $5041: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $5041: $cd $ce $20
     xor a                                         ; $5044: $af
     call Call_001_50b4                            ; $5045: $cd $b4 $50
     jp Jump_001_50d9                              ; $5048: $c3 $d9 $50
@@ -2984,7 +2984,7 @@ jr_001_5149:
     ld [$d636], a                                 ; $5149: $ea $36 $d6
     ld c, $0a                                     ; $514c: $0e $0a
     ld a, $02                                     ; $514e: $3e $02
-    call Call_000_03b6                            ; $5150: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $5150: $cd $b6 $03
     ret                                           ; $5153: $c9
 
 
@@ -3133,28 +3133,28 @@ Call_001_51e4:
     ld bc, $1050                                  ; $521a: $01 $50 $10
     ld de, $7f07                                  ; $521d: $11 $07 $7f
     call Call_001_5230                            ; $5220: $cd $30 $52
-    ld a, [$d843]                                 ; $5223: $fa $43 $d8
-    ld [$d82b], a                                 ; $5226: $ea $2b $d8
-    ld a, [$d844]                                 ; $5229: $fa $44 $d8
-    ld [$d82c], a                                 ; $522c: $ea $2c $d8
+    ld a, [MessageProgressionResetEntryLow]       ; $5223: $fa $43 $d8
+    ld [MessageProgressionEntryLow], a            ; $5226: $ea $2b $d8
+    ld a, [MessageProgressionResetEntryHigh]      ; $5229: $fa $44 $d8
+    ld [MessageProgressionEntryHigh], a           ; $522c: $ea $2c $d8
     ret                                           ; $522f: $c9
 
 
 Call_001_5230:
     ld a, $00                                     ; $5230: $3e $00
-    ld [$c355], a                                 ; $5232: $ea $55 $c3
+    ld [MessageProgressionCopyBankAddressLow], a  ; $5232: $ea $55 $c3
     ld a, $61                                     ; $5235: $3e $61
-    ld [$c356], a                                 ; $5237: $ea $56 $c3
+    ld [MessageProgressionCopyBankAddressHigh], a ; $5237: $ea $56 $c3
     ld a, $0a                                     ; $523a: $3e $0a
-    ld [$c357], a                                 ; $523c: $ea $57 $c3
+    ld [MessageProgressionCopyBank], a            ; $523c: $ea $57 $c3
     ld a, b                                       ; $523f: $78
-    ld [$c351], a                                 ; $5240: $ea $51 $c3
+    ld [MessageProgressionCopySourceX], a         ; $5240: $ea $51 $c3
     add d                                         ; $5243: $82
-    ld [$c353], a                                 ; $5244: $ea $53 $c3
+    ld [MessageProgressionCopyDestX], a           ; $5244: $ea $53 $c3
     ld a, c                                       ; $5247: $79
-    ld [$c352], a                                 ; $5248: $ea $52 $c3
+    ld [MessageProgressionCopySourceY], a         ; $5248: $ea $52 $c3
     add e                                         ; $524b: $83
-    ld [$c354], a                                 ; $524c: $ea $54 $c3
+    ld [MessageProgressionCopyDestY], a           ; $524c: $ea $54 $c3
     jp Jump_000_0b0d                              ; $524f: $c3 $0d $0b
 
 
@@ -3171,7 +3171,7 @@ jr_001_5252:
 
     ld c, $03                                     ; $5265: $0e $03
     ld a, $02                                     ; $5267: $3e $02
-    call Call_000_03b6                            ; $5269: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $5269: $cd $b6 $03
     ret                                           ; $526c: $c9
 
 
@@ -3242,11 +3242,11 @@ GS05_StatePhase_00_TODO::
     call Call_001_595e                            ; $52ed: $cd $5e $59
     ld c, $00                                     ; $52f0: $0e $00
     ld a, $01                                     ; $52f2: $3e $01
-    call Call_000_03b6                            ; $52f4: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $52f4: $cd $b6 $03
     call Call_000_0399                            ; $52f7: $cd $99 $03
     ld c, $04                                     ; $52fa: $0e $04
     ld a, $01                                     ; $52fc: $3e $01
-    call Call_000_03b6                            ; $52fe: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $52fe: $cd $b6 $03
     call Call_000_04a2                            ; $5301: $cd $a2 $04
     ld b, $03                                     ; $5304: $06 $03
     ld hl, $46e8                                  ; $5306: $21 $e8 $46
@@ -3321,11 +3321,11 @@ jr_001_539e:
     call Call_001_5760                            ; $539f: $cd $60 $57
     ld c, $00                                     ; $53a2: $0e $00
     ld a, $01                                     ; $53a4: $3e $01
-    call Call_000_03b6                            ; $53a6: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $53a6: $cd $b6 $03
     call Call_000_0399                            ; $53a9: $cd $99 $03
     ld c, $04                                     ; $53ac: $0e $04
     ld a, $01                                     ; $53ae: $3e $01
-    call Call_000_03b6                            ; $53b0: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $53b0: $cd $b6 $03
     call Call_000_04a2                            ; $53b3: $cd $a2 $04
     ld b, $03                                     ; $53b6: $06 $03
     ld hl, $46e8                                  ; $53b8: $21 $e8 $46
@@ -3365,14 +3365,14 @@ jr_001_539e:
     ld bc, $00b4                                  ; $53f8: $01 $b4 $00
     call Call_000_05fa                            ; $53fb: $cd $fa $05
     ld a, $05                                     ; $53fe: $3e $05
-    call Call_000_03b6                            ; $5400: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $5400: $cd $b6 $03
     ld c, $00                                     ; $5403: $0e $00
     ld a, $01                                     ; $5405: $3e $01
-    call Call_000_03b6                            ; $5407: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $5407: $cd $b6 $03
     call Call_000_0399                            ; $540a: $cd $99 $03
     ld c, $00                                     ; $540d: $0e $00
     ld a, $01                                     ; $540f: $3e $01
-    call Call_000_03b6                            ; $5411: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $5411: $cd $b6 $03
     call Call_000_05b6                            ; $5414: $cd $b6 $05
     ld b, $03                                     ; $5417: $06 $03
     ld hl, $46f3                                  ; $5419: $21 $f3 $46
@@ -3391,11 +3391,11 @@ jr_001_539e:
     ld [$cd64], a                                 ; $543c: $ea $64 $cd
     ld c, $00                                     ; $543f: $0e $00
     ld a, $01                                     ; $5441: $3e $01
-    call Call_000_03b6                            ; $5443: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $5443: $cd $b6 $03
     call Call_000_0399                            ; $5446: $cd $99 $03
     ld c, $07                                     ; $5449: $0e $07
     ld a, $01                                     ; $544b: $3e $01
-    call Call_000_03b6                            ; $544d: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $544d: $cd $b6 $03
     ld a, $2f                                     ; $5450: $3e $2f
     ld [$c336], a                                 ; $5452: $ea $36 $c3
     ld hl, $c337                                  ; $5455: $21 $37 $c3
@@ -3412,32 +3412,32 @@ jr_001_539e:
     ld de, $0074                                  ; $5471: $11 $74 $00
     call Call_000_040d                            ; $5474: $cd $0d $04
     ld a, $10                                     ; $5477: $3e $10
-    ld [$d843], a                                 ; $5479: $ea $43 $d8
-    ld [$d82b], a                                 ; $547c: $ea $2b $d8
+    ld [MessageProgressionResetEntryLow], a       ; $5479: $ea $43 $d8
+    ld [MessageProgressionEntryLow], a            ; $547c: $ea $2b $d8
     ld a, $20                                     ; $547f: $3e $20
-    ld [$d844], a                                 ; $5481: $ea $44 $d8
-    ld [$d82c], a                                 ; $5484: $ea $2c $d8
+    ld [MessageProgressionResetEntryHigh], a      ; $5481: $ea $44 $d8
+    ld [MessageProgressionEntryHigh], a           ; $5484: $ea $2c $d8
     ld a, $90                                     ; $5487: $3e $90
-    ld [$d845], a                                 ; $5489: $ea $45 $d8
+    ld [MessageProgressionCopyLimitLow], a        ; $5489: $ea $45 $d8
     ld a, $58                                     ; $548c: $3e $58
-    ld [$d846], a                                 ; $548e: $ea $46 $d8
+    ld [MessageProgressionCopyLimitHigh], a       ; $548e: $ea $46 $d8
     ld a, $00                                     ; $5491: $3e $00
-    ld [$d82d], a                                 ; $5493: $ea $2d $d8
+    ld [MessageProgressionPointerLow], a          ; $5493: $ea $2d $d8
     ld a, $40                                     ; $5496: $3e $40
-    ld [$d82e], a                                 ; $5498: $ea $2e $d8
+    ld [MessageProgressionPointerHigh], a         ; $5498: $ea $2e $d8
     call Call_001_51dd                            ; $549b: $cd $dd $51
     call Call_001_5252                            ; $549e: $cd $52 $52
     ld bc, $003c                                  ; $54a1: $01 $3c $00
     call Call_000_05fa                            ; $54a4: $cd $fa $05
     ld a, $05                                     ; $54a7: $3e $05
-    call Call_000_03b6                            ; $54a9: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $54a9: $cd $b6 $03
     ld c, $00                                     ; $54ac: $0e $00
     ld a, $01                                     ; $54ae: $3e $01
-    call Call_000_03b6                            ; $54b0: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $54b0: $cd $b6 $03
     call Call_000_0399                            ; $54b3: $cd $99 $03
     ld c, $00                                     ; $54b6: $0e $00
     ld a, $01                                     ; $54b8: $3e $01
-    call Call_000_03b6                            ; $54ba: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $54ba: $cd $b6 $03
     ld b, $03                                     ; $54bd: $06 $03
     ld hl, $46f3                                  ; $54bf: $21 $f3 $46
     ld c, $0b                                     ; $54c2: $0e $0b
@@ -3493,7 +3493,7 @@ Call_001_54f5:
 
     ld c, $08                                     ; $551f: $0e $08
     ld a, $02                                     ; $5521: $3e $02
-    call Call_000_03b6                            ; $5523: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $5523: $cd $b6 $03
     ld c, $08                                     ; $5526: $0e $08
 
 jr_001_5528:
@@ -3573,7 +3573,7 @@ GS05_StatePhase_01_TODO::
 
     ld c, $03                                     ; $559e: $0e $03
     ld a, $02                                     ; $55a0: $3e $02
-    call Call_000_03b6                            ; $55a2: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $55a2: $cd $b6 $03
     ld hl, StatePhase_Current                     ; $55a5: $21 $35 $d6
     inc [hl]                                      ; $55a8: $34
     ret                                           ; $55a9: $c9
@@ -3586,7 +3586,7 @@ jr_001_55aa:
 
     ld c, $04                                     ; $55b1: $0e $04
     ld a, $02                                     ; $55b3: $3e $02
-    call Call_000_03b6                            ; $55b5: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $55b5: $cd $b6 $03
     ld a, $03                                     ; $55b8: $3e $03
     ld [StatePhase_Current], a                    ; $55ba: $ea $35 $d6
     ret                                           ; $55bd: $c9
@@ -3600,14 +3600,14 @@ GS05_StatePhase_05_TODO::
     ld bc, $003c                                  ; $55bf: $01 $3c $00
     call Call_000_05fa                            ; $55c2: $cd $fa $05
     ld a, $05                                     ; $55c5: $3e $05
-    call Call_000_03b6                            ; $55c7: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $55c7: $cd $b6 $03
     ld c, $00                                     ; $55ca: $0e $00
     ld a, $01                                     ; $55cc: $3e $01
-    call Call_000_03b6                            ; $55ce: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $55ce: $cd $b6 $03
     call Call_000_0399                            ; $55d1: $cd $99 $03
     ld c, $00                                     ; $55d4: $0e $00
     ld a, $01                                     ; $55d6: $3e $01
-    call Call_000_03b6                            ; $55d8: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $55d8: $cd $b6 $03
     ld b, $03                                     ; $55db: $06 $03
     ld hl, $46f3                                  ; $55dd: $21 $f3 $46
     ld c, $08                                     ; $55e0: $0e $08
@@ -3639,14 +3639,14 @@ GS05_StatePhase_02_TODO::
     ld bc, $003c                                  ; $561b: $01 $3c $00
     call Call_000_05fa                            ; $561e: $cd $fa $05
     ld a, $05                                     ; $5621: $3e $05
-    call Call_000_03b6                            ; $5623: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $5623: $cd $b6 $03
     ld c, $00                                     ; $5626: $0e $00
     ld a, $01                                     ; $5628: $3e $01
-    call Call_000_03b6                            ; $562a: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $562a: $cd $b6 $03
     call Call_000_0399                            ; $562d: $cd $99 $03
     ld c, $00                                     ; $5630: $0e $00
     ld a, $01                                     ; $5632: $3e $01
-    call Call_000_03b6                            ; $5634: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $5634: $cd $b6 $03
     ld b, $03                                     ; $5637: $06 $03
     ld hl, $46f3                                  ; $5639: $21 $f3 $46
     ld c, $08                                     ; $563c: $0e $08
@@ -3699,14 +3699,14 @@ GS05_StatePhase_03_TODO::
     ld bc, $003c                                  ; $56f7: $01 $3c $00
     call Call_000_05fa                            ; $56fa: $cd $fa $05
     ld a, $05                                     ; $56fd: $3e $05
-    call Call_000_03b6                            ; $56ff: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $56ff: $cd $b6 $03
     ld c, $00                                     ; $5702: $0e $00
     ld a, $01                                     ; $5704: $3e $01
-    call Call_000_03b6                            ; $5706: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $5706: $cd $b6 $03
     call Call_000_0399                            ; $5709: $cd $99 $03
     ld c, $00                                     ; $570c: $0e $00
     ld a, $01                                     ; $570e: $3e $01
-    call Call_000_03b6                            ; $5710: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $5710: $cd $b6 $03
     ld b, $03                                     ; $5713: $06 $03
     ld hl, $46f3                                  ; $5715: $21 $f3 $46
     ld c, $08                                     ; $5718: $0e $08
@@ -3765,7 +3765,7 @@ Call_001_5760:
     ld c, a                                       ; $5774: $4f
     pop af                                        ; $5775: $f1
     add $60                                       ; $5776: $c6 $60
-    jp Jump_000_20ce                              ; $5778: $c3 $ce $20
+    jp TODO_EmitMessageScriptById                 ; $5778: $c3 $ce $20
 
 
 Call_001_577b:
@@ -3775,7 +3775,7 @@ Call_001_577b:
 
     ld c, $0a                                     ; $5781: $0e $0a
     ld a, $02                                     ; $5783: $3e $02
-    call Call_000_03b6                            ; $5785: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $5785: $cd $b6 $03
     ld hl, $c322                                  ; $5788: $21 $22 $c3
     bit 5, [hl]                                   ; $578b: $cb $6e
     jr z, jr_001_5798                             ; $578d: $28 $09
@@ -4139,14 +4139,14 @@ Call_001_595e:
     call Call_000_1972                            ; $5983: $cd $72 $19
     add $51                                       ; $5986: $c6 $51
     ld bc, $4818                                  ; $5988: $01 $18 $48
-    call Call_000_20ce                            ; $598b: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $598b: $cd $ce $20
     pop af                                        ; $598e: $f1
     cp $0a                                        ; $598f: $fe $0a
     jr z, jr_001_599b                             ; $5991: $28 $08
 
     add $51                                       ; $5993: $c6 $51
     ld bc, $4018                                  ; $5995: $01 $18 $40
-    call Call_000_20ce                            ; $5998: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $5998: $cd $ce $20
 
 jr_001_599b:
     pop af                                        ; $599b: $f1
@@ -4186,14 +4186,14 @@ jr_001_599b:
     swap a                                        ; $59d1: $cb $37
     add $51                                       ; $59d3: $c6 $51
     ld bc, $0818                                  ; $59d5: $01 $18 $08
-    call Call_000_20ce                            ; $59d8: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $59d8: $cd $ce $20
     pop bc                                        ; $59db: $c1
     push bc                                       ; $59dc: $c5
     ld a, b                                       ; $59dd: $78
     and $0f                                       ; $59de: $e6 $0f
     add $51                                       ; $59e0: $c6 $51
     ld bc, $1018                                  ; $59e2: $01 $18 $10
-    call Call_000_20ce                            ; $59e5: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $59e5: $cd $ce $20
     pop bc                                        ; $59e8: $c1
     push bc                                       ; $59e9: $c5
     ld a, c                                       ; $59ea: $79
@@ -4201,13 +4201,13 @@ jr_001_599b:
     swap a                                        ; $59ed: $cb $37
     add $51                                       ; $59ef: $c6 $51
     ld bc, $2018                                  ; $59f1: $01 $18 $20
-    call Call_000_20ce                            ; $59f4: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $59f4: $cd $ce $20
     pop bc                                        ; $59f7: $c1
     ld a, c                                       ; $59f8: $79
     and $0f                                       ; $59f9: $e6 $0f
     add $51                                       ; $59fb: $c6 $51
     ld bc, $2818                                  ; $59fd: $01 $18 $28
-    call Call_000_20ce                            ; $5a00: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $5a00: $cd $ce $20
     ld a, [hl]                                    ; $5a03: $7e
     call Call_001_5c07                            ; $5a04: $cd $07 $5c
     ld a, [$a065]                                 ; $5a07: $fa $65 $a0
@@ -4245,14 +4245,14 @@ jr_001_599b:
     swap a                                        ; $5a3b: $cb $37
     add $51                                       ; $5a3d: $c6 $51
     ld bc, $6818                                  ; $5a3f: $01 $18 $68
-    call Call_000_20ce                            ; $5a42: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $5a42: $cd $ce $20
     pop bc                                        ; $5a45: $c1
     push bc                                       ; $5a46: $c5
     ld a, b                                       ; $5a47: $78
     and $0f                                       ; $5a48: $e6 $0f
     add $51                                       ; $5a4a: $c6 $51
     ld bc, $7018                                  ; $5a4c: $01 $18 $70
-    call Call_000_20ce                            ; $5a4f: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $5a4f: $cd $ce $20
     pop bc                                        ; $5a52: $c1
     push bc                                       ; $5a53: $c5
     ld a, c                                       ; $5a54: $79
@@ -4260,13 +4260,13 @@ jr_001_599b:
     swap a                                        ; $5a57: $cb $37
     add $51                                       ; $5a59: $c6 $51
     ld bc, $8018                                  ; $5a5b: $01 $18 $80
-    call Call_000_20ce                            ; $5a5e: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $5a5e: $cd $ce $20
     pop bc                                        ; $5a61: $c1
     ld a, c                                       ; $5a62: $79
     and $0f                                       ; $5a63: $e6 $0f
     add $51                                       ; $5a65: $c6 $51
     ld bc, $8818                                  ; $5a67: $01 $18 $88
-    call Call_000_20ce                            ; $5a6a: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $5a6a: $cd $ce $20
     dec hl                                        ; $5a6d: $2b
     ld a, [hl]                                    ; $5a6e: $7e
     jp Jump_001_5c2c                              ; $5a6f: $c3 $2c $5c
@@ -4275,28 +4275,28 @@ jr_001_599b:
 Jump_001_5a72:
     ld a, $80                                     ; $5a72: $3e $80
     ld bc, $0818                                  ; $5a74: $01 $18 $08
-    call Call_000_20ce                            ; $5a77: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $5a77: $cd $ce $20
     ld a, $80                                     ; $5a7a: $3e $80
     ld bc, $1018                                  ; $5a7c: $01 $18 $10
-    call Call_000_20ce                            ; $5a7f: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $5a7f: $cd $ce $20
     ld a, $80                                     ; $5a82: $3e $80
     ld bc, $2018                                  ; $5a84: $01 $18 $20
-    call Call_000_20ce                            ; $5a87: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $5a87: $cd $ce $20
     ld a, $80                                     ; $5a8a: $3e $80
     ld bc, $2818                                  ; $5a8c: $01 $18 $28
-    call Call_000_20ce                            ; $5a8f: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $5a8f: $cd $ce $20
     ld a, $80                                     ; $5a92: $3e $80
     ld bc, $6818                                  ; $5a94: $01 $18 $68
-    call Call_000_20ce                            ; $5a97: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $5a97: $cd $ce $20
     ld a, $80                                     ; $5a9a: $3e $80
     ld bc, $7018                                  ; $5a9c: $01 $18 $70
-    call Call_000_20ce                            ; $5a9f: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $5a9f: $cd $ce $20
     ld a, $80                                     ; $5aa2: $3e $80
     ld bc, $8018                                  ; $5aa4: $01 $18 $80
-    call Call_000_20ce                            ; $5aa7: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $5aa7: $cd $ce $20
     ld a, $80                                     ; $5aaa: $3e $80
     ld bc, $8818                                  ; $5aac: $01 $18 $88
-    call Call_000_20ce                            ; $5aaf: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $5aaf: $cd $ce $20
     xor a                                         ; $5ab2: $af
     call Call_001_5c07                            ; $5ab3: $cd $07 $5c
     jp Jump_001_5c2c                              ; $5ab6: $c3 $2c $5c
@@ -4309,14 +4309,14 @@ Call_001_5ab9:
     call Call_000_1972                            ; $5abf: $cd $72 $19
     add $51                                       ; $5ac2: $c6 $51
     ld bc, $4818                                  ; $5ac4: $01 $18 $48
-    call Call_000_20ce                            ; $5ac7: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $5ac7: $cd $ce $20
     pop af                                        ; $5aca: $f1
     cp $0a                                        ; $5acb: $fe $0a
     jr z, jr_001_5ad7                             ; $5acd: $28 $08
 
     add $51                                       ; $5acf: $c6 $51
     ld bc, $4018                                  ; $5ad1: $01 $18 $40
-    call Call_000_20ce                            ; $5ad4: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $5ad4: $cd $ce $20
 
 jr_001_5ad7:
     pop af                                        ; $5ad7: $f1
@@ -4335,14 +4335,14 @@ jr_001_5ad7:
     swap a                                        ; $5aeb: $cb $37
     add $51                                       ; $5aed: $c6 $51
     ld bc, $0818                                  ; $5aef: $01 $18 $08
-    call Call_000_20ce                            ; $5af2: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $5af2: $cd $ce $20
     pop bc                                        ; $5af5: $c1
     push bc                                       ; $5af6: $c5
     ld a, b                                       ; $5af7: $78
     and $0f                                       ; $5af8: $e6 $0f
     add $51                                       ; $5afa: $c6 $51
     ld bc, $1018                                  ; $5afc: $01 $18 $10
-    call Call_000_20ce                            ; $5aff: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $5aff: $cd $ce $20
     pop bc                                        ; $5b02: $c1
     push bc                                       ; $5b03: $c5
     ld a, c                                       ; $5b04: $79
@@ -4350,13 +4350,13 @@ jr_001_5ad7:
     swap a                                        ; $5b07: $cb $37
     add $51                                       ; $5b09: $c6 $51
     ld bc, $2018                                  ; $5b0b: $01 $18 $20
-    call Call_000_20ce                            ; $5b0e: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $5b0e: $cd $ce $20
     pop bc                                        ; $5b11: $c1
     ld a, c                                       ; $5b12: $79
     and $0f                                       ; $5b13: $e6 $0f
     add $51                                       ; $5b15: $c6 $51
     ld bc, $2818                                  ; $5b17: $01 $18 $28
-    call Call_000_20ce                            ; $5b1a: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $5b1a: $cd $ce $20
     ld a, [hl]                                    ; $5b1d: $7e
     call Call_001_5c07                            ; $5b1e: $cd $07 $5c
     ld hl, $d84a                                  ; $5b21: $21 $4a $d8
@@ -4372,14 +4372,14 @@ jr_001_5ad7:
     swap a                                        ; $5b32: $cb $37
     add $51                                       ; $5b34: $c6 $51
     ld bc, $6818                                  ; $5b36: $01 $18 $68
-    call Call_000_20ce                            ; $5b39: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $5b39: $cd $ce $20
     pop bc                                        ; $5b3c: $c1
     push bc                                       ; $5b3d: $c5
     ld a, b                                       ; $5b3e: $78
     and $0f                                       ; $5b3f: $e6 $0f
     add $51                                       ; $5b41: $c6 $51
     ld bc, $7018                                  ; $5b43: $01 $18 $70
-    call Call_000_20ce                            ; $5b46: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $5b46: $cd $ce $20
     pop bc                                        ; $5b49: $c1
     push bc                                       ; $5b4a: $c5
     ld a, c                                       ; $5b4b: $79
@@ -4387,13 +4387,13 @@ jr_001_5ad7:
     swap a                                        ; $5b4e: $cb $37
     add $51                                       ; $5b50: $c6 $51
     ld bc, $8018                                  ; $5b52: $01 $18 $80
-    call Call_000_20ce                            ; $5b55: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $5b55: $cd $ce $20
     pop bc                                        ; $5b58: $c1
     ld a, c                                       ; $5b59: $79
     and $0f                                       ; $5b5a: $e6 $0f
     add $51                                       ; $5b5c: $c6 $51
     ld bc, $8818                                  ; $5b5e: $01 $18 $88
-    call Call_000_20ce                            ; $5b61: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $5b61: $cd $ce $20
     dec hl                                        ; $5b64: $2b
     ld a, [hl]                                    ; $5b65: $7e
     jp Jump_001_5c2c                              ; $5b66: $c3 $2c $5c
@@ -4402,28 +4402,28 @@ jr_001_5ad7:
 Jump_001_5b69:
     ld a, $80                                     ; $5b69: $3e $80
     ld bc, $0818                                  ; $5b6b: $01 $18 $08
-    call Call_000_20ce                            ; $5b6e: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $5b6e: $cd $ce $20
     ld a, $80                                     ; $5b71: $3e $80
     ld bc, $1018                                  ; $5b73: $01 $18 $10
-    call Call_000_20ce                            ; $5b76: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $5b76: $cd $ce $20
     ld a, $80                                     ; $5b79: $3e $80
     ld bc, $2018                                  ; $5b7b: $01 $18 $20
-    call Call_000_20ce                            ; $5b7e: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $5b7e: $cd $ce $20
     ld a, $80                                     ; $5b81: $3e $80
     ld bc, $2818                                  ; $5b83: $01 $18 $28
-    call Call_000_20ce                            ; $5b86: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $5b86: $cd $ce $20
     ld a, $80                                     ; $5b89: $3e $80
     ld bc, $6818                                  ; $5b8b: $01 $18 $68
-    call Call_000_20ce                            ; $5b8e: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $5b8e: $cd $ce $20
     ld a, $80                                     ; $5b91: $3e $80
     ld bc, $7018                                  ; $5b93: $01 $18 $70
-    call Call_000_20ce                            ; $5b96: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $5b96: $cd $ce $20
     ld a, $80                                     ; $5b99: $3e $80
     ld bc, $8018                                  ; $5b9b: $01 $18 $80
-    call Call_000_20ce                            ; $5b9e: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $5b9e: $cd $ce $20
     ld a, $80                                     ; $5ba1: $3e $80
     ld bc, $8818                                  ; $5ba3: $01 $18 $88
-    call Call_000_20ce                            ; $5ba6: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $5ba6: $cd $ce $20
     xor a                                         ; $5ba9: $af
     call Call_001_5c07                            ; $5baa: $cd $07 $5c
     jp Jump_001_5c2c                              ; $5bad: $c3 $2c $5c
@@ -4587,7 +4587,7 @@ jr_001_5c93:
     ld [$d636], a                                 ; $5c93: $ea $36 $d6
     ld c, $0a                                     ; $5c96: $0e $0a
     ld a, $02                                     ; $5c98: $3e $02
-    call Call_000_03b6                            ; $5c9a: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $5c9a: $cd $b6 $03
     ret                                           ; $5c9d: $c9
 
 
@@ -4726,11 +4726,11 @@ GS08_StatePhase_00_TODO::
     add hl, bc                                    ; $5e16: $09
     ld c, $00                                     ; $5e17: $0e $00
     ld a, $01                                     ; $5e19: $3e $01
-    call Call_000_03b6                            ; $5e1b: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $5e1b: $cd $b6 $03
     call Call_000_0399                            ; $5e1e: $cd $99 $03
     ld c, [hl]                                    ; $5e21: $4e
     ld a, $01                                     ; $5e22: $3e $01
-    call Call_000_03b6                            ; $5e24: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $5e24: $cd $b6 $03
     call Call_000_04a2                            ; $5e27: $cd $a2 $04
     ld a, [CurrentGridSize]                       ; $5e2a: $fa $00 $d8
     cp $05                                        ; $5e2d: $fe $05
@@ -4767,19 +4767,19 @@ jr_001_5e60:
     jr nz, jr_001_5e8e                            ; $5e65: $20 $27
 
     ld a, $0d                                     ; $5e67: $3e $0d
-    ld [$d843], a                                 ; $5e69: $ea $43 $d8
-    ld [$d82b], a                                 ; $5e6c: $ea $2b $d8
+    ld [MessageProgressionResetEntryLow], a       ; $5e69: $ea $43 $d8
+    ld [MessageProgressionEntryLow], a            ; $5e6c: $ea $2b $d8
     ld a, $58                                     ; $5e6f: $3e $58
-    ld [$d844], a                                 ; $5e71: $ea $44 $d8
-    ld [$d82c], a                                 ; $5e74: $ea $2c $d8
+    ld [MessageProgressionResetEntryHigh], a      ; $5e71: $ea $44 $d8
+    ld [MessageProgressionEntryHigh], a           ; $5e74: $ea $2c $d8
     ld a, $93                                     ; $5e77: $3e $93
-    ld [$d845], a                                 ; $5e79: $ea $45 $d8
+    ld [MessageProgressionCopyLimitLow], a        ; $5e79: $ea $45 $d8
     ld a, $86                                     ; $5e7c: $3e $86
-    ld [$d846], a                                 ; $5e7e: $ea $46 $d8
+    ld [MessageProgressionCopyLimitHigh], a       ; $5e7e: $ea $46 $d8
     ld a, $aa                                     ; $5e81: $3e $aa
-    ld [$d82d], a                                 ; $5e83: $ea $2d $d8
+    ld [MessageProgressionPointerLow], a          ; $5e83: $ea $2d $d8
     ld a, $5c                                     ; $5e86: $3e $5c
-    ld [$d82e], a                                 ; $5e88: $ea $2e $d8
+    ld [MessageProgressionPointerHigh], a         ; $5e88: $ea $2e $d8
     call Call_001_5fab                            ; $5e8b: $cd $ab $5f
 
 jr_001_5e8e:
@@ -4830,11 +4830,11 @@ GS08_StatePhase_0b_TODO::
     add hl, bc                                    ; $5ef0: $09
     ld c, $00                                     ; $5ef1: $0e $00
     ld a, $01                                     ; $5ef3: $3e $01
-    call Call_000_03b6                            ; $5ef5: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $5ef5: $cd $b6 $03
     call Call_000_0399                            ; $5ef8: $cd $99 $03
     ld c, [hl]                                    ; $5efb: $4e
     ld a, $01                                     ; $5efc: $3e $01
-    call Call_000_03b6                            ; $5efe: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $5efe: $cd $b6 $03
     call Call_000_04a2                            ; $5f01: $cd $a2 $04
     ld a, [CurrentGridSize]                       ; $5f04: $fa $00 $d8
     cp $05                                        ; $5f07: $fe $05
@@ -4871,19 +4871,19 @@ jr_001_5f3a:
     jr nz, jr_001_5f68                            ; $5f3f: $20 $27
 
     ld a, $0d                                     ; $5f41: $3e $0d
-    ld [$d843], a                                 ; $5f43: $ea $43 $d8
-    ld [$d82b], a                                 ; $5f46: $ea $2b $d8
+    ld [MessageProgressionResetEntryLow], a       ; $5f43: $ea $43 $d8
+    ld [MessageProgressionEntryLow], a            ; $5f46: $ea $2b $d8
     ld a, $58                                     ; $5f49: $3e $58
-    ld [$d844], a                                 ; $5f4b: $ea $44 $d8
-    ld [$d82c], a                                 ; $5f4e: $ea $2c $d8
+    ld [MessageProgressionResetEntryHigh], a      ; $5f4b: $ea $44 $d8
+    ld [MessageProgressionEntryHigh], a           ; $5f4e: $ea $2c $d8
     ld a, $93                                     ; $5f51: $3e $93
-    ld [$d845], a                                 ; $5f53: $ea $45 $d8
+    ld [MessageProgressionCopyLimitLow], a        ; $5f53: $ea $45 $d8
     ld a, $86                                     ; $5f56: $3e $86
-    ld [$d846], a                                 ; $5f58: $ea $46 $d8
+    ld [MessageProgressionCopyLimitHigh], a       ; $5f58: $ea $46 $d8
     ld a, $aa                                     ; $5f5b: $3e $aa
-    ld [$d82d], a                                 ; $5f5d: $ea $2d $d8
+    ld [MessageProgressionPointerLow], a          ; $5f5d: $ea $2d $d8
     ld a, $5c                                     ; $5f60: $3e $5c
-    ld [$d82e], a                                 ; $5f62: $ea $2e $d8
+    ld [MessageProgressionPointerHigh], a         ; $5f62: $ea $2e $d8
     call Call_001_5fab                            ; $5f65: $cd $ab $5f
 
 jr_001_5f68:
@@ -4929,9 +4929,9 @@ Call_001_5fab:
 jr_001_5fab:
     call Call_000_05c5                            ; $5fab: $cd $c5 $05
     rst RST_08                                    ; $5fae: $cf
-    call Call_001_7918                            ; $5faf: $cd $18 $79
-    call Call_000_3093                            ; $5fb2: $cd $93 $30
-    call Call_000_2b88                            ; $5fb5: $cd $88 $2b
+    call AdvanceMessageScriptDelay                ; $5faf: $cd $18 $79
+    call TODO_MessageSequenceTick                 ; $5fb2: $cd $93 $30
+    call AdvanceMessageProgressionHelper          ; $5fb5: $cd $88 $2b
     jr nz, jr_001_5fab                            ; $5fb8: $20 $f1
 
     ret                                           ; $5fba: $c9
@@ -4939,11 +4939,11 @@ jr_001_5fab:
 
 Call_001_5fbb:
 jr_001_5fbb:
-    call Call_000_2b88                            ; $5fbb: $cd $88 $2b
+    call AdvanceMessageProgressionHelper          ; $5fbb: $cd $88 $2b
     ret z                                         ; $5fbe: $c8
 
-    call Call_001_7918                            ; $5fbf: $cd $18 $79
-    call Call_000_3093                            ; $5fc2: $cd $93 $30
+    call AdvanceMessageScriptDelay                ; $5fbf: $cd $18 $79
+    call TODO_MessageSequenceTick                 ; $5fc2: $cd $93 $30
     call Call_000_05c5                            ; $5fc5: $cd $c5 $05
     rst RST_08                                    ; $5fc8: $cf
     jr jr_001_5fbb                                ; $5fc9: $18 $f0
@@ -4955,7 +4955,7 @@ GS08_StatePhase_03_TODO::
 
     call Call_001_71ca                            ; $5fd3: $cd $ca $71
     call Call_001_713e                            ; $5fd6: $cd $3e $71
-    call Call_001_7918                            ; $5fd9: $cd $18 $79
+    call AdvanceMessageScriptDelay                ; $5fd9: $cd $18 $79
     call Call_001_7e33                            ; $5fdc: $cd $33 $7e
     call Call_001_7e77                            ; $5fdf: $cd $77 $7e
     call Call_001_7aea                            ; $5fe2: $cd $ea $7a
@@ -4970,7 +4970,7 @@ GS08_StatePhase_03_TODO::
 
     ld c, $10                                     ; $5ffb: $0e $10
     ld a, $02                                     ; $5ffd: $3e $02
-    call Call_000_03b6                            ; $5fff: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $5fff: $cd $b6 $03
     ld a, $05                                     ; $6002: $3e $05
     ld [StatePhase_Current], a                    ; $6004: $ea $35 $d6
     ret                                           ; $6007: $c9
@@ -4986,11 +4986,11 @@ jr_001_6008:
     call Call_000_1b1f                            ; $6014: $cd $1f $1b
     ld c, $00                                     ; $6017: $0e $00
     ld a, $01                                     ; $6019: $3e $01
-    call Call_000_03b6                            ; $601b: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $601b: $cd $b6 $03
     call Call_000_0399                            ; $601e: $cd $99 $03
     ld c, $09                                     ; $6021: $0e $09
     ld a, $01                                     ; $6023: $3e $01
-    call Call_000_03b6                            ; $6025: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6025: $cd $b6 $03
     call Call_000_05b6                            ; $6028: $cd $b6 $05
     call Call_001_7635                            ; $602b: $cd $35 $76
 
@@ -5002,16 +5002,16 @@ jr_001_602e:
 
     ld c, $03                                     ; $6036: $0e $03
     ld a, $02                                     ; $6038: $3e $02
-    call Call_000_03b6                            ; $603a: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $603a: $cd $b6 $03
     call Call_001_76a9                            ; $603d: $cd $a9 $76
     call Call_000_1a45                            ; $6040: $cd $45 $1a
     ld c, $00                                     ; $6043: $0e $00
     ld a, $01                                     ; $6045: $3e $01
-    call Call_000_03b6                            ; $6047: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6047: $cd $b6 $03
     call Call_000_0399                            ; $604a: $cd $99 $03
     ld c, $12                                     ; $604d: $0e $12
     ld a, $01                                     ; $604f: $3e $01
-    call Call_000_03b6                            ; $6051: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6051: $cd $b6 $03
     ld hl, StatePhase_Current                     ; $6054: $21 $35 $d6
     inc [hl]                                      ; $6057: $34
     ret                                           ; $6058: $c9
@@ -5024,11 +5024,11 @@ jr_001_6059:
 
     ld c, $00                                     ; $605e: $0e $00
     ld a, $01                                     ; $6060: $3e $01
-    call Call_000_03b6                            ; $6062: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6062: $cd $b6 $03
     call Call_000_0399                            ; $6065: $cd $99 $03
     ld c, $08                                     ; $6068: $0e $08
     ld a, $01                                     ; $606a: $3e $01
-    call Call_000_03b6                            ; $606c: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $606c: $cd $b6 $03
     call Call_000_05b6                            ; $606f: $cd $b6 $05
     call Call_001_7ce3                            ; $6072: $cd $e3 $7c
     ld hl, StatePhase_Current                     ; $6075: $21 $35 $d6
@@ -5039,7 +5039,7 @@ jr_001_6059:
 Jump_001_607a:
     call Call_001_71ca                            ; $607a: $cd $ca $71
     call Call_001_713e                            ; $607d: $cd $3e $71
-    call Call_001_7918                            ; $6080: $cd $18 $79
+    call AdvanceMessageScriptDelay                ; $6080: $cd $18 $79
     call Call_001_7aea                            ; $6083: $cd $ea $7a
     call Call_001_7a98                            ; $6086: $cd $98 $7a
     call Call_001_7222                            ; $6089: $cd $22 $72
@@ -5052,7 +5052,7 @@ Jump_001_607a:
 
     ld c, $10                                     ; $609c: $0e $10
     ld a, $02                                     ; $609e: $3e $02
-    call Call_000_03b6                            ; $60a0: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $60a0: $cd $b6 $03
     ld a, $05                                     ; $60a3: $3e $05
     ld [StatePhase_Current], a                    ; $60a5: $ea $35 $d6
     ret                                           ; $60a8: $c9
@@ -5068,22 +5068,22 @@ jr_001_60a9:
     call Call_000_1b1f                            ; $60b6: $cd $1f $1b
     ld c, $00                                     ; $60b9: $0e $00
     ld a, $01                                     ; $60bb: $3e $01
-    call Call_000_03b6                            ; $60bd: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $60bd: $cd $b6 $03
     call Call_000_0399                            ; $60c0: $cd $99 $03
     ld c, $09                                     ; $60c3: $0e $09
     ld a, $01                                     ; $60c5: $3e $01
-    call Call_000_03b6                            ; $60c7: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $60c7: $cd $b6 $03
     call Call_000_05b6                            ; $60ca: $cd $b6 $05
     call Call_001_7635                            ; $60cd: $cd $35 $76
     call Call_000_302e                            ; $60d0: $cd $2e $30
     ld a, $d2                                     ; $60d3: $3e $d2
-    ld [$d82d], a                                 ; $60d5: $ea $2d $d8
+    ld [MessageProgressionPointerLow], a          ; $60d5: $ea $2d $d8
     ld a, $5c                                     ; $60d8: $3e $5c
-    ld [$d82e], a                                 ; $60da: $ea $2e $d8
+    ld [MessageProgressionPointerHigh], a         ; $60da: $ea $2e $d8
     call Call_001_5fbb                            ; $60dd: $cd $bb $5f
 
 jr_001_60e0:
-    call Call_001_7918                            ; $60e0: $cd $18 $79
+    call AdvanceMessageScriptDelay                ; $60e0: $cd $18 $79
     call Call_000_05c5                            ; $60e3: $cd $c5 $05
     rst RST_08                                    ; $60e6: $cf
     ld a, [$c31e]                                 ; $60e7: $fa $1e $c3
@@ -5092,12 +5092,12 @@ jr_001_60e0:
 
     ld c, $03                                     ; $60ee: $0e $03
     ld a, $02                                     ; $60f0: $3e $02
-    call Call_000_03b6                            ; $60f2: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $60f2: $cd $b6 $03
     call Call_001_76a9                            ; $60f5: $cd $a9 $76
     ld a, $0a                                     ; $60f8: $3e $0a
-    ld [$d82d], a                                 ; $60fa: $ea $2d $d8
+    ld [MessageProgressionPointerLow], a          ; $60fa: $ea $2d $d8
     ld a, $5d                                     ; $60fd: $3e $5d
-    ld [$d82e], a                                 ; $60ff: $ea $2e $d8
+    ld [MessageProgressionPointerHigh], a         ; $60ff: $ea $2e $d8
     call Call_001_5fbb                            ; $6102: $cd $bb $5f
     ld a, [$a065]                                 ; $6105: $fa $65 $a0
     ld c, a                                       ; $6108: $4f
@@ -5111,17 +5111,17 @@ jr_001_60e0:
     ld hl, $616b                                  ; $6115: $21 $6b $61
     add hl, bc                                    ; $6118: $09
     ld a, [hl+]                                   ; $6119: $2a
-    ld [$d82d], a                                 ; $611a: $ea $2d $d8
+    ld [MessageProgressionPointerLow], a          ; $611a: $ea $2d $d8
     ld a, [hl]                                    ; $611d: $7e
-    ld [$d82e], a                                 ; $611e: $ea $2e $d8
+    ld [MessageProgressionPointerHigh], a         ; $611e: $ea $2e $d8
     call Call_001_5fbb                            ; $6121: $cd $bb $5f
     ld c, $00                                     ; $6124: $0e $00
     ld a, $01                                     ; $6126: $3e $01
-    call Call_000_03b6                            ; $6128: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6128: $cd $b6 $03
     call Call_000_0399                            ; $612b: $cd $99 $03
     ld c, $12                                     ; $612e: $0e $12
     ld a, $01                                     ; $6130: $3e $01
-    call Call_000_03b6                            ; $6132: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6132: $cd $b6 $03
     ld hl, StatePhase_Current                     ; $6135: $21 $35 $d6
     inc [hl]                                      ; $6138: $34
     ret                                           ; $6139: $c9
@@ -5134,18 +5134,18 @@ Jump_001_613a:
 
     ld c, $00                                     ; $613f: $0e $00
     ld a, $01                                     ; $6141: $3e $01
-    call Call_000_03b6                            ; $6143: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6143: $cd $b6 $03
     call Call_000_0399                            ; $6146: $cd $99 $03
     ld c, $08                                     ; $6149: $0e $08
     ld a, $01                                     ; $614b: $3e $01
-    call Call_000_03b6                            ; $614d: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $614d: $cd $b6 $03
     call Call_000_05b6                            ; $6150: $cd $b6 $05
     call Call_001_7ce3                            ; $6153: $cd $e3 $7c
     call Call_000_302e                            ; $6156: $cd $2e $30
     ld a, $e8                                     ; $6159: $3e $e8
-    ld [$d82d], a                                 ; $615b: $ea $2d $d8
+    ld [MessageProgressionPointerLow], a          ; $615b: $ea $2d $d8
     ld a, $5c                                     ; $615e: $3e $5c
-    ld [$d82e], a                                 ; $6160: $ea $2e $d8
+    ld [MessageProgressionPointerHigh], a         ; $6160: $ea $2e $d8
     call Call_001_5fbb                            ; $6163: $cd $bb $5f
     ld hl, StatePhase_Current                     ; $6166: $21 $35 $d6
     inc [hl]                                      ; $6169: $34
@@ -5175,18 +5175,18 @@ GS08_StatePhase_04_TODO::
 
     ld c, $03                                     ; $6181: $0e $03
     ld a, $02                                     ; $6183: $3e $02
-    call Call_000_03b6                            ; $6185: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6185: $cd $b6 $03
     ld bc, $003c                                  ; $6188: $01 $3c $00
     call Call_000_05fa                            ; $618b: $cd $fa $05
     ld a, $05                                     ; $618e: $3e $05
-    call Call_000_03b6                            ; $6190: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6190: $cd $b6 $03
     ld c, $00                                     ; $6193: $0e $00
     ld a, $01                                     ; $6195: $3e $01
-    call Call_000_03b6                            ; $6197: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6197: $cd $b6 $03
     call Call_000_0399                            ; $619a: $cd $99 $03
     ld c, $00                                     ; $619d: $0e $00
     ld a, $01                                     ; $619f: $3e $01
-    call Call_000_03b6                            ; $61a1: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $61a1: $cd $b6 $03
     ld a, [CurrentGridSize]                       ; $61a4: $fa $00 $d8
     cp $05                                        ; $61a7: $fe $05
     jr nz, jr_001_61ba                            ; $61a9: $20 $0f
@@ -5274,7 +5274,7 @@ GS08_StatePhase_06_TODO::
 
     ld c, $03                                     ; $6247: $0e $03
     ld a, $02                                     ; $6249: $3e $02
-    call Call_000_03b6                            ; $624b: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $624b: $cd $b6 $03
     ld a, [$d83a]                                 ; $624e: $fa $3a $d8
     ld c, a                                       ; $6251: $4f
     ld b, $00                                     ; $6252: $06 $00
@@ -5291,7 +5291,7 @@ jr_001_625d:
 
     ld c, $04                                     ; $6260: $0e $04
     ld a, $02                                     ; $6262: $3e $02
-    call Call_000_03b6                            ; $6264: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6264: $cd $b6 $03
     ld a, $0a                                     ; $6267: $3e $0a
     ld [StatePhase_Current], a                    ; $6269: $ea $35 $d6
     ret                                           ; $626c: $c9
@@ -5310,7 +5310,7 @@ GS08_StatePhase_07_TODO::
 
     ld c, $04                                     ; $627e: $0e $04
     ld a, $02                                     ; $6280: $3e $02
-    call Call_000_03b6                            ; $6282: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6282: $cd $b6 $03
     ld a, [$d83b]                                 ; $6285: $fa $3b $d8
     and a                                         ; $6288: $a7
     jr z, jr_001_6291                             ; $6289: $28 $06
@@ -5326,18 +5326,18 @@ jr_001_6291:
     ld [$aca2], a                                 ; $6296: $ea $a2 $ac
     ld c, $03                                     ; $6299: $0e $03
     ld a, $02                                     ; $629b: $3e $02
-    call Call_000_03b6                            ; $629d: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $629d: $cd $b6 $03
     ld bc, $003c                                  ; $62a0: $01 $3c $00
     call Call_000_05fa                            ; $62a3: $cd $fa $05
     ld a, $05                                     ; $62a6: $3e $05
-    call Call_000_03b6                            ; $62a8: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $62a8: $cd $b6 $03
     ld c, $00                                     ; $62ab: $0e $00
     ld a, $01                                     ; $62ad: $3e $01
-    call Call_000_03b6                            ; $62af: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $62af: $cd $b6 $03
     call Call_000_0399                            ; $62b2: $cd $99 $03
     ld c, $00                                     ; $62b5: $0e $00
     ld a, $01                                     ; $62b7: $3e $01
-    call Call_000_03b6                            ; $62b9: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $62b9: $cd $b6 $03
     ld a, [CurrentGridSize]                       ; $62bc: $fa $00 $d8
     cp $05                                        ; $62bf: $fe $05
     jr nz, jr_001_62d2                            ; $62c1: $20 $0f
@@ -5405,7 +5405,7 @@ GS08_StatePhase_08_TODO::
 
     ld c, $04                                     ; $6336: $0e $04
     ld a, $02                                     ; $6338: $3e $02
-    call Call_000_03b6                            ; $633a: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $633a: $cd $b6 $03
     ld a, $06                                     ; $633d: $3e $06
     ld [StatePhase_Current], a                    ; $633f: $ea $35 $d6
     ret                                           ; $6342: $c9
@@ -5421,7 +5421,7 @@ GS08_StatePhase_09_TODO::
 
     ld c, $04                                     ; $6351: $0e $04
     ld a, $02                                     ; $6353: $3e $02
-    call Call_000_03b6                            ; $6355: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6355: $cd $b6 $03
     ld a, [$d83d]                                 ; $6358: $fa $3d $d8
     and a                                         ; $635b: $a7
     jr z, jr_001_6364                             ; $635c: $28 $06
@@ -5436,11 +5436,11 @@ jr_001_6364:
     ld [$d806], a                                 ; $6366: $ea $06 $d8
     ld c, $00                                     ; $6369: $0e $00
     ld a, $01                                     ; $636b: $3e $01
-    call Call_000_03b6                            ; $636d: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $636d: $cd $b6 $03
     call Call_000_0399                            ; $6370: $cd $99 $03
     ld c, $08                                     ; $6373: $0e $08
     ld a, $01                                     ; $6375: $3e $01
-    call Call_000_03b6                            ; $6377: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6377: $cd $b6 $03
     call Call_000_05b6                            ; $637a: $cd $b6 $05
     call Call_001_7ce3                            ; $637d: $cd $e3 $7c
     ld a, $06                                     ; $6380: $3e $06
@@ -5454,9 +5454,9 @@ jr_001_6364:
 
     call Call_000_302e                            ; $6395: $cd $2e $30
     ld a, $e8                                     ; $6398: $3e $e8
-    ld [$d82d], a                                 ; $639a: $ea $2d $d8
+    ld [MessageProgressionPointerLow], a          ; $639a: $ea $2d $d8
     ld a, $5c                                     ; $639d: $3e $5c
-    ld [$d82e], a                                 ; $639f: $ea $2e $d8
+    ld [MessageProgressionPointerHigh], a         ; $639f: $ea $2e $d8
     call Call_001_5fbb                            ; $63a2: $cd $bb $5f
 
 jr_001_63a5:
@@ -5592,11 +5592,11 @@ GS09_StatePhase_00_TODO::
     add hl, bc                                    ; $6488: $09
     ld c, $00                                     ; $6489: $0e $00
     ld a, $01                                     ; $648b: $3e $01
-    call Call_000_03b6                            ; $648d: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $648d: $cd $b6 $03
     call Call_000_0399                            ; $6490: $cd $99 $03
     ld c, [hl]                                    ; $6493: $4e
     ld a, $01                                     ; $6494: $3e $01
-    call Call_000_03b6                            ; $6496: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6496: $cd $b6 $03
     call Call_000_04a2                            ; $6499: $cd $a2 $04
     ld b, $03                                     ; $649c: $06 $03
     ld hl, $4694                                  ; $649e: $21 $94 $46
@@ -5651,11 +5651,11 @@ GS09_StatePhase_09_TODO::
     add hl, bc                                    ; $650e: $09
     ld c, $00                                     ; $650f: $0e $00
     ld a, $01                                     ; $6511: $3e $01
-    call Call_000_03b6                            ; $6513: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6513: $cd $b6 $03
     call Call_000_0399                            ; $6516: $cd $99 $03
     ld c, [hl]                                    ; $6519: $4e
     ld a, $01                                     ; $651a: $3e $01
-    call Call_000_03b6                            ; $651c: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $651c: $cd $b6 $03
     call Call_000_04a2                            ; $651f: $cd $a2 $04
     ld b, $03                                     ; $6522: $06 $03
     ld hl, $4694                                  ; $6524: $21 $94 $46
@@ -5696,7 +5696,7 @@ GS09_StatePhase_01_TODO::
     call Call_001_71ca                            ; $656c: $cd $ca $71
     call Call_001_713e                            ; $656f: $cd $3e $71
     call Call_001_7aea                            ; $6572: $cd $ea $7a
-    call Call_001_7918                            ; $6575: $cd $18 $79
+    call AdvanceMessageScriptDelay                ; $6575: $cd $18 $79
     call Call_001_682f                            ; $6578: $cd $2f $68
     call Call_001_7516                            ; $657b: $cd $16 $75
     call Call_001_75f6                            ; $657e: $cd $f6 $75
@@ -5707,7 +5707,7 @@ GS09_StatePhase_01_TODO::
 
     ld c, $10                                     ; $658b: $0e $10
     ld a, $02                                     ; $658d: $3e $02
-    call Call_000_03b6                            ; $658f: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $658f: $cd $b6 $03
     ld a, $03                                     ; $6592: $3e $03
     ld [StatePhase_Current], a                    ; $6594: $ea $35 $d6
     ret                                           ; $6597: $c9
@@ -5720,23 +5720,23 @@ jr_001_6598:
 
     ld c, $00                                     ; $659e: $0e $00
     ld a, $05                                     ; $65a0: $3e $05
-    call Call_000_03b6                            ; $65a2: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $65a2: $cd $b6 $03
     ld c, $00                                     ; $65a5: $0e $00
     ld a, $01                                     ; $65a7: $3e $01
-    call Call_000_03b6                            ; $65a9: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $65a9: $cd $b6 $03
     call Call_000_0399                            ; $65ac: $cd $99 $03
     ld c, $00                                     ; $65af: $0e $00
     ld a, $01                                     ; $65b1: $3e $01
-    call Call_000_03b6                            ; $65b3: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $65b3: $cd $b6 $03
     ld bc, $0003                                  ; $65b6: $01 $03 $00
     call Call_000_0603                            ; $65b9: $cd $03 $06
     ld c, $00                                     ; $65bc: $0e $00
     ld a, $01                                     ; $65be: $3e $01
-    call Call_000_03b6                            ; $65c0: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $65c0: $cd $b6 $03
     call Call_000_0399                            ; $65c3: $cd $99 $03
     ld c, $09                                     ; $65c6: $0e $09
     ld a, $01                                     ; $65c8: $3e $01
-    call Call_000_03b6                            ; $65ca: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $65ca: $cd $b6 $03
     call Call_000_05b6                            ; $65cd: $cd $b6 $05
     call Call_001_7635                            ; $65d0: $cd $35 $76
 
@@ -5748,16 +5748,16 @@ jr_001_65d3:
 
     ld c, $03                                     ; $65db: $0e $03
     ld a, $02                                     ; $65dd: $3e $02
-    call Call_000_03b6                            ; $65df: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $65df: $cd $b6 $03
     call Call_001_76a9                            ; $65e2: $cd $a9 $76
     call Call_000_1a45                            ; $65e5: $cd $45 $1a
     ld c, $00                                     ; $65e8: $0e $00
     ld a, $01                                     ; $65ea: $3e $01
-    call Call_000_03b6                            ; $65ec: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $65ec: $cd $b6 $03
     call Call_000_0399                            ; $65ef: $cd $99 $03
     ld c, $12                                     ; $65f2: $0e $12
     ld a, $01                                     ; $65f4: $3e $01
-    call Call_000_03b6                            ; $65f6: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $65f6: $cd $b6 $03
     ld hl, StatePhase_Current                     ; $65f9: $21 $35 $d6
     inc [hl]                                      ; $65fc: $34
     ret                                           ; $65fd: $c9
@@ -5770,11 +5770,11 @@ jr_001_65fe:
 
     ld c, $00                                     ; $6603: $0e $00
     ld a, $01                                     ; $6605: $3e $01
-    call Call_000_03b6                            ; $6607: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6607: $cd $b6 $03
     call Call_000_0399                            ; $660a: $cd $99 $03
     ld c, $08                                     ; $660d: $0e $08
     ld a, $01                                     ; $660f: $3e $01
-    call Call_000_03b6                            ; $6611: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6611: $cd $b6 $03
     call Call_000_05b6                            ; $6614: $cd $b6 $05
     call Call_001_7ce3                            ; $6617: $cd $e3 $7c
     ld hl, StatePhase_Current                     ; $661a: $21 $35 $d6
@@ -5789,18 +5789,18 @@ GS09_StatePhase_02_TODO::
 
     ld c, $03                                     ; $6625: $0e $03
     ld a, $02                                     ; $6627: $3e $02
-    call Call_000_03b6                            ; $6629: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6629: $cd $b6 $03
     ld bc, $003c                                  ; $662c: $01 $3c $00
     call Call_000_05fa                            ; $662f: $cd $fa $05
     ld a, $05                                     ; $6632: $3e $05
-    call Call_000_03b6                            ; $6634: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6634: $cd $b6 $03
     ld c, $00                                     ; $6637: $0e $00
     ld a, $01                                     ; $6639: $3e $01
-    call Call_000_03b6                            ; $663b: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $663b: $cd $b6 $03
     call Call_000_0399                            ; $663e: $cd $99 $03
     ld c, $00                                     ; $6641: $0e $00
     ld a, $01                                     ; $6643: $3e $01
-    call Call_000_03b6                            ; $6645: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6645: $cd $b6 $03
     ld b, $03                                     ; $6648: $06 $03
     ld hl, $469f                                  ; $664a: $21 $9f $46
     ld c, $00                                     ; $664d: $0e $00
@@ -5863,7 +5863,7 @@ GS09_StatePhase_04_TODO::
 
     ld c, $03                                     ; $66c2: $0e $03
     ld a, $02                                     ; $66c4: $3e $02
-    call Call_000_03b6                            ; $66c6: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $66c6: $cd $b6 $03
     ld a, [$d83a]                                 ; $66c9: $fa $3a $d8
     ld c, a                                       ; $66cc: $4f
     ld b, $00                                     ; $66cd: $06 $00
@@ -5880,7 +5880,7 @@ jr_001_66d8:
 
     ld c, $04                                     ; $66db: $0e $04
     ld a, $02                                     ; $66dd: $3e $02
-    call Call_000_03b6                            ; $66df: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $66df: $cd $b6 $03
     ld a, $08                                     ; $66e2: $3e $08
     ld [StatePhase_Current], a                    ; $66e4: $ea $35 $d6
     ret                                           ; $66e7: $c9
@@ -5899,7 +5899,7 @@ GS09_StatePhase_05_TODO::
 
     ld c, $04                                     ; $66f9: $0e $04
     ld a, $02                                     ; $66fb: $3e $02
-    call Call_000_03b6                            ; $66fd: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $66fd: $cd $b6 $03
     ld a, [$d83b]                                 ; $6700: $fa $3b $d8
     and a                                         ; $6703: $a7
     jr z, jr_001_670c                             ; $6704: $28 $06
@@ -5915,18 +5915,18 @@ jr_001_670c:
     ld [$aca2], a                                 ; $6711: $ea $a2 $ac
     ld c, $03                                     ; $6714: $0e $03
     ld a, $02                                     ; $6716: $3e $02
-    call Call_000_03b6                            ; $6718: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6718: $cd $b6 $03
     ld bc, $003c                                  ; $671b: $01 $3c $00
     call Call_000_05fa                            ; $671e: $cd $fa $05
     ld a, $05                                     ; $6721: $3e $05
-    call Call_000_03b6                            ; $6723: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6723: $cd $b6 $03
     ld c, $00                                     ; $6726: $0e $00
     ld a, $01                                     ; $6728: $3e $01
-    call Call_000_03b6                            ; $672a: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $672a: $cd $b6 $03
     call Call_000_0399                            ; $672d: $cd $99 $03
     ld c, $00                                     ; $6730: $0e $00
     ld a, $01                                     ; $6732: $3e $01
-    call Call_000_03b6                            ; $6734: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6734: $cd $b6 $03
     ld b, $03                                     ; $6737: $06 $03
     ld hl, $469f                                  ; $6739: $21 $9f $46
     ld c, $00                                     ; $673c: $0e $00
@@ -5970,7 +5970,7 @@ GS09_StatePhase_06_TODO::
 
     ld c, $04                                     ; $678b: $0e $04
     ld a, $02                                     ; $678d: $3e $02
-    call Call_000_03b6                            ; $678f: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $678f: $cd $b6 $03
     ld a, $04                                     ; $6792: $3e $04
     ld [StatePhase_Current], a                    ; $6794: $ea $35 $d6
     ret                                           ; $6797: $c9
@@ -5986,7 +5986,7 @@ GS09_StatePhase_07_TODO::
 
     ld c, $04                                     ; $67a6: $0e $04
     ld a, $02                                     ; $67a8: $3e $02
-    call Call_000_03b6                            ; $67aa: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $67aa: $cd $b6 $03
     ld a, [$d83d]                                 ; $67ad: $fa $3d $d8
     and a                                         ; $67b0: $a7
     jr z, jr_001_67b9                             ; $67b1: $28 $06
@@ -6001,11 +6001,11 @@ jr_001_67b9:
     ld [$d806], a                                 ; $67bb: $ea $06 $d8
     ld c, $00                                     ; $67be: $0e $00
     ld a, $01                                     ; $67c0: $3e $01
-    call Call_000_03b6                            ; $67c2: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $67c2: $cd $b6 $03
     call Call_000_0399                            ; $67c5: $cd $99 $03
     ld c, $08                                     ; $67c8: $0e $08
     ld a, $01                                     ; $67ca: $3e $01
-    call Call_000_03b6                            ; $67cc: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $67cc: $cd $b6 $03
     call Call_000_05b6                            ; $67cf: $cd $b6 $05
     call Call_001_7ce3                            ; $67d2: $cd $e3 $7c
     ld a, [$a065]                                 ; $67d5: $fa $65 $a0
@@ -6359,18 +6359,18 @@ jr_001_6a48:
 
 
 GS0A_StatePhase_01_TODO::
-    call Call_001_7918                            ; $6a92: $cd $18 $79
+    call AdvanceMessageScriptDelay                ; $6a92: $cd $18 $79
     ld a, [$d833]                                 ; $6a95: $fa $33 $d8
     add $3a                                       ; $6a98: $c6 $3a
     ld bc, $2848                                  ; $6a9a: $01 $48 $28
-    call Call_000_20ce                            ; $6a9d: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $6a9d: $cd $ce $20
     ld a, [$c31e]                                 ; $6aa0: $fa $1e $c3
     and $f0                                       ; $6aa3: $e6 $f0
     jr z, jr_001_6ab7                             ; $6aa5: $28 $10
 
     ld c, $0a                                     ; $6aa7: $0e $0a
     ld a, $02                                     ; $6aa9: $3e $02
-    call Call_000_03b6                            ; $6aab: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6aab: $cd $b6 $03
     ld a, [$d833]                                 ; $6aae: $fa $33 $d8
     xor $01                                       ; $6ab1: $ee $01
     ld [$d833], a                                 ; $6ab3: $ea $33 $d8
@@ -6390,13 +6390,13 @@ jr_001_6ab7:
     rst RST_08                                    ; $6ac7: $cf
     ld c, $04                                     ; $6ac8: $0e $04
     ld a, $02                                     ; $6aca: $3e $02
-    call Call_000_03b6                            ; $6acc: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6acc: $cd $b6 $03
     call Call_000_05b6                            ; $6acf: $cd $b6 $05
     ld a, $01                                     ; $6ad2: $3e $01
     ld [$d833], a                                 ; $6ad4: $ea $33 $d8
     add $3a                                       ; $6ad7: $c6 $3a
     ld bc, $2848                                  ; $6ad9: $01 $48 $28
-    call Call_000_20ce                            ; $6adc: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $6adc: $cd $ce $20
     ld bc, $001e                                  ; $6adf: $01 $1e $00
     call Call_000_05fa                            ; $6ae2: $cd $fa $05
     jr jr_001_6aee                                ; $6ae5: $18 $07
@@ -6404,7 +6404,7 @@ jr_001_6ab7:
 jr_001_6ae7:
     ld c, $03                                     ; $6ae7: $0e $03
     ld a, $02                                     ; $6ae9: $3e $02
-    call Call_000_03b6                            ; $6aeb: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6aeb: $cd $b6 $03
 
 jr_001_6aee:
     ld a, [$d833]                                 ; $6aee: $fa $33 $d8
@@ -6547,7 +6547,7 @@ jr_001_6ba3:
 
 jr_001_6bba:
     call Call_001_7185                            ; $6bba: $cd $85 $71
-    call Call_001_7918                            ; $6bbd: $cd $18 $79
+    call AdvanceMessageScriptDelay                ; $6bbd: $cd $18 $79
     ld a, [$d812]                                 ; $6bc0: $fa $12 $d8
     ld c, a                                       ; $6bc3: $4f
     ld a, [$d813]                                 ; $6bc4: $fa $13 $d8
@@ -6601,7 +6601,7 @@ jr_001_6bf3:
     ld [hl], a                                    ; $6c0f: $77
     ld c, $03                                     ; $6c10: $0e $03
     ld a, $02                                     ; $6c12: $3e $02
-    call Call_000_03b6                            ; $6c14: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6c14: $cd $b6 $03
     ret                                           ; $6c17: $c9
 
 
@@ -6615,7 +6615,7 @@ jr_001_6c18:
     ld [$d813], a                                 ; $6c21: $ea $13 $d8
     ld c, $03                                     ; $6c24: $0e $03
     ld a, $02                                     ; $6c26: $3e $02
-    call Call_000_03b6                            ; $6c28: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6c28: $cd $b6 $03
     ret                                           ; $6c2b: $c9
 
 
@@ -6629,14 +6629,14 @@ Call_001_6c2c:
     ld [$d82a], a                                 ; $6c36: $ea $2a $d8
     ld c, $02                                     ; $6c39: $0e $02
     ld a, $02                                     ; $6c3b: $3e $02
-    call Call_000_03b6                            ; $6c3d: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6c3d: $cd $b6 $03
     ret                                           ; $6c40: $c9
 
 
 GS0A_StatePhase_03_TODO::
     call Call_001_71ca                            ; $6c41: $cd $ca $71
     call Call_001_713e                            ; $6c44: $cd $3e $71
-    call Call_001_7918                            ; $6c47: $cd $18 $79
+    call AdvanceMessageScriptDelay                ; $6c47: $cd $18 $79
     call Call_001_7e33                            ; $6c4a: $cd $33 $7e
     call Call_001_7e77                            ; $6c4d: $cd $77 $7e
     call Call_001_7aea                            ; $6c50: $cd $ea $7a
@@ -6651,7 +6651,7 @@ GS0A_StatePhase_03_TODO::
 
     ld c, $10                                     ; $6c69: $0e $10
     ld a, $02                                     ; $6c6b: $3e $02
-    call Call_000_03b6                            ; $6c6d: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6c6d: $cd $b6 $03
     ld a, $05                                     ; $6c70: $3e $05
     ld [StatePhase_Current], a                    ; $6c72: $ea $35 $d6
     ret                                           ; $6c75: $c9
@@ -6667,11 +6667,11 @@ jr_001_6c76:
     call Call_000_1b1f                            ; $6c82: $cd $1f $1b
     ld c, $00                                     ; $6c85: $0e $00
     ld a, $01                                     ; $6c87: $3e $01
-    call Call_000_03b6                            ; $6c89: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6c89: $cd $b6 $03
     call Call_000_0399                            ; $6c8c: $cd $99 $03
     ld c, $09                                     ; $6c8f: $0e $09
     ld a, $01                                     ; $6c91: $3e $01
-    call Call_000_03b6                            ; $6c93: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6c93: $cd $b6 $03
     call Call_000_05b6                            ; $6c96: $cd $b6 $05
     call Call_001_7635                            ; $6c99: $cd $35 $76
 
@@ -6683,25 +6683,25 @@ jr_001_6c9c:
 
     ld c, $03                                     ; $6ca4: $0e $03
     ld a, $02                                     ; $6ca6: $3e $02
-    call Call_000_03b6                            ; $6ca8: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6ca8: $cd $b6 $03
     call Call_001_76a9                            ; $6cab: $cd $a9 $76
     ld c, $00                                     ; $6cae: $0e $00
     ld a, $01                                     ; $6cb0: $3e $01
-    call Call_000_03b6                            ; $6cb2: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6cb2: $cd $b6 $03
     call Call_000_0399                            ; $6cb5: $cd $99 $03
     ld c, $00                                     ; $6cb8: $0e $00
     ld a, $01                                     ; $6cba: $3e $01
-    call Call_000_03b6                            ; $6cbc: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6cbc: $cd $b6 $03
     call Call_000_1a45                            ; $6cbf: $cd $45 $1a
     ld bc, $0004                                  ; $6cc2: $01 $04 $00
     call Call_000_05fa                            ; $6cc5: $cd $fa $05
     ld c, $00                                     ; $6cc8: $0e $00
     ld a, $01                                     ; $6cca: $3e $01
-    call Call_000_03b6                            ; $6ccc: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6ccc: $cd $b6 $03
     call Call_000_0399                            ; $6ccf: $cd $99 $03
     ld c, $12                                     ; $6cd2: $0e $12
     ld a, $01                                     ; $6cd4: $3e $01
-    call Call_000_03b6                            ; $6cd6: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6cd6: $cd $b6 $03
     ld hl, StatePhase_Current                     ; $6cd9: $21 $35 $d6
     inc [hl]                                      ; $6cdc: $34
     ret                                           ; $6cdd: $c9
@@ -6714,11 +6714,11 @@ jr_001_6cde:
 
     ld c, $00                                     ; $6ce3: $0e $00
     ld a, $01                                     ; $6ce5: $3e $01
-    call Call_000_03b6                            ; $6ce7: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6ce7: $cd $b6 $03
     call Call_000_0399                            ; $6cea: $cd $99 $03
     ld c, $08                                     ; $6ced: $0e $08
     ld a, $01                                     ; $6cef: $3e $01
-    call Call_000_03b6                            ; $6cf1: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6cf1: $cd $b6 $03
     call Call_000_05b6                            ; $6cf4: $cd $b6 $05
     call Call_001_7ce3                            ; $6cf7: $cd $e3 $7c
     ld hl, StatePhase_Current                     ; $6cfa: $21 $35 $d6
@@ -6733,18 +6733,18 @@ GS0A_StatePhase_04_TODO::
 
     ld c, $03                                     ; $6d05: $0e $03
     ld a, $02                                     ; $6d07: $3e $02
-    call Call_000_03b6                            ; $6d09: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6d09: $cd $b6 $03
     ld bc, $003c                                  ; $6d0c: $01 $3c $00
     call Call_000_05fa                            ; $6d0f: $cd $fa $05
     ld a, $05                                     ; $6d12: $3e $05
-    call Call_000_03b6                            ; $6d14: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6d14: $cd $b6 $03
     ld c, $00                                     ; $6d17: $0e $00
     ld a, $01                                     ; $6d19: $3e $01
-    call Call_000_03b6                            ; $6d1b: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6d1b: $cd $b6 $03
     call Call_000_0399                            ; $6d1e: $cd $99 $03
     ld c, $00                                     ; $6d21: $0e $00
     ld a, $01                                     ; $6d23: $3e $01
-    call Call_000_03b6                            ; $6d25: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6d25: $cd $b6 $03
     ld b, $03                                     ; $6d28: $06 $03
     ld hl, $469f                                  ; $6d2a: $21 $9f $46
     ld c, $00                                     ; $6d2d: $0e $00
@@ -6812,7 +6812,7 @@ GS0A_StatePhase_06_TODO::
 
     ld c, $03                                     ; $6dab: $0e $03
     ld a, $02                                     ; $6dad: $3e $02
-    call Call_000_03b6                            ; $6daf: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6daf: $cd $b6 $03
     ld a, [$d83a]                                 ; $6db2: $fa $3a $d8
     ld c, a                                       ; $6db5: $4f
     ld b, $00                                     ; $6db6: $06 $00
@@ -6829,7 +6829,7 @@ jr_001_6dc1:
 
     ld c, $04                                     ; $6dc4: $0e $04
     ld a, $02                                     ; $6dc6: $3e $02
-    call Call_000_03b6                            ; $6dc8: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6dc8: $cd $b6 $03
     ld a, $0a                                     ; $6dcb: $3e $0a
     ld [StatePhase_Current], a                    ; $6dcd: $ea $35 $d6
     ret                                           ; $6dd0: $c9
@@ -6848,7 +6848,7 @@ GS0A_StatePhase_07_TODO::
 
     ld c, $04                                     ; $6de2: $0e $04
     ld a, $02                                     ; $6de4: $3e $02
-    call Call_000_03b6                            ; $6de6: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6de6: $cd $b6 $03
     ld a, [$d83b]                                 ; $6de9: $fa $3b $d8
     and a                                         ; $6dec: $a7
     jr z, jr_001_6df5                             ; $6ded: $28 $06
@@ -6864,18 +6864,18 @@ jr_001_6df5:
     ld [$aca2], a                                 ; $6dfa: $ea $a2 $ac
     ld c, $03                                     ; $6dfd: $0e $03
     ld a, $02                                     ; $6dff: $3e $02
-    call Call_000_03b6                            ; $6e01: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6e01: $cd $b6 $03
     ld bc, $003c                                  ; $6e04: $01 $3c $00
     call Call_000_05fa                            ; $6e07: $cd $fa $05
     ld a, $05                                     ; $6e0a: $3e $05
-    call Call_000_03b6                            ; $6e0c: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6e0c: $cd $b6 $03
     ld c, $00                                     ; $6e0f: $0e $00
     ld a, $01                                     ; $6e11: $3e $01
-    call Call_000_03b6                            ; $6e13: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6e13: $cd $b6 $03
     call Call_000_0399                            ; $6e16: $cd $99 $03
     ld c, $00                                     ; $6e19: $0e $00
     ld a, $01                                     ; $6e1b: $3e $01
-    call Call_000_03b6                            ; $6e1d: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6e1d: $cd $b6 $03
     ld b, $03                                     ; $6e20: $06 $03
     ld hl, $469f                                  ; $6e22: $21 $9f $46
     ld c, $00                                     ; $6e25: $0e $00
@@ -6923,7 +6923,7 @@ GS0A_StatePhase_08_TODO::
 
     ld c, $04                                     ; $6e7c: $0e $04
     ld a, $02                                     ; $6e7e: $3e $02
-    call Call_000_03b6                            ; $6e80: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6e80: $cd $b6 $03
     ld a, $06                                     ; $6e83: $3e $06
     ld [StatePhase_Current], a                    ; $6e85: $ea $35 $d6
     ret                                           ; $6e88: $c9
@@ -6939,7 +6939,7 @@ GS0A_StatePhase_09_TODO::
 
     ld c, $04                                     ; $6e97: $0e $04
     ld a, $02                                     ; $6e99: $3e $02
-    call Call_000_03b6                            ; $6e9b: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6e9b: $cd $b6 $03
     ld a, [$d83d]                                 ; $6e9e: $fa $3d $d8
     and a                                         ; $6ea1: $a7
     jr z, jr_001_6eaa                             ; $6ea2: $28 $06
@@ -6954,11 +6954,11 @@ jr_001_6eaa:
     ld [$d806], a                                 ; $6eac: $ea $06 $d8
     ld c, $00                                     ; $6eaf: $0e $00
     ld a, $01                                     ; $6eb1: $3e $01
-    call Call_000_03b6                            ; $6eb3: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6eb3: $cd $b6 $03
     call Call_000_0399                            ; $6eb6: $cd $99 $03
     ld c, $08                                     ; $6eb9: $0e $08
     ld a, $01                                     ; $6ebb: $3e $01
-    call Call_000_03b6                            ; $6ebd: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $6ebd: $cd $b6 $03
     call Call_000_05b6                            ; $6ec0: $cd $b6 $05
     call Call_001_7ce3                            ; $6ec3: $cd $e3 $7c
     ld a, [$a065]                                 ; $6ec6: $fa $65 $a0
@@ -7252,13 +7252,13 @@ Call_001_701b:
     push hl                                       ; $701d: $e5
     push af                                       ; $701e: $f5
     ld a, c                                       ; $701f: $79
-    ld [$c351], a                                 ; $7020: $ea $51 $c3
+    ld [MessageProgressionCopySourceX], a         ; $7020: $ea $51 $c3
     add $05                                       ; $7023: $c6 $05
-    ld [$c353], a                                 ; $7025: $ea $53 $c3
+    ld [MessageProgressionCopyDestX], a           ; $7025: $ea $53 $c3
     ld a, b                                       ; $7028: $78
-    ld [$c352], a                                 ; $7029: $ea $52 $c3
+    ld [MessageProgressionCopySourceY], a         ; $7029: $ea $52 $c3
     add $05                                       ; $702c: $c6 $05
-    ld [$c354], a                                 ; $702e: $ea $54 $c3
+    ld [MessageProgressionCopyDestY], a           ; $702e: $ea $54 $c3
     pop af                                        ; $7031: $f1
     sla a                                         ; $7032: $cb $27
     ld c, a                                       ; $7034: $4f
@@ -7270,23 +7270,23 @@ Call_001_701b:
     ld hl, $7061                                  ; $703b: $21 $61 $70
     add hl, bc                                    ; $703e: $09
     ld a, [hl+]                                   ; $703f: $2a
-    ld [$c355], a                                 ; $7040: $ea $55 $c3
+    ld [MessageProgressionCopyBankAddressLow], a  ; $7040: $ea $55 $c3
     ld a, [hl+]                                   ; $7043: $2a
-    ld [$c356], a                                 ; $7044: $ea $56 $c3
+    ld [MessageProgressionCopyBankAddressHigh], a ; $7044: $ea $56 $c3
     jr jr_001_7055                                ; $7047: $18 $0c
 
 jr_001_7049:
     ld hl, $7081                                  ; $7049: $21 $81 $70
     add hl, bc                                    ; $704c: $09
     ld a, [hl+]                                   ; $704d: $2a
-    ld [$c355], a                                 ; $704e: $ea $55 $c3
+    ld [MessageProgressionCopyBankAddressLow], a  ; $704e: $ea $55 $c3
     ld a, [hl+]                                   ; $7051: $2a
-    ld [$c356], a                                 ; $7052: $ea $56 $c3
+    ld [MessageProgressionCopyBankAddressHigh], a ; $7052: $ea $56 $c3
 
 jr_001_7055:
     ld a, $06                                     ; $7055: $3e $06
-    ld [$c357], a                                 ; $7057: $ea $57 $c3
-    call Call_000_08b3                            ; $705a: $cd $b3 $08
+    ld [MessageProgressionCopyBank], a            ; $7057: $ea $57 $c3
+    call PrepareMessageProgressionCopy            ; $705a: $cd $b3 $08
     pop hl                                        ; $705d: $e1
     pop de                                        ; $705e: $d1
     pop bc                                        ; $705f: $c1
@@ -7453,33 +7453,33 @@ Call_001_7103:
     push de                                       ; $7104: $d5
     push hl                                       ; $7105: $e5
     ld a, c                                       ; $7106: $79
-    ld [$c351], a                                 ; $7107: $ea $51 $c3
+    ld [MessageProgressionCopySourceX], a         ; $7107: $ea $51 $c3
     add $05                                       ; $710a: $c6 $05
-    ld [$c353], a                                 ; $710c: $ea $53 $c3
+    ld [MessageProgressionCopyDestX], a           ; $710c: $ea $53 $c3
     ld a, b                                       ; $710f: $78
-    ld [$c352], a                                 ; $7110: $ea $52 $c3
+    ld [MessageProgressionCopySourceY], a         ; $7110: $ea $52 $c3
     add $05                                       ; $7113: $c6 $05
-    ld [$c354], a                                 ; $7115: $ea $54 $c3
+    ld [MessageProgressionCopyDestY], a           ; $7115: $ea $54 $c3
     ld a, e                                       ; $7118: $7b
     and a                                         ; $7119: $a7
     jr nz, jr_001_7128                            ; $711a: $20 $0c
 
     ld a, $e0                                     ; $711c: $3e $e0
-    ld [$c355], a                                 ; $711e: $ea $55 $c3
+    ld [MessageProgressionCopyBankAddressLow], a  ; $711e: $ea $55 $c3
     ld a, $58                                     ; $7121: $3e $58
-    ld [$c356], a                                 ; $7123: $ea $56 $c3
+    ld [MessageProgressionCopyBankAddressHigh], a ; $7123: $ea $56 $c3
     jr jr_001_7132                                ; $7126: $18 $0a
 
 jr_001_7128:
     ld a, $f0                                     ; $7128: $3e $f0
-    ld [$c355], a                                 ; $712a: $ea $55 $c3
+    ld [MessageProgressionCopyBankAddressLow], a  ; $712a: $ea $55 $c3
     ld a, $58                                     ; $712d: $3e $58
-    ld [$c356], a                                 ; $712f: $ea $56 $c3
+    ld [MessageProgressionCopyBankAddressHigh], a ; $712f: $ea $56 $c3
 
 jr_001_7132:
     ld a, $06                                     ; $7132: $3e $06
-    ld [$c357], a                                 ; $7134: $ea $57 $c3
-    call Call_000_08b3                            ; $7137: $cd $b3 $08
+    ld [MessageProgressionCopyBank], a            ; $7134: $ea $57 $c3
+    call PrepareMessageProgressionCopy            ; $7137: $cd $b3 $08
     pop hl                                        ; $713a: $e1
     pop de                                        ; $713b: $d1
     pop bc                                        ; $713c: $c1
@@ -7510,7 +7510,7 @@ Call_001_713e:
     srl a                                         ; $7160: $cb $3f
     and $01                                       ; $7162: $e6 $01
     add $03                                       ; $7164: $c6 $03
-    call Call_000_20ce                            ; $7166: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $7166: $cd $ce $20
     pop bc                                        ; $7169: $c1
     push bc                                       ; $716a: $c5
     ld b, $00                                     ; $716b: $06 $00
@@ -7523,7 +7523,7 @@ Call_001_713e:
     srl a                                         ; $7178: $cb $3f
     and $01                                       ; $717a: $e6 $01
     add $05                                       ; $717c: $c6 $05
-    call Call_000_20ce                            ; $717e: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $717e: $cd $ce $20
     pop bc                                        ; $7181: $c1
     jp Jump_001_7967                              ; $7182: $c3 $67 $79
 
@@ -7552,7 +7552,7 @@ Call_001_7185:
     srl a                                         ; $71a7: $cb $3f
     and $01                                       ; $71a9: $e6 $01
     add $03                                       ; $71ab: $c6 $03
-    call Call_000_20ce                            ; $71ad: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $71ad: $cd $ce $20
     pop bc                                        ; $71b0: $c1
     push bc                                       ; $71b1: $c5
     ld b, $00                                     ; $71b2: $06 $00
@@ -7565,7 +7565,7 @@ Call_001_7185:
     srl a                                         ; $71bf: $cb $3f
     and $01                                       ; $71c1: $e6 $01
     add $05                                       ; $71c3: $c6 $05
-    call Call_000_20ce                            ; $71c5: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $71c5: $cd $ce $20
     pop bc                                        ; $71c8: $c1
     ret                                           ; $71c9: $c9
 
@@ -7581,7 +7581,7 @@ Call_001_71ca:
 
     ld c, $0b                                     ; $71d7: $0e $0b
     ld a, $02                                     ; $71d9: $3e $02
-    call Call_000_03b6                            ; $71db: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $71db: $cd $b6 $03
 
 jr_001_71de:
     ld hl, $c322                                  ; $71de: $21 $22 $c3
@@ -7836,7 +7836,7 @@ jr_001_7328:
     ld [$d822], a                                 ; $734f: $ea $22 $d8
     ld c, $09                                     ; $7352: $0e $09
     ld a, $02                                     ; $7354: $3e $02
-    call Call_000_03b6                            ; $7356: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $7356: $cd $b6 $03
     xor a                                         ; $7359: $af
 
 jr_001_735a:
@@ -7852,7 +7852,7 @@ jr_001_735a:
     call Call_001_7aea                            ; $736c: $cd $ea $7a
 
 jr_001_736f:
-    call Call_001_7918                            ; $736f: $cd $18 $79
+    call AdvanceMessageScriptDelay                ; $736f: $cd $18 $79
     pop af                                        ; $7372: $f1
     push af                                       ; $7373: $f5
     cp $10                                        ; $7374: $fe $10
@@ -8121,7 +8121,7 @@ Jump_001_7529:
 
     ld c, $05                                     ; $752d: $0e $05
     ld a, $02                                     ; $752f: $3e $02
-    call Call_000_03b6                            ; $7531: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $7531: $cd $b6 $03
     ret                                           ; $7534: $c9
 
 
@@ -8131,14 +8131,14 @@ jr_001_7535:
 
     ld c, $07                                     ; $7539: $0e $07
     ld a, $02                                     ; $753b: $3e $02
-    call Call_000_03b6                            ; $753d: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $753d: $cd $b6 $03
     ret                                           ; $7540: $c9
 
 
 jr_001_7541:
     ld c, $0c                                     ; $7541: $0e $0c
     ld a, $02                                     ; $7543: $3e $02
-    call Call_000_03b6                            ; $7545: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $7545: $cd $b6 $03
     ret                                           ; $7548: $c9
 
 
@@ -8156,32 +8156,32 @@ Call_001_7549:
     add hl, bc                                    ; $7559: $09
     pop af                                        ; $755a: $f1
     add [hl]                                      ; $755b: $86
-    ld [$c355], a                                 ; $755c: $ea $55 $c3
+    ld [MessageProgressionCopyBankAddressLow], a  ; $755c: $ea $55 $c3
     inc hl                                        ; $755f: $23
     ld a, $00                                     ; $7560: $3e $00
     adc [hl]                                      ; $7562: $8e
-    ld [$c356], a                                 ; $7563: $ea $56 $c3
+    ld [MessageProgressionCopyBankAddressHigh], a ; $7563: $ea $56 $c3
     ld a, $06                                     ; $7566: $3e $06
-    ld [$c357], a                                 ; $7568: $ea $57 $c3
+    ld [MessageProgressionCopyBank], a            ; $7568: $ea $57 $c3
     ld a, [$d824]                                 ; $756b: $fa $24 $d8
     ld e, a                                       ; $756e: $5f
     sla a                                         ; $756f: $cb $27
     add e                                         ; $7571: $83
     sla a                                         ; $7572: $cb $27
     add $3b                                       ; $7574: $c6 $3b
-    ld [$c351], a                                 ; $7576: $ea $51 $c3
+    ld [MessageProgressionCopySourceX], a         ; $7576: $ea $51 $c3
     add $04                                       ; $7579: $c6 $04
-    ld [$c353], a                                 ; $757b: $ea $53 $c3
+    ld [MessageProgressionCopyDestX], a           ; $757b: $ea $53 $c3
     ld a, [$d825]                                 ; $757e: $fa $25 $d8
     ld e, a                                       ; $7581: $5f
     sla a                                         ; $7582: $cb $27
     add e                                         ; $7584: $83
     sla a                                         ; $7585: $cb $27
     add $33                                       ; $7587: $c6 $33
-    ld [$c352], a                                 ; $7589: $ea $52 $c3
+    ld [MessageProgressionCopySourceY], a         ; $7589: $ea $52 $c3
     add $04                                       ; $758c: $c6 $04
-    ld [$c354], a                                 ; $758e: $ea $54 $c3
-    call Call_000_08b3                            ; $7591: $cd $b3 $08
+    ld [MessageProgressionCopyDestY], a           ; $758e: $ea $54 $c3
+    call PrepareMessageProgressionCopy            ; $7591: $cd $b3 $08
     pop hl                                        ; $7594: $e1
     pop de                                        ; $7595: $d1
     pop bc                                        ; $7596: $c1
@@ -8248,20 +8248,20 @@ Call_001_75cf:
     push bc                                       ; $75cf: $c5
     push de                                       ; $75d0: $d5
     push hl                                       ; $75d1: $e5
-    ld [$c355], a                                 ; $75d2: $ea $55 $c3
+    ld [MessageProgressionCopyBankAddressLow], a  ; $75d2: $ea $55 $c3
     ld a, $58                                     ; $75d5: $3e $58
-    ld [$c356], a                                 ; $75d7: $ea $56 $c3
+    ld [MessageProgressionCopyBankAddressHigh], a ; $75d7: $ea $56 $c3
     ld a, $06                                     ; $75da: $3e $06
-    ld [$c357], a                                 ; $75dc: $ea $57 $c3
+    ld [MessageProgressionCopyBank], a            ; $75dc: $ea $57 $c3
     ld a, b                                       ; $75df: $78
-    ld [$c351], a                                 ; $75e0: $ea $51 $c3
+    ld [MessageProgressionCopySourceX], a         ; $75e0: $ea $51 $c3
     add d                                         ; $75e3: $82
-    ld [$c353], a                                 ; $75e4: $ea $53 $c3
+    ld [MessageProgressionCopyDestX], a           ; $75e4: $ea $53 $c3
     ld a, c                                       ; $75e7: $79
-    ld [$c352], a                                 ; $75e8: $ea $52 $c3
+    ld [MessageProgressionCopySourceY], a         ; $75e8: $ea $52 $c3
     add e                                         ; $75eb: $83
-    ld [$c354], a                                 ; $75ec: $ea $54 $c3
-    call Call_000_08b3                            ; $75ef: $cd $b3 $08
+    ld [MessageProgressionCopyDestY], a           ; $75ec: $ea $54 $c3
+    call PrepareMessageProgressionCopy            ; $75ef: $cd $b3 $08
     pop hl                                        ; $75f2: $e1
     pop de                                        ; $75f3: $d1
     pop bc                                        ; $75f4: $c1
@@ -8276,13 +8276,13 @@ Call_001_75f6:
 
     ld c, $00                                     ; $75fe: $0e $00
     ld a, $01                                     ; $7600: $3e $01
-    call Call_000_03b6                            ; $7602: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $7602: $cd $b6 $03
     call Call_000_0399                            ; $7605: $cd $99 $03
     ld c, $00                                     ; $7608: $0e $00
 
 jr_001_760a:
     ld a, $01                                     ; $760a: $3e $01
-    call Call_000_03b6                            ; $760c: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $760c: $cd $b6 $03
 
 jr_001_760f:
     call Call_000_05c5                            ; $760f: $cd $c5 $05
@@ -8292,7 +8292,7 @@ jr_001_760f:
     ld [$c31e], a                                 ; $7617: $ea $1e $c3
     ld [$c322], a                                 ; $761a: $ea $22 $c3
     call Call_001_713e                            ; $761d: $cd $3e $71
-    call Call_001_7918                            ; $7620: $cd $18 $79
+    call AdvanceMessageScriptDelay                ; $7620: $cd $18 $79
     call Call_001_7516                            ; $7623: $cd $16 $75
     ld a, [$d821]                                 ; $7626: $fa $21 $d8
     and a                                         ; $7629: $a7
@@ -8520,20 +8520,20 @@ jr_001_7746:
     push bc                                       ; $7746: $c5
     push hl                                       ; $7747: $e5
     ld a, l                                       ; $7748: $7d
-    ld [$c355], a                                 ; $7749: $ea $55 $c3
+    ld [MessageProgressionCopyBankAddressLow], a  ; $7749: $ea $55 $c3
     ld a, h                                       ; $774c: $7c
-    ld [$c356], a                                 ; $774d: $ea $56 $c3
+    ld [MessageProgressionCopyBankAddressHigh], a ; $774d: $ea $56 $c3
     ld a, $07                                     ; $7750: $3e $07
-    ld [$c357], a                                 ; $7752: $ea $57 $c3
+    ld [MessageProgressionCopyBank], a            ; $7752: $ea $57 $c3
     ld a, $3b                                     ; $7755: $3e $3b
-    ld [$c351], a                                 ; $7757: $ea $51 $c3
+    ld [MessageProgressionCopySourceX], a         ; $7757: $ea $51 $c3
     add $1c                                       ; $775a: $c6 $1c
-    ld [$c353], a                                 ; $775c: $ea $53 $c3
+    ld [MessageProgressionCopyDestX], a           ; $775c: $ea $53 $c3
     ld a, c                                       ; $775f: $79
-    ld [$c352], a                                 ; $7760: $ea $52 $c3
+    ld [MessageProgressionCopySourceY], a         ; $7760: $ea $52 $c3
     add $0b                                       ; $7763: $c6 $0b
-    ld [$c354], a                                 ; $7765: $ea $54 $c3
-    call Call_000_08b3                            ; $7768: $cd $b3 $08
+    ld [MessageProgressionCopyDestY], a           ; $7765: $ea $54 $c3
+    call PrepareMessageProgressionCopy            ; $7768: $cd $b3 $08
     pop hl                                        ; $776b: $e1
     pop bc                                        ; $776c: $c1
     ld de, $0108                                  ; $776d: $11 $08 $01
@@ -8552,20 +8552,20 @@ jr_001_7779:
     jr nz, jr_001_7746                            ; $777f: $20 $c5
 
     ld a, l                                       ; $7781: $7d
-    ld [$c355], a                                 ; $7782: $ea $55 $c3
+    ld [MessageProgressionCopyBankAddressLow], a  ; $7782: $ea $55 $c3
     ld a, h                                       ; $7785: $7c
-    ld [$c356], a                                 ; $7786: $ea $56 $c3
+    ld [MessageProgressionCopyBankAddressHigh], a ; $7786: $ea $56 $c3
     ld a, $07                                     ; $7789: $3e $07
-    ld [$c357], a                                 ; $778b: $ea $57 $c3
+    ld [MessageProgressionCopyBank], a            ; $778b: $ea $57 $c3
     ld a, $3b                                     ; $778e: $3e $3b
-    ld [$c351], a                                 ; $7790: $ea $51 $c3
+    ld [MessageProgressionCopySourceX], a         ; $7790: $ea $51 $c3
     add $1c                                       ; $7793: $c6 $1c
-    ld [$c353], a                                 ; $7795: $ea $53 $c3
+    ld [MessageProgressionCopyDestX], a           ; $7795: $ea $53 $c3
     ld a, c                                       ; $7798: $79
-    ld [$c352], a                                 ; $7799: $ea $52 $c3
+    ld [MessageProgressionCopySourceY], a         ; $7799: $ea $52 $c3
     add $04                                       ; $779c: $c6 $04
-    ld [$c354], a                                 ; $779e: $ea $54 $c3
-    call Call_000_08b3                            ; $77a1: $cd $b3 $08
+    ld [MessageProgressionCopyDestY], a           ; $779e: $ea $54 $c3
+    call PrepareMessageProgressionCopy            ; $77a1: $cd $b3 $08
     ret                                           ; $77a4: $c9
 
 
@@ -8580,20 +8580,20 @@ jr_001_77ab:
     push bc                                       ; $77ab: $c5
     push hl                                       ; $77ac: $e5
     ld a, l                                       ; $77ad: $7d
-    ld [$c355], a                                 ; $77ae: $ea $55 $c3
+    ld [MessageProgressionCopyBankAddressLow], a  ; $77ae: $ea $55 $c3
     ld a, h                                       ; $77b1: $7c
-    ld [$c356], a                                 ; $77b2: $ea $56 $c3
+    ld [MessageProgressionCopyBankAddressHigh], a ; $77b2: $ea $56 $c3
     ld a, $08                                     ; $77b5: $3e $08
-    ld [$c357], a                                 ; $77b7: $ea $57 $c3
+    ld [MessageProgressionCopyBank], a            ; $77b7: $ea $57 $c3
     ld a, $3b                                     ; $77ba: $3e $3b
-    ld [$c351], a                                 ; $77bc: $ea $51 $c3
+    ld [MessageProgressionCopySourceX], a         ; $77bc: $ea $51 $c3
     add $3a                                       ; $77bf: $c6 $3a
-    ld [$c353], a                                 ; $77c1: $ea $53 $c3
+    ld [MessageProgressionCopyDestX], a           ; $77c1: $ea $53 $c3
     ld a, c                                       ; $77c4: $79
-    ld [$c352], a                                 ; $77c5: $ea $52 $c3
+    ld [MessageProgressionCopySourceY], a         ; $77c5: $ea $52 $c3
     add $0b                                       ; $77c8: $c6 $0b
-    ld [$c354], a                                 ; $77ca: $ea $54 $c3
-    call Call_000_08b3                            ; $77cd: $cd $b3 $08
+    ld [MessageProgressionCopyDestY], a           ; $77ca: $ea $54 $c3
+    call PrepareMessageProgressionCopy            ; $77cd: $cd $b3 $08
     pop hl                                        ; $77d0: $e1
     pop bc                                        ; $77d1: $c1
     ld de, $0108                                  ; $77d2: $11 $08 $01
@@ -8612,20 +8612,20 @@ jr_001_77de:
     jr nz, jr_001_77ab                            ; $77e4: $20 $c5
 
     ld a, l                                       ; $77e6: $7d
-    ld [$c355], a                                 ; $77e7: $ea $55 $c3
+    ld [MessageProgressionCopyBankAddressLow], a  ; $77e7: $ea $55 $c3
     ld a, h                                       ; $77ea: $7c
-    ld [$c356], a                                 ; $77eb: $ea $56 $c3
+    ld [MessageProgressionCopyBankAddressHigh], a ; $77eb: $ea $56 $c3
     ld a, $08                                     ; $77ee: $3e $08
-    ld [$c357], a                                 ; $77f0: $ea $57 $c3
+    ld [MessageProgressionCopyBank], a            ; $77f0: $ea $57 $c3
     ld a, $3b                                     ; $77f3: $3e $3b
-    ld [$c351], a                                 ; $77f5: $ea $51 $c3
+    ld [MessageProgressionCopySourceX], a         ; $77f5: $ea $51 $c3
     add $3a                                       ; $77f8: $c6 $3a
-    ld [$c353], a                                 ; $77fa: $ea $53 $c3
+    ld [MessageProgressionCopyDestX], a           ; $77fa: $ea $53 $c3
     ld a, c                                       ; $77fd: $79
-    ld [$c352], a                                 ; $77fe: $ea $52 $c3
+    ld [MessageProgressionCopySourceY], a         ; $77fe: $ea $52 $c3
     add $0a                                       ; $7801: $c6 $0a
-    ld [$c354], a                                 ; $7803: $ea $54 $c3
-    call Call_000_08b3                            ; $7806: $cd $b3 $08
+    ld [MessageProgressionCopyDestY], a           ; $7803: $ea $54 $c3
+    call PrepareMessageProgressionCopy            ; $7806: $cd $b3 $08
     ret                                           ; $7809: $c9
 
 
@@ -8637,20 +8637,20 @@ jr_001_780f:
     push bc                                       ; $780f: $c5
     push hl                                       ; $7810: $e5
     ld a, l                                       ; $7811: $7d
-    ld [$c355], a                                 ; $7812: $ea $55 $c3
+    ld [MessageProgressionCopyBankAddressLow], a  ; $7812: $ea $55 $c3
     ld a, h                                       ; $7815: $7c
-    ld [$c356], a                                 ; $7816: $ea $56 $c3
+    ld [MessageProgressionCopyBankAddressHigh], a ; $7816: $ea $56 $c3
     ld a, $06                                     ; $7819: $3e $06
-    ld [$c357], a                                 ; $781b: $ea $57 $c3
+    ld [MessageProgressionCopyBank], a            ; $781b: $ea $57 $c3
     ld a, $3b                                     ; $781e: $3e $3b
-    ld [$c351], a                                 ; $7820: $ea $51 $c3
+    ld [MessageProgressionCopySourceX], a         ; $7820: $ea $51 $c3
     add $58                                       ; $7823: $c6 $58
-    ld [$c353], a                                 ; $7825: $ea $53 $c3
+    ld [MessageProgressionCopyDestX], a           ; $7825: $ea $53 $c3
     ld a, c                                       ; $7828: $79
-    ld [$c352], a                                 ; $7829: $ea $52 $c3
+    ld [MessageProgressionCopySourceY], a         ; $7829: $ea $52 $c3
     add $0b                                       ; $782c: $c6 $0b
-    ld [$c354], a                                 ; $782e: $ea $54 $c3
-    call Call_000_08b3                            ; $7831: $cd $b3 $08
+    ld [MessageProgressionCopyDestY], a           ; $782e: $ea $54 $c3
+    call PrepareMessageProgressionCopy            ; $7831: $cd $b3 $08
     pop hl                                        ; $7834: $e1
     pop bc                                        ; $7835: $c1
     ld de, $0108                                  ; $7836: $11 $08 $01
@@ -8669,20 +8669,20 @@ jr_001_7842:
     jr nz, jr_001_780f                            ; $7848: $20 $c5
 
     ld a, l                                       ; $784a: $7d
-    ld [$c355], a                                 ; $784b: $ea $55 $c3
+    ld [MessageProgressionCopyBankAddressLow], a  ; $784b: $ea $55 $c3
     ld a, h                                       ; $784e: $7c
-    ld [$c356], a                                 ; $784f: $ea $56 $c3
+    ld [MessageProgressionCopyBankAddressHigh], a ; $784f: $ea $56 $c3
     ld a, $06                                     ; $7852: $3e $06
-    ld [$c357], a                                 ; $7854: $ea $57 $c3
+    ld [MessageProgressionCopyBank], a            ; $7854: $ea $57 $c3
     ld a, $3b                                     ; $7857: $3e $3b
-    ld [$c351], a                                 ; $7859: $ea $51 $c3
+    ld [MessageProgressionCopySourceX], a         ; $7859: $ea $51 $c3
     add $58                                       ; $785c: $c6 $58
-    ld [$c353], a                                 ; $785e: $ea $53 $c3
+    ld [MessageProgressionCopyDestX], a           ; $785e: $ea $53 $c3
     ld a, c                                       ; $7861: $79
-    ld [$c352], a                                 ; $7862: $ea $52 $c3
+    ld [MessageProgressionCopySourceY], a         ; $7862: $ea $52 $c3
     add $04                                       ; $7865: $c6 $04
-    ld [$c354], a                                 ; $7867: $ea $54 $c3
-    call Call_000_08b3                            ; $786a: $cd $b3 $08
+    ld [MessageProgressionCopyDestY], a           ; $7867: $ea $54 $c3
+    call PrepareMessageProgressionCopy            ; $786a: $cd $b3 $08
     ret                                           ; $786d: $c9
 
 
@@ -8814,26 +8814,26 @@ jr_001_790f:
     ret                                           ; $7917: $c9
 
 
-Call_001_7918:
+AdvanceMessageScriptDelay::
     ld a, [$d817]                                 ; $7918: $fa $17 $d8
     and a                                         ; $791b: $a7
-    jr nz, jr_001_793e                            ; $791c: $20 $20
+    jr nz, .MessageDelayTick                      ; $791c: $20 $20
 
     ld a, [$d818]                                 ; $791e: $fa $18 $d8
     ld c, a                                       ; $7921: $4f
     ld b, $00                                     ; $7922: $06 $00
 
-jr_001_7924:
-    ld hl, $794e                                  ; $7924: $21 $4e $79
+FindNextDelayEntry::
+    ld hl, MessageScriptDelayTable                ; $7924: $21 $4e $79
     add hl, bc                                    ; $7927: $09
     ld a, [hl+]                                   ; $7928: $2a
     and a                                         ; $7929: $a7
-    jr nz, jr_001_7931                            ; $792a: $20 $05
+    jr nz, LoadDelayEntry                         ; $792a: $20 $05
 
     ld bc, $0000                                  ; $792c: $01 $00 $00
-    jr jr_001_7924                                ; $792f: $18 $f3
+    jr FindNextDelayEntry                         ; $792f: $18 $f3
 
-jr_001_7931:
+LoadDelayEntry::
     ld [$d817], a                                 ; $7931: $ea $17 $d8
     ld a, [hl]                                    ; $7934: $7e
     ld [$d816], a                                 ; $7935: $ea $16 $d8
@@ -8842,7 +8842,7 @@ jr_001_7931:
     ld a, c                                       ; $793a: $79
     ld [$d818], a                                 ; $793b: $ea $18 $d8
 
-jr_001_793e:
+.MessageDelayTick:
     ld hl, $d817                                  ; $793e: $21 $17 $d8
     dec [hl]                                      ; $7941: $35
     ld a, [$d816]                                 ; $7942: $fa $16 $d8
@@ -8850,29 +8850,19 @@ jr_001_793e:
     ret z                                         ; $7947: $c8
 
     ld bc, $1810                                  ; $7948: $01 $10 $18
-    jp Jump_000_20ce                              ; $794b: $c3 $ce $20
+    jp TODO_EmitMessageScriptById                 ; $794b: $c3 $ce $20
 
 
-    ret nz                                        ; $794e: $c0
-
-    rst $38                                       ; $794f: $ff
-    inc b                                         ; $7950: $04
-    nop                                           ; $7951: $00
-    inc b                                         ; $7952: $04
-    ld bc, $0002                                  ; $7953: $01 $02 $00
-    add b                                         ; $7956: $80
-    rst $38                                       ; $7957: $ff
-    inc bc                                        ; $7958: $03
-    nop                                           ; $7959: $00
-    dec b                                         ; $795a: $05
-    ld bc, $0002                                  ; $795b: $01 $02 $00
-    inc bc                                        ; $795e: $03
-    rst $38                                       ; $795f: $ff
-    inc bc                                        ; $7960: $03
-    nop                                           ; $7961: $00
-    dec b                                         ; $7962: $05
-    ld bc, $0002                                  ; $7963: $01 $02 $00
-    nop                                           ; $7966: $00
+MessageScriptDelayTable::
+    db $c0, $ff, $04
+    db $00, $04, $01
+    db $02, $00, $80
+    db $ff, $03, $00
+    db $05, $01, $02
+    db $00, $03, $ff
+    db $03, $00, $05
+    db $01, $02, $00
+    db $00
 
 Jump_001_7967:
 jr_001_7967:
@@ -8957,7 +8947,7 @@ jr_001_79ba:
     add $32                                       ; $79da: $c6 $32
     ld c, a                                       ; $79dc: $4f
     pop af                                        ; $79dd: $f1
-    call Call_000_20ce                            ; $79de: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $79de: $cd $ce $20
     ld a, [$d821]                                 ; $79e1: $fa $21 $d8
     cp $01                                        ; $79e4: $fe $01
     jr z, jr_001_79eb                             ; $79e6: $28 $03
@@ -8976,7 +8966,7 @@ jr_001_79eb:
 
     ld c, $06                                     ; $79f7: $0e $06
     ld a, $02                                     ; $79f9: $3e $02
-    call Call_000_03b6                            ; $79fb: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $79fb: $cd $b6 $03
     ret                                           ; $79fe: $c9
 
 
@@ -9176,7 +9166,7 @@ jr_001_7ad6:
 jr_001_7ae2:
     ld c, $0d                                     ; $7ae2: $0e $0d
     ld a, $02                                     ; $7ae4: $3e $02
-    call Call_000_03b6                            ; $7ae6: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $7ae6: $cd $b6 $03
     ret                                           ; $7ae9: $c9
 
 
@@ -9397,37 +9387,37 @@ Call_001_7c29:
     ld hl, $5840                                  ; $7c3c: $21 $40 $58
     add hl, de                                    ; $7c3f: $19
     ld a, l                                       ; $7c40: $7d
-    ld [$c355], a                                 ; $7c41: $ea $55 $c3
+    ld [MessageProgressionCopyBankAddressLow], a  ; $7c41: $ea $55 $c3
     ld a, h                                       ; $7c44: $7c
-    ld [$c356], a                                 ; $7c45: $ea $56 $c3
+    ld [MessageProgressionCopyBankAddressHigh], a ; $7c45: $ea $56 $c3
     ld a, $06                                     ; $7c48: $3e $06
-    ld [$c357], a                                 ; $7c4a: $ea $57 $c3
+    ld [MessageProgressionCopyBank], a            ; $7c4a: $ea $57 $c3
     ld a, b                                       ; $7c4d: $78
-    ld [$c351], a                                 ; $7c4e: $ea $51 $c3
+    ld [MessageProgressionCopySourceX], a         ; $7c4e: $ea $51 $c3
     add $07                                       ; $7c51: $c6 $07
-    ld [$c353], a                                 ; $7c53: $ea $53 $c3
+    ld [MessageProgressionCopyDestX], a           ; $7c53: $ea $53 $c3
     ld a, c                                       ; $7c56: $79
-    ld [$c352], a                                 ; $7c57: $ea $52 $c3
+    ld [MessageProgressionCopySourceY], a         ; $7c57: $ea $52 $c3
     add $07                                       ; $7c5a: $c6 $07
-    ld [$c354], a                                 ; $7c5c: $ea $54 $c3
-    jp Jump_000_08b3                              ; $7c5f: $c3 $b3 $08
+    ld [MessageProgressionCopyDestY], a           ; $7c5c: $ea $54 $c3
+    jp PrepareMessageProgressionCopy              ; $7c5f: $c3 $b3 $08
 
 
     ld a, $a0                                     ; $7c62: $3e $a0
-    ld [$c355], a                                 ; $7c64: $ea $55 $c3
+    ld [MessageProgressionCopyBankAddressLow], a  ; $7c64: $ea $55 $c3
     ld a, $5b                                     ; $7c67: $3e $5b
-    ld [$c356], a                                 ; $7c69: $ea $56 $c3
+    ld [MessageProgressionCopyBankAddressHigh], a ; $7c69: $ea $56 $c3
     ld a, $06                                     ; $7c6c: $3e $06
-    ld [$c357], a                                 ; $7c6e: $ea $57 $c3
+    ld [MessageProgressionCopyBank], a            ; $7c6e: $ea $57 $c3
     ld a, $08                                     ; $7c71: $3e $08
-    ld [$c351], a                                 ; $7c73: $ea $51 $c3
+    ld [MessageProgressionCopySourceX], a         ; $7c73: $ea $51 $c3
     add $2f                                       ; $7c76: $c6 $2f
-    ld [$c353], a                                 ; $7c78: $ea $53 $c3
+    ld [MessageProgressionCopyDestX], a           ; $7c78: $ea $53 $c3
     ld a, $26                                     ; $7c7b: $3e $26
-    ld [$c352], a                                 ; $7c7d: $ea $52 $c3
+    ld [MessageProgressionCopySourceY], a         ; $7c7d: $ea $52 $c3
     add $09                                       ; $7c80: $c6 $09
-    ld [$c354], a                                 ; $7c82: $ea $54 $c3
-    jp Jump_000_08b3                              ; $7c85: $c3 $b3 $08
+    ld [MessageProgressionCopyDestY], a           ; $7c82: $ea $54 $c3
+    jp PrepareMessageProgressionCopy              ; $7c85: $c3 $b3 $08
 
 
 Call_001_7c88:
@@ -9499,20 +9489,20 @@ Call_001_7ce3:
 
 Jump_001_7cf3:
     ld a, $00                                     ; $7cf3: $3e $00
-    ld [$c355], a                                 ; $7cf5: $ea $55 $c3
+    ld [MessageProgressionCopyBankAddressLow], a  ; $7cf5: $ea $55 $c3
     ld a, $63                                     ; $7cf8: $3e $63
-    ld [$c356], a                                 ; $7cfa: $ea $56 $c3
+    ld [MessageProgressionCopyBankAddressHigh], a ; $7cfa: $ea $56 $c3
     ld a, $07                                     ; $7cfd: $3e $07
-    ld [$c357], a                                 ; $7cff: $ea $57 $c3
+    ld [MessageProgressionCopyBank], a            ; $7cff: $ea $57 $c3
     ld a, $3c                                     ; $7d02: $3e $3c
-    ld [$c351], a                                 ; $7d04: $ea $51 $c3
+    ld [MessageProgressionCopySourceX], a         ; $7d04: $ea $51 $c3
     add $1a                                       ; $7d07: $c6 $1a
-    ld [$c353], a                                 ; $7d09: $ea $53 $c3
+    ld [MessageProgressionCopyDestX], a           ; $7d09: $ea $53 $c3
     ld a, $3a                                     ; $7d0c: $3e $3a
-    ld [$c352], a                                 ; $7d0e: $ea $52 $c3
+    ld [MessageProgressionCopySourceY], a         ; $7d0e: $ea $52 $c3
     add $0f                                       ; $7d11: $c6 $0f
-    ld [$c354], a                                 ; $7d13: $ea $54 $c3
-    jp Jump_000_08b3                              ; $7d16: $c3 $b3 $08
+    ld [MessageProgressionCopyDestY], a           ; $7d13: $ea $54 $c3
+    jp PrepareMessageProgressionCopy              ; $7d16: $c3 $b3 $08
 
 
 Jump_001_7d19:
@@ -9522,20 +9512,20 @@ Jump_001_7d19:
     ld bc, $0200                                  ; $7d21: $01 $00 $02
     call BankedTileCopyVRAMSafe                   ; $7d24: $cd $38 $05
     ld a, $00                                     ; $7d27: $3e $00
-    ld [$c355], a                                 ; $7d29: $ea $55 $c3
+    ld [MessageProgressionCopyBankAddressLow], a  ; $7d29: $ea $55 $c3
     ld a, $5b                                     ; $7d2c: $3e $5b
-    ld [$c356], a                                 ; $7d2e: $ea $56 $c3
+    ld [MessageProgressionCopyBankAddressHigh], a ; $7d2e: $ea $56 $c3
     ld a, $06                                     ; $7d31: $3e $06
-    ld [$c357], a                                 ; $7d33: $ea $57 $c3
+    ld [MessageProgressionCopyBank], a            ; $7d33: $ea $57 $c3
     ld a, $38                                     ; $7d36: $3e $38
-    ld [$c351], a                                 ; $7d38: $ea $51 $c3
+    ld [MessageProgressionCopySourceX], a         ; $7d38: $ea $51 $c3
     add $3f                                       ; $7d3b: $c6 $3f
-    ld [$c353], a                                 ; $7d3d: $ea $53 $c3
+    ld [MessageProgressionCopyDestX], a           ; $7d3d: $ea $53 $c3
     ld a, $49                                     ; $7d40: $3e $49
-    ld [$c352], a                                 ; $7d42: $ea $52 $c3
+    ld [MessageProgressionCopySourceY], a         ; $7d42: $ea $52 $c3
     add $0f                                       ; $7d45: $c6 $0f
-    ld [$c354], a                                 ; $7d47: $ea $54 $c3
-    jp Jump_000_08b3                              ; $7d4a: $c3 $b3 $08
+    ld [MessageProgressionCopyDestY], a           ; $7d47: $ea $54 $c3
+    jp PrepareMessageProgressionCopy              ; $7d4a: $c3 $b3 $08
 
 
 Jump_001_7d4d:
@@ -9545,20 +9535,20 @@ Jump_001_7d4d:
     ld bc, $0200                                  ; $7d55: $01 $00 $02
     call BankedTileCopyVRAMSafe                   ; $7d58: $cd $38 $05
     ld a, $00                                     ; $7d5b: $3e $00
-    ld [$c355], a                                 ; $7d5d: $ea $55 $c3
+    ld [MessageProgressionCopyBankAddressLow], a  ; $7d5d: $ea $55 $c3
     ld a, $5b                                     ; $7d60: $3e $5b
-    ld [$c356], a                                 ; $7d62: $ea $56 $c3
+    ld [MessageProgressionCopyBankAddressHigh], a ; $7d62: $ea $56 $c3
     ld a, $06                                     ; $7d65: $3e $06
-    ld [$c357], a                                 ; $7d67: $ea $57 $c3
+    ld [MessageProgressionCopyBank], a            ; $7d67: $ea $57 $c3
     ld a, $47                                     ; $7d6a: $3e $47
-    ld [$c351], a                                 ; $7d6c: $ea $51 $c3
+    ld [MessageProgressionCopySourceX], a         ; $7d6c: $ea $51 $c3
     add $3f                                       ; $7d6f: $c6 $3f
-    ld [$c353], a                                 ; $7d71: $ea $53 $c3
+    ld [MessageProgressionCopyDestX], a           ; $7d71: $ea $53 $c3
     ld a, $57                                     ; $7d74: $3e $57
-    ld [$c352], a                                 ; $7d76: $ea $52 $c3
+    ld [MessageProgressionCopySourceY], a         ; $7d76: $ea $52 $c3
     add $0f                                       ; $7d79: $c6 $0f
-    ld [$c354], a                                 ; $7d7b: $ea $54 $c3
-    jp Jump_000_08b3                              ; $7d7e: $c3 $b3 $08
+    ld [MessageProgressionCopyDestY], a           ; $7d7b: $ea $54 $c3
+    jp PrepareMessageProgressionCopy              ; $7d7e: $c3 $b3 $08
 
 
 Call_001_7d81:
@@ -9584,7 +9574,7 @@ jr_001_7d9c:
     ld a, $09                                     ; $7d9c: $3e $09
 
 jr_001_7d9e:
-    call Call_000_20ce                            ; $7d9e: $cd $ce $20
+    call TODO_EmitMessageScriptById               ; $7d9e: $cd $ce $20
     ld a, [$c33a]                                 ; $7da1: $fa $3a $c3
     and $03                                       ; $7da4: $e6 $03
     jr nz, jr_001_7daf                            ; $7da6: $20 $07
@@ -9680,11 +9670,11 @@ Call_001_7dfe:
     add hl, bc                                    ; $7e1b: $09
     ld c, $00                                     ; $7e1c: $0e $00
     ld a, $01                                     ; $7e1e: $3e $01
-    call Call_000_03b6                            ; $7e20: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $7e20: $cd $b6 $03
     call Call_000_0399                            ; $7e23: $cd $99 $03
     ld c, [hl]                                    ; $7e26: $4e
     ld a, $01                                     ; $7e27: $3e $01
-    call Call_000_03b6                            ; $7e29: $cd $b6 $03
+    call TODO_Bank0FDispatcher                    ; $7e29: $cd $b6 $03
     ret                                           ; $7e2c: $c9
 
 
@@ -9761,7 +9751,7 @@ jr_001_7e6a:
 jr_001_7e6f:
     ld bc, $2e0c                                  ; $7e6f: $01 $0c $2e
     ld a, $0a                                     ; $7e72: $3e $0a
-    jp Jump_000_20ce                              ; $7e74: $c3 $ce $20
+    jp TODO_EmitMessageScriptById                 ; $7e74: $c3 $ce $20
 
 
 Call_001_7e77:

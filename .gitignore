@@ -1,5 +1,6 @@
 *.gb
 *.sav
+.github/
 __pycache__/
 disassembly/game.map
 disassembly/game.o
