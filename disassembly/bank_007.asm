@@ -2558,7 +2558,7 @@ Picross5x5GameBoardTileData::
     nop                                           ; $6211: $00
     ld [hl], b                                    ; $6212: $70
     ld [hl], b                                    ; $6213: $70
-    ld [$3008], sp                                ; $6214: $08 $08 $30
+    ld [.LoopCallbackReturn], sp                  ; $6214: $08 $08 $30
     jr nc, jr_007_6259                            ; $6217: $30 $40
 
     ld b, b                                       ; $6219: $40
@@ -2572,7 +2572,7 @@ Picross5x5GameBoardTileData::
     nop                                           ; $6221: $00
     ld [hl], b                                    ; $6222: $70
     ld [hl], b                                    ; $6223: $70
-    ld [$3008], sp                                ; $6224: $08 $08 $30
+    ld [.LoopCallbackReturn], sp                  ; $6224: $08 $08 $30
     jr nc, jr_007_6231                            ; $6227: $30 $08
 
     ld [$7070], sp                                ; $6229: $08 $70 $70
@@ -5093,278 +5093,17 @@ jr_007_6b66:
     nop                                           ; $6bfd: $00
     rst $38                                       ; $6bfe: $ff
     nop                                           ; $6bff: $00
-    rst $38                                       ; $6c00: $ff
-    nop                                           ; $6c01: $00
-    rst $38                                       ; $6c02: $ff
-    nop                                           ; $6c03: $00
-    rst $38                                       ; $6c04: $ff
-    nop                                           ; $6c05: $00
-    rst $38                                       ; $6c06: $ff
-    nop                                           ; $6c07: $00
-    rst $38                                       ; $6c08: $ff
-    nop                                           ; $6c09: $00
-    rst $38                                       ; $6c0a: $ff
-    nop                                           ; $6c0b: $00
-    rst $38                                       ; $6c0c: $ff
-    nop                                           ; $6c0d: $00
-    rst $38                                       ; $6c0e: $ff
-    nop                                           ; $6c0f: $00
-    rst $38                                       ; $6c10: $ff
-    nop                                           ; $6c11: $00
-    rst $38                                       ; $6c12: $ff
-    nop                                           ; $6c13: $00
-    rst $38                                       ; $6c14: $ff
-    nop                                           ; $6c15: $00
-    rst $38                                       ; $6c16: $ff
-    nop                                           ; $6c17: $00
-    rst $38                                       ; $6c18: $ff
-    nop                                           ; $6c19: $00
-    rst $38                                       ; $6c1a: $ff
-    nop                                           ; $6c1b: $00
-    rst $38                                       ; $6c1c: $ff
-    nop                                           ; $6c1d: $00
-    rst $38                                       ; $6c1e: $ff
-    nop                                           ; $6c1f: $00
-    rst $38                                       ; $6c20: $ff
-    nop                                           ; $6c21: $00
-    rst $38                                       ; $6c22: $ff
-    nop                                           ; $6c23: $00
-    rst $38                                       ; $6c24: $ff
-    nop                                           ; $6c25: $00
-    rst $38                                       ; $6c26: $ff
-    nop                                           ; $6c27: $00
-    rst $38                                       ; $6c28: $ff
-    nop                                           ; $6c29: $00
-    rst $38                                       ; $6c2a: $ff
-    nop                                           ; $6c2b: $00
-    rst $38                                       ; $6c2c: $ff
-    nop                                           ; $6c2d: $00
-    rst $38                                       ; $6c2e: $ff
-    nop                                           ; $6c2f: $00
-    rst $38                                       ; $6c30: $ff
-    nop                                           ; $6c31: $00
-    rst $38                                       ; $6c32: $ff
-    nop                                           ; $6c33: $00
-    rst $38                                       ; $6c34: $ff
-    nop                                           ; $6c35: $00
-    rst $38                                       ; $6c36: $ff
-    nop                                           ; $6c37: $00
-    rst $38                                       ; $6c38: $ff
-    nop                                           ; $6c39: $00
-    rst $38                                       ; $6c3a: $ff
-    nop                                           ; $6c3b: $00
-    rst $38                                       ; $6c3c: $ff
-    nop                                           ; $6c3d: $00
-    rst $38                                       ; $6c3e: $ff
-    nop                                           ; $6c3f: $00
-    rst $38                                       ; $6c40: $ff
-    nop                                           ; $6c41: $00
-    rst $38                                       ; $6c42: $ff
-    nop                                           ; $6c43: $00
-    rst $38                                       ; $6c44: $ff
-    nop                                           ; $6c45: $00
-    rst $38                                       ; $6c46: $ff
-    nop                                           ; $6c47: $00
-    rst $38                                       ; $6c48: $ff
-    nop                                           ; $6c49: $00
-    rst $38                                       ; $6c4a: $ff
-    nop                                           ; $6c4b: $00
-    rst $38                                       ; $6c4c: $ff
-    nop                                           ; $6c4d: $00
-    rst $38                                       ; $6c4e: $ff
-    nop                                           ; $6c4f: $00
-    rst $38                                       ; $6c50: $ff
-    nop                                           ; $6c51: $00
-    rst $38                                       ; $6c52: $ff
-    nop                                           ; $6c53: $00
-    rst $38                                       ; $6c54: $ff
-    nop                                           ; $6c55: $00
-    rst $38                                       ; $6c56: $ff
-    nop                                           ; $6c57: $00
-    rst $38                                       ; $6c58: $ff
-    nop                                           ; $6c59: $00
-    rst $38                                       ; $6c5a: $ff
-    nop                                           ; $6c5b: $00
-    rst $38                                       ; $6c5c: $ff
-    nop                                           ; $6c5d: $00
-    rst $38                                       ; $6c5e: $ff
-    nop                                           ; $6c5f: $00
-    rst $38                                       ; $6c60: $ff
-    nop                                           ; $6c61: $00
-    rst $38                                       ; $6c62: $ff
-    nop                                           ; $6c63: $00
-    rst $38                                       ; $6c64: $ff
-    nop                                           ; $6c65: $00
-    rst $38                                       ; $6c66: $ff
-    nop                                           ; $6c67: $00
-    rst $38                                       ; $6c68: $ff
-    nop                                           ; $6c69: $00
-    rst $38                                       ; $6c6a: $ff
-    nop                                           ; $6c6b: $00
-    rst $38                                       ; $6c6c: $ff
-    nop                                           ; $6c6d: $00
-    rst $38                                       ; $6c6e: $ff
-    nop                                           ; $6c6f: $00
-    rst $38                                       ; $6c70: $ff
-    nop                                           ; $6c71: $00
-    rst $38                                       ; $6c72: $ff
-    nop                                           ; $6c73: $00
-    rst $38                                       ; $6c74: $ff
-    nop                                           ; $6c75: $00
-    rst $38                                       ; $6c76: $ff
-    nop                                           ; $6c77: $00
-    rst $38                                       ; $6c78: $ff
-    nop                                           ; $6c79: $00
-    rst $38                                       ; $6c7a: $ff
-    nop                                           ; $6c7b: $00
-    rst $38                                       ; $6c7c: $ff
-    nop                                           ; $6c7d: $00
-    rst $38                                       ; $6c7e: $ff
-    nop                                           ; $6c7f: $00
-    rst $38                                       ; $6c80: $ff
-    nop                                           ; $6c81: $00
-    rst $38                                       ; $6c82: $ff
-    nop                                           ; $6c83: $00
-    rst $38                                       ; $6c84: $ff
-    nop                                           ; $6c85: $00
-    rst $38                                       ; $6c86: $ff
-    nop                                           ; $6c87: $00
-    rst $38                                       ; $6c88: $ff
-    nop                                           ; $6c89: $00
-    rst $38                                       ; $6c8a: $ff
-    nop                                           ; $6c8b: $00
-    rst $38                                       ; $6c8c: $ff
-    nop                                           ; $6c8d: $00
-    rst $38                                       ; $6c8e: $ff
-    nop                                           ; $6c8f: $00
-    rst $38                                       ; $6c90: $ff
-    nop                                           ; $6c91: $00
-    rst $38                                       ; $6c92: $ff
-    nop                                           ; $6c93: $00
-    rst $38                                       ; $6c94: $ff
-    nop                                           ; $6c95: $00
-    rst $38                                       ; $6c96: $ff
-    nop                                           ; $6c97: $00
-    rst $38                                       ; $6c98: $ff
-    nop                                           ; $6c99: $00
-    rst $38                                       ; $6c9a: $ff
-    nop                                           ; $6c9b: $00
-    rst $38                                       ; $6c9c: $ff
-    nop                                           ; $6c9d: $00
-    rst $38                                       ; $6c9e: $ff
-    nop                                           ; $6c9f: $00
-    rst $38                                       ; $6ca0: $ff
-    nop                                           ; $6ca1: $00
-    rst $38                                       ; $6ca2: $ff
-    nop                                           ; $6ca3: $00
-    rst $38                                       ; $6ca4: $ff
-    nop                                           ; $6ca5: $00
-    rst $38                                       ; $6ca6: $ff
-    nop                                           ; $6ca7: $00
-    rst $38                                       ; $6ca8: $ff
-    nop                                           ; $6ca9: $00
-    rst $38                                       ; $6caa: $ff
-    nop                                           ; $6cab: $00
-    rst $38                                       ; $6cac: $ff
-    nop                                           ; $6cad: $00
-    rst $38                                       ; $6cae: $ff
-    nop                                           ; $6caf: $00
-    rst $38                                       ; $6cb0: $ff
-    nop                                           ; $6cb1: $00
-    rst $38                                       ; $6cb2: $ff
-    nop                                           ; $6cb3: $00
-    rst $38                                       ; $6cb4: $ff
-    nop                                           ; $6cb5: $00
-    rst $38                                       ; $6cb6: $ff
-    nop                                           ; $6cb7: $00
-    rst $38                                       ; $6cb8: $ff
-    nop                                           ; $6cb9: $00
-    rst $38                                       ; $6cba: $ff
-    nop                                           ; $6cbb: $00
-    rst $38                                       ; $6cbc: $ff
-    nop                                           ; $6cbd: $00
-    rst $38                                       ; $6cbe: $ff
-    nop                                           ; $6cbf: $00
-    rst $38                                       ; $6cc0: $ff
-    nop                                           ; $6cc1: $00
-    rst $38                                       ; $6cc2: $ff
-    nop                                           ; $6cc3: $00
-    rst $38                                       ; $6cc4: $ff
-    nop                                           ; $6cc5: $00
-    rst $38                                       ; $6cc6: $ff
-    nop                                           ; $6cc7: $00
-    rst $38                                       ; $6cc8: $ff
-    nop                                           ; $6cc9: $00
-    rst $38                                       ; $6cca: $ff
-    nop                                           ; $6ccb: $00
-    rst $38                                       ; $6ccc: $ff
-    nop                                           ; $6ccd: $00
-    rst $38                                       ; $6cce: $ff
-    nop                                           ; $6ccf: $00
-    rst $38                                       ; $6cd0: $ff
-    nop                                           ; $6cd1: $00
-    rst $38                                       ; $6cd2: $ff
-    nop                                           ; $6cd3: $00
-    rst $38                                       ; $6cd4: $ff
-    nop                                           ; $6cd5: $00
-    rst $38                                       ; $6cd6: $ff
-    nop                                           ; $6cd7: $00
-    rst $38                                       ; $6cd8: $ff
-    nop                                           ; $6cd9: $00
-    rst $38                                       ; $6cda: $ff
-    nop                                           ; $6cdb: $00
-    rst $38                                       ; $6cdc: $ff
-    nop                                           ; $6cdd: $00
-    rst $38                                       ; $6cde: $ff
-    nop                                           ; $6cdf: $00
-    rst $38                                       ; $6ce0: $ff
-    nop                                           ; $6ce1: $00
-    rst $38                                       ; $6ce2: $ff
-    nop                                           ; $6ce3: $00
-    rst $38                                       ; $6ce4: $ff
-    nop                                           ; $6ce5: $00
-    rst $38                                       ; $6ce6: $ff
-    nop                                           ; $6ce7: $00
-    rst $38                                       ; $6ce8: $ff
-    nop                                           ; $6ce9: $00
-    rst $38                                       ; $6cea: $ff
-    nop                                           ; $6ceb: $00
-    rst $38                                       ; $6cec: $ff
-    nop                                           ; $6ced: $00
-    rst $38                                       ; $6cee: $ff
-    nop                                           ; $6cef: $00
-    rst $38                                       ; $6cf0: $ff
-    nop                                           ; $6cf1: $00
-    rst $38                                       ; $6cf2: $ff
-    nop                                           ; $6cf3: $00
-    rst $38                                       ; $6cf4: $ff
-    nop                                           ; $6cf5: $00
-    rst $38                                       ; $6cf6: $ff
-    nop                                           ; $6cf7: $00
-    rst $38                                       ; $6cf8: $ff
-    nop                                           ; $6cf9: $00
-    rst $38                                       ; $6cfa: $ff
-    nop                                           ; $6cfb: $00
-    rst $38                                       ; $6cfc: $ff
-    nop                                           ; $6cfd: $00
-    rst $38                                       ; $6cfe: $ff
-    nop                                           ; $6cff: $00
-    rst $38                                       ; $6d00: $ff
-    nop                                           ; $6d01: $00
-    rst $38                                       ; $6d02: $ff
-    nop                                           ; $6d03: $00
-    rst $38                                       ; $6d04: $ff
-    nop                                           ; $6d05: $00
-    rst $38                                       ; $6d06: $ff
-    nop                                           ; $6d07: $00
-    rst $38                                       ; $6d08: $ff
-    nop                                           ; $6d09: $00
-    rst $38                                       ; $6d0a: $ff
-    nop                                           ; $6d0b: $00
-    rst $38                                       ; $6d0c: $ff
-    nop                                           ; $6d0d: $00
-    rst $38                                       ; $6d0e: $ff
-    nop                                           ; $6d0f: $00
+
+GS06_RedrawSourceData_Bank07::
+    db $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00
+    db $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00
+    db $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00
+    db $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00
+    db $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00
+    db $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00
+    db $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00
+    db $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00, $ff, $00
+
     rst $38                                       ; $6d10: $ff
     nop                                           ; $6d11: $00
     rst $38                                       ; $6d12: $ff

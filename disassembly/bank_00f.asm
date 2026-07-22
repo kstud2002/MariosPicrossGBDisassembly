@@ -4847,7 +4847,9 @@ jr_00f_566f:
     ld [hl+], a                                   ; $56d4: $22
     inc b                                         ; $56d5: $04
     inc b                                         ; $56d6: $04
-    call nc, Call_000_20fc                        ; $56d7: $d4 $fc $20
+
+    db $d4, $fc, $20
+
     ei                                            ; $56da: $fb
     ld de, $d404                                  ; $56db: $11 $04 $d4
     inc b                                         ; $56de: $04
@@ -4873,7 +4875,9 @@ jr_00f_56e9:
     ld [hl+], a                                   ; $56f4: $22
     inc b                                         ; $56f5: $04
     inc b                                         ; $56f6: $04
-    call nc, Call_000_20fc                        ; $56f7: $d4 $fc $20
+
+    db $d4, $fc, $20
+
     ei                                            ; $56fa: $fb
     ld de, $0202                                  ; $56fb: $11 $02 $02
     inc b                                         ; $56fe: $04

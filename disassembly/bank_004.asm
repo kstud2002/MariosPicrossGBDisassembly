@@ -4116,7 +4116,7 @@ jr_004_512f:
     rst $38                                       ; $5143: $ff
     nop                                           ; $5144: $00
     rst $38                                       ; $5145: $ff
-    ld sp, TODO_EmitMessageScriptById             ; $5146: $31 $ce $20
+    ld sp, EmitMessageScriptById                  ; $5146: $31 $ce $20
     rst RST_18                                    ; $5149: $df
     nop                                           ; $514a: $00
     rst $38                                       ; $514b: $ff
