@@ -7769,7 +7769,9 @@ Call_00f_60ee:
     inc h                                         ; $63e1: $24
     inc [hl]                                      ; $63e2: $34
     ld b, h                                       ; $63e3: $44
-    call nc, Call_000_1a0a                        ; $63e4: $d4 $0a $1a
+
+    db $d4, $0a, $1a
+
     ld a, [hl+]                                   ; $63e7: $2a
     ld a, d                                       ; $63e8: $7a
     ld [$b4a4], a                                 ; $63e9: $ea $a4 $b4

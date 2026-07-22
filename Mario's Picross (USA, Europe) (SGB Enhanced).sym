@@ -8,6 +8,7 @@
 00:c314 rRequestedROMBank
 00:d634 rGameState_Current
 00:d635 rStatePhase_Current
+00:d63c rStatePhaseTimer
 00:d800 rCurrentGridSize
 00:d819 rGS06_MessageSequenceMessageId
 00:d81a rGS06_MessageSequenceCountdown
@@ -41,6 +42,14 @@
 00:c360 rMessageProgressionCopyValueG
 00:c361 rMessageProgressionCopyValueH
 00:c362 rMessageProgressionCopyValueI
+00:cda2 rGS06_SequenceMessageScriptBaseLow
+00:cda3 rGS06_SequenceMessageScriptBaseHigh
+00:cda4 rGS06_SequenceEventMessageId
+00:cda5 rGS06_SequenceEventDelay
+00:cda6 rGS06_SequenceEventCursor
+00:cda7 rGS06_SequenceEventTableLow
+00:cda8 rGS06_SequenceEventTableHigh
+00:cda9 rGS06_SequenceEventTableBank
 00:f636 rLevelSelectColumn
 00:f637 rLevelSelectRow
 
@@ -114,6 +123,11 @@
 
 00:2000 ROMBankSwitchTrigger
 ;00:4000 RAMBankSwitchTrigger
+
+00:19bd GS06_UpdateSequenceEventAndEmitMessage
+00:19eb .LoadNextSequenceEvent
+00:19fc .ApplySequenceEvent
+00:1a23 .TickSequenceEventDelayAndEmit
 
 00:20ce EmitMessageScriptById
 00:20f0 .CopyMessageScriptLoop
@@ -253,13 +267,15 @@
 
 00:218a GS06_StatePhase_00_Init
 00:2282 GS06_StatePhase_01_Message
-00:22aa GS06_StatePhase_02_HighlightNumbersTop
-00:22e1 GS06_StatePhase_02_Data
+00:22aa GS06_StatePhase_02_HighlightNumbersTop_Prepare
+00:22e1 GS06_StatePhase_02_HighlightNumbersTop_SequenceEventTable
 00:22e1 .data:0011:4
-00:22f2 GS06_StatePhase_03_TODO
-00:2310 GS06_StatePhase_04_TODO
-00:2358 GS06_StatePhase_05_TODO
-00:2376 GS06_StatePhase_06_TODO
+00:22f2 GS06_StatePhase_03_HighlightNumbersTop_Animation
+00:2310 GS06_StatePhase_04_HighlightNumbersLeft_Prepare
+00:2347 GS06_StatePhase_04_HighlightNumbersLeft_SequenceEventTable
+00:2347 .data:0011:4
+00:2358 GS06_StatePhase_05_HighlightNumbersLeft_Animation
+00:2376 GS06_StatePhase_06_Message
 00:239e GS06_StatePhase_07_TODO
 00:23c6 GS06_StatePhase_08_TODO
 00:246d GS06_StatePhase_09_TODO
@@ -317,6 +333,10 @@
 00:2fd8 .CheckCancelInputStart
 00:2fea .WaitLoopBody
 00:3008 .LoopCallbackReturn
+
+00:3012 GS06_EmitPromptAndTickTransitionTimer
+00:3029 .TickTransitionTimer
+
 00:302e GS06_CopyRedrawSourceToProgressionBuffer
 00:3071 GS06_PrepareRedrawSourceCopy
 
@@ -326,6 +346,8 @@
 00:30b9 .TickAndEmitCurrentEntry
 00:30c9 GS06_MessageSequencePatternData
 00:30c9 .data:000d:2
+
+00:323e GS06_ResetMessageSequenceState
 
 00:324f .padding:5b1
 00:3800 .data:100
@@ -1670,11 +1692,11 @@
 03:736d .data:0019:4
 03:7386 MessageData_Event33
 03:7386 .data:0019:4
-03:739f MessageData_Event34
+03:739f MessageData_Event34_HighlightNumbers_Frame1
 03:739f .data:0041:4
-03:73e0 MessageData_Event35
+03:73e0 MessageData_Event35_HighlightNumbers_Frame2
 03:73e0 .data:0041:4
-03:7421 MessageData_Event36
+03:7421 MessageData_Event36_HighlightNumbers_Frame3
 03:7421 .data:0041:4
 03:7462 MessageData_Event37_AButtonPrompt
 03:7462 .data:0005:4
@@ -2261,7 +2283,8 @@
 0f:51ee .data:3
 0f:5208 .data:3
 0f:564d .data:3
-0f:6396 .data:3
-0f:6a99 .data:3
-0f:56f7 .data:3
 0f:56d7 .data:3
+0f:56f7 .data:3
+0f:6396 .data:3
+0f:63e4 .data:3
+0f:6a99 .data:3

@@ -3462,13 +3462,13 @@ jr_003_4dd3:
     nop                                           ; $4e7e: $00
     nop                                           ; $4e7f: $00
     xor a                                         ; $4e80: $af
-    ld [$d63c], a                                 ; $4e81: $ea $3c $d6
+    ld [rStatePhaseTimer], a                      ; $4e81: $ea $3c $d6
     ld [$d63d], a                                 ; $4e84: $ea $3d $d6
     jp Jump_000_05ea                              ; $4e87: $c3 $ea $05
 
 
 jr_003_4e8a:
-    ld a, [$d63c]                                 ; $4e8a: $fa $3c $d6
+    ld a, [rStatePhaseTimer]                      ; $4e8a: $fa $3c $d6
     inc a                                         ; $4e8d: $3c
     cp $46                                        ; $4e8e: $fe $46
     jr c, jr_003_4e93                             ; $4e90: $38 $01
@@ -3476,7 +3476,7 @@ jr_003_4e8a:
     xor a                                         ; $4e92: $af
 
 jr_003_4e93:
-    ld [$d63c], a                                 ; $4e93: $ea $3c $d6
+    ld [rStatePhaseTimer], a                      ; $4e93: $ea $3c $d6
     cp $30                                        ; $4e96: $fe $30
     jp nc, Jump_000_05ea                          ; $4e98: $d2 $ea $05
 
@@ -3486,7 +3486,7 @@ jr_003_4e93:
     jp Jump_000_05ea                              ; $4ea3: $c3 $ea $05
 
 
-    ld a, [$d63c]                                 ; $4ea6: $fa $3c $d6
+    ld a, [rStatePhaseTimer]                      ; $4ea6: $fa $3c $d6
     inc a                                         ; $4ea9: $3c
     cp $46                                        ; $4eaa: $fe $46
     jr c, jr_003_4eaf                             ; $4eac: $38 $01
@@ -3494,7 +3494,7 @@ jr_003_4e93:
     xor a                                         ; $4eae: $af
 
 jr_003_4eaf:
-    ld [$d63c], a                                 ; $4eaf: $ea $3c $d6
+    ld [rStatePhaseTimer], a                      ; $4eaf: $ea $3c $d6
     cp $30                                        ; $4eb2: $fe $30
     jp nc, Jump_000_05ea                          ; $4eb4: $d2 $ea $05
 
@@ -3504,7 +3504,7 @@ jr_003_4eaf:
     jp Jump_000_05ea                              ; $4ebf: $c3 $ea $05
 
 
-    ld a, [$d63c]                                 ; $4ec2: $fa $3c $d6
+    ld a, [rStatePhaseTimer]                      ; $4ec2: $fa $3c $d6
     inc a                                         ; $4ec5: $3c
     cp $46                                        ; $4ec6: $fe $46
     jr c, jr_003_4ed3                             ; $4ec8: $38 $09
@@ -3515,7 +3515,7 @@ jr_003_4eaf:
     xor a                                         ; $4ed2: $af
 
 jr_003_4ed3:
-    ld [$d63c], a                                 ; $4ed3: $ea $3c $d6
+    ld [rStatePhaseTimer], a                      ; $4ed3: $ea $3c $d6
     cp $30                                        ; $4ed6: $fe $30
     jp nc, Jump_000_05ea                          ; $4ed8: $d2 $ea $05
 
@@ -3526,7 +3526,7 @@ jr_003_4ed3:
     jp Jump_000_05ea                              ; $4ee6: $c3 $ea $05
 
 
-    ld a, [$d63c]                                 ; $4ee9: $fa $3c $d6
+    ld a, [rStatePhaseTimer]                      ; $4ee9: $fa $3c $d6
     inc a                                         ; $4eec: $3c
     cp $46                                        ; $4eed: $fe $46
     jr c, jr_003_4efa                             ; $4eef: $38 $09
@@ -3537,7 +3537,7 @@ jr_003_4ed3:
     xor a                                         ; $4ef9: $af
 
 jr_003_4efa:
-    ld [$d63c], a                                 ; $4efa: $ea $3c $d6
+    ld [rStatePhaseTimer], a                      ; $4efa: $ea $3c $d6
     cp $30                                        ; $4efd: $fe $30
     jp nc, Jump_000_05ea                          ; $4eff: $d2 $ea $05
 
@@ -3548,7 +3548,7 @@ jr_003_4efa:
     jp Jump_000_05ea                              ; $4f0d: $c3 $ea $05
 
 
-    ld a, [$d63c]                                 ; $4f10: $fa $3c $d6
+    ld a, [rStatePhaseTimer]                      ; $4f10: $fa $3c $d6
     inc a                                         ; $4f13: $3c
     cp $46                                        ; $4f14: $fe $46
     jr c, jr_003_4f21                             ; $4f16: $38 $09
@@ -3559,7 +3559,7 @@ jr_003_4efa:
     xor a                                         ; $4f20: $af
 
 jr_003_4f21:
-    ld [$d63c], a                                 ; $4f21: $ea $3c $d6
+    ld [rStatePhaseTimer], a                      ; $4f21: $ea $3c $d6
     cp $30                                        ; $4f24: $fe $30
     jp nc, Jump_000_05ea                          ; $4f26: $d2 $ea $05
 
@@ -11239,7 +11239,7 @@ MessageData_Event33::
     db $10, $00, $09, $30
     db $ff
 
-MessageData_Event34::
+MessageData_Event34_HighlightNumbers_Frame1::
     db $10, $08, $07, $10
     db $18, $08, $07, $10
     db $20, $08, $07, $10
@@ -11258,7 +11258,7 @@ MessageData_Event34::
     db $08, $20, $0a, $50
     db $ff
 
-MessageData_Event35::
+MessageData_Event35_HighlightNumbers_Frame2::
     db $10, $08, $08, $10
     db $18, $08, $08, $10
     db $20, $08, $08, $10
@@ -11277,7 +11277,7 @@ MessageData_Event35::
     db $08, $20, $0b, $50
     db $ff
 
-MessageData_Event36::
+MessageData_Event36_HighlightNumbers_Frame3::
     db $10, $08, $09, $10
     db $18, $08, $09, $10
     db $20, $08, $09, $10

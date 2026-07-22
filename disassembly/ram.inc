@@ -23,8 +23,17 @@ DEF rMessageProgressionCopyValueF EQU $c35f
 DEF rMessageProgressionCopyValueG EQU $c360
 DEF rMessageProgressionCopyValueH EQU $c361
 DEF rMessageProgressionCopyValueI EQU $c362
+DEF rGS06_SequenceMessageScriptBaseLow EQU $cda2
+DEF rGS06_SequenceMessageScriptBaseHigh EQU $cda3
+DEF rGS06_SequenceEventMessageId EQU $cda4
+DEF rGS06_SequenceEventDelay EQU $cda5
+DEF rGS06_SequenceEventCursor EQU $cda6
+DEF rGS06_SequenceEventTableLow EQU $cda7
+DEF rGS06_SequenceEventTableHigh EQU $cda8
+DEF rGS06_SequenceEventTableBank EQU $cda9
 DEF rGameState_Current EQU $d634
 DEF rStatePhase_Current EQU $d635
+DEF rStatePhaseTimer EQU $d63c
 DEF rCurrentGridSize EQU $d800
 DEF rGS06_MessageSequenceMessageId EQU $d819
 DEF rGS06_MessageSequenceCountdown EQU $d81a

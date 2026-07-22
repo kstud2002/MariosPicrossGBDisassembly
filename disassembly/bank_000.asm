@@ -599,7 +599,7 @@ jr_000_0421:
     dec b                                         ; $0437: $05
     jr nz, jr_000_0421                            ; $0438: $20 $e7
 
-    ld [$d63c], a                                 ; $043a: $ea $3c $d6
+    ld [rStatePhaseTimer], a                      ; $043a: $ea $3c $d6
     ld [$d63d], a                                 ; $043d: $ea $3d $d6
     ld [$d63e], a                                 ; $0440: $ea $3e $d6
     ld [$d63f], a                                 ; $0443: $ea $3f $d6
@@ -5715,7 +5715,7 @@ jr_000_19b8:
     jp hl                                         ; $19bc: $e9
 
 
-Call_000_19bd:
+GS06_UpdateSequenceEventAndEmitMessage::
     ld e, a                                       ; $19bd: $5f
     ld d, $00                                     ; $19be: $16 $00
     sla e                                         ; $19c0: $cb $23
@@ -5724,27 +5724,27 @@ Call_000_19bd:
     rl d                                          ; $19c6: $cb $12
     sla e                                         ; $19c8: $cb $23
     rl d                                          ; $19ca: $cb $12
-    ld hl, $cda9                                  ; $19cc: $21 $a9 $cd
+    ld hl, rGS06_SequenceEventTableBank           ; $19cc: $21 $a9 $cd
     add hl, de                                    ; $19cf: $19
     ld a, [rActiveROMBank]                        ; $19d0: $fa $12 $c3
     push af                                       ; $19d3: $f5
     ld a, [hl]                                    ; $19d4: $7e
     ld [rActiveROMBank], a                        ; $19d5: $ea $12 $c3
     ld [ROMBankSwitchTrigger], a                  ; $19d8: $ea $00 $20
-    ld hl, $cda5                                  ; $19db: $21 $a5 $cd
+    ld hl, rGS06_SequenceEventDelay               ; $19db: $21 $a5 $cd
     add hl, de                                    ; $19de: $19
     ld a, [hl]                                    ; $19df: $7e
     and a                                         ; $19e0: $a7
-    jr nz, jr_000_1a23                            ; $19e1: $20 $40
+    jr nz, .TickSequenceEventDelayAndEmit         ; $19e1: $20 $40
 
-    ld hl, $cda6                                  ; $19e3: $21 $a6 $cd
+    ld hl, rGS06_SequenceEventCursor              ; $19e3: $21 $a6 $cd
     add hl, de                                    ; $19e6: $19
     ld a, [hl]                                    ; $19e7: $7e
     ld c, a                                       ; $19e8: $4f
     ld b, $00                                     ; $19e9: $06 $00
 
-jr_000_19eb:
-    ld hl, $cda7                                  ; $19eb: $21 $a7 $cd
+.LoadNextSequenceEvent:
+    ld hl, rGS06_SequenceEventTableLow            ; $19eb: $21 $a7 $cd
     add hl, de                                    ; $19ee: $19
     ld a, [hl+]                                   ; $19ef: $2a
     ld h, [hl]                                    ; $19f0: $66
@@ -5752,57 +5752,55 @@ jr_000_19eb:
     add hl, bc                                    ; $19f2: $09
     ld a, [hl+]                                   ; $19f3: $2a
     and a                                         ; $19f4: $a7
-    jr nz, jr_000_19fc                            ; $19f5: $20 $05
+    jr nz, .ApplySequenceEvent                    ; $19f5: $20 $05
 
     ld bc, $0000                                  ; $19f7: $01 $00 $00
-    jr jr_000_19eb                                ; $19fa: $18 $ef
+    jr .LoadNextSequenceEvent                     ; $19fa: $18 $ef
 
-jr_000_19fc:
+.ApplySequenceEvent:
     push hl                                       ; $19fc: $e5
-    ld hl, $cda5                                  ; $19fd: $21 $a5 $cd
+    ld hl, rGS06_SequenceEventDelay               ; $19fd: $21 $a5 $cd
     add hl, de                                    ; $1a00: $19
     ld [hl], a                                    ; $1a01: $77
     pop hl                                        ; $1a02: $e1
     ld a, [hl+]                                   ; $1a03: $2a
     push hl                                       ; $1a04: $e5
-    ld hl, $cda2                                  ; $1a05: $21 $a2 $cd
+    ld hl, rGS06_SequenceMessageScriptBaseLow     ; $1a05: $21 $a2 $cd
     add hl, de                                    ; $1a08: $19
     add [hl]                                      ; $1a09: $86
-
-Call_000_1a0a:
     ld [hl], a                                    ; $1a0a: $77
     pop hl                                        ; $1a0b: $e1
     ld a, [hl+]                                   ; $1a0c: $2a
     push hl                                       ; $1a0d: $e5
-    ld hl, $cda3                                  ; $1a0e: $21 $a3 $cd
+    ld hl, rGS06_SequenceMessageScriptBaseHigh    ; $1a0e: $21 $a3 $cd
     add hl, de                                    ; $1a11: $19
     add [hl]                                      ; $1a12: $86
     ld [hl], a                                    ; $1a13: $77
     pop hl                                        ; $1a14: $e1
     ld a, [hl+]                                   ; $1a15: $2a
-    ld hl, $cda4                                  ; $1a16: $21 $a4 $cd
+    ld hl, rGS06_SequenceEventMessageId           ; $1a16: $21 $a4 $cd
     add hl, de                                    ; $1a19: $19
     ld [hl], a                                    ; $1a1a: $77
     ld a, c                                       ; $1a1b: $79
     add $04                                       ; $1a1c: $c6 $04
-    ld hl, $cda6                                  ; $1a1e: $21 $a6 $cd
+    ld hl, rGS06_SequenceEventCursor              ; $1a1e: $21 $a6 $cd
     add hl, de                                    ; $1a21: $19
     ld [hl], a                                    ; $1a22: $77
 
-jr_000_1a23:
-    ld hl, $cda5                                  ; $1a23: $21 $a5 $cd
+.TickSequenceEventDelayAndEmit:
+    ld hl, rGS06_SequenceEventDelay               ; $1a23: $21 $a5 $cd
     add hl, de                                    ; $1a26: $19
     dec [hl]                                      ; $1a27: $35
-    ld hl, $cda4                                  ; $1a28: $21 $a4 $cd
+    ld hl, rGS06_SequenceEventMessageId           ; $1a28: $21 $a4 $cd
     add hl, de                                    ; $1a2b: $19
     ld a, [hl]                                    ; $1a2c: $7e
     cp $ff                                        ; $1a2d: $fe $ff
     ret z                                         ; $1a2f: $c8
 
-    ld hl, $cda2                                  ; $1a30: $21 $a2 $cd
+    ld hl, rGS06_SequenceMessageScriptBaseLow     ; $1a30: $21 $a2 $cd
     add hl, de                                    ; $1a33: $19
     ld b, [hl]                                    ; $1a34: $46
-    ld hl, $cda3                                  ; $1a35: $21 $a3 $cd
+    ld hl, rGS06_SequenceMessageScriptBaseHigh    ; $1a35: $21 $a3 $cd
     add hl, de                                    ; $1a38: $19
     ld c, [hl]                                    ; $1a39: $4e
     call EmitMessageScriptById                    ; $1a3a: $cd $ce $20
@@ -6291,7 +6289,7 @@ Call_000_1d22:
     ld bc, $0300                                  ; $1d36: $01 $00 $03
     call BankedTileCopy                           ; $1d39: $cd $e4 $04
     xor a                                         ; $1d3c: $af
-    ld [$d63c], a                                 ; $1d3d: $ea $3c $d6
+    ld [rStatePhaseTimer], a                      ; $1d3d: $ea $3c $d6
     ld [$d63d], a                                 ; $1d40: $ea $3d $d6
     call ClearShadowOAMBuffer                     ; $1d43: $cd $b6 $05
     call Call_000_04a2                            ; $1d46: $cd $a2 $04
@@ -6313,7 +6311,7 @@ jr_000_1d59:
     ld bc, $3040                                  ; $1d64: $01 $40 $30
     ld a, $4b                                     ; $1d67: $3e $4b
     call EmitMessageScriptById                    ; $1d69: $cd $ce $20
-    ld a, [$d63c]                                 ; $1d6c: $fa $3c $d6
+    ld a, [rStatePhaseTimer]                      ; $1d6c: $fa $3c $d6
     inc a                                         ; $1d6f: $3c
     cp $46                                        ; $1d70: $fe $46
     jr c, jr_000_1d7d                             ; $1d72: $38 $09
@@ -6324,7 +6322,7 @@ jr_000_1d59:
     xor a                                         ; $1d7c: $af
 
 jr_000_1d7d:
-    ld [$d63c], a                                 ; $1d7d: $ea $3c $d6
+    ld [rStatePhaseTimer], a                      ; $1d7d: $ea $3c $d6
     cp $30                                        ; $1d80: $fe $30
     jr nc, jr_000_1d8f                            ; $1d82: $30 $0b
 
@@ -6695,7 +6693,7 @@ jr_000_1ff1:
     dec b                                         ; $2007: $05
     jr nz, jr_000_1ff1                            ; $2008: $20 $e7
 
-    ld [$d63c], a                                 ; $200a: $ea $3c $d6
+    ld [rStatePhaseTimer], a                      ; $200a: $ea $3c $d6
     ld [$d63d], a                                 ; $200d: $ea $3d $d6
     ld [$d63e], a                                 ; $2010: $ea $3e $d6
     ld [$d63f], a                                 ; $2013: $ea $3f $d6
@@ -7066,7 +7064,7 @@ GS06_StatePhase_00_Init::
     ld [$d63f], a                                 ; $21fa: $ea $3f $d6
     ld a, [$c33b]                                 ; $21fd: $fa $3b $c3
     ld [$d63d], a                                 ; $2200: $ea $3d $d6
-    call Call_000_323e                            ; $2203: $cd $3e $32
+    call GS06_ResetMessageSequenceState           ; $2203: $cd $3e $32
     xor a                                         ; $2206: $af
     ld [$d807], a                                 ; $2207: $ea $07 $d8
     ld [$d808], a                                 ; $220a: $ea $08 $d8
@@ -7132,119 +7130,115 @@ GS06_StatePhase_01_Message::
     ld [rMessageProgressionPointerLow], a         ; $229a: $ea $2d $d8
     ld a, $6a                                     ; $229d: $3e $6a
     ld [rMessageProgressionPointerHigh], a        ; $229f: $ea $2e $d8
-    call Call_000_323e                            ; $22a2: $cd $3e $32
+    call GS06_ResetMessageSequenceState           ; $22a2: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $22a5: $21 $35 $d6
     inc [hl]                                      ; $22a8: $34
     ret                                           ; $22a9: $c9
 
 
-GS06_StatePhase_02_HighlightNumbersTop::
+GS06_StatePhase_02_HighlightNumbersTop_Prepare::
     call $7918                                    ; $22aa: $cd $18 $79
     call GS06_MessageSequenceTick                 ; $22ad: $cd $93 $30
     call AdvanceMessageProgression                ; $22b0: $cd $6e $2b
     ret nz                                        ; $22b3: $c0
 
     xor a                                         ; $22b4: $af
-    ld [$cda6], a                                 ; $22b5: $ea $a6 $cd
-    ld [$cda5], a                                 ; $22b8: $ea $a5 $cd
+    ld [rGS06_SequenceEventCursor], a             ; $22b5: $ea $a6 $cd
+    ld [rGS06_SequenceEventDelay], a              ; $22b8: $ea $a5 $cd
     ld a, $39                                     ; $22bb: $3e $39
-    ld [$cda2], a                                 ; $22bd: $ea $a2 $cd
+    ld [rGS06_SequenceMessageScriptBaseLow], a    ; $22bd: $ea $a2 $cd
     ld a, $0e                                     ; $22c0: $3e $0e
-    ld [$cda3], a                                 ; $22c2: $ea $a3 $cd
+    ld [rGS06_SequenceMessageScriptBaseHigh], a   ; $22c2: $ea $a3 $cd
     ld a, $e1                                     ; $22c5: $3e $e1
-    ld [$cda7], a                                 ; $22c7: $ea $a7 $cd
+    ld [rGS06_SequenceEventTableLow], a           ; $22c7: $ea $a7 $cd
     ld a, $22                                     ; $22ca: $3e $22
-    ld [$cda8], a                                 ; $22cc: $ea $a8 $cd
+    ld [rGS06_SequenceEventTableHigh], a          ; $22cc: $ea $a8 $cd
     ld a, $00                                     ; $22cf: $3e $00
-    ld [$cda9], a                                 ; $22d1: $ea $a9 $cd
+    ld [rGS06_SequenceEventTableBank], a          ; $22d1: $ea $a9 $cd
     ld a, $78                                     ; $22d4: $3e $78
-    ld [$d63c], a                                 ; $22d6: $ea $3c $d6
-    call Call_000_323e                            ; $22d9: $cd $3e $32
+    ld [rStatePhaseTimer], a                      ; $22d6: $ea $3c $d6
+    call GS06_ResetMessageSequenceState           ; $22d9: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $22dc: $21 $35 $d6
     inc [hl]                                      ; $22df: $34
     ret                                           ; $22e0: $c9
 
 
-GS06_StatePhase_02_Data::
+GS06_StatePhase_02_HighlightNumbersTop_SequenceEventTable::
     db $08, $00, $00, $34
     db $08, $00, $00, $35
     db $08, $00, $00, $36
     db $08, $00, $00, $35
     db $00
 
-GS06_StatePhase_03_TODO::
+GS06_StatePhase_03_HighlightNumbersTop_Animation::
     call $7918                                    ; $22f2: $cd $18 $79
     ld a, $00                                     ; $22f5: $3e $00
-    call Call_000_19bd                            ; $22f7: $cd $bd $19
-    call Call_000_3012                            ; $22fa: $cd $12 $30
+    call GS06_UpdateSequenceEventAndEmitMessage   ; $22f7: $cd $bd $19
+    call GS06_EmitPromptAndTickTransitionTimer    ; $22fa: $cd $12 $30
     ret nz                                        ; $22fd: $c0
 
     ld a, $04                                     ; $22fe: $3e $04
     ld [rMessageProgressionPointerLow], a         ; $2300: $ea $2d $d8
     ld a, $6b                                     ; $2303: $3e $6b
     ld [rMessageProgressionPointerHigh], a        ; $2305: $ea $2e $d8
-    call Call_000_323e                            ; $2308: $cd $3e $32
+    call GS06_ResetMessageSequenceState           ; $2308: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $230b: $21 $35 $d6
     inc [hl]                                      ; $230e: $34
     ret                                           ; $230f: $c9
 
 
-GS06_StatePhase_04_TODO::
+GS06_StatePhase_04_HighlightNumbersLeft_Prepare::
     call $7918                                    ; $2310: $cd $18 $79
     call GS06_MessageSequenceTick                 ; $2313: $cd $93 $30
     call AdvanceMessageProgression                ; $2316: $cd $6e $2b
     ret nz                                        ; $2319: $c0
 
     xor a                                         ; $231a: $af
-    ld [$cda6], a                                 ; $231b: $ea $a6 $cd
-    ld [$cda5], a                                 ; $231e: $ea $a5 $cd
+    ld [rGS06_SequenceEventCursor], a             ; $231b: $ea $a6 $cd
+    ld [rGS06_SequenceEventDelay], a              ; $231e: $ea $a5 $cd
     ld a, $16                                     ; $2321: $3e $16
-    ld [$cda2], a                                 ; $2323: $ea $a2 $cd
+    ld [rGS06_SequenceMessageScriptBaseLow], a    ; $2323: $ea $a2 $cd
     ld a, $31                                     ; $2326: $3e $31
-    ld [$cda3], a                                 ; $2328: $ea $a3 $cd
+    ld [rGS06_SequenceMessageScriptBaseHigh], a   ; $2328: $ea $a3 $cd
     ld a, $47                                     ; $232b: $3e $47
-    ld [$cda7], a                                 ; $232d: $ea $a7 $cd
+    ld [rGS06_SequenceEventTableLow], a           ; $232d: $ea $a7 $cd
     ld a, $23                                     ; $2330: $3e $23
-    ld [$cda8], a                                 ; $2332: $ea $a8 $cd
+    ld [rGS06_SequenceEventTableHigh], a          ; $2332: $ea $a8 $cd
     ld a, $00                                     ; $2335: $3e $00
-    ld [$cda9], a                                 ; $2337: $ea $a9 $cd
+    ld [rGS06_SequenceEventTableBank], a          ; $2337: $ea $a9 $cd
     ld a, $78                                     ; $233a: $3e $78
-    ld [$d63c], a                                 ; $233c: $ea $3c $d6
-    call Call_000_323e                            ; $233f: $cd $3e $32
+    ld [rStatePhaseTimer], a                      ; $233c: $ea $3c $d6
+    call GS06_ResetMessageSequenceState           ; $233f: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $2342: $21 $35 $d6
     inc [hl]                                      ; $2345: $34
     ret                                           ; $2346: $c9
 
 
-    ld [$0000], sp                                ; $2347: $08 $00 $00
-    inc [hl]                                      ; $234a: $34
-    ld [$0000], sp                                ; $234b: $08 $00 $00
-    dec [hl]                                      ; $234e: $35
-    ld [$0000], sp                                ; $234f: $08 $00 $00
-    ld [hl], $08                                  ; $2352: $36 $08
-    nop                                           ; $2354: $00
-    nop                                           ; $2355: $00
-    dec [hl]                                      ; $2356: $35
-    nop                                           ; $2357: $00
+GS06_StatePhase_04_HighlightNumbersLeft_SequenceEventTable::
+    db $08, $00, $00, $34
+    db $08, $00, $00, $35
+    db $08, $00, $00, $36
+    db $08, $00, $00, $35
+    db $00
 
-GS06_StatePhase_05_TODO::
+GS06_StatePhase_05_HighlightNumbersLeft_Animation::
     call $7918                                    ; $2358: $cd $18 $79
     ld a, $00                                     ; $235b: $3e $00
-    call Call_000_19bd                            ; $235d: $cd $bd $19
-    call Call_000_3012                            ; $2360: $cd $12 $30
+    call GS06_UpdateSequenceEventAndEmitMessage   ; $235d: $cd $bd $19
+    call GS06_EmitPromptAndTickTransitionTimer    ; $2360: $cd $12 $30
     ret nz                                        ; $2363: $c0
 
     ld a, $2a                                     ; $2364: $3e $2a
     ld [rMessageProgressionPointerLow], a         ; $2366: $ea $2d $d8
     ld a, $6b                                     ; $2369: $3e $6b
     ld [rMessageProgressionPointerHigh], a        ; $236b: $ea $2e $d8
-    call Call_000_323e                            ; $236e: $cd $3e $32
+    call GS06_ResetMessageSequenceState           ; $236e: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $2371: $21 $35 $d6
     inc [hl]                                      ; $2374: $34
     ret                                           ; $2375: $c9
 
 
-GS06_StatePhase_06_TODO::
+GS06_StatePhase_06_Message::
     call $7918                                    ; $2376: $cd $18 $79
     call GS06_MessageSequenceTick                 ; $2379: $cd $93 $30
     call AdvanceMessageProgression                ; $237c: $cd $6e $2b
@@ -7258,7 +7252,7 @@ GS06_StatePhase_06_TODO::
     ld [rMessageProgressionPointerLow], a         ; $238e: $ea $2d $d8
     ld a, $6b                                     ; $2391: $3e $6b
     ld [rMessageProgressionPointerHigh], a        ; $2393: $ea $2e $d8
-    call Call_000_323e                            ; $2396: $cd $3e $32
+    call GS06_ResetMessageSequenceState           ; $2396: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $2399: $21 $35 $d6
     inc [hl]                                      ; $239c: $34
     ret                                           ; $239d: $c9
@@ -7278,7 +7272,7 @@ GS06_StatePhase_07_TODO::
     ld [rMessageProgressionPointerLow], a         ; $23b6: $ea $2d $d8
     ld a, $6b                                     ; $23b9: $3e $6b
     ld [rMessageProgressionPointerHigh], a        ; $23bb: $ea $2e $d8
-    call Call_000_323e                            ; $23be: $cd $3e $32
+    call GS06_ResetMessageSequenceState           ; $23be: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $23c1: $21 $35 $d6
     inc [hl]                                      ; $23c4: $34
     ret                                           ; $23c5: $c9
@@ -7300,7 +7294,7 @@ GS06_StatePhase_08_TODO::
     ld [$d831], a                                 ; $23e0: $ea $31 $d8
     ld a, $23                                     ; $23e3: $3e $23
     ld [$d832], a                                 ; $23e5: $ea $32 $d8
-    call Call_000_323e                            ; $23e8: $cd $3e $32
+    call GS06_ResetMessageSequenceState           ; $23e8: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $23eb: $21 $35 $d6
     inc [hl]                                      ; $23ee: $34
     ret                                           ; $23ef: $c9
@@ -7414,8 +7408,8 @@ GS06_StatePhase_09_TODO::
     jr nz, jr_000_247f                            ; $2470: $20 $0d
 
     ld a, $0a                                     ; $2472: $3e $0a
-    ld [$d63c], a                                 ; $2474: $ea $3c $d6
-    call Call_000_323e                            ; $2477: $cd $3e $32
+    ld [rStatePhaseTimer], a                      ; $2474: $ea $3c $d6
+    call GS06_ResetMessageSequenceState           ; $2477: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $247a: $21 $35 $d6
     inc [hl]                                      ; $247d: $34
 
@@ -7427,14 +7421,14 @@ jr_000_247f:
     call $71ca                                    ; $247f: $cd $ca $71
     call $713e                                    ; $2482: $cd $3e $71
     call $7918                                    ; $2485: $cd $18 $79
-    call Call_000_3012                            ; $2488: $cd $12 $30
+    call GS06_EmitPromptAndTickTransitionTimer    ; $2488: $cd $12 $30
     call $7222                                    ; $248b: $cd $22 $72
     call $7516                                    ; $248e: $cd $16 $75
     ret                                           ; $2491: $c9
 
 
 GS06_StatePhase_0a_TODO::
-    call Call_000_3012                            ; $2492: $cd $12 $30
+    call GS06_EmitPromptAndTickTransitionTimer    ; $2492: $cd $12 $30
     ret nz                                        ; $2495: $c0
 
     call $7635                                    ; $2496: $cd $35 $76
@@ -7442,7 +7436,7 @@ GS06_StatePhase_0a_TODO::
     ld [rMessageProgressionPointerLow], a         ; $249b: $ea $2d $d8
     ld a, $6c                                     ; $249e: $3e $6c
     ld [rMessageProgressionPointerHigh], a        ; $24a0: $ea $2e $d8
-    call Call_000_323e                            ; $24a3: $cd $3e $32
+    call GS06_ResetMessageSequenceState           ; $24a3: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $24a6: $21 $35 $d6
     inc [hl]                                      ; $24a9: $34
     ret                                           ; $24aa: $c9
@@ -7462,7 +7456,7 @@ GS06_StatePhase_0b_TODO::
     ld [rMessageProgressionPointerLow], a         ; $24c3: $ea $2d $d8
     ld a, $6c                                     ; $24c6: $3e $6c
     ld [rMessageProgressionPointerHigh], a        ; $24c8: $ea $2e $d8
-    call Call_000_323e                            ; $24cb: $cd $3e $32
+    call GS06_ResetMessageSequenceState           ; $24cb: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $24ce: $21 $35 $d6
     inc [hl]                                      ; $24d1: $34
     ret                                           ; $24d2: $c9
@@ -7484,7 +7478,7 @@ GS06_StatePhase_0c_TODO::
     ld [rMessageProgressionPointerLow], a         ; $24f1: $ea $2d $d8
     ld a, $6c                                     ; $24f4: $3e $6c
     ld [rMessageProgressionPointerHigh], a        ; $24f6: $ea $2e $d8
-    call Call_000_323e                            ; $24f9: $cd $3e $32
+    call GS06_ResetMessageSequenceState           ; $24f9: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $24fc: $21 $35 $d6
     inc [hl]                                      ; $24ff: $34
     ret                                           ; $2500: $c9
@@ -7497,21 +7491,21 @@ GS06_StatePhase_0d_TODO::
     ret nz                                        ; $250a: $c0
 
     xor a                                         ; $250b: $af
-    ld [$cda6], a                                 ; $250c: $ea $a6 $cd
-    ld [$cda5], a                                 ; $250f: $ea $a5 $cd
+    ld [rGS06_SequenceEventCursor], a             ; $250c: $ea $a6 $cd
+    ld [rGS06_SequenceEventDelay], a              ; $250f: $ea $a5 $cd
     ld a, $39                                     ; $2512: $3e $39
-    ld [$cda2], a                                 ; $2514: $ea $a2 $cd
+    ld [rGS06_SequenceMessageScriptBaseLow], a    ; $2514: $ea $a2 $cd
     ld a, $0e                                     ; $2517: $3e $0e
-    ld [$cda3], a                                 ; $2519: $ea $a3 $cd
+    ld [rGS06_SequenceMessageScriptBaseHigh], a   ; $2519: $ea $a3 $cd
     ld a, $38                                     ; $251c: $3e $38
-    ld [$cda7], a                                 ; $251e: $ea $a7 $cd
+    ld [rGS06_SequenceEventTableLow], a           ; $251e: $ea $a7 $cd
     ld a, $25                                     ; $2521: $3e $25
-    ld [$cda8], a                                 ; $2523: $ea $a8 $cd
+    ld [rGS06_SequenceEventTableHigh], a          ; $2523: $ea $a8 $cd
     ld a, $00                                     ; $2526: $3e $00
-    ld [$cda9], a                                 ; $2528: $ea $a9 $cd
+    ld [rGS06_SequenceEventTableBank], a          ; $2528: $ea $a9 $cd
     ld a, $78                                     ; $252b: $3e $78
-    ld [$d63c], a                                 ; $252d: $ea $3c $d6
-    call Call_000_323e                            ; $2530: $cd $3e $32
+    ld [rStatePhaseTimer], a                      ; $252d: $ea $3c $d6
+    call GS06_ResetMessageSequenceState           ; $2530: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $2533: $21 $35 $d6
     inc [hl]                                      ; $2536: $34
     ret                                           ; $2537: $c9
@@ -7531,15 +7525,15 @@ GS06_StatePhase_0d_TODO::
 GS06_StatePhase_0e_TODO::
     call $7918                                    ; $2549: $cd $18 $79
     ld a, $00                                     ; $254c: $3e $00
-    call Call_000_19bd                            ; $254e: $cd $bd $19
-    call Call_000_3012                            ; $2551: $cd $12 $30
+    call GS06_UpdateSequenceEventAndEmitMessage   ; $254e: $cd $bd $19
+    call GS06_EmitPromptAndTickTransitionTimer    ; $2551: $cd $12 $30
     ret nz                                        ; $2554: $c0
 
     ld a, $0c                                     ; $2555: $3e $0c
     ld [rMessageProgressionPointerLow], a         ; $2557: $ea $2d $d8
     ld a, $6d                                     ; $255a: $3e $6d
     ld [rMessageProgressionPointerHigh], a        ; $255c: $ea $2e $d8
-    call Call_000_323e                            ; $255f: $cd $3e $32
+    call GS06_ResetMessageSequenceState           ; $255f: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $2562: $21 $35 $d6
     inc [hl]                                      ; $2565: $34
     ret                                           ; $2566: $c9
@@ -7559,7 +7553,7 @@ GS06_StatePhase_0f_TODO::
     ld [rMessageProgressionPointerLow], a         ; $257f: $ea $2d $d8
     ld a, $6d                                     ; $2582: $3e $6d
     ld [rMessageProgressionPointerHigh], a        ; $2584: $ea $2e $d8
-    call Call_000_323e                            ; $2587: $cd $3e $32
+    call GS06_ResetMessageSequenceState           ; $2587: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $258a: $21 $35 $d6
     inc [hl]                                      ; $258d: $34
     ret                                           ; $258e: $c9
@@ -7572,21 +7566,21 @@ GS06_StatePhase_10_TODO::
     ret nz                                        ; $2598: $c0
 
     xor a                                         ; $2599: $af
-    ld [$cda6], a                                 ; $259a: $ea $a6 $cd
-    ld [$cda5], a                                 ; $259d: $ea $a5 $cd
+    ld [rGS06_SequenceEventCursor], a             ; $259a: $ea $a6 $cd
+    ld [rGS06_SequenceEventDelay], a              ; $259d: $ea $a5 $cd
     ld a, $39                                     ; $25a0: $3e $39
-    ld [$cda2], a                                 ; $25a2: $ea $a2 $cd
+    ld [rGS06_SequenceMessageScriptBaseLow], a    ; $25a2: $ea $a2 $cd
     ld a, $0e                                     ; $25a5: $3e $0e
-    ld [$cda3], a                                 ; $25a7: $ea $a3 $cd
+    ld [rGS06_SequenceMessageScriptBaseHigh], a   ; $25a7: $ea $a3 $cd
     ld a, $c6                                     ; $25aa: $3e $c6
-    ld [$cda7], a                                 ; $25ac: $ea $a7 $cd
+    ld [rGS06_SequenceEventTableLow], a           ; $25ac: $ea $a7 $cd
     ld a, $25                                     ; $25af: $3e $25
-    ld [$cda8], a                                 ; $25b1: $ea $a8 $cd
+    ld [rGS06_SequenceEventTableHigh], a          ; $25b1: $ea $a8 $cd
     ld a, $00                                     ; $25b4: $3e $00
-    ld [$cda9], a                                 ; $25b6: $ea $a9 $cd
+    ld [rGS06_SequenceEventTableBank], a          ; $25b6: $ea $a9 $cd
     ld a, $78                                     ; $25b9: $3e $78
-    ld [$d63c], a                                 ; $25bb: $ea $3c $d6
-    call Call_000_323e                            ; $25be: $cd $3e $32
+    ld [rStatePhaseTimer], a                      ; $25bb: $ea $3c $d6
+    call GS06_ResetMessageSequenceState           ; $25be: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $25c1: $21 $35 $d6
     inc [hl]                                      ; $25c4: $34
     ret                                           ; $25c5: $c9
@@ -7608,15 +7602,15 @@ GS06_StatePhase_10_TODO::
 GS06_StatePhase_11_TODO::
     call $7918                                    ; $25d7: $cd $18 $79
     ld a, $00                                     ; $25da: $3e $00
-    call Call_000_19bd                            ; $25dc: $cd $bd $19
-    call Call_000_3012                            ; $25df: $cd $12 $30
+    call GS06_UpdateSequenceEventAndEmitMessage   ; $25dc: $cd $bd $19
+    call GS06_EmitPromptAndTickTransitionTimer    ; $25df: $cd $12 $30
     ret nz                                        ; $25e2: $c0
 
     ld a, $bc                                     ; $25e3: $3e $bc
     ld [rMessageProgressionPointerLow], a         ; $25e5: $ea $2d $d8
     ld a, $6d                                     ; $25e8: $3e $6d
     ld [rMessageProgressionPointerHigh], a        ; $25ea: $ea $2e $d8
-    call Call_000_323e                            ; $25ed: $cd $3e $32
+    call GS06_ResetMessageSequenceState           ; $25ed: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $25f0: $21 $35 $d6
     inc [hl]                                      ; $25f3: $34
     ret                                           ; $25f4: $c9
@@ -7638,7 +7632,7 @@ GS06_StatePhase_12_TODO::
     ld [$d831], a                                 ; $260f: $ea $31 $d8
     ld a, $26                                     ; $2612: $3e $26
     ld [$d832], a                                 ; $2614: $ea $32 $d8
-    call Call_000_323e                            ; $2617: $cd $3e $32
+    call GS06_ResetMessageSequenceState           ; $2617: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $261a: $21 $35 $d6
     inc [hl]                                      ; $261d: $34
     ret                                           ; $261e: $c9
@@ -7669,7 +7663,7 @@ GS06_StatePhase_13_TODO::
     ld [rMessageProgressionPointerLow], a         ; $2648: $ea $2d $d8
     ld a, $6e                                     ; $264b: $3e $6e
     ld [rMessageProgressionPointerHigh], a        ; $264d: $ea $2e $d8
-    call Call_000_323e                            ; $2650: $cd $3e $32
+    call GS06_ResetMessageSequenceState           ; $2650: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $2653: $21 $35 $d6
     inc [hl]                                      ; $2656: $34
     ret                                           ; $2657: $c9
@@ -7679,7 +7673,7 @@ jr_000_2658:
     call $71ca                                    ; $2658: $cd $ca $71
     call $713e                                    ; $265b: $cd $3e $71
     call $7918                                    ; $265e: $cd $18 $79
-    call Call_000_3012                            ; $2661: $cd $12 $30
+    call GS06_EmitPromptAndTickTransitionTimer    ; $2661: $cd $12 $30
     call $7222                                    ; $2664: $cd $22 $72
     call $7516                                    ; $2667: $cd $16 $75
     ret                                           ; $266a: $c9
@@ -7692,21 +7686,21 @@ GS06_StatePhase_14_TODO::
     ret nz                                        ; $2674: $c0
 
     xor a                                         ; $2675: $af
-    ld [$cda6], a                                 ; $2676: $ea $a6 $cd
-    ld [$cda5], a                                 ; $2679: $ea $a5 $cd
+    ld [rGS06_SequenceEventCursor], a             ; $2676: $ea $a6 $cd
+    ld [rGS06_SequenceEventDelay], a              ; $2679: $ea $a5 $cd
     ld a, $16                                     ; $267c: $3e $16
-    ld [$cda2], a                                 ; $267e: $ea $a2 $cd
+    ld [rGS06_SequenceMessageScriptBaseLow], a    ; $267e: $ea $a2 $cd
     ld a, $31                                     ; $2681: $3e $31
-    ld [$cda3], a                                 ; $2683: $ea $a3 $cd
+    ld [rGS06_SequenceMessageScriptBaseHigh], a   ; $2683: $ea $a3 $cd
     ld a, $a2                                     ; $2686: $3e $a2
-    ld [$cda7], a                                 ; $2688: $ea $a7 $cd
+    ld [rGS06_SequenceEventTableLow], a           ; $2688: $ea $a7 $cd
     ld a, $26                                     ; $268b: $3e $26
-    ld [$cda8], a                                 ; $268d: $ea $a8 $cd
+    ld [rGS06_SequenceEventTableHigh], a          ; $268d: $ea $a8 $cd
     ld a, $00                                     ; $2690: $3e $00
-    ld [$cda9], a                                 ; $2692: $ea $a9 $cd
+    ld [rGS06_SequenceEventTableBank], a          ; $2692: $ea $a9 $cd
     ld a, $78                                     ; $2695: $3e $78
-    ld [$d63c], a                                 ; $2697: $ea $3c $d6
-    call Call_000_323e                            ; $269a: $cd $3e $32
+    ld [rStatePhaseTimer], a                      ; $2697: $ea $3c $d6
+    call GS06_ResetMessageSequenceState           ; $269a: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $269d: $21 $35 $d6
     inc [hl]                                      ; $26a0: $34
     ret                                           ; $26a1: $c9
@@ -7726,15 +7720,15 @@ GS06_StatePhase_14_TODO::
 GS06_StatePhase_15_TODO::
     call $7918                                    ; $26b3: $cd $18 $79
     ld a, $00                                     ; $26b6: $3e $00
-    call Call_000_19bd                            ; $26b8: $cd $bd $19
-    call Call_000_3012                            ; $26bb: $cd $12 $30
+    call GS06_UpdateSequenceEventAndEmitMessage   ; $26b8: $cd $bd $19
+    call GS06_EmitPromptAndTickTransitionTimer    ; $26bb: $cd $12 $30
     ret nz                                        ; $26be: $c0
 
     ld a, $6c                                     ; $26bf: $3e $6c
     ld [rMessageProgressionPointerLow], a         ; $26c1: $ea $2d $d8
     ld a, $6e                                     ; $26c4: $3e $6e
     ld [rMessageProgressionPointerHigh], a        ; $26c6: $ea $2e $d8
-    call Call_000_323e                            ; $26c9: $cd $3e $32
+    call GS06_ResetMessageSequenceState           ; $26c9: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $26cc: $21 $35 $d6
     inc [hl]                                      ; $26cf: $34
     ret                                           ; $26d0: $c9
@@ -7754,7 +7748,7 @@ GS06_StatePhase_16_TODO::
     ld [rMessageProgressionPointerLow], a         ; $26e9: $ea $2d $d8
     ld a, $6f                                     ; $26ec: $3e $6f
     ld [rMessageProgressionPointerHigh], a        ; $26ee: $ea $2e $d8
-    call Call_000_323e                            ; $26f1: $cd $3e $32
+    call GS06_ResetMessageSequenceState           ; $26f1: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $26f4: $21 $35 $d6
     inc [hl]                                      ; $26f7: $34
     ret                                           ; $26f8: $c9
@@ -7767,21 +7761,21 @@ GS06_StatePhase_17_TODO::
     ret nz                                        ; $2702: $c0
 
     xor a                                         ; $2703: $af
-    ld [$cda6], a                                 ; $2704: $ea $a6 $cd
-    ld [$cda5], a                                 ; $2707: $ea $a5 $cd
+    ld [rGS06_SequenceEventCursor], a             ; $2704: $ea $a6 $cd
+    ld [rGS06_SequenceEventDelay], a              ; $2707: $ea $a5 $cd
     ld a, $16                                     ; $270a: $3e $16
-    ld [$cda2], a                                 ; $270c: $ea $a2 $cd
+    ld [rGS06_SequenceMessageScriptBaseLow], a    ; $270c: $ea $a2 $cd
     ld a, $37                                     ; $270f: $3e $37
-    ld [$cda3], a                                 ; $2711: $ea $a3 $cd
+    ld [rGS06_SequenceMessageScriptBaseHigh], a   ; $2711: $ea $a3 $cd
     ld a, $30                                     ; $2714: $3e $30
-    ld [$cda7], a                                 ; $2716: $ea $a7 $cd
+    ld [rGS06_SequenceEventTableLow], a           ; $2716: $ea $a7 $cd
     ld a, $27                                     ; $2719: $3e $27
-    ld [$cda8], a                                 ; $271b: $ea $a8 $cd
+    ld [rGS06_SequenceEventTableHigh], a          ; $271b: $ea $a8 $cd
     ld a, $00                                     ; $271e: $3e $00
-    ld [$cda9], a                                 ; $2720: $ea $a9 $cd
+    ld [rGS06_SequenceEventTableBank], a          ; $2720: $ea $a9 $cd
     ld a, $78                                     ; $2723: $3e $78
-    ld [$d63c], a                                 ; $2725: $ea $3c $d6
-    call Call_000_323e                            ; $2728: $cd $3e $32
+    ld [rStatePhaseTimer], a                      ; $2725: $ea $3c $d6
+    call GS06_ResetMessageSequenceState           ; $2728: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $272b: $21 $35 $d6
     inc [hl]                                      ; $272e: $34
     ret                                           ; $272f: $c9
@@ -7800,15 +7794,15 @@ GS06_StatePhase_17_TODO::
 GS06_StatePhase_18_TODO::
     call $7918                                    ; $2741: $cd $18 $79
     ld a, $00                                     ; $2744: $3e $00
-    call Call_000_19bd                            ; $2746: $cd $bd $19
-    call Call_000_3012                            ; $2749: $cd $12 $30
+    call GS06_UpdateSequenceEventAndEmitMessage   ; $2746: $cd $bd $19
+    call GS06_EmitPromptAndTickTransitionTimer    ; $2749: $cd $12 $30
     ret nz                                        ; $274c: $c0
 
     ld a, $36                                     ; $274d: $3e $36
     ld [rMessageProgressionPointerLow], a         ; $274f: $ea $2d $d8
     ld a, $6f                                     ; $2752: $3e $6f
     ld [rMessageProgressionPointerHigh], a        ; $2754: $ea $2e $d8
-    call Call_000_323e                            ; $2757: $cd $3e $32
+    call GS06_ResetMessageSequenceState           ; $2757: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $275a: $21 $35 $d6
     inc [hl]                                      ; $275d: $34
     ret                                           ; $275e: $c9
@@ -7831,7 +7825,7 @@ GS06_StatePhase_19_TODO::
     ld [$d831], a                                 ; $277b: $ea $31 $d8
     ld a, $27                                     ; $277e: $3e $27
     ld [$d832], a                                 ; $2780: $ea $32 $d8
-    call Call_000_323e                            ; $2783: $cd $3e $32
+    call GS06_ResetMessageSequenceState           ; $2783: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $2786: $21 $35 $d6
     inc [hl]                                      ; $2789: $34
     ret                                           ; $278a: $c9
@@ -7862,7 +7856,7 @@ GS06_StatePhase_1a_TODO::
     ld [rMessageProgressionPointerLow], a         ; $27b1: $ea $2d $d8
     ld a, $6f                                     ; $27b4: $3e $6f
     ld [rMessageProgressionPointerHigh], a        ; $27b6: $ea $2e $d8
-    call Call_000_323e                            ; $27b9: $cd $3e $32
+    call GS06_ResetMessageSequenceState           ; $27b9: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $27bc: $21 $35 $d6
     inc [hl]                                      ; $27bf: $34
     ret                                           ; $27c0: $c9
@@ -7872,7 +7866,7 @@ jr_000_27c1:
     call $71ca                                    ; $27c1: $cd $ca $71
     call $713e                                    ; $27c4: $cd $3e $71
     call $7918                                    ; $27c7: $cd $18 $79
-    call Call_000_3012                            ; $27ca: $cd $12 $30
+    call GS06_EmitPromptAndTickTransitionTimer    ; $27ca: $cd $12 $30
     call $7222                                    ; $27cd: $cd $22 $72
     call $7516                                    ; $27d0: $cd $16 $75
     ret                                           ; $27d3: $c9
@@ -7884,7 +7878,7 @@ GS06_StatePhase_1b_TODO::
     call AdvanceMessageProgression                ; $27da: $cd $6e $2b
     ret nz                                        ; $27dd: $c0
 
-    call Call_000_323e                            ; $27de: $cd $3e $32
+    call GS06_ResetMessageSequenceState           ; $27de: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $27e1: $21 $35 $d6
     inc [hl]                                      ; $27e4: $34
     ret                                           ; $27e5: $c9
@@ -7892,7 +7886,7 @@ GS06_StatePhase_1b_TODO::
 
 GS06_StatePhase_1c_TODO::
     call $7918                                    ; $27e6: $cd $18 $79
-    call Call_000_3012                            ; $27e9: $cd $12 $30
+    call GS06_EmitPromptAndTickTransitionTimer    ; $27e9: $cd $12 $30
     call Call_000_3160                            ; $27ec: $cd $60 $31
     call $7cc8                                    ; $27ef: $cd $c8 $7c
     ld a, [$d806]                                 ; $27f2: $fa $06 $d8
@@ -7903,7 +7897,7 @@ GS06_StatePhase_1c_TODO::
     ld [rMessageProgressionPointerLow], a         ; $27fa: $ea $2d $d8
     ld a, $70                                     ; $27fd: $3e $70
     ld [rMessageProgressionPointerHigh], a        ; $27ff: $ea $2e $d8
-    call Call_000_323e                            ; $2802: $cd $3e $32
+    call GS06_ResetMessageSequenceState           ; $2802: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $2805: $21 $35 $d6
     inc [hl]                                      ; $2808: $34
     ret                                           ; $2809: $c9
@@ -7926,7 +7920,7 @@ GS06_StatePhase_1d_TODO::
     ld [rMessageProgressionPointerLow], a         ; $282b: $ea $2d $d8
     ld a, $70                                     ; $282e: $3e $70
     ld [rMessageProgressionPointerHigh], a        ; $2830: $ea $2e $d8
-    call Call_000_323e                            ; $2833: $cd $3e $32
+    call GS06_ResetMessageSequenceState           ; $2833: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $2836: $21 $35 $d6
     inc [hl]                                      ; $2839: $34
     ret                                           ; $283a: $c9
@@ -7949,7 +7943,7 @@ GS06_StatePhase_1e_TODO::
     ld [$d831], a                                 ; $2858: $ea $31 $d8
     ld a, $28                                     ; $285b: $3e $28
     ld [$d832], a                                 ; $285d: $ea $32 $d8
-    call Call_000_323e                            ; $2860: $cd $3e $32
+    call GS06_ResetMessageSequenceState           ; $2860: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $2863: $21 $35 $d6
     inc [hl]                                      ; $2866: $34
     ret                                           ; $2867: $c9
@@ -7970,7 +7964,7 @@ GS06_StatePhase_1f_TODO::
     ld [rMessageProgressionPointerLow], a         ; $2877: $ea $2d $d8
     ld a, $71                                     ; $287a: $3e $71
     ld [rMessageProgressionPointerHigh], a        ; $287c: $ea $2e $d8
-    call Call_000_323e                            ; $287f: $cd $3e $32
+    call GS06_ResetMessageSequenceState           ; $287f: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $2882: $21 $35 $d6
     inc [hl]                                      ; $2885: $34
     ret                                           ; $2886: $c9
@@ -7980,7 +7974,7 @@ jr_000_2887:
     call $71ca                                    ; $2887: $cd $ca $71
     call $713e                                    ; $288a: $cd $3e $71
     call $7918                                    ; $288d: $cd $18 $79
-    call Call_000_3012                            ; $2890: $cd $12 $30
+    call GS06_EmitPromptAndTickTransitionTimer    ; $2890: $cd $12 $30
     call $7222                                    ; $2893: $cd $22 $72
     call $7516                                    ; $2896: $cd $16 $75
     ret                                           ; $2899: $c9
@@ -8000,7 +7994,7 @@ GS06_StatePhase_20_TODO::
     ld [rMessageProgressionPointerLow], a         ; $28b2: $ea $2d $d8
     ld a, $71                                     ; $28b5: $3e $71
     ld [rMessageProgressionPointerHigh], a        ; $28b7: $ea $2e $d8
-    call Call_000_323e                            ; $28ba: $cd $3e $32
+    call GS06_ResetMessageSequenceState           ; $28ba: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $28bd: $21 $35 $d6
     inc [hl]                                      ; $28c0: $34
     ret                                           ; $28c1: $c9
@@ -8023,7 +8017,7 @@ GS06_StatePhase_21_TODO::
     ld [$d831], a                                 ; $28df: $ea $31 $d8
     ld a, $28                                     ; $28e2: $3e $28
     ld [$d832], a                                 ; $28e4: $ea $32 $d8
-    call Call_000_323e                            ; $28e7: $cd $3e $32
+    call GS06_ResetMessageSequenceState           ; $28e7: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $28ea: $21 $35 $d6
     inc [hl]                                      ; $28ed: $34
     ret                                           ; $28ee: $c9
@@ -8053,7 +8047,7 @@ GS06_StatePhase_22_TODO::
     ld [rMessageProgressionPointerLow], a         ; $2913: $ea $2d $d8
     ld a, $71                                     ; $2916: $3e $71
     ld [rMessageProgressionPointerHigh], a        ; $2918: $ea $2e $d8
-    call Call_000_323e                            ; $291b: $cd $3e $32
+    call GS06_ResetMessageSequenceState           ; $291b: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $291e: $21 $35 $d6
     inc [hl]                                      ; $2921: $34
     ret                                           ; $2922: $c9
@@ -8063,7 +8057,7 @@ jr_000_2923:
     call $71ca                                    ; $2923: $cd $ca $71
     call $713e                                    ; $2926: $cd $3e $71
     call $7918                                    ; $2929: $cd $18 $79
-    call Call_000_3012                            ; $292c: $cd $12 $30
+    call GS06_EmitPromptAndTickTransitionTimer    ; $292c: $cd $12 $30
     call $7222                                    ; $292f: $cd $22 $72
     call $7516                                    ; $2932: $cd $16 $75
     ret                                           ; $2935: $c9
@@ -8089,7 +8083,7 @@ GS06_StatePhase_23_TODO::
     ld [$d831], a                                 ; $295c: $ea $31 $d8
     ld a, $29                                     ; $295f: $3e $29
     ld [$d832], a                                 ; $2961: $ea $32 $d8
-    call Call_000_323e                            ; $2964: $cd $3e $32
+    call GS06_ResetMessageSequenceState           ; $2964: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $2967: $21 $35 $d6
     inc [hl]                                      ; $296a: $34
     ret                                           ; $296b: $c9
@@ -8116,7 +8110,7 @@ GS06_StatePhase_24_TODO::
     ld [rMessageProgressionPointerLow], a         ; $2988: $ea $2d $d8
     ld a, $72                                     ; $298b: $3e $72
     ld [rMessageProgressionPointerHigh], a        ; $298d: $ea $2e $d8
-    call Call_000_323e                            ; $2990: $cd $3e $32
+    call GS06_ResetMessageSequenceState           ; $2990: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $2993: $21 $35 $d6
     inc [hl]                                      ; $2996: $34
     rst RST_08                                    ; $2997: $cf
@@ -8165,7 +8159,7 @@ GS06_StatePhase_25_TODO::
     ld [rMessageProgressionPointerLow], a         ; $29e4: $ea $2d $d8
     ld a, $73                                     ; $29e7: $3e $73
     ld [rMessageProgressionPointerHigh], a        ; $29e9: $ea $2e $d8
-    call Call_000_323e                            ; $29ec: $cd $3e $32
+    call GS06_ResetMessageSequenceState           ; $29ec: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $29ef: $21 $35 $d6
     inc [hl]                                      ; $29f2: $34
     ret                                           ; $29f3: $c9
@@ -8186,7 +8180,7 @@ GS06_StatePhase_26_TODO::
     ld [$d812], a                                 ; $2a0d: $ea $12 $d8
 
 jr_000_2a10:
-    call Call_000_3012                            ; $2a10: $cd $12 $30
+    call GS06_EmitPromptAndTickTransitionTimer    ; $2a10: $cd $12 $30
     call Call_000_05c5                            ; $2a13: $cd $c5 $05
     rst RST_08                                    ; $2a16: $cf
     call Call_000_31ca                            ; $2a17: $cd $ca $31
@@ -8198,7 +8192,7 @@ jr_000_2a10:
     ld [rMessageProgressionPointerLow], a         ; $2a23: $ea $2d $d8
     ld a, $73                                     ; $2a26: $3e $73
     ld [rMessageProgressionPointerHigh], a        ; $2a28: $ea $2e $d8
-    call Call_000_323e                            ; $2a2b: $cd $3e $32
+    call GS06_ResetMessageSequenceState           ; $2a2b: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $2a2e: $21 $35 $d6
     inc [hl]                                      ; $2a31: $34
     ret                                           ; $2a32: $c9
@@ -8219,7 +8213,7 @@ GS06_StatePhase_27_TODO::
     ld [$d813], a                                 ; $2a4c: $ea $13 $d8
 
 jr_000_2a4f:
-    call Call_000_3012                            ; $2a4f: $cd $12 $30
+    call GS06_EmitPromptAndTickTransitionTimer    ; $2a4f: $cd $12 $30
     call Call_000_05c5                            ; $2a52: $cd $c5 $05
     rst RST_08                                    ; $2a55: $cf
     call Call_000_31ca                            ; $2a56: $cd $ca $31
@@ -8234,7 +8228,7 @@ jr_000_2a4f:
     ld [rMessageProgressionPointerLow], a         ; $2a6b: $ea $2d $d8
     ld a, $73                                     ; $2a6e: $3e $73
     ld [rMessageProgressionPointerHigh], a        ; $2a70: $ea $2e $d8
-    call Call_000_323e                            ; $2a73: $cd $3e $32
+    call GS06_ResetMessageSequenceState           ; $2a73: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $2a76: $21 $35 $d6
     inc [hl]                                      ; $2a79: $34
     ret                                           ; $2a7a: $c9
@@ -8257,7 +8251,7 @@ GS06_StatePhase_28_TODO::
     ld [rMessageProgressionPointerLow], a         ; $2a9c: $ea $2d $d8
     ld a, $74                                     ; $2a9f: $3e $74
     ld [rMessageProgressionPointerHigh], a        ; $2aa1: $ea $2e $d8
-    call Call_000_323e                            ; $2aa4: $cd $3e $32
+    call GS06_ResetMessageSequenceState           ; $2aa4: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $2aa7: $21 $35 $d6
     inc [hl]                                      ; $2aaa: $34
     ret                                           ; $2aab: $c9
@@ -8297,7 +8291,7 @@ jr_000_2ae0:
     ld [$d805], a                                 ; $2ae7: $ea $05 $d8
     ld [$d806], a                                 ; $2aea: $ea $06 $d8
     ld [$d80f], a                                 ; $2aed: $ea $0f $d8
-    call Call_000_323e                            ; $2af0: $cd $3e $32
+    call GS06_ResetMessageSequenceState           ; $2af0: $cd $3e $32
     ld a, $02                                     ; $2af3: $3e $02
     ld [$d811], a                                 ; $2af5: $ea $11 $d8
     ld a, $02                                     ; $2af8: $3e $02
@@ -8720,10 +8714,10 @@ GS06_WaitForAdvanceOrSkip_PollLoop::
     pop hl                                        ; $300f: $e1
     jr GS06_WaitForAdvanceOrSkip_PollLoop         ; $3010: $18 $a9
 
-Call_000_3012:
+GS06_EmitPromptAndTickTransitionTimer::
     ld a, [$c33b]                                 ; $3012: $fa $3b $c3
     bit 4, a                                      ; $3015: $cb $67
-    jr nz, jr_000_3029                            ; $3017: $20 $10
+    jr nz, .TickTransitionTimer                   ; $3017: $20 $10
 
     ld a, [rMessageProgressionEntryLow]           ; $3019: $fa $2b $d8
     sub $03                                       ; $301c: $d6 $03
@@ -8734,8 +8728,8 @@ Call_000_3012:
     ld a, $38                                     ; $3024: $3e $38
     call EmitMessageScriptById                    ; $3026: $cd $ce $20
 
-jr_000_3029:
-    ld hl, $d63c                                  ; $3029: $21 $3c $d6
+.TickTransitionTimer:
+    ld hl, rStatePhaseTimer                       ; $3029: $21 $3c $d6
     dec [hl]                                      ; $302c: $35
     ret                                           ; $302d: $c9
 
@@ -9060,7 +9054,7 @@ jr_000_323a:
     ret                                           ; $323d: $c9
 
 
-Call_000_323e:
+GS06_ResetMessageSequenceState::
     xor a                                         ; $323e: $af
     ld [rGS06_MessageSequencePatternCursor], a    ; $323f: $ea $1b $d8
     ld [rGS06_MessageSequenceCountdown], a        ; $3242: $ea $1a $d8
