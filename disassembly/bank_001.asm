@@ -1097,19 +1097,19 @@ jr_001_448d:
     ld hl, $4bae                                  ; $4533: $21 $ae $4b
     call SwitchBankToBAndJumpToHL                 ; $4536: $cd $de $05
     ld a, $10                                     ; $4539: $3e $10
-    ld [rMessageProgressionResetEntryLow], a      ; $453b: $ea $43 $d8
-    ld [rMessageProgressionEntryLow], a           ; $453e: $ea $2b $d8
+    ld [rMessageScriptStreamResetEntryLow], a     ; $453b: $ea $43 $d8
+    ld [rMessageScriptStreamEntryLow], a          ; $453e: $ea $2b $d8
     ld a, $20                                     ; $4541: $3e $20
-    ld [rMessageProgressionResetEntryHigh], a     ; $4543: $ea $44 $d8
-    ld [rMessageProgressionEntryHigh], a          ; $4546: $ea $2c $d8
+    ld [rMessageScriptStreamResetEntryHigh], a    ; $4543: $ea $44 $d8
+    ld [rMessageScriptStreamEntryHigh], a         ; $4546: $ea $2c $d8
     ld a, $90                                     ; $4549: $3e $90
-    ld [rMessageProgressionCopyLimitLow], a       ; $454b: $ea $45 $d8
+    ld [rMessageScriptStreamLimitLow], a          ; $454b: $ea $45 $d8
     ld a, $58                                     ; $454e: $3e $58
-    ld [rMessageProgressionCopyLimitHigh], a      ; $4550: $ea $46 $d8
+    ld [rMessageScriptStreamLimitHigh], a         ; $4550: $ea $46 $d8
     ld a, $0c                                     ; $4553: $3e $0c
-    ld [rMessageProgressionPointerLow], a         ; $4555: $ea $2d $d8
+    ld [rMessageScriptStreamPointerLow], a        ; $4555: $ea $2d $d8
     ld a, $41                                     ; $4558: $3e $41
-    ld [rMessageProgressionPointerHigh], a        ; $455a: $ea $2e $d8
+    ld [rMessageScriptStreamPointerHigh], a       ; $455a: $ea $2e $d8
     call Call_001_51dd                            ; $455d: $cd $dd $51
     call Call_001_5252                            ; $4560: $cd $52 $52
     xor a                                         ; $4563: $af
@@ -1195,40 +1195,40 @@ Jump_001_45bb:
     ld hl, $4bae                                  ; $4622: $21 $ae $4b
     call SwitchBankToBAndJumpToHL                 ; $4625: $cd $de $05
     ld a, $10                                     ; $4628: $3e $10
-    ld [rMessageProgressionResetEntryLow], a      ; $462a: $ea $43 $d8
-    ld [rMessageProgressionEntryLow], a           ; $462d: $ea $2b $d8
+    ld [rMessageScriptStreamResetEntryLow], a     ; $462a: $ea $43 $d8
+    ld [rMessageScriptStreamEntryLow], a          ; $462d: $ea $2b $d8
     ld a, $20                                     ; $4630: $3e $20
-    ld [rMessageProgressionResetEntryHigh], a     ; $4632: $ea $44 $d8
-    ld [rMessageProgressionEntryHigh], a          ; $4635: $ea $2c $d8
+    ld [rMessageScriptStreamResetEntryHigh], a    ; $4632: $ea $44 $d8
+    ld [rMessageScriptStreamEntryHigh], a         ; $4635: $ea $2c $d8
     ld a, $90                                     ; $4638: $3e $90
-    ld [rMessageProgressionCopyLimitLow], a       ; $463a: $ea $45 $d8
+    ld [rMessageScriptStreamLimitLow], a          ; $463a: $ea $45 $d8
     ld a, $58                                     ; $463d: $3e $58
-    ld [rMessageProgressionCopyLimitHigh], a      ; $463f: $ea $46 $d8
+    ld [rMessageScriptStreamLimitHigh], a         ; $463f: $ea $46 $d8
     ld a, $8e                                     ; $4642: $3e $8e
-    ld [rMessageProgressionPointerLow], a         ; $4644: $ea $2d $d8
+    ld [rMessageScriptStreamPointerLow], a        ; $4644: $ea $2d $d8
     ld a, $41                                     ; $4647: $3e $41
-    ld [rMessageProgressionPointerHigh], a        ; $4649: $ea $2e $d8
+    ld [rMessageScriptStreamPointerHigh], a       ; $4649: $ea $2e $d8
     call Call_001_51dd                            ; $464c: $cd $dd $51
     call Call_001_5252                            ; $464f: $cd $52 $52
     call Call_001_51e4                            ; $4652: $cd $e4 $51
     ld a, $08                                     ; $4655: $3e $08
-    ld [rMessageProgressionPointerLow], a         ; $4657: $ea $2d $d8
+    ld [rMessageScriptStreamPointerLow], a        ; $4657: $ea $2d $d8
     ld a, $42                                     ; $465a: $3e $42
-    ld [rMessageProgressionPointerHigh], a        ; $465c: $ea $2e $d8
+    ld [rMessageScriptStreamPointerHigh], a       ; $465c: $ea $2e $d8
     call Call_001_51dd                            ; $465f: $cd $dd $51
     call Call_001_5252                            ; $4662: $cd $52 $52
     call Call_001_51e4                            ; $4665: $cd $e4 $51
     ld a, $58                                     ; $4668: $3e $58
-    ld [rMessageProgressionPointerLow], a         ; $466a: $ea $2d $d8
+    ld [rMessageScriptStreamPointerLow], a        ; $466a: $ea $2d $d8
     ld a, $42                                     ; $466d: $3e $42
-    ld [rMessageProgressionPointerHigh], a        ; $466f: $ea $2e $d8
+    ld [rMessageScriptStreamPointerHigh], a       ; $466f: $ea $2e $d8
     call Call_001_51dd                            ; $4672: $cd $dd $51
     call Call_001_5252                            ; $4675: $cd $52 $52
     call Call_001_51e4                            ; $4678: $cd $e4 $51
     ld a, $3a                                     ; $467b: $3e $3a
-    ld [rMessageProgressionPointerLow], a         ; $467d: $ea $2d $d8
+    ld [rMessageScriptStreamPointerLow], a        ; $467d: $ea $2d $d8
     ld a, $43                                     ; $4680: $3e $43
-    ld [rMessageProgressionPointerHigh], a        ; $4682: $ea $2e $d8
+    ld [rMessageScriptStreamPointerHigh], a       ; $4682: $ea $2e $d8
     call Call_001_51dd                            ; $4685: $cd $dd $51
     call Call_001_5252                            ; $4688: $cd $52 $52
     ld bc, $003c                                  ; $468b: $01 $3c $00
@@ -1843,7 +1843,7 @@ Call_001_49ee:
     ld c, a                                       ; $4a02: $4f
     pop af                                        ; $4a03: $f1
     add $60                                       ; $4a04: $c6 $60
-    jp EmitMessageScriptById                      ; $4a06: $c3 $ce $20
+    jp CopyOAMSpriteById                          ; $4a06: $c3 $ce $20
 
 
 Call_001_4a09:
@@ -2501,14 +2501,14 @@ Call_001_4dde:
     call Call_000_1972                            ; $4e0c: $cd $72 $19
     add $51                                       ; $4e0f: $c6 $51
     ld bc, $4818                                  ; $4e11: $01 $18 $48
-    call EmitMessageScriptById                    ; $4e14: $cd $ce $20
+    call CopyOAMSpriteById                        ; $4e14: $cd $ce $20
     pop af                                        ; $4e17: $f1
     cp $0a                                        ; $4e18: $fe $0a
     jr z, jr_001_4e24                             ; $4e1a: $28 $08
 
     add $51                                       ; $4e1c: $c6 $51
     ld bc, $4018                                  ; $4e1e: $01 $18 $40
-    call EmitMessageScriptById                    ; $4e21: $cd $ce $20
+    call CopyOAMSpriteById                        ; $4e21: $cd $ce $20
 
 jr_001_4e24:
     pop af                                        ; $4e24: $f1
@@ -2555,14 +2555,14 @@ jr_001_4e24:
     swap a                                        ; $4e63: $cb $37
     add $51                                       ; $4e65: $c6 $51
     ld bc, $0818                                  ; $4e67: $01 $18 $08
-    call EmitMessageScriptById                    ; $4e6a: $cd $ce $20
+    call CopyOAMSpriteById                        ; $4e6a: $cd $ce $20
     pop bc                                        ; $4e6d: $c1
     push bc                                       ; $4e6e: $c5
     ld a, b                                       ; $4e6f: $78
     and $0f                                       ; $4e70: $e6 $0f
     add $51                                       ; $4e72: $c6 $51
     ld bc, $1018                                  ; $4e74: $01 $18 $10
-    call EmitMessageScriptById                    ; $4e77: $cd $ce $20
+    call CopyOAMSpriteById                        ; $4e77: $cd $ce $20
     pop bc                                        ; $4e7a: $c1
     push bc                                       ; $4e7b: $c5
     ld a, c                                       ; $4e7c: $79
@@ -2570,13 +2570,13 @@ jr_001_4e24:
     swap a                                        ; $4e7f: $cb $37
     add $51                                       ; $4e81: $c6 $51
     ld bc, $2018                                  ; $4e83: $01 $18 $20
-    call EmitMessageScriptById                    ; $4e86: $cd $ce $20
+    call CopyOAMSpriteById                        ; $4e86: $cd $ce $20
     pop bc                                        ; $4e89: $c1
     ld a, c                                       ; $4e8a: $79
     and $0f                                       ; $4e8b: $e6 $0f
     add $51                                       ; $4e8d: $c6 $51
     ld bc, $2818                                  ; $4e8f: $01 $18 $28
-    call EmitMessageScriptById                    ; $4e92: $cd $ce $20
+    call CopyOAMSpriteById                        ; $4e92: $cd $ce $20
     ld a, [hl]                                    ; $4e95: $7e
     call Call_001_50b4                            ; $4e96: $cd $b4 $50
     ld a, [$a065]                                 ; $4e99: $fa $65 $a0
@@ -2621,14 +2621,14 @@ jr_001_4e24:
     swap a                                        ; $4ed6: $cb $37
     add $51                                       ; $4ed8: $c6 $51
     ld bc, $6818                                  ; $4eda: $01 $18 $68
-    call EmitMessageScriptById                    ; $4edd: $cd $ce $20
+    call CopyOAMSpriteById                        ; $4edd: $cd $ce $20
     pop bc                                        ; $4ee0: $c1
     push bc                                       ; $4ee1: $c5
     ld a, b                                       ; $4ee2: $78
     and $0f                                       ; $4ee3: $e6 $0f
     add $51                                       ; $4ee5: $c6 $51
     ld bc, $7018                                  ; $4ee7: $01 $18 $70
-    call EmitMessageScriptById                    ; $4eea: $cd $ce $20
+    call CopyOAMSpriteById                        ; $4eea: $cd $ce $20
     pop bc                                        ; $4eed: $c1
     push bc                                       ; $4eee: $c5
     ld a, c                                       ; $4eef: $79
@@ -2636,13 +2636,13 @@ jr_001_4e24:
     swap a                                        ; $4ef2: $cb $37
     add $51                                       ; $4ef4: $c6 $51
     ld bc, $8018                                  ; $4ef6: $01 $18 $80
-    call EmitMessageScriptById                    ; $4ef9: $cd $ce $20
+    call CopyOAMSpriteById                        ; $4ef9: $cd $ce $20
     pop bc                                        ; $4efc: $c1
     ld a, c                                       ; $4efd: $79
     and $0f                                       ; $4efe: $e6 $0f
     add $51                                       ; $4f00: $c6 $51
     ld bc, $8818                                  ; $4f02: $01 $18 $88
-    call EmitMessageScriptById                    ; $4f05: $cd $ce $20
+    call CopyOAMSpriteById                        ; $4f05: $cd $ce $20
     dec hl                                        ; $4f08: $2b
     ld a, [hl]                                    ; $4f09: $7e
     jp Jump_001_50d9                              ; $4f0a: $c3 $d9 $50
@@ -2651,28 +2651,28 @@ jr_001_4e24:
 Jump_001_4f0d:
     ld a, $80                                     ; $4f0d: $3e $80
     ld bc, $0818                                  ; $4f0f: $01 $18 $08
-    call EmitMessageScriptById                    ; $4f12: $cd $ce $20
+    call CopyOAMSpriteById                        ; $4f12: $cd $ce $20
     ld a, $80                                     ; $4f15: $3e $80
     ld bc, $1018                                  ; $4f17: $01 $18 $10
-    call EmitMessageScriptById                    ; $4f1a: $cd $ce $20
+    call CopyOAMSpriteById                        ; $4f1a: $cd $ce $20
     ld a, $80                                     ; $4f1d: $3e $80
     ld bc, $2018                                  ; $4f1f: $01 $18 $20
-    call EmitMessageScriptById                    ; $4f22: $cd $ce $20
+    call CopyOAMSpriteById                        ; $4f22: $cd $ce $20
     ld a, $80                                     ; $4f25: $3e $80
     ld bc, $2818                                  ; $4f27: $01 $18 $28
-    call EmitMessageScriptById                    ; $4f2a: $cd $ce $20
+    call CopyOAMSpriteById                        ; $4f2a: $cd $ce $20
     ld a, $80                                     ; $4f2d: $3e $80
     ld bc, $6818                                  ; $4f2f: $01 $18 $68
-    call EmitMessageScriptById                    ; $4f32: $cd $ce $20
+    call CopyOAMSpriteById                        ; $4f32: $cd $ce $20
     ld a, $80                                     ; $4f35: $3e $80
     ld bc, $7018                                  ; $4f37: $01 $18 $70
-    call EmitMessageScriptById                    ; $4f3a: $cd $ce $20
+    call CopyOAMSpriteById                        ; $4f3a: $cd $ce $20
     ld a, $80                                     ; $4f3d: $3e $80
     ld bc, $8018                                  ; $4f3f: $01 $18 $80
-    call EmitMessageScriptById                    ; $4f42: $cd $ce $20
+    call CopyOAMSpriteById                        ; $4f42: $cd $ce $20
     ld a, $80                                     ; $4f45: $3e $80
     ld bc, $8818                                  ; $4f47: $01 $18 $88
-    call EmitMessageScriptById                    ; $4f4a: $cd $ce $20
+    call CopyOAMSpriteById                        ; $4f4a: $cd $ce $20
     xor a                                         ; $4f4d: $af
     call Call_001_50b4                            ; $4f4e: $cd $b4 $50
     jp Jump_001_50d9                              ; $4f51: $c3 $d9 $50
@@ -2685,14 +2685,14 @@ Call_001_4f54:
     call Call_000_1972                            ; $4f5a: $cd $72 $19
     add $51                                       ; $4f5d: $c6 $51
     ld bc, $4818                                  ; $4f5f: $01 $18 $48
-    call EmitMessageScriptById                    ; $4f62: $cd $ce $20
+    call CopyOAMSpriteById                        ; $4f62: $cd $ce $20
     pop af                                        ; $4f65: $f1
     cp $0a                                        ; $4f66: $fe $0a
     jr z, jr_001_4f72                             ; $4f68: $28 $08
 
     add $51                                       ; $4f6a: $c6 $51
     ld bc, $4018                                  ; $4f6c: $01 $18 $40
-    call EmitMessageScriptById                    ; $4f6f: $cd $ce $20
+    call CopyOAMSpriteById                        ; $4f6f: $cd $ce $20
 
 jr_001_4f72:
     pop af                                        ; $4f72: $f1
@@ -2711,14 +2711,14 @@ jr_001_4f72:
     swap a                                        ; $4f86: $cb $37
     add $51                                       ; $4f88: $c6 $51
     ld bc, $0818                                  ; $4f8a: $01 $18 $08
-    call EmitMessageScriptById                    ; $4f8d: $cd $ce $20
+    call CopyOAMSpriteById                        ; $4f8d: $cd $ce $20
     pop bc                                        ; $4f90: $c1
     push bc                                       ; $4f91: $c5
     ld a, b                                       ; $4f92: $78
     and $0f                                       ; $4f93: $e6 $0f
     add $51                                       ; $4f95: $c6 $51
     ld bc, $1018                                  ; $4f97: $01 $18 $10
-    call EmitMessageScriptById                    ; $4f9a: $cd $ce $20
+    call CopyOAMSpriteById                        ; $4f9a: $cd $ce $20
     pop bc                                        ; $4f9d: $c1
     push bc                                       ; $4f9e: $c5
     ld a, c                                       ; $4f9f: $79
@@ -2726,13 +2726,13 @@ jr_001_4f72:
     swap a                                        ; $4fa2: $cb $37
     add $51                                       ; $4fa4: $c6 $51
     ld bc, $2018                                  ; $4fa6: $01 $18 $20
-    call EmitMessageScriptById                    ; $4fa9: $cd $ce $20
+    call CopyOAMSpriteById                        ; $4fa9: $cd $ce $20
     pop bc                                        ; $4fac: $c1
     ld a, c                                       ; $4fad: $79
     and $0f                                       ; $4fae: $e6 $0f
     add $51                                       ; $4fb0: $c6 $51
     ld bc, $2818                                  ; $4fb2: $01 $18 $28
-    call EmitMessageScriptById                    ; $4fb5: $cd $ce $20
+    call CopyOAMSpriteById                        ; $4fb5: $cd $ce $20
     ld a, [hl]                                    ; $4fb8: $7e
     call Call_001_50b4                            ; $4fb9: $cd $b4 $50
     ld hl, $d84a                                  ; $4fbc: $21 $4a $d8
@@ -2748,14 +2748,14 @@ jr_001_4f72:
     swap a                                        ; $4fcd: $cb $37
     add $51                                       ; $4fcf: $c6 $51
     ld bc, $6818                                  ; $4fd1: $01 $18 $68
-    call EmitMessageScriptById                    ; $4fd4: $cd $ce $20
+    call CopyOAMSpriteById                        ; $4fd4: $cd $ce $20
     pop bc                                        ; $4fd7: $c1
     push bc                                       ; $4fd8: $c5
     ld a, b                                       ; $4fd9: $78
     and $0f                                       ; $4fda: $e6 $0f
     add $51                                       ; $4fdc: $c6 $51
     ld bc, $7018                                  ; $4fde: $01 $18 $70
-    call EmitMessageScriptById                    ; $4fe1: $cd $ce $20
+    call CopyOAMSpriteById                        ; $4fe1: $cd $ce $20
     pop bc                                        ; $4fe4: $c1
     push bc                                       ; $4fe5: $c5
     ld a, c                                       ; $4fe6: $79
@@ -2763,13 +2763,13 @@ jr_001_4f72:
     swap a                                        ; $4fe9: $cb $37
     add $51                                       ; $4feb: $c6 $51
     ld bc, $8018                                  ; $4fed: $01 $18 $80
-    call EmitMessageScriptById                    ; $4ff0: $cd $ce $20
+    call CopyOAMSpriteById                        ; $4ff0: $cd $ce $20
     pop bc                                        ; $4ff3: $c1
     ld a, c                                       ; $4ff4: $79
     and $0f                                       ; $4ff5: $e6 $0f
     add $51                                       ; $4ff7: $c6 $51
     ld bc, $8818                                  ; $4ff9: $01 $18 $88
-    call EmitMessageScriptById                    ; $4ffc: $cd $ce $20
+    call CopyOAMSpriteById                        ; $4ffc: $cd $ce $20
     dec hl                                        ; $4fff: $2b
     ld a, [hl]                                    ; $5000: $7e
     jp Jump_001_50d9                              ; $5001: $c3 $d9 $50
@@ -2778,28 +2778,28 @@ jr_001_4f72:
 Jump_001_5004:
     ld a, $80                                     ; $5004: $3e $80
     ld bc, $0818                                  ; $5006: $01 $18 $08
-    call EmitMessageScriptById                    ; $5009: $cd $ce $20
+    call CopyOAMSpriteById                        ; $5009: $cd $ce $20
     ld a, $80                                     ; $500c: $3e $80
     ld bc, $1018                                  ; $500e: $01 $18 $10
-    call EmitMessageScriptById                    ; $5011: $cd $ce $20
+    call CopyOAMSpriteById                        ; $5011: $cd $ce $20
     ld a, $80                                     ; $5014: $3e $80
     ld bc, $2018                                  ; $5016: $01 $18 $20
-    call EmitMessageScriptById                    ; $5019: $cd $ce $20
+    call CopyOAMSpriteById                        ; $5019: $cd $ce $20
     ld a, $80                                     ; $501c: $3e $80
     ld bc, $2818                                  ; $501e: $01 $18 $28
-    call EmitMessageScriptById                    ; $5021: $cd $ce $20
+    call CopyOAMSpriteById                        ; $5021: $cd $ce $20
     ld a, $80                                     ; $5024: $3e $80
     ld bc, $6818                                  ; $5026: $01 $18 $68
-    call EmitMessageScriptById                    ; $5029: $cd $ce $20
+    call CopyOAMSpriteById                        ; $5029: $cd $ce $20
     ld a, $80                                     ; $502c: $3e $80
     ld bc, $7018                                  ; $502e: $01 $18 $70
-    call EmitMessageScriptById                    ; $5031: $cd $ce $20
+    call CopyOAMSpriteById                        ; $5031: $cd $ce $20
     ld a, $80                                     ; $5034: $3e $80
     ld bc, $8018                                  ; $5036: $01 $18 $80
-    call EmitMessageScriptById                    ; $5039: $cd $ce $20
+    call CopyOAMSpriteById                        ; $5039: $cd $ce $20
     ld a, $80                                     ; $503c: $3e $80
     ld bc, $8818                                  ; $503e: $01 $18 $88
-    call EmitMessageScriptById                    ; $5041: $cd $ce $20
+    call CopyOAMSpriteById                        ; $5041: $cd $ce $20
     xor a                                         ; $5044: $af
     call Call_001_50b4                            ; $5045: $cd $b4 $50
     jp Jump_001_50d9                              ; $5048: $c3 $d9 $50
@@ -3133,28 +3133,28 @@ Call_001_51e4:
     ld bc, $1050                                  ; $521a: $01 $50 $10
     ld de, $7f07                                  ; $521d: $11 $07 $7f
     call Call_001_5230                            ; $5220: $cd $30 $52
-    ld a, [rMessageProgressionResetEntryLow]      ; $5223: $fa $43 $d8
-    ld [rMessageProgressionEntryLow], a           ; $5226: $ea $2b $d8
-    ld a, [rMessageProgressionResetEntryHigh]     ; $5229: $fa $44 $d8
-    ld [rMessageProgressionEntryHigh], a          ; $522c: $ea $2c $d8
+    ld a, [rMessageScriptStreamResetEntryLow]     ; $5223: $fa $43 $d8
+    ld [rMessageScriptStreamEntryLow], a          ; $5226: $ea $2b $d8
+    ld a, [rMessageScriptStreamResetEntryHigh]    ; $5229: $fa $44 $d8
+    ld [rMessageScriptStreamEntryHigh], a         ; $522c: $ea $2c $d8
     ret                                           ; $522f: $c9
 
 
 Call_001_5230:
     ld a, $00                                     ; $5230: $3e $00
-    ld [rMessageProgressionCopyBankAddressLow], a ; $5232: $ea $55 $c3
+    ld [rMessageScriptCopyBankAddressLow], a      ; $5232: $ea $55 $c3
     ld a, $61                                     ; $5235: $3e $61
-    ld [rMessageProgressionCopyBankAddressHigh], a; $5237: $ea $56 $c3
+    ld [rMessageScriptCopyBankAddressHigh], a     ; $5237: $ea $56 $c3
     ld a, $0a                                     ; $523a: $3e $0a
-    ld [rMessageProgressionCopyBank], a           ; $523c: $ea $57 $c3
+    ld [rMessageScriptCopyBank], a                ; $523c: $ea $57 $c3
     ld a, b                                       ; $523f: $78
-    ld [rMessageProgressionCopySourceX], a        ; $5240: $ea $51 $c3
+    ld [rMessageScriptCopySourceX], a             ; $5240: $ea $51 $c3
     add d                                         ; $5243: $82
-    ld [rMessageProgressionCopyDestX], a          ; $5244: $ea $53 $c3
+    ld [rMessageScriptCopyDestX], a               ; $5244: $ea $53 $c3
     ld a, c                                       ; $5247: $79
-    ld [rMessageProgressionCopySourceY], a        ; $5248: $ea $52 $c3
+    ld [rMessageScriptCopySourceY], a             ; $5248: $ea $52 $c3
     add e                                         ; $524b: $83
-    ld [rMessageProgressionCopyDestY], a          ; $524c: $ea $54 $c3
+    ld [rMessageScriptCopyDestY], a               ; $524c: $ea $54 $c3
     jp Jump_000_0b0d                              ; $524f: $c3 $0d $0b
 
 
@@ -3412,19 +3412,19 @@ jr_001_539e:
     ld de, $0074                                  ; $5471: $11 $74 $00
     call Call_000_040d                            ; $5474: $cd $0d $04
     ld a, $10                                     ; $5477: $3e $10
-    ld [rMessageProgressionResetEntryLow], a      ; $5479: $ea $43 $d8
-    ld [rMessageProgressionEntryLow], a           ; $547c: $ea $2b $d8
+    ld [rMessageScriptStreamResetEntryLow], a     ; $5479: $ea $43 $d8
+    ld [rMessageScriptStreamEntryLow], a          ; $547c: $ea $2b $d8
     ld a, $20                                     ; $547f: $3e $20
-    ld [rMessageProgressionResetEntryHigh], a     ; $5481: $ea $44 $d8
-    ld [rMessageProgressionEntryHigh], a          ; $5484: $ea $2c $d8
+    ld [rMessageScriptStreamResetEntryHigh], a    ; $5481: $ea $44 $d8
+    ld [rMessageScriptStreamEntryHigh], a         ; $5484: $ea $2c $d8
     ld a, $90                                     ; $5487: $3e $90
-    ld [rMessageProgressionCopyLimitLow], a       ; $5489: $ea $45 $d8
+    ld [rMessageScriptStreamLimitLow], a          ; $5489: $ea $45 $d8
     ld a, $58                                     ; $548c: $3e $58
-    ld [rMessageProgressionCopyLimitHigh], a      ; $548e: $ea $46 $d8
+    ld [rMessageScriptStreamLimitHigh], a         ; $548e: $ea $46 $d8
     ld a, $00                                     ; $5491: $3e $00
-    ld [rMessageProgressionPointerLow], a         ; $5493: $ea $2d $d8
+    ld [rMessageScriptStreamPointerLow], a        ; $5493: $ea $2d $d8
     ld a, $40                                     ; $5496: $3e $40
-    ld [rMessageProgressionPointerHigh], a        ; $5498: $ea $2e $d8
+    ld [rMessageScriptStreamPointerHigh], a       ; $5498: $ea $2e $d8
     call Call_001_51dd                            ; $549b: $cd $dd $51
     call Call_001_5252                            ; $549e: $cd $52 $52
     ld bc, $003c                                  ; $54a1: $01 $3c $00
@@ -3765,7 +3765,7 @@ Call_001_5760:
     ld c, a                                       ; $5774: $4f
     pop af                                        ; $5775: $f1
     add $60                                       ; $5776: $c6 $60
-    jp EmitMessageScriptById                      ; $5778: $c3 $ce $20
+    jp CopyOAMSpriteById                          ; $5778: $c3 $ce $20
 
 
 Call_001_577b:
@@ -4139,14 +4139,14 @@ Call_001_595e:
     call Call_000_1972                            ; $5983: $cd $72 $19
     add $51                                       ; $5986: $c6 $51
     ld bc, $4818                                  ; $5988: $01 $18 $48
-    call EmitMessageScriptById                    ; $598b: $cd $ce $20
+    call CopyOAMSpriteById                        ; $598b: $cd $ce $20
     pop af                                        ; $598e: $f1
     cp $0a                                        ; $598f: $fe $0a
     jr z, jr_001_599b                             ; $5991: $28 $08
 
     add $51                                       ; $5993: $c6 $51
     ld bc, $4018                                  ; $5995: $01 $18 $40
-    call EmitMessageScriptById                    ; $5998: $cd $ce $20
+    call CopyOAMSpriteById                        ; $5998: $cd $ce $20
 
 jr_001_599b:
     pop af                                        ; $599b: $f1
@@ -4186,14 +4186,14 @@ jr_001_599b:
     swap a                                        ; $59d1: $cb $37
     add $51                                       ; $59d3: $c6 $51
     ld bc, $0818                                  ; $59d5: $01 $18 $08
-    call EmitMessageScriptById                    ; $59d8: $cd $ce $20
+    call CopyOAMSpriteById                        ; $59d8: $cd $ce $20
     pop bc                                        ; $59db: $c1
     push bc                                       ; $59dc: $c5
     ld a, b                                       ; $59dd: $78
     and $0f                                       ; $59de: $e6 $0f
     add $51                                       ; $59e0: $c6 $51
     ld bc, $1018                                  ; $59e2: $01 $18 $10
-    call EmitMessageScriptById                    ; $59e5: $cd $ce $20
+    call CopyOAMSpriteById                        ; $59e5: $cd $ce $20
     pop bc                                        ; $59e8: $c1
     push bc                                       ; $59e9: $c5
     ld a, c                                       ; $59ea: $79
@@ -4201,13 +4201,13 @@ jr_001_599b:
     swap a                                        ; $59ed: $cb $37
     add $51                                       ; $59ef: $c6 $51
     ld bc, $2018                                  ; $59f1: $01 $18 $20
-    call EmitMessageScriptById                    ; $59f4: $cd $ce $20
+    call CopyOAMSpriteById                        ; $59f4: $cd $ce $20
     pop bc                                        ; $59f7: $c1
     ld a, c                                       ; $59f8: $79
     and $0f                                       ; $59f9: $e6 $0f
     add $51                                       ; $59fb: $c6 $51
     ld bc, $2818                                  ; $59fd: $01 $18 $28
-    call EmitMessageScriptById                    ; $5a00: $cd $ce $20
+    call CopyOAMSpriteById                        ; $5a00: $cd $ce $20
     ld a, [hl]                                    ; $5a03: $7e
     call Call_001_5c07                            ; $5a04: $cd $07 $5c
     ld a, [$a065]                                 ; $5a07: $fa $65 $a0
@@ -4245,14 +4245,14 @@ jr_001_599b:
     swap a                                        ; $5a3b: $cb $37
     add $51                                       ; $5a3d: $c6 $51
     ld bc, $6818                                  ; $5a3f: $01 $18 $68
-    call EmitMessageScriptById                    ; $5a42: $cd $ce $20
+    call CopyOAMSpriteById                        ; $5a42: $cd $ce $20
     pop bc                                        ; $5a45: $c1
     push bc                                       ; $5a46: $c5
     ld a, b                                       ; $5a47: $78
     and $0f                                       ; $5a48: $e6 $0f
     add $51                                       ; $5a4a: $c6 $51
     ld bc, $7018                                  ; $5a4c: $01 $18 $70
-    call EmitMessageScriptById                    ; $5a4f: $cd $ce $20
+    call CopyOAMSpriteById                        ; $5a4f: $cd $ce $20
     pop bc                                        ; $5a52: $c1
     push bc                                       ; $5a53: $c5
     ld a, c                                       ; $5a54: $79
@@ -4260,13 +4260,13 @@ jr_001_599b:
     swap a                                        ; $5a57: $cb $37
     add $51                                       ; $5a59: $c6 $51
     ld bc, $8018                                  ; $5a5b: $01 $18 $80
-    call EmitMessageScriptById                    ; $5a5e: $cd $ce $20
+    call CopyOAMSpriteById                        ; $5a5e: $cd $ce $20
     pop bc                                        ; $5a61: $c1
     ld a, c                                       ; $5a62: $79
     and $0f                                       ; $5a63: $e6 $0f
     add $51                                       ; $5a65: $c6 $51
     ld bc, $8818                                  ; $5a67: $01 $18 $88
-    call EmitMessageScriptById                    ; $5a6a: $cd $ce $20
+    call CopyOAMSpriteById                        ; $5a6a: $cd $ce $20
     dec hl                                        ; $5a6d: $2b
     ld a, [hl]                                    ; $5a6e: $7e
     jp Jump_001_5c2c                              ; $5a6f: $c3 $2c $5c
@@ -4275,28 +4275,28 @@ jr_001_599b:
 Jump_001_5a72:
     ld a, $80                                     ; $5a72: $3e $80
     ld bc, $0818                                  ; $5a74: $01 $18 $08
-    call EmitMessageScriptById                    ; $5a77: $cd $ce $20
+    call CopyOAMSpriteById                        ; $5a77: $cd $ce $20
     ld a, $80                                     ; $5a7a: $3e $80
     ld bc, $1018                                  ; $5a7c: $01 $18 $10
-    call EmitMessageScriptById                    ; $5a7f: $cd $ce $20
+    call CopyOAMSpriteById                        ; $5a7f: $cd $ce $20
     ld a, $80                                     ; $5a82: $3e $80
     ld bc, $2018                                  ; $5a84: $01 $18 $20
-    call EmitMessageScriptById                    ; $5a87: $cd $ce $20
+    call CopyOAMSpriteById                        ; $5a87: $cd $ce $20
     ld a, $80                                     ; $5a8a: $3e $80
     ld bc, $2818                                  ; $5a8c: $01 $18 $28
-    call EmitMessageScriptById                    ; $5a8f: $cd $ce $20
+    call CopyOAMSpriteById                        ; $5a8f: $cd $ce $20
     ld a, $80                                     ; $5a92: $3e $80
     ld bc, $6818                                  ; $5a94: $01 $18 $68
-    call EmitMessageScriptById                    ; $5a97: $cd $ce $20
+    call CopyOAMSpriteById                        ; $5a97: $cd $ce $20
     ld a, $80                                     ; $5a9a: $3e $80
     ld bc, $7018                                  ; $5a9c: $01 $18 $70
-    call EmitMessageScriptById                    ; $5a9f: $cd $ce $20
+    call CopyOAMSpriteById                        ; $5a9f: $cd $ce $20
     ld a, $80                                     ; $5aa2: $3e $80
     ld bc, $8018                                  ; $5aa4: $01 $18 $80
-    call EmitMessageScriptById                    ; $5aa7: $cd $ce $20
+    call CopyOAMSpriteById                        ; $5aa7: $cd $ce $20
     ld a, $80                                     ; $5aaa: $3e $80
     ld bc, $8818                                  ; $5aac: $01 $18 $88
-    call EmitMessageScriptById                    ; $5aaf: $cd $ce $20
+    call CopyOAMSpriteById                        ; $5aaf: $cd $ce $20
     xor a                                         ; $5ab2: $af
     call Call_001_5c07                            ; $5ab3: $cd $07 $5c
     jp Jump_001_5c2c                              ; $5ab6: $c3 $2c $5c
@@ -4309,14 +4309,14 @@ Call_001_5ab9:
     call Call_000_1972                            ; $5abf: $cd $72 $19
     add $51                                       ; $5ac2: $c6 $51
     ld bc, $4818                                  ; $5ac4: $01 $18 $48
-    call EmitMessageScriptById                    ; $5ac7: $cd $ce $20
+    call CopyOAMSpriteById                        ; $5ac7: $cd $ce $20
     pop af                                        ; $5aca: $f1
     cp $0a                                        ; $5acb: $fe $0a
     jr z, jr_001_5ad7                             ; $5acd: $28 $08
 
     add $51                                       ; $5acf: $c6 $51
     ld bc, $4018                                  ; $5ad1: $01 $18 $40
-    call EmitMessageScriptById                    ; $5ad4: $cd $ce $20
+    call CopyOAMSpriteById                        ; $5ad4: $cd $ce $20
 
 jr_001_5ad7:
     pop af                                        ; $5ad7: $f1
@@ -4335,14 +4335,14 @@ jr_001_5ad7:
     swap a                                        ; $5aeb: $cb $37
     add $51                                       ; $5aed: $c6 $51
     ld bc, $0818                                  ; $5aef: $01 $18 $08
-    call EmitMessageScriptById                    ; $5af2: $cd $ce $20
+    call CopyOAMSpriteById                        ; $5af2: $cd $ce $20
     pop bc                                        ; $5af5: $c1
     push bc                                       ; $5af6: $c5
     ld a, b                                       ; $5af7: $78
     and $0f                                       ; $5af8: $e6 $0f
     add $51                                       ; $5afa: $c6 $51
     ld bc, $1018                                  ; $5afc: $01 $18 $10
-    call EmitMessageScriptById                    ; $5aff: $cd $ce $20
+    call CopyOAMSpriteById                        ; $5aff: $cd $ce $20
     pop bc                                        ; $5b02: $c1
     push bc                                       ; $5b03: $c5
     ld a, c                                       ; $5b04: $79
@@ -4350,13 +4350,13 @@ jr_001_5ad7:
     swap a                                        ; $5b07: $cb $37
     add $51                                       ; $5b09: $c6 $51
     ld bc, $2018                                  ; $5b0b: $01 $18 $20
-    call EmitMessageScriptById                    ; $5b0e: $cd $ce $20
+    call CopyOAMSpriteById                        ; $5b0e: $cd $ce $20
     pop bc                                        ; $5b11: $c1
     ld a, c                                       ; $5b12: $79
     and $0f                                       ; $5b13: $e6 $0f
     add $51                                       ; $5b15: $c6 $51
     ld bc, $2818                                  ; $5b17: $01 $18 $28
-    call EmitMessageScriptById                    ; $5b1a: $cd $ce $20
+    call CopyOAMSpriteById                        ; $5b1a: $cd $ce $20
     ld a, [hl]                                    ; $5b1d: $7e
     call Call_001_5c07                            ; $5b1e: $cd $07 $5c
     ld hl, $d84a                                  ; $5b21: $21 $4a $d8
@@ -4372,14 +4372,14 @@ jr_001_5ad7:
     swap a                                        ; $5b32: $cb $37
     add $51                                       ; $5b34: $c6 $51
     ld bc, $6818                                  ; $5b36: $01 $18 $68
-    call EmitMessageScriptById                    ; $5b39: $cd $ce $20
+    call CopyOAMSpriteById                        ; $5b39: $cd $ce $20
     pop bc                                        ; $5b3c: $c1
     push bc                                       ; $5b3d: $c5
     ld a, b                                       ; $5b3e: $78
     and $0f                                       ; $5b3f: $e6 $0f
     add $51                                       ; $5b41: $c6 $51
     ld bc, $7018                                  ; $5b43: $01 $18 $70
-    call EmitMessageScriptById                    ; $5b46: $cd $ce $20
+    call CopyOAMSpriteById                        ; $5b46: $cd $ce $20
     pop bc                                        ; $5b49: $c1
     push bc                                       ; $5b4a: $c5
     ld a, c                                       ; $5b4b: $79
@@ -4387,13 +4387,13 @@ jr_001_5ad7:
     swap a                                        ; $5b4e: $cb $37
     add $51                                       ; $5b50: $c6 $51
     ld bc, $8018                                  ; $5b52: $01 $18 $80
-    call EmitMessageScriptById                    ; $5b55: $cd $ce $20
+    call CopyOAMSpriteById                        ; $5b55: $cd $ce $20
     pop bc                                        ; $5b58: $c1
     ld a, c                                       ; $5b59: $79
     and $0f                                       ; $5b5a: $e6 $0f
     add $51                                       ; $5b5c: $c6 $51
     ld bc, $8818                                  ; $5b5e: $01 $18 $88
-    call EmitMessageScriptById                    ; $5b61: $cd $ce $20
+    call CopyOAMSpriteById                        ; $5b61: $cd $ce $20
     dec hl                                        ; $5b64: $2b
     ld a, [hl]                                    ; $5b65: $7e
     jp Jump_001_5c2c                              ; $5b66: $c3 $2c $5c
@@ -4402,28 +4402,28 @@ jr_001_5ad7:
 Jump_001_5b69:
     ld a, $80                                     ; $5b69: $3e $80
     ld bc, $0818                                  ; $5b6b: $01 $18 $08
-    call EmitMessageScriptById                    ; $5b6e: $cd $ce $20
+    call CopyOAMSpriteById                        ; $5b6e: $cd $ce $20
     ld a, $80                                     ; $5b71: $3e $80
     ld bc, $1018                                  ; $5b73: $01 $18 $10
-    call EmitMessageScriptById                    ; $5b76: $cd $ce $20
+    call CopyOAMSpriteById                        ; $5b76: $cd $ce $20
     ld a, $80                                     ; $5b79: $3e $80
     ld bc, $2018                                  ; $5b7b: $01 $18 $20
-    call EmitMessageScriptById                    ; $5b7e: $cd $ce $20
+    call CopyOAMSpriteById                        ; $5b7e: $cd $ce $20
     ld a, $80                                     ; $5b81: $3e $80
     ld bc, $2818                                  ; $5b83: $01 $18 $28
-    call EmitMessageScriptById                    ; $5b86: $cd $ce $20
+    call CopyOAMSpriteById                        ; $5b86: $cd $ce $20
     ld a, $80                                     ; $5b89: $3e $80
     ld bc, $6818                                  ; $5b8b: $01 $18 $68
-    call EmitMessageScriptById                    ; $5b8e: $cd $ce $20
+    call CopyOAMSpriteById                        ; $5b8e: $cd $ce $20
     ld a, $80                                     ; $5b91: $3e $80
     ld bc, $7018                                  ; $5b93: $01 $18 $70
-    call EmitMessageScriptById                    ; $5b96: $cd $ce $20
+    call CopyOAMSpriteById                        ; $5b96: $cd $ce $20
     ld a, $80                                     ; $5b99: $3e $80
     ld bc, $8018                                  ; $5b9b: $01 $18 $80
-    call EmitMessageScriptById                    ; $5b9e: $cd $ce $20
+    call CopyOAMSpriteById                        ; $5b9e: $cd $ce $20
     ld a, $80                                     ; $5ba1: $3e $80
     ld bc, $8818                                  ; $5ba3: $01 $18 $88
-    call EmitMessageScriptById                    ; $5ba6: $cd $ce $20
+    call CopyOAMSpriteById                        ; $5ba6: $cd $ce $20
     xor a                                         ; $5ba9: $af
     call Call_001_5c07                            ; $5baa: $cd $07 $5c
     jp Jump_001_5c2c                              ; $5bad: $c3 $2c $5c
@@ -4601,36 +4601,43 @@ GS05_TODO_Data3::
     db $07, $a3
     db $47, $a3
 
-    db $b6, $00, $c9, $00, $d8, $00, $f1, $00, $d7, $00, $df, $00, $d8, $00, $d6, $00
-    db $dd, $00, $df, $00, $d8, $00, $cc, $00, $cd, $00, $d7, $00, $df, $00, $d3, $00
-    db $d2, $00, $c9, $00, $ec, $00, $ff, $ff
+SETCHARMAP messages
 
-    db $c0, $00, $c9, $00, $d6, $00, $dd, $00, $df, $00, $cb, $00, $d3, $00, $d3, $00
-    db $c8, $00, $ec, $00, $ff, $ff
+LetsTryThisOneText::
+    db "L⁣e⁣t⁣'⁣s⁣ ⁣t⁣r⁣y⁣ ⁣t⁣h⁣i⁣s⁣ ⁣o⁣n⁣e⁣.⁣", $ff, $ff
 
-    db $b6, $00, $c9, $00, $d8, $00, $f1, $00, $d7, $00, $df, $00, $d8, $00, $d6, $00
-    db $dd, $00, $df, $00, $c5, $00, $cb, $00, $c5, $00, $cd, $00, $d2, $00, $ec, $00
-    db $ff, $ff, $fe, $ff
+VeryGoodText::
+    db "V⁣e⁣r⁣y⁣ ⁣g⁣o⁣o⁣d⁣.⁣", $ff, $ff
 
-    db $b3, $00, $d8, $00, $f1, $00, $d7, $00, $df, $00, $d8, $00, $cc, $00, $c9, $00
-    db $df, $00, $d0, $00, $c9, $00, $d8, $00, $d8, $00, $c9, $00, $d6, $00, $df, $00
-    db $ff, $ff
+LetsTryAgainText::
+    db "L⁣e⁣t⁣'⁣s⁣ ⁣t⁣r⁣y⁣ ⁣a⁣g⁣a⁣i⁣n⁣.⁣", $ff, $ff
 
-    db $e5, $00, $b6, $00, $e6, $00, $ec, $00, $ff, $ff
+ItsTheLetterText::
+    db $fe, $ff, "I⁣t⁣'⁣s⁣ ⁣t⁣h⁣e⁣ ⁣l⁣e⁣t⁣t⁣e⁣r⁣ ⁣", $ff, $ff
 
-    db $e5, $00, $af, $00, $e6, $00, $ec, $00, $ff, $ff
+LText::
+    db "“⁣L⁣”⁣.⁣", $ff, $ff
 
-    db $e5, $00, $be, $00, $e6, $00, $ec, $00, $ff, $ff
+EText::
+    db "“⁣E⁣”⁣.⁣", $ff, $ff
 
-    db $e5, $00, $bd, $00, $e6, $00, $ec, $00, $ff, $ff
+TText::
+    db "“⁣T⁣”⁣.⁣", $ff, $ff
 
-    db $e5, $00, $c1, $00, $e6, $00, $ec, $00, $ff, $ff
+SText::
+    db "“⁣S⁣”⁣.⁣", $ff, $ff
 
-    db $e5, $00, $b9, $00, $e6, $00, $ec, $00, $ff, $ff
+WText::
+    db "“⁣W⁣”⁣.⁣", $ff, $ff
 
-    db $e5, $00, $bc, $00, $e6, $00, $ec, $00, $ff, $ff
+OText::
+    db "“⁣O⁣”⁣.⁣", $ff, $ff
 
-    db $e5, $00, $b5, $00, $e6, $00, $ec, $00, $ff, $ff
+RText::
+    db "“⁣R⁣”⁣.⁣", $ff, $ff
+
+KText::
+    db "“⁣K⁣”⁣.⁣", $ff, $ff
 
 GameState_08_TODO_PhaseDispatcher::
     ld a, [rStatePhase_Current]                   ; $5d7e: $fa $35 $d6
@@ -4767,19 +4774,19 @@ jr_001_5e60:
     jr nz, jr_001_5e8e                            ; $5e65: $20 $27
 
     ld a, $0d                                     ; $5e67: $3e $0d
-    ld [rMessageProgressionResetEntryLow], a      ; $5e69: $ea $43 $d8
-    ld [rMessageProgressionEntryLow], a           ; $5e6c: $ea $2b $d8
+    ld [rMessageScriptStreamResetEntryLow], a     ; $5e69: $ea $43 $d8
+    ld [rMessageScriptStreamEntryLow], a          ; $5e6c: $ea $2b $d8
     ld a, $58                                     ; $5e6f: $3e $58
-    ld [rMessageProgressionResetEntryHigh], a     ; $5e71: $ea $44 $d8
-    ld [rMessageProgressionEntryHigh], a          ; $5e74: $ea $2c $d8
+    ld [rMessageScriptStreamResetEntryHigh], a    ; $5e71: $ea $44 $d8
+    ld [rMessageScriptStreamEntryHigh], a         ; $5e74: $ea $2c $d8
     ld a, $93                                     ; $5e77: $3e $93
-    ld [rMessageProgressionCopyLimitLow], a       ; $5e79: $ea $45 $d8
+    ld [rMessageScriptStreamLimitLow], a          ; $5e79: $ea $45 $d8
     ld a, $86                                     ; $5e7c: $3e $86
-    ld [rMessageProgressionCopyLimitHigh], a      ; $5e7e: $ea $46 $d8
+    ld [rMessageScriptStreamLimitHigh], a         ; $5e7e: $ea $46 $d8
     ld a, $aa                                     ; $5e81: $3e $aa
-    ld [rMessageProgressionPointerLow], a         ; $5e83: $ea $2d $d8
+    ld [rMessageScriptStreamPointerLow], a        ; $5e83: $ea $2d $d8
     ld a, $5c                                     ; $5e86: $3e $5c
-    ld [rMessageProgressionPointerHigh], a        ; $5e88: $ea $2e $d8
+    ld [rMessageScriptStreamPointerHigh], a       ; $5e88: $ea $2e $d8
     call Call_001_5fab                            ; $5e8b: $cd $ab $5f
 
 jr_001_5e8e:
@@ -4871,19 +4878,19 @@ jr_001_5f3a:
     jr nz, jr_001_5f68                            ; $5f3f: $20 $27
 
     ld a, $0d                                     ; $5f41: $3e $0d
-    ld [rMessageProgressionResetEntryLow], a      ; $5f43: $ea $43 $d8
-    ld [rMessageProgressionEntryLow], a           ; $5f46: $ea $2b $d8
+    ld [rMessageScriptStreamResetEntryLow], a     ; $5f43: $ea $43 $d8
+    ld [rMessageScriptStreamEntryLow], a          ; $5f46: $ea $2b $d8
     ld a, $58                                     ; $5f49: $3e $58
-    ld [rMessageProgressionResetEntryHigh], a     ; $5f4b: $ea $44 $d8
-    ld [rMessageProgressionEntryHigh], a          ; $5f4e: $ea $2c $d8
+    ld [rMessageScriptStreamResetEntryHigh], a    ; $5f4b: $ea $44 $d8
+    ld [rMessageScriptStreamEntryHigh], a         ; $5f4e: $ea $2c $d8
     ld a, $93                                     ; $5f51: $3e $93
-    ld [rMessageProgressionCopyLimitLow], a       ; $5f53: $ea $45 $d8
+    ld [rMessageScriptStreamLimitLow], a          ; $5f53: $ea $45 $d8
     ld a, $86                                     ; $5f56: $3e $86
-    ld [rMessageProgressionCopyLimitHigh], a      ; $5f58: $ea $46 $d8
+    ld [rMessageScriptStreamLimitHigh], a         ; $5f58: $ea $46 $d8
     ld a, $aa                                     ; $5f5b: $3e $aa
-    ld [rMessageProgressionPointerLow], a         ; $5f5d: $ea $2d $d8
+    ld [rMessageScriptStreamPointerLow], a        ; $5f5d: $ea $2d $d8
     ld a, $5c                                     ; $5f60: $3e $5c
-    ld [rMessageProgressionPointerHigh], a        ; $5f62: $ea $2e $d8
+    ld [rMessageScriptStreamPointerHigh], a       ; $5f62: $ea $2e $d8
     call Call_001_5fab                            ; $5f65: $cd $ab $5f
 
 jr_001_5f68:
@@ -4930,8 +4937,8 @@ jr_001_5fab:
     call Call_000_05c5                            ; $5fab: $cd $c5 $05
     rst RST_08                                    ; $5fae: $cf
     call AdvanceMessageScriptDelay                ; $5faf: $cd $18 $79
-    call GS06_MessageSequenceTick                 ; $5fb2: $cd $93 $30
-    call AdvanceMessageProgressionHelper          ; $5fb5: $cd $88 $2b
+    call AnimateMarioMouthDuringText              ; $5fb2: $cd $93 $30
+    call AdvanceMessageScriptStreamHelper         ; $5fb5: $cd $88 $2b
     jr nz, jr_001_5fab                            ; $5fb8: $20 $f1
 
     ret                                           ; $5fba: $c9
@@ -4939,11 +4946,11 @@ jr_001_5fab:
 
 Call_001_5fbb:
 jr_001_5fbb:
-    call AdvanceMessageProgressionHelper          ; $5fbb: $cd $88 $2b
+    call AdvanceMessageScriptStreamHelper         ; $5fbb: $cd $88 $2b
     ret z                                         ; $5fbe: $c8
 
     call AdvanceMessageScriptDelay                ; $5fbf: $cd $18 $79
-    call GS06_MessageSequenceTick                 ; $5fc2: $cd $93 $30
+    call AnimateMarioMouthDuringText              ; $5fc2: $cd $93 $30
     call Call_000_05c5                            ; $5fc5: $cd $c5 $05
     rst RST_08                                    ; $5fc8: $cf
     jr jr_001_5fbb                                ; $5fc9: $18 $f0
@@ -5077,9 +5084,9 @@ jr_001_60a9:
     call Call_001_7635                            ; $60cd: $cd $35 $76
     call GS06_CopyRedrawSourceToProgressionBuffer ; $60d0: $cd $2e $30
     ld a, $d2                                     ; $60d3: $3e $d2
-    ld [rMessageProgressionPointerLow], a         ; $60d5: $ea $2d $d8
+    ld [rMessageScriptStreamPointerLow], a        ; $60d5: $ea $2d $d8
     ld a, $5c                                     ; $60d8: $3e $5c
-    ld [rMessageProgressionPointerHigh], a        ; $60da: $ea $2e $d8
+    ld [rMessageScriptStreamPointerHigh], a       ; $60da: $ea $2e $d8
     call Call_001_5fbb                            ; $60dd: $cd $bb $5f
 
 jr_001_60e0:
@@ -5095,9 +5102,9 @@ jr_001_60e0:
     call TODO_Bank0FDispatcher                    ; $60f2: $cd $b6 $03
     call Call_001_76a9                            ; $60f5: $cd $a9 $76
     ld a, $0a                                     ; $60f8: $3e $0a
-    ld [rMessageProgressionPointerLow], a         ; $60fa: $ea $2d $d8
+    ld [rMessageScriptStreamPointerLow], a        ; $60fa: $ea $2d $d8
     ld a, $5d                                     ; $60fd: $3e $5d
-    ld [rMessageProgressionPointerHigh], a        ; $60ff: $ea $2e $d8
+    ld [rMessageScriptStreamPointerHigh], a       ; $60ff: $ea $2e $d8
     call Call_001_5fbb                            ; $6102: $cd $bb $5f
     ld a, [$a065]                                 ; $6105: $fa $65 $a0
     ld c, a                                       ; $6108: $4f
@@ -5111,9 +5118,9 @@ jr_001_60e0:
     ld hl, $616b                                  ; $6115: $21 $6b $61
     add hl, bc                                    ; $6118: $09
     ld a, [hl+]                                   ; $6119: $2a
-    ld [rMessageProgressionPointerLow], a         ; $611a: $ea $2d $d8
+    ld [rMessageScriptStreamPointerLow], a        ; $611a: $ea $2d $d8
     ld a, [hl]                                    ; $611d: $7e
-    ld [rMessageProgressionPointerHigh], a        ; $611e: $ea $2e $d8
+    ld [rMessageScriptStreamPointerHigh], a       ; $611e: $ea $2e $d8
     call Call_001_5fbb                            ; $6121: $cd $bb $5f
     ld c, $00                                     ; $6124: $0e $00
     ld a, $01                                     ; $6126: $3e $01
@@ -5143,9 +5150,9 @@ Jump_001_613a:
     call Call_001_7ce3                            ; $6153: $cd $e3 $7c
     call GS06_CopyRedrawSourceToProgressionBuffer ; $6156: $cd $2e $30
     ld a, $e8                                     ; $6159: $3e $e8
-    ld [rMessageProgressionPointerLow], a         ; $615b: $ea $2d $d8
+    ld [rMessageScriptStreamPointerLow], a        ; $615b: $ea $2d $d8
     ld a, $5c                                     ; $615e: $3e $5c
-    ld [rMessageProgressionPointerHigh], a        ; $6160: $ea $2e $d8
+    ld [rMessageScriptStreamPointerHigh], a       ; $6160: $ea $2e $d8
     call Call_001_5fbb                            ; $6163: $cd $bb $5f
     ld hl, rStatePhase_Current                    ; $6166: $21 $35 $d6
     inc [hl]                                      ; $6169: $34
@@ -5454,9 +5461,9 @@ jr_001_6364:
 
     call GS06_CopyRedrawSourceToProgressionBuffer ; $6395: $cd $2e $30
     ld a, $e8                                     ; $6398: $3e $e8
-    ld [rMessageProgressionPointerLow], a         ; $639a: $ea $2d $d8
+    ld [rMessageScriptStreamPointerLow], a        ; $639a: $ea $2d $d8
     ld a, $5c                                     ; $639d: $3e $5c
-    ld [rMessageProgressionPointerHigh], a        ; $639f: $ea $2e $d8
+    ld [rMessageScriptStreamPointerHigh], a       ; $639f: $ea $2e $d8
     call Call_001_5fbb                            ; $63a2: $cd $bb $5f
 
 jr_001_63a5:
@@ -6363,7 +6370,7 @@ GS0A_StatePhase_01_TODO::
     ld a, [$d833]                                 ; $6a95: $fa $33 $d8
     add $3a                                       ; $6a98: $c6 $3a
     ld bc, $2848                                  ; $6a9a: $01 $48 $28
-    call EmitMessageScriptById                    ; $6a9d: $cd $ce $20
+    call CopyOAMSpriteById                        ; $6a9d: $cd $ce $20
     ld a, [$c31e]                                 ; $6aa0: $fa $1e $c3
     and $f0                                       ; $6aa3: $e6 $f0
     jr z, jr_001_6ab7                             ; $6aa5: $28 $10
@@ -6396,7 +6403,7 @@ jr_001_6ab7:
     ld [$d833], a                                 ; $6ad4: $ea $33 $d8
     add $3a                                       ; $6ad7: $c6 $3a
     ld bc, $2848                                  ; $6ad9: $01 $48 $28
-    call EmitMessageScriptById                    ; $6adc: $cd $ce $20
+    call CopyOAMSpriteById                        ; $6adc: $cd $ce $20
     ld bc, $001e                                  ; $6adf: $01 $1e $00
     call Call_000_05fa                            ; $6ae2: $cd $fa $05
     jr jr_001_6aee                                ; $6ae5: $18 $07
@@ -7252,13 +7259,13 @@ Call_001_701b:
     push hl                                       ; $701d: $e5
     push af                                       ; $701e: $f5
     ld a, c                                       ; $701f: $79
-    ld [rMessageProgressionCopySourceX], a        ; $7020: $ea $51 $c3
+    ld [rMessageScriptCopySourceX], a             ; $7020: $ea $51 $c3
     add $05                                       ; $7023: $c6 $05
-    ld [rMessageProgressionCopyDestX], a          ; $7025: $ea $53 $c3
+    ld [rMessageScriptCopyDestX], a               ; $7025: $ea $53 $c3
     ld a, b                                       ; $7028: $78
-    ld [rMessageProgressionCopySourceY], a        ; $7029: $ea $52 $c3
+    ld [rMessageScriptCopySourceY], a             ; $7029: $ea $52 $c3
     add $05                                       ; $702c: $c6 $05
-    ld [rMessageProgressionCopyDestY], a          ; $702e: $ea $54 $c3
+    ld [rMessageScriptCopyDestY], a               ; $702e: $ea $54 $c3
     pop af                                        ; $7031: $f1
     sla a                                         ; $7032: $cb $27
     ld c, a                                       ; $7034: $4f
@@ -7270,23 +7277,23 @@ Call_001_701b:
     ld hl, $7061                                  ; $703b: $21 $61 $70
     add hl, bc                                    ; $703e: $09
     ld a, [hl+]                                   ; $703f: $2a
-    ld [rMessageProgressionCopyBankAddressLow], a ; $7040: $ea $55 $c3
+    ld [rMessageScriptCopyBankAddressLow], a      ; $7040: $ea $55 $c3
     ld a, [hl+]                                   ; $7043: $2a
-    ld [rMessageProgressionCopyBankAddressHigh], a; $7044: $ea $56 $c3
+    ld [rMessageScriptCopyBankAddressHigh], a     ; $7044: $ea $56 $c3
     jr jr_001_7055                                ; $7047: $18 $0c
 
 jr_001_7049:
     ld hl, $7081                                  ; $7049: $21 $81 $70
     add hl, bc                                    ; $704c: $09
     ld a, [hl+]                                   ; $704d: $2a
-    ld [rMessageProgressionCopyBankAddressLow], a ; $704e: $ea $55 $c3
+    ld [rMessageScriptCopyBankAddressLow], a      ; $704e: $ea $55 $c3
     ld a, [hl+]                                   ; $7051: $2a
-    ld [rMessageProgressionCopyBankAddressHigh], a; $7052: $ea $56 $c3
+    ld [rMessageScriptCopyBankAddressHigh], a     ; $7052: $ea $56 $c3
 
 jr_001_7055:
     ld a, $06                                     ; $7055: $3e $06
-    ld [rMessageProgressionCopyBank], a           ; $7057: $ea $57 $c3
-    call PrepareMessageProgressionCopy            ; $705a: $cd $b3 $08
+    ld [rMessageScriptCopyBank], a                ; $7057: $ea $57 $c3
+    call PrepareMessageScriptCopy                 ; $705a: $cd $b3 $08
     pop hl                                        ; $705d: $e1
     pop de                                        ; $705e: $d1
     pop bc                                        ; $705f: $c1
@@ -7453,33 +7460,33 @@ Call_001_7103:
     push de                                       ; $7104: $d5
     push hl                                       ; $7105: $e5
     ld a, c                                       ; $7106: $79
-    ld [rMessageProgressionCopySourceX], a        ; $7107: $ea $51 $c3
+    ld [rMessageScriptCopySourceX], a             ; $7107: $ea $51 $c3
     add $05                                       ; $710a: $c6 $05
-    ld [rMessageProgressionCopyDestX], a          ; $710c: $ea $53 $c3
+    ld [rMessageScriptCopyDestX], a               ; $710c: $ea $53 $c3
     ld a, b                                       ; $710f: $78
-    ld [rMessageProgressionCopySourceY], a        ; $7110: $ea $52 $c3
+    ld [rMessageScriptCopySourceY], a             ; $7110: $ea $52 $c3
     add $05                                       ; $7113: $c6 $05
-    ld [rMessageProgressionCopyDestY], a          ; $7115: $ea $54 $c3
+    ld [rMessageScriptCopyDestY], a               ; $7115: $ea $54 $c3
     ld a, e                                       ; $7118: $7b
     and a                                         ; $7119: $a7
     jr nz, jr_001_7128                            ; $711a: $20 $0c
 
     ld a, $e0                                     ; $711c: $3e $e0
-    ld [rMessageProgressionCopyBankAddressLow], a ; $711e: $ea $55 $c3
+    ld [rMessageScriptCopyBankAddressLow], a      ; $711e: $ea $55 $c3
     ld a, $58                                     ; $7121: $3e $58
-    ld [rMessageProgressionCopyBankAddressHigh], a; $7123: $ea $56 $c3
+    ld [rMessageScriptCopyBankAddressHigh], a     ; $7123: $ea $56 $c3
     jr jr_001_7132                                ; $7126: $18 $0a
 
 jr_001_7128:
     ld a, $f0                                     ; $7128: $3e $f0
-    ld [rMessageProgressionCopyBankAddressLow], a ; $712a: $ea $55 $c3
+    ld [rMessageScriptCopyBankAddressLow], a      ; $712a: $ea $55 $c3
     ld a, $58                                     ; $712d: $3e $58
-    ld [rMessageProgressionCopyBankAddressHigh], a; $712f: $ea $56 $c3
+    ld [rMessageScriptCopyBankAddressHigh], a     ; $712f: $ea $56 $c3
 
 jr_001_7132:
     ld a, $06                                     ; $7132: $3e $06
-    ld [rMessageProgressionCopyBank], a           ; $7134: $ea $57 $c3
-    call PrepareMessageProgressionCopy            ; $7137: $cd $b3 $08
+    ld [rMessageScriptCopyBank], a                ; $7134: $ea $57 $c3
+    call PrepareMessageScriptCopy                 ; $7137: $cd $b3 $08
     pop hl                                        ; $713a: $e1
     pop de                                        ; $713b: $d1
     pop bc                                        ; $713c: $c1
@@ -7510,7 +7517,7 @@ Call_001_713e:
     srl a                                         ; $7160: $cb $3f
     and $01                                       ; $7162: $e6 $01
     add $03                                       ; $7164: $c6 $03
-    call EmitMessageScriptById                    ; $7166: $cd $ce $20
+    call CopyOAMSpriteById                        ; $7166: $cd $ce $20
     pop bc                                        ; $7169: $c1
     push bc                                       ; $716a: $c5
     ld b, $00                                     ; $716b: $06 $00
@@ -7523,7 +7530,7 @@ Call_001_713e:
     srl a                                         ; $7178: $cb $3f
     and $01                                       ; $717a: $e6 $01
     add $05                                       ; $717c: $c6 $05
-    call EmitMessageScriptById                    ; $717e: $cd $ce $20
+    call CopyOAMSpriteById                        ; $717e: $cd $ce $20
     pop bc                                        ; $7181: $c1
     jp Jump_001_7967                              ; $7182: $c3 $67 $79
 
@@ -7552,7 +7559,7 @@ Call_001_7185:
     srl a                                         ; $71a7: $cb $3f
     and $01                                       ; $71a9: $e6 $01
     add $03                                       ; $71ab: $c6 $03
-    call EmitMessageScriptById                    ; $71ad: $cd $ce $20
+    call CopyOAMSpriteById                        ; $71ad: $cd $ce $20
     pop bc                                        ; $71b0: $c1
     push bc                                       ; $71b1: $c5
     ld b, $00                                     ; $71b2: $06 $00
@@ -7565,7 +7572,7 @@ Call_001_7185:
     srl a                                         ; $71bf: $cb $3f
     and $01                                       ; $71c1: $e6 $01
     add $05                                       ; $71c3: $c6 $05
-    call EmitMessageScriptById                    ; $71c5: $cd $ce $20
+    call CopyOAMSpriteById                        ; $71c5: $cd $ce $20
     pop bc                                        ; $71c8: $c1
     ret                                           ; $71c9: $c9
 
@@ -8156,32 +8163,32 @@ Call_001_7549:
     add hl, bc                                    ; $7559: $09
     pop af                                        ; $755a: $f1
     add [hl]                                      ; $755b: $86
-    ld [rMessageProgressionCopyBankAddressLow], a ; $755c: $ea $55 $c3
+    ld [rMessageScriptCopyBankAddressLow], a      ; $755c: $ea $55 $c3
     inc hl                                        ; $755f: $23
     ld a, $00                                     ; $7560: $3e $00
     adc [hl]                                      ; $7562: $8e
-    ld [rMessageProgressionCopyBankAddressHigh], a; $7563: $ea $56 $c3
+    ld [rMessageScriptCopyBankAddressHigh], a     ; $7563: $ea $56 $c3
     ld a, $06                                     ; $7566: $3e $06
-    ld [rMessageProgressionCopyBank], a           ; $7568: $ea $57 $c3
+    ld [rMessageScriptCopyBank], a                ; $7568: $ea $57 $c3
     ld a, [$d824]                                 ; $756b: $fa $24 $d8
     ld e, a                                       ; $756e: $5f
     sla a                                         ; $756f: $cb $27
     add e                                         ; $7571: $83
     sla a                                         ; $7572: $cb $27
     add $3b                                       ; $7574: $c6 $3b
-    ld [rMessageProgressionCopySourceX], a        ; $7576: $ea $51 $c3
+    ld [rMessageScriptCopySourceX], a             ; $7576: $ea $51 $c3
     add $04                                       ; $7579: $c6 $04
-    ld [rMessageProgressionCopyDestX], a          ; $757b: $ea $53 $c3
+    ld [rMessageScriptCopyDestX], a               ; $757b: $ea $53 $c3
     ld a, [$d825]                                 ; $757e: $fa $25 $d8
     ld e, a                                       ; $7581: $5f
     sla a                                         ; $7582: $cb $27
     add e                                         ; $7584: $83
     sla a                                         ; $7585: $cb $27
     add $33                                       ; $7587: $c6 $33
-    ld [rMessageProgressionCopySourceY], a        ; $7589: $ea $52 $c3
+    ld [rMessageScriptCopySourceY], a             ; $7589: $ea $52 $c3
     add $04                                       ; $758c: $c6 $04
-    ld [rMessageProgressionCopyDestY], a          ; $758e: $ea $54 $c3
-    call PrepareMessageProgressionCopy            ; $7591: $cd $b3 $08
+    ld [rMessageScriptCopyDestY], a               ; $758e: $ea $54 $c3
+    call PrepareMessageScriptCopy                 ; $7591: $cd $b3 $08
     pop hl                                        ; $7594: $e1
     pop de                                        ; $7595: $d1
     pop bc                                        ; $7596: $c1
@@ -8248,20 +8255,20 @@ Call_001_75cf:
     push bc                                       ; $75cf: $c5
     push de                                       ; $75d0: $d5
     push hl                                       ; $75d1: $e5
-    ld [rMessageProgressionCopyBankAddressLow], a ; $75d2: $ea $55 $c3
+    ld [rMessageScriptCopyBankAddressLow], a      ; $75d2: $ea $55 $c3
     ld a, $58                                     ; $75d5: $3e $58
-    ld [rMessageProgressionCopyBankAddressHigh], a; $75d7: $ea $56 $c3
+    ld [rMessageScriptCopyBankAddressHigh], a     ; $75d7: $ea $56 $c3
     ld a, $06                                     ; $75da: $3e $06
-    ld [rMessageProgressionCopyBank], a           ; $75dc: $ea $57 $c3
+    ld [rMessageScriptCopyBank], a                ; $75dc: $ea $57 $c3
     ld a, b                                       ; $75df: $78
-    ld [rMessageProgressionCopySourceX], a        ; $75e0: $ea $51 $c3
+    ld [rMessageScriptCopySourceX], a             ; $75e0: $ea $51 $c3
     add d                                         ; $75e3: $82
-    ld [rMessageProgressionCopyDestX], a          ; $75e4: $ea $53 $c3
+    ld [rMessageScriptCopyDestX], a               ; $75e4: $ea $53 $c3
     ld a, c                                       ; $75e7: $79
-    ld [rMessageProgressionCopySourceY], a        ; $75e8: $ea $52 $c3
+    ld [rMessageScriptCopySourceY], a             ; $75e8: $ea $52 $c3
     add e                                         ; $75eb: $83
-    ld [rMessageProgressionCopyDestY], a          ; $75ec: $ea $54 $c3
-    call PrepareMessageProgressionCopy            ; $75ef: $cd $b3 $08
+    ld [rMessageScriptCopyDestY], a               ; $75ec: $ea $54 $c3
+    call PrepareMessageScriptCopy                 ; $75ef: $cd $b3 $08
     pop hl                                        ; $75f2: $e1
     pop de                                        ; $75f3: $d1
     pop bc                                        ; $75f4: $c1
@@ -8520,20 +8527,20 @@ jr_001_7746:
     push bc                                       ; $7746: $c5
     push hl                                       ; $7747: $e5
     ld a, l                                       ; $7748: $7d
-    ld [rMessageProgressionCopyBankAddressLow], a ; $7749: $ea $55 $c3
+    ld [rMessageScriptCopyBankAddressLow], a      ; $7749: $ea $55 $c3
     ld a, h                                       ; $774c: $7c
-    ld [rMessageProgressionCopyBankAddressHigh], a; $774d: $ea $56 $c3
+    ld [rMessageScriptCopyBankAddressHigh], a     ; $774d: $ea $56 $c3
     ld a, $07                                     ; $7750: $3e $07
-    ld [rMessageProgressionCopyBank], a           ; $7752: $ea $57 $c3
+    ld [rMessageScriptCopyBank], a                ; $7752: $ea $57 $c3
     ld a, $3b                                     ; $7755: $3e $3b
-    ld [rMessageProgressionCopySourceX], a        ; $7757: $ea $51 $c3
+    ld [rMessageScriptCopySourceX], a             ; $7757: $ea $51 $c3
     add $1c                                       ; $775a: $c6 $1c
-    ld [rMessageProgressionCopyDestX], a          ; $775c: $ea $53 $c3
+    ld [rMessageScriptCopyDestX], a               ; $775c: $ea $53 $c3
     ld a, c                                       ; $775f: $79
-    ld [rMessageProgressionCopySourceY], a        ; $7760: $ea $52 $c3
+    ld [rMessageScriptCopySourceY], a             ; $7760: $ea $52 $c3
     add $0b                                       ; $7763: $c6 $0b
-    ld [rMessageProgressionCopyDestY], a          ; $7765: $ea $54 $c3
-    call PrepareMessageProgressionCopy            ; $7768: $cd $b3 $08
+    ld [rMessageScriptCopyDestY], a               ; $7765: $ea $54 $c3
+    call PrepareMessageScriptCopy                 ; $7768: $cd $b3 $08
     pop hl                                        ; $776b: $e1
     pop bc                                        ; $776c: $c1
     ld de, $0108                                  ; $776d: $11 $08 $01
@@ -8552,20 +8559,20 @@ jr_001_7779:
     jr nz, jr_001_7746                            ; $777f: $20 $c5
 
     ld a, l                                       ; $7781: $7d
-    ld [rMessageProgressionCopyBankAddressLow], a ; $7782: $ea $55 $c3
+    ld [rMessageScriptCopyBankAddressLow], a      ; $7782: $ea $55 $c3
     ld a, h                                       ; $7785: $7c
-    ld [rMessageProgressionCopyBankAddressHigh], a; $7786: $ea $56 $c3
+    ld [rMessageScriptCopyBankAddressHigh], a     ; $7786: $ea $56 $c3
     ld a, $07                                     ; $7789: $3e $07
-    ld [rMessageProgressionCopyBank], a           ; $778b: $ea $57 $c3
+    ld [rMessageScriptCopyBank], a                ; $778b: $ea $57 $c3
     ld a, $3b                                     ; $778e: $3e $3b
-    ld [rMessageProgressionCopySourceX], a        ; $7790: $ea $51 $c3
+    ld [rMessageScriptCopySourceX], a             ; $7790: $ea $51 $c3
     add $1c                                       ; $7793: $c6 $1c
-    ld [rMessageProgressionCopyDestX], a          ; $7795: $ea $53 $c3
+    ld [rMessageScriptCopyDestX], a               ; $7795: $ea $53 $c3
     ld a, c                                       ; $7798: $79
-    ld [rMessageProgressionCopySourceY], a        ; $7799: $ea $52 $c3
+    ld [rMessageScriptCopySourceY], a             ; $7799: $ea $52 $c3
     add $04                                       ; $779c: $c6 $04
-    ld [rMessageProgressionCopyDestY], a          ; $779e: $ea $54 $c3
-    call PrepareMessageProgressionCopy            ; $77a1: $cd $b3 $08
+    ld [rMessageScriptCopyDestY], a               ; $779e: $ea $54 $c3
+    call PrepareMessageScriptCopy                 ; $77a1: $cd $b3 $08
     ret                                           ; $77a4: $c9
 
 
@@ -8580,20 +8587,20 @@ jr_001_77ab:
     push bc                                       ; $77ab: $c5
     push hl                                       ; $77ac: $e5
     ld a, l                                       ; $77ad: $7d
-    ld [rMessageProgressionCopyBankAddressLow], a ; $77ae: $ea $55 $c3
+    ld [rMessageScriptCopyBankAddressLow], a      ; $77ae: $ea $55 $c3
     ld a, h                                       ; $77b1: $7c
-    ld [rMessageProgressionCopyBankAddressHigh], a; $77b2: $ea $56 $c3
+    ld [rMessageScriptCopyBankAddressHigh], a     ; $77b2: $ea $56 $c3
     ld a, $08                                     ; $77b5: $3e $08
-    ld [rMessageProgressionCopyBank], a           ; $77b7: $ea $57 $c3
+    ld [rMessageScriptCopyBank], a                ; $77b7: $ea $57 $c3
     ld a, $3b                                     ; $77ba: $3e $3b
-    ld [rMessageProgressionCopySourceX], a        ; $77bc: $ea $51 $c3
+    ld [rMessageScriptCopySourceX], a             ; $77bc: $ea $51 $c3
     add $3a                                       ; $77bf: $c6 $3a
-    ld [rMessageProgressionCopyDestX], a          ; $77c1: $ea $53 $c3
+    ld [rMessageScriptCopyDestX], a               ; $77c1: $ea $53 $c3
     ld a, c                                       ; $77c4: $79
-    ld [rMessageProgressionCopySourceY], a        ; $77c5: $ea $52 $c3
+    ld [rMessageScriptCopySourceY], a             ; $77c5: $ea $52 $c3
     add $0b                                       ; $77c8: $c6 $0b
-    ld [rMessageProgressionCopyDestY], a          ; $77ca: $ea $54 $c3
-    call PrepareMessageProgressionCopy            ; $77cd: $cd $b3 $08
+    ld [rMessageScriptCopyDestY], a               ; $77ca: $ea $54 $c3
+    call PrepareMessageScriptCopy                 ; $77cd: $cd $b3 $08
     pop hl                                        ; $77d0: $e1
     pop bc                                        ; $77d1: $c1
     ld de, $0108                                  ; $77d2: $11 $08 $01
@@ -8612,20 +8619,20 @@ jr_001_77de:
     jr nz, jr_001_77ab                            ; $77e4: $20 $c5
 
     ld a, l                                       ; $77e6: $7d
-    ld [rMessageProgressionCopyBankAddressLow], a ; $77e7: $ea $55 $c3
+    ld [rMessageScriptCopyBankAddressLow], a      ; $77e7: $ea $55 $c3
     ld a, h                                       ; $77ea: $7c
-    ld [rMessageProgressionCopyBankAddressHigh], a; $77eb: $ea $56 $c3
+    ld [rMessageScriptCopyBankAddressHigh], a     ; $77eb: $ea $56 $c3
     ld a, $08                                     ; $77ee: $3e $08
-    ld [rMessageProgressionCopyBank], a           ; $77f0: $ea $57 $c3
+    ld [rMessageScriptCopyBank], a                ; $77f0: $ea $57 $c3
     ld a, $3b                                     ; $77f3: $3e $3b
-    ld [rMessageProgressionCopySourceX], a        ; $77f5: $ea $51 $c3
+    ld [rMessageScriptCopySourceX], a             ; $77f5: $ea $51 $c3
     add $3a                                       ; $77f8: $c6 $3a
-    ld [rMessageProgressionCopyDestX], a          ; $77fa: $ea $53 $c3
+    ld [rMessageScriptCopyDestX], a               ; $77fa: $ea $53 $c3
     ld a, c                                       ; $77fd: $79
-    ld [rMessageProgressionCopySourceY], a        ; $77fe: $ea $52 $c3
+    ld [rMessageScriptCopySourceY], a             ; $77fe: $ea $52 $c3
     add $0a                                       ; $7801: $c6 $0a
-    ld [rMessageProgressionCopyDestY], a          ; $7803: $ea $54 $c3
-    call PrepareMessageProgressionCopy            ; $7806: $cd $b3 $08
+    ld [rMessageScriptCopyDestY], a               ; $7803: $ea $54 $c3
+    call PrepareMessageScriptCopy                 ; $7806: $cd $b3 $08
     ret                                           ; $7809: $c9
 
 
@@ -8637,20 +8644,20 @@ jr_001_780f:
     push bc                                       ; $780f: $c5
     push hl                                       ; $7810: $e5
     ld a, l                                       ; $7811: $7d
-    ld [rMessageProgressionCopyBankAddressLow], a ; $7812: $ea $55 $c3
+    ld [rMessageScriptCopyBankAddressLow], a      ; $7812: $ea $55 $c3
     ld a, h                                       ; $7815: $7c
-    ld [rMessageProgressionCopyBankAddressHigh], a; $7816: $ea $56 $c3
+    ld [rMessageScriptCopyBankAddressHigh], a     ; $7816: $ea $56 $c3
     ld a, $06                                     ; $7819: $3e $06
-    ld [rMessageProgressionCopyBank], a           ; $781b: $ea $57 $c3
+    ld [rMessageScriptCopyBank], a                ; $781b: $ea $57 $c3
     ld a, $3b                                     ; $781e: $3e $3b
-    ld [rMessageProgressionCopySourceX], a        ; $7820: $ea $51 $c3
+    ld [rMessageScriptCopySourceX], a             ; $7820: $ea $51 $c3
     add $58                                       ; $7823: $c6 $58
-    ld [rMessageProgressionCopyDestX], a          ; $7825: $ea $53 $c3
+    ld [rMessageScriptCopyDestX], a               ; $7825: $ea $53 $c3
     ld a, c                                       ; $7828: $79
-    ld [rMessageProgressionCopySourceY], a        ; $7829: $ea $52 $c3
+    ld [rMessageScriptCopySourceY], a             ; $7829: $ea $52 $c3
     add $0b                                       ; $782c: $c6 $0b
-    ld [rMessageProgressionCopyDestY], a          ; $782e: $ea $54 $c3
-    call PrepareMessageProgressionCopy            ; $7831: $cd $b3 $08
+    ld [rMessageScriptCopyDestY], a               ; $782e: $ea $54 $c3
+    call PrepareMessageScriptCopy                 ; $7831: $cd $b3 $08
     pop hl                                        ; $7834: $e1
     pop bc                                        ; $7835: $c1
     ld de, $0108                                  ; $7836: $11 $08 $01
@@ -8669,20 +8676,20 @@ jr_001_7842:
     jr nz, jr_001_780f                            ; $7848: $20 $c5
 
     ld a, l                                       ; $784a: $7d
-    ld [rMessageProgressionCopyBankAddressLow], a ; $784b: $ea $55 $c3
+    ld [rMessageScriptCopyBankAddressLow], a      ; $784b: $ea $55 $c3
     ld a, h                                       ; $784e: $7c
-    ld [rMessageProgressionCopyBankAddressHigh], a; $784f: $ea $56 $c3
+    ld [rMessageScriptCopyBankAddressHigh], a     ; $784f: $ea $56 $c3
     ld a, $06                                     ; $7852: $3e $06
-    ld [rMessageProgressionCopyBank], a           ; $7854: $ea $57 $c3
+    ld [rMessageScriptCopyBank], a                ; $7854: $ea $57 $c3
     ld a, $3b                                     ; $7857: $3e $3b
-    ld [rMessageProgressionCopySourceX], a        ; $7859: $ea $51 $c3
+    ld [rMessageScriptCopySourceX], a             ; $7859: $ea $51 $c3
     add $58                                       ; $785c: $c6 $58
-    ld [rMessageProgressionCopyDestX], a          ; $785e: $ea $53 $c3
+    ld [rMessageScriptCopyDestX], a               ; $785e: $ea $53 $c3
     ld a, c                                       ; $7861: $79
-    ld [rMessageProgressionCopySourceY], a        ; $7862: $ea $52 $c3
+    ld [rMessageScriptCopySourceY], a             ; $7862: $ea $52 $c3
     add $04                                       ; $7865: $c6 $04
-    ld [rMessageProgressionCopyDestY], a          ; $7867: $ea $54 $c3
-    call PrepareMessageProgressionCopy            ; $786a: $cd $b3 $08
+    ld [rMessageScriptCopyDestY], a               ; $7867: $ea $54 $c3
+    call PrepareMessageScriptCopy                 ; $786a: $cd $b3 $08
     ret                                           ; $786d: $c9
 
 
@@ -8850,7 +8857,7 @@ AdvanceMessageScriptDelay::
     ret z                                         ; $7947: $c8
 
     ld bc, $1810                                  ; $7948: $01 $10 $18
-    jp EmitMessageScriptById                      ; $794b: $c3 $ce $20
+    jp CopyOAMSpriteById                          ; $794b: $c3 $ce $20
 
 
 MessageScriptDelayTable::
@@ -8947,7 +8954,7 @@ jr_001_79ba:
     add $32                                       ; $79da: $c6 $32
     ld c, a                                       ; $79dc: $4f
     pop af                                        ; $79dd: $f1
-    call EmitMessageScriptById                    ; $79de: $cd $ce $20
+    call CopyOAMSpriteById                        ; $79de: $cd $ce $20
     ld a, [rMessageStepSequenceState]             ; $79e1: $fa $21 $d8
     cp $01                                        ; $79e4: $fe $01
     jr z, jr_001_79eb                             ; $79e6: $28 $03
@@ -9387,37 +9394,37 @@ Call_001_7c29:
     ld hl, $5840                                  ; $7c3c: $21 $40 $58
     add hl, de                                    ; $7c3f: $19
     ld a, l                                       ; $7c40: $7d
-    ld [rMessageProgressionCopyBankAddressLow], a ; $7c41: $ea $55 $c3
+    ld [rMessageScriptCopyBankAddressLow], a      ; $7c41: $ea $55 $c3
     ld a, h                                       ; $7c44: $7c
-    ld [rMessageProgressionCopyBankAddressHigh], a; $7c45: $ea $56 $c3
+    ld [rMessageScriptCopyBankAddressHigh], a     ; $7c45: $ea $56 $c3
     ld a, $06                                     ; $7c48: $3e $06
-    ld [rMessageProgressionCopyBank], a           ; $7c4a: $ea $57 $c3
+    ld [rMessageScriptCopyBank], a                ; $7c4a: $ea $57 $c3
     ld a, b                                       ; $7c4d: $78
-    ld [rMessageProgressionCopySourceX], a        ; $7c4e: $ea $51 $c3
+    ld [rMessageScriptCopySourceX], a             ; $7c4e: $ea $51 $c3
     add $07                                       ; $7c51: $c6 $07
-    ld [rMessageProgressionCopyDestX], a          ; $7c53: $ea $53 $c3
+    ld [rMessageScriptCopyDestX], a               ; $7c53: $ea $53 $c3
     ld a, c                                       ; $7c56: $79
-    ld [rMessageProgressionCopySourceY], a        ; $7c57: $ea $52 $c3
+    ld [rMessageScriptCopySourceY], a             ; $7c57: $ea $52 $c3
     add $07                                       ; $7c5a: $c6 $07
-    ld [rMessageProgressionCopyDestY], a          ; $7c5c: $ea $54 $c3
-    jp PrepareMessageProgressionCopy              ; $7c5f: $c3 $b3 $08
+    ld [rMessageScriptCopyDestY], a               ; $7c5c: $ea $54 $c3
+    jp PrepareMessageScriptCopy                   ; $7c5f: $c3 $b3 $08
 
 
     ld a, $a0                                     ; $7c62: $3e $a0
-    ld [rMessageProgressionCopyBankAddressLow], a ; $7c64: $ea $55 $c3
+    ld [rMessageScriptCopyBankAddressLow], a      ; $7c64: $ea $55 $c3
     ld a, $5b                                     ; $7c67: $3e $5b
-    ld [rMessageProgressionCopyBankAddressHigh], a; $7c69: $ea $56 $c3
+    ld [rMessageScriptCopyBankAddressHigh], a     ; $7c69: $ea $56 $c3
     ld a, $06                                     ; $7c6c: $3e $06
-    ld [rMessageProgressionCopyBank], a           ; $7c6e: $ea $57 $c3
+    ld [rMessageScriptCopyBank], a                ; $7c6e: $ea $57 $c3
     ld a, $08                                     ; $7c71: $3e $08
-    ld [rMessageProgressionCopySourceX], a        ; $7c73: $ea $51 $c3
+    ld [rMessageScriptCopySourceX], a             ; $7c73: $ea $51 $c3
     add $2f                                       ; $7c76: $c6 $2f
-    ld [rMessageProgressionCopyDestX], a          ; $7c78: $ea $53 $c3
+    ld [rMessageScriptCopyDestX], a               ; $7c78: $ea $53 $c3
     ld a, $26                                     ; $7c7b: $3e $26
-    ld [rMessageProgressionCopySourceY], a        ; $7c7d: $ea $52 $c3
+    ld [rMessageScriptCopySourceY], a             ; $7c7d: $ea $52 $c3
     add $09                                       ; $7c80: $c6 $09
-    ld [rMessageProgressionCopyDestY], a          ; $7c82: $ea $54 $c3
-    jp PrepareMessageProgressionCopy              ; $7c85: $c3 $b3 $08
+    ld [rMessageScriptCopyDestY], a               ; $7c82: $ea $54 $c3
+    jp PrepareMessageScriptCopy                   ; $7c85: $c3 $b3 $08
 
 
 Call_001_7c88:
@@ -9489,20 +9496,20 @@ Call_001_7ce3:
 
 Jump_001_7cf3:
     ld a, $00                                     ; $7cf3: $3e $00
-    ld [rMessageProgressionCopyBankAddressLow], a ; $7cf5: $ea $55 $c3
+    ld [rMessageScriptCopyBankAddressLow], a      ; $7cf5: $ea $55 $c3
     ld a, $63                                     ; $7cf8: $3e $63
-    ld [rMessageProgressionCopyBankAddressHigh], a; $7cfa: $ea $56 $c3
+    ld [rMessageScriptCopyBankAddressHigh], a     ; $7cfa: $ea $56 $c3
     ld a, $07                                     ; $7cfd: $3e $07
-    ld [rMessageProgressionCopyBank], a           ; $7cff: $ea $57 $c3
+    ld [rMessageScriptCopyBank], a                ; $7cff: $ea $57 $c3
     ld a, $3c                                     ; $7d02: $3e $3c
-    ld [rMessageProgressionCopySourceX], a        ; $7d04: $ea $51 $c3
+    ld [rMessageScriptCopySourceX], a             ; $7d04: $ea $51 $c3
     add $1a                                       ; $7d07: $c6 $1a
-    ld [rMessageProgressionCopyDestX], a          ; $7d09: $ea $53 $c3
+    ld [rMessageScriptCopyDestX], a               ; $7d09: $ea $53 $c3
     ld a, $3a                                     ; $7d0c: $3e $3a
-    ld [rMessageProgressionCopySourceY], a        ; $7d0e: $ea $52 $c3
+    ld [rMessageScriptCopySourceY], a             ; $7d0e: $ea $52 $c3
     add $0f                                       ; $7d11: $c6 $0f
-    ld [rMessageProgressionCopyDestY], a          ; $7d13: $ea $54 $c3
-    jp PrepareMessageProgressionCopy              ; $7d16: $c3 $b3 $08
+    ld [rMessageScriptCopyDestY], a               ; $7d13: $ea $54 $c3
+    jp PrepareMessageScriptCopy                   ; $7d16: $c3 $b3 $08
 
 
 Jump_001_7d19:
@@ -9512,20 +9519,20 @@ Jump_001_7d19:
     ld bc, $0200                                  ; $7d21: $01 $00 $02
     call BankedTileCopyVRAMSafe                   ; $7d24: $cd $38 $05
     ld a, $00                                     ; $7d27: $3e $00
-    ld [rMessageProgressionCopyBankAddressLow], a ; $7d29: $ea $55 $c3
+    ld [rMessageScriptCopyBankAddressLow], a      ; $7d29: $ea $55 $c3
     ld a, $5b                                     ; $7d2c: $3e $5b
-    ld [rMessageProgressionCopyBankAddressHigh], a; $7d2e: $ea $56 $c3
+    ld [rMessageScriptCopyBankAddressHigh], a     ; $7d2e: $ea $56 $c3
     ld a, $06                                     ; $7d31: $3e $06
-    ld [rMessageProgressionCopyBank], a           ; $7d33: $ea $57 $c3
+    ld [rMessageScriptCopyBank], a                ; $7d33: $ea $57 $c3
     ld a, $38                                     ; $7d36: $3e $38
-    ld [rMessageProgressionCopySourceX], a        ; $7d38: $ea $51 $c3
+    ld [rMessageScriptCopySourceX], a             ; $7d38: $ea $51 $c3
     add $3f                                       ; $7d3b: $c6 $3f
-    ld [rMessageProgressionCopyDestX], a          ; $7d3d: $ea $53 $c3
+    ld [rMessageScriptCopyDestX], a               ; $7d3d: $ea $53 $c3
     ld a, $49                                     ; $7d40: $3e $49
-    ld [rMessageProgressionCopySourceY], a        ; $7d42: $ea $52 $c3
+    ld [rMessageScriptCopySourceY], a             ; $7d42: $ea $52 $c3
     add $0f                                       ; $7d45: $c6 $0f
-    ld [rMessageProgressionCopyDestY], a          ; $7d47: $ea $54 $c3
-    jp PrepareMessageProgressionCopy              ; $7d4a: $c3 $b3 $08
+    ld [rMessageScriptCopyDestY], a               ; $7d47: $ea $54 $c3
+    jp PrepareMessageScriptCopy                   ; $7d4a: $c3 $b3 $08
 
 
 Jump_001_7d4d:
@@ -9535,20 +9542,20 @@ Jump_001_7d4d:
     ld bc, $0200                                  ; $7d55: $01 $00 $02
     call BankedTileCopyVRAMSafe                   ; $7d58: $cd $38 $05
     ld a, $00                                     ; $7d5b: $3e $00
-    ld [rMessageProgressionCopyBankAddressLow], a ; $7d5d: $ea $55 $c3
+    ld [rMessageScriptCopyBankAddressLow], a      ; $7d5d: $ea $55 $c3
     ld a, $5b                                     ; $7d60: $3e $5b
-    ld [rMessageProgressionCopyBankAddressHigh], a; $7d62: $ea $56 $c3
+    ld [rMessageScriptCopyBankAddressHigh], a     ; $7d62: $ea $56 $c3
     ld a, $06                                     ; $7d65: $3e $06
-    ld [rMessageProgressionCopyBank], a           ; $7d67: $ea $57 $c3
+    ld [rMessageScriptCopyBank], a                ; $7d67: $ea $57 $c3
     ld a, $47                                     ; $7d6a: $3e $47
-    ld [rMessageProgressionCopySourceX], a        ; $7d6c: $ea $51 $c3
+    ld [rMessageScriptCopySourceX], a             ; $7d6c: $ea $51 $c3
     add $3f                                       ; $7d6f: $c6 $3f
-    ld [rMessageProgressionCopyDestX], a          ; $7d71: $ea $53 $c3
+    ld [rMessageScriptCopyDestX], a               ; $7d71: $ea $53 $c3
     ld a, $57                                     ; $7d74: $3e $57
-    ld [rMessageProgressionCopySourceY], a        ; $7d76: $ea $52 $c3
+    ld [rMessageScriptCopySourceY], a             ; $7d76: $ea $52 $c3
     add $0f                                       ; $7d79: $c6 $0f
-    ld [rMessageProgressionCopyDestY], a          ; $7d7b: $ea $54 $c3
-    jp PrepareMessageProgressionCopy              ; $7d7e: $c3 $b3 $08
+    ld [rMessageScriptCopyDestY], a               ; $7d7b: $ea $54 $c3
+    jp PrepareMessageScriptCopy                   ; $7d7e: $c3 $b3 $08
 
 
 Call_001_7d81:
@@ -9574,7 +9581,7 @@ jr_001_7d9c:
     ld a, $09                                     ; $7d9c: $3e $09
 
 jr_001_7d9e:
-    call EmitMessageScriptById                    ; $7d9e: $cd $ce $20
+    call CopyOAMSpriteById                        ; $7d9e: $cd $ce $20
     ld a, [$c33a]                                 ; $7da1: $fa $3a $c3
     and $03                                       ; $7da4: $e6 $03
     jr nz, jr_001_7daf                            ; $7da6: $20 $07
@@ -9751,7 +9758,7 @@ jr_001_7e6a:
 jr_001_7e6f:
     ld bc, $2e0c                                  ; $7e6f: $01 $0c $2e
     ld a, $0a                                     ; $7e72: $3e $0a
-    jp EmitMessageScriptById                      ; $7e74: $c3 $ce $20
+    jp CopyOAMSpriteById                          ; $7e74: $c3 $ce $20
 
 
 Call_001_7e77:

@@ -10462,7 +10462,7 @@ jr_00f_70d6:
     rst $28                                       ; $70ef: $ef
     ld a, [$e465]                                 ; $70f0: $fa $65 $e4
     rst $30                                       ; $70f3: $f7
-    ld [.CopyMessageScriptLoop], sp               ; $70f4: $08 $f0 $20
+    ld [.CopyOAMSpriteLoop], sp                   ; $70f4: $08 $f0 $20
     ld [bc], a                                    ; $70f7: $02
     nop                                           ; $70f8: $00
     ei                                            ; $70f9: $fb
@@ -10473,7 +10473,7 @@ jr_00f_70d6:
     rst $28                                       ; $70ff: $ef
     ld a, [$e465]                                 ; $7100: $fa $65 $e4
     rst $30                                       ; $7103: $f7
-    ld [.CopyMessageScriptLoop], sp               ; $7104: $08 $f0 $20
+    ld [.CopyOAMSpriteLoop], sp                   ; $7104: $08 $f0 $20
     ld [bc], a                                    ; $7107: $02
     nop                                           ; $7108: $00
     ei                                            ; $7109: $fb
@@ -10484,7 +10484,7 @@ jr_00f_70d6:
     rst $28                                       ; $710f: $ef
     ld a, [$e465]                                 ; $7110: $fa $65 $e4
     rst $30                                       ; $7113: $f7
-    ld [.CopyMessageScriptLoop], sp               ; $7114: $08 $f0 $20
+    ld [.CopyOAMSpriteLoop], sp                   ; $7114: $08 $f0 $20
     ld [bc], a                                    ; $7117: $02
     nop                                           ; $7118: $00
     ei                                            ; $7119: $fb
@@ -10496,7 +10496,7 @@ jr_00f_70d6:
     rst $28                                       ; $7120: $ef
     ld a, [$e465]                                 ; $7121: $fa $65 $e4
     rst $30                                       ; $7124: $f7
-    ld [.CopyMessageScriptLoop], sp               ; $7125: $08 $f0 $20
+    ld [.CopyOAMSpriteLoop], sp                   ; $7125: $08 $f0 $20
     ld [bc], a                                    ; $7128: $02
     nop                                           ; $7129: $00
     ei                                            ; $712a: $fb

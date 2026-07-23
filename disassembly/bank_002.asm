@@ -1038,10 +1038,10 @@ StatePointer_0a::
     ld a, [$d83a]                                 ; $4632: $fa $3a $d8
     add $40                                       ; $4635: $c6 $40
     ld bc, $4038                                  ; $4637: $01 $38 $40
-    call EmitMessageScriptById                    ; $463a: $cd $ce $20
+    call CopyOAMSpriteById                        ; $463a: $cd $ce $20
     ld a, $3c                                     ; $463d: $3e $3c
     ld bc, $4038                                  ; $463f: $01 $38 $40
-    call EmitMessageScriptById                    ; $4642: $cd $ce $20
+    call CopyOAMSpriteById                        ; $4642: $cd $ce $20
     ld a, [$c322]                                 ; $4645: $fa $22 $c3
     and $c0                                       ; $4648: $e6 $c0
     jr z, jr_002_466f                             ; $464a: $28 $23
@@ -1080,10 +1080,10 @@ jr_002_466f:
     ld a, [$d83b]                                 ; $4672: $fa $3b $d8
     add $43                                       ; $4675: $c6 $43
     ld bc, $4038                                  ; $4677: $01 $38 $40
-    call EmitMessageScriptById                    ; $467a: $cd $ce $20
+    call CopyOAMSpriteById                        ; $467a: $cd $ce $20
     ld a, $3f                                     ; $467d: $3e $3f
     ld bc, $4038                                  ; $467f: $01 $38 $40
-    call EmitMessageScriptById                    ; $4682: $cd $ce $20
+    call CopyOAMSpriteById                        ; $4682: $cd $ce $20
     ld a, [$c322]                                 ; $4685: $fa $22 $c3
     and $c0                                       ; $4688: $e6 $c0
     jr z, jr_002_46af                             ; $468a: $28 $23
@@ -1122,10 +1122,10 @@ jr_002_46af:
     ld a, [$d83c]                                 ; $46b2: $fa $3c $d8
     add $45                                       ; $46b5: $c6 $45
     ld bc, $4038                                  ; $46b7: $01 $38 $40
-    call EmitMessageScriptById                    ; $46ba: $cd $ce $20
+    call CopyOAMSpriteById                        ; $46ba: $cd $ce $20
     ld a, $3e                                     ; $46bd: $3e $3e
     ld bc, $4038                                  ; $46bf: $01 $38 $40
-    call EmitMessageScriptById                    ; $46c2: $cd $ce $20
+    call CopyOAMSpriteById                        ; $46c2: $cd $ce $20
     ld a, [$c322]                                 ; $46c5: $fa $22 $c3
     and $c0                                       ; $46c8: $e6 $c0
     jr z, jr_002_4706                             ; $46ca: $28 $3a
@@ -1179,10 +1179,10 @@ jr_002_4706:
     ld a, [$d83d]                                 ; $470f: $fa $3d $d8
     add $43                                       ; $4712: $c6 $43
     ld bc, $4038                                  ; $4714: $01 $38 $40
-    call EmitMessageScriptById                    ; $4717: $cd $ce $20
+    call CopyOAMSpriteById                        ; $4717: $cd $ce $20
     ld a, $3f                                     ; $471a: $3e $3f
     ld bc, $4038                                  ; $471c: $01 $38 $40
-    call EmitMessageScriptById                    ; $471f: $cd $ce $20
+    call CopyOAMSpriteById                        ; $471f: $cd $ce $20
     ld a, [$c322]                                 ; $4722: $fa $22 $c3
     and $c0                                       ; $4725: $e6 $c0
     jr z, jr_002_474c                             ; $4727: $28 $23
@@ -1344,7 +1344,7 @@ jr_002_4826:
     ld c, a                                       ; $483e: $4f
     ld b, $30                                     ; $483f: $06 $30
     ld a, $4b                                     ; $4841: $3e $4b
-    call EmitMessageScriptById                    ; $4843: $cd $ce $20
+    call CopyOAMSpriteById                        ; $4843: $cd $ce $20
 
 jr_002_4846:
     ld a, [$c31e]                                 ; $4846: $fa $1e $c3
@@ -2658,7 +2658,7 @@ Call_002_4f40:
     add $10                                       ; $4f60: $c6 $10
     ld c, a                                       ; $4f62: $4f
     ld a, [hl]                                    ; $4f63: $7e
-    call EmitMessageScriptById                    ; $4f64: $cd $ce $20
+    call CopyOAMSpriteById                        ; $4f64: $cd $ce $20
     pop hl                                        ; $4f67: $e1
     ret                                           ; $4f68: $c9
 

@@ -3382,7 +3382,7 @@ jr_003_4dd3:
 
     inc e                                         ; $4e1c: $1c
     and l                                         ; $4e1d: $a5
-    jp z, MessageData_Event5a                     ; $4e1e: $ca $c9 $79
+    jp z, OAMSpriteData_Event5a                   ; $4e1e: $ca $c9 $79
 
     ld sp, $0008                                  ; $4e21: $31 $08 $00
     dec bc                                        ; $4e24: $0b
@@ -3482,7 +3482,7 @@ jr_003_4e93:
 
     ld a, $4e                                     ; $4e9b: $3e $4e
     ld bc, $3088                                  ; $4e9d: $01 $88 $30
-    call EmitMessageScriptById                    ; $4ea0: $cd $ce $20
+    call CopyOAMSpriteById                        ; $4ea0: $cd $ce $20
     jp Jump_000_05ea                              ; $4ea3: $c3 $ea $05
 
 
@@ -3500,7 +3500,7 @@ jr_003_4eaf:
 
     ld a, $4c                                     ; $4eb7: $3e $4c
     ld bc, $3088                                  ; $4eb9: $01 $88 $30
-    call EmitMessageScriptById                    ; $4ebc: $cd $ce $20
+    call CopyOAMSpriteById                        ; $4ebc: $cd $ce $20
     jp Jump_000_05ea                              ; $4ebf: $c3 $ea $05
 
 
@@ -3522,7 +3522,7 @@ jr_003_4ed3:
     ld a, [$d63d]                                 ; $4edb: $fa $3d $d6
     add $4c                                       ; $4ede: $c6 $4c
     ld bc, $3088                                  ; $4ee0: $01 $88 $30
-    call EmitMessageScriptById                    ; $4ee3: $cd $ce $20
+    call CopyOAMSpriteById                        ; $4ee3: $cd $ce $20
     jp Jump_000_05ea                              ; $4ee6: $c3 $ea $05
 
 
@@ -3544,7 +3544,7 @@ jr_003_4efa:
     ld a, [$d63d]                                 ; $4f02: $fa $3d $d6
     add $4e                                       ; $4f05: $c6 $4e
     ld bc, $3088                                  ; $4f07: $01 $88 $30
-    call EmitMessageScriptById                    ; $4f0a: $cd $ce $20
+    call CopyOAMSpriteById                        ; $4f0a: $cd $ce $20
     jp Jump_000_05ea                              ; $4f0d: $c3 $ea $05
 
 
@@ -3567,7 +3567,7 @@ jr_003_4f21:
     xor $01                                       ; $4f2c: $ee $01
     add $4f                                       ; $4f2e: $c6 $4f
     ld bc, $3088                                  ; $4f30: $01 $88 $30
-    call EmitMessageScriptById                    ; $4f33: $cd $ce $20
+    call CopyOAMSpriteById                        ; $4f33: $cd $ce $20
     jp Jump_000_05ea                              ; $4f36: $c3 $ea $05
 
 
@@ -4037,19 +4037,19 @@ jr_003_5273:
     ld hl, $4e8a                                  ; $5280: $21 $8a $4e
     call SwitchBankToBAndJumpToHL                 ; $5283: $cd $de $05
     ld a, $10                                     ; $5286: $3e $10
-    ld [rMessageProgressionResetEntryLow], a      ; $5288: $ea $43 $d8
-    ld [rMessageProgressionEntryLow], a           ; $528b: $ea $2b $d8
+    ld [rMessageScriptStreamResetEntryLow], a     ; $5288: $ea $43 $d8
+    ld [rMessageScriptStreamEntryLow], a          ; $528b: $ea $2b $d8
     ld a, $20                                     ; $528e: $3e $20
-    ld [rMessageProgressionResetEntryHigh], a     ; $5290: $ea $44 $d8
-    ld [rMessageProgressionEntryHigh], a          ; $5293: $ea $2c $d8
+    ld [rMessageScriptStreamResetEntryHigh], a    ; $5290: $ea $44 $d8
+    ld [rMessageScriptStreamEntryHigh], a         ; $5293: $ea $2c $d8
     ld a, $90                                     ; $5296: $3e $90
-    ld [rMessageProgressionCopyLimitLow], a       ; $5298: $ea $45 $d8
+    ld [rMessageScriptStreamLimitLow], a          ; $5298: $ea $45 $d8
     ld a, $58                                     ; $529b: $3e $58
-    ld [rMessageProgressionCopyLimitHigh], a      ; $529d: $ea $46 $d8
+    ld [rMessageScriptStreamLimitHigh], a         ; $529d: $ea $46 $d8
     ld a, $39                                     ; $52a0: $3e $39
-    ld [rMessageProgressionPointerLow], a         ; $52a2: $ea $2d $d8
+    ld [rMessageScriptStreamPointerLow], a        ; $52a2: $ea $2d $d8
     ld a, $4f                                     ; $52a5: $3e $4f
-    ld [rMessageProgressionPointerHigh], a        ; $52a7: $ea $2e $d8
+    ld [rMessageScriptStreamPointerHigh], a       ; $52a7: $ea $2e $d8
     call Call_003_541f                            ; $52aa: $cd $1f $54
     call Call_000_04a2                            ; $52ad: $cd $a2 $04
     call Call_000_1fa5                            ; $52b0: $cd $a5 $1f
@@ -4274,7 +4274,7 @@ jr_003_544b:
 
     add $83                                       ; $5455: $c6 $83
     ld bc, $5828                                  ; $5457: $01 $28 $58
-    jp EmitMessageScriptById                      ; $545a: $c3 $ce $20
+    jp CopyOAMSpriteById                          ; $545a: $c3 $ce $20
 
 
     rst $38                                       ; $545d: $ff
@@ -10298,484 +10298,484 @@ jr_003_5917:
     nop                                           ; $6c61: $00
     nop                                           ; $6c62: $00
 
-MessagePointerTable_Event00::
+OAMSpritePointerTable_Event00::
     db $6f, $6d
 
-MessagePointerTable_Event01::
+OAMSpritePointerTable_Event01::
     db $78, $6d
 
-MessagePointerTable_Event02::
+OAMSpritePointerTable_Event02::
     db $85, $6d
 
-MessagePointerTable_Event03::
+OAMSpritePointerTable_Event03::
     db $8a, $6d
 
-MessagePointerTable_Event04::
+OAMSpritePointerTable_Event04::
     db $93, $6d
 
-MessagePointerTable_Event05::
+OAMSpritePointerTable_Event05::
     db $9c, $6d
 
-MessagePointerTable_Event06::
+OAMSpritePointerTable_Event06::
     db $a5, $6d
 
-MessagePointerTable_Event07::
+OAMSpritePointerTable_Event07::
     db $ae, $6d
 
-MessagePointerTable_Event08::
+OAMSpritePointerTable_Event08::
     db $b7, $6d
 
-MessagePointerTable_Event09::
+OAMSpritePointerTable_Event09::
     db $c0, $6d
 
-MessagePointerTable_Event0a::
+OAMSpritePointerTable_Event0a::
     db $c9, $6d
 
-MessagePointerTable_Event0b::
+OAMSpritePointerTable_Event0b::
     db $ce, $6d
 
-MessagePointerTable_Event0c::
+OAMSpritePointerTable_Event0c::
     db $df, $6d
 
-MessagePointerTable_Event0d::
+OAMSpritePointerTable_Event0d::
     db $f0, $6d
 
-MessagePointerTable_Event0e::
+OAMSpritePointerTable_Event0e::
     db $01, $6e
 
-MessagePointerTable_Event0f::
+OAMSpritePointerTable_Event0f::
     db $22, $6e
 
-MessagePointerTable_Event10::
+OAMSpritePointerTable_Event10::
     db $37, $6e
 
-MessagePointerTable_Event11::
+OAMSpritePointerTable_Event11::
     db $64, $6e
 
-MessagePointerTable_Event12::
+OAMSpritePointerTable_Event12::
     db $a1, $6e
 
-MessagePointerTable_Event13::
+OAMSpritePointerTable_Event13::
     db $de, $6e
 
-MessagePointerTable_Event14::
+OAMSpritePointerTable_Event14::
     db $1b, $6f
 
-MessagePointerTable_Event15::
+OAMSpritePointerTable_Event15::
     db $58, $6f
 
-MessagePointerTable_Event16::
+OAMSpritePointerTable_Event16::
     db $95, $6f
 
-MessagePointerTable_Event17::
+OAMSpritePointerTable_Event17::
     db $ce, $6f
 
-MessagePointerTable_Event18::
+OAMSpritePointerTable_Event18::
     db $03, $70
 
-MessagePointerTable_Event19::
+OAMSpritePointerTable_Event19::
     db $34, $70
 
-MessagePointerTable_Event1a::
+OAMSpritePointerTable_Event1a::
     db $65, $70
 
-MessagePointerTable_Event1b::
+OAMSpritePointerTable_Event1b::
     db $92, $70
 
-MessagePointerTable_Event1c::
+OAMSpritePointerTable_Event1c::
     db $bf, $70
 
-MessagePointerTable_Event1d::
+OAMSpritePointerTable_Event1d::
     db $d8, $70
 
-MessagePointerTable_Event1e::
+OAMSpritePointerTable_Event1e::
     db $f1, $70
 
-MessagePointerTable_Event1f::
+OAMSpritePointerTable_Event1f::
     db $02, $71
 
-MessagePointerTable_Event20::
+OAMSpritePointerTable_Event20::
     db $23, $71
 
-MessagePointerTable_Event21::
+OAMSpritePointerTable_Event21::
     db $34, $71
 
-MessagePointerTable_Event22::
+OAMSpritePointerTable_Event22::
     db $45, $71
 
-MessagePointerTable_Event23::
+OAMSpritePointerTable_Event23::
     db $7e, $71
 
-MessagePointerTable_Event24::
+OAMSpritePointerTable_Event24::
     db $b3, $71
 
-MessagePointerTable_Event25::
+OAMSpritePointerTable_Event25::
     db $e8, $71
 
-MessagePointerTable_Event26::
+OAMSpritePointerTable_Event26::
     db $1d, $72
 
-MessagePointerTable_Event27::
+OAMSpritePointerTable_Event27::
     db $52, $72
 
-MessagePointerTable_Event28::
+OAMSpritePointerTable_Event28::
     db $87, $72
 
-MessagePointerTable_Event29::
+OAMSpritePointerTable_Event29::
     db $b0, $72
 
-MessagePointerTable_Event2a::
+OAMSpritePointerTable_Event2a::
     db $d9, $72
 
-MessagePointerTable_Event2b::
+OAMSpritePointerTable_Event2b::
     db $fa, $72
 
-MessagePointerTable_Event2c::
+OAMSpritePointerTable_Event2c::
     db $ff, $72
 
-MessagePointerTable_Event2d::
+OAMSpritePointerTable_Event2d::
     db $04, $73
 
-MessagePointerTable_Event2e::
+OAMSpritePointerTable_Event2e::
     db $09, $73
 
-MessagePointerTable_Event2f::
+OAMSpritePointerTable_Event2f::
     db $22, $73
 
-MessagePointerTable_Event30::
+OAMSpritePointerTable_Event30::
     db $3b, $73
 
-MessagePointerTable_Event31::
+OAMSpritePointerTable_Event31::
     db $54, $73
 
-MessagePointerTable_Event32::
+OAMSpritePointerTable_Event32::
     db $6d, $73
 
-MessagePointerTable_Event33::
+OAMSpritePointerTable_Event33::
     db $86, $73
 
-MessagePointerTable_Event34::
+OAMSpritePointerTable_Event34::
     db $9f, $73
 
-MessagePointerTable_Event35::
+OAMSpritePointerTable_Event35::
     db $e0, $73
 
-MessagePointerTable_Event36::
+OAMSpritePointerTable_Event36::
     db $21, $74
 
-MessagePointerTable_Event37::
+OAMSpritePointerTable_Event37::
     db $62, $74
 
-MessagePointerTable_Event38::
+OAMSpritePointerTable_Event38::
     db $67, $74
 
-MessagePointerTable_Event39::
+OAMSpritePointerTable_Event39::
     db $6c, $74
 
-MessagePointerTable_Event3a::
+OAMSpritePointerTable_Event3a::
     db $71, $74
 
-MessagePointerTable_Event3b::
+OAMSpritePointerTable_Event3b::
     db $d2, $74
 
-MessagePointerTable_Event3c::
+OAMSpritePointerTable_Event3c::
     db $33, $75
 
-MessagePointerTable_Event3d::
+OAMSpritePointerTable_Event3d::
     db $ac, $75
 
-MessagePointerTable_Event3e::
+OAMSpritePointerTable_Event3e::
     db $0d, $76
 
-MessagePointerTable_Event3f::
+OAMSpritePointerTable_Event3f::
     db $6e, $76
 
-MessagePointerTable_Event40::
+OAMSpritePointerTable_Event40::
     db $af, $76
 
-MessagePointerTable_Event41::
+OAMSpritePointerTable_Event41::
     db $d8, $76
 
-MessagePointerTable_Event42::
+OAMSpritePointerTable_Event42::
     db $01, $77
 
-MessagePointerTable_Event43::
+OAMSpritePointerTable_Event43::
     db $2a, $77
 
-MessagePointerTable_Event44::
+OAMSpritePointerTable_Event44::
     db $4b, $77
 
-MessagePointerTable_Event45::
+OAMSpritePointerTable_Event45::
     db $6c, $77
 
-MessagePointerTable_Event46::
+OAMSpritePointerTable_Event46::
     db $ad, $77
 
-MessagePointerTable_Event47::
+OAMSpritePointerTable_Event47::
     db $ee, $77
 
-MessagePointerTable_Event48::
+OAMSpritePointerTable_Event48::
     db $2f, $78
 
-MessagePointerTable_Event49::
+OAMSpritePointerTable_Event49::
     db $70, $78
 
-MessagePointerTable_Event4a::
+OAMSpritePointerTable_Event4a::
     db $b1, $78
 
-MessagePointerTable_Event4b::
+OAMSpritePointerTable_Event4b::
     db $f2, $78
 
-MessagePointerTable_Event4c::
+OAMSpritePointerTable_Event4c::
     db $0b, $79
 
-MessagePointerTable_Event4d::
+OAMSpritePointerTable_Event4d::
     db $1c, $79
 
-MessagePointerTable_Event4e::
+OAMSpritePointerTable_Event4e::
     db $3d, $79
 
-MessagePointerTable_Event4f::
+OAMSpritePointerTable_Event4f::
     db $5a, $79
 
-MessagePointerTable_Event50::
+OAMSpritePointerTable_Event50::
     db $73, $79
 
-MessagePointerTable_Event51::
+OAMSpritePointerTable_Event51::
     db $9c, $79
 
-MessagePointerTable_Event52::
+OAMSpritePointerTable_Event52::
     db $a1, $79
 
-MessagePointerTable_Event53::
+OAMSpritePointerTable_Event53::
     db $a6, $79
 
-MessagePointerTable_Event54::
+OAMSpritePointerTable_Event54::
     db $ab, $79
 
-MessagePointerTable_Event55::
+OAMSpritePointerTable_Event55::
     db $b0, $79
 
-MessagePointerTable_Event56::
+OAMSpritePointerTable_Event56::
     db $b5, $79
 
-MessagePointerTable_Event57::
+OAMSpritePointerTable_Event57::
     db $ba, $79
 
-MessagePointerTable_Event58::
+OAMSpritePointerTable_Event58::
     db $bf, $79
 
-MessagePointerTable_Event59::
+OAMSpritePointerTable_Event59::
     db $c4, $79
 
-MessagePointerTable_Event5a::
+OAMSpritePointerTable_Event5a::
     db $c9, $79
 
-MessagePointerTable_Event5b::
+OAMSpritePointerTable_Event5b::
     db $ce, $79
 
-MessagePointerTable_Event5c::
+OAMSpritePointerTable_Event5c::
     db $e7, $79
 
-MessagePointerTable_Event5d::
+OAMSpritePointerTable_Event5d::
     db $00, $7a
 
-MessagePointerTable_Event5e::
+OAMSpritePointerTable_Event5e::
     db $19, $7a
 
-MessagePointerTable_Event5f::
+OAMSpritePointerTable_Event5f::
     db $32, $7a
 
-MessagePointerTable_Event60::
+OAMSpritePointerTable_Event60::
     db $4b, $7a
 
-MessagePointerTable_Event61::
+OAMSpritePointerTable_Event61::
     db $5c, $7a
 
-MessagePointerTable_Event62::
+OAMSpritePointerTable_Event62::
     db $6d, $7a
 
-MessagePointerTable_Event63::
+OAMSpritePointerTable_Event63::
     db $7e, $7a
 
-MessagePointerTable_Event64::
+OAMSpritePointerTable_Event64::
     db $83, $7a
 
-MessagePointerTable_Event65::
+OAMSpritePointerTable_Event65::
     db $88, $7a
 
-MessagePointerTable_Event66::
+OAMSpritePointerTable_Event66::
     db $8d, $7a
 
-MessagePointerTable_Event67::
+OAMSpritePointerTable_Event67::
     db $92, $7a
 
-MessagePointerTable_Event68::
+OAMSpritePointerTable_Event68::
     db $97, $7a
 
-MessagePointerTable_Event69::
+OAMSpritePointerTable_Event69::
     db $9c, $7a
 
-MessagePointerTable_Event6a::
+OAMSpritePointerTable_Event6a::
     db $a1, $7a
 
-MessagePointerTable_Event6b::
+OAMSpritePointerTable_Event6b::
     db $a6, $7a
 
-MessagePointerTable_Event6c::
+OAMSpritePointerTable_Event6c::
     db $ab, $7a
 
-MessagePointerTable_Event6d::
+OAMSpritePointerTable_Event6d::
     db $b0, $7a
 
-MessagePointerTable_Event6e::
+OAMSpritePointerTable_Event6e::
     db $b5, $7a
 
-MessagePointerTable_Event6f::
+OAMSpritePointerTable_Event6f::
     db $ba, $7a
 
-MessagePointerTable_Event70::
+OAMSpritePointerTable_Event70::
     db $bf, $7a
 
-MessagePointerTable_Event71::
+OAMSpritePointerTable_Event71::
     db $c4, $7a
 
-MessagePointerTable_Event72::
+OAMSpritePointerTable_Event72::
     db $c9, $7a
 
-MessagePointerTable_Event73::
+OAMSpritePointerTable_Event73::
     db $ce, $7a
 
-MessagePointerTable_Event74::
+OAMSpritePointerTable_Event74::
     db $d3, $7a
 
-MessagePointerTable_Event75::
+OAMSpritePointerTable_Event75::
     db $d8, $7a
 
-MessagePointerTable_Event76::
+OAMSpritePointerTable_Event76::
     db $dd, $7a
 
-MessagePointerTable_Event77::
+OAMSpritePointerTable_Event77::
     db $e2, $7a
 
-MessagePointerTable_Event78::
+OAMSpritePointerTable_Event78::
     db $e7, $7a
 
-MessagePointerTable_Event79::
+OAMSpritePointerTable_Event79::
     db $ec, $7a
 
-MessagePointerTable_Event7a::
+OAMSpritePointerTable_Event7a::
     db $f1, $7a
 
-MessagePointerTable_Event7b::
+OAMSpritePointerTable_Event7b::
     db $f6, $7a
 
-MessagePointerTable_Event7c::
+OAMSpritePointerTable_Event7c::
     db $fb, $7a
 
-MessagePointerTable_Event7d::
+OAMSpritePointerTable_Event7d::
     db $00, $7b
 
-MessagePointerTable_Event7e::
+OAMSpritePointerTable_Event7e::
     db $05, $7b
 
-MessagePointerTable_Event7f::
+OAMSpritePointerTable_Event7f::
     db $0a, $7b
 
-MessagePointerTable_Event80::
+OAMSpritePointerTable_Event80::
     db $0f, $7b
 
-MessagePointerTable_Event81::
+OAMSpritePointerTable_Event81::
     db $14, $7b
 
-MessagePointerTable_Event82::
+OAMSpritePointerTable_Event82::
     db $19, $7b
 
-MessagePointerTable_Event83::
+OAMSpritePointerTable_Event83::
     db $1e, $7b
 
-MessagePointerTable_Event84::
+OAMSpritePointerTable_Event84::
     db $9f, $7b
 
-MessagePointerTable_Event85::
+OAMSpritePointerTable_Event85::
     db $20, $7c
 
-MessageData_Event00::
+OAMSpriteData_Event00::
     db $10, $08, $80, $10
     db $10, $10, $81, $10
     db $ff
 
-MessageData_Event01::
+OAMSpriteData_Event01::
     db $10, $08, $82, $10
     db $18, $08, $83, $10
     db $10, $10, $84, $10
     db $ff
 
-MessageData_Event02::
+OAMSpriteData_Event02::
     db $10, $08, $7d, $10
     db $ff
 
-MessageData_Event03::
+OAMSpriteData_Event03::
     db $10, $08, $75, $10
     db $38, $08, $79, $10
     db $ff
 
-MessageData_Event04::
+OAMSpriteData_Event04::
     db $10, $08, $76, $10
     db $38, $08, $7a, $10
     db $ff
 
-MessageData_Event05::
+OAMSpriteData_Event05::
     db $10, $08, $77, $10
     db $10, $38, $7b, $10
     db $ff
 
-MessageData_Event06::
+OAMSpriteData_Event06::
     db $10, $08, $78, $10
     db $10, $38, $7c, $10
     db $ff
 
-MessageData_Event07::
+OAMSpriteData_Event07::
     db $10, $08, $5e, $00
     db $10, $10, $6e, $00
     db $ff
 
-MessageData_Event08::
+OAMSpriteData_Event08::
     db $10, $08, $5e, $00
     db $10, $10, $5f, $00
     db $ff
 
-MessageData_Event09::
+OAMSpriteData_Event09::
     db $10, $08, $5e, $00
     db $10, $10, $6f, $00
     db $ff
 
-MessageData_Event0a::
+OAMSpriteData_Event0a::
     db $10, $08, $74, $10
     db $ff
 
-MessageData_Event0b::
+OAMSpriteData_Event0b::
     db $07, $08, $50, $10
     db $07, $10, $51, $10
     db $0f, $08, $60, $10
     db $0f, $10, $61, $10
     db $ff
 
-MessageData_Event0c::
+OAMSpriteData_Event0c::
     db $07, $08, $50, $10
     db $07, $10, $51, $10
     db $0f, $10, $61, $10
     db $0f, $08, $52, $10
     db $ff
 
-MessageData_Event0d::
+OAMSpriteData_Event0d::
     db $07, $08, $50, $10
     db $07, $10, $51, $10
     db $0f, $10, $61, $10
     db $0f, $08, $62, $10
     db $ff
 
-MessageData_Event0e::
+OAMSpriteData_Event0e::
     db $07, $08, $53, $10
     db $0f, $08, $63, $10
     db $04, $1b, $58, $10
@@ -10786,7 +10786,7 @@ MessageData_Event0e::
     db $0c, $23, $69, $10
     db $ff
 
-MessageData_Event0f::
+OAMSpriteData_Event0f::
     db $0f, $08, $63, $10
     db $04, $0d, $5a, $10
     db $04, $15, $5b, $10
@@ -10794,7 +10794,7 @@ MessageData_Event0f::
     db $0c, $0d, $6a, $10
     db $ff
 
-MessageData_Event10::
+OAMSpriteData_Event10::
     db $12, $0d, $66, $10
     db $09, $06, $55, $10
     db $11, $06, $65, $10
@@ -10808,7 +10808,7 @@ MessageData_Event10::
     db $0c, $23, $69, $10
     db $ff
 
-MessageData_Event11::
+OAMSpriteData_Event11::
     db $09, $fe, $55, $10
     db $17, $ff, $65, $10
     db $17, $0f, $66, $10
@@ -10826,7 +10826,7 @@ MessageData_Event11::
     db $0c, $23, $69, $10
     db $ff
 
-MessageData_Event12::
+OAMSpriteData_Event12::
     db $0b, $fa, $55, $10
     db $1b, $07, $67, $10
     db $11, $fd, $67, $10
@@ -10844,7 +10844,7 @@ MessageData_Event12::
     db $0c, $23, $69, $10
     db $ff
 
-MessageData_Event13::
+OAMSpriteData_Event13::
     db $22, $03, $67, $10
     db $16, $fd, $67, $10
     db $16, $11, $67, $10
@@ -10862,7 +10862,7 @@ MessageData_Event13::
     db $0c, $23, $69, $10
     db $ff
 
-MessageData_Event14::
+OAMSpriteData_Event14::
     db $27, $09, $67, $10
     db $1b, $f5, $67, $10
     db $1b, $0f, $67, $10
@@ -10880,7 +10880,7 @@ MessageData_Event14::
     db $0c, $23, $69, $10
     db $ff
 
-MessageData_Event15::
+OAMSpriteData_Event15::
     db $2e, $05, $67, $10
     db $22, $fb, $67, $10
     db $22, $13, $67, $10
@@ -10898,7 +10898,7 @@ MessageData_Event15::
     db $0c, $23, $69, $10
     db $ff
 
-MessageData_Event16::
+OAMSpriteData_Event16::
     db $37, $05, $67, $10
     db $2b, $03, $67, $10
     db $2b, $17, $67, $10
@@ -10915,7 +10915,7 @@ MessageData_Event16::
     db $0c, $23, $69, $10
     db $ff
 
-MessageData_Event17::
+OAMSpriteData_Event17::
     db $36, $ff, $67, $10
     db $36, $0f, $67, $10
     db $3f, $fb, $67, $10
@@ -10931,7 +10931,7 @@ MessageData_Event17::
     db $0c, $23, $69, $10
     db $ff
 
-MessageData_Event18::
+OAMSpriteData_Event18::
     db $43, $17, $67, $10
     db $4c, $f9, $67, $10
     db $4c, $13, $67, $10
@@ -10946,7 +10946,7 @@ MessageData_Event18::
     db $0c, $23, $69, $10
     db $ff
 
-MessageData_Event19::
+OAMSpriteData_Event19::
     db $52, $fb, $67, $10
     db $52, $0f, $67, $10
     db $5b, $f7, $67, $10
@@ -10961,7 +10961,7 @@ MessageData_Event19::
     db $0c, $23, $69, $10
     db $ff
 
-MessageData_Event1a::
+OAMSpriteData_Event1a::
     db $6f, $09, $67, $10
     db $6c, $fb, $67, $10
     db $6c, $17, $67, $10
@@ -10975,7 +10975,7 @@ MessageData_Event1a::
     db $0c, $23, $69, $10
     db $ff
 
-MessageData_Event1b::
+OAMSpriteData_Event1b::
     db $82, $07, $67, $10
     db $7f, $f7, $67, $10
     db $7f, $17, $67, $10
@@ -10989,7 +10989,7 @@ MessageData_Event1b::
     db $0c, $23, $69, $10
     db $ff
 
-MessageData_Event1c::
+OAMSpriteData_Event1c::
     db $0e, $04, $67, $10
     db $15, $0b, $67, $30
     db $08, $09, $53, $10
@@ -10998,7 +10998,7 @@ MessageData_Event1c::
     db $10, $11, $64, $10
     db $ff
 
-MessageData_Event1d::
+OAMSpriteData_Event1d::
     db $0f, $02, $67, $30
     db $13, $07, $67, $10
     db $06, $07, $53, $10
@@ -11007,14 +11007,14 @@ MessageData_Event1d::
     db $0e, $0f, $64, $10
     db $ff
 
-MessageData_Event1e::
+OAMSpriteData_Event1e::
     db $07, $08, $53, $10
     db $07, $10, $54, $10
     db $0f, $08, $63, $10
     db $0f, $10, $64, $10
     db $ff
 
-MessageData_Event1f::
+OAMSpriteData_Event1f::
     db $11, $0e, $64, $10
     db $09, $06, $53, $10
     db $11, $06, $63, $10
@@ -11025,21 +11025,21 @@ MessageData_Event1f::
     db $0c, $23, $69, $10
     db $ff
 
-MessageData_Event20::
+OAMSpriteData_Event20::
     db $0e, $06, $3c, $10
     db $0e, $0e, $3d, $10
     db $16, $06, $4c, $10
     db $16, $0e, $4d, $10
     db $ff
 
-MessageData_Event21::
+OAMSpriteData_Event21::
     db $0b, $09, $3e, $10
     db $0b, $11, $3f, $10
     db $13, $09, $4e, $10
     db $13, $11, $4f, $10
     db $ff
 
-MessageData_Event22::
+OAMSpriteData_Event22::
     db $07, $08, $53, $10
     db $07, $10, $54, $10
     db $0f, $08, $63, $10
@@ -11056,7 +11056,7 @@ MessageData_Event22::
     db $5e, $13, $66, $10
     db $ff
 
-MessageData_Event23::
+OAMSpriteData_Event23::
     db $07, $08, $53, $10
     db $07, $10, $54, $10
     db $0f, $08, $63, $10
@@ -11072,7 +11072,7 @@ MessageData_Event23::
     db $5a, $15, $66, $10
     db $ff
 
-MessageData_Event24::
+OAMSpriteData_Event24::
     db $07, $08, $53, $10
     db $07, $10, $54, $10
     db $0f, $08, $63, $10
@@ -11088,7 +11088,7 @@ MessageData_Event24::
     db $56, $ed, $56, $10
     db $ff
 
-MessageData_Event25::
+OAMSpriteData_Event25::
     db $07, $08, $53, $10
     db $07, $10, $54, $10
     db $0f, $08, $63, $10
@@ -11104,7 +11104,7 @@ MessageData_Event25::
     db $3b, $17, $56, $10
     db $ff
 
-MessageData_Event26::
+OAMSpriteData_Event26::
     db $07, $08, $53, $10
     db $07, $10, $54, $10
     db $0f, $08, $63, $10
@@ -11120,7 +11120,7 @@ MessageData_Event26::
     db $2d, $fb, $56, $10
     db $ff
 
-MessageData_Event27::
+OAMSpriteData_Event27::
     db $07, $08, $53, $10
     db $07, $10, $54, $10
     db $0f, $08, $63, $10
@@ -11136,7 +11136,7 @@ MessageData_Event27::
     db $20, $12, $56, $10
     db $ff
 
-MessageData_Event28::
+OAMSpriteData_Event28::
     db $07, $08, $53, $10
     db $07, $10, $54, $10
     db $0f, $08, $63, $10
@@ -11149,7 +11149,7 @@ MessageData_Event28::
     db $21, $08, $66, $10
     db $ff
 
-MessageData_Event29::
+OAMSpriteData_Event29::
     db $07, $08, $53, $10
     db $07, $10, $54, $10
     db $0f, $08, $63, $10
@@ -11162,7 +11162,7 @@ MessageData_Event29::
     db $19, $07, $66, $10
     db $ff
 
-MessageData_Event2a::
+OAMSpriteData_Event2a::
     db $07, $08, $53, $10
     db $0f, $08, $63, $10
     db $0f, $10, $64, $10
@@ -11173,19 +11173,19 @@ MessageData_Event2a::
     db $0a, $1d, $6d, $10
     db $ff
 
-MessageData_Event2b::
+OAMSpriteData_Event2b::
     db $10, $08, $04, $10
     db $ff
 
-MessageData_Event2c::
+OAMSpriteData_Event2c::
     db $10, $08, $05, $10
     db $ff
 
-MessageData_Event2d::
+OAMSpriteData_Event2d::
     db $10, $08, $06, $10
     db $ff
 
-MessageData_Event2e::
+OAMSpriteData_Event2e::
     db $10, $08, $15, $10
     db $18, $08, $15, $10
     db $20, $08, $15, $10
@@ -11194,7 +11194,7 @@ MessageData_Event2e::
     db $30, $08, $0a, $10
     db $ff
 
-MessageData_Event2f::
+OAMSpriteData_Event2f::
     db $10, $08, $16, $10
     db $18, $08, $16, $10
     db $20, $08, $16, $10
@@ -11203,7 +11203,7 @@ MessageData_Event2f::
     db $30, $08, $0b, $10
     db $ff
 
-MessageData_Event30::
+OAMSpriteData_Event30::
     db $10, $08, $17, $10
     db $18, $08, $17, $10
     db $20, $08, $17, $10
@@ -11212,7 +11212,7 @@ MessageData_Event30::
     db $30, $08, $14, $10
     db $ff
 
-MessageData_Event31::
+OAMSpriteData_Event31::
     db $10, $20, $18, $10
     db $10, $18, $18, $10
     db $10, $10, $18, $10
@@ -11221,7 +11221,7 @@ MessageData_Event31::
     db $10, $00, $07, $30
     db $ff
 
-MessageData_Event32::
+OAMSpriteData_Event32::
     db $10, $08, $19, $10
     db $10, $10, $19, $10
     db $10, $18, $19, $10
@@ -11230,7 +11230,7 @@ MessageData_Event32::
     db $10, $00, $08, $30
     db $ff
 
-MessageData_Event33::
+OAMSpriteData_Event33::
     db $10, $08, $1a, $10
     db $10, $10, $1a, $10
     db $10, $18, $1a, $10
@@ -11239,7 +11239,7 @@ MessageData_Event33::
     db $10, $00, $09, $30
     db $ff
 
-MessageData_Event34_HighlightNumbers_Frame1::
+OAMSpriteData_Event34_HighlightNumbers_Frame1::
     db $10, $08, $07, $10
     db $18, $08, $07, $10
     db $20, $08, $07, $10
@@ -11258,7 +11258,7 @@ MessageData_Event34_HighlightNumbers_Frame1::
     db $08, $20, $0a, $50
     db $ff
 
-MessageData_Event35_HighlightNumbers_Frame2::
+OAMSpriteData_Event35_HighlightNumbers_Frame2::
     db $10, $08, $08, $10
     db $18, $08, $08, $10
     db $20, $08, $08, $10
@@ -11277,7 +11277,7 @@ MessageData_Event35_HighlightNumbers_Frame2::
     db $08, $20, $0b, $50
     db $ff
 
-MessageData_Event36_HighlightNumbers_Frame3::
+OAMSpriteData_Event36_HighlightNumbers_Frame3::
     db $10, $08, $09, $10
     db $18, $08, $09, $10
     db $20, $08, $09, $10
@@ -11296,19 +11296,19 @@ MessageData_Event36_HighlightNumbers_Frame3::
     db $08, $20, $14, $50
     db $ff
 
-MessageData_Event37_AButtonPrompt::
+OAMSpriteData_Event37_AButtonPrompt::
     db $10, $08, $1b, $10
     db $ff
 
-MessageData_Event38::
+OAMSpriteData_Event38::
     db $10, $08, $7c, $10
     db $ff
 
-MessageData_Event39::
+OAMSpriteData_Event39::
     db $10, $08, $7f, $00
     db $ff
 
-MessageData_Event3a::
+OAMSpriteData_Event3a::
     db $10, $08, $50, $10
     db $10, $10, $51, $10
     db $10, $18, $52, $10
@@ -11335,7 +11335,7 @@ MessageData_Event3a::
     db $20, $10, $6b, $10
     db $ff
 
-MessageData_Event3b::
+OAMSpriteData_Event3b::
     db $10, $08, $50, $10
     db $10, $10, $51, $10
     db $10, $18, $52, $10
@@ -11362,7 +11362,7 @@ MessageData_Event3b::
     db $20, $30, $6f, $10
     db $ff
 
-MessageData_Event3c::
+OAMSpriteData_Event3c::
     db $18, $18, $50, $10
     db $18, $20, $51, $10
     db $18, $28, $52, $10
@@ -11395,7 +11395,7 @@ MessageData_Event3c::
     db $28, $30, $6c, $10
     db $ff
 
-MessageData_Event3d::
+OAMSpriteData_Event3d::
     db $10, $40, $5d, $10
     db $18, $40, $6d, $10
     db $20, $40, $6d, $10
@@ -11422,7 +11422,7 @@ MessageData_Event3d::
     db $28, $38, $7c, $10
     db $ff
 
-MessageData_Event3e::
+OAMSpriteData_Event3e::
     db $10, $18, $5c, $10
     db $10, $20, $5c, $10
     db $10, $28, $5d, $10
@@ -11449,7 +11449,7 @@ MessageData_Event3e::
     db $38, $20, $63, $10
     db $ff
 
-MessageData_Event3f::
+OAMSpriteData_Event3f::
     db $10, $18, $5c, $10
     db $10, $20, $5c, $10
     db $10, $28, $5c, $10
@@ -11468,7 +11468,7 @@ MessageData_Event3f::
     db $20, $28, $66, $10
     db $ff
 
-MessageData_Event40::
+OAMSpriteData_Event40::
     db $18, $10, $6a, $10
     db $20, $10, $6c, $10
     db $28, $10, $6c, $10
@@ -11481,7 +11481,7 @@ MessageData_Event40::
     db $30, $10, $7c, $10
     db $ff
 
-MessageData_Event41::
+OAMSpriteData_Event41::
     db $28, $10, $6c, $10
     db $10, $08, $5b, $10
     db $10, $10, $5c, $10
@@ -11494,7 +11494,7 @@ MessageData_Event41::
     db $18, $10, $6c, $10
     db $ff
 
-MessageData_Event42::
+OAMSpriteData_Event42::
     db $10, $08, $5b, $10
     db $10, $10, $5c, $10
     db $18, $08, $6b, $10
@@ -11507,7 +11507,7 @@ MessageData_Event42::
     db $30, $10, $7c, $10
     db $ff
 
-MessageData_Event43::
+OAMSpriteData_Event43::
     db $10, $08, $5b, $10
     db $18, $08, $6b, $10
     db $20, $08, $6b, $10
@@ -11518,7 +11518,7 @@ MessageData_Event43::
     db $18, $10, $6a, $10
     db $ff
 
-MessageData_Event44::
+OAMSpriteData_Event44::
     db $10, $08, $5b, $10
     db $18, $08, $6b, $10
     db $20, $08, $6b, $10
@@ -11529,7 +11529,7 @@ MessageData_Event44::
     db $20, $10, $6a, $10
     db $ff
 
-MessageData_Event45::
+OAMSpriteData_Event45::
     db $10, $08, $5b, $10
     db $18, $08, $6b, $10
     db $20, $08, $6b, $10
@@ -11548,7 +11548,7 @@ MessageData_Event45::
     db $40, $10, $6c, $10
     db $ff
 
-MessageData_Event46::
+OAMSpriteData_Event46::
     db $10, $08, $5b, $10
     db $18, $08, $6b, $10
     db $20, $08, $6b, $10
@@ -11567,7 +11567,7 @@ MessageData_Event46::
     db $18, $10, $6c, $10
     db $ff
 
-MessageData_Event47::
+OAMSpriteData_Event47::
     db $10, $08, $5b, $10
     db $18, $08, $6b, $10
     db $20, $08, $6b, $10
@@ -11586,7 +11586,7 @@ MessageData_Event47::
     db $20, $10, $6c, $10
     db $ff
 
-MessageData_Event48::
+OAMSpriteData_Event48::
     db $10, $08, $5b, $10
     db $18, $08, $6b, $10
     db $20, $08, $6b, $10
@@ -11605,7 +11605,7 @@ MessageData_Event48::
     db $28, $10, $6c, $10
     db $ff
 
-MessageData_Event49::
+OAMSpriteData_Event49::
     db $10, $08, $5b, $10
     db $18, $08, $6b, $10
     db $20, $08, $6b, $10
@@ -11624,7 +11624,7 @@ MessageData_Event49::
     db $30, $10, $6c, $10
     db $ff
 
-MessageData_Event4a::
+OAMSpriteData_Event4a::
     db $10, $08, $5b, $10
     db $18, $08, $6b, $10
     db $20, $08, $6b, $10
@@ -11643,7 +11643,7 @@ MessageData_Event4a::
     db $38, $10, $6c, $10
     db $ff
 
-MessageData_Event4b::
+OAMSpriteData_Event4b::
     db $10, $08, $04, $00
     db $10, $10, $11, $00
     db $10, $18, $00, $00
@@ -11652,14 +11652,14 @@ MessageData_Event4b::
     db $10, $38, $2b, $00
     db $ff
 
-MessageData_Event4c::
+OAMSpriteData_Event4c::
     db $10, $18, $00, $00
     db $10, $20, $2a, $00
     db $10, $28, $0e, $00
     db $10, $30, $0a, $00
     db $ff
 
-MessageData_Event4d::
+OAMSpriteData_Event4d::
     db $10, $08, $01, $00
     db $10, $10, $2a, $00
     db $10, $18, $02, $00
@@ -11670,7 +11670,7 @@ MessageData_Event4d::
     db $10, $40, $0b, $00
     db $ff
 
-MessageData_Event4e::
+OAMSpriteData_Event4e::
     db $10, $14, $2a, $00
     db $10, $0c, $00, $00
     db $10, $1c, $12, $00
@@ -11680,7 +11680,7 @@ MessageData_Event4e::
     db $10, $3c, $13, $00
     db $ff
 
-MessageData_Event4f::
+OAMSpriteData_Event4f::
     db $10, $10, $01, $00
     db $10, $18, $2a, $00
     db $10, $20, $04, $00
@@ -11689,7 +11689,7 @@ MessageData_Event4f::
     db $10, $38, $13, $00
     db $ff
 
-MessageData_Event50::
+OAMSpriteData_Event50::
     db $10, $04, $2a, $00
     db $10, $fc, $00, $00
     db $10, $0c, $13, $00
@@ -11702,47 +11702,47 @@ MessageData_Event50::
     db $10, $4c, $0d, $00
     db $ff
 
-MessageData_Event51::
+OAMSpriteData_Event51::
     db $10, $08, $20, $00
     db $ff
 
-MessageData_Event52::
+OAMSpriteData_Event52::
     db $10, $08, $21, $00
     db $ff
 
-MessageData_Event53::
+OAMSpriteData_Event53::
     db $10, $08, $22, $00
     db $ff
 
-MessageData_Event54::
+OAMSpriteData_Event54::
     db $10, $08, $23, $00
     db $ff
 
-MessageData_Event55::
+OAMSpriteData_Event55::
     db $10, $08, $24, $00
     db $ff
 
-MessageData_Event56::
+OAMSpriteData_Event56::
     db $10, $08, $25, $00
     db $ff
 
-MessageData_Event57::
+OAMSpriteData_Event57::
     db $10, $08, $26, $00
     db $ff
 
-MessageData_Event58::
+OAMSpriteData_Event58::
     db $10, $08, $27, $00
     db $ff
 
-MessageData_Event59::
+OAMSpriteData_Event59::
     db $10, $08, $28, $00
     db $ff
 
-MessageData_Event5a::
+OAMSpriteData_Event5a::
     db $10, $08, $29, $00
     db $ff
 
-MessageData_Event5b::
+OAMSpriteData_Event5b::
     db $10, $08, $34, $10
     db $10, $10, $35, $10
     db $18, $08, $44, $10
@@ -11751,7 +11751,7 @@ MessageData_Event5b::
     db $20, $10, $3d, $10
     db $ff
 
-MessageData_Event5c::
+OAMSpriteData_Event5c::
     db $10, $08, $36, $10
     db $10, $10, $37, $10
     db $18, $08, $46, $10
@@ -11760,7 +11760,7 @@ MessageData_Event5c::
     db $20, $10, $4d, $10
     db $ff
 
-MessageData_Event5d::
+OAMSpriteData_Event5d::
     db $10, $08, $38, $10
     db $18, $08, $48, $10
     db $18, $10, $49, $10
@@ -11769,7 +11769,7 @@ MessageData_Event5d::
     db $10, $10, $38, $30
     db $ff
 
-MessageData_Event5e::
+OAMSpriteData_Event5e::
     db $18, $08, $4a, $10
     db $18, $10, $4b, $10
     db $20, $08, $4e, $10
@@ -11778,7 +11778,7 @@ MessageData_Event5e::
     db $10, $10, $39, $30
     db $ff
 
-MessageData_Event5f::
+OAMSpriteData_Event5f::
     db $18, $08, $4a, $10
     db $20, $08, $4e, $10
     db $10, $08, $39, $10
@@ -11787,156 +11787,156 @@ MessageData_Event5f::
     db $20, $10, $3b, $10
     db $ff
 
-MessageData_Event60::
+OAMSpriteData_Event60::
     db $10, $08, $30, $10
     db $10, $10, $31, $10
     db $18, $08, $40, $10
     db $18, $10, $41, $10
     db $ff
 
-MessageData_Event61::
+OAMSpriteData_Event61::
     db $10, $06, $32, $10
     db $10, $0e, $33, $10
     db $18, $06, $42, $10
     db $18, $0e, $43, $10
     db $ff
 
-MessageData_Event62::
+OAMSpriteData_Event62::
     db $0e, $0a, $32, $10
     db $0e, $12, $33, $10
     db $16, $0a, $42, $10
     db $16, $12, $43, $10
     db $ff
 
-MessageData_Event63::
+OAMSpriteData_Event63::
     db $10, $08, $1f, $00
     db $ff
 
-MessageData_Event64::
+OAMSpriteData_Event64::
     db $10, $08, $00, $00
     db $ff
 
-MessageData_Event65::
+OAMSpriteData_Event65::
     db $10, $08, $01, $00
     db $ff
 
-MessageData_Event66::
+OAMSpriteData_Event66::
     db $10, $08, $02, $00
     db $ff
 
-MessageData_Event67::
+OAMSpriteData_Event67::
     db $10, $08, $03, $00
     db $ff
 
-MessageData_Event68::
+OAMSpriteData_Event68::
     db $10, $08, $04, $00
     db $ff
 
-MessageData_Event69::
+OAMSpriteData_Event69::
     db $10, $08, $05, $00
     db $ff
 
-MessageData_Event6a::
+OAMSpriteData_Event6a::
     db $10, $08, $06, $00
     db $ff
 
-MessageData_Event6b::
+OAMSpriteData_Event6b::
     db $10, $08, $07, $00
     db $ff
 
-MessageData_Event6c::
+OAMSpriteData_Event6c::
     db $10, $08, $08, $00
     db $ff
 
-MessageData_Event6d::
+OAMSpriteData_Event6d::
     db $10, $08, $09, $00
     db $ff
 
-MessageData_Event6e::
+OAMSpriteData_Event6e::
     db $10, $08, $0a, $00
     db $ff
 
-MessageData_Event6f::
+OAMSpriteData_Event6f::
     db $10, $08, $0b, $00
     db $ff
 
-MessageData_Event70::
+OAMSpriteData_Event70::
     db $10, $08, $0c, $00
     db $ff
 
-MessageData_Event71::
+OAMSpriteData_Event71::
     db $10, $08, $0d, $00
     db $ff
 
-MessageData_Event72::
+OAMSpriteData_Event72::
     db $10, $08, $0e, $00
     db $ff
 
-MessageData_Event73::
+OAMSpriteData_Event73::
     db $10, $08, $0f, $00
     db $ff
 
-MessageData_Event74::
+OAMSpriteData_Event74::
     db $10, $08, $10, $00
     db $ff
 
-MessageData_Event75::
+OAMSpriteData_Event75::
     db $10, $08, $11, $00
     db $ff
 
-MessageData_Event76::
+OAMSpriteData_Event76::
     db $10, $08, $12, $00
     db $ff
 
-MessageData_Event77::
+OAMSpriteData_Event77::
     db $10, $08, $13, $00
     db $ff
 
-MessageData_Event78::
+OAMSpriteData_Event78::
     db $10, $08, $14, $00
     db $ff
 
-MessageData_Event79::
+OAMSpriteData_Event79::
     db $10, $08, $15, $00
     db $ff
 
-MessageData_Event7a::
+OAMSpriteData_Event7a::
     db $10, $08, $16, $00
     db $ff
 
-MessageData_Event7b::
+OAMSpriteData_Event7b::
     db $10, $08, $17, $00
     db $ff
 
-MessageData_Event7c::
+OAMSpriteData_Event7c::
     db $10, $08, $18, $00
     db $ff
 
-MessageData_Event7d::
+OAMSpriteData_Event7d::
     db $10, $08, $19, $00
     db $ff
 
-MessageData_Event7e::
+OAMSpriteData_Event7e::
     db $10, $08, $1a, $00
     db $ff
 
-MessageData_Event7f::
+OAMSpriteData_Event7f::
     db $10, $08, $1b, $00
     db $ff
 
-MessageData_Event80::
+OAMSpriteData_Event80::
     db $10, $08, $1c, $00
     db $ff
 
-MessageData_Event81::
+OAMSpriteData_Event81::
     db $10, $08, $1d, $00
     db $ff
 
-MessageData_Event82::
+OAMSpriteData_Event82::
     db $10, $08, $1e, $00
     db $ff
 
-MessageData_Event83::
+OAMSpriteData_Event83::
     db $f8, $f0, $04, $80
     db $f8, $f8, $05, $80
     db $f8, $00, $06, $80
@@ -11971,7 +11971,7 @@ MessageData_Event83::
     db $18, $00, $1f, $80
     db $ff
 
-MessageData_Event84::
+OAMSpriteData_Event84::
     db $f0, $f8, $20, $80
     db $f0, $00, $21, $80
     db $f0, $08, $22, $80
@@ -12006,7 +12006,7 @@ MessageData_Event84::
     db $18, $00, $3f, $80
     db $ff
 
-MessageData_Event85::
+OAMSpriteData_Event85::
     db $f0, $f8, $40, $80
     db $f0, $00, $41, $80
     db $f0, $08, $42, $80
