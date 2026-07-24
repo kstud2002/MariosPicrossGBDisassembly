@@ -345,11 +345,11 @@ jr_000_02d9:
     call Call_000_06ce                            ; $02fd: $cd $ce $06
 
 jr_000_0300:
-    ld a, [$c31a]                                 ; $0300: $fa $1a $c3
+    ld a, [rInputButtonsHeld]                     ; $0300: $fa $1a $c3
     cp $0f                                        ; $0303: $fe $0f
     jr nz, jr_000_0313                            ; $0305: $20 $0c
 
-    ld a, [$c31e]                                 ; $0307: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $0307: $fa $1e $c3
     and $0f                                       ; $030a: $e6 $0f
     jr z, jr_000_0313                             ; $030c: $28 $05
 
@@ -1165,17 +1165,17 @@ Call_000_06ce:
     and $0f                                       ; $06ef: $e6 $0f
     or b                                          ; $06f1: $b0
     cpl                                           ; $06f2: $2f
-    ld [$c31a], a                                 ; $06f3: $ea $1a $c3
+    ld [rInputButtonsHeld], a                     ; $06f3: $ea $1a $c3
     ld a, $30                                     ; $06f6: $3e $30
     ldh [rP1], a                                  ; $06f8: $e0 $00
-    ld a, [$c31a]                                 ; $06fa: $fa $1a $c3
+    ld a, [rInputButtonsHeld]                     ; $06fa: $fa $1a $c3
     ld hl, $c326                                  ; $06fd: $21 $26 $c3
     xor [hl]                                      ; $0700: $ae
-    ld hl, $c31a                                  ; $0701: $21 $1a $c3
+    ld hl, rInputButtonsHeld                      ; $0701: $21 $1a $c3
     and [hl]                                      ; $0704: $a6
-    ld [$c31e], a                                 ; $0705: $ea $1e $c3
-    ld [$c322], a                                 ; $0708: $ea $22 $c3
-    ld a, [$c31a]                                 ; $070b: $fa $1a $c3
+    ld [rInputButtonsPressed], a                  ; $0705: $ea $1e $c3
+    ld [rInputButtonsPressedOrRepeated], a        ; $0708: $ea $22 $c3
+    ld a, [rInputButtonsHeld]                     ; $070b: $fa $1a $c3
     and a                                         ; $070e: $a7
     jr z, jr_000_072b                             ; $070f: $28 $1a
 
@@ -1187,8 +1187,8 @@ Call_000_06ce:
     dec [hl]                                      ; $071a: $35
     jr nz, jr_000_0731                            ; $071b: $20 $14
 
-    ld a, [$c31a]                                 ; $071d: $fa $1a $c3
-    ld [$c322], a                                 ; $0720: $ea $22 $c3
+    ld a, [rInputButtonsHeld]                     ; $071d: $fa $1a $c3
+    ld [rInputButtonsPressedOrRepeated], a        ; $0720: $ea $22 $c3
     ld a, [$c319]                                 ; $0723: $fa $19 $c3
     ld [$c32a], a                                 ; $0726: $ea $2a $c3
     jr jr_000_0731                                ; $0729: $18 $06
@@ -1198,7 +1198,7 @@ jr_000_072b:
     ld [$c32a], a                                 ; $072e: $ea $2a $c3
 
 jr_000_0731:
-    ld a, [$c31a]                                 ; $0731: $fa $1a $c3
+    ld a, [rInputButtonsHeld]                     ; $0731: $fa $1a $c3
     ld [$c326], a                                 ; $0734: $ea $26 $c3
     ret                                           ; $0737: $c9
 
@@ -1493,121 +1493,121 @@ jr_000_08b2:
     ret                                           ; $08b2: $c9
 
 
-PrepareMessageScriptCopy::
-    ld a, [rMessageScriptCopySourceX]             ; $08b3: $fa $51 $c3
+PrepareBGTileCopy::
+    ld a, [rBGTileCopySourceX]                    ; $08b3: $fa $51 $c3
     and $07                                       ; $08b6: $e6 $07
     ld c, a                                       ; $08b8: $4f
     ld b, $00                                     ; $08b9: $06 $00
     ld hl, $0d59                                  ; $08bb: $21 $59 $0d
     add hl, bc                                    ; $08be: $09
     ld a, [hl]                                    ; $08bf: $7e
-    ld [rMessageScriptCopyMaskHigh], a            ; $08c0: $ea $59 $c3
-    ld a, [rMessageScriptCopyDestX]               ; $08c3: $fa $53 $c3
+    ld [rBGTileCopyMaskHigh], a                   ; $08c0: $ea $59 $c3
+    ld a, [rBGTileCopyDestX]                      ; $08c3: $fa $53 $c3
     and $07                                       ; $08c6: $e6 $07
     ld c, a                                       ; $08c8: $4f
     ld b, $00                                     ; $08c9: $06 $00
     ld hl, $0d62                                  ; $08cb: $21 $62 $0d
     add hl, bc                                    ; $08ce: $09
     ld a, [hl]                                    ; $08cf: $7e
-    ld [rMessageScriptCopyValueA], a              ; $08d0: $ea $5a $c3
-    ld a, [rMessageScriptCopySourceX]             ; $08d3: $fa $51 $c3
+    ld [rBGTileCopyValueA], a                     ; $08d0: $ea $5a $c3
+    ld a, [rBGTileCopySourceX]                    ; $08d3: $fa $51 $c3
     and $f8                                       ; $08d6: $e6 $f8
     ld c, a                                       ; $08d8: $4f
-    ld a, [rMessageScriptCopyDestX]               ; $08d9: $fa $53 $c3
+    ld a, [rBGTileCopyDestX]                      ; $08d9: $fa $53 $c3
     and $f8                                       ; $08dc: $e6 $f8
     sub c                                         ; $08de: $91
     srl a                                         ; $08df: $cb $3f
     srl a                                         ; $08e1: $cb $3f
     srl a                                         ; $08e3: $cb $3f
-    ld [rMessageScriptCopyValueB], a              ; $08e5: $ea $5b $c3
-    ld a, [rMessageScriptCopySourceX]             ; $08e8: $fa $51 $c3
+    ld [rBGTileCopyValueB], a                     ; $08e5: $ea $5b $c3
+    ld a, [rBGTileCopySourceX]                    ; $08e8: $fa $51 $c3
     ld c, a                                       ; $08eb: $4f
-    ld a, [rMessageScriptCopyDestX]               ; $08ec: $fa $53 $c3
+    ld a, [rBGTileCopyDestX]                      ; $08ec: $fa $53 $c3
     sub c                                         ; $08ef: $91
     srl a                                         ; $08f0: $cb $3f
     srl a                                         ; $08f2: $cb $3f
     srl a                                         ; $08f4: $cb $3f
     inc a                                         ; $08f6: $3c
-    ld [rMessageScriptCopyValueC], a              ; $08f7: $ea $5c $c3
-    ld a, [rMessageScriptCopySourceX]             ; $08fa: $fa $51 $c3
+    ld [rBGTileCopyValueC], a                     ; $08f7: $ea $5c $c3
+    ld a, [rBGTileCopySourceX]                    ; $08fa: $fa $51 $c3
     and $07                                       ; $08fd: $e6 $07
     ld c, a                                       ; $08ff: $4f
     add $38                                       ; $0900: $c6 $38
-    ld [rMessageScriptCopyValueE], a              ; $0902: $ea $5e $c3
+    ld [rBGTileCopyValueE], a                     ; $0902: $ea $5e $c3
     ld b, $00                                     ; $0905: $06 $00
     ld hl, $0d59                                  ; $0907: $21 $59 $0d
     add hl, bc                                    ; $090a: $09
     ld a, [hl]                                    ; $090b: $7e
-    ld [rMessageScriptCopyValueF], a              ; $090c: $ea $5f $c3
+    ld [rBGTileCopyValueF], a                     ; $090c: $ea $5f $c3
     ld hl, $0d61                                  ; $090f: $21 $61 $0d
     add hl, bc                                    ; $0912: $09
     ld a, [hl]                                    ; $0913: $7e
-    ld [rMessageScriptCopyValueG], a              ; $0914: $ea $60 $c3
-    ld a, [rMessageScriptCopyBankAddressLow]      ; $0917: $fa $55 $c3
+    ld [rBGTileCopyValueG], a                     ; $0914: $ea $60 $c3
+    ld a, [rBGTileCopyBankAddressLow]             ; $0917: $fa $55 $c3
     ld c, a                                       ; $091a: $4f
-    ld a, [rMessageScriptCopyBankAddressHigh]     ; $091b: $fa $56 $c3
+    ld a, [rBGTileCopyBankAddressHigh]            ; $091b: $fa $56 $c3
     ld b, a                                       ; $091e: $47
     ld a, [rActiveROMBank]                        ; $091f: $fa $12 $c3
     push af                                       ; $0922: $f5
-    ld a, [rMessageScriptCopyBank]                ; $0923: $fa $57 $c3
+    ld a, [rBGTileCopyBank]                       ; $0923: $fa $57 $c3
     ld [rActiveROMBank], a                        ; $0926: $ea $12 $c3
     ld [ROMBankSwitchTrigger], a                  ; $0929: $ea $00 $20
     ld de, $c363                                  ; $092c: $11 $63 $c3
-    ld a, [rMessageScriptCopySourceY]             ; $092f: $fa $52 $c3
+    ld a, [rBGTileCopySourceY]                    ; $092f: $fa $52 $c3
     ld l, a                                       ; $0932: $6f
-    ld a, [rMessageScriptCopySourceX]             ; $0933: $fa $51 $c3
+    ld a, [rBGTileCopySourceX]                    ; $0933: $fa $51 $c3
     and $f8                                       ; $0936: $e6 $f8
     ld h, a                                       ; $0938: $67
 
-.PrepareMessageScriptCopyLoop:
+.PrepareBGTileCopyLoop:
     xor a                                         ; $0939: $af
-    ld [rMessageScriptCopyValueH], a              ; $093a: $ea $61 $c3
-    ld [rMessageScriptCopyValueI], a              ; $093d: $ea $62 $c3
-    ld a, [rMessageScriptCopyValueC]              ; $0940: $fa $5c $c3
-    ld [rMessageScriptCopyValueD], a              ; $0943: $ea $5d $c3
-    ld a, [rMessageScriptCopyMaskHigh]            ; $0946: $fa $59 $c3
-    ld [rMessageScriptCopyMaskLow], a             ; $0949: $ea $58 $c3
+    ld [rBGTileCopyValueH], a                     ; $093a: $ea $61 $c3
+    ld [rBGTileCopyValueI], a                     ; $093d: $ea $62 $c3
+    ld a, [rBGTileCopyValueC]                     ; $0940: $fa $5c $c3
+    ld [rBGTileCopyValueD], a                     ; $0943: $ea $5d $c3
+    ld a, [rBGTileCopyMaskHigh]                   ; $0946: $fa $59 $c3
+    ld [rBGTileCopyMaskLow], a                    ; $0949: $ea $58 $c3
     push bc                                       ; $094c: $c5
     push hl                                       ; $094d: $e5
-    ld a, [rMessageScriptCopyValueB]              ; $094e: $fa $5b $c3
+    ld a, [rBGTileCopyValueB]                     ; $094e: $fa $5b $c3
     and a                                         ; $0951: $a7
-    jr nz, .PrepareMessageScriptCopyRow           ; $0952: $20 $0f
+    jr nz, .PrepareBGTileCopyRow                  ; $0952: $20 $0f
 
     push hl                                       ; $0954: $e5
-    ld a, [rMessageScriptCopyValueA]              ; $0955: $fa $5a $c3
-    ld hl, rMessageScriptCopyMaskHigh             ; $0958: $21 $59 $c3
+    ld a, [rBGTileCopyValueA]                     ; $0955: $fa $5a $c3
+    ld hl, rBGTileCopyMaskHigh                    ; $0958: $21 $59 $c3
     and [hl]                                      ; $095b: $a6
-    ld [rMessageScriptCopyMaskLow], a             ; $095c: $ea $58 $c3
+    ld [rBGTileCopyMaskLow], a                    ; $095c: $ea $58 $c3
     pop hl                                        ; $095f: $e1
-    jp .PrepareMessageScriptCopyNextRow           ; $0960: $c3 $11 $0a
+    jp .PrepareBGTileCopyNextRow                  ; $0960: $c3 $11 $0a
 
 
-.PrepareMessageScriptCopyRow:
+.PrepareBGTileCopyRow:
     push hl                                       ; $0963: $e5
     call Call_000_0d6a                            ; $0964: $cd $6a $0d
-    ld a, [rMessageScriptCopyMaskLow]             ; $0967: $fa $58 $c3
+    ld a, [rBGTileCopyMaskLow]                    ; $0967: $fa $58 $c3
     ld [de], a                                    ; $096a: $12
     inc de                                        ; $096b: $13
     ld a, [bc]                                    ; $096c: $0a
     ld l, a                                       ; $096d: $6f
-    ld a, [rMessageScriptCopyValueE]              ; $096e: $fa $5e $c3
+    ld a, [rBGTileCopyValueE]                     ; $096e: $fa $5e $c3
     ld h, a                                       ; $0971: $67
     ld a, [hl]                                    ; $0972: $7e
     ld [de], a                                    ; $0973: $12
-    ld hl, rMessageScriptCopyValueG               ; $0974: $21 $60 $c3
+    ld hl, rBGTileCopyValueG                      ; $0974: $21 $60 $c3
     and [hl]                                      ; $0977: $a6
-    ld [rMessageScriptCopyValueH], a              ; $0978: $ea $61 $c3
+    ld [rBGTileCopyValueH], a                     ; $0978: $ea $61 $c3
     inc bc                                        ; $097b: $03
     inc de                                        ; $097c: $13
     ld a, [bc]                                    ; $097d: $0a
     ld l, a                                       ; $097e: $6f
-    ld a, [rMessageScriptCopyValueE]              ; $097f: $fa $5e $c3
+    ld a, [rBGTileCopyValueE]                     ; $097f: $fa $5e $c3
     ld h, a                                       ; $0982: $67
     ld a, [hl]                                    ; $0983: $7e
     ld [de], a                                    ; $0984: $12
-    ld hl, rMessageScriptCopyValueG               ; $0985: $21 $60 $c3
+    ld hl, rBGTileCopyValueG                      ; $0985: $21 $60 $c3
     and [hl]                                      ; $0988: $a6
-    ld [rMessageScriptCopyValueI], a              ; $0989: $ea $62 $c3
+    ld [rBGTileCopyValueI], a                     ; $0989: $ea $62 $c3
     ld a, c                                       ; $098c: $79
     add $0f                                       ; $098d: $c6 $0f
     ld c, a                                       ; $098f: $4f
@@ -1619,46 +1619,46 @@ PrepareMessageScriptCopy::
     ld a, h                                       ; $0996: $7c
     add $08                                       ; $0997: $c6 $08
     ld h, a                                       ; $0999: $67
-    ld a, [rMessageScriptCopyValueD]              ; $099a: $fa $5d $c3
+    ld a, [rBGTileCopyValueD]                     ; $099a: $fa $5d $c3
     dec a                                         ; $099d: $3d
-    ld [rMessageScriptCopyValueD], a              ; $099e: $ea $5d $c3
-    ld a, [rMessageScriptCopyValueB]              ; $09a1: $fa $5b $c3
+    ld [rBGTileCopyValueD], a                     ; $099e: $ea $5d $c3
+    ld a, [rBGTileCopyValueB]                     ; $09a1: $fa $5b $c3
     dec a                                         ; $09a4: $3d
-    jr z, .PrepareMessageScriptCopyTail           ; $09a5: $28 $64
+    jr z, .PrepareBGTileCopyTail                  ; $09a5: $28 $64
 
-.PrepareMessageScriptCopyRowSpanLoop:
+.PrepareBGTileCopyRowSpanLoop:
     push af                                       ; $09a7: $f5
     push hl                                       ; $09a8: $e5
     call Call_000_0d6a                            ; $09a9: $cd $6a $0d
     ld a, $ff                                     ; $09ac: $3e $ff
     ld [de], a                                    ; $09ae: $12
     inc de                                        ; $09af: $13
-    ld a, [rMessageScriptCopyValueD]              ; $09b0: $fa $5d $c3
+    ld a, [rBGTileCopyValueD]                     ; $09b0: $fa $5d $c3
     and a                                         ; $09b3: $a7
-    jr z, .PrepareMessageScriptCopyRowSpanFirstByte; $09b4: $28 $02
+    jr z, .PrepareBGTileCopyRowSpanFirstByte      ; $09b4: $28 $02
 
     ld a, [bc]                                    ; $09b6: $0a
     inc bc                                        ; $09b7: $03
 
-.PrepareMessageScriptCopyRowSpanFirstByte:
+.PrepareBGTileCopyRowSpanFirstByte:
     ld l, a                                       ; $09b8: $6f
-    ld a, [rMessageScriptCopyValueE]              ; $09b9: $fa $5e $c3
+    ld a, [rBGTileCopyValueE]                     ; $09b9: $fa $5e $c3
     ld h, a                                       ; $09bc: $67
     ld a, [hl]                                    ; $09bd: $7e
     push af                                       ; $09be: $f5
-    ld hl, rMessageScriptCopyValueF               ; $09bf: $21 $5f $c3
+    ld hl, rBGTileCopyValueF                      ; $09bf: $21 $5f $c3
     and [hl]                                      ; $09c2: $a6
-    ld hl, rMessageScriptCopyValueH               ; $09c3: $21 $61 $c3
+    ld hl, rBGTileCopyValueH                      ; $09c3: $21 $61 $c3
     or [hl]                                       ; $09c6: $b6
     ld [de], a                                    ; $09c7: $12
     pop af                                        ; $09c8: $f1
-    ld hl, rMessageScriptCopyValueG               ; $09c9: $21 $60 $c3
+    ld hl, rBGTileCopyValueG                      ; $09c9: $21 $60 $c3
     and [hl]                                      ; $09cc: $a6
-    ld [rMessageScriptCopyValueH], a              ; $09cd: $ea $61 $c3
+    ld [rBGTileCopyValueH], a                     ; $09cd: $ea $61 $c3
     inc de                                        ; $09d0: $13
-    ld a, [rMessageScriptCopyValueD]              ; $09d1: $fa $5d $c3
+    ld a, [rBGTileCopyValueD]                     ; $09d1: $fa $5d $c3
     and a                                         ; $09d4: $a7
-    jr z, .PrepareMessageScriptCopyRowSpanSecondByte; $09d5: $28 $0b
+    jr z, .PrepareBGTileCopyRowSpanSecondByte     ; $09d5: $28 $0b
 
     ld a, [bc]                                    ; $09d7: $0a
     push af                                       ; $09d8: $f5
@@ -1670,68 +1670,68 @@ PrepareMessageScriptCopy::
     ld b, a                                       ; $09e0: $47
     pop af                                        ; $09e1: $f1
 
-.PrepareMessageScriptCopyRowSpanSecondByte:
+.PrepareBGTileCopyRowSpanSecondByte:
     ld l, a                                       ; $09e2: $6f
-    ld a, [rMessageScriptCopyValueE]              ; $09e3: $fa $5e $c3
+    ld a, [rBGTileCopyValueE]                     ; $09e3: $fa $5e $c3
     ld h, a                                       ; $09e6: $67
     ld a, [hl]                                    ; $09e7: $7e
     push af                                       ; $09e8: $f5
-    ld hl, rMessageScriptCopyValueF               ; $09e9: $21 $5f $c3
+    ld hl, rBGTileCopyValueF                      ; $09e9: $21 $5f $c3
     and [hl]                                      ; $09ec: $a6
-    ld hl, rMessageScriptCopyValueI               ; $09ed: $21 $62 $c3
+    ld hl, rBGTileCopyValueI                      ; $09ed: $21 $62 $c3
     or [hl]                                       ; $09f0: $b6
     ld [de], a                                    ; $09f1: $12
     pop af                                        ; $09f2: $f1
-    ld hl, rMessageScriptCopyValueG               ; $09f3: $21 $60 $c3
+    ld hl, rBGTileCopyValueG                      ; $09f3: $21 $60 $c3
     and [hl]                                      ; $09f6: $a6
-    ld [rMessageScriptCopyValueI], a              ; $09f7: $ea $62 $c3
+    ld [rBGTileCopyValueI], a                     ; $09f7: $ea $62 $c3
     inc de                                        ; $09fa: $13
     pop hl                                        ; $09fb: $e1
     ld a, h                                       ; $09fc: $7c
     add $08                                       ; $09fd: $c6 $08
     ld h, a                                       ; $09ff: $67
-    ld a, [rMessageScriptCopyValueD]              ; $0a00: $fa $5d $c3
+    ld a, [rBGTileCopyValueD]                     ; $0a00: $fa $5d $c3
     dec a                                         ; $0a03: $3d
-    ld [rMessageScriptCopyValueD], a              ; $0a04: $ea $5d $c3
+    ld [rBGTileCopyValueD], a                     ; $0a04: $ea $5d $c3
     pop af                                        ; $0a07: $f1
     dec a                                         ; $0a08: $3d
-    jr nz, .PrepareMessageScriptCopyRowSpanLoop   ; $0a09: $20 $9c
+    jr nz, .PrepareBGTileCopyRowSpanLoop          ; $0a09: $20 $9c
 
-.PrepareMessageScriptCopyTail:
-    ld a, [rMessageScriptCopyValueA]              ; $0a0b: $fa $5a $c3
-    ld [rMessageScriptCopyMaskLow], a             ; $0a0e: $ea $58 $c3
+.PrepareBGTileCopyTail:
+    ld a, [rBGTileCopyValueA]                     ; $0a0b: $fa $5a $c3
+    ld [rBGTileCopyMaskLow], a                    ; $0a0e: $ea $58 $c3
 
-.PrepareMessageScriptCopyNextRow:
+.PrepareBGTileCopyNextRow:
     call Call_000_0d6a                            ; $0a11: $cd $6a $0d
-    ld a, [rMessageScriptCopyMaskLow]             ; $0a14: $fa $58 $c3
+    ld a, [rBGTileCopyMaskLow]                    ; $0a14: $fa $58 $c3
     ld [de], a                                    ; $0a17: $12
     inc de                                        ; $0a18: $13
-    ld a, [rMessageScriptCopyValueD]              ; $0a19: $fa $5d $c3
+    ld a, [rBGTileCopyValueD]                     ; $0a19: $fa $5d $c3
     and a                                         ; $0a1c: $a7
-    jr z, .PrepareMessageScriptCopyNextRowPart1   ; $0a1d: $28 $02
+    jr z, .PrepareBGTileCopyNextRowPart1          ; $0a1d: $28 $02
 
     ld a, [bc]                                    ; $0a1f: $0a
     inc bc                                        ; $0a20: $03
 
-.PrepareMessageScriptCopyNextRowPart1:
+.PrepareBGTileCopyNextRowPart1:
     ld l, a                                       ; $0a21: $6f
-    ld a, [rMessageScriptCopyValueE]              ; $0a22: $fa $5e $c3
+    ld a, [rBGTileCopyValueE]                     ; $0a22: $fa $5e $c3
     ld h, a                                       ; $0a25: $67
     ld a, [hl]                                    ; $0a26: $7e
     push af                                       ; $0a27: $f5
-    ld hl, rMessageScriptCopyValueF               ; $0a28: $21 $5f $c3
+    ld hl, rBGTileCopyValueF                      ; $0a28: $21 $5f $c3
     and [hl]                                      ; $0a2b: $a6
-    ld hl, rMessageScriptCopyValueH               ; $0a2c: $21 $61 $c3
+    ld hl, rBGTileCopyValueH                      ; $0a2c: $21 $61 $c3
     or [hl]                                       ; $0a2f: $b6
     ld [de], a                                    ; $0a30: $12
     pop af                                        ; $0a31: $f1
-    ld hl, rMessageScriptCopyValueG               ; $0a32: $21 $60 $c3
+    ld hl, rBGTileCopyValueG                      ; $0a32: $21 $60 $c3
     and [hl]                                      ; $0a35: $a6
-    ld [rMessageScriptCopyValueH], a              ; $0a36: $ea $61 $c3
+    ld [rBGTileCopyValueH], a                     ; $0a36: $ea $61 $c3
     inc de                                        ; $0a39: $13
-    ld a, [rMessageScriptCopyValueD]              ; $0a3a: $fa $5d $c3
+    ld a, [rBGTileCopyValueD]                     ; $0a3a: $fa $5d $c3
     and a                                         ; $0a3d: $a7
-    jr z, .PrepareMessageScriptCopyNextRowPart2   ; $0a3e: $28 $0b
+    jr z, .PrepareBGTileCopyNextRowPart2          ; $0a3e: $28 $0b
 
     ld a, [bc]                                    ; $0a40: $0a
     push af                                       ; $0a41: $f5
@@ -1743,21 +1743,21 @@ PrepareMessageScriptCopy::
     ld b, a                                       ; $0a49: $47
     pop af                                        ; $0a4a: $f1
 
-.PrepareMessageScriptCopyNextRowPart2:
+.PrepareBGTileCopyNextRowPart2:
     ld l, a                                       ; $0a4b: $6f
-    ld a, [rMessageScriptCopyValueE]              ; $0a4c: $fa $5e $c3
+    ld a, [rBGTileCopyValueE]                     ; $0a4c: $fa $5e $c3
     ld h, a                                       ; $0a4f: $67
     ld a, [hl]                                    ; $0a50: $7e
     push af                                       ; $0a51: $f5
-    ld hl, rMessageScriptCopyValueF               ; $0a52: $21 $5f $c3
+    ld hl, rBGTileCopyValueF                      ; $0a52: $21 $5f $c3
     and [hl]                                      ; $0a55: $a6
-    ld hl, rMessageScriptCopyValueI               ; $0a56: $21 $62 $c3
+    ld hl, rBGTileCopyValueI                      ; $0a56: $21 $62 $c3
     or [hl]                                       ; $0a59: $b6
     ld [de], a                                    ; $0a5a: $12
     pop af                                        ; $0a5b: $f1
-    ld hl, rMessageScriptCopyValueG               ; $0a5c: $21 $60 $c3
+    ld hl, rBGTileCopyValueG                      ; $0a5c: $21 $60 $c3
     and [hl]                                      ; $0a5f: $a6
-    ld [rMessageScriptCopyValueI], a              ; $0a60: $ea $62 $c3
+    ld [rBGTileCopyValueI], a                     ; $0a60: $ea $62 $c3
     inc de                                        ; $0a63: $13
     pop hl                                        ; $0a64: $e1
     pop bc                                        ; $0a65: $c1
@@ -1765,7 +1765,7 @@ PrepareMessageScriptCopy::
     inc bc                                        ; $0a67: $03
     ld a, c                                       ; $0a68: $79
     and $0f                                       ; $0a69: $e6 $0f
-    jr nz, .PrepareMessageScriptCopyRowAdvance    ; $0a6b: $20 $08
+    jr nz, .PrepareBGTileCopyRowAdvance           ; $0a6b: $20 $08
 
     ld a, c                                       ; $0a6d: $79
     add $f0                                       ; $0a6e: $c6 $f0
@@ -1774,11 +1774,11 @@ PrepareMessageScriptCopy::
     adc $00                                       ; $0a72: $ce $00
     ld b, a                                       ; $0a74: $47
 
-.PrepareMessageScriptCopyRowAdvance:
+.PrepareBGTileCopyRowAdvance:
     inc l                                         ; $0a75: $2c
-    ld a, [rMessageScriptCopyDestY]               ; $0a76: $fa $54 $c3
+    ld a, [rBGTileCopyDestY]                      ; $0a76: $fa $54 $c3
     cp l                                          ; $0a79: $bd
-    jp nc, .PrepareMessageScriptCopyLoop          ; $0a7a: $d2 $39 $09
+    jp nc, .PrepareBGTileCopyLoop                 ; $0a7a: $d2 $39 $09
 
     xor a                                         ; $0a7d: $af
     ld [de], a                                    ; $0a7e: $12
@@ -1910,90 +1910,90 @@ Jump_000_0ae9:
 
 Call_000_0b0d:
 Jump_000_0b0d:
-    ld a, [rMessageScriptCopySourceX]             ; $0b0d: $fa $51 $c3
+    ld a, [rBGTileCopySourceX]                    ; $0b0d: $fa $51 $c3
     and $07                                       ; $0b10: $e6 $07
     ld c, a                                       ; $0b12: $4f
     ld b, $00                                     ; $0b13: $06 $00
     ld hl, $0d59                                  ; $0b15: $21 $59 $0d
     add hl, bc                                    ; $0b18: $09
     ld a, [hl]                                    ; $0b19: $7e
-    ld [rMessageScriptCopyMaskHigh], a            ; $0b1a: $ea $59 $c3
-    ld a, [rMessageScriptCopyDestX]               ; $0b1d: $fa $53 $c3
+    ld [rBGTileCopyMaskHigh], a                   ; $0b1a: $ea $59 $c3
+    ld a, [rBGTileCopyDestX]                      ; $0b1d: $fa $53 $c3
     and $07                                       ; $0b20: $e6 $07
     ld c, a                                       ; $0b22: $4f
     ld b, $00                                     ; $0b23: $06 $00
     ld hl, $0d62                                  ; $0b25: $21 $62 $0d
     add hl, bc                                    ; $0b28: $09
     ld a, [hl]                                    ; $0b29: $7e
-    ld [rMessageScriptCopyValueA], a              ; $0b2a: $ea $5a $c3
-    ld a, [rMessageScriptCopySourceX]             ; $0b2d: $fa $51 $c3
+    ld [rBGTileCopyValueA], a                     ; $0b2a: $ea $5a $c3
+    ld a, [rBGTileCopySourceX]                    ; $0b2d: $fa $51 $c3
     and $f8                                       ; $0b30: $e6 $f8
     ld c, a                                       ; $0b32: $4f
-    ld a, [rMessageScriptCopyDestX]               ; $0b33: $fa $53 $c3
+    ld a, [rBGTileCopyDestX]                      ; $0b33: $fa $53 $c3
     and $f8                                       ; $0b36: $e6 $f8
     sub c                                         ; $0b38: $91
     srl a                                         ; $0b39: $cb $3f
     srl a                                         ; $0b3b: $cb $3f
     srl a                                         ; $0b3d: $cb $3f
-    ld [rMessageScriptCopyValueB], a              ; $0b3f: $ea $5b $c3
-    ld a, [rMessageScriptCopySourceX]             ; $0b42: $fa $51 $c3
+    ld [rBGTileCopyValueB], a                     ; $0b3f: $ea $5b $c3
+    ld a, [rBGTileCopySourceX]                    ; $0b42: $fa $51 $c3
     ld c, a                                       ; $0b45: $4f
-    ld a, [rMessageScriptCopyDestX]               ; $0b46: $fa $53 $c3
+    ld a, [rBGTileCopyDestX]                      ; $0b46: $fa $53 $c3
     sub c                                         ; $0b49: $91
     srl a                                         ; $0b4a: $cb $3f
     srl a                                         ; $0b4c: $cb $3f
     srl a                                         ; $0b4e: $cb $3f
     inc a                                         ; $0b50: $3c
-    ld [rMessageScriptCopyValueC], a              ; $0b51: $ea $5c $c3
-    ld a, [rMessageScriptCopySourceX]             ; $0b54: $fa $51 $c3
+    ld [rBGTileCopyValueC], a                     ; $0b51: $ea $5c $c3
+    ld a, [rBGTileCopySourceX]                    ; $0b54: $fa $51 $c3
     and $07                                       ; $0b57: $e6 $07
     ld c, a                                       ; $0b59: $4f
     add $38                                       ; $0b5a: $c6 $38
-    ld [rMessageScriptCopyValueE], a              ; $0b5c: $ea $5e $c3
+    ld [rBGTileCopyValueE], a                     ; $0b5c: $ea $5e $c3
     ld b, $00                                     ; $0b5f: $06 $00
     ld hl, $0d59                                  ; $0b61: $21 $59 $0d
     add hl, bc                                    ; $0b64: $09
     ld a, [hl]                                    ; $0b65: $7e
-    ld [rMessageScriptCopyValueF], a              ; $0b66: $ea $5f $c3
+    ld [rBGTileCopyValueF], a                     ; $0b66: $ea $5f $c3
     ld hl, $0d61                                  ; $0b69: $21 $61 $0d
     add hl, bc                                    ; $0b6c: $09
     ld a, [hl]                                    ; $0b6d: $7e
-    ld [rMessageScriptCopyValueG], a              ; $0b6e: $ea $60 $c3
-    ld a, [rMessageScriptCopyBankAddressLow]      ; $0b71: $fa $55 $c3
+    ld [rBGTileCopyValueG], a                     ; $0b6e: $ea $60 $c3
+    ld a, [rBGTileCopyBankAddressLow]             ; $0b71: $fa $55 $c3
     ld c, a                                       ; $0b74: $4f
-    ld a, [rMessageScriptCopyBankAddressHigh]     ; $0b75: $fa $56 $c3
+    ld a, [rBGTileCopyBankAddressHigh]            ; $0b75: $fa $56 $c3
     ld b, a                                       ; $0b78: $47
     ld a, [rActiveROMBank]                        ; $0b79: $fa $12 $c3
     push af                                       ; $0b7c: $f5
-    ld a, [rMessageScriptCopyBank]                ; $0b7d: $fa $57 $c3
+    ld a, [rBGTileCopyBank]                       ; $0b7d: $fa $57 $c3
     ld [rActiveROMBank], a                        ; $0b80: $ea $12 $c3
     ld [ROMBankSwitchTrigger], a                  ; $0b83: $ea $00 $20
     ld de, $c363                                  ; $0b86: $11 $63 $c3
-    ld a, [rMessageScriptCopySourceY]             ; $0b89: $fa $52 $c3
+    ld a, [rBGTileCopySourceY]                    ; $0b89: $fa $52 $c3
     ld l, a                                       ; $0b8c: $6f
-    ld a, [rMessageScriptCopySourceX]             ; $0b8d: $fa $51 $c3
+    ld a, [rBGTileCopySourceX]                    ; $0b8d: $fa $51 $c3
     and $f8                                       ; $0b90: $e6 $f8
     ld h, a                                       ; $0b92: $67
 
 Jump_000_0b93:
     xor a                                         ; $0b93: $af
-    ld [rMessageScriptCopyValueH], a              ; $0b94: $ea $61 $c3
-    ld [rMessageScriptCopyValueI], a              ; $0b97: $ea $62 $c3
-    ld a, [rMessageScriptCopyValueC]              ; $0b9a: $fa $5c $c3
-    ld [rMessageScriptCopyValueD], a              ; $0b9d: $ea $5d $c3
-    ld a, [rMessageScriptCopyMaskHigh]            ; $0ba0: $fa $59 $c3
-    ld [rMessageScriptCopyMaskLow], a             ; $0ba3: $ea $58 $c3
+    ld [rBGTileCopyValueH], a                     ; $0b94: $ea $61 $c3
+    ld [rBGTileCopyValueI], a                     ; $0b97: $ea $62 $c3
+    ld a, [rBGTileCopyValueC]                     ; $0b9a: $fa $5c $c3
+    ld [rBGTileCopyValueD], a                     ; $0b9d: $ea $5d $c3
+    ld a, [rBGTileCopyMaskHigh]                   ; $0ba0: $fa $59 $c3
+    ld [rBGTileCopyMaskLow], a                    ; $0ba3: $ea $58 $c3
     push bc                                       ; $0ba6: $c5
     push hl                                       ; $0ba7: $e5
-    ld a, [rMessageScriptCopyValueB]              ; $0ba8: $fa $5b $c3
+    ld a, [rBGTileCopyValueB]                     ; $0ba8: $fa $5b $c3
     and a                                         ; $0bab: $a7
     jr nz, jr_000_0bbd                            ; $0bac: $20 $0f
 
     push hl                                       ; $0bae: $e5
-    ld a, [rMessageScriptCopyValueA]              ; $0baf: $fa $5a $c3
-    ld hl, rMessageScriptCopyMaskHigh             ; $0bb2: $21 $59 $c3
+    ld a, [rBGTileCopyValueA]                     ; $0baf: $fa $5a $c3
+    ld hl, rBGTileCopyMaskHigh                    ; $0bb2: $21 $59 $c3
     and [hl]                                      ; $0bb5: $a6
-    ld [rMessageScriptCopyMaskLow], a             ; $0bb6: $ea $58 $c3
+    ld [rBGTileCopyMaskLow], a                    ; $0bb6: $ea $58 $c3
     pop hl                                        ; $0bb9: $e1
     jp Jump_000_0c6b                              ; $0bba: $c3 $6b $0c
 
@@ -2001,29 +2001,29 @@ Jump_000_0b93:
 jr_000_0bbd:
     push hl                                       ; $0bbd: $e5
     call Call_000_0d6a                            ; $0bbe: $cd $6a $0d
-    ld a, [rMessageScriptCopyMaskLow]             ; $0bc1: $fa $58 $c3
+    ld a, [rBGTileCopyMaskLow]                    ; $0bc1: $fa $58 $c3
     ld [de], a                                    ; $0bc4: $12
     inc de                                        ; $0bc5: $13
     ld a, [bc]                                    ; $0bc6: $0a
     ld l, a                                       ; $0bc7: $6f
-    ld a, [rMessageScriptCopyValueE]              ; $0bc8: $fa $5e $c3
+    ld a, [rBGTileCopyValueE]                     ; $0bc8: $fa $5e $c3
     ld h, a                                       ; $0bcb: $67
     ld a, [hl]                                    ; $0bcc: $7e
     ld [de], a                                    ; $0bcd: $12
-    ld hl, rMessageScriptCopyValueG               ; $0bce: $21 $60 $c3
+    ld hl, rBGTileCopyValueG                      ; $0bce: $21 $60 $c3
     and [hl]                                      ; $0bd1: $a6
-    ld [rMessageScriptCopyValueH], a              ; $0bd2: $ea $61 $c3
+    ld [rBGTileCopyValueH], a                     ; $0bd2: $ea $61 $c3
     inc bc                                        ; $0bd5: $03
     inc de                                        ; $0bd6: $13
     ld a, [bc]                                    ; $0bd7: $0a
     ld l, a                                       ; $0bd8: $6f
-    ld a, [rMessageScriptCopyValueE]              ; $0bd9: $fa $5e $c3
+    ld a, [rBGTileCopyValueE]                     ; $0bd9: $fa $5e $c3
     ld h, a                                       ; $0bdc: $67
     ld a, [hl]                                    ; $0bdd: $7e
     ld [de], a                                    ; $0bde: $12
-    ld hl, rMessageScriptCopyValueG               ; $0bdf: $21 $60 $c3
+    ld hl, rBGTileCopyValueG                      ; $0bdf: $21 $60 $c3
     and [hl]                                      ; $0be2: $a6
-    ld [rMessageScriptCopyValueI], a              ; $0be3: $ea $62 $c3
+    ld [rBGTileCopyValueI], a                     ; $0be3: $ea $62 $c3
     ld a, c                                       ; $0be6: $79
     add $0f                                       ; $0be7: $c6 $0f
     ld c, a                                       ; $0be9: $4f
@@ -2037,10 +2037,10 @@ Call_000_0bee:
     ld a, h                                       ; $0bf0: $7c
     add $08                                       ; $0bf1: $c6 $08
     ld h, a                                       ; $0bf3: $67
-    ld a, [rMessageScriptCopyValueD]              ; $0bf4: $fa $5d $c3
+    ld a, [rBGTileCopyValueD]                     ; $0bf4: $fa $5d $c3
     dec a                                         ; $0bf7: $3d
-    ld [rMessageScriptCopyValueD], a              ; $0bf8: $ea $5d $c3
-    ld a, [rMessageScriptCopyValueB]              ; $0bfb: $fa $5b $c3
+    ld [rBGTileCopyValueD], a                     ; $0bf8: $ea $5d $c3
+    ld a, [rBGTileCopyValueB]                     ; $0bfb: $fa $5b $c3
     dec a                                         ; $0bfe: $3d
     jr z, jr_000_0c65                             ; $0bff: $28 $64
 
@@ -2051,7 +2051,7 @@ jr_000_0c01:
     ld a, $ff                                     ; $0c06: $3e $ff
     ld [de], a                                    ; $0c08: $12
     inc de                                        ; $0c09: $13
-    ld a, [rMessageScriptCopyValueD]              ; $0c0a: $fa $5d $c3
+    ld a, [rBGTileCopyValueD]                     ; $0c0a: $fa $5d $c3
     and a                                         ; $0c0d: $a7
     jr z, jr_000_0c12                             ; $0c0e: $28 $02
 
@@ -2060,21 +2060,21 @@ jr_000_0c01:
 
 jr_000_0c12:
     ld l, a                                       ; $0c12: $6f
-    ld a, [rMessageScriptCopyValueE]              ; $0c13: $fa $5e $c3
+    ld a, [rBGTileCopyValueE]                     ; $0c13: $fa $5e $c3
     ld h, a                                       ; $0c16: $67
     ld a, [hl]                                    ; $0c17: $7e
     push af                                       ; $0c18: $f5
-    ld hl, rMessageScriptCopyValueF               ; $0c19: $21 $5f $c3
+    ld hl, rBGTileCopyValueF                      ; $0c19: $21 $5f $c3
     and [hl]                                      ; $0c1c: $a6
-    ld hl, rMessageScriptCopyValueH               ; $0c1d: $21 $61 $c3
+    ld hl, rBGTileCopyValueH                      ; $0c1d: $21 $61 $c3
     or [hl]                                       ; $0c20: $b6
     ld [de], a                                    ; $0c21: $12
     pop af                                        ; $0c22: $f1
-    ld hl, rMessageScriptCopyValueG               ; $0c23: $21 $60 $c3
+    ld hl, rBGTileCopyValueG                      ; $0c23: $21 $60 $c3
     and [hl]                                      ; $0c26: $a6
-    ld [rMessageScriptCopyValueH], a              ; $0c27: $ea $61 $c3
+    ld [rBGTileCopyValueH], a                     ; $0c27: $ea $61 $c3
     inc de                                        ; $0c2a: $13
-    ld a, [rMessageScriptCopyValueD]              ; $0c2b: $fa $5d $c3
+    ld a, [rBGTileCopyValueD]                     ; $0c2b: $fa $5d $c3
     and a                                         ; $0c2e: $a7
     jr z, jr_000_0c3c                             ; $0c2f: $28 $0b
 
@@ -2090,41 +2090,41 @@ jr_000_0c12:
 
 jr_000_0c3c:
     ld l, a                                       ; $0c3c: $6f
-    ld a, [rMessageScriptCopyValueE]              ; $0c3d: $fa $5e $c3
+    ld a, [rBGTileCopyValueE]                     ; $0c3d: $fa $5e $c3
     ld h, a                                       ; $0c40: $67
     ld a, [hl]                                    ; $0c41: $7e
     push af                                       ; $0c42: $f5
-    ld hl, rMessageScriptCopyValueF               ; $0c43: $21 $5f $c3
+    ld hl, rBGTileCopyValueF                      ; $0c43: $21 $5f $c3
     and [hl]                                      ; $0c46: $a6
-    ld hl, rMessageScriptCopyValueI               ; $0c47: $21 $62 $c3
+    ld hl, rBGTileCopyValueI                      ; $0c47: $21 $62 $c3
     or [hl]                                       ; $0c4a: $b6
     ld [de], a                                    ; $0c4b: $12
     pop af                                        ; $0c4c: $f1
-    ld hl, rMessageScriptCopyValueG               ; $0c4d: $21 $60 $c3
+    ld hl, rBGTileCopyValueG                      ; $0c4d: $21 $60 $c3
     and [hl]                                      ; $0c50: $a6
-    ld [rMessageScriptCopyValueI], a              ; $0c51: $ea $62 $c3
+    ld [rBGTileCopyValueI], a                     ; $0c51: $ea $62 $c3
     inc de                                        ; $0c54: $13
     pop hl                                        ; $0c55: $e1
     ld a, h                                       ; $0c56: $7c
     add $08                                       ; $0c57: $c6 $08
     ld h, a                                       ; $0c59: $67
-    ld a, [rMessageScriptCopyValueD]              ; $0c5a: $fa $5d $c3
+    ld a, [rBGTileCopyValueD]                     ; $0c5a: $fa $5d $c3
     dec a                                         ; $0c5d: $3d
-    ld [rMessageScriptCopyValueD], a              ; $0c5e: $ea $5d $c3
+    ld [rBGTileCopyValueD], a                     ; $0c5e: $ea $5d $c3
     pop af                                        ; $0c61: $f1
     dec a                                         ; $0c62: $3d
     jr nz, jr_000_0c01                            ; $0c63: $20 $9c
 
 jr_000_0c65:
-    ld a, [rMessageScriptCopyValueA]              ; $0c65: $fa $5a $c3
-    ld [rMessageScriptCopyMaskLow], a             ; $0c68: $ea $58 $c3
+    ld a, [rBGTileCopyValueA]                     ; $0c65: $fa $5a $c3
+    ld [rBGTileCopyMaskLow], a                    ; $0c68: $ea $58 $c3
 
 Jump_000_0c6b:
     call Call_000_0d6a                            ; $0c6b: $cd $6a $0d
-    ld a, [rMessageScriptCopyMaskLow]             ; $0c6e: $fa $58 $c3
+    ld a, [rBGTileCopyMaskLow]                    ; $0c6e: $fa $58 $c3
     ld [de], a                                    ; $0c71: $12
     inc de                                        ; $0c72: $13
-    ld a, [rMessageScriptCopyValueD]              ; $0c73: $fa $5d $c3
+    ld a, [rBGTileCopyValueD]                     ; $0c73: $fa $5d $c3
     and a                                         ; $0c76: $a7
     jr z, jr_000_0c7b                             ; $0c77: $28 $02
 
@@ -2133,21 +2133,21 @@ Jump_000_0c6b:
 
 jr_000_0c7b:
     ld l, a                                       ; $0c7b: $6f
-    ld a, [rMessageScriptCopyValueE]              ; $0c7c: $fa $5e $c3
+    ld a, [rBGTileCopyValueE]                     ; $0c7c: $fa $5e $c3
     ld h, a                                       ; $0c7f: $67
     ld a, [hl]                                    ; $0c80: $7e
     push af                                       ; $0c81: $f5
-    ld hl, rMessageScriptCopyValueF               ; $0c82: $21 $5f $c3
+    ld hl, rBGTileCopyValueF                      ; $0c82: $21 $5f $c3
     and [hl]                                      ; $0c85: $a6
-    ld hl, rMessageScriptCopyValueH               ; $0c86: $21 $61 $c3
+    ld hl, rBGTileCopyValueH                      ; $0c86: $21 $61 $c3
     or [hl]                                       ; $0c89: $b6
     ld [de], a                                    ; $0c8a: $12
     pop af                                        ; $0c8b: $f1
-    ld hl, rMessageScriptCopyValueG               ; $0c8c: $21 $60 $c3
+    ld hl, rBGTileCopyValueG                      ; $0c8c: $21 $60 $c3
     and [hl]                                      ; $0c8f: $a6
-    ld [rMessageScriptCopyValueH], a              ; $0c90: $ea $61 $c3
+    ld [rBGTileCopyValueH], a                     ; $0c90: $ea $61 $c3
     inc de                                        ; $0c93: $13
-    ld a, [rMessageScriptCopyValueD]              ; $0c94: $fa $5d $c3
+    ld a, [rBGTileCopyValueD]                     ; $0c94: $fa $5d $c3
     and a                                         ; $0c97: $a7
     jr z, jr_000_0ca5                             ; $0c98: $28 $0b
 
@@ -2163,19 +2163,19 @@ jr_000_0c7b:
 
 jr_000_0ca5:
     ld l, a                                       ; $0ca5: $6f
-    ld a, [rMessageScriptCopyValueE]              ; $0ca6: $fa $5e $c3
+    ld a, [rBGTileCopyValueE]                     ; $0ca6: $fa $5e $c3
     ld h, a                                       ; $0ca9: $67
     ld a, [hl]                                    ; $0caa: $7e
     push af                                       ; $0cab: $f5
-    ld hl, rMessageScriptCopyValueF               ; $0cac: $21 $5f $c3
+    ld hl, rBGTileCopyValueF                      ; $0cac: $21 $5f $c3
     and [hl]                                      ; $0caf: $a6
-    ld hl, rMessageScriptCopyValueI               ; $0cb0: $21 $62 $c3
+    ld hl, rBGTileCopyValueI                      ; $0cb0: $21 $62 $c3
     or [hl]                                       ; $0cb3: $b6
     ld [de], a                                    ; $0cb4: $12
     pop af                                        ; $0cb5: $f1
-    ld hl, rMessageScriptCopyValueG               ; $0cb6: $21 $60 $c3
+    ld hl, rBGTileCopyValueG                      ; $0cb6: $21 $60 $c3
     and [hl]                                      ; $0cb9: $a6
-    ld [rMessageScriptCopyValueI], a              ; $0cba: $ea $62 $c3
+    ld [rBGTileCopyValueI], a                     ; $0cba: $ea $62 $c3
     inc de                                        ; $0cbd: $13
     pop hl                                        ; $0cbe: $e1
     pop bc                                        ; $0cbf: $c1
@@ -2196,7 +2196,7 @@ Call_000_0ccc:
 
 jr_000_0ccf:
     inc l                                         ; $0ccf: $2c
-    ld a, [rMessageScriptCopyDestY]               ; $0cd0: $fa $54 $c3
+    ld a, [rBGTileCopyDestY]                      ; $0cd0: $fa $54 $c3
     cp l                                          ; $0cd3: $bd
     jp nc, Jump_000_0b93                          ; $0cd4: $d2 $93 $0b
 
@@ -5880,13 +5880,13 @@ Call_000_1a88:
     ld hl, $4000                                  ; $1aa0: $21 $00 $40
     add hl, de                                    ; $1aa3: $19
     ld a, l                                       ; $1aa4: $7d
-    ld [rMessageScriptCopyBankAddressLow], a      ; $1aa5: $ea $55 $c3
+    ld [rBGTileCopyBankAddressLow], a             ; $1aa5: $ea $55 $c3
     ld a, h                                       ; $1aa8: $7c
-    ld [rMessageScriptCopyBankAddressHigh], a     ; $1aa9: $ea $56 $c3
+    ld [rBGTileCopyBankAddressHigh], a            ; $1aa9: $ea $56 $c3
     ld a, $0e                                     ; $1aac: $3e $0e
-    ld [rMessageScriptCopyBank], a                ; $1aae: $ea $57 $c3
+    ld [rBGTileCopyBank], a                       ; $1aae: $ea $57 $c3
     ld a, b                                       ; $1ab1: $78
-    ld [rMessageScriptCopySourceX], a             ; $1ab2: $ea $51 $c3
+    ld [rBGTileCopySourceX], a                    ; $1ab2: $ea $51 $c3
     pop de                                        ; $1ab5: $d1
     ld hl, MessageGlyphWidthTable                 ; $1ab6: $21 $b6 $2c
     add hl, de                                    ; $1ab9: $19
@@ -5896,12 +5896,12 @@ Call_000_1a88:
 
     push af                                       ; $1abe: $f5
     add b                                         ; $1abf: $80
-    ld [rMessageScriptCopyDestX], a               ; $1ac0: $ea $53 $c3
+    ld [rBGTileCopyDestX], a                      ; $1ac0: $ea $53 $c3
     ld a, c                                       ; $1ac3: $79
-    ld [rMessageScriptCopySourceY], a             ; $1ac4: $ea $52 $c3
+    ld [rBGTileCopySourceY], a                    ; $1ac4: $ea $52 $c3
     add $09                                       ; $1ac7: $c6 $09
-    ld [rMessageScriptCopyDestY], a               ; $1ac9: $ea $54 $c3
-    call PrepareMessageScriptCopy                 ; $1acc: $cd $b3 $08
+    ld [rBGTileCopyDestY], a                      ; $1ac9: $ea $54 $c3
+    call PrepareBGTileCopy                        ; $1acc: $cd $b3 $08
     pop af                                        ; $1acf: $f1
 
 jr_000_1ad0:
@@ -5914,7 +5914,7 @@ jr_000_1ad0:
 
 
 Call_000_1ada:
-    ld a, [$c31a]                                 ; $1ada: $fa $1a $c3
+    ld a, [rInputButtonsHeld]                     ; $1ada: $fa $1a $c3
     cp $64                                        ; $1add: $fe $64
     jr nz, jr_000_1ae6                            ; $1adf: $20 $05
 
@@ -6178,9 +6178,9 @@ jr_000_1c1c:
     ld [$aca9], a                                 ; $1c7e: $ea $a9 $ac
     ld a, [$d808]                                 ; $1c81: $fa $08 $d8
     ld [$acaa], a                                 ; $1c84: $ea $aa $ac
-    ld a, [$d636]                                 ; $1c87: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $1c87: $fa $36 $d6
     ld [$acab], a                                 ; $1c8a: $ea $ab $ac
-    ld a, [$d637]                                 ; $1c8d: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $1c8d: $fa $37 $d6
     ld [$acac], a                                 ; $1c90: $ea $ac $ac
     jp Jump_000_1b1f                              ; $1c93: $c3 $1f $1b
 
@@ -6203,9 +6203,9 @@ Call_000_1c96:
     ld a, [$acaa]                                 ; $1cc0: $fa $aa $ac
     ld [$d808], a                                 ; $1cc3: $ea $08 $d8
     ld a, [$acab]                                 ; $1cc6: $fa $ab $ac
-    ld [$d636], a                                 ; $1cc9: $ea $36 $d6
+    ld [rPuzzleCursorColumn], a                   ; $1cc9: $ea $36 $d6
     ld a, [$acac]                                 ; $1ccc: $fa $ac $ac
-    ld [$d637], a                                 ; $1ccf: $ea $37 $d6
+    ld [rPuzzleCursorRow], a                      ; $1ccf: $ea $37 $d6
     call Call_000_07f1                            ; $1cd2: $cd $f1 $07
     ld b, $3c                                     ; $1cd5: $06 $3c
     ld de, $acad                                  ; $1cd7: $11 $ad $ac
@@ -6301,7 +6301,7 @@ Call_000_1d22:
     call Call_000_040d                            ; $1d56: $cd $0d $04
 
 jr_000_1d59:
-    ld a, [$c31e]                                 ; $1d59: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $1d59: $fa $1e $c3
     bit 0, a                                      ; $1d5c: $cb $47
     jr nz, jr_000_1db9                            ; $1d5e: $20 $59
 
@@ -6868,13 +6868,13 @@ CopyOAMSpriteById::
 
 
 GameState_06_HowToPlay_PhaseDispatcher::
-    ld a, [$c31e]                                 ; $2111: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $2111: $fa $1e $c3
     ld [$d834], a                                 ; $2114: $ea $34 $d8
     ld a, [$d837]                                 ; $2117: $fa $37 $d8
     and a                                         ; $211a: $a7
     jr nz, jr_000_212b                            ; $211b: $20 $0e
 
-    ld a, [$c31e]                                 ; $211d: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $211d: $fa $1e $c3
     bit 3, a                                      ; $2120: $cb $5f
     jr z, jr_000_2130                             ; $2122: $28 $0c
 
@@ -7053,13 +7053,13 @@ GS06_StatePhase_00_Init::
     xor a                                         ; $21db: $af
     ld [$d805], a                                 ; $21dc: $ea $05 $d8
     ld [$d806], a                                 ; $21df: $ea $06 $d8
-    ld [$d818], a                                 ; $21e2: $ea $18 $d8
-    ld [$d817], a                                 ; $21e5: $ea $17 $d8
+    ld [rMarioBlinkAnimationSequenceCursor], a    ; $21e2: $ea $18 $d8
+    ld [rMarioBlinkAnimationDelay], a             ; $21e5: $ea $17 $d8
     ld [$d80f], a                                 ; $21e8: $ea $0f $d8
-    ld [$d824], a                                 ; $21eb: $ea $24 $d8
-    ld [$d825], a                                 ; $21ee: $ea $25 $d8
-    ld [$d823], a                                 ; $21f1: $ea $23 $d8
-    ld [$d822], a                                 ; $21f4: $ea $22 $d8
+    ld [rCellEffectTargetColumn], a               ; $21eb: $ea $24 $d8
+    ld [rCellEffectTargetRow], a                  ; $21ee: $ea $25 $d8
+    ld [rPendingCellEffectCode], a                ; $21f1: $ea $23 $d8
+    ld [rPendingCellEffectDelay], a               ; $21f4: $ea $22 $d8
     ld [$d63e], a                                 ; $21f7: $ea $3e $d6
     ld [$d63f], a                                 ; $21fa: $ea $3f $d6
     ld a, [$c33b]                                 ; $21fd: $fa $3b $c3
@@ -7123,7 +7123,7 @@ GS06_StatePhase_01_Message::
     ret nz                                        ; $228b: $c0
 
     ld hl, $03ed                                  ; $228c: $21 $ed $03
-    call GS06_WaitForAdvanceOrSkip                ; $228f: $cd $b6 $2f
+    call GS06_ShowAButtonPromptAndWaitForAdvanceOrSkip; $228f: $cd $b6 $2f
     call ClearShadowOAMBuffer                     ; $2292: $cd $b6 $05
     call GS06_CopyRedrawSourceToProgressionBuffer ; $2295: $cd $2e $30
     ld a, $ae                                     ; $2298: $3e $ae
@@ -7174,7 +7174,7 @@ GS06_StatePhase_03_HighlightNumbersTop_Animation::
     call $7918                                    ; $22f2: $cd $18 $79
     ld a, $00                                     ; $22f5: $3e $00
     call GS06_UpdateOAMSequenceEventAndCopySprite ; $22f7: $cd $bd $19
-    call GS06_EmitPromptAndTickTransitionTimer    ; $22fa: $cd $12 $30
+    call GS06_ShowMessageArrowAndTickTransitionTimer; $22fa: $cd $12 $30
     ret nz                                        ; $22fd: $c0
 
     ld a, $04                                     ; $22fe: $3e $04
@@ -7225,7 +7225,7 @@ GS06_StatePhase_05_HighlightNumbersLeft_Animation::
     call $7918                                    ; $2358: $cd $18 $79
     ld a, $00                                     ; $235b: $3e $00
     call GS06_UpdateOAMSequenceEventAndCopySprite ; $235d: $cd $bd $19
-    call GS06_EmitPromptAndTickTransitionTimer    ; $2360: $cd $12 $30
+    call GS06_ShowMessageArrowAndTickTransitionTimer; $2360: $cd $12 $30
     ret nz                                        ; $2363: $c0
 
     ld a, $2a                                     ; $2364: $3e $2a
@@ -7245,7 +7245,7 @@ GS06_StatePhase_06_Message::
     ret nz                                        ; $237f: $c0
 
     ld hl, $03ed                                  ; $2380: $21 $ed $03
-    call GS06_WaitForAdvanceOrSkip                ; $2383: $cd $b6 $2f
+    call GS06_ShowAButtonPromptAndWaitForAdvanceOrSkip; $2383: $cd $b6 $2f
     call ClearShadowOAMBuffer                     ; $2386: $cd $b6 $05
     call GS06_CopyRedrawSourceToProgressionBuffer ; $2389: $cd $2e $30
     ld a, $4a                                     ; $238c: $3e $4a
@@ -7258,14 +7258,14 @@ GS06_StatePhase_06_Message::
     ret                                           ; $239d: $c9
 
 
-GS06_StatePhase_07_TODO::
+GS06_StatePhase_07_Message::
     call $7918                                    ; $239e: $cd $18 $79
     call AnimateMarioMouthDuringText              ; $23a1: $cd $93 $30
     call AdvanceMessageScriptStream               ; $23a4: $cd $6e $2b
     ret nz                                        ; $23a7: $c0
 
     ld hl, $03ed                                  ; $23a8: $21 $ed $03
-    call GS06_WaitForAdvanceOrSkip                ; $23ab: $cd $b6 $2f
+    call GS06_ShowAButtonPromptAndWaitForAdvanceOrSkip; $23ab: $cd $b6 $2f
     call ClearShadowOAMBuffer                     ; $23ae: $cd $b6 $05
     call GS06_CopyRedrawSourceToProgressionBuffer ; $23b1: $cd $2e $30
     ld a, $bc                                     ; $23b4: $3e $bc
@@ -7278,157 +7278,86 @@ GS06_StatePhase_07_TODO::
     ret                                           ; $23c5: $c9
 
 
-GS06_StatePhase_08_TODO::
+GS06_StatePhase_08_SolvePuzzle_Prepare::
     call $7918                                    ; $23c6: $cd $18 $79
     call AnimateMarioMouthDuringText              ; $23c9: $cd $93 $30
     call AdvanceMessageScriptStream               ; $23cc: $cd $6e $2b
     ret nz                                        ; $23cf: $c0
 
     xor a                                         ; $23d0: $af
-    ld [$d636], a                                 ; $23d1: $ea $36 $d6
-    ld [$d637], a                                 ; $23d4: $ea $37 $d6
+    ld [rPuzzleCursorColumn], a                   ; $23d1: $ea $36 $d6
+    ld [rPuzzleCursorRow], a                      ; $23d4: $ea $37 $d6
     xor a                                         ; $23d7: $af
-    ld [$d82f], a                                 ; $23d8: $ea $2f $d8
-    ld [$d830], a                                 ; $23db: $ea $30 $d8
+    ld [rGS06_ScriptedInputSequenceCursor], a     ; $23d8: $ea $2f $d8
+    ld [rGS06_ScriptedInputSequenceDelay], a      ; $23db: $ea $30 $d8
     ld a, $f0                                     ; $23de: $3e $f0
-    ld [$d831], a                                 ; $23e0: $ea $31 $d8
+    ld [rGS06_ScriptedInputSequenceTableLow], a   ; $23e0: $ea $31 $d8
     ld a, $23                                     ; $23e3: $3e $23
-    ld [$d832], a                                 ; $23e5: $ea $32 $d8
+    ld [rGS06_ScriptedInputSequenceTableHigh], a  ; $23e5: $ea $32 $d8
     call GS06_ResetMessageSequenceState           ; $23e8: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $23eb: $21 $35 $d6
     inc [hl]                                      ; $23ee: $34
     ret                                           ; $23ef: $c9
 
 
-    nop                                           ; $23f0: $00
-    nop                                           ; $23f1: $00
-    ld bc, $0180                                  ; $23f2: $01 $80 $01
-    add b                                         ; $23f5: $80
-    ld bc, $0180                                  ; $23f6: $01 $80 $01
-    add b                                         ; $23f9: $80
-    ld bc, $0000                                  ; $23fa: $01 $00 $00
-    ld b, b                                       ; $23fd: $40
-    ld b, b                                       ; $23fe: $40
-    ld b, b                                       ; $23ff: $40
-    ld b, b                                       ; $2400: $40
-    stop                                          ; $2401: $10 $00
-    nop                                           ; $2403: $00
-    ld bc, $0180                                  ; $2404: $01 $80 $01
-    add b                                         ; $2407: $80
-    ld bc, $0180                                  ; $2408: $01 $80 $01
-    add b                                         ; $240b: $80
-    ld bc, $0000                                  ; $240c: $01 $00 $00
-    ld b, b                                       ; $240f: $40
-    ld b, b                                       ; $2410: $40
-    ld b, b                                       ; $2411: $40
-    ld b, b                                       ; $2412: $40
-    db $10                                        ; $2413: $10
+GS06_SolvePuzzleDemoInputSequenceData::
+    db $00, $00, $01, $80
+    db $01, $80, $01, $80
+    db $01, $80, $01, $00
+    db $00, $40, $40, $40
+    db $40, $10, $00, $00
+    db $01, $80, $01, $80
+    db $01, $80, $01, $80
+    db $01, $00, $00, $40
+    db $40, $40, $40, $10
+    db $10, $10, $00, $00
+    db $01, $80, $01, $80
+    db $01, $80, $01, $80
+    db $01, $00, $00, $40
+    db $40, $40, $40, $20
+    db $20, $00, $00, $02
+    db $10, $02, $00, $00
+    db $20, $80, $80, $80
+    db $80, $00, $00, $02
+    db $10, $02, $00, $00
+    db $20, $20, $20, $40
+    db $40, $00, $00, $10
+    db $10, $01, $10, $01
+    db $10, $00, $00, $20
+    db $20, $20, $20, $40
+    db $00, $00, $10, $10
+    db $01, $10, $02, $10
+    db $00, $00, $20, $20
+    db $20, $20, $80, $80
+    db $00, $00, $10, $10
+    db $02, $10, $01, $10
+    db $00, $00, $00, $00
+    db $ff
 
-Call_000_2414:
-    db $10                                        ; $2414: $10
-    stop                                          ; $2415: $10 $00
-    nop                                           ; $2417: $00
-    ld bc, $0180                                  ; $2418: $01 $80 $01
-    add b                                         ; $241b: $80
-    ld bc, $0180                                  ; $241c: $01 $80 $01
-    add b                                         ; $241f: $80
-    ld bc, $0000                                  ; $2420: $01 $00 $00
-    ld b, b                                       ; $2423: $40
-    ld b, b                                       ; $2424: $40
-    ld b, b                                       ; $2425: $40
-    ld b, b                                       ; $2426: $40
-    jr nz, @+$22                                  ; $2427: $20 $20
-
-    nop                                           ; $2429: $00
-    nop                                           ; $242a: $00
-    ld [bc], a                                    ; $242b: $02
-    db $10                                        ; $242c: $10
-    ld [bc], a                                    ; $242d: $02
-    nop                                           ; $242e: $00
-    nop                                           ; $242f: $00
-    jr nz, @-$7e                                  ; $2430: $20 $80
-
-    add b                                         ; $2432: $80
-    add b                                         ; $2433: $80
-    add b                                         ; $2434: $80
-    nop                                           ; $2435: $00
-    nop                                           ; $2436: $00
-    ld [bc], a                                    ; $2437: $02
-    db $10                                        ; $2438: $10
-    ld [bc], a                                    ; $2439: $02
-    nop                                           ; $243a: $00
-    nop                                           ; $243b: $00
-    jr nz, jr_000_245e                            ; $243c: $20 $20
-
-    jr nz, @+$42                                  ; $243e: $20 $40
-
-    ld b, b                                       ; $2440: $40
-    nop                                           ; $2441: $00
-    nop                                           ; $2442: $00
-    db $10                                        ; $2443: $10
-    db $10                                        ; $2444: $10
-    ld bc, $0110                                  ; $2445: $01 $10 $01
-    stop                                          ; $2448: $10 $00
-    nop                                           ; $244a: $00
-    jr nz, GS06_StatePhase_09_TODO                ; $244b: $20 $20
-
-    jr nz, @+$22                                  ; $244d: $20 $20
-
-    ld b, b                                       ; $244f: $40
-    nop                                           ; $2450: $00
-    nop                                           ; $2451: $00
-    db $10                                        ; $2452: $10
-    db $10                                        ; $2453: $10
-
-Call_000_2454:
-    ld bc, $0210                                  ; $2454: $01 $10 $02
-    stop                                          ; $2457: $10 $00
-    nop                                           ; $2459: $00
-    jr nz, @+$22                                  ; $245a: $20 $20
-
-    jr nz, jr_000_247e                            ; $245c: $20 $20
-
-jr_000_245e:
-    add b                                         ; $245e: $80
-    add b                                         ; $245f: $80
-    nop                                           ; $2460: $00
-    nop                                           ; $2461: $00
-    db $10                                        ; $2462: $10
-    db $10                                        ; $2463: $10
-    ld [bc], a                                    ; $2464: $02
-    db $10                                        ; $2465: $10
-    ld bc, $0010                                  ; $2466: $01 $10 $00
-    nop                                           ; $2469: $00
-    nop                                           ; $246a: $00
-    nop                                           ; $246b: $00
-    rst $38                                       ; $246c: $ff
-
-GS06_StatePhase_09_TODO::
-    call Call_000_30d6                            ; $246d: $cd $d6 $30
-    jr nz, jr_000_247f                            ; $2470: $20 $0d
+GS06_StatePhase_09_SolvePuzzle_Animation::
+    call GS06_TickScriptedInputSequence           ; $246d: $cd $d6 $30
+    jr nz, .FrameLoop                             ; $2470: $20 $0d
 
     ld a, $0a                                     ; $2472: $3e $0a
     ld [rStatePhaseTimer], a                      ; $2474: $ea $3c $d6
     call GS06_ResetMessageSequenceState           ; $2477: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $247a: $21 $35 $d6
     inc [hl]                                      ; $247d: $34
-
-jr_000_247e:
     ret                                           ; $247e: $c9
 
 
-jr_000_247f:
+.FrameLoop:
     call $71ca                                    ; $247f: $cd $ca $71
     call $713e                                    ; $2482: $cd $3e $71
     call $7918                                    ; $2485: $cd $18 $79
-    call GS06_EmitPromptAndTickTransitionTimer    ; $2488: $cd $12 $30
+    call GS06_ShowMessageArrowAndTickTransitionTimer; $2488: $cd $12 $30
     call $7222                                    ; $248b: $cd $22 $72
     call $7516                                    ; $248e: $cd $16 $75
     ret                                           ; $2491: $c9
 
 
 GS06_StatePhase_0a_TODO::
-    call GS06_EmitPromptAndTickTransitionTimer    ; $2492: $cd $12 $30
+    call GS06_ShowMessageArrowAndTickTransitionTimer; $2492: $cd $12 $30
     ret nz                                        ; $2495: $c0
 
     call $7635                                    ; $2496: $cd $35 $76
@@ -7449,7 +7378,7 @@ GS06_StatePhase_0b_TODO::
     ret nz                                        ; $24b4: $c0
 
     ld hl, $03ed                                  ; $24b5: $21 $ed $03
-    call GS06_WaitForAdvanceOrSkip                ; $24b8: $cd $b6 $2f
+    call GS06_ShowAButtonPromptAndWaitForAdvanceOrSkip; $24b8: $cd $b6 $2f
     call ClearShadowOAMBuffer                     ; $24bb: $cd $b6 $05
     call GS06_CopyRedrawSourceToProgressionBuffer ; $24be: $cd $2e $30
     ld a, $76                                     ; $24c1: $3e $76
@@ -7469,7 +7398,7 @@ GS06_StatePhase_0c_TODO::
     ret nz                                        ; $24dc: $c0
 
     ld hl, $03ed                                  ; $24dd: $21 $ed $03
-    call GS06_WaitForAdvanceOrSkip                ; $24e0: $cd $b6 $2f
+    call GS06_ShowAButtonPromptAndWaitForAdvanceOrSkip; $24e0: $cd $b6 $2f
     call ClearShadowOAMBuffer                     ; $24e3: $cd $b6 $05
     call GS06_CopyRedrawSourceToProgressionBuffer ; $24e6: $cd $2e $30
     call Call_000_3114                            ; $24e9: $cd $14 $31
@@ -7526,7 +7455,7 @@ GS06_StatePhase_0e_TODO::
     call $7918                                    ; $2549: $cd $18 $79
     ld a, $00                                     ; $254c: $3e $00
     call GS06_UpdateOAMSequenceEventAndCopySprite ; $254e: $cd $bd $19
-    call GS06_EmitPromptAndTickTransitionTimer    ; $2551: $cd $12 $30
+    call GS06_ShowMessageArrowAndTickTransitionTimer; $2551: $cd $12 $30
     ret nz                                        ; $2554: $c0
 
     ld a, $0c                                     ; $2555: $3e $0c
@@ -7546,7 +7475,7 @@ GS06_StatePhase_0f_TODO::
     ret nz                                        ; $2570: $c0
 
     ld hl, $03ed                                  ; $2571: $21 $ed $03
-    call GS06_WaitForAdvanceOrSkip                ; $2574: $cd $b6 $2f
+    call GS06_ShowAButtonPromptAndWaitForAdvanceOrSkip; $2574: $cd $b6 $2f
     call ClearShadowOAMBuffer                     ; $2577: $cd $b6 $05
     call GS06_CopyRedrawSourceToProgressionBuffer ; $257a: $cd $2e $30
     ld a, $9a                                     ; $257d: $3e $9a
@@ -7603,7 +7532,7 @@ GS06_StatePhase_11_TODO::
     call $7918                                    ; $25d7: $cd $18 $79
     ld a, $00                                     ; $25da: $3e $00
     call GS06_UpdateOAMSequenceEventAndCopySprite ; $25dc: $cd $bd $19
-    call GS06_EmitPromptAndTickTransitionTimer    ; $25df: $cd $12 $30
+    call GS06_ShowMessageArrowAndTickTransitionTimer; $25df: $cd $12 $30
     ret nz                                        ; $25e2: $c0
 
     ld a, $bc                                     ; $25e3: $3e $bc
@@ -7623,15 +7552,15 @@ GS06_StatePhase_12_TODO::
     ret nz                                        ; $25fe: $c0
 
     xor a                                         ; $25ff: $af
-    ld [$d636], a                                 ; $2600: $ea $36 $d6
-    ld [$d637], a                                 ; $2603: $ea $37 $d6
+    ld [rPuzzleCursorColumn], a                   ; $2600: $ea $36 $d6
+    ld [rPuzzleCursorRow], a                      ; $2603: $ea $37 $d6
     xor a                                         ; $2606: $af
-    ld [$d82f], a                                 ; $2607: $ea $2f $d8
-    ld [$d830], a                                 ; $260a: $ea $30 $d8
+    ld [rGS06_ScriptedInputSequenceCursor], a     ; $2607: $ea $2f $d8
+    ld [rGS06_ScriptedInputSequenceDelay], a      ; $260a: $ea $30 $d8
     ld a, $1f                                     ; $260d: $3e $1f
-    ld [$d831], a                                 ; $260f: $ea $31 $d8
+    ld [rGS06_ScriptedInputSequenceTableLow], a   ; $260f: $ea $31 $d8
     ld a, $26                                     ; $2612: $3e $26
-    ld [$d832], a                                 ; $2614: $ea $32 $d8
+    ld [rGS06_ScriptedInputSequenceTableHigh], a  ; $2614: $ea $32 $d8
     call GS06_ResetMessageSequenceState           ; $2617: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $261a: $21 $35 $d6
     inc [hl]                                      ; $261d: $34
@@ -7650,11 +7579,11 @@ GS06_StatePhase_12_TODO::
     rst $38                                       ; $262e: $ff
 
 GS06_StatePhase_13_TODO::
-    call Call_000_30d6                            ; $262f: $cd $d6 $30
+    call GS06_TickScriptedInputSequence           ; $262f: $cd $d6 $30
     jr nz, jr_000_2658                            ; $2632: $20 $24
 
     ld hl, $03ed                                  ; $2634: $21 $ed $03
-    call GS06_WaitForAdvanceOrSkip                ; $2637: $cd $b6 $2f
+    call GS06_ShowAButtonPromptAndWaitForAdvanceOrSkip; $2637: $cd $b6 $2f
     call ClearShadowOAMBuffer                     ; $263a: $cd $b6 $05
     call GS06_CopyRedrawSourceToProgressionBuffer ; $263d: $cd $2e $30
     call Call_000_3114                            ; $2640: $cd $14 $31
@@ -7673,7 +7602,7 @@ jr_000_2658:
     call $71ca                                    ; $2658: $cd $ca $71
     call $713e                                    ; $265b: $cd $3e $71
     call $7918                                    ; $265e: $cd $18 $79
-    call GS06_EmitPromptAndTickTransitionTimer    ; $2661: $cd $12 $30
+    call GS06_ShowMessageArrowAndTickTransitionTimer; $2661: $cd $12 $30
     call $7222                                    ; $2664: $cd $22 $72
     call $7516                                    ; $2667: $cd $16 $75
     ret                                           ; $266a: $c9
@@ -7721,7 +7650,7 @@ GS06_StatePhase_15_TODO::
     call $7918                                    ; $26b3: $cd $18 $79
     ld a, $00                                     ; $26b6: $3e $00
     call GS06_UpdateOAMSequenceEventAndCopySprite ; $26b8: $cd $bd $19
-    call GS06_EmitPromptAndTickTransitionTimer    ; $26bb: $cd $12 $30
+    call GS06_ShowMessageArrowAndTickTransitionTimer; $26bb: $cd $12 $30
     ret nz                                        ; $26be: $c0
 
     ld a, $6c                                     ; $26bf: $3e $6c
@@ -7741,7 +7670,7 @@ GS06_StatePhase_16_TODO::
     ret nz                                        ; $26da: $c0
 
     ld hl, $03ed                                  ; $26db: $21 $ed $03
-    call GS06_WaitForAdvanceOrSkip                ; $26de: $cd $b6 $2f
+    call GS06_ShowAButtonPromptAndWaitForAdvanceOrSkip; $26de: $cd $b6 $2f
     call ClearShadowOAMBuffer                     ; $26e1: $cd $b6 $05
     call GS06_CopyRedrawSourceToProgressionBuffer ; $26e4: $cd $2e $30
     ld a, $04                                     ; $26e7: $3e $04
@@ -7795,7 +7724,7 @@ GS06_StatePhase_18_TODO::
     call $7918                                    ; $2741: $cd $18 $79
     ld a, $00                                     ; $2744: $3e $00
     call GS06_UpdateOAMSequenceEventAndCopySprite ; $2746: $cd $bd $19
-    call GS06_EmitPromptAndTickTransitionTimer    ; $2749: $cd $12 $30
+    call GS06_ShowMessageArrowAndTickTransitionTimer; $2749: $cd $12 $30
     ret nz                                        ; $274c: $c0
 
     ld a, $36                                     ; $274d: $3e $36
@@ -7815,16 +7744,16 @@ GS06_StatePhase_19_TODO::
     ret nz                                        ; $2768: $c0
 
     xor a                                         ; $2769: $af
-    ld [$d636], a                                 ; $276a: $ea $36 $d6
+    ld [rPuzzleCursorColumn], a                   ; $276a: $ea $36 $d6
     ld a, $01                                     ; $276d: $3e $01
-    ld [$d637], a                                 ; $276f: $ea $37 $d6
+    ld [rPuzzleCursorRow], a                      ; $276f: $ea $37 $d6
     xor a                                         ; $2772: $af
-    ld [$d82f], a                                 ; $2773: $ea $2f $d8
-    ld [$d830], a                                 ; $2776: $ea $30 $d8
+    ld [rGS06_ScriptedInputSequenceCursor], a     ; $2773: $ea $2f $d8
+    ld [rGS06_ScriptedInputSequenceDelay], a      ; $2776: $ea $30 $d8
     ld a, $8b                                     ; $2779: $3e $8b
-    ld [$d831], a                                 ; $277b: $ea $31 $d8
+    ld [rGS06_ScriptedInputSequenceTableLow], a   ; $277b: $ea $31 $d8
     ld a, $27                                     ; $277e: $3e $27
-    ld [$d832], a                                 ; $2780: $ea $32 $d8
+    ld [rGS06_ScriptedInputSequenceTableHigh], a  ; $2780: $ea $32 $d8
     call GS06_ResetMessageSequenceState           ; $2783: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $2786: $21 $35 $d6
     inc [hl]                                      ; $2789: $34
@@ -7845,11 +7774,11 @@ GS06_StatePhase_19_TODO::
     rst $38                                       ; $279d: $ff
 
 GS06_StatePhase_1a_TODO::
-    call Call_000_30d6                            ; $279e: $cd $d6 $30
+    call GS06_TickScriptedInputSequence           ; $279e: $cd $d6 $30
     jr nz, jr_000_27c1                            ; $27a1: $20 $1e
 
     ld hl, $03ed                                  ; $27a3: $21 $ed $03
-    call GS06_WaitForAdvanceOrSkip                ; $27a6: $cd $b6 $2f
+    call GS06_ShowAButtonPromptAndWaitForAdvanceOrSkip; $27a6: $cd $b6 $2f
     call ClearShadowOAMBuffer                     ; $27a9: $cd $b6 $05
     call GS06_CopyRedrawSourceToProgressionBuffer ; $27ac: $cd $2e $30
     ld a, $fe                                     ; $27af: $3e $fe
@@ -7866,7 +7795,7 @@ jr_000_27c1:
     call $71ca                                    ; $27c1: $cd $ca $71
     call $713e                                    ; $27c4: $cd $3e $71
     call $7918                                    ; $27c7: $cd $18 $79
-    call GS06_EmitPromptAndTickTransitionTimer    ; $27ca: $cd $12 $30
+    call GS06_ShowMessageArrowAndTickTransitionTimer; $27ca: $cd $12 $30
     call $7222                                    ; $27cd: $cd $22 $72
     call $7516                                    ; $27d0: $cd $16 $75
     ret                                           ; $27d3: $c9
@@ -7886,7 +7815,7 @@ GS06_StatePhase_1b_TODO::
 
 GS06_StatePhase_1c_TODO::
     call $7918                                    ; $27e6: $cd $18 $79
-    call GS06_EmitPromptAndTickTransitionTimer    ; $27e9: $cd $12 $30
+    call GS06_ShowMessageArrowAndTickTransitionTimer; $27e9: $cd $12 $30
     call Call_000_3160                            ; $27ec: $cd $60 $31
     call $7cc8                                    ; $27ef: $cd $c8 $7c
     ld a, [$d806]                                 ; $27f2: $fa $06 $d8
@@ -7911,7 +7840,7 @@ GS06_StatePhase_1d_TODO::
 
     call $7ce3                                    ; $2814: $cd $e3 $7c
     ld hl, $03ed                                  ; $2817: $21 $ed $03
-    call GS06_WaitForAdvanceOrSkip                ; $281a: $cd $b6 $2f
+    call GS06_ShowAButtonPromptAndWaitForAdvanceOrSkip; $281a: $cd $b6 $2f
     call ClearShadowOAMBuffer                     ; $281d: $cd $b6 $05
     call GS06_CopyRedrawSourceToProgressionBuffer ; $2820: $cd $2e $30
     call Call_000_313a                            ; $2823: $cd $3a $31
@@ -7933,16 +7862,16 @@ GS06_StatePhase_1e_TODO::
     ret nz                                        ; $2844: $c0
 
     ld a, $03                                     ; $2845: $3e $03
-    ld [$d636], a                                 ; $2847: $ea $36 $d6
+    ld [rPuzzleCursorColumn], a                   ; $2847: $ea $36 $d6
     ld a, $01                                     ; $284a: $3e $01
-    ld [$d637], a                                 ; $284c: $ea $37 $d6
+    ld [rPuzzleCursorRow], a                      ; $284c: $ea $37 $d6
     xor a                                         ; $284f: $af
-    ld [$d82f], a                                 ; $2850: $ea $2f $d8
-    ld [$d830], a                                 ; $2853: $ea $30 $d8
+    ld [rGS06_ScriptedInputSequenceCursor], a     ; $2850: $ea $2f $d8
+    ld [rGS06_ScriptedInputSequenceDelay], a      ; $2853: $ea $30 $d8
     ld a, $68                                     ; $2856: $3e $68
-    ld [$d831], a                                 ; $2858: $ea $31 $d8
+    ld [rGS06_ScriptedInputSequenceTableLow], a   ; $2858: $ea $31 $d8
     ld a, $28                                     ; $285b: $3e $28
-    ld [$d832], a                                 ; $285d: $ea $32 $d8
+    ld [rGS06_ScriptedInputSequenceTableHigh], a  ; $285d: $ea $32 $d8
     call GS06_ResetMessageSequenceState           ; $2860: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $2863: $21 $35 $d6
     inc [hl]                                      ; $2866: $34
@@ -7957,7 +7886,7 @@ GS06_StatePhase_1e_TODO::
     rst $38                                       ; $286f: $ff
 
 GS06_StatePhase_1f_TODO::
-    call Call_000_30d6                            ; $2870: $cd $d6 $30
+    call GS06_TickScriptedInputSequence           ; $2870: $cd $d6 $30
     jr nz, jr_000_2887                            ; $2873: $20 $12
 
     ld a, $1a                                     ; $2875: $3e $1a
@@ -7974,7 +7903,7 @@ jr_000_2887:
     call $71ca                                    ; $2887: $cd $ca $71
     call $713e                                    ; $288a: $cd $3e $71
     call $7918                                    ; $288d: $cd $18 $79
-    call GS06_EmitPromptAndTickTransitionTimer    ; $2890: $cd $12 $30
+    call GS06_ShowMessageArrowAndTickTransitionTimer; $2890: $cd $12 $30
     call $7222                                    ; $2893: $cd $22 $72
     call $7516                                    ; $2896: $cd $16 $75
     ret                                           ; $2899: $c9
@@ -7987,7 +7916,7 @@ GS06_StatePhase_20_TODO::
     ret nz                                        ; $28a3: $c0
 
     ld hl, $03ed                                  ; $28a4: $21 $ed $03
-    call GS06_WaitForAdvanceOrSkip                ; $28a7: $cd $b6 $2f
+    call GS06_ShowAButtonPromptAndWaitForAdvanceOrSkip; $28a7: $cd $b6 $2f
     call ClearShadowOAMBuffer                     ; $28aa: $cd $b6 $05
     call GS06_CopyRedrawSourceToProgressionBuffer ; $28ad: $cd $2e $30
     ld a, $48                                     ; $28b0: $3e $48
@@ -8007,16 +7936,16 @@ GS06_StatePhase_21_TODO::
     ret nz                                        ; $28cb: $c0
 
     ld a, $03                                     ; $28cc: $3e $03
-    ld [$d636], a                                 ; $28ce: $ea $36 $d6
+    ld [rPuzzleCursorColumn], a                   ; $28ce: $ea $36 $d6
     ld a, $01                                     ; $28d1: $3e $01
-    ld [$d637], a                                 ; $28d3: $ea $37 $d6
+    ld [rPuzzleCursorRow], a                      ; $28d3: $ea $37 $d6
     xor a                                         ; $28d6: $af
-    ld [$d82f], a                                 ; $28d7: $ea $2f $d8
-    ld [$d830], a                                 ; $28da: $ea $30 $d8
+    ld [rGS06_ScriptedInputSequenceCursor], a     ; $28d7: $ea $2f $d8
+    ld [rGS06_ScriptedInputSequenceDelay], a      ; $28da: $ea $30 $d8
     ld a, $ef                                     ; $28dd: $3e $ef
-    ld [$d831], a                                 ; $28df: $ea $31 $d8
+    ld [rGS06_ScriptedInputSequenceTableLow], a   ; $28df: $ea $31 $d8
     ld a, $28                                     ; $28e2: $3e $28
-    ld [$d832], a                                 ; $28e4: $ea $32 $d8
+    ld [rGS06_ScriptedInputSequenceTableHigh], a  ; $28e4: $ea $32 $d8
     call GS06_ResetMessageSequenceState           ; $28e7: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $28ea: $21 $35 $d6
     inc [hl]                                      ; $28ed: $34
@@ -8033,11 +7962,11 @@ GS06_StatePhase_21_TODO::
     rst $38                                       ; $28f6: $ff
 
 GS06_StatePhase_22_TODO::
-    call Call_000_30d6                            ; $28f7: $cd $d6 $30
+    call GS06_TickScriptedInputSequence           ; $28f7: $cd $d6 $30
     jr nz, jr_000_2923                            ; $28fa: $20 $27
 
     ld hl, $03ed                                  ; $28fc: $21 $ed $03
-    call GS06_WaitForAdvanceOrSkip                ; $28ff: $cd $b6 $2f
+    call GS06_ShowAButtonPromptAndWaitForAdvanceOrSkip; $28ff: $cd $b6 $2f
     call ClearShadowOAMBuffer                     ; $2902: $cd $b6 $05
     call GS06_CopyRedrawSourceToProgressionBuffer ; $2905: $cd $2e $30
     call Call_000_3114                            ; $2908: $cd $14 $31
@@ -8057,7 +7986,7 @@ jr_000_2923:
     call $71ca                                    ; $2923: $cd $ca $71
     call $713e                                    ; $2926: $cd $3e $71
     call $7918                                    ; $2929: $cd $18 $79
-    call GS06_EmitPromptAndTickTransitionTimer    ; $292c: $cd $12 $30
+    call GS06_ShowMessageArrowAndTickTransitionTimer; $292c: $cd $12 $30
     call $7222                                    ; $292f: $cd $22 $72
     call $7516                                    ; $2932: $cd $16 $75
     ret                                           ; $2935: $c9
@@ -8077,12 +8006,12 @@ GS06_StatePhase_23_TODO::
     ld bc, $0200                                  ; $294d: $01 $00 $02
     call BankedTileCopyVRAMSafe                   ; $2950: $cd $38 $05
     xor a                                         ; $2953: $af
-    ld [$d82f], a                                 ; $2954: $ea $2f $d8
-    ld [$d830], a                                 ; $2957: $ea $30 $d8
+    ld [rGS06_ScriptedInputSequenceCursor], a     ; $2954: $ea $2f $d8
+    ld [rGS06_ScriptedInputSequenceDelay], a      ; $2957: $ea $30 $d8
     ld a, $6c                                     ; $295a: $3e $6c
-    ld [$d831], a                                 ; $295c: $ea $31 $d8
+    ld [rGS06_ScriptedInputSequenceTableLow], a   ; $295c: $ea $31 $d8
     ld a, $29                                     ; $295f: $3e $29
-    ld [$d832], a                                 ; $2961: $ea $32 $d8
+    ld [rGS06_ScriptedInputSequenceTableHigh], a  ; $2961: $ea $32 $d8
     call GS06_ResetMessageSequenceState           ; $2964: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $2967: $21 $35 $d6
     inc [hl]                                      ; $296a: $34
@@ -8099,11 +8028,11 @@ jr_000_2970:
 
 GS06_StatePhase_24_TODO::
     call Call_000_29c0                            ; $2972: $cd $c0 $29
-    call Call_000_30d6                            ; $2975: $cd $d6 $30
+    call GS06_TickScriptedInputSequence           ; $2975: $cd $d6 $30
     jr nz, jr_000_29a7                            ; $2978: $20 $2d
 
     ld hl, $29c0                                  ; $297a: $21 $c0 $29
-    call GS06_WaitForAdvanceOrSkip                ; $297d: $cd $b6 $2f
+    call GS06_ShowAButtonPromptAndWaitForAdvanceOrSkip; $297d: $cd $b6 $2f
     call ClearShadowOAMBuffer                     ; $2980: $cd $b6 $05
     call GS06_CopyRedrawSourceToProgressionBuffer ; $2983: $cd $2e $30
     ld a, $88                                     ; $2986: $3e $88
@@ -8124,7 +8053,7 @@ GS06_StatePhase_24_TODO::
 
 jr_000_29a7:
     call $7918                                    ; $29a7: $cd $18 $79
-    ld a, [$c31e]                                 ; $29aa: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $29aa: $fa $1e $c3
     and $f0                                       ; $29ad: $e6 $f0
     ret z                                         ; $29af: $c8
 
@@ -8152,7 +8081,7 @@ GS06_StatePhase_25_TODO::
     ret nz                                        ; $29d5: $c0
 
     ld hl, $03ed                                  ; $29d6: $21 $ed $03
-    call GS06_WaitForAdvanceOrSkip                ; $29d9: $cd $b6 $2f
+    call GS06_ShowAButtonPromptAndWaitForAdvanceOrSkip; $29d9: $cd $b6 $2f
     call ClearShadowOAMBuffer                     ; $29dc: $cd $b6 $05
     call GS06_CopyRedrawSourceToProgressionBuffer ; $29df: $cd $2e $30
     ld a, $24                                     ; $29e2: $3e $24
@@ -8173,14 +8102,14 @@ GS06_StatePhase_26_TODO::
     ret nz                                        ; $2a00: $c0
 
     ld hl, $31ca                                  ; $2a01: $21 $ca $31
-    call GS06_WaitForAdvanceOrSkip                ; $2a04: $cd $b6 $2f
+    call GS06_ShowAButtonPromptAndWaitForAdvanceOrSkip; $2a04: $cd $b6 $2f
     ld a, [$d812]                                 ; $2a07: $fa $12 $d8
     scf                                           ; $2a0a: $37
     rl a                                          ; $2a0b: $cb $17
     ld [$d812], a                                 ; $2a0d: $ea $12 $d8
 
 jr_000_2a10:
-    call GS06_EmitPromptAndTickTransitionTimer    ; $2a10: $cd $12 $30
+    call GS06_ShowMessageArrowAndTickTransitionTimer; $2a10: $cd $12 $30
     call Call_000_05c5                            ; $2a13: $cd $c5 $05
     rst RST_08                                    ; $2a16: $cf
     call Call_000_31ca                            ; $2a17: $cd $ca $31
@@ -8206,14 +8135,14 @@ GS06_StatePhase_27_TODO::
     ret nz                                        ; $2a3f: $c0
 
     ld hl, $31ca                                  ; $2a40: $21 $ca $31
-    call GS06_WaitForAdvanceOrSkip                ; $2a43: $cd $b6 $2f
+    call GS06_ShowAButtonPromptAndWaitForAdvanceOrSkip; $2a43: $cd $b6 $2f
     ld a, [$d813]                                 ; $2a46: $fa $13 $d8
     scf                                           ; $2a49: $37
     rl a                                          ; $2a4a: $cb $17
     ld [$d813], a                                 ; $2a4c: $ea $13 $d8
 
 jr_000_2a4f:
-    call GS06_EmitPromptAndTickTransitionTimer    ; $2a4f: $cd $12 $30
+    call GS06_ShowMessageArrowAndTickTransitionTimer; $2a4f: $cd $12 $30
     call Call_000_05c5                            ; $2a52: $cd $c5 $05
     rst RST_08                                    ; $2a55: $cf
     call Call_000_31ca                            ; $2a56: $cd $ca $31
@@ -8243,7 +8172,7 @@ GS06_StatePhase_28_TODO::
 
     call $78a2                                    ; $2a88: $cd $a2 $78
     ld hl, $7185                                  ; $2a8b: $21 $85 $71
-    call GS06_WaitForAdvanceOrSkip                ; $2a8e: $cd $b6 $2f
+    call GS06_ShowAButtonPromptAndWaitForAdvanceOrSkip; $2a8e: $cd $b6 $2f
     call ClearShadowOAMBuffer                     ; $2a91: $cd $b6 $05
     call $7185                                    ; $2a94: $cd $85 $71
     call GS06_CopyRedrawSourceToProgressionBuffer ; $2a97: $cd $2e $30
@@ -8269,7 +8198,7 @@ GS06_StatePhase_29_TODO::
     ld [$d836], a                                 ; $2abd: $ea $36 $d8
     ld hl, $03ed                                  ; $2ac0: $21 $ed $03
     call GS06_WaitForAdvanceOrSkip_PollLoop       ; $2ac3: $cd $bb $2f
-    ld a, [$c31a]                                 ; $2ac6: $fa $1a $c3
+    ld a, [rInputButtonsHeld]                     ; $2ac6: $fa $1a $c3
     push af                                       ; $2ac9: $f5
     call ClearShadowOAMBuffer                     ; $2aca: $cd $b6 $05
     call GS06_CopyRedrawSourceToProgressionBuffer ; $2acd: $cd $2e $30
@@ -8286,8 +8215,8 @@ GS06_StatePhase_29_TODO::
 
 jr_000_2ae0:
     xor a                                         ; $2ae0: $af
-    ld [$d636], a                                 ; $2ae1: $ea $36 $d6
-    ld [$d637], a                                 ; $2ae4: $ea $37 $d6
+    ld [rPuzzleCursorColumn], a                   ; $2ae1: $ea $36 $d6
+    ld [rPuzzleCursorRow], a                      ; $2ae4: $ea $37 $d6
     ld [$d805], a                                 ; $2ae7: $ea $05 $d8
     ld [$d806], a                                 ; $2aea: $ea $06 $d8
     ld [$d80f], a                                 ; $2aed: $ea $0f $d8
@@ -8389,7 +8318,7 @@ AdvanceMessageScriptStreamHelper::
     jr z, .ResetMessageScriptStreamEntry          ; $2ba9: $28 $0c
 
 .AdvanceMessageScriptStreamEntry:
-    call PrepareMessageScriptCopySetup            ; $2bab: $cd $d3 $2b
+    call PrepareBGTileCopySetup                   ; $2bab: $cd $d3 $2b
     ld hl, rMessageScriptStreamEntryLow           ; $2bae: $21 $2b $d8
     add $01                                       ; $2bb1: $c6 $01
     add [hl]                                      ; $2bb3: $86
@@ -8415,7 +8344,7 @@ AdvanceMessageScriptStreamHelper::
     ret                                           ; $2bd2: $c9
 
 
-PrepareMessageScriptCopySetup::
+PrepareBGTileCopySetup::
     push de                                       ; $2bd3: $d5
     sla e                                         ; $2bd4: $cb $23
     rl d                                          ; $2bd6: $cb $12
@@ -8427,13 +8356,13 @@ PrepareMessageScriptCopySetup::
     ld hl, $4000                                  ; $2bdf: $21 $00 $40
     add hl, de                                    ; $2be2: $19
     ld a, l                                       ; $2be3: $7d
-    ld [rMessageScriptCopyBankAddressLow], a      ; $2be4: $ea $55 $c3
+    ld [rBGTileCopyBankAddressLow], a             ; $2be4: $ea $55 $c3
     ld a, h                                       ; $2be7: $7c
-    ld [rMessageScriptCopyBankAddressHigh], a     ; $2be8: $ea $56 $c3
+    ld [rBGTileCopyBankAddressHigh], a            ; $2be8: $ea $56 $c3
     ld a, $0d                                     ; $2beb: $3e $0d
-    ld [rMessageScriptCopyBank], a                ; $2bed: $ea $57 $c3
+    ld [rBGTileCopyBank], a                       ; $2bed: $ea $57 $c3
     ld a, b                                       ; $2bf0: $78
-    ld [rMessageScriptCopySourceX], a             ; $2bf1: $ea $51 $c3
+    ld [rBGTileCopySourceX], a                    ; $2bf1: $ea $51 $c3
     pop de                                        ; $2bf4: $d1
     ld hl, MessageGlyphWidthTable                 ; $2bf5: $21 $b6 $2c
     add hl, de                                    ; $2bf8: $19
@@ -8445,28 +8374,28 @@ PrepareMessageScriptCopySetup::
     add b                                         ; $2bfd: $80
     ld hl, rMessageScriptStreamLimitLow           ; $2bfe: $21 $45 $d8
     cp [hl]                                       ; $2c01: $be
-    jr c, .PrepareMessageScriptCopyParams         ; $2c02: $38 $02
+    jr c, .PrepareBGTileCopyParams                ; $2c02: $38 $02
 
     pop af                                        ; $2c04: $f1
     ret                                           ; $2c05: $c9
 
 
-.PrepareMessageScriptCopyParams:
-    ld [rMessageScriptCopyDestX], a               ; $2c06: $ea $53 $c3
+.PrepareBGTileCopyParams:
+    ld [rBGTileCopyDestX], a                      ; $2c06: $ea $53 $c3
     ld a, c                                       ; $2c09: $79
-    ld [rMessageScriptCopySourceY], a             ; $2c0a: $ea $52 $c3
+    ld [rBGTileCopySourceY], a                    ; $2c0a: $ea $52 $c3
     add $08                                       ; $2c0d: $c6 $08
     ld hl, rMessageScriptStreamLimitHigh          ; $2c0f: $21 $46 $d8
     cp [hl]                                       ; $2c12: $be
-    jr c, .ApplyMessageScriptCopyParams           ; $2c13: $38 $02
+    jr c, .ApplyBGTileCopyParams                  ; $2c13: $38 $02
 
     pop af                                        ; $2c15: $f1
     ret                                           ; $2c16: $c9
 
 
-.ApplyMessageScriptCopyParams:
-    ld [rMessageScriptCopyDestY], a               ; $2c17: $ea $54 $c3
-    call PrepareMessageScriptCopy                 ; $2c1a: $cd $b3 $08
+.ApplyBGTileCopyParams:
+    ld [rBGTileCopyDestY], a                      ; $2c17: $ea $54 $c3
+    call PrepareBGTileCopy                        ; $2c1a: $cd $b3 $08
     pop af                                        ; $2c1d: $f1
     ret                                           ; $2c1e: $c9
 
@@ -8536,13 +8465,13 @@ Call_000_2c6a:
     ld hl, $4000                                  ; $2c76: $21 $00 $40
     add hl, de                                    ; $2c79: $19
     ld a, l                                       ; $2c7a: $7d
-    ld [rMessageScriptCopyBankAddressLow], a      ; $2c7b: $ea $55 $c3
+    ld [rBGTileCopyBankAddressLow], a             ; $2c7b: $ea $55 $c3
     ld a, h                                       ; $2c7e: $7c
-    ld [rMessageScriptCopyBankAddressHigh], a     ; $2c7f: $ea $56 $c3
+    ld [rBGTileCopyBankAddressHigh], a            ; $2c7f: $ea $56 $c3
     ld a, $0d                                     ; $2c82: $3e $0d
-    ld [rMessageScriptCopyBank], a                ; $2c84: $ea $57 $c3
+    ld [rBGTileCopyBank], a                       ; $2c84: $ea $57 $c3
     ld a, b                                       ; $2c87: $78
-    ld [rMessageScriptCopySourceX], a             ; $2c88: $ea $51 $c3
+    ld [rBGTileCopySourceX], a                    ; $2c88: $ea $51 $c3
     pop de                                        ; $2c8b: $d1
     ld hl, MessageGlyphWidthTable                 ; $2c8c: $21 $b6 $2c
     add hl, de                                    ; $2c8f: $19
@@ -8561,9 +8490,9 @@ Call_000_2c6a:
 
 
 jr_000_2c9d:
-    ld [rMessageScriptCopyDestX], a               ; $2c9d: $ea $53 $c3
+    ld [rBGTileCopyDestX], a                      ; $2c9d: $ea $53 $c3
     ld a, c                                       ; $2ca0: $79
-    ld [rMessageScriptCopySourceY], a             ; $2ca1: $ea $52 $c3
+    ld [rBGTileCopySourceY], a                    ; $2ca1: $ea $52 $c3
     add $08                                       ; $2ca4: $c6 $08
     ld hl, rMessageScriptStreamLimitHigh          ; $2ca6: $21 $46 $d8
     cp [hl]                                       ; $2ca9: $be
@@ -8574,7 +8503,7 @@ jr_000_2c9d:
 
 
 jr_000_2cae:
-    ld [rMessageScriptCopyDestY], a               ; $2cae: $ea $54 $c3
+    ld [rBGTileCopyDestY], a                      ; $2cae: $ea $54 $c3
     call Call_000_0b0d                            ; $2cb1: $cd $0d $0b
     pop af                                        ; $2cb4: $f1
     ret                                           ; $2cb5: $c9
@@ -8648,7 +8577,7 @@ MessageGlyphSourceOffsetTable::
     db $08, $25, $28, $25, $48, $25, $68, $25, $88, $25, $a8, $25, $c8, $25, $e8, $25
     db $0c, $26, $2c, $26, $4c, $26, $6c, $26, $8c, $26, $ac, $26, $cc, $26, $ec, $26
 
-GS06_WaitForAdvanceOrSkip::
+GS06_ShowAButtonPromptAndWaitForAdvanceOrSkip::
     ld a, $78                                     ; $2fb6: $3e $78
     ld [$d836], a                                 ; $2fb8: $ea $36 $d8
 
@@ -8663,7 +8592,7 @@ GS06_WaitForAdvanceOrSkip_PollLoop::
     ret z                                         ; $2fc8: $c8
 
 .CheckAdvanceInputA:
-    ld a, [$c31e]                                 ; $2fc9: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $2fc9: $fa $1e $c3
     bit 0, a                                      ; $2fcc: $cb $47
     jr z, .CheckCancelInputStart                  ; $2fce: $28 $08
 
@@ -8674,7 +8603,7 @@ GS06_WaitForAdvanceOrSkip_PollLoop::
 
 
 .CheckCancelInputStart:
-    ld a, [$c31e]                                 ; $2fd8: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $2fd8: $fa $1e $c3
     bit 3, a                                      ; $2fdb: $cb $5f
     jr z, .WaitLoopBody                           ; $2fdd: $28 $0b
 
@@ -8714,7 +8643,7 @@ GS06_WaitForAdvanceOrSkip_PollLoop::
     pop hl                                        ; $300f: $e1
     jr GS06_WaitForAdvanceOrSkip_PollLoop         ; $3010: $18 $a9
 
-GS06_EmitPromptAndTickTransitionTimer::
+GS06_ShowMessageArrowAndTickTransitionTimer::
     ld a, [$c33b]                                 ; $3012: $fa $3b $c3
     bit 4, a                                      ; $3015: $cb $67
     jr nz, .TickTransitionTimer                   ; $3017: $20 $10
@@ -8762,20 +8691,20 @@ GS06_CopyRedrawSourceToProgressionBuffer::
 
 GS06_PrepareRedrawSourceCopy::
     ld a, $00                                     ; $3071: $3e $00
-    ld [rMessageScriptCopyBankAddressLow], a      ; $3073: $ea $55 $c3
+    ld [rBGTileCopyBankAddressLow], a             ; $3073: $ea $55 $c3
     ld a, $6c                                     ; $3076: $3e $6c
-    ld [rMessageScriptCopyBankAddressHigh], a     ; $3078: $ea $56 $c3
+    ld [rBGTileCopyBankAddressHigh], a            ; $3078: $ea $56 $c3
     ld a, $07                                     ; $307b: $3e $07
-    ld [rMessageScriptCopyBank], a                ; $307d: $ea $57 $c3
+    ld [rBGTileCopyBank], a                       ; $307d: $ea $57 $c3
     ld a, b                                       ; $3080: $78
-    ld [rMessageScriptCopySourceX], a             ; $3081: $ea $51 $c3
+    ld [rBGTileCopySourceX], a                    ; $3081: $ea $51 $c3
     add d                                         ; $3084: $82
-    ld [rMessageScriptCopyDestX], a               ; $3085: $ea $53 $c3
+    ld [rBGTileCopyDestX], a                      ; $3085: $ea $53 $c3
     ld a, c                                       ; $3088: $79
-    ld [rMessageScriptCopySourceY], a             ; $3089: $ea $52 $c3
+    ld [rBGTileCopySourceY], a                    ; $3089: $ea $52 $c3
     add e                                         ; $308c: $83
-    ld [rMessageScriptCopyDestY], a               ; $308d: $ea $54 $c3
-    jp PrepareMessageScriptCopy                   ; $3090: $c3 $b3 $08
+    ld [rBGTileCopyDestY], a                      ; $308d: $ea $54 $c3
+    jp PrepareBGTileCopy                          ; $3090: $c3 $b3 $08
 
 
 AnimateMarioMouthDuringText::
@@ -8826,40 +8755,38 @@ MarioMouthAnimationPatternData::
     db $05, $ff
     db $00
 
-Call_000_30d6:
+GS06_TickScriptedInputSequence::
     xor a                                         ; $30d6: $af
-    ld [$c31a], a                                 ; $30d7: $ea $1a $c3
-    ld [$c31e], a                                 ; $30da: $ea $1e $c3
-    ld [$c322], a                                 ; $30dd: $ea $22 $c3
-    ld a, [$d830]                                 ; $30e0: $fa $30 $d8
+    ld [rInputButtonsHeld], a                     ; $30d7: $ea $1a $c3
+    ld [rInputButtonsPressed], a                  ; $30da: $ea $1e $c3
+    ld [rInputButtonsPressedOrRepeated], a        ; $30dd: $ea $22 $c3
+    ld a, [rGS06_ScriptedInputSequenceDelay]      ; $30e0: $fa $30 $d8
     and a                                         ; $30e3: $a7
-    jr nz, jr_000_310c                            ; $30e4: $20 $26
+    jr nz, .TickDelayAndReturnBusy                ; $30e4: $20 $26
 
-    ld a, [$d82f]                                 ; $30e6: $fa $2f $d8
+    ld a, [rGS06_ScriptedInputSequenceCursor]     ; $30e6: $fa $2f $d8
     ld c, a                                       ; $30e9: $4f
     ld b, $00                                     ; $30ea: $06 $00
-    ld a, [$d831]                                 ; $30ec: $fa $31 $d8
+    ld a, [rGS06_ScriptedInputSequenceTableLow]   ; $30ec: $fa $31 $d8
     ld l, a                                       ; $30ef: $6f
-    ld a, [$d832]                                 ; $30f0: $fa $32 $d8
+    ld a, [rGS06_ScriptedInputSequenceTableHigh]  ; $30f0: $fa $32 $d8
     ld h, a                                       ; $30f3: $67
     add hl, bc                                    ; $30f4: $09
     ld a, [hl]                                    ; $30f5: $7e
     cp $ff                                        ; $30f6: $fe $ff
     ret z                                         ; $30f8: $c8
 
-    ld [$c31a], a                                 ; $30f9: $ea $1a $c3
-
-Call_000_30fc:
-    ld [$c31e], a                                 ; $30fc: $ea $1e $c3
-    ld [$c322], a                                 ; $30ff: $ea $22 $c3
+    ld [rInputButtonsHeld], a                     ; $30f9: $ea $1a $c3
+    ld [rInputButtonsPressed], a                  ; $30fc: $ea $1e $c3
+    ld [rInputButtonsPressedOrRepeated], a        ; $30ff: $ea $22 $c3
     ld a, $07                                     ; $3102: $3e $07
-    ld [$d830], a                                 ; $3104: $ea $30 $d8
+    ld [rGS06_ScriptedInputSequenceDelay], a      ; $3104: $ea $30 $d8
     ld a, c                                       ; $3107: $79
     inc a                                         ; $3108: $3c
-    ld [$d82f], a                                 ; $3109: $ea $2f $d8
+    ld [rGS06_ScriptedInputSequenceCursor], a     ; $3109: $ea $2f $d8
 
-jr_000_310c:
-    ld hl, $d830                                  ; $310c: $21 $30 $d8
+.TickDelayAndReturnBusy:
+    ld hl, rGS06_ScriptedInputSequenceDelay       ; $310c: $21 $30 $d8
     dec [hl]                                      ; $310f: $35
     ld a, $ff                                     ; $3110: $3e $ff
     and a                                         ; $3112: $a7
@@ -8868,38 +8795,38 @@ jr_000_310c:
 
 Call_000_3114:
     ld a, $40                                     ; $3114: $3e $40
-    ld [rMessageScriptCopyBankAddressLow], a      ; $3116: $ea $55 $c3
+    ld [rBGTileCopyBankAddressLow], a             ; $3116: $ea $55 $c3
     ld a, $4c                                     ; $3119: $3e $4c
-    ld [rMessageScriptCopyBankAddressHigh], a     ; $311b: $ea $56 $c3
+    ld [rBGTileCopyBankAddressHigh], a            ; $311b: $ea $56 $c3
     ld a, $07                                     ; $311e: $3e $07
-    ld [rMessageScriptCopyBank], a                ; $3120: $ea $57 $c3
+    ld [rBGTileCopyBank], a                       ; $3120: $ea $57 $c3
     ld a, $38                                     ; $3123: $3e $38
-    ld [rMessageScriptCopySourceX], a             ; $3125: $ea $51 $c3
+    ld [rBGTileCopySourceX], a                    ; $3125: $ea $51 $c3
     add $1f                                       ; $3128: $c6 $1f
-    ld [rMessageScriptCopyDestX], a               ; $312a: $ea $53 $c3
+    ld [rBGTileCopyDestX], a                      ; $312a: $ea $53 $c3
     ld a, $30                                     ; $312d: $3e $30
-    ld [rMessageScriptCopySourceY], a             ; $312f: $ea $52 $c3
+    ld [rBGTileCopySourceY], a                    ; $312f: $ea $52 $c3
     add $1f                                       ; $3132: $c6 $1f
-    ld [rMessageScriptCopyDestY], a               ; $3134: $ea $54 $c3
-    jp PrepareMessageScriptCopy                   ; $3137: $c3 $b3 $08
+    ld [rBGTileCopyDestY], a                      ; $3134: $ea $54 $c3
+    jp PrepareBGTileCopy                          ; $3137: $c3 $b3 $08
 
 
 Call_000_313a:
     ld a, $00                                     ; $313a: $3e $00
-    ld [rMessageScriptCopyBankAddressLow], a      ; $313c: $ea $55 $c3
+    ld [rBGTileCopyBankAddressLow], a             ; $313c: $ea $55 $c3
     ld a, $68                                     ; $313f: $3e $68
-    ld [rMessageScriptCopyBankAddressHigh], a     ; $3141: $ea $56 $c3
+    ld [rBGTileCopyBankAddressHigh], a            ; $3141: $ea $56 $c3
     ld a, $07                                     ; $3144: $3e $07
-    ld [rMessageScriptCopyBank], a                ; $3146: $ea $57 $c3
+    ld [rBGTileCopyBank], a                       ; $3146: $ea $57 $c3
     ld a, $38                                     ; $3149: $3e $38
-    ld [rMessageScriptCopySourceX], a             ; $314b: $ea $51 $c3
+    ld [rBGTileCopySourceX], a                    ; $314b: $ea $51 $c3
     add $1f                                       ; $314e: $c6 $1f
-    ld [rMessageScriptCopyDestX], a               ; $3150: $ea $53 $c3
+    ld [rBGTileCopyDestX], a                      ; $3150: $ea $53 $c3
     ld a, $30                                     ; $3153: $3e $30
-    ld [rMessageScriptCopySourceY], a             ; $3155: $ea $52 $c3
+    ld [rBGTileCopySourceY], a                    ; $3155: $ea $52 $c3
     add $1f                                       ; $3158: $c6 $1f
-    ld [rMessageScriptCopyDestY], a               ; $315a: $ea $54 $c3
-    jp PrepareMessageScriptCopy                   ; $315d: $c3 $b3 $08
+    ld [rBGTileCopyDestY], a                      ; $315a: $ea $54 $c3
+    jp PrepareBGTileCopy                          ; $315d: $c3 $b3 $08
 
 
 Call_000_3160:
@@ -9006,7 +8933,7 @@ Call_000_31ca:
     rl [hl]                                       ; $31fd: $cb $16
 
 jr_000_31ff:
-    ld a, [$d636]                                 ; $31ff: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $31ff: $fa $36 $d6
     inc a                                         ; $3202: $3c
     cp $05                                        ; $3203: $fe $05
     jr nz, jr_000_3208                            ; $3205: $20 $01
@@ -9014,7 +8941,7 @@ jr_000_31ff:
     xor a                                         ; $3207: $af
 
 jr_000_3208:
-    ld [$d636], a                                 ; $3208: $ea $36 $d6
+    ld [rPuzzleCursorColumn], a                   ; $3208: $ea $36 $d6
     call $6c2c                                    ; $320b: $cd $2c $6c
 
 jr_000_320e:
@@ -9038,7 +8965,7 @@ jr_000_320e:
     rl [hl]                                       ; $3229: $cb $16
 
 jr_000_322b:
-    ld a, [$d637]                                 ; $322b: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $322b: $fa $37 $d6
     inc a                                         ; $322e: $3c
     cp $05                                        ; $322f: $fe $05
     jr nz, jr_000_3234                            ; $3231: $20 $01
@@ -9046,7 +8973,7 @@ jr_000_322b:
     xor a                                         ; $3233: $af
 
 jr_000_3234:
-    ld [$d637], a                                 ; $3234: $ea $37 $d6
+    ld [rPuzzleCursorRow], a                      ; $3234: $ea $37 $d6
     call $6c2c                                    ; $3237: $cd $2c $6c
 
 jr_000_323a:

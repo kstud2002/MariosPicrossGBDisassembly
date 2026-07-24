@@ -3725,9 +3725,9 @@ jr_003_4fd1:
     ld [$a066], a                                 ; $5002: $ea $66 $a0
     ld [$d807], a                                 ; $5005: $ea $07 $d8
     ld [$d808], a                                 ; $5008: $ea $08 $d8
-    ld [$d818], a                                 ; $500b: $ea $18 $d8
-    ld [$d817], a                                 ; $500e: $ea $17 $d8
-    ld [$d810], a                                 ; $5011: $ea $10 $d8
+    ld [rMarioBlinkAnimationSequenceCursor], a    ; $500b: $ea $18 $d8
+    ld [rMarioBlinkAnimationDelay], a             ; $500e: $ea $17 $d8
+    ld [rCellEffectFrameSourceBaseIndex], a       ; $5011: $ea $10 $d8
     ld [$d847], a                                 ; $5014: $ea $47 $d8
     ld [$d848], a                                 ; $5017: $ea $48 $d8
     call ClearShadowOAMBuffer                     ; $501a: $cd $b6 $05
@@ -3753,7 +3753,7 @@ jr_003_4fd1:
 
 GS00_StatePhase_01_TitleScreenIdle::
     call Call_003_5425                            ; $5049: $cd $25 $54
-    ld a, [$c31e]                                 ; $504c: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $504c: $fa $1e $c3
     ld hl, $d848                                  ; $504f: $21 $48 $d8
     xor [hl]                                      ; $5052: $ae
     ld [hl], a                                    ; $5053: $77
@@ -3777,7 +3777,7 @@ jr_003_506e:
     ld [$d847], a                                 ; $506f: $ea $47 $d8
 
 jr_003_5072:
-    ld a, [$c31e]                                 ; $5072: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $5072: $fa $1e $c3
     and $09                                       ; $5075: $e6 $09
     ret z                                         ; $5077: $c8
 
@@ -3838,7 +3838,7 @@ jr_003_50ce:
     ld hl, $d612                                  ; $50ec: $21 $12 $d6
     ld bc, $0020                                  ; $50ef: $01 $20 $00
     call Call_000_04d3                            ; $50f2: $cd $d3 $04
-    ld a, [$c31a]                                 ; $50f5: $fa $1a $c3
+    ld a, [rInputButtonsHeld]                     ; $50f5: $fa $1a $c3
     bit 5, a                                      ; $50f8: $cb $6f
     jr z, jr_003_510c                             ; $50fa: $28 $10
 
@@ -4086,7 +4086,7 @@ jr_003_52e4:
     ld b, $03                                     ; $52e8: $06 $03
     ld hl, $4e8a                                  ; $52ea: $21 $8a $4e
     call SwitchBankToBAndJumpToHL                 ; $52ed: $cd $de $05
-    ld a, [$c31e]                                 ; $52f0: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $52f0: $fa $1e $c3
     and $01                                       ; $52f3: $e6 $01
     jr z, jr_003_52e4                             ; $52f5: $28 $ed
 
@@ -4200,7 +4200,7 @@ jr_003_53d4:
     ld b, $03                                     ; $53d8: $06 $03
     ld hl, $4ea6                                  ; $53da: $21 $a6 $4e
     call SwitchBankToBAndJumpToHL                 ; $53dd: $cd $de $05
-    ld a, [$c31e]                                 ; $53e0: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $53e0: $fa $1e $c3
     and $01                                       ; $53e3: $e6 $01
     jr z, jr_003_53d4                             ; $53e5: $28 $ed
 
@@ -4238,11 +4238,11 @@ jr_003_541f:
 
 
 Call_003_5425:
-    ld a, [$d817]                                 ; $5425: $fa $17 $d8
+    ld a, [rMarioBlinkAnimationDelay]             ; $5425: $fa $17 $d8
     and a                                         ; $5428: $a7
     jr nz, jr_003_544b                            ; $5429: $20 $20
 
-    ld a, [$d818]                                 ; $542b: $fa $18 $d8
+    ld a, [rMarioBlinkAnimationSequenceCursor]    ; $542b: $fa $18 $d8
     ld c, a                                       ; $542e: $4f
     ld b, $00                                     ; $542f: $06 $00
 
@@ -4257,18 +4257,18 @@ jr_003_5431:
     jr jr_003_5431                                ; $543c: $18 $f3
 
 jr_003_543e:
-    ld [$d817], a                                 ; $543e: $ea $17 $d8
+    ld [rMarioBlinkAnimationDelay], a             ; $543e: $ea $17 $d8
     ld a, [hl]                                    ; $5441: $7e
-    ld [$d816], a                                 ; $5442: $ea $16 $d8
+    ld [rMarioBlinkAnimationSpriteId], a          ; $5442: $ea $16 $d8
     inc c                                         ; $5445: $0c
     inc c                                         ; $5446: $0c
     ld a, c                                       ; $5447: $79
-    ld [$d818], a                                 ; $5448: $ea $18 $d8
+    ld [rMarioBlinkAnimationSequenceCursor], a    ; $5448: $ea $18 $d8
 
 jr_003_544b:
-    ld hl, $d817                                  ; $544b: $21 $17 $d8
+    ld hl, rMarioBlinkAnimationDelay              ; $544b: $21 $17 $d8
     dec [hl]                                      ; $544e: $35
-    ld a, [$d816]                                 ; $544f: $fa $16 $d8
+    ld a, [rMarioBlinkAnimationSpriteId]          ; $544f: $fa $16 $d8
     cp $ff                                        ; $5452: $fe $ff
     ret z                                         ; $5454: $c8
 
@@ -10700,12 +10700,12 @@ OAMSpritePointerTable_Event84::
 OAMSpritePointerTable_Event85::
     db $20, $7c
 
-OAMSpriteData_Event00::
+OAMSpriteData_Event00_MarioBlinking_Frame1::
     db $10, $08, $80, $10
     db $10, $10, $81, $10
     db $ff
 
-OAMSpriteData_Event01::
+OAMSpriteData_Event01_MarioBlinking_Frame2::
     db $10, $08, $82, $10
     db $18, $08, $83, $10
     db $10, $10, $84, $10
@@ -11300,11 +11300,11 @@ OAMSpriteData_Event37_AButtonPrompt::
     db $10, $08, $1b, $10
     db $ff
 
-OAMSpriteData_Event38::
+OAMSpriteData_Event38_MessageArrow::
     db $10, $08, $7c, $10
     db $ff
 
-OAMSpriteData_Event39::
+OAMSpriteData_Event39_MarioMouthOpen::
     db $10, $08, $7f, $00
     db $ff
 

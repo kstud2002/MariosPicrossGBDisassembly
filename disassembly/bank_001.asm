@@ -997,9 +997,9 @@ GS04_StatePhase_04_TODO::
     bit 7, a                                      ; $4461: $cb $7f
     jr z, jr_001_4470                             ; $4463: $28 $0b
 
-    ld a, [$d636]                                 ; $4465: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $4465: $fa $36 $d6
     ld c, a                                       ; $4468: $4f
-    ld a, [$d637]                                 ; $4469: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $4469: $fa $37 $d6
     ld b, a                                       ; $446c: $47
     call Call_001_4c78                            ; $446d: $cd $78 $4c
 
@@ -1113,8 +1113,8 @@ jr_001_448d:
     call Call_001_51dd                            ; $455d: $cd $dd $51
     call Call_001_5252                            ; $4560: $cd $52 $52
     xor a                                         ; $4563: $af
-    ld [$d636], a                                 ; $4564: $ea $36 $d6
-    ld [$d637], a                                 ; $4567: $ea $37 $d6
+    ld [rPuzzleCursorColumn], a                   ; $4564: $ea $36 $d6
+    ld [rPuzzleCursorRow], a                      ; $4567: $ea $37 $d6
     ld bc, $003c                                  ; $456a: $01 $3c $00
     call Call_000_05fa                            ; $456d: $cd $fa $05
     ld a, $05                                     ; $4570: $3e $05
@@ -1290,12 +1290,12 @@ Call_001_46e4:
     ld a, [hl+]                                   ; $46f9: $2a
     ld h, [hl]                                    ; $46fa: $66
     ld l, a                                       ; $46fb: $6f
-    ld a, [$d637]                                 ; $46fc: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $46fc: $fa $37 $d6
     sla a                                         ; $46ff: $cb $27
     sla a                                         ; $4701: $cb $27
     sla a                                         ; $4703: $cb $27
     ld c, a                                       ; $4705: $4f
-    ld a, [$d636]                                 ; $4706: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $4706: $fa $36 $d6
     or c                                          ; $4709: $b1
     ld c, a                                       ; $470a: $4f
     ld b, $00                                     ; $470b: $06 $00
@@ -1322,9 +1322,9 @@ jr_001_4720:
     dec c                                         ; $472e: $0d
     jr nz, jr_001_4720                            ; $472f: $20 $ef
 
-    ld a, [$d636]                                 ; $4731: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $4731: $fa $36 $d6
     ld c, a                                       ; $4734: $4f
-    ld a, [$d637]                                 ; $4735: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $4735: $fa $37 $d6
     ld b, a                                       ; $4738: $47
     call Call_001_4c78                            ; $4739: $cd $78 $4c
     ld c, $08                                     ; $473c: $0e $08
@@ -1361,7 +1361,7 @@ jr_001_476a:
     call Call_001_4dde                            ; $476a: $cd $de $4d
     rst RST_08                                    ; $476d: $cf
     pop bc                                        ; $476e: $c1
-    ld a, [$c31e]                                 ; $476f: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $476f: $fa $1e $c3
     and a                                         ; $4772: $a7
     jr nz, jr_001_477a                            ; $4773: $20 $05
 
@@ -1382,7 +1382,7 @@ GS04_StatePhase_01_TODO::
     call Call_001_49ee                            ; $4786: $cd $ee $49
     call Call_001_4dde                            ; $4789: $cd $de $4d
     call Call_001_4a09                            ; $478c: $cd $09 $4a
-    ld a, [$c31e]                                 ; $478f: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $478f: $fa $1e $c3
     and $09                                       ; $4792: $e6 $09
     jr z, jr_001_47a2                             ; $4794: $28 $0c
 
@@ -1395,7 +1395,7 @@ GS04_StatePhase_01_TODO::
 
 
 jr_001_47a2:
-    ld a, [$c31e]                                 ; $47a2: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $47a2: $fa $1e $c3
     and $02                                       ; $47a5: $e6 $02
     jr z, jr_001_47b6                             ; $47a7: $28 $0d
 
@@ -1477,10 +1477,10 @@ GS04_StatePhase_02_TODO::
     inc hl                                        ; $4847: $23
     ld b, [hl]                                    ; $4848: $46
     add hl, bc                                    ; $4849: $09
-    ld a, [$d636]                                 ; $484a: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $484a: $fa $36 $d6
     sla a                                         ; $484d: $cb $27
     ld c, a                                       ; $484f: $4f
-    ld a, [$d637]                                 ; $4850: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $4850: $fa $37 $d6
     swap a                                        ; $4853: $cb $37
     or c                                          ; $4855: $b1
     ld c, a                                       ; $4856: $4f
@@ -1797,11 +1797,11 @@ Call_001_49a2:
     ld hl, $a390                                  ; $49b7: $21 $90 $a3
     add hl, bc                                    ; $49ba: $09
     ld a, [hl]                                    ; $49bb: $7e
-    ld [$d636], a                                 ; $49bc: $ea $36 $d6
+    ld [rPuzzleCursorColumn], a                   ; $49bc: $ea $36 $d6
     ld hl, $a399                                  ; $49bf: $21 $99 $a3
     add hl, bc                                    ; $49c2: $09
     ld a, [hl]                                    ; $49c3: $7e
-    ld [$d637], a                                 ; $49c4: $ea $37 $d6
+    ld [rPuzzleCursorRow], a                      ; $49c4: $ea $37 $d6
     ret                                           ; $49c7: $c9
 
 
@@ -1820,22 +1820,22 @@ Call_001_49c8:
     ld b, $00                                     ; $49db: $06 $00
     ld hl, $a390                                  ; $49dd: $21 $90 $a3
     add hl, bc                                    ; $49e0: $09
-    ld a, [$d636]                                 ; $49e1: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $49e1: $fa $36 $d6
     ld [hl], a                                    ; $49e4: $77
     ld hl, $a399                                  ; $49e5: $21 $99 $a3
     add hl, bc                                    ; $49e8: $09
-    ld a, [$d637]                                 ; $49e9: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $49e9: $fa $37 $d6
     ld [hl], a                                    ; $49ec: $77
     ret                                           ; $49ed: $c9
 
 
 Call_001_49ee:
     push af                                       ; $49ee: $f5
-    ld a, [$d636]                                 ; $49ef: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $49ef: $fa $36 $d6
     swap a                                        ; $49f2: $cb $37
     add $20                                       ; $49f4: $c6 $20
     ld b, a                                       ; $49f6: $47
-    ld a, [$d637]                                 ; $49f7: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $49f7: $fa $37 $d6
     sla a                                         ; $49fa: $cb $27
     sla a                                         ; $49fc: $cb $27
     sla a                                         ; $49fe: $cb $27
@@ -1847,48 +1847,48 @@ Call_001_49ee:
 
 
 Call_001_4a09:
-    ld a, [$c322]                                 ; $4a09: $fa $22 $c3
+    ld a, [rInputButtonsPressedOrRepeated]        ; $4a09: $fa $22 $c3
     and $f0                                       ; $4a0c: $e6 $f0
     ret z                                         ; $4a0e: $c8
 
     ld c, $0a                                     ; $4a0f: $0e $0a
     ld a, $02                                     ; $4a11: $3e $02
     call TODO_Bank0FDispatcher                    ; $4a13: $cd $b6 $03
-    ld hl, $c322                                  ; $4a16: $21 $22 $c3
+    ld hl, rInputButtonsPressedOrRepeated         ; $4a16: $21 $22 $c3
     bit 5, [hl]                                   ; $4a19: $cb $6e
     jr z, jr_001_4a26                             ; $4a1b: $28 $09
 
-    ld a, [$d636]                                 ; $4a1d: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $4a1d: $fa $36 $d6
     dec a                                         ; $4a20: $3d
     and $07                                       ; $4a21: $e6 $07
-    ld [$d636], a                                 ; $4a23: $ea $36 $d6
+    ld [rPuzzleCursorColumn], a                   ; $4a23: $ea $36 $d6
 
 jr_001_4a26:
     bit 4, [hl]                                   ; $4a26: $cb $66
     jr z, jr_001_4a33                             ; $4a28: $28 $09
 
-    ld a, [$d636]                                 ; $4a2a: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $4a2a: $fa $36 $d6
     inc a                                         ; $4a2d: $3c
     and $07                                       ; $4a2e: $e6 $07
-    ld [$d636], a                                 ; $4a30: $ea $36 $d6
+    ld [rPuzzleCursorColumn], a                   ; $4a30: $ea $36 $d6
 
 jr_001_4a33:
     bit 6, [hl]                                   ; $4a33: $cb $76
     jr z, jr_001_4a40                             ; $4a35: $28 $09
 
-    ld a, [$d637]                                 ; $4a37: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $4a37: $fa $37 $d6
     dec a                                         ; $4a3a: $3d
     and $07                                       ; $4a3b: $e6 $07
-    ld [$d637], a                                 ; $4a3d: $ea $37 $d6
+    ld [rPuzzleCursorRow], a                      ; $4a3d: $ea $37 $d6
 
 jr_001_4a40:
     bit 7, [hl]                                   ; $4a40: $cb $7e
     jr z, jr_001_4a4d                             ; $4a42: $28 $09
 
-    ld a, [$d637]                                 ; $4a44: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $4a44: $fa $37 $d6
     inc a                                         ; $4a47: $3c
     and $07                                       ; $4a48: $e6 $07
-    ld [$d637], a                                 ; $4a4a: $ea $37 $d6
+    ld [rPuzzleCursorRow], a                      ; $4a4a: $ea $37 $d6
 
 jr_001_4a4d:
     ret                                           ; $4a4d: $c9
@@ -2199,11 +2199,11 @@ jr_001_4c57:
     bit 7, a                                      ; $4c58: $cb $7f
     jr z, jr_001_4c6b                             ; $4c5a: $28 $0f
 
-    ld a, [$d636]                                 ; $4c5c: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $4c5c: $fa $36 $d6
     cp c                                          ; $4c5f: $b9
     jr nz, jr_001_4c68                            ; $4c60: $20 $06
 
-    ld a, [$d637]                                 ; $4c62: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $4c62: $fa $37 $d6
     cp b                                          ; $4c65: $b8
     jr z, jr_001_4c6b                             ; $4c66: $28 $03
 
@@ -2279,12 +2279,12 @@ Call_001_4cbc:
     ld a, [hl+]                                   ; $4cd1: $2a
     ld h, [hl]                                    ; $4cd2: $66
     ld l, a                                       ; $4cd3: $6f
-    ld a, [$d637]                                 ; $4cd4: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $4cd4: $fa $37 $d6
     sla a                                         ; $4cd7: $cb $27
     sla a                                         ; $4cd9: $cb $27
     sla a                                         ; $4cdb: $cb $27
     ld c, a                                       ; $4cdd: $4f
-    ld a, [$d636]                                 ; $4cde: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $4cde: $fa $36 $d6
     or c                                          ; $4ce1: $b1
     ld c, a                                       ; $4ce2: $4f
     ld b, $00                                     ; $4ce3: $06 $00
@@ -2319,12 +2319,12 @@ Call_001_4cef:
     ld a, [hl+]                                   ; $4d08: $2a
     ld h, [hl]                                    ; $4d09: $66
     ld l, a                                       ; $4d0a: $6f
-    ld a, [$d637]                                 ; $4d0b: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $4d0b: $fa $37 $d6
     sla a                                         ; $4d0e: $cb $27
     sla a                                         ; $4d10: $cb $27
     sla a                                         ; $4d12: $cb $27
     ld c, a                                       ; $4d14: $4f
-    ld a, [$d636]                                 ; $4d15: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $4d15: $fa $36 $d6
     or c                                          ; $4d18: $b1
     ld c, a                                       ; $4d19: $4f
     ld b, $00                                     ; $4d1a: $06 $00
@@ -2358,12 +2358,12 @@ Call_001_4cef:
     ld a, [hl+]                                   ; $4d46: $2a
     ld h, [hl]                                    ; $4d47: $66
     ld l, a                                       ; $4d48: $6f
-    ld a, [$d637]                                 ; $4d49: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $4d49: $fa $37 $d6
     sla a                                         ; $4d4c: $cb $27
     sla a                                         ; $4d4e: $cb $27
     sla a                                         ; $4d50: $cb $27
     ld c, a                                       ; $4d52: $4f
-    ld a, [$d636]                                 ; $4d53: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $4d53: $fa $36 $d6
     or c                                          ; $4d56: $b1
     ld c, a                                       ; $4d57: $4f
     sla a                                         ; $4d58: $cb $27
@@ -2403,12 +2403,12 @@ jr_001_4d76:
     ld a, [hl+]                                   ; $4d8b: $2a
     ld h, [hl]                                    ; $4d8c: $66
     ld l, a                                       ; $4d8d: $6f
-    ld a, [$d637]                                 ; $4d8e: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $4d8e: $fa $37 $d6
     sla a                                         ; $4d91: $cb $27
     sla a                                         ; $4d93: $cb $27
     sla a                                         ; $4d95: $cb $27
     ld c, a                                       ; $4d97: $4f
-    ld a, [$d636]                                 ; $4d98: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $4d98: $fa $36 $d6
     or c                                          ; $4d9b: $b1
     ld c, a                                       ; $4d9c: $4f
     sla a                                         ; $4d9d: $cb $27
@@ -2485,12 +2485,12 @@ Call_001_4dde:
     ld a, [hl+]                                   ; $4df3: $2a
     ld h, [hl]                                    ; $4df4: $66
     ld l, a                                       ; $4df5: $6f
-    ld a, [$d637]                                 ; $4df6: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $4df6: $fa $37 $d6
     sla a                                         ; $4df9: $cb $27
     sla a                                         ; $4dfb: $cb $27
     sla a                                         ; $4dfd: $cb $27
     ld c, a                                       ; $4dff: $4f
-    ld a, [$d636]                                 ; $4e00: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $4e00: $fa $36 $d6
     or c                                          ; $4e03: $b1
     ld c, a                                       ; $4e04: $4f
     ld b, $00                                     ; $4e05: $06 $00
@@ -2532,12 +2532,12 @@ jr_001_4e24:
     ld a, [hl+]                                   ; $4e40: $2a
     ld h, [hl]                                    ; $4e41: $66
     ld l, a                                       ; $4e42: $6f
-    ld a, [$d637]                                 ; $4e43: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $4e43: $fa $37 $d6
     sla a                                         ; $4e46: $cb $27
     sla a                                         ; $4e48: $cb $27
     sla a                                         ; $4e4a: $cb $27
     ld c, a                                       ; $4e4c: $4f
-    ld a, [$d636]                                 ; $4e4d: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $4e4d: $fa $36 $d6
     or c                                          ; $4e50: $b1
     ld c, a                                       ; $4e51: $4f
     sla a                                         ; $4e52: $cb $27
@@ -2595,12 +2595,12 @@ jr_001_4e24:
     ld a, [hl+]                                   ; $4eae: $2a
     ld h, [hl]                                    ; $4eaf: $66
     ld l, a                                       ; $4eb0: $6f
-    ld a, [$d637]                                 ; $4eb1: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $4eb1: $fa $37 $d6
     sla a                                         ; $4eb4: $cb $27
     sla a                                         ; $4eb6: $cb $27
     sla a                                         ; $4eb8: $cb $27
     ld c, a                                       ; $4eba: $4f
-    ld a, [$d636]                                 ; $4ebb: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $4ebb: $fa $36 $d6
     or c                                          ; $4ebe: $b1
     ld c, a                                       ; $4ebf: $4f
     sla a                                         ; $4ec0: $cb $27
@@ -2822,12 +2822,12 @@ Call_001_504b:
     ld a, [hl+]                                   ; $5060: $2a
     ld h, [hl]                                    ; $5061: $66
     ld l, a                                       ; $5062: $6f
-    ld a, [$d637]                                 ; $5063: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $5063: $fa $37 $d6
     sla a                                         ; $5066: $cb $27
     sla a                                         ; $5068: $cb $27
     sla a                                         ; $506a: $cb $27
     ld c, a                                       ; $506c: $4f
-    ld a, [$d636]                                 ; $506d: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $506d: $fa $36 $d6
     or c                                          ; $5070: $b1
     ld c, a                                       ; $5071: $4f
     ld b, $00                                     ; $5072: $06 $00
@@ -2850,12 +2850,12 @@ Call_001_504b:
     ld a, [hl+]                                   ; $508e: $2a
     ld h, [hl]                                    ; $508f: $66
     ld l, a                                       ; $5090: $6f
-    ld a, [$d637]                                 ; $5091: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $5091: $fa $37 $d6
     sla a                                         ; $5094: $cb $27
     sla a                                         ; $5096: $cb $27
     sla a                                         ; $5098: $cb $27
     ld c, a                                       ; $509a: $4f
-    ld a, [$d636]                                 ; $509b: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $509b: $fa $36 $d6
     or c                                          ; $509e: $b1
     ld c, a                                       ; $509f: $4f
     sla a                                         ; $50a0: $cb $27
@@ -2931,11 +2931,11 @@ jr_001_50f1:
     ld bc, $002b                                  ; $50fb: $01 $2b $00
 
 Jump_001_50fe:
-    ld a, [$d637]                                 ; $50fe: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $50fe: $fa $37 $d6
     cp $07                                        ; $5101: $fe $07
     jr nz, jr_001_510b                            ; $5103: $20 $06
 
-    ld a, [$d636]                                 ; $5105: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $5105: $fa $36 $d6
     cp $07                                        ; $5108: $fe $07
     ret z                                         ; $510a: $c8
 
@@ -2956,12 +2956,12 @@ jr_001_510b:
     ld a, [hl+]                                   ; $5120: $2a
     ld h, [hl]                                    ; $5121: $66
     ld l, a                                       ; $5122: $6f
-    ld a, [$d637]                                 ; $5123: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $5123: $fa $37 $d6
     sla a                                         ; $5126: $cb $27
     sla a                                         ; $5128: $cb $27
     sla a                                         ; $512a: $cb $27
     ld c, a                                       ; $512c: $4f
-    ld a, [$d636]                                 ; $512d: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $512d: $fa $36 $d6
     or c                                          ; $5130: $b1
     ld c, a                                       ; $5131: $4f
     ld b, $00                                     ; $5132: $06 $00
@@ -2970,18 +2970,18 @@ jr_001_510b:
     bit 7, [hl]                                   ; $5136: $cb $7e
     ret nz                                        ; $5138: $c0
 
-    ld a, [$d636]                                 ; $5139: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $5139: $fa $36 $d6
     inc a                                         ; $513c: $3c
     cp $08                                        ; $513d: $fe $08
     jr nz, jr_001_5149                            ; $513f: $20 $08
 
-    ld a, [$d637]                                 ; $5141: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $5141: $fa $37 $d6
     inc a                                         ; $5144: $3c
-    ld [$d637], a                                 ; $5145: $ea $37 $d6
+    ld [rPuzzleCursorRow], a                      ; $5145: $ea $37 $d6
     xor a                                         ; $5148: $af
 
 jr_001_5149:
-    ld [$d636], a                                 ; $5149: $ea $36 $d6
+    ld [rPuzzleCursorColumn], a                   ; $5149: $ea $36 $d6
     ld c, $0a                                     ; $514c: $0e $0a
     ld a, $02                                     ; $514e: $3e $02
     call TODO_Bank0FDispatcher                    ; $5150: $cd $b6 $03
@@ -3142,19 +3142,19 @@ Call_001_51e4:
 
 Call_001_5230:
     ld a, $00                                     ; $5230: $3e $00
-    ld [rMessageScriptCopyBankAddressLow], a      ; $5232: $ea $55 $c3
+    ld [rBGTileCopyBankAddressLow], a             ; $5232: $ea $55 $c3
     ld a, $61                                     ; $5235: $3e $61
-    ld [rMessageScriptCopyBankAddressHigh], a     ; $5237: $ea $56 $c3
+    ld [rBGTileCopyBankAddressHigh], a            ; $5237: $ea $56 $c3
     ld a, $0a                                     ; $523a: $3e $0a
-    ld [rMessageScriptCopyBank], a                ; $523c: $ea $57 $c3
+    ld [rBGTileCopyBank], a                       ; $523c: $ea $57 $c3
     ld a, b                                       ; $523f: $78
-    ld [rMessageScriptCopySourceX], a             ; $5240: $ea $51 $c3
+    ld [rBGTileCopySourceX], a                    ; $5240: $ea $51 $c3
     add d                                         ; $5243: $82
-    ld [rMessageScriptCopyDestX], a               ; $5244: $ea $53 $c3
+    ld [rBGTileCopyDestX], a                      ; $5244: $ea $53 $c3
     ld a, c                                       ; $5247: $79
-    ld [rMessageScriptCopySourceY], a             ; $5248: $ea $52 $c3
+    ld [rBGTileCopySourceY], a                    ; $5248: $ea $52 $c3
     add e                                         ; $524b: $83
-    ld [rMessageScriptCopyDestY], a               ; $524c: $ea $54 $c3
+    ld [rBGTileCopyDestY], a                      ; $524c: $ea $54 $c3
     jp Jump_000_0b0d                              ; $524f: $c3 $0d $0b
 
 
@@ -3165,7 +3165,7 @@ jr_001_5252:
     call SwitchBankToBAndJumpToHL                 ; $5257: $cd $de $05
     call Call_000_05c5                            ; $525a: $cd $c5 $05
     rst RST_08                                    ; $525d: $cf
-    ld a, [$c31e]                                 ; $525e: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $525e: $fa $1e $c3
     and $01                                       ; $5261: $e6 $01
     jr z, jr_001_5252                             ; $5263: $28 $ed
 
@@ -3295,9 +3295,9 @@ GS05_StatePhase_04_TODO::
     bit 7, a                                      ; $5372: $cb $7f
     jr z, jr_001_5381                             ; $5374: $28 $0b
 
-    ld a, [$d636]                                 ; $5376: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $5376: $fa $36 $d6
     ld c, a                                       ; $5379: $4f
-    ld a, [$d637]                                 ; $537a: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $537a: $fa $37 $d6
     ld b, a                                       ; $537d: $47
     call Call_001_581c                            ; $537e: $cd $1c $58
 
@@ -3475,12 +3475,12 @@ Call_001_54f5:
     ld a, [hl+]                                   ; $5501: $2a
     ld h, [hl]                                    ; $5502: $66
     ld l, a                                       ; $5503: $6f
-    ld a, [$d637]                                 ; $5504: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $5504: $fa $37 $d6
     sla a                                         ; $5507: $cb $27
     sla a                                         ; $5509: $cb $27
     sla a                                         ; $550b: $cb $27
     ld c, a                                       ; $550d: $4f
-    ld a, [$d636]                                 ; $550e: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $550e: $fa $36 $d6
     or c                                          ; $5511: $b1
     ld c, a                                       ; $5512: $4f
     ld b, $00                                     ; $5513: $06 $00
@@ -3507,9 +3507,9 @@ jr_001_5528:
     dec c                                         ; $5536: $0d
     jr nz, jr_001_5528                            ; $5537: $20 $ef
 
-    ld a, [$d636]                                 ; $5539: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $5539: $fa $36 $d6
     ld c, a                                       ; $553c: $4f
-    ld a, [$d637]                                 ; $553d: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $553d: $fa $37 $d6
     ld b, a                                       ; $5540: $47
     call Call_001_581c                            ; $5541: $cd $1c $58
     ld c, $08                                     ; $5544: $0e $08
@@ -3546,7 +3546,7 @@ jr_001_5572:
     call Call_001_595e                            ; $5572: $cd $5e $59
     rst RST_08                                    ; $5575: $cf
     pop bc                                        ; $5576: $c1
-    ld a, [$c31e]                                 ; $5577: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $5577: $fa $1e $c3
     and a                                         ; $557a: $a7
     jr nz, jr_001_5582                            ; $557b: $20 $05
 
@@ -3567,7 +3567,7 @@ GS05_StatePhase_01_TODO::
     call Call_001_5760                            ; $558e: $cd $60 $57
     call Call_001_595e                            ; $5591: $cd $5e $59
     call Call_001_577b                            ; $5594: $cd $7b $57
-    ld a, [$c31e]                                 ; $5597: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $5597: $fa $1e $c3
     and $09                                       ; $559a: $e6 $09
     jr z, jr_001_55aa                             ; $559c: $28 $0c
 
@@ -3580,7 +3580,7 @@ GS05_StatePhase_01_TODO::
 
 
 jr_001_55aa:
-    ld a, [$c31e]                                 ; $55aa: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $55aa: $fa $1e $c3
     and $02                                       ; $55ad: $e6 $02
     jr z, jr_001_55be                             ; $55af: $28 $0d
 
@@ -3656,10 +3656,10 @@ GS05_StatePhase_02_TODO::
     call Call_001_5749                            ; $5647: $cd $49 $57
     call Call_001_5bb0                            ; $564a: $cd $b0 $5b
     call Call_001_5860                            ; $564d: $cd $60 $58
-    ld a, [$d637]                                 ; $5650: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $5650: $fa $37 $d6
     swap a                                        ; $5653: $cb $37
     ld c, a                                       ; $5655: $4f
-    ld a, [$d636]                                 ; $5656: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $5656: $fa $36 $d6
     sla a                                         ; $5659: $cb $27
     or c                                          ; $565b: $b1
     ld c, a                                       ; $565c: $4f
@@ -3728,11 +3728,11 @@ Call_001_5732:
     ld hl, $a081                                  ; $5738: $21 $81 $a0
     add hl, bc                                    ; $573b: $09
     ld a, [hl]                                    ; $573c: $7e
-    ld [$d636], a                                 ; $573d: $ea $36 $d6
+    ld [rPuzzleCursorColumn], a                   ; $573d: $ea $36 $d6
     ld hl, $a084                                  ; $5740: $21 $84 $a0
     add hl, bc                                    ; $5743: $09
     ld a, [hl]                                    ; $5744: $7e
-    ld [$d637], a                                 ; $5745: $ea $37 $d6
+    ld [rPuzzleCursorRow], a                      ; $5745: $ea $37 $d6
     ret                                           ; $5748: $c9
 
 
@@ -3742,22 +3742,22 @@ Call_001_5749:
     ld b, $00                                     ; $574d: $06 $00
     ld hl, $a081                                  ; $574f: $21 $81 $a0
     add hl, bc                                    ; $5752: $09
-    ld a, [$d636]                                 ; $5753: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $5753: $fa $36 $d6
     ld [hl], a                                    ; $5756: $77
     ld hl, $a084                                  ; $5757: $21 $84 $a0
     add hl, bc                                    ; $575a: $09
-    ld a, [$d637]                                 ; $575b: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $575b: $fa $37 $d6
     ld [hl], a                                    ; $575e: $77
     ret                                           ; $575f: $c9
 
 
 Call_001_5760:
     push af                                       ; $5760: $f5
-    ld a, [$d636]                                 ; $5761: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $5761: $fa $36 $d6
     swap a                                        ; $5764: $cb $37
     add $20                                       ; $5766: $c6 $20
     ld b, a                                       ; $5768: $47
-    ld a, [$d637]                                 ; $5769: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $5769: $fa $37 $d6
     sla a                                         ; $576c: $cb $27
     sla a                                         ; $576e: $cb $27
     sla a                                         ; $5770: $cb $27
@@ -3769,48 +3769,48 @@ Call_001_5760:
 
 
 Call_001_577b:
-    ld a, [$c322]                                 ; $577b: $fa $22 $c3
+    ld a, [rInputButtonsPressedOrRepeated]        ; $577b: $fa $22 $c3
     and $f0                                       ; $577e: $e6 $f0
     ret z                                         ; $5780: $c8
 
     ld c, $0a                                     ; $5781: $0e $0a
     ld a, $02                                     ; $5783: $3e $02
     call TODO_Bank0FDispatcher                    ; $5785: $cd $b6 $03
-    ld hl, $c322                                  ; $5788: $21 $22 $c3
+    ld hl, rInputButtonsPressedOrRepeated         ; $5788: $21 $22 $c3
     bit 5, [hl]                                   ; $578b: $cb $6e
     jr z, jr_001_5798                             ; $578d: $28 $09
 
-    ld a, [$d636]                                 ; $578f: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $578f: $fa $36 $d6
     dec a                                         ; $5792: $3d
     and $07                                       ; $5793: $e6 $07
-    ld [$d636], a                                 ; $5795: $ea $36 $d6
+    ld [rPuzzleCursorColumn], a                   ; $5795: $ea $36 $d6
 
 jr_001_5798:
     bit 4, [hl]                                   ; $5798: $cb $66
     jr z, jr_001_57a5                             ; $579a: $28 $09
 
-    ld a, [$d636]                                 ; $579c: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $579c: $fa $36 $d6
     inc a                                         ; $579f: $3c
     and $07                                       ; $57a0: $e6 $07
-    ld [$d636], a                                 ; $57a2: $ea $36 $d6
+    ld [rPuzzleCursorColumn], a                   ; $57a2: $ea $36 $d6
 
 jr_001_57a5:
     bit 6, [hl]                                   ; $57a5: $cb $76
     jr z, jr_001_57b2                             ; $57a7: $28 $09
 
-    ld a, [$d637]                                 ; $57a9: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $57a9: $fa $37 $d6
     dec a                                         ; $57ac: $3d
     and $07                                       ; $57ad: $e6 $07
-    ld [$d637], a                                 ; $57af: $ea $37 $d6
+    ld [rPuzzleCursorRow], a                      ; $57af: $ea $37 $d6
 
 jr_001_57b2:
     bit 7, [hl]                                   ; $57b2: $cb $7e
     jr z, jr_001_57bf                             ; $57b4: $28 $09
 
-    ld a, [$d637]                                 ; $57b6: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $57b6: $fa $37 $d6
     inc a                                         ; $57b9: $3c
     and $07                                       ; $57ba: $e6 $07
-    ld [$d637], a                                 ; $57bc: $ea $37 $d6
+    ld [rPuzzleCursorRow], a                      ; $57bc: $ea $37 $d6
 
 jr_001_57bf:
     ret                                           ; $57bf: $c9
@@ -3872,11 +3872,11 @@ jr_001_57fb:
     bit 7, a                                      ; $57fc: $cb $7f
     jr z, jr_001_580f                             ; $57fe: $28 $0f
 
-    ld a, [$d636]                                 ; $5800: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $5800: $fa $36 $d6
     cp c                                          ; $5803: $b9
     jr nz, jr_001_580c                            ; $5804: $20 $06
 
-    ld a, [$d637]                                 ; $5806: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $5806: $fa $37 $d6
     cp b                                          ; $5809: $b8
     jr z, jr_001_580f                             ; $580a: $28 $03
 
@@ -3945,12 +3945,12 @@ Call_001_5860:
     ld a, [hl+]                                   ; $586c: $2a
     ld h, [hl]                                    ; $586d: $66
     ld l, a                                       ; $586e: $6f
-    ld a, [$d637]                                 ; $586f: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $586f: $fa $37 $d6
     sla a                                         ; $5872: $cb $27
     sla a                                         ; $5874: $cb $27
     sla a                                         ; $5876: $cb $27
     ld c, a                                       ; $5878: $4f
-    ld a, [$d636]                                 ; $5879: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $5879: $fa $36 $d6
     or c                                          ; $587c: $b1
     ld c, a                                       ; $587d: $4f
     ld b, $00                                     ; $587e: $06 $00
@@ -3978,12 +3978,12 @@ Call_001_588a:
     ld a, [hl+]                                   ; $589a: $2a
     ld h, [hl]                                    ; $589b: $66
     ld l, a                                       ; $589c: $6f
-    ld a, [$d637]                                 ; $589d: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $589d: $fa $37 $d6
     sla a                                         ; $58a0: $cb $27
     sla a                                         ; $58a2: $cb $27
     sla a                                         ; $58a4: $cb $27
     ld c, a                                       ; $58a6: $4f
-    ld a, [$d636]                                 ; $58a7: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $58a7: $fa $36 $d6
     or c                                          ; $58aa: $b1
     ld c, a                                       ; $58ab: $4f
     ld b, $00                                     ; $58ac: $06 $00
@@ -4010,12 +4010,12 @@ Call_001_588a:
     ld a, [hl+]                                   ; $58cf: $2a
     ld h, [hl]                                    ; $58d0: $66
     ld l, a                                       ; $58d1: $6f
-    ld a, [$d637]                                 ; $58d2: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $58d2: $fa $37 $d6
     sla a                                         ; $58d5: $cb $27
     sla a                                         ; $58d7: $cb $27
     sla a                                         ; $58d9: $cb $27
     ld c, a                                       ; $58db: $4f
-    ld a, [$d636]                                 ; $58dc: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $58dc: $fa $36 $d6
     or c                                          ; $58df: $b1
     ld c, a                                       ; $58e0: $4f
     sla a                                         ; $58e1: $cb $27
@@ -4048,12 +4048,12 @@ jr_001_58ff:
     ld a, [hl+]                                   ; $590b: $2a
     ld h, [hl]                                    ; $590c: $66
     ld l, a                                       ; $590d: $6f
-    ld a, [$d637]                                 ; $590e: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $590e: $fa $37 $d6
     sla a                                         ; $5911: $cb $27
     sla a                                         ; $5913: $cb $27
     sla a                                         ; $5915: $cb $27
     ld c, a                                       ; $5917: $4f
-    ld a, [$d636]                                 ; $5918: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $5918: $fa $36 $d6
     or c                                          ; $591b: $b1
     ld c, a                                       ; $591c: $4f
     sla a                                         ; $591d: $cb $27
@@ -4123,12 +4123,12 @@ Call_001_595e:
     ld a, [hl+]                                   ; $596a: $2a
     ld h, [hl]                                    ; $596b: $66
     ld l, a                                       ; $596c: $6f
-    ld a, [$d637]                                 ; $596d: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $596d: $fa $37 $d6
     sla a                                         ; $5970: $cb $27
     sla a                                         ; $5972: $cb $27
     sla a                                         ; $5974: $cb $27
     ld c, a                                       ; $5976: $4f
-    ld a, [$d636]                                 ; $5977: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $5977: $fa $36 $d6
     or c                                          ; $597a: $b1
     ld c, a                                       ; $597b: $4f
     ld b, $00                                     ; $597c: $06 $00
@@ -4163,12 +4163,12 @@ jr_001_599b:
     ld a, [hl+]                                   ; $59ae: $2a
     ld h, [hl]                                    ; $59af: $66
     ld l, a                                       ; $59b0: $6f
-    ld a, [$d637]                                 ; $59b1: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $59b1: $fa $37 $d6
     sla a                                         ; $59b4: $cb $27
     sla a                                         ; $59b6: $cb $27
     sla a                                         ; $59b8: $cb $27
     ld c, a                                       ; $59ba: $4f
-    ld a, [$d636]                                 ; $59bb: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $59bb: $fa $36 $d6
     or c                                          ; $59be: $b1
     ld c, a                                       ; $59bf: $4f
     sla a                                         ; $59c0: $cb $27
@@ -4219,12 +4219,12 @@ jr_001_599b:
     ld a, [hl+]                                   ; $5a13: $2a
     ld h, [hl]                                    ; $5a14: $66
     ld l, a                                       ; $5a15: $6f
-    ld a, [$d637]                                 ; $5a16: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $5a16: $fa $37 $d6
     sla a                                         ; $5a19: $cb $27
     sla a                                         ; $5a1b: $cb $27
     sla a                                         ; $5a1d: $cb $27
     ld c, a                                       ; $5a1f: $4f
-    ld a, [$d636]                                 ; $5a20: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $5a20: $fa $36 $d6
     or c                                          ; $5a23: $b1
     ld c, a                                       ; $5a24: $4f
     sla a                                         ; $5a25: $cb $27
@@ -4439,12 +4439,12 @@ Call_001_5bb0:
     ld a, [hl+]                                   ; $5bbc: $2a
     ld h, [hl]                                    ; $5bbd: $66
     ld l, a                                       ; $5bbe: $6f
-    ld a, [$d637]                                 ; $5bbf: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $5bbf: $fa $37 $d6
     sla a                                         ; $5bc2: $cb $27
     sla a                                         ; $5bc4: $cb $27
     sla a                                         ; $5bc6: $cb $27
     ld c, a                                       ; $5bc8: $4f
-    ld a, [$d636]                                 ; $5bc9: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $5bc9: $fa $36 $d6
     or c                                          ; $5bcc: $b1
     ld c, a                                       ; $5bcd: $4f
     ld b, $00                                     ; $5bce: $06 $00
@@ -4460,12 +4460,12 @@ Call_001_5bb0:
     ld a, [hl+]                                   ; $5be1: $2a
     ld h, [hl]                                    ; $5be2: $66
     ld l, a                                       ; $5be3: $6f
-    ld a, [$d637]                                 ; $5be4: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $5be4: $fa $37 $d6
     sla a                                         ; $5be7: $cb $27
     sla a                                         ; $5be9: $cb $27
     sla a                                         ; $5beb: $cb $27
     ld c, a                                       ; $5bed: $4f
-    ld a, [$d636]                                 ; $5bee: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $5bee: $fa $36 $d6
     or c                                          ; $5bf1: $b1
     ld c, a                                       ; $5bf2: $4f
     sla a                                         ; $5bf3: $cb $27
@@ -4541,11 +4541,11 @@ jr_001_5c44:
     ld bc, $002b                                  ; $5c4e: $01 $2b $00
 
 Jump_001_5c51:
-    ld a, [$d637]                                 ; $5c51: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $5c51: $fa $37 $d6
     cp $07                                        ; $5c54: $fe $07
     jr nz, jr_001_5c5e                            ; $5c56: $20 $06
 
-    ld a, [$d636]                                 ; $5c58: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $5c58: $fa $36 $d6
     cp $07                                        ; $5c5b: $fe $07
     ret z                                         ; $5c5d: $c8
 
@@ -4559,12 +4559,12 @@ jr_001_5c5e:
     ld a, [hl+]                                   ; $5c6a: $2a
     ld h, [hl]                                    ; $5c6b: $66
     ld l, a                                       ; $5c6c: $6f
-    ld a, [$d637]                                 ; $5c6d: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $5c6d: $fa $37 $d6
     sla a                                         ; $5c70: $cb $27
     sla a                                         ; $5c72: $cb $27
     sla a                                         ; $5c74: $cb $27
     ld c, a                                       ; $5c76: $4f
-    ld a, [$d636]                                 ; $5c77: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $5c77: $fa $36 $d6
     or c                                          ; $5c7a: $b1
     ld c, a                                       ; $5c7b: $4f
     ld b, $00                                     ; $5c7c: $06 $00
@@ -4573,18 +4573,18 @@ jr_001_5c5e:
     bit 7, [hl]                                   ; $5c80: $cb $7e
     ret nz                                        ; $5c82: $c0
 
-    ld a, [$d636]                                 ; $5c83: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $5c83: $fa $36 $d6
     inc a                                         ; $5c86: $3c
     cp $08                                        ; $5c87: $fe $08
     jr nz, jr_001_5c93                            ; $5c89: $20 $08
 
-    ld a, [$d637]                                 ; $5c8b: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $5c8b: $fa $37 $d6
     inc a                                         ; $5c8e: $3c
-    ld [$d637], a                                 ; $5c8f: $ea $37 $d6
+    ld [rPuzzleCursorRow], a                      ; $5c8f: $ea $37 $d6
     xor a                                         ; $5c92: $af
 
 jr_001_5c93:
-    ld [$d636], a                                 ; $5c93: $ea $36 $d6
+    ld [rPuzzleCursorColumn], a                   ; $5c93: $ea $36 $d6
     ld c, $0a                                     ; $5c96: $0e $0a
     ld a, $02                                     ; $5c98: $3e $02
     call TODO_Bank0FDispatcher                    ; $5c9a: $cd $b6 $03
@@ -4693,8 +4693,8 @@ GS08_StatePhase_00_TODO::
     call Call_000_07f1                            ; $5db5: $cd $f1 $07
     call LoadGameBoardTileData                    ; $5db8: $cd $b9 $69
     xor a                                         ; $5dbb: $af
-    ld [$d636], a                                 ; $5dbc: $ea $36 $d6
-    ld [$d637], a                                 ; $5dbf: $ea $37 $d6
+    ld [rPuzzleCursorColumn], a                   ; $5dbc: $ea $36 $d6
+    ld [rPuzzleCursorRow], a                      ; $5dbf: $ea $37 $d6
     ld a, $00                                     ; $5dc2: $3e $00
     ld [$d833], a                                 ; $5dc4: $ea $33 $d8
     ld a, $02                                     ; $5dc7: $3e $02
@@ -4936,7 +4936,7 @@ Call_001_5fab:
 jr_001_5fab:
     call Call_000_05c5                            ; $5fab: $cd $c5 $05
     rst RST_08                                    ; $5fae: $cf
-    call AdvanceMessageScriptDelay                ; $5faf: $cd $18 $79
+    call TickMarioBlinkAnimation                  ; $5faf: $cd $18 $79
     call AnimateMarioMouthDuringText              ; $5fb2: $cd $93 $30
     call AdvanceMessageScriptStreamHelper         ; $5fb5: $cd $88 $2b
     jr nz, jr_001_5fab                            ; $5fb8: $20 $f1
@@ -4949,7 +4949,7 @@ jr_001_5fbb:
     call AdvanceMessageScriptStreamHelper         ; $5fbb: $cd $88 $2b
     ret z                                         ; $5fbe: $c8
 
-    call AdvanceMessageScriptDelay                ; $5fbf: $cd $18 $79
+    call TickMarioBlinkAnimation                  ; $5fbf: $cd $18 $79
     call AnimateMarioMouthDuringText              ; $5fc2: $cd $93 $30
     call Call_000_05c5                            ; $5fc5: $cd $c5 $05
     rst RST_08                                    ; $5fc8: $cf
@@ -4960,18 +4960,18 @@ GS08_StatePhase_03_TODO::
     cp $05                                        ; $5fce: $fe $05
     jp z, Jump_001_607a                           ; $5fd0: $ca $7a $60
 
-    call Call_001_71ca                            ; $5fd3: $cd $ca $71
-    call Call_001_713e                            ; $5fd6: $cd $3e $71
-    call AdvanceMessageScriptDelay                ; $5fd9: $cd $18 $79
+    call UpdatePuzzleCursorFromDirectionalInput   ; $5fd3: $cd $ca $71
+    call DrawPuzzleCursorSpritesAndTickStepSequence; $5fd6: $cd $3e $71
+    call TickMarioBlinkAnimation                  ; $5fd9: $cd $18 $79
     call Call_001_7e33                            ; $5fdc: $cd $33 $7e
     call Call_001_7e77                            ; $5fdf: $cd $77 $7e
     call Call_001_7aea                            ; $5fe2: $cd $ea $7a
     call Call_001_7a98                            ; $5fe5: $cd $98 $7a
-    call Call_001_7222                            ; $5fe8: $cd $22 $72
-    call Call_001_7516                            ; $5feb: $cd $16 $75
+    call ProcessPuzzleCellActionInput             ; $5fe8: $cd $22 $72
+    call TickPendingCellActionEffect              ; $5feb: $cd $16 $75
     call Call_001_75f6                            ; $5fee: $cd $f6 $75
     call Call_001_7cc8                            ; $5ff1: $cd $c8 $7c
-    ld a, [$c31e]                                 ; $5ff4: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $5ff4: $fa $1e $c3
     and $08                                       ; $5ff7: $e6 $08
     jr z, jr_001_6008                             ; $5ff9: $28 $0d
 
@@ -5003,7 +5003,7 @@ jr_001_6008:
 
 jr_001_602e:
     rst RST_08                                    ; $602e: $cf
-    ld a, [$c31e]                                 ; $602f: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $602f: $fa $1e $c3
     and $09                                       ; $6032: $e6 $09
     jr z, jr_001_602e                             ; $6034: $28 $f8
 
@@ -5044,16 +5044,16 @@ jr_001_6059:
 
 
 Jump_001_607a:
-    call Call_001_71ca                            ; $607a: $cd $ca $71
-    call Call_001_713e                            ; $607d: $cd $3e $71
-    call AdvanceMessageScriptDelay                ; $6080: $cd $18 $79
+    call UpdatePuzzleCursorFromDirectionalInput   ; $607a: $cd $ca $71
+    call DrawPuzzleCursorSpritesAndTickStepSequence; $607d: $cd $3e $71
+    call TickMarioBlinkAnimation                  ; $6080: $cd $18 $79
     call Call_001_7aea                            ; $6083: $cd $ea $7a
     call Call_001_7a98                            ; $6086: $cd $98 $7a
-    call Call_001_7222                            ; $6089: $cd $22 $72
-    call Call_001_7516                            ; $608c: $cd $16 $75
+    call ProcessPuzzleCellActionInput             ; $6089: $cd $22 $72
+    call TickPendingCellActionEffect              ; $608c: $cd $16 $75
     call Call_001_75f6                            ; $608f: $cd $f6 $75
     call Call_001_7cc8                            ; $6092: $cd $c8 $7c
-    ld a, [$c31e]                                 ; $6095: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $6095: $fa $1e $c3
     and $08                                       ; $6098: $e6 $08
     jr z, jr_001_60a9                             ; $609a: $28 $0d
 
@@ -5090,10 +5090,10 @@ jr_001_60a9:
     call Call_001_5fbb                            ; $60dd: $cd $bb $5f
 
 jr_001_60e0:
-    call AdvanceMessageScriptDelay                ; $60e0: $cd $18 $79
+    call TickMarioBlinkAnimation                  ; $60e0: $cd $18 $79
     call Call_000_05c5                            ; $60e3: $cd $c5 $05
     rst RST_08                                    ; $60e6: $cf
-    ld a, [$c31e]                                 ; $60e7: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $60e7: $fa $1e $c3
     and $09                                       ; $60ea: $e6 $09
     jr z, jr_001_60e0                             ; $60ec: $28 $f2
 
@@ -5176,7 +5176,7 @@ Jump_001_613a:
     ld e, l                                       ; $617a: $5d
 
 GS08_StatePhase_04_TODO::
-    ld a, [$c31e]                                 ; $617b: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $617b: $fa $1e $c3
     and $09                                       ; $617e: $e6 $09
     ret z                                         ; $6180: $c8
 
@@ -5275,7 +5275,7 @@ GS08_StatePhase_06_TODO::
     ld b, $02                                     ; $6238: $06 $02
     ld hl, $4632                                  ; $623a: $21 $32 $46
     call SwitchBankToBAndJumpToHL                 ; $623d: $cd $de $05
-    ld a, [$c31e]                                 ; $6240: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $6240: $fa $1e $c3
     bit 0, a                                      ; $6243: $cb $47
     jr z, jr_001_625d                             ; $6245: $28 $16
 
@@ -5311,7 +5311,7 @@ GS08_StatePhase_07_TODO::
     ld b, $02                                     ; $6270: $06 $02
     ld hl, $4672                                  ; $6272: $21 $72 $46
     call SwitchBankToBAndJumpToHL                 ; $6275: $cd $de $05
-    ld a, [$c31e]                                 ; $6278: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $6278: $fa $1e $c3
     and $01                                       ; $627b: $e6 $01
     ret z                                         ; $627d: $c8
 
@@ -5406,7 +5406,7 @@ GS08_StatePhase_08_TODO::
     ld b, $02                                     ; $6328: $06 $02
     ld hl, $46b2                                  ; $632a: $21 $b2 $46
     call SwitchBankToBAndJumpToHL                 ; $632d: $cd $de $05
-    ld a, [$c31e]                                 ; $6330: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $6330: $fa $1e $c3
     and $01                                       ; $6333: $e6 $01
     ret z                                         ; $6335: $c8
 
@@ -5422,7 +5422,7 @@ GS08_StatePhase_09_TODO::
     ld b, $02                                     ; $6343: $06 $02
     ld hl, $470f                                  ; $6345: $21 $0f $47
     call SwitchBankToBAndJumpToHL                 ; $6348: $cd $de $05
-    ld a, [$c31e]                                 ; $634b: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $634b: $fa $1e $c3
     and $01                                       ; $634e: $e6 $01
     ret z                                         ; $6350: $c8
 
@@ -5562,8 +5562,8 @@ GS09_StatePhase_00_TODO::
     call Call_000_07f1                            ; $642f: $cd $f1 $07
     call LoadGameBoardTileData                    ; $6432: $cd $b9 $69
     xor a                                         ; $6435: $af
-    ld [$d636], a                                 ; $6436: $ea $36 $d6
-    ld [$d637], a                                 ; $6439: $ea $37 $d6
+    ld [rPuzzleCursorColumn], a                   ; $6436: $ea $36 $d6
+    ld [rPuzzleCursorRow], a                      ; $6439: $ea $37 $d6
     ld a, $00                                     ; $643c: $3e $00
     ld [$d833], a                                 ; $643e: $ea $33 $d8
     ld a, $02                                     ; $6441: $3e $02
@@ -5581,7 +5581,7 @@ GS09_StatePhase_00_TODO::
     call Call_001_6f30                            ; $6460: $cd $30 $6f
     call Call_001_7dcb                            ; $6463: $cd $cb $7d
     call ClearShadowOAMBuffer                     ; $6466: $cd $b6 $05
-    call Call_001_713e                            ; $6469: $cd $3e $71
+    call DrawPuzzleCursorSpritesAndTickStepSequence; $6469: $cd $3e $71
     call Call_001_7beb                            ; $646c: $cd $eb $7b
     call Call_001_786e                            ; $646f: $cd $6e $78
     ld a, [$a065]                                 ; $6472: $fa $65 $a0
@@ -5700,15 +5700,15 @@ GS09_StatePhase_09_TODO::
 
 
 GS09_StatePhase_01_TODO::
-    call Call_001_71ca                            ; $656c: $cd $ca $71
-    call Call_001_713e                            ; $656f: $cd $3e $71
+    call UpdatePuzzleCursorFromDirectionalInput   ; $656c: $cd $ca $71
+    call DrawPuzzleCursorSpritesAndTickStepSequence; $656f: $cd $3e $71
     call Call_001_7aea                            ; $6572: $cd $ea $7a
-    call AdvanceMessageScriptDelay                ; $6575: $cd $18 $79
+    call TickMarioBlinkAnimation                  ; $6575: $cd $18 $79
     call Call_001_682f                            ; $6578: $cd $2f $68
-    call Call_001_7516                            ; $657b: $cd $16 $75
+    call TickPendingCellActionEffect              ; $657b: $cd $16 $75
     call Call_001_75f6                            ; $657e: $cd $f6 $75
     call Call_001_7cc8                            ; $6581: $cd $c8 $7c
-    ld a, [$c31e]                                 ; $6584: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $6584: $fa $1e $c3
     and $08                                       ; $6587: $e6 $08
     jr z, jr_001_6598                             ; $6589: $28 $0d
 
@@ -5749,7 +5749,7 @@ jr_001_6598:
 
 jr_001_65d3:
     rst RST_08                                    ; $65d3: $cf
-    ld a, [$c31e]                                 ; $65d4: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $65d4: $fa $1e $c3
     and $09                                       ; $65d7: $e6 $09
     jr z, jr_001_65d3                             ; $65d9: $28 $f8
 
@@ -5790,7 +5790,7 @@ jr_001_65fe:
 
 
 GS09_StatePhase_02_TODO::
-    ld a, [$c31e]                                 ; $661f: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $661f: $fa $1e $c3
     and $09                                       ; $6622: $e6 $09
     ret z                                         ; $6624: $c8
 
@@ -5864,7 +5864,7 @@ GS09_StatePhase_04_TODO::
     ld b, $02                                     ; $66b3: $06 $02
     ld hl, $4632                                  ; $66b5: $21 $32 $46
     call SwitchBankToBAndJumpToHL                 ; $66b8: $cd $de $05
-    ld a, [$c31e]                                 ; $66bb: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $66bb: $fa $1e $c3
     bit 0, a                                      ; $66be: $cb $47
     jr z, jr_001_66d8                             ; $66c0: $28 $16
 
@@ -5900,7 +5900,7 @@ GS09_StatePhase_05_TODO::
     ld b, $02                                     ; $66eb: $06 $02
     ld hl, $4672                                  ; $66ed: $21 $72 $46
     call SwitchBankToBAndJumpToHL                 ; $66f0: $cd $de $05
-    ld a, [$c31e]                                 ; $66f3: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $66f3: $fa $1e $c3
     and $01                                       ; $66f6: $e6 $01
     ret z                                         ; $66f8: $c8
 
@@ -5971,7 +5971,7 @@ GS09_StatePhase_06_TODO::
     ld b, $02                                     ; $677d: $06 $02
     ld hl, $46b2                                  ; $677f: $21 $b2 $46
     call SwitchBankToBAndJumpToHL                 ; $6782: $cd $de $05
-    ld a, [$c31e]                                 ; $6785: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $6785: $fa $1e $c3
     and $01                                       ; $6788: $e6 $01
     ret z                                         ; $678a: $c8
 
@@ -5987,7 +5987,7 @@ GS09_StatePhase_07_TODO::
     ld b, $02                                     ; $6798: $06 $02
     ld hl, $470f                                  ; $679a: $21 $0f $47
     call SwitchBankToBAndJumpToHL                 ; $679d: $cd $de $05
-    ld a, [$c31e]                                 ; $67a0: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $67a0: $fa $1e $c3
     and $01                                       ; $67a3: $e6 $01
     ret z                                         ; $67a5: $c8
 
@@ -6064,11 +6064,11 @@ GS09_StatePhase_08_TODO::
 
 
 Call_001_682f:
-    ld a, [$c31a]                                 ; $682f: $fa $1a $c3
+    ld a, [rInputButtonsHeld]                     ; $682f: $fa $1a $c3
     and $01                                       ; $6832: $e6 $01
     jr z, jr_001_683d                             ; $6834: $28 $07
 
-    ld a, [$c322]                                 ; $6836: $fa $22 $c3
+    ld a, [rInputButtonsPressedOrRepeated]        ; $6836: $fa $22 $c3
     and $f0                                       ; $6839: $e6 $f0
     jr z, jr_001_6841                             ; $683b: $28 $04
 
@@ -6077,12 +6077,12 @@ jr_001_683d:
     ld [$d80f], a                                 ; $683e: $ea $0f $d8
 
 jr_001_6841:
-    ld a, [$d637]                                 ; $6841: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $6841: $fa $37 $d6
     sla a                                         ; $6844: $cb $27
     sla a                                         ; $6846: $cb $27
     sla a                                         ; $6848: $cb $27
     sla a                                         ; $684a: $cb $27
-    ld hl, $d636                                  ; $684c: $21 $36 $d6
+    ld hl, rPuzzleCursorColumn                    ; $684c: $21 $36 $d6
     add [hl]                                      ; $684f: $86
     ld c, a                                       ; $6850: $4f
     ld b, $00                                     ; $6851: $06 $00
@@ -6097,10 +6097,10 @@ jr_001_6841:
     ld a, [hl]                                    ; $6862: $7e
     pop hl                                        ; $6863: $e1
     and a                                         ; $6864: $a7
-    jp z, Jump_001_7260                           ; $6865: $ca $60 $72
+    jp z, ProcessPuzzleCellActionInput_HandleFillActionInput; $6865: $ca $60 $72
 
     dec a                                         ; $6868: $3d
-    jp z, Jump_001_7260                           ; $6869: $ca $60 $72
+    jp z, ProcessPuzzleCellActionInput_HandleFillActionInput; $6869: $ca $60 $72
 
     ret                                           ; $686c: $c9
 
@@ -6159,8 +6159,8 @@ GS0A_StatePhase_00_TODO::
     call Call_000_07f1                            ; $68a4: $cd $f1 $07
     call LoadGameBoardTileData                    ; $68a7: $cd $b9 $69
     xor a                                         ; $68aa: $af
-    ld [$d636], a                                 ; $68ab: $ea $36 $d6
-    ld [$d637], a                                 ; $68ae: $ea $37 $d6
+    ld [rPuzzleCursorColumn], a                   ; $68ab: $ea $36 $d6
+    ld [rPuzzleCursorRow], a                      ; $68ae: $ea $37 $d6
     ld a, $00                                     ; $68b1: $3e $00
     ld [$d833], a                                 ; $68b3: $ea $33 $d8
     ld a, $02                                     ; $68b6: $3e $02
@@ -6338,18 +6338,18 @@ jr_001_6a48:
     xor a                                         ; $6a48: $af
     ld [$d805], a                                 ; $6a49: $ea $05 $d8
     ld [$d806], a                                 ; $6a4c: $ea $06 $d8
-    ld [$d818], a                                 ; $6a4f: $ea $18 $d8
-    ld [$d817], a                                 ; $6a52: $ea $17 $d8
+    ld [rMarioBlinkAnimationSequenceCursor], a    ; $6a4f: $ea $18 $d8
+    ld [rMarioBlinkAnimationDelay], a             ; $6a52: $ea $17 $d8
     ld [$d81c], a                                 ; $6a55: $ea $1c $d8
     ld [$d81d], a                                 ; $6a58: $ea $1d $d8
     ld [$d80f], a                                 ; $6a5b: $ea $0f $d8
     ld [rMessageStepDelayTimer], a                ; $6a5e: $ea $1f $d8
     ld [rMessageStepSequenceCursor], a            ; $6a61: $ea $20 $d8
     ld [rMessageStepSequenceState], a             ; $6a64: $ea $21 $d8
-    ld [$d824], a                                 ; $6a67: $ea $24 $d8
-    ld [$d825], a                                 ; $6a6a: $ea $25 $d8
-    ld [$d823], a                                 ; $6a6d: $ea $23 $d8
-    ld [$d822], a                                 ; $6a70: $ea $22 $d8
+    ld [rCellEffectTargetColumn], a               ; $6a67: $ea $24 $d8
+    ld [rCellEffectTargetRow], a                  ; $6a6a: $ea $25 $d8
+    ld [rPendingCellEffectCode], a                ; $6a6d: $ea $23 $d8
+    ld [rPendingCellEffectDelay], a               ; $6a70: $ea $22 $d8
     ld a, $01                                     ; $6a73: $3e $01
     ld [$d812], a                                 ; $6a75: $ea $12 $d8
     ld [$d813], a                                 ; $6a78: $ea $13 $d8
@@ -6366,12 +6366,12 @@ jr_001_6a48:
 
 
 GS0A_StatePhase_01_TODO::
-    call AdvanceMessageScriptDelay                ; $6a92: $cd $18 $79
+    call TickMarioBlinkAnimation                  ; $6a92: $cd $18 $79
     ld a, [$d833]                                 ; $6a95: $fa $33 $d8
     add $3a                                       ; $6a98: $c6 $3a
     ld bc, $2848                                  ; $6a9a: $01 $48 $28
     call CopyOAMSpriteById                        ; $6a9d: $cd $ce $20
-    ld a, [$c31e]                                 ; $6aa0: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $6aa0: $fa $1e $c3
     and $f0                                       ; $6aa3: $e6 $f0
     jr z, jr_001_6ab7                             ; $6aa5: $28 $10
 
@@ -6385,11 +6385,11 @@ GS0A_StatePhase_01_TODO::
 
 
 jr_001_6ab7:
-    ld a, [$c31e]                                 ; $6ab7: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $6ab7: $fa $1e $c3
     and $09                                       ; $6aba: $e6 $09
     jr nz, jr_001_6ae7                            ; $6abc: $20 $29
 
-    ld a, [$c31e]                                 ; $6abe: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $6abe: $fa $1e $c3
     and $02                                       ; $6ac1: $e6 $02
     ret z                                         ; $6ac3: $c8
 
@@ -6485,7 +6485,7 @@ GS0A_StatePhase_02_TODO::
     rl [hl]                                       ; $6b5b: $cb $16
 
 jr_001_6b5d:
-    ld a, [$d636]                                 ; $6b5d: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $6b5d: $fa $36 $d6
     inc a                                         ; $6b60: $3c
     ld hl, rCurrentGridSize                       ; $6b61: $21 $00 $d8
     cp [hl]                                       ; $6b64: $be
@@ -6494,7 +6494,7 @@ jr_001_6b5d:
     xor a                                         ; $6b67: $af
 
 jr_001_6b68:
-    ld [$d636], a                                 ; $6b68: $ea $36 $d6
+    ld [rPuzzleCursorColumn], a                   ; $6b68: $ea $36 $d6
     ld c, a                                       ; $6b6b: $4f
     sla a                                         ; $6b6c: $cb $27
     add c                                         ; $6b6e: $81
@@ -6528,7 +6528,7 @@ jr_001_6b7f:
     rl [hl]                                       ; $6b96: $cb $16
 
 jr_001_6b98:
-    ld a, [$d637]                                 ; $6b98: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $6b98: $fa $37 $d6
     inc a                                         ; $6b9b: $3c
     ld hl, $d801                                  ; $6b9c: $21 $01 $d8
     cp [hl]                                       ; $6b9f: $be
@@ -6537,7 +6537,7 @@ jr_001_6b98:
     xor a                                         ; $6ba2: $af
 
 jr_001_6ba3:
-    ld [$d637], a                                 ; $6ba3: $ea $37 $d6
+    ld [rPuzzleCursorRow], a                      ; $6ba3: $ea $37 $d6
     ld c, a                                       ; $6ba6: $4f
     sla a                                         ; $6ba7: $cb $27
     add c                                         ; $6ba9: $81
@@ -6554,7 +6554,7 @@ jr_001_6ba3:
 
 jr_001_6bba:
     call Call_001_7185                            ; $6bba: $cd $85 $71
-    call AdvanceMessageScriptDelay                ; $6bbd: $cd $18 $79
+    call TickMarioBlinkAnimation                  ; $6bbd: $cd $18 $79
     ld a, [$d812]                                 ; $6bc0: $fa $12 $d8
     ld c, a                                       ; $6bc3: $4f
     ld a, [$d813]                                 ; $6bc4: $fa $13 $d8
@@ -6586,7 +6586,7 @@ jr_001_6bd7:
     ld a, [hl]                                    ; $6be9: $7e
     sbc $00                                       ; $6bea: $de $00
     ld [hl], a                                    ; $6bec: $77
-    ld a, [$c31e]                                 ; $6bed: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $6bed: $fa $1e $c3
     and $09                                       ; $6bf0: $e6 $09
     ret z                                         ; $6bf2: $c8
 
@@ -6641,18 +6641,18 @@ Call_001_6c2c:
 
 
 GS0A_StatePhase_03_TODO::
-    call Call_001_71ca                            ; $6c41: $cd $ca $71
-    call Call_001_713e                            ; $6c44: $cd $3e $71
-    call AdvanceMessageScriptDelay                ; $6c47: $cd $18 $79
+    call UpdatePuzzleCursorFromDirectionalInput   ; $6c41: $cd $ca $71
+    call DrawPuzzleCursorSpritesAndTickStepSequence; $6c44: $cd $3e $71
+    call TickMarioBlinkAnimation                  ; $6c47: $cd $18 $79
     call Call_001_7e33                            ; $6c4a: $cd $33 $7e
     call Call_001_7e77                            ; $6c4d: $cd $77 $7e
     call Call_001_7aea                            ; $6c50: $cd $ea $7a
     call Call_001_7a98                            ; $6c53: $cd $98 $7a
-    call Call_001_7222                            ; $6c56: $cd $22 $72
-    call Call_001_7516                            ; $6c59: $cd $16 $75
+    call ProcessPuzzleCellActionInput             ; $6c56: $cd $22 $72
+    call TickPendingCellActionEffect              ; $6c59: $cd $16 $75
     call Call_001_75f6                            ; $6c5c: $cd $f6 $75
     call Call_001_7cc8                            ; $6c5f: $cd $c8 $7c
-    ld a, [$c31e]                                 ; $6c62: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $6c62: $fa $1e $c3
     and $08                                       ; $6c65: $e6 $08
     jr z, jr_001_6c76                             ; $6c67: $28 $0d
 
@@ -6684,7 +6684,7 @@ jr_001_6c76:
 
 jr_001_6c9c:
     rst RST_08                                    ; $6c9c: $cf
-    ld a, [$c31e]                                 ; $6c9d: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $6c9d: $fa $1e $c3
     and $09                                       ; $6ca0: $e6 $09
     jr z, jr_001_6c9c                             ; $6ca2: $28 $f8
 
@@ -6734,7 +6734,7 @@ jr_001_6cde:
 
 
 GS0A_StatePhase_04_TODO::
-    ld a, [$c31e]                                 ; $6cff: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $6cff: $fa $1e $c3
     and $09                                       ; $6d02: $e6 $09
     ret z                                         ; $6d04: $c8
 
@@ -6813,7 +6813,7 @@ GS0A_StatePhase_06_TODO::
     ld b, $02                                     ; $6d9c: $06 $02
     ld hl, $4632                                  ; $6d9e: $21 $32 $46
     call SwitchBankToBAndJumpToHL                 ; $6da1: $cd $de $05
-    ld a, [$c31e]                                 ; $6da4: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $6da4: $fa $1e $c3
     bit 0, a                                      ; $6da7: $cb $47
     jr z, jr_001_6dc1                             ; $6da9: $28 $16
 
@@ -6849,7 +6849,7 @@ GS0A_StatePhase_07_TODO::
     ld b, $02                                     ; $6dd4: $06 $02
     ld hl, $4672                                  ; $6dd6: $21 $72 $46
     call SwitchBankToBAndJumpToHL                 ; $6dd9: $cd $de $05
-    ld a, [$c31e]                                 ; $6ddc: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $6ddc: $fa $1e $c3
     and $01                                       ; $6ddf: $e6 $01
     ret z                                         ; $6de1: $c8
 
@@ -6924,7 +6924,7 @@ GS0A_StatePhase_08_TODO::
     ld b, $02                                     ; $6e6e: $06 $02
     ld hl, $46b2                                  ; $6e70: $21 $b2 $46
     call SwitchBankToBAndJumpToHL                 ; $6e73: $cd $de $05
-    ld a, [$c31e]                                 ; $6e76: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $6e76: $fa $1e $c3
     and $01                                       ; $6e79: $e6 $01
     ret z                                         ; $6e7b: $c8
 
@@ -6940,7 +6940,7 @@ GS0A_StatePhase_09_TODO::
     ld b, $02                                     ; $6e89: $06 $02
     ld hl, $470f                                  ; $6e8b: $21 $0f $47
     call SwitchBankToBAndJumpToHL                 ; $6e8e: $cd $de $05
-    ld a, [$c31e]                                 ; $6e91: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $6e91: $fa $1e $c3
     and $01                                       ; $6e94: $e6 $01
     ret z                                         ; $6e96: $c8
 
@@ -7259,13 +7259,13 @@ Call_001_701b:
     push hl                                       ; $701d: $e5
     push af                                       ; $701e: $f5
     ld a, c                                       ; $701f: $79
-    ld [rMessageScriptCopySourceX], a             ; $7020: $ea $51 $c3
+    ld [rBGTileCopySourceX], a                    ; $7020: $ea $51 $c3
     add $05                                       ; $7023: $c6 $05
-    ld [rMessageScriptCopyDestX], a               ; $7025: $ea $53 $c3
+    ld [rBGTileCopyDestX], a                      ; $7025: $ea $53 $c3
     ld a, b                                       ; $7028: $78
-    ld [rMessageScriptCopySourceY], a             ; $7029: $ea $52 $c3
+    ld [rBGTileCopySourceY], a                    ; $7029: $ea $52 $c3
     add $05                                       ; $702c: $c6 $05
-    ld [rMessageScriptCopyDestY], a               ; $702e: $ea $54 $c3
+    ld [rBGTileCopyDestY], a                      ; $702e: $ea $54 $c3
     pop af                                        ; $7031: $f1
     sla a                                         ; $7032: $cb $27
     ld c, a                                       ; $7034: $4f
@@ -7277,23 +7277,23 @@ Call_001_701b:
     ld hl, $7061                                  ; $703b: $21 $61 $70
     add hl, bc                                    ; $703e: $09
     ld a, [hl+]                                   ; $703f: $2a
-    ld [rMessageScriptCopyBankAddressLow], a      ; $7040: $ea $55 $c3
+    ld [rBGTileCopyBankAddressLow], a             ; $7040: $ea $55 $c3
     ld a, [hl+]                                   ; $7043: $2a
-    ld [rMessageScriptCopyBankAddressHigh], a     ; $7044: $ea $56 $c3
+    ld [rBGTileCopyBankAddressHigh], a            ; $7044: $ea $56 $c3
     jr jr_001_7055                                ; $7047: $18 $0c
 
 jr_001_7049:
     ld hl, $7081                                  ; $7049: $21 $81 $70
     add hl, bc                                    ; $704c: $09
     ld a, [hl+]                                   ; $704d: $2a
-    ld [rMessageScriptCopyBankAddressLow], a      ; $704e: $ea $55 $c3
+    ld [rBGTileCopyBankAddressLow], a             ; $704e: $ea $55 $c3
     ld a, [hl+]                                   ; $7051: $2a
-    ld [rMessageScriptCopyBankAddressHigh], a     ; $7052: $ea $56 $c3
+    ld [rBGTileCopyBankAddressHigh], a            ; $7052: $ea $56 $c3
 
 jr_001_7055:
     ld a, $06                                     ; $7055: $3e $06
-    ld [rMessageScriptCopyBank], a                ; $7057: $ea $57 $c3
-    call PrepareMessageScriptCopy                 ; $705a: $cd $b3 $08
+    ld [rBGTileCopyBank], a                       ; $7057: $ea $57 $c3
+    call PrepareBGTileCopy                        ; $705a: $cd $b3 $08
     pop hl                                        ; $705d: $e1
     pop de                                        ; $705e: $d1
     pop bc                                        ; $705f: $c1
@@ -7460,47 +7460,47 @@ Call_001_7103:
     push de                                       ; $7104: $d5
     push hl                                       ; $7105: $e5
     ld a, c                                       ; $7106: $79
-    ld [rMessageScriptCopySourceX], a             ; $7107: $ea $51 $c3
+    ld [rBGTileCopySourceX], a                    ; $7107: $ea $51 $c3
     add $05                                       ; $710a: $c6 $05
-    ld [rMessageScriptCopyDestX], a               ; $710c: $ea $53 $c3
+    ld [rBGTileCopyDestX], a                      ; $710c: $ea $53 $c3
     ld a, b                                       ; $710f: $78
-    ld [rMessageScriptCopySourceY], a             ; $7110: $ea $52 $c3
+    ld [rBGTileCopySourceY], a                    ; $7110: $ea $52 $c3
     add $05                                       ; $7113: $c6 $05
-    ld [rMessageScriptCopyDestY], a               ; $7115: $ea $54 $c3
+    ld [rBGTileCopyDestY], a                      ; $7115: $ea $54 $c3
     ld a, e                                       ; $7118: $7b
     and a                                         ; $7119: $a7
     jr nz, jr_001_7128                            ; $711a: $20 $0c
 
     ld a, $e0                                     ; $711c: $3e $e0
-    ld [rMessageScriptCopyBankAddressLow], a      ; $711e: $ea $55 $c3
+    ld [rBGTileCopyBankAddressLow], a             ; $711e: $ea $55 $c3
     ld a, $58                                     ; $7121: $3e $58
-    ld [rMessageScriptCopyBankAddressHigh], a     ; $7123: $ea $56 $c3
+    ld [rBGTileCopyBankAddressHigh], a            ; $7123: $ea $56 $c3
     jr jr_001_7132                                ; $7126: $18 $0a
 
 jr_001_7128:
     ld a, $f0                                     ; $7128: $3e $f0
-    ld [rMessageScriptCopyBankAddressLow], a      ; $712a: $ea $55 $c3
+    ld [rBGTileCopyBankAddressLow], a             ; $712a: $ea $55 $c3
     ld a, $58                                     ; $712d: $3e $58
-    ld [rMessageScriptCopyBankAddressHigh], a     ; $712f: $ea $56 $c3
+    ld [rBGTileCopyBankAddressHigh], a            ; $712f: $ea $56 $c3
 
 jr_001_7132:
     ld a, $06                                     ; $7132: $3e $06
-    ld [rMessageScriptCopyBank], a                ; $7134: $ea $57 $c3
-    call PrepareMessageScriptCopy                 ; $7137: $cd $b3 $08
+    ld [rBGTileCopyBank], a                       ; $7134: $ea $57 $c3
+    call PrepareBGTileCopy                        ; $7137: $cd $b3 $08
     pop hl                                        ; $713a: $e1
     pop de                                        ; $713b: $d1
     pop bc                                        ; $713c: $c1
     ret                                           ; $713d: $c9
 
 
-Call_001_713e:
-    ld a, [$d636]                                 ; $713e: $fa $36 $d6
+DrawPuzzleCursorSpritesAndTickStepSequence::
+    ld a, [rPuzzleCursorColumn]                   ; $713e: $fa $36 $d6
     ld e, a                                       ; $7141: $5f
     sla a                                         ; $7142: $cb $27
     add e                                         ; $7144: $83
     sla a                                         ; $7145: $cb $27
     ld b, a                                       ; $7147: $47
-    ld a, [$d637]                                 ; $7148: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $7148: $fa $37 $d6
     ld e, a                                       ; $714b: $5f
     sla a                                         ; $714c: $cb $27
     add e                                         ; $714e: $83
@@ -7532,17 +7532,17 @@ Call_001_713e:
     add $05                                       ; $717c: $c6 $05
     call CopyOAMSpriteById                        ; $717e: $cd $ce $20
     pop bc                                        ; $7181: $c1
-    jp Jump_001_7967                              ; $7182: $c3 $67 $79
+    jp TickMessageStepSequenceAndEmitSprite       ; $7182: $c3 $67 $79
 
 
 Call_001_7185:
-    ld a, [$d636]                                 ; $7185: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $7185: $fa $36 $d6
     ld e, a                                       ; $7188: $5f
     sla a                                         ; $7189: $cb $27
     add e                                         ; $718b: $83
     sla a                                         ; $718c: $cb $27
     ld b, a                                       ; $718e: $47
-    ld a, [$d637]                                 ; $718f: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $718f: $fa $37 $d6
     ld e, a                                       ; $7192: $5f
     sla a                                         ; $7193: $cb $27
     add e                                         ; $7195: $83
@@ -7577,92 +7577,92 @@ Call_001_7185:
     ret                                           ; $71c9: $c9
 
 
-Call_001_71ca:
-    ld a, [$c322]                                 ; $71ca: $fa $22 $c3
+UpdatePuzzleCursorFromDirectionalInput::
+    ld a, [rInputButtonsPressedOrRepeated]        ; $71ca: $fa $22 $c3
     and $f0                                       ; $71cd: $e6 $f0
     ret z                                         ; $71cf: $c8
 
-    ld a, [$c31a]                                 ; $71d0: $fa $1a $c3
+    ld a, [rInputButtonsHeld]                     ; $71d0: $fa $1a $c3
     and $03                                       ; $71d3: $e6 $03
-    jr nz, jr_001_71de                            ; $71d5: $20 $07
+    jr nz, .CheckLeft                             ; $71d5: $20 $07
 
     ld c, $0b                                     ; $71d7: $0e $0b
     ld a, $02                                     ; $71d9: $3e $02
     call TODO_Bank0FDispatcher                    ; $71db: $cd $b6 $03
 
-jr_001_71de:
-    ld hl, $c322                                  ; $71de: $21 $22 $c3
+.CheckLeft:
+    ld hl, rInputButtonsPressedOrRepeated         ; $71de: $21 $22 $c3
     bit 5, [hl]                                   ; $71e1: $cb $6e
-    jr z, jr_001_71ef                             ; $71e3: $28 $0a
+    jr z, .CheckRight                             ; $71e3: $28 $0a
 
-    ld a, [$d636]                                 ; $71e5: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $71e5: $fa $36 $d6
     and a                                         ; $71e8: $a7
-    jr z, jr_001_71ef                             ; $71e9: $28 $04
+    jr z, .CheckRight                             ; $71e9: $28 $04
 
     dec a                                         ; $71eb: $3d
-    ld [$d636], a                                 ; $71ec: $ea $36 $d6
+    ld [rPuzzleCursorColumn], a                   ; $71ec: $ea $36 $d6
 
-jr_001_71ef:
+.CheckRight:
     bit 4, [hl]                                   ; $71ef: $cb $66
-    jr z, jr_001_7201                             ; $71f1: $28 $0e
+    jr z, .CheckUp                                ; $71f1: $28 $0e
 
     ld a, [rCurrentGridSize]                      ; $71f3: $fa $00 $d8
     ld c, a                                       ; $71f6: $4f
-    ld a, [$d636]                                 ; $71f7: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $71f7: $fa $36 $d6
     inc a                                         ; $71fa: $3c
     cp c                                          ; $71fb: $b9
-    jr z, jr_001_7201                             ; $71fc: $28 $03
+    jr z, .CheckUp                                ; $71fc: $28 $03
 
-    ld [$d636], a                                 ; $71fe: $ea $36 $d6
+    ld [rPuzzleCursorColumn], a                   ; $71fe: $ea $36 $d6
 
-jr_001_7201:
+.CheckUp:
     bit 6, [hl]                                   ; $7201: $cb $76
-    jr z, jr_001_720f                             ; $7203: $28 $0a
+    jr z, .CheckDown                              ; $7203: $28 $0a
 
-    ld a, [$d637]                                 ; $7205: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $7205: $fa $37 $d6
     and a                                         ; $7208: $a7
-    jr z, jr_001_720f                             ; $7209: $28 $04
+    jr z, .CheckDown                              ; $7209: $28 $04
 
     dec a                                         ; $720b: $3d
-    ld [$d637], a                                 ; $720c: $ea $37 $d6
+    ld [rPuzzleCursorRow], a                      ; $720c: $ea $37 $d6
 
-jr_001_720f:
+.CheckDown:
     bit 7, [hl]                                   ; $720f: $cb $7e
-    jr z, jr_001_7221                             ; $7211: $28 $0e
+    jr z, .Return                                 ; $7211: $28 $0e
 
     ld a, [$d801]                                 ; $7213: $fa $01 $d8
     ld c, a                                       ; $7216: $4f
-    ld a, [$d637]                                 ; $7217: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $7217: $fa $37 $d6
     inc a                                         ; $721a: $3c
     cp c                                          ; $721b: $b9
-    jr z, jr_001_7221                             ; $721c: $28 $03
+    jr z, .Return                                 ; $721c: $28 $03
 
-    ld [$d637], a                                 ; $721e: $ea $37 $d6
+    ld [rPuzzleCursorRow], a                      ; $721e: $ea $37 $d6
 
-jr_001_7221:
+.Return:
     ret                                           ; $7221: $c9
 
 
-Call_001_7222:
-    ld a, [$c31a]                                 ; $7222: $fa $1a $c3
+ProcessPuzzleCellActionInput::
+    ld a, [rInputButtonsHeld]                     ; $7222: $fa $1a $c3
     and $01                                       ; $7225: $e6 $01
-    jr z, jr_001_7230                             ; $7227: $28 $07
+    jr z, .ClearActionRepeatState                 ; $7227: $28 $07
 
-    ld a, [$c322]                                 ; $7229: $fa $22 $c3
+    ld a, [rInputButtonsPressedOrRepeated]        ; $7229: $fa $22 $c3
     and $f0                                       ; $722c: $e6 $f0
-    jr z, jr_001_7234                             ; $722e: $28 $04
+    jr z, .LoadCursorCellAndTileState             ; $722e: $28 $04
 
-jr_001_7230:
+.ClearActionRepeatState:
     xor a                                         ; $7230: $af
     ld [$d80f], a                                 ; $7231: $ea $0f $d8
 
-jr_001_7234:
-    ld a, [$d637]                                 ; $7234: $fa $37 $d6
+.LoadCursorCellAndTileState:
+    ld a, [rPuzzleCursorRow]                      ; $7234: $fa $37 $d6
     sla a                                         ; $7237: $cb $27
     sla a                                         ; $7239: $cb $27
     sla a                                         ; $723b: $cb $27
     sla a                                         ; $723d: $cb $27
-    ld hl, $d636                                  ; $723f: $21 $36 $d6
+    ld hl, rPuzzleCursorColumn                    ; $723f: $21 $36 $d6
     add [hl]                                      ; $7242: $86
     ld c, a                                       ; $7243: $4f
     ld b, $00                                     ; $7244: $06 $00
@@ -7677,113 +7677,113 @@ jr_001_7234:
     ld a, [hl]                                    ; $7255: $7e
     pop hl                                        ; $7256: $e1
     and a                                         ; $7257: $a7
-    jp z, Jump_001_7260                           ; $7258: $ca $60 $72
+    jp z, ProcessPuzzleCellActionInput_HandleFillActionInput; $7258: $ca $60 $72
 
     dec a                                         ; $725b: $3d
-    jp z, Jump_001_7260                           ; $725c: $ca $60 $72
+    jp z, ProcessPuzzleCellActionInput_HandleFillActionInput; $725c: $ca $60 $72
 
     ret                                           ; $725f: $c9
 
 
-Jump_001_7260:
-    ld a, [$c31a]                                 ; $7260: $fa $1a $c3
+ProcessPuzzleCellActionInput_HandleFillActionInput::
+    ld a, [rInputButtonsHeld]                     ; $7260: $fa $1a $c3
     and $01                                       ; $7263: $e6 $01
-    jr z, jr_001_728a                             ; $7265: $28 $23
+    jr z, .HandleMarkXActionInput                 ; $7265: $28 $23
 
-    ld a, [$c31e]                                 ; $7267: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $7267: $fa $1e $c3
     and $01                                       ; $726a: $e6 $01
-    jr z, jr_001_7280                             ; $726c: $28 $12
+    jr z, .ApplyPendingFillAction                 ; $726c: $28 $12
 
     ld a, [hl]                                    ; $726e: $7e
     and $06                                       ; $726f: $e6 $06
     cp $02                                        ; $7271: $fe $02
-    jr z, jr_001_727c                             ; $7273: $28 $07
+    jr z, .ClearPendingFillAction                 ; $7273: $28 $07
 
     ld a, $01                                     ; $7275: $3e $01
-    ld [$d804], a                                 ; $7277: $ea $04 $d8
-    jr jr_001_7280                                ; $727a: $18 $04
+    ld [rPuzzleCellPendingActionMode], a          ; $7277: $ea $04 $d8
+    jr .ApplyPendingFillAction                    ; $727a: $18 $04
 
-jr_001_727c:
+.ClearPendingFillAction:
     xor a                                         ; $727c: $af
-    ld [$d804], a                                 ; $727d: $ea $04 $d8
+    ld [rPuzzleCellPendingActionMode], a          ; $727d: $ea $04 $d8
 
-jr_001_7280:
-    ld a, [$d804]                                 ; $7280: $fa $04 $d8
+.ApplyPendingFillAction:
+    ld a, [rPuzzleCellPendingActionMode]          ; $7280: $fa $04 $d8
     and a                                         ; $7283: $a7
-    jp z, Jump_001_749a                           ; $7284: $ca $9a $74
+    jp z, ProcessPuzzleCellActionInput_ClearCellState; $7284: $ca $9a $74
 
-    jp Jump_001_72e5                              ; $7287: $c3 $e5 $72
+    jp ProcessPuzzleCellActionInput_ApplyFillAction; $7287: $c3 $e5 $72
 
 
-jr_001_728a:
-    ld a, [$c31a]                                 ; $728a: $fa $1a $c3
+.HandleMarkXActionInput:
+    ld a, [rInputButtonsHeld]                     ; $728a: $fa $1a $c3
     and $02                                       ; $728d: $e6 $02
     ret z                                         ; $728f: $c8
 
-    ld a, [$c31e]                                 ; $7290: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $7290: $fa $1e $c3
     and $02                                       ; $7293: $e6 $02
-    jr z, jr_001_72a9                             ; $7295: $28 $12
+    jr z, .ApplyPendingMarkXAction                ; $7295: $28 $12
 
     ld a, [hl]                                    ; $7297: $7e
     and $06                                       ; $7298: $e6 $06
     cp $04                                        ; $729a: $fe $04
-    jr z, jr_001_72a5                             ; $729c: $28 $07
+    jr z, .ClearPendingMarkXAction                ; $729c: $28 $07
 
     ld a, $02                                     ; $729e: $3e $02
-    ld [$d804], a                                 ; $72a0: $ea $04 $d8
-    jr jr_001_72a9                                ; $72a3: $18 $04
+    ld [rPuzzleCellPendingActionMode], a          ; $72a0: $ea $04 $d8
+    jr .ApplyPendingMarkXAction                   ; $72a3: $18 $04
 
-jr_001_72a5:
+.ClearPendingMarkXAction:
     xor a                                         ; $72a5: $af
-    ld [$d804], a                                 ; $72a6: $ea $04 $d8
+    ld [rPuzzleCellPendingActionMode], a          ; $72a6: $ea $04 $d8
 
-jr_001_72a9:
-    ld a, [$d804]                                 ; $72a9: $fa $04 $d8
+.ApplyPendingMarkXAction:
+    ld a, [rPuzzleCellPendingActionMode]          ; $72a9: $fa $04 $d8
     and a                                         ; $72ac: $a7
-    jp z, Jump_001_749a                           ; $72ad: $ca $9a $74
+    jp z, ProcessPuzzleCellActionInput_ClearCellState; $72ad: $ca $9a $74
 
-    jp Jump_001_741c                              ; $72b0: $c3 $1c $74
+    jp ProcessPuzzleCellActionInput_ApplyMarkXAction; $72b0: $c3 $1c $74
 
 
-    ld a, [$c31a]                                 ; $72b3: $fa $1a $c3
+    ld a, [rInputButtonsHeld]                     ; $72b3: $fa $1a $c3
     and $03                                       ; $72b6: $e6 $03
     cp $03                                        ; $72b8: $fe $03
-    jr z, jr_001_72df                             ; $72ba: $28 $23
+    jr z, .HandleDualHeldInputClearAction         ; $72ba: $28 $23
 
-    ld a, [$d804]                                 ; $72bc: $fa $04 $d8
+    ld a, [rPuzzleCellPendingActionMode]          ; $72bc: $fa $04 $d8
     and a                                         ; $72bf: $a7
-    jr z, jr_001_72cc                             ; $72c0: $28 $0a
+    jr z, .RouteHeldInputToFillOrMarkX            ; $72c0: $28 $0a
 
-    ld a, [$c31a]                                 ; $72c2: $fa $1a $c3
+    ld a, [rInputButtonsHeld]                     ; $72c2: $fa $1a $c3
     and $03                                       ; $72c5: $e6 $03
     ret nz                                        ; $72c7: $c0
 
-    ld [$d804], a                                 ; $72c8: $ea $04 $d8
+    ld [rPuzzleCellPendingActionMode], a          ; $72c8: $ea $04 $d8
     ret                                           ; $72cb: $c9
 
 
-jr_001_72cc:
-    ld a, [$c31a]                                 ; $72cc: $fa $1a $c3
+.RouteHeldInputToFillOrMarkX:
+    ld a, [rInputButtonsHeld]                     ; $72cc: $fa $1a $c3
     and $01                                       ; $72cf: $e6 $01
-    jr z, jr_001_72d6                             ; $72d1: $28 $03
+    jr z, .RouteHeldInputToMarkX                  ; $72d1: $28 $03
 
-    jp Jump_001_72e5                              ; $72d3: $c3 $e5 $72
+    jp ProcessPuzzleCellActionInput_ApplyFillAction; $72d3: $c3 $e5 $72
 
 
-jr_001_72d6:
-    ld a, [$c31a]                                 ; $72d6: $fa $1a $c3
+.RouteHeldInputToMarkX:
+    ld a, [rInputButtonsHeld]                     ; $72d6: $fa $1a $c3
     and $02                                       ; $72d9: $e6 $02
     ret z                                         ; $72db: $c8
 
-    jp Jump_001_741c                              ; $72dc: $c3 $1c $74
+    jp ProcessPuzzleCellActionInput_ApplyMarkXAction; $72dc: $c3 $1c $74
 
 
-jr_001_72df:
-    ld [$d804], a                                 ; $72df: $ea $04 $d8
-    jp Jump_001_749a                              ; $72e2: $c3 $9a $74
+.HandleDualHeldInputClearAction:
+    ld [rPuzzleCellPendingActionMode], a          ; $72df: $ea $04 $d8
+    jp ProcessPuzzleCellActionInput_ClearCellState; $72e2: $c3 $9a $74
 
 
-Jump_001_72e5:
+ProcessPuzzleCellActionInput_ApplyFillAction::
     ld a, [hl]                                    ; $72e5: $7e
     and $06                                       ; $72e6: $e6 $06
     cp $02                                        ; $72e8: $fe $02
@@ -7800,90 +7800,90 @@ Jump_001_72e5:
     and a                                         ; $72fb: $a7
     ret nz                                        ; $72fc: $c0
 
-    ld a, [$d636]                                 ; $72fd: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $72fd: $fa $36 $d6
     ld e, a                                       ; $7300: $5f
     sla a                                         ; $7301: $cb $27
     add e                                         ; $7303: $83
     sla a                                         ; $7304: $cb $27
     add $32                                       ; $7306: $c6 $32
     ld [$d826], a                                 ; $7308: $ea $26 $d8
-    ld a, [$d637]                                 ; $730b: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $730b: $fa $37 $d6
     ld e, a                                       ; $730e: $5f
     sla a                                         ; $730f: $cb $27
     add e                                         ; $7311: $83
     sla a                                         ; $7312: $cb $27
     add $2b                                       ; $7314: $c6 $2b
     ld [$d827], a                                 ; $7316: $ea $27 $d8
-    ld a, [$d822]                                 ; $7319: $fa $22 $d8
+    ld a, [rPendingCellEffectDelay]               ; $7319: $fa $22 $d8
     and a                                         ; $731c: $a7
-    jr z, jr_001_7328                             ; $731d: $28 $09
+    jr z, .BeginFillEffectSequence                ; $731d: $28 $09
 
-    ld a, [$d823]                                 ; $731f: $fa $23 $d8
-    call Call_001_7549                            ; $7322: $cd $49 $75
+    ld a, [rPendingCellEffectCode]                ; $731f: $fa $23 $d8
+    call EmitCellEffectFrameCopy                  ; $7322: $cd $49 $75
     call Call_001_7529                            ; $7325: $cd $29 $75
 
-jr_001_7328:
-    ld a, [$d636]                                 ; $7328: $fa $36 $d6
-    ld [$d824], a                                 ; $732b: $ea $24 $d8
-    ld a, [$d637]                                 ; $732e: $fa $37 $d6
-    ld [$d825], a                                 ; $7331: $ea $25 $d8
+.BeginFillEffectSequence:
+    ld a, [rPuzzleCursorColumn]                   ; $7328: $fa $36 $d6
+    ld [rCellEffectTargetColumn], a               ; $732b: $ea $24 $d8
+    ld a, [rPuzzleCursorRow]                      ; $732e: $fa $37 $d6
+    ld [rCellEffectTargetRow], a                  ; $7331: $ea $25 $d8
     xor a                                         ; $7334: $af
-    ld [$d822], a                                 ; $7335: $ea $22 $d8
+    ld [rPendingCellEffectDelay], a               ; $7335: $ea $22 $d8
     ld a, [hl]                                    ; $7338: $7e
     and $06                                       ; $7339: $e6 $06
     srl a                                         ; $733b: $cb $3f
     swap a                                        ; $733d: $cb $37
-    ld [$d823], a                                 ; $733f: $ea $23 $d8
+    ld [rPendingCellEffectCode], a                ; $733f: $ea $23 $d8
     ld a, $04                                     ; $7342: $3e $04
     ld [rMessageStepSequenceState], a             ; $7344: $ea $21 $d8
     xor a                                         ; $7347: $af
     ld [rMessageStepSequenceCursor], a            ; $7348: $ea $20 $d8
     ld [rMessageStepDelayTimer], a                ; $734b: $ea $1f $d8
     xor a                                         ; $734e: $af
-    ld [$d822], a                                 ; $734f: $ea $22 $d8
+    ld [rPendingCellEffectDelay], a               ; $734f: $ea $22 $d8
     ld c, $09                                     ; $7352: $0e $09
     ld a, $02                                     ; $7354: $3e $02
     call TODO_Bank0FDispatcher                    ; $7356: $cd $b6 $03
     xor a                                         ; $7359: $af
 
-jr_001_735a:
+.RunFillActionAnimationLoop:
     push af                                       ; $735a: $f5
     call Call_000_05c5                            ; $735b: $cd $c5 $05
     rst RST_08                                    ; $735e: $cf
     call Call_001_7d81                            ; $735f: $cd $81 $7d
-    call Call_001_713e                            ; $7362: $cd $3e $71
+    call DrawPuzzleCursorSpritesAndTickStepSequence; $7362: $cd $3e $71
     ld a, [rGameState_Current]                    ; $7365: $fa $34 $d6
     cp $06                                        ; $7368: $fe $06
-    jr z, jr_001_736f                             ; $736a: $28 $03
+    jr z, .TickFillActionFrameDelay               ; $736a: $28 $03
 
     call Call_001_7aea                            ; $736c: $cd $ea $7a
 
-jr_001_736f:
-    call AdvanceMessageScriptDelay                ; $736f: $cd $18 $79
+.TickFillActionFrameDelay:
+    call TickMarioBlinkAnimation                  ; $736f: $cd $18 $79
     pop af                                        ; $7372: $f1
     push af                                       ; $7373: $f5
     cp $10                                        ; $7374: $fe $10
-    jr nz, jr_001_7382                            ; $7376: $20 $0a
+    jr nz, .CheckLateFillEffectTrigger            ; $7376: $20 $0a
 
     ld a, $10                                     ; $7378: $3e $10
-    call Call_001_7549                            ; $737a: $cd $49 $75
+    call EmitCellEffectFrameCopy                  ; $737a: $cd $49 $75
     call Call_001_7529                            ; $737d: $cd $29 $75
-    jr jr_001_7391                                ; $7380: $18 $0f
+    jr .AdvanceFillAnimationFrame                 ; $7380: $18 $0f
 
-jr_001_7382:
+.CheckLateFillEffectTrigger:
     cp $54                                        ; $7382: $fe $54
-    jr nz, jr_001_7391                            ; $7384: $20 $0b
+    jr nz, .AdvanceFillAnimationFrame             ; $7384: $20 $0b
 
-    ld a, [$d823]                                 ; $7386: $fa $23 $d8
-    call Call_001_7549                            ; $7389: $cd $49 $75
+    ld a, [rPendingCellEffectCode]                ; $7386: $fa $23 $d8
+    call EmitCellEffectFrameCopy                  ; $7389: $cd $49 $75
     ld a, $10                                     ; $738c: $3e $10
     call Call_001_7529                            ; $738e: $cd $29 $75
 
-jr_001_7391:
+.AdvanceFillAnimationFrame:
     pop af                                        ; $7391: $f1
     inc a                                         ; $7392: $3c
     cp $58                                        ; $7393: $fe $58
-    jr nz, jr_001_735a                            ; $7395: $20 $c3
+    jr nz, .RunFillActionAnimationLoop            ; $7395: $20 $c3
 
     call Call_001_7c88                            ; $7397: $cd $88 $7c
     ld hl, $d80f                                  ; $739a: $21 $0f $d8
@@ -7905,12 +7905,12 @@ jr_001_73aa:
     ld [$d803], a                                 ; $73ae: $ea $03 $d8
     set 1, [hl]                                   ; $73b1: $cb $ce
     res 2, [hl]                                   ; $73b3: $cb $96
-    ld a, [$d822]                                 ; $73b5: $fa $22 $d8
+    ld a, [rPendingCellEffectDelay]               ; $73b5: $fa $22 $d8
     and a                                         ; $73b8: $a7
     jr z, jr_001_73c4                             ; $73b9: $28 $09
 
-    ld a, [$d823]                                 ; $73bb: $fa $23 $d8
-    call Call_001_7549                            ; $73be: $cd $49 $75
+    ld a, [rPendingCellEffectCode]                ; $73bb: $fa $23 $d8
+    call EmitCellEffectFrameCopy                  ; $73be: $cd $49 $75
     call Call_001_7529                            ; $73c1: $cd $29 $75
 
 jr_001_73c4:
@@ -7927,13 +7927,13 @@ jr_001_73c4:
     ld [rMessageStepSequenceCursor], a            ; $73d5: $ea $20 $d8
     ld [rMessageStepDelayTimer], a                ; $73d8: $ea $1f $d8
     ld a, $08                                     ; $73db: $3e $08
-    ld [$d822], a                                 ; $73dd: $ea $22 $d8
+    ld [rPendingCellEffectDelay], a               ; $73dd: $ea $22 $d8
     ld a, $10                                     ; $73e0: $3e $10
-    ld [$d823], a                                 ; $73e2: $ea $23 $d8
-    ld a, [$d636]                                 ; $73e5: $fa $36 $d6
-    ld [$d824], a                                 ; $73e8: $ea $24 $d8
-    ld a, [$d637]                                 ; $73eb: $fa $37 $d6
-    ld [$d825], a                                 ; $73ee: $ea $25 $d8
+    ld [rPendingCellEffectCode], a                ; $73e2: $ea $23 $d8
+    ld a, [rPuzzleCursorColumn]                   ; $73e5: $fa $36 $d6
+    ld [rCellEffectTargetColumn], a               ; $73e8: $ea $24 $d8
+    ld a, [rPuzzleCursorRow]                      ; $73eb: $fa $37 $d6
+    ld [rCellEffectTargetRow], a                  ; $73ee: $ea $25 $d8
     ret                                           ; $73f1: $c9
 
 
@@ -7950,52 +7950,52 @@ jr_001_73f2:
 
 jr_001_7405:
     ld a, $07                                     ; $7405: $3e $07
-    ld [$d822], a                                 ; $7407: $ea $22 $d8
+    ld [rPendingCellEffectDelay], a               ; $7407: $ea $22 $d8
     ld a, $10                                     ; $740a: $3e $10
-    ld [$d823], a                                 ; $740c: $ea $23 $d8
-    ld a, [$d636]                                 ; $740f: $fa $36 $d6
-    ld [$d824], a                                 ; $7412: $ea $24 $d8
-    ld a, [$d637]                                 ; $7415: $fa $37 $d6
-    ld [$d825], a                                 ; $7418: $ea $25 $d8
+    ld [rPendingCellEffectCode], a                ; $740c: $ea $23 $d8
+    ld a, [rPuzzleCursorColumn]                   ; $740f: $fa $36 $d6
+    ld [rCellEffectTargetColumn], a               ; $7412: $ea $24 $d8
+    ld a, [rPuzzleCursorRow]                      ; $7415: $fa $37 $d6
+    ld [rCellEffectTargetRow], a                  ; $7418: $ea $25 $d8
     ret                                           ; $741b: $c9
 
 
-Jump_001_741c:
+ProcessPuzzleCellActionInput_ApplyMarkXAction::
     ld a, [hl]                                    ; $741c: $7e
     and $06                                       ; $741d: $e6 $06
     cp $04                                        ; $741f: $fe $04
     ret z                                         ; $7421: $c8
 
     cp $02                                        ; $7422: $fe $02
-    jr nz, jr_001_7438                            ; $7424: $20 $12
+    jr nz, .ApplyMarkXBits                        ; $7424: $20 $12
 
     bit 0, [hl]                                   ; $7426: $cb $46
-    jr z, jr_001_7431                             ; $7428: $28 $07
+    jr z, .IncrementMarkedCellCounter             ; $7428: $28 $07
 
     ld a, [$d802]                                 ; $742a: $fa $02 $d8
     inc a                                         ; $742d: $3c
     ld [$d802], a                                 ; $742e: $ea $02 $d8
 
-jr_001_7431:
+.IncrementMarkedCellCounter:
     ld a, [$d803]                                 ; $7431: $fa $03 $d8
     inc a                                         ; $7434: $3c
     ld [$d803], a                                 ; $7435: $ea $03 $d8
 
-jr_001_7438:
+.ApplyMarkXBits:
     res 1, [hl]                                   ; $7438: $cb $8e
     set 2, [hl]                                   ; $743a: $cb $d6
-    ld a, [$d822]                                 ; $743c: $fa $22 $d8
+    ld a, [rPendingCellEffectDelay]               ; $743c: $fa $22 $d8
     and a                                         ; $743f: $a7
-    jr z, jr_001_744b                             ; $7440: $28 $09
+    jr z, .BeginMarkXEffectSequence               ; $7440: $28 $09
 
-    ld a, [$d823]                                 ; $7442: $fa $23 $d8
-    call Call_001_7549                            ; $7445: $cd $49 $75
+    ld a, [rPendingCellEffectCode]                ; $7442: $fa $23 $d8
+    call EmitCellEffectFrameCopy                  ; $7445: $cd $49 $75
     call Call_001_7529                            ; $7448: $cd $29 $75
 
-jr_001_744b:
+.BeginMarkXEffectSequence:
     ld a, [rMessageStepSequenceState]             ; $744b: $fa $21 $d8
     cp $03                                        ; $744e: $fe $03
-    jr z, jr_001_7475                             ; $7450: $28 $23
+    jr z, .TickMarkXEffectSequence                ; $7450: $28 $23
 
     ld a, $03                                     ; $7452: $3e $03
     ld [rMessageStepSequenceState], a             ; $7454: $ea $21 $d8
@@ -8003,72 +8003,72 @@ jr_001_744b:
     ld [rMessageStepSequenceCursor], a            ; $7458: $ea $20 $d8
     ld [rMessageStepDelayTimer], a                ; $745b: $ea $1f $d8
     ld a, $06                                     ; $745e: $3e $06
-    ld [$d822], a                                 ; $7460: $ea $22 $d8
+    ld [rPendingCellEffectDelay], a               ; $7460: $ea $22 $d8
     ld a, $20                                     ; $7463: $3e $20
-    ld [$d823], a                                 ; $7465: $ea $23 $d8
-    ld a, [$d636]                                 ; $7468: $fa $36 $d6
-    ld [$d824], a                                 ; $746b: $ea $24 $d8
-    ld a, [$d637]                                 ; $746e: $fa $37 $d6
-    ld [$d825], a                                 ; $7471: $ea $25 $d8
+    ld [rPendingCellEffectCode], a                ; $7465: $ea $23 $d8
+    ld a, [rPuzzleCursorColumn]                   ; $7468: $fa $36 $d6
+    ld [rCellEffectTargetColumn], a               ; $746b: $ea $24 $d8
+    ld a, [rPuzzleCursorRow]                      ; $746e: $fa $37 $d6
+    ld [rCellEffectTargetRow], a                  ; $7471: $ea $25 $d8
     ret                                           ; $7474: $c9
 
 
-jr_001_7475:
+.TickMarkXEffectSequence:
     ld a, [rMessageStepSequenceCursor]            ; $7475: $fa $20 $d8
     cp $02                                        ; $7478: $fe $02
-    jr c, jr_001_7483                             ; $747a: $38 $07
+    jr c, .QueueMarkXEffectFrame                  ; $747a: $38 $07
 
     xor a                                         ; $747c: $af
     ld [rMessageStepSequenceCursor], a            ; $747d: $ea $20 $d8
     ld [rMessageStepDelayTimer], a                ; $7480: $ea $1f $d8
 
-jr_001_7483:
+.QueueMarkXEffectFrame:
     ld a, $06                                     ; $7483: $3e $06
-    ld [$d822], a                                 ; $7485: $ea $22 $d8
+    ld [rPendingCellEffectDelay], a               ; $7485: $ea $22 $d8
     ld a, $20                                     ; $7488: $3e $20
-    ld [$d823], a                                 ; $748a: $ea $23 $d8
-    ld a, [$d636]                                 ; $748d: $fa $36 $d6
-    ld [$d824], a                                 ; $7490: $ea $24 $d8
-    ld a, [$d637]                                 ; $7493: $fa $37 $d6
-    ld [$d825], a                                 ; $7496: $ea $25 $d8
+    ld [rPendingCellEffectCode], a                ; $748a: $ea $23 $d8
+    ld a, [rPuzzleCursorColumn]                   ; $748d: $fa $36 $d6
+    ld [rCellEffectTargetColumn], a               ; $7490: $ea $24 $d8
+    ld a, [rPuzzleCursorRow]                      ; $7493: $fa $37 $d6
+    ld [rCellEffectTargetRow], a                  ; $7496: $ea $25 $d8
     ret                                           ; $7499: $c9
 
 
-Jump_001_749a:
+ProcessPuzzleCellActionInput_ClearCellState::
     ld a, [hl]                                    ; $749a: $7e
     and $06                                       ; $749b: $e6 $06
     ret z                                         ; $749d: $c8
 
     cp $02                                        ; $749e: $fe $02
-    jr nz, jr_001_74b4                            ; $74a0: $20 $12
+    jr nz, .ClearCellMarkBits                     ; $74a0: $20 $12
 
     bit 0, [hl]                                   ; $74a2: $cb $46
-    jr z, jr_001_74ad                             ; $74a4: $28 $07
+    jr z, .IncrementClearedCellCounter            ; $74a4: $28 $07
 
     ld a, [$d802]                                 ; $74a6: $fa $02 $d8
     inc a                                         ; $74a9: $3c
     ld [$d802], a                                 ; $74aa: $ea $02 $d8
 
-jr_001_74ad:
+.IncrementClearedCellCounter:
     ld a, [$d803]                                 ; $74ad: $fa $03 $d8
     inc a                                         ; $74b0: $3c
     ld [$d803], a                                 ; $74b1: $ea $03 $d8
 
-jr_001_74b4:
+.ClearCellMarkBits:
     res 1, [hl]                                   ; $74b4: $cb $8e
     res 2, [hl]                                   ; $74b6: $cb $96
-    ld a, [$d822]                                 ; $74b8: $fa $22 $d8
+    ld a, [rPendingCellEffectDelay]               ; $74b8: $fa $22 $d8
     and a                                         ; $74bb: $a7
-    jr z, jr_001_74c7                             ; $74bc: $28 $09
+    jr z, .BeginClearCellEffectSequence           ; $74bc: $28 $09
 
-    ld a, [$d823]                                 ; $74be: $fa $23 $d8
-    call Call_001_7549                            ; $74c1: $cd $49 $75
+    ld a, [rPendingCellEffectCode]                ; $74be: $fa $23 $d8
+    call EmitCellEffectFrameCopy                  ; $74c1: $cd $49 $75
     call Call_001_7529                            ; $74c4: $cd $29 $75
 
-jr_001_74c7:
+.BeginClearCellEffectSequence:
     ld a, [rMessageStepSequenceState]             ; $74c7: $fa $21 $d8
     cp $05                                        ; $74ca: $fe $05
-    jr z, jr_001_74f1                             ; $74cc: $28 $23
+    jr z, .TickClearCellEffectSequence            ; $74cc: $28 $23
 
     ld a, $05                                     ; $74ce: $3e $05
     ld [rMessageStepSequenceState], a             ; $74d0: $ea $21 $d8
@@ -8076,48 +8076,48 @@ jr_001_74c7:
     ld [rMessageStepSequenceCursor], a            ; $74d4: $ea $20 $d8
     ld [rMessageStepDelayTimer], a                ; $74d7: $ea $1f $d8
     ld a, $0c                                     ; $74da: $3e $0c
-    ld [$d822], a                                 ; $74dc: $ea $22 $d8
+    ld [rPendingCellEffectDelay], a               ; $74dc: $ea $22 $d8
     ld a, $00                                     ; $74df: $3e $00
-    ld [$d823], a                                 ; $74e1: $ea $23 $d8
-    ld a, [$d636]                                 ; $74e4: $fa $36 $d6
-    ld [$d824], a                                 ; $74e7: $ea $24 $d8
-    ld a, [$d637]                                 ; $74ea: $fa $37 $d6
-    ld [$d825], a                                 ; $74ed: $ea $25 $d8
+    ld [rPendingCellEffectCode], a                ; $74e1: $ea $23 $d8
+    ld a, [rPuzzleCursorColumn]                   ; $74e4: $fa $36 $d6
+    ld [rCellEffectTargetColumn], a               ; $74e7: $ea $24 $d8
+    ld a, [rPuzzleCursorRow]                      ; $74ea: $fa $37 $d6
+    ld [rCellEffectTargetRow], a                  ; $74ed: $ea $25 $d8
     ret                                           ; $74f0: $c9
 
 
-jr_001_74f1:
+.TickClearCellEffectSequence:
     ld a, [rMessageStepSequenceCursor]            ; $74f1: $fa $20 $d8
     cp $08                                        ; $74f4: $fe $08
-    jr c, jr_001_74ff                             ; $74f6: $38 $07
+    jr c, .QueueClearCellEffectFrame              ; $74f6: $38 $07
 
     xor a                                         ; $74f8: $af
     ld [rMessageStepSequenceCursor], a            ; $74f9: $ea $20 $d8
     ld [rMessageStepDelayTimer], a                ; $74fc: $ea $1f $d8
 
-jr_001_74ff:
+.QueueClearCellEffectFrame:
     ld a, $0c                                     ; $74ff: $3e $0c
-    ld [$d822], a                                 ; $7501: $ea $22 $d8
+    ld [rPendingCellEffectDelay], a               ; $7501: $ea $22 $d8
     ld a, $00                                     ; $7504: $3e $00
-    ld [$d823], a                                 ; $7506: $ea $23 $d8
-    ld a, [$d636]                                 ; $7509: $fa $36 $d6
-    ld [$d824], a                                 ; $750c: $ea $24 $d8
-    ld a, [$d637]                                 ; $750f: $fa $37 $d6
-    ld [$d825], a                                 ; $7512: $ea $25 $d8
+    ld [rPendingCellEffectCode], a                ; $7506: $ea $23 $d8
+    ld a, [rPuzzleCursorColumn]                   ; $7509: $fa $36 $d6
+    ld [rCellEffectTargetColumn], a               ; $750c: $ea $24 $d8
+    ld a, [rPuzzleCursorRow]                      ; $750f: $fa $37 $d6
+    ld [rCellEffectTargetRow], a                  ; $7512: $ea $25 $d8
     ret                                           ; $7515: $c9
 
 
-Call_001_7516:
-    ld a, [$d822]                                 ; $7516: $fa $22 $d8
+TickPendingCellActionEffect::
+    ld a, [rPendingCellEffectDelay]               ; $7516: $fa $22 $d8
     and a                                         ; $7519: $a7
     ret z                                         ; $751a: $c8
 
     dec a                                         ; $751b: $3d
-    ld [$d822], a                                 ; $751c: $ea $22 $d8
+    ld [rPendingCellEffectDelay], a               ; $751c: $ea $22 $d8
     ret nz                                        ; $751f: $c0
 
-    ld a, [$d823]                                 ; $7520: $fa $23 $d8
-    call Call_001_7549                            ; $7523: $cd $49 $75
+    ld a, [rPendingCellEffectCode]                ; $7520: $fa $23 $d8
+    call EmitCellEffectFrameCopy                  ; $7523: $cd $49 $75
     jp Jump_001_7529                              ; $7526: $c3 $29 $75
 
 
@@ -8149,46 +8149,46 @@ jr_001_7541:
     ret                                           ; $7548: $c9
 
 
-Call_001_7549:
+EmitCellEffectFrameCopy::
     push af                                       ; $7549: $f5
     push bc                                       ; $754a: $c5
     push de                                       ; $754b: $d5
     push hl                                       ; $754c: $e5
     push af                                       ; $754d: $f5
-    ld a, [$d810]                                 ; $754e: $fa $10 $d8
+    ld a, [rCellEffectFrameSourceBaseIndex]       ; $754e: $fa $10 $d8
     sla a                                         ; $7551: $cb $27
     ld c, a                                       ; $7553: $4f
     ld b, $00                                     ; $7554: $06 $00
-    ld hl, $7599                                  ; $7556: $21 $99 $75
+    ld hl, CellEffectFrameSourceBaseAddressTable  ; $7556: $21 $99 $75
     add hl, bc                                    ; $7559: $09
     pop af                                        ; $755a: $f1
     add [hl]                                      ; $755b: $86
-    ld [rMessageScriptCopyBankAddressLow], a      ; $755c: $ea $55 $c3
+    ld [rBGTileCopyBankAddressLow], a             ; $755c: $ea $55 $c3
     inc hl                                        ; $755f: $23
     ld a, $00                                     ; $7560: $3e $00
     adc [hl]                                      ; $7562: $8e
-    ld [rMessageScriptCopyBankAddressHigh], a     ; $7563: $ea $56 $c3
+    ld [rBGTileCopyBankAddressHigh], a            ; $7563: $ea $56 $c3
     ld a, $06                                     ; $7566: $3e $06
-    ld [rMessageScriptCopyBank], a                ; $7568: $ea $57 $c3
-    ld a, [$d824]                                 ; $756b: $fa $24 $d8
+    ld [rBGTileCopyBank], a                       ; $7568: $ea $57 $c3
+    ld a, [rCellEffectTargetColumn]               ; $756b: $fa $24 $d8
     ld e, a                                       ; $756e: $5f
     sla a                                         ; $756f: $cb $27
     add e                                         ; $7571: $83
     sla a                                         ; $7572: $cb $27
     add $3b                                       ; $7574: $c6 $3b
-    ld [rMessageScriptCopySourceX], a             ; $7576: $ea $51 $c3
+    ld [rBGTileCopySourceX], a                    ; $7576: $ea $51 $c3
     add $04                                       ; $7579: $c6 $04
-    ld [rMessageScriptCopyDestX], a               ; $757b: $ea $53 $c3
-    ld a, [$d825]                                 ; $757e: $fa $25 $d8
+    ld [rBGTileCopyDestX], a                      ; $757b: $ea $53 $c3
+    ld a, [rCellEffectTargetRow]                  ; $757e: $fa $25 $d8
     ld e, a                                       ; $7581: $5f
     sla a                                         ; $7582: $cb $27
     add e                                         ; $7584: $83
     sla a                                         ; $7585: $cb $27
     add $33                                       ; $7587: $c6 $33
-    ld [rMessageScriptCopySourceY], a             ; $7589: $ea $52 $c3
+    ld [rBGTileCopySourceY], a                    ; $7589: $ea $52 $c3
     add $04                                       ; $758c: $c6 $04
-    ld [rMessageScriptCopyDestY], a               ; $758e: $ea $54 $c3
-    call PrepareMessageScriptCopy                 ; $7591: $cd $b3 $08
+    ld [rBGTileCopyDestY], a                      ; $758e: $ea $54 $c3
+    call PrepareBGTileCopy                        ; $7591: $cd $b3 $08
     pop hl                                        ; $7594: $e1
     pop de                                        ; $7595: $d1
     pop bc                                        ; $7596: $c1
@@ -8196,79 +8196,53 @@ Call_001_7549:
     ret                                           ; $7598: $c9
 
 
-    nop                                           ; $7599: $00
-    ld e, b                                       ; $759a: $58
-    nop                                           ; $759b: $00
-    ld l, e                                       ; $759c: $6b
-    jr nc, jr_001_760a                            ; $759d: $30 $6b
-
-    ld h, b                                       ; $759f: $60
-    ld l, e                                       ; $75a0: $6b
-    sub b                                         ; $75a1: $90
-    ld l, e                                       ; $75a2: $6b
-    ret nz                                        ; $75a3: $c0
-
-    ld l, e                                       ; $75a4: $6b
-    ldh a, [rOCPD]                                ; $75a5: $f0 $6b
-    jr nz, @+$6e                                  ; $75a7: $20 $6c
-
-    ld d, b                                       ; $75a9: $50
-    ld l, h                                       ; $75aa: $6c
-    add b                                         ; $75ab: $80
-    ld l, h                                       ; $75ac: $6c
-    or b                                          ; $75ad: $b0
-    ld l, h                                       ; $75ae: $6c
-    ldh [$ff6c], a                                ; $75af: $e0 $6c
-    db $10                                        ; $75b1: $10
-    ld l, l                                       ; $75b2: $6d
-    ld b, b                                       ; $75b3: $40
-    ld l, l                                       ; $75b4: $6d
-    ld [hl], b                                    ; $75b5: $70
-    ld l, l                                       ; $75b6: $6d
-    and b                                         ; $75b7: $a0
-    ld l, l                                       ; $75b8: $6d
-    ret nc                                        ; $75b9: $d0
-
-    ld l, l                                       ; $75ba: $6d
-    nop                                           ; $75bb: $00
-    ld l, [hl]                                    ; $75bc: $6e
-    jr nc, @+$70                                  ; $75bd: $30 $6e
-
-    ld h, b                                       ; $75bf: $60
-    ld l, [hl]                                    ; $75c0: $6e
-    sub b                                         ; $75c1: $90
-    ld l, [hl]                                    ; $75c2: $6e
-    ret nz                                        ; $75c3: $c0
-
-    ld l, [hl]                                    ; $75c4: $6e
-    ldh a, [$ff6e]                                ; $75c5: $f0 $6e
-    jr nz, jr_001_7638                            ; $75c7: $20 $6f
-
-    ld d, b                                       ; $75c9: $50
-    ld l, a                                       ; $75ca: $6f
-    add b                                         ; $75cb: $80
-    ld l, a                                       ; $75cc: $6f
-    or b                                          ; $75cd: $b0
-    ld l, a                                       ; $75ce: $6f
+CellEffectFrameSourceBaseAddressTable::
+    db $00, $58
+    db $00, $6b
+    db $30, $6b
+    db $60, $6b
+    db $90, $6b
+    db $c0, $6b
+    db $f0, $6b
+    db $20, $6c
+    db $50, $6c
+    db $80, $6c
+    db $b0, $6c
+    db $e0, $6c
+    db $10, $6d
+    db $40, $6d
+    db $70, $6d
+    db $a0, $6d
+    db $d0, $6d
+    db $00, $6e
+    db $30, $6e
+    db $60, $6e
+    db $90, $6e
+    db $c0, $6e
+    db $f0, $6e
+    db $20, $6f
+    db $50, $6f
+    db $80, $6f
+    db $b0, $6f
 
 Call_001_75cf:
     push bc                                       ; $75cf: $c5
     push de                                       ; $75d0: $d5
     push hl                                       ; $75d1: $e5
-    ld [rMessageScriptCopyBankAddressLow], a      ; $75d2: $ea $55 $c3
+    ld [rBGTileCopyBankAddressLow], a             ; $75d2: $ea $55 $c3
     ld a, $58                                     ; $75d5: $3e $58
-    ld [rMessageScriptCopyBankAddressHigh], a     ; $75d7: $ea $56 $c3
+    ld [rBGTileCopyBankAddressHigh], a            ; $75d7: $ea $56 $c3
     ld a, $06                                     ; $75da: $3e $06
-    ld [rMessageScriptCopyBank], a                ; $75dc: $ea $57 $c3
+    ld [rBGTileCopyBank], a                       ; $75dc: $ea $57 $c3
     ld a, b                                       ; $75df: $78
-    ld [rMessageScriptCopySourceX], a             ; $75e0: $ea $51 $c3
+    ld [rBGTileCopySourceX], a                    ; $75e0: $ea $51 $c3
     add d                                         ; $75e3: $82
-    ld [rMessageScriptCopyDestX], a               ; $75e4: $ea $53 $c3
+    ld [rBGTileCopyDestX], a                      ; $75e4: $ea $53 $c3
     ld a, c                                       ; $75e7: $79
-    ld [rMessageScriptCopySourceY], a             ; $75e8: $ea $52 $c3
+    ld [rBGTileCopySourceY], a                    ; $75e8: $ea $52 $c3
     add e                                         ; $75eb: $83
-    ld [rMessageScriptCopyDestY], a               ; $75ec: $ea $54 $c3
-    call PrepareMessageScriptCopy                 ; $75ef: $cd $b3 $08
+    ld [rBGTileCopyDestY], a                      ; $75ec: $ea $54 $c3
+    call PrepareBGTileCopy                        ; $75ef: $cd $b3 $08
     pop hl                                        ; $75f2: $e1
     pop de                                        ; $75f3: $d1
     pop bc                                        ; $75f4: $c1
@@ -8286,8 +8260,6 @@ Call_001_75f6:
     call TODO_Bank0FDispatcher                    ; $7602: $cd $b6 $03
     call Call_000_0399                            ; $7605: $cd $99 $03
     ld c, $00                                     ; $7608: $0e $00
-
-jr_001_760a:
     ld a, $01                                     ; $760a: $3e $01
     call TODO_Bank0FDispatcher                    ; $760c: $cd $b6 $03
 
@@ -8295,12 +8267,12 @@ jr_001_760f:
     call Call_000_05c5                            ; $760f: $cd $c5 $05
     rst RST_08                                    ; $7612: $cf
     xor a                                         ; $7613: $af
-    ld [$c31a], a                                 ; $7614: $ea $1a $c3
-    ld [$c31e], a                                 ; $7617: $ea $1e $c3
-    ld [$c322], a                                 ; $761a: $ea $22 $c3
-    call Call_001_713e                            ; $761d: $cd $3e $71
-    call AdvanceMessageScriptDelay                ; $7620: $cd $18 $79
-    call Call_001_7516                            ; $7623: $cd $16 $75
+    ld [rInputButtonsHeld], a                     ; $7614: $ea $1a $c3
+    ld [rInputButtonsPressed], a                  ; $7617: $ea $1e $c3
+    ld [rInputButtonsPressedOrRepeated], a        ; $761a: $ea $22 $c3
+    call DrawPuzzleCursorSpritesAndTickStepSequence; $761d: $cd $3e $71
+    call TickMarioBlinkAnimation                  ; $7620: $cd $18 $79
+    call TickPendingCellActionEffect              ; $7623: $cd $16 $75
     ld a, [rMessageStepSequenceState]             ; $7626: $fa $21 $d8
     and a                                         ; $7629: $a7
     jr nz, jr_001_760f                            ; $762a: $20 $e3
@@ -8313,8 +8285,6 @@ jr_001_760f:
 
 Call_001_7635:
     ld a, [rCurrentGridSize]                      ; $7635: $fa $00 $d8
-
-jr_001_7638:
     cp $05                                        ; $7638: $fe $05
     jr nz, jr_001_763e                            ; $763a: $20 $02
 
@@ -8527,20 +8497,20 @@ jr_001_7746:
     push bc                                       ; $7746: $c5
     push hl                                       ; $7747: $e5
     ld a, l                                       ; $7748: $7d
-    ld [rMessageScriptCopyBankAddressLow], a      ; $7749: $ea $55 $c3
+    ld [rBGTileCopyBankAddressLow], a             ; $7749: $ea $55 $c3
     ld a, h                                       ; $774c: $7c
-    ld [rMessageScriptCopyBankAddressHigh], a     ; $774d: $ea $56 $c3
+    ld [rBGTileCopyBankAddressHigh], a            ; $774d: $ea $56 $c3
     ld a, $07                                     ; $7750: $3e $07
-    ld [rMessageScriptCopyBank], a                ; $7752: $ea $57 $c3
+    ld [rBGTileCopyBank], a                       ; $7752: $ea $57 $c3
     ld a, $3b                                     ; $7755: $3e $3b
-    ld [rMessageScriptCopySourceX], a             ; $7757: $ea $51 $c3
+    ld [rBGTileCopySourceX], a                    ; $7757: $ea $51 $c3
     add $1c                                       ; $775a: $c6 $1c
-    ld [rMessageScriptCopyDestX], a               ; $775c: $ea $53 $c3
+    ld [rBGTileCopyDestX], a                      ; $775c: $ea $53 $c3
     ld a, c                                       ; $775f: $79
-    ld [rMessageScriptCopySourceY], a             ; $7760: $ea $52 $c3
+    ld [rBGTileCopySourceY], a                    ; $7760: $ea $52 $c3
     add $0b                                       ; $7763: $c6 $0b
-    ld [rMessageScriptCopyDestY], a               ; $7765: $ea $54 $c3
-    call PrepareMessageScriptCopy                 ; $7768: $cd $b3 $08
+    ld [rBGTileCopyDestY], a                      ; $7765: $ea $54 $c3
+    call PrepareBGTileCopy                        ; $7768: $cd $b3 $08
     pop hl                                        ; $776b: $e1
     pop bc                                        ; $776c: $c1
     ld de, $0108                                  ; $776d: $11 $08 $01
@@ -8559,20 +8529,20 @@ jr_001_7779:
     jr nz, jr_001_7746                            ; $777f: $20 $c5
 
     ld a, l                                       ; $7781: $7d
-    ld [rMessageScriptCopyBankAddressLow], a      ; $7782: $ea $55 $c3
+    ld [rBGTileCopyBankAddressLow], a             ; $7782: $ea $55 $c3
     ld a, h                                       ; $7785: $7c
-    ld [rMessageScriptCopyBankAddressHigh], a     ; $7786: $ea $56 $c3
+    ld [rBGTileCopyBankAddressHigh], a            ; $7786: $ea $56 $c3
     ld a, $07                                     ; $7789: $3e $07
-    ld [rMessageScriptCopyBank], a                ; $778b: $ea $57 $c3
+    ld [rBGTileCopyBank], a                       ; $778b: $ea $57 $c3
     ld a, $3b                                     ; $778e: $3e $3b
-    ld [rMessageScriptCopySourceX], a             ; $7790: $ea $51 $c3
+    ld [rBGTileCopySourceX], a                    ; $7790: $ea $51 $c3
     add $1c                                       ; $7793: $c6 $1c
-    ld [rMessageScriptCopyDestX], a               ; $7795: $ea $53 $c3
+    ld [rBGTileCopyDestX], a                      ; $7795: $ea $53 $c3
     ld a, c                                       ; $7798: $79
-    ld [rMessageScriptCopySourceY], a             ; $7799: $ea $52 $c3
+    ld [rBGTileCopySourceY], a                    ; $7799: $ea $52 $c3
     add $04                                       ; $779c: $c6 $04
-    ld [rMessageScriptCopyDestY], a               ; $779e: $ea $54 $c3
-    call PrepareMessageScriptCopy                 ; $77a1: $cd $b3 $08
+    ld [rBGTileCopyDestY], a                      ; $779e: $ea $54 $c3
+    call PrepareBGTileCopy                        ; $77a1: $cd $b3 $08
     ret                                           ; $77a4: $c9
 
 
@@ -8587,20 +8557,20 @@ jr_001_77ab:
     push bc                                       ; $77ab: $c5
     push hl                                       ; $77ac: $e5
     ld a, l                                       ; $77ad: $7d
-    ld [rMessageScriptCopyBankAddressLow], a      ; $77ae: $ea $55 $c3
+    ld [rBGTileCopyBankAddressLow], a             ; $77ae: $ea $55 $c3
     ld a, h                                       ; $77b1: $7c
-    ld [rMessageScriptCopyBankAddressHigh], a     ; $77b2: $ea $56 $c3
+    ld [rBGTileCopyBankAddressHigh], a            ; $77b2: $ea $56 $c3
     ld a, $08                                     ; $77b5: $3e $08
-    ld [rMessageScriptCopyBank], a                ; $77b7: $ea $57 $c3
+    ld [rBGTileCopyBank], a                       ; $77b7: $ea $57 $c3
     ld a, $3b                                     ; $77ba: $3e $3b
-    ld [rMessageScriptCopySourceX], a             ; $77bc: $ea $51 $c3
+    ld [rBGTileCopySourceX], a                    ; $77bc: $ea $51 $c3
     add $3a                                       ; $77bf: $c6 $3a
-    ld [rMessageScriptCopyDestX], a               ; $77c1: $ea $53 $c3
+    ld [rBGTileCopyDestX], a                      ; $77c1: $ea $53 $c3
     ld a, c                                       ; $77c4: $79
-    ld [rMessageScriptCopySourceY], a             ; $77c5: $ea $52 $c3
+    ld [rBGTileCopySourceY], a                    ; $77c5: $ea $52 $c3
     add $0b                                       ; $77c8: $c6 $0b
-    ld [rMessageScriptCopyDestY], a               ; $77ca: $ea $54 $c3
-    call PrepareMessageScriptCopy                 ; $77cd: $cd $b3 $08
+    ld [rBGTileCopyDestY], a                      ; $77ca: $ea $54 $c3
+    call PrepareBGTileCopy                        ; $77cd: $cd $b3 $08
     pop hl                                        ; $77d0: $e1
     pop bc                                        ; $77d1: $c1
     ld de, $0108                                  ; $77d2: $11 $08 $01
@@ -8619,20 +8589,20 @@ jr_001_77de:
     jr nz, jr_001_77ab                            ; $77e4: $20 $c5
 
     ld a, l                                       ; $77e6: $7d
-    ld [rMessageScriptCopyBankAddressLow], a      ; $77e7: $ea $55 $c3
+    ld [rBGTileCopyBankAddressLow], a             ; $77e7: $ea $55 $c3
     ld a, h                                       ; $77ea: $7c
-    ld [rMessageScriptCopyBankAddressHigh], a     ; $77eb: $ea $56 $c3
+    ld [rBGTileCopyBankAddressHigh], a            ; $77eb: $ea $56 $c3
     ld a, $08                                     ; $77ee: $3e $08
-    ld [rMessageScriptCopyBank], a                ; $77f0: $ea $57 $c3
+    ld [rBGTileCopyBank], a                       ; $77f0: $ea $57 $c3
     ld a, $3b                                     ; $77f3: $3e $3b
-    ld [rMessageScriptCopySourceX], a             ; $77f5: $ea $51 $c3
+    ld [rBGTileCopySourceX], a                    ; $77f5: $ea $51 $c3
     add $3a                                       ; $77f8: $c6 $3a
-    ld [rMessageScriptCopyDestX], a               ; $77fa: $ea $53 $c3
+    ld [rBGTileCopyDestX], a                      ; $77fa: $ea $53 $c3
     ld a, c                                       ; $77fd: $79
-    ld [rMessageScriptCopySourceY], a             ; $77fe: $ea $52 $c3
+    ld [rBGTileCopySourceY], a                    ; $77fe: $ea $52 $c3
     add $0a                                       ; $7801: $c6 $0a
-    ld [rMessageScriptCopyDestY], a               ; $7803: $ea $54 $c3
-    call PrepareMessageScriptCopy                 ; $7806: $cd $b3 $08
+    ld [rBGTileCopyDestY], a                      ; $7803: $ea $54 $c3
+    call PrepareBGTileCopy                        ; $7806: $cd $b3 $08
     ret                                           ; $7809: $c9
 
 
@@ -8644,20 +8614,20 @@ jr_001_780f:
     push bc                                       ; $780f: $c5
     push hl                                       ; $7810: $e5
     ld a, l                                       ; $7811: $7d
-    ld [rMessageScriptCopyBankAddressLow], a      ; $7812: $ea $55 $c3
+    ld [rBGTileCopyBankAddressLow], a             ; $7812: $ea $55 $c3
     ld a, h                                       ; $7815: $7c
-    ld [rMessageScriptCopyBankAddressHigh], a     ; $7816: $ea $56 $c3
+    ld [rBGTileCopyBankAddressHigh], a            ; $7816: $ea $56 $c3
     ld a, $06                                     ; $7819: $3e $06
-    ld [rMessageScriptCopyBank], a                ; $781b: $ea $57 $c3
+    ld [rBGTileCopyBank], a                       ; $781b: $ea $57 $c3
     ld a, $3b                                     ; $781e: $3e $3b
-    ld [rMessageScriptCopySourceX], a             ; $7820: $ea $51 $c3
+    ld [rBGTileCopySourceX], a                    ; $7820: $ea $51 $c3
     add $58                                       ; $7823: $c6 $58
-    ld [rMessageScriptCopyDestX], a               ; $7825: $ea $53 $c3
+    ld [rBGTileCopyDestX], a                      ; $7825: $ea $53 $c3
     ld a, c                                       ; $7828: $79
-    ld [rMessageScriptCopySourceY], a             ; $7829: $ea $52 $c3
+    ld [rBGTileCopySourceY], a                    ; $7829: $ea $52 $c3
     add $0b                                       ; $782c: $c6 $0b
-    ld [rMessageScriptCopyDestY], a               ; $782e: $ea $54 $c3
-    call PrepareMessageScriptCopy                 ; $7831: $cd $b3 $08
+    ld [rBGTileCopyDestY], a                      ; $782e: $ea $54 $c3
+    call PrepareBGTileCopy                        ; $7831: $cd $b3 $08
     pop hl                                        ; $7834: $e1
     pop bc                                        ; $7835: $c1
     ld de, $0108                                  ; $7836: $11 $08 $01
@@ -8676,20 +8646,20 @@ jr_001_7842:
     jr nz, jr_001_780f                            ; $7848: $20 $c5
 
     ld a, l                                       ; $784a: $7d
-    ld [rMessageScriptCopyBankAddressLow], a      ; $784b: $ea $55 $c3
+    ld [rBGTileCopyBankAddressLow], a             ; $784b: $ea $55 $c3
     ld a, h                                       ; $784e: $7c
-    ld [rMessageScriptCopyBankAddressHigh], a     ; $784f: $ea $56 $c3
+    ld [rBGTileCopyBankAddressHigh], a            ; $784f: $ea $56 $c3
     ld a, $06                                     ; $7852: $3e $06
-    ld [rMessageScriptCopyBank], a                ; $7854: $ea $57 $c3
+    ld [rBGTileCopyBank], a                       ; $7854: $ea $57 $c3
     ld a, $3b                                     ; $7857: $3e $3b
-    ld [rMessageScriptCopySourceX], a             ; $7859: $ea $51 $c3
+    ld [rBGTileCopySourceX], a                    ; $7859: $ea $51 $c3
     add $58                                       ; $785c: $c6 $58
-    ld [rMessageScriptCopyDestX], a               ; $785e: $ea $53 $c3
+    ld [rBGTileCopyDestX], a                      ; $785e: $ea $53 $c3
     ld a, c                                       ; $7861: $79
-    ld [rMessageScriptCopySourceY], a             ; $7862: $ea $52 $c3
+    ld [rBGTileCopySourceY], a                    ; $7862: $ea $52 $c3
     add $04                                       ; $7865: $c6 $04
-    ld [rMessageScriptCopyDestY], a               ; $7867: $ea $54 $c3
-    call PrepareMessageScriptCopy                 ; $786a: $cd $b3 $08
+    ld [rBGTileCopyDestY], a                      ; $7867: $ea $54 $c3
+    call PrepareBGTileCopy                        ; $786a: $cd $b3 $08
     ret                                           ; $786d: $c9
 
 
@@ -8702,13 +8672,13 @@ jr_001_7873:
 
 jr_001_7875:
     ld a, b                                       ; $7875: $78
-    ld [$d824], a                                 ; $7876: $ea $24 $d8
+    ld [rCellEffectTargetColumn], a               ; $7876: $ea $24 $d8
     ld a, c                                       ; $7879: $79
-    ld [$d825], a                                 ; $787a: $ea $25 $d8
+    ld [rCellEffectTargetRow], a                  ; $787a: $ea $25 $d8
     ld a, [hl+]                                   ; $787d: $2a
     srl a                                         ; $787e: $cb $3f
     swap a                                        ; $7880: $cb $37
-    call Call_001_7549                            ; $7882: $cd $49 $75
+    call EmitCellEffectFrameCopy                  ; $7882: $cd $49 $75
     inc b                                         ; $7885: $04
     ld a, [rCurrentGridSize]                      ; $7886: $fa $00 $d8
     cp b                                          ; $7889: $b8
@@ -8732,9 +8702,9 @@ jr_001_7875:
 
 
 Call_001_78a2:
-    ld a, [$d636]                                 ; $78a2: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $78a2: $fa $36 $d6
     ld c, a                                       ; $78a5: $4f
-    ld a, [$d637]                                 ; $78a6: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $78a6: $fa $37 $d6
     ld b, a                                       ; $78a9: $47
     ld e, c                                       ; $78aa: $59
     ld d, $00                                     ; $78ab: $16 $00
@@ -8745,9 +8715,9 @@ Call_001_78a2:
 
 jr_001_78b4:
     ld a, c                                       ; $78b4: $79
-    ld [$d824], a                                 ; $78b5: $ea $24 $d8
+    ld [rCellEffectTargetColumn], a               ; $78b5: $ea $24 $d8
     ld a, b                                       ; $78b8: $78
-    ld [$d825], a                                 ; $78b9: $ea $25 $d8
+    ld [rCellEffectTargetRow], a                  ; $78b9: $ea $25 $d8
     ld a, [hl]                                    ; $78bc: $7e
     and $01                                       ; $78bd: $e6 $01
     push af                                       ; $78bf: $f5
@@ -8757,7 +8727,7 @@ jr_001_78b4:
     ld a, $20                                     ; $78c4: $3e $20
 
 jr_001_78c6:
-    call Call_001_7549                            ; $78c6: $cd $49 $75
+    call EmitCellEffectFrameCopy                  ; $78c6: $cd $49 $75
     pop af                                        ; $78c9: $f1
     jr z, jr_001_78d2                             ; $78ca: $28 $06
 
@@ -8787,9 +8757,9 @@ jr_001_78d6:
 
 jr_001_78ed:
     ld a, c                                       ; $78ed: $79
-    ld [$d824], a                                 ; $78ee: $ea $24 $d8
+    ld [rCellEffectTargetColumn], a               ; $78ee: $ea $24 $d8
     ld a, b                                       ; $78f1: $78
-    ld [$d825], a                                 ; $78f2: $ea $25 $d8
+    ld [rCellEffectTargetRow], a                  ; $78f2: $ea $25 $d8
     ld a, [hl]                                    ; $78f5: $7e
     and $01                                       ; $78f6: $e6 $01
     push af                                       ; $78f8: $f5
@@ -8799,7 +8769,7 @@ jr_001_78ed:
     ld a, $20                                     ; $78fd: $3e $20
 
 jr_001_78ff:
-    call Call_001_7549                            ; $78ff: $cd $49 $75
+    call EmitCellEffectFrameCopy                  ; $78ff: $cd $49 $75
     pop af                                        ; $7902: $f1
     jr z, jr_001_790b                             ; $7903: $28 $06
 
@@ -8821,38 +8791,38 @@ jr_001_790f:
     ret                                           ; $7917: $c9
 
 
-AdvanceMessageScriptDelay::
-    ld a, [$d817]                                 ; $7918: $fa $17 $d8
+TickMarioBlinkAnimation::
+    ld a, [rMarioBlinkAnimationDelay]             ; $7918: $fa $17 $d8
     and a                                         ; $791b: $a7
-    jr nz, .MessageDelayTick                      ; $791c: $20 $20
+    jr nz, .TickBlinkFrameDelay                   ; $791c: $20 $20
 
-    ld a, [$d818]                                 ; $791e: $fa $18 $d8
+    ld a, [rMarioBlinkAnimationSequenceCursor]    ; $791e: $fa $18 $d8
     ld c, a                                       ; $7921: $4f
     ld b, $00                                     ; $7922: $06 $00
 
-.FindNextDelayEntry:
-    ld hl, MessageScriptDelayTable                ; $7924: $21 $4e $79
+.FindNextBlinkFrameEntry:
+    ld hl, MarioBlinkFrameDelayAndSpriteIdTable   ; $7924: $21 $4e $79
     add hl, bc                                    ; $7927: $09
     ld a, [hl+]                                   ; $7928: $2a
     and a                                         ; $7929: $a7
-    jr nz, .LoadDelayEntry                        ; $792a: $20 $05
+    jr nz, .LoadBlinkFrameEntry                   ; $792a: $20 $05
 
     ld bc, $0000                                  ; $792c: $01 $00 $00
-    jr .FindNextDelayEntry                        ; $792f: $18 $f3
+    jr .FindNextBlinkFrameEntry                   ; $792f: $18 $f3
 
-.LoadDelayEntry:
-    ld [$d817], a                                 ; $7931: $ea $17 $d8
+.LoadBlinkFrameEntry:
+    ld [rMarioBlinkAnimationDelay], a             ; $7931: $ea $17 $d8
     ld a, [hl]                                    ; $7934: $7e
-    ld [$d816], a                                 ; $7935: $ea $16 $d8
+    ld [rMarioBlinkAnimationSpriteId], a          ; $7935: $ea $16 $d8
     inc c                                         ; $7938: $0c
     inc c                                         ; $7939: $0c
     ld a, c                                       ; $793a: $79
-    ld [$d818], a                                 ; $793b: $ea $18 $d8
+    ld [rMarioBlinkAnimationSequenceCursor], a    ; $793b: $ea $18 $d8
 
-.MessageDelayTick:
-    ld hl, $d817                                  ; $793e: $21 $17 $d8
+.TickBlinkFrameDelay:
+    ld hl, rMarioBlinkAnimationDelay              ; $793e: $21 $17 $d8
     dec [hl]                                      ; $7941: $35
-    ld a, [$d816]                                 ; $7942: $fa $16 $d8
+    ld a, [rMarioBlinkAnimationSpriteId]          ; $7942: $fa $16 $d8
     cp $ff                                        ; $7945: $fe $ff
     ret z                                         ; $7947: $c8
 
@@ -8860,19 +8830,22 @@ AdvanceMessageScriptDelay::
     jp CopyOAMSpriteById                          ; $794b: $c3 $ce $20
 
 
-MessageScriptDelayTable::
-    db $c0, $ff, $04
-    db $00, $04, $01
-    db $02, $00, $80
-    db $ff, $03, $00
-    db $05, $01, $02
-    db $00, $03, $ff
-    db $03, $00, $05
-    db $01, $02, $00
+MarioBlinkFrameDelayAndSpriteIdTable::
+    db $c0, $ff
+    db $04, $00
+    db $04, $01
+    db $02, $00
+    db $80, $ff
+    db $03, $00
+    db $05, $01
+    db $02, $00
+    db $03, $ff
+    db $03, $00
+    db $05, $01
+    db $02, $00
     db $00
 
-Jump_001_7967:
-jr_001_7967:
+TickMessageStepSequenceAndEmitSprite::
     ld a, [rMessageStepDelayTimer]                ; $7967: $fa $1f $d8
     and a                                         ; $796a: $a7
     jr nz, jr_001_79ba                            ; $796b: $20 $4d
@@ -8903,7 +8876,7 @@ jr_001_798b:
     cp $ff                                        ; $798b: $fe $ff
     jr nz, jr_001_79ac                            ; $798d: $20 $1d
 
-    ld a, [$c31a]                                 ; $798f: $fa $1a $c3
+    ld a, [rInputButtonsHeld]                     ; $798f: $fa $1a $c3
     and $03                                       ; $7992: $e6 $03
     jr z, jr_001_799e                             ; $7994: $28 $08
 
@@ -8919,7 +8892,7 @@ jr_001_799e:
     ld [rMessageStepDelayTimer], a                ; $79a3: $ea $1f $d8
     ld [rMessageStepSequenceCursor], a            ; $79a6: $ea $20 $d8
     pop hl                                        ; $79a9: $e1
-    jr jr_001_7967                                ; $79aa: $18 $bb
+    jr TickMessageStepSequenceAndEmitSprite       ; $79aa: $18 $bb
 
 jr_001_79ac:
     ld [rMessageStepDelayTimer], a                ; $79ac: $ea $1f $d8
@@ -8939,14 +8912,14 @@ jr_001_79ba:
     ret z                                         ; $79c3: $c8
 
     push af                                       ; $79c4: $f5
-    ld a, [$d636]                                 ; $79c5: $fa $36 $d6
+    ld a, [rPuzzleCursorColumn]                   ; $79c5: $fa $36 $d6
     ld e, a                                       ; $79c8: $5f
     sla a                                         ; $79c9: $cb $27
     add e                                         ; $79cb: $83
     sla a                                         ; $79cc: $cb $27
     add $3a                                       ; $79ce: $c6 $3a
     ld b, a                                       ; $79d0: $47
-    ld a, [$d637]                                 ; $79d1: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $79d1: $fa $37 $d6
     ld e, a                                       ; $79d4: $5f
     sla a                                         ; $79d5: $cb $27
     add e                                         ; $79d7: $83
@@ -9394,37 +9367,37 @@ Call_001_7c29:
     ld hl, $5840                                  ; $7c3c: $21 $40 $58
     add hl, de                                    ; $7c3f: $19
     ld a, l                                       ; $7c40: $7d
-    ld [rMessageScriptCopyBankAddressLow], a      ; $7c41: $ea $55 $c3
+    ld [rBGTileCopyBankAddressLow], a             ; $7c41: $ea $55 $c3
     ld a, h                                       ; $7c44: $7c
-    ld [rMessageScriptCopyBankAddressHigh], a     ; $7c45: $ea $56 $c3
+    ld [rBGTileCopyBankAddressHigh], a            ; $7c45: $ea $56 $c3
     ld a, $06                                     ; $7c48: $3e $06
-    ld [rMessageScriptCopyBank], a                ; $7c4a: $ea $57 $c3
+    ld [rBGTileCopyBank], a                       ; $7c4a: $ea $57 $c3
     ld a, b                                       ; $7c4d: $78
-    ld [rMessageScriptCopySourceX], a             ; $7c4e: $ea $51 $c3
+    ld [rBGTileCopySourceX], a                    ; $7c4e: $ea $51 $c3
     add $07                                       ; $7c51: $c6 $07
-    ld [rMessageScriptCopyDestX], a               ; $7c53: $ea $53 $c3
+    ld [rBGTileCopyDestX], a                      ; $7c53: $ea $53 $c3
     ld a, c                                       ; $7c56: $79
-    ld [rMessageScriptCopySourceY], a             ; $7c57: $ea $52 $c3
+    ld [rBGTileCopySourceY], a                    ; $7c57: $ea $52 $c3
     add $07                                       ; $7c5a: $c6 $07
-    ld [rMessageScriptCopyDestY], a               ; $7c5c: $ea $54 $c3
-    jp PrepareMessageScriptCopy                   ; $7c5f: $c3 $b3 $08
+    ld [rBGTileCopyDestY], a                      ; $7c5c: $ea $54 $c3
+    jp PrepareBGTileCopy                          ; $7c5f: $c3 $b3 $08
 
 
     ld a, $a0                                     ; $7c62: $3e $a0
-    ld [rMessageScriptCopyBankAddressLow], a      ; $7c64: $ea $55 $c3
+    ld [rBGTileCopyBankAddressLow], a             ; $7c64: $ea $55 $c3
     ld a, $5b                                     ; $7c67: $3e $5b
-    ld [rMessageScriptCopyBankAddressHigh], a     ; $7c69: $ea $56 $c3
+    ld [rBGTileCopyBankAddressHigh], a            ; $7c69: $ea $56 $c3
     ld a, $06                                     ; $7c6c: $3e $06
-    ld [rMessageScriptCopyBank], a                ; $7c6e: $ea $57 $c3
+    ld [rBGTileCopyBank], a                       ; $7c6e: $ea $57 $c3
     ld a, $08                                     ; $7c71: $3e $08
-    ld [rMessageScriptCopySourceX], a             ; $7c73: $ea $51 $c3
+    ld [rBGTileCopySourceX], a                    ; $7c73: $ea $51 $c3
     add $2f                                       ; $7c76: $c6 $2f
-    ld [rMessageScriptCopyDestX], a               ; $7c78: $ea $53 $c3
+    ld [rBGTileCopyDestX], a                      ; $7c78: $ea $53 $c3
     ld a, $26                                     ; $7c7b: $3e $26
-    ld [rMessageScriptCopySourceY], a             ; $7c7d: $ea $52 $c3
+    ld [rBGTileCopySourceY], a                    ; $7c7d: $ea $52 $c3
     add $09                                       ; $7c80: $c6 $09
-    ld [rMessageScriptCopyDestY], a               ; $7c82: $ea $54 $c3
-    jp PrepareMessageScriptCopy                   ; $7c85: $c3 $b3 $08
+    ld [rBGTileCopyDestY], a                      ; $7c82: $ea $54 $c3
+    jp PrepareBGTileCopy                          ; $7c85: $c3 $b3 $08
 
 
 Call_001_7c88:
@@ -9496,20 +9469,20 @@ Call_001_7ce3:
 
 Jump_001_7cf3:
     ld a, $00                                     ; $7cf3: $3e $00
-    ld [rMessageScriptCopyBankAddressLow], a      ; $7cf5: $ea $55 $c3
+    ld [rBGTileCopyBankAddressLow], a             ; $7cf5: $ea $55 $c3
     ld a, $63                                     ; $7cf8: $3e $63
-    ld [rMessageScriptCopyBankAddressHigh], a     ; $7cfa: $ea $56 $c3
+    ld [rBGTileCopyBankAddressHigh], a            ; $7cfa: $ea $56 $c3
     ld a, $07                                     ; $7cfd: $3e $07
-    ld [rMessageScriptCopyBank], a                ; $7cff: $ea $57 $c3
+    ld [rBGTileCopyBank], a                       ; $7cff: $ea $57 $c3
     ld a, $3c                                     ; $7d02: $3e $3c
-    ld [rMessageScriptCopySourceX], a             ; $7d04: $ea $51 $c3
+    ld [rBGTileCopySourceX], a                    ; $7d04: $ea $51 $c3
     add $1a                                       ; $7d07: $c6 $1a
-    ld [rMessageScriptCopyDestX], a               ; $7d09: $ea $53 $c3
+    ld [rBGTileCopyDestX], a                      ; $7d09: $ea $53 $c3
     ld a, $3a                                     ; $7d0c: $3e $3a
-    ld [rMessageScriptCopySourceY], a             ; $7d0e: $ea $52 $c3
+    ld [rBGTileCopySourceY], a                    ; $7d0e: $ea $52 $c3
     add $0f                                       ; $7d11: $c6 $0f
-    ld [rMessageScriptCopyDestY], a               ; $7d13: $ea $54 $c3
-    jp PrepareMessageScriptCopy                   ; $7d16: $c3 $b3 $08
+    ld [rBGTileCopyDestY], a                      ; $7d13: $ea $54 $c3
+    jp PrepareBGTileCopy                          ; $7d16: $c3 $b3 $08
 
 
 Jump_001_7d19:
@@ -9519,20 +9492,20 @@ Jump_001_7d19:
     ld bc, $0200                                  ; $7d21: $01 $00 $02
     call BankedTileCopyVRAMSafe                   ; $7d24: $cd $38 $05
     ld a, $00                                     ; $7d27: $3e $00
-    ld [rMessageScriptCopyBankAddressLow], a      ; $7d29: $ea $55 $c3
+    ld [rBGTileCopyBankAddressLow], a             ; $7d29: $ea $55 $c3
     ld a, $5b                                     ; $7d2c: $3e $5b
-    ld [rMessageScriptCopyBankAddressHigh], a     ; $7d2e: $ea $56 $c3
+    ld [rBGTileCopyBankAddressHigh], a            ; $7d2e: $ea $56 $c3
     ld a, $06                                     ; $7d31: $3e $06
-    ld [rMessageScriptCopyBank], a                ; $7d33: $ea $57 $c3
+    ld [rBGTileCopyBank], a                       ; $7d33: $ea $57 $c3
     ld a, $38                                     ; $7d36: $3e $38
-    ld [rMessageScriptCopySourceX], a             ; $7d38: $ea $51 $c3
+    ld [rBGTileCopySourceX], a                    ; $7d38: $ea $51 $c3
     add $3f                                       ; $7d3b: $c6 $3f
-    ld [rMessageScriptCopyDestX], a               ; $7d3d: $ea $53 $c3
+    ld [rBGTileCopyDestX], a                      ; $7d3d: $ea $53 $c3
     ld a, $49                                     ; $7d40: $3e $49
-    ld [rMessageScriptCopySourceY], a             ; $7d42: $ea $52 $c3
+    ld [rBGTileCopySourceY], a                    ; $7d42: $ea $52 $c3
     add $0f                                       ; $7d45: $c6 $0f
-    ld [rMessageScriptCopyDestY], a               ; $7d47: $ea $54 $c3
-    jp PrepareMessageScriptCopy                   ; $7d4a: $c3 $b3 $08
+    ld [rBGTileCopyDestY], a                      ; $7d47: $ea $54 $c3
+    jp PrepareBGTileCopy                          ; $7d4a: $c3 $b3 $08
 
 
 Jump_001_7d4d:
@@ -9542,20 +9515,20 @@ Jump_001_7d4d:
     ld bc, $0200                                  ; $7d55: $01 $00 $02
     call BankedTileCopyVRAMSafe                   ; $7d58: $cd $38 $05
     ld a, $00                                     ; $7d5b: $3e $00
-    ld [rMessageScriptCopyBankAddressLow], a      ; $7d5d: $ea $55 $c3
+    ld [rBGTileCopyBankAddressLow], a             ; $7d5d: $ea $55 $c3
     ld a, $5b                                     ; $7d60: $3e $5b
-    ld [rMessageScriptCopyBankAddressHigh], a     ; $7d62: $ea $56 $c3
+    ld [rBGTileCopyBankAddressHigh], a            ; $7d62: $ea $56 $c3
     ld a, $06                                     ; $7d65: $3e $06
-    ld [rMessageScriptCopyBank], a                ; $7d67: $ea $57 $c3
+    ld [rBGTileCopyBank], a                       ; $7d67: $ea $57 $c3
     ld a, $47                                     ; $7d6a: $3e $47
-    ld [rMessageScriptCopySourceX], a             ; $7d6c: $ea $51 $c3
+    ld [rBGTileCopySourceX], a                    ; $7d6c: $ea $51 $c3
     add $3f                                       ; $7d6f: $c6 $3f
-    ld [rMessageScriptCopyDestX], a               ; $7d71: $ea $53 $c3
+    ld [rBGTileCopyDestX], a                      ; $7d71: $ea $53 $c3
     ld a, $57                                     ; $7d74: $3e $57
-    ld [rMessageScriptCopySourceY], a             ; $7d76: $ea $52 $c3
+    ld [rBGTileCopySourceY], a                    ; $7d76: $ea $52 $c3
     add $0f                                       ; $7d79: $c6 $0f
-    ld [rMessageScriptCopyDestY], a               ; $7d7b: $ea $54 $c3
-    jp PrepareMessageScriptCopy                   ; $7d7e: $c3 $b3 $08
+    ld [rBGTileCopyDestY], a                      ; $7d7b: $ea $54 $c3
+    jp PrepareBGTileCopy                          ; $7d7e: $c3 $b3 $08
 
 
 Call_001_7d81:

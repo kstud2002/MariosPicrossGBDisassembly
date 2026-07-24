@@ -90,7 +90,7 @@ jr_002_409f:
     ld hl, $a38d                                  ; $40a5: $21 $8d $a3
     add hl, bc                                    ; $40a8: $09
     ld a, [hl]                                    ; $40a9: $7e
-    ld [$d637], a                                 ; $40aa: $ea $37 $d6
+    ld [rPuzzleCursorRow], a                      ; $40aa: $ea $37 $d6
     call Call_002_41f6                            ; $40ad: $cd $f6 $41
     call ClearShadowOAMBuffer                     ; $40b0: $cd $b6 $05
     ld b, $03                                     ; $40b3: $06 $03
@@ -136,7 +136,7 @@ GS03_StatePhase_01_TODO::
     ld hl, $4ec2                                  ; $4101: $21 $c2 $4e
     call SwitchBankToBAndJumpToHL                 ; $4104: $cd $de $05
     call Call_002_42be                            ; $4107: $cd $be $42
-    ld a, [$c31e]                                 ; $410a: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $410a: $fa $1e $c3
     and $09                                       ; $410d: $e6 $09
     jr z, jr_002_411d                             ; $410f: $28 $0c
 
@@ -149,7 +149,7 @@ GS03_StatePhase_01_TODO::
 
 
 jr_002_411d:
-    ld a, [$c31e]                                 ; $411d: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $411d: $fa $1e $c3
     and $02                                       ; $4120: $e6 $02
     ret z                                         ; $4122: $c8
 
@@ -198,7 +198,7 @@ jr_002_416f:
     ld b, $00                                     ; $4176: $06 $00
     ld hl, $a38d                                  ; $4178: $21 $8d $a3
     add hl, bc                                    ; $417b: $09
-    ld a, [$d637]                                 ; $417c: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $417c: $fa $37 $d6
     ld [hl], a                                    ; $417f: $77
     cp $02                                        ; $4180: $fe $02
     jr z, jr_002_418f                             ; $4182: $28 $0b
@@ -255,7 +255,7 @@ jr_002_41da:
     ld b, $00                                     ; $41e1: $06 $00
     ld hl, $a38d                                  ; $41e3: $21 $8d $a3
     add hl, bc                                    ; $41e6: $09
-    ld a, [$d637]                                 ; $41e7: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $41e7: $fa $37 $d6
     ld [hl], a                                    ; $41ea: $77
     xor a                                         ; $41eb: $af
     ld [rStatePhase_Current], a                   ; $41ec: $ea $35 $d6
@@ -461,12 +461,12 @@ jr_002_42be:
     and a                                         ; $42c1: $a7
     ret z                                         ; $42c2: $c8
 
-    ld a, [$c322]                                 ; $42c3: $fa $22 $c3
+    ld a, [rInputButtonsPressedOrRepeated]        ; $42c3: $fa $22 $c3
     and $c0                                       ; $42c6: $e6 $c0
     ret z                                         ; $42c8: $c8
 
     push af                                       ; $42c9: $f5
-    ld a, [$d637]                                 ; $42ca: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $42ca: $fa $37 $d6
     call Call_002_425a                            ; $42cd: $cd $5a $42
     rst RST_08                                    ; $42d0: $cf
     ld c, $0a                                     ; $42d1: $0e $0a
@@ -478,7 +478,7 @@ jr_002_42be:
 jr_002_42db:
     jr z, jr_002_42ee                             ; $42db: $28 $11
 
-    ld a, [$d637]                                 ; $42dd: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $42dd: $fa $37 $d6
     dec a                                         ; $42e0: $3d
     cp $ff                                        ; $42e1: $fe $ff
     jr nz, jr_002_42e8                            ; $42e3: $20 $03
@@ -486,12 +486,12 @@ jr_002_42db:
     ld a, [$d63b]                                 ; $42e5: $fa $3b $d6
 
 jr_002_42e8:
-    ld [$d637], a                                 ; $42e8: $ea $37 $d6
+    ld [rPuzzleCursorRow], a                      ; $42e8: $ea $37 $d6
     jp Jump_002_41f6                              ; $42eb: $c3 $f6 $41
 
 
 jr_002_42ee:
-    ld a, [$d637]                                 ; $42ee: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $42ee: $fa $37 $d6
     ld hl, $d63b                                  ; $42f1: $21 $3b $d6
     cp [hl]                                       ; $42f4: $be
     jr nz, jr_002_42f9                            ; $42f5: $20 $02
@@ -500,7 +500,7 @@ jr_002_42ee:
 
 jr_002_42f9:
     inc a                                         ; $42f9: $3c
-    ld [$d637], a                                 ; $42fa: $ea $37 $d6
+    ld [rPuzzleCursorRow], a                      ; $42fa: $ea $37 $d6
     jp Jump_002_41f6                              ; $42fd: $c3 $f6 $41
 
 
@@ -564,7 +564,7 @@ GS02_StatePhase_00_TODO::
     ld hl, $a078                                  ; $4376: $21 $78 $a0
     add hl, bc                                    ; $4379: $09
     ld a, [hl]                                    ; $437a: $7e
-    ld [$d637], a                                 ; $437b: $ea $37 $d6
+    ld [rPuzzleCursorRow], a                      ; $437b: $ea $37 $d6
     call Call_002_44b1                            ; $437e: $cd $b1 $44
     call ClearShadowOAMBuffer                     ; $4381: $cd $b6 $05
     ld b, $03                                     ; $4384: $06 $03
@@ -597,7 +597,7 @@ GS02_StatePhase_01_TODO::
     ld hl, $4ec2                                  ; $43bf: $21 $c2 $4e
     call SwitchBankToBAndJumpToHL                 ; $43c2: $cd $de $05
     call Call_002_45b1                            ; $43c5: $cd $b1 $45
-    ld a, [$c31e]                                 ; $43c8: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $43c8: $fa $1e $c3
     and $09                                       ; $43cb: $e6 $09
     jr z, jr_002_43db                             ; $43cd: $28 $0c
 
@@ -610,7 +610,7 @@ GS02_StatePhase_01_TODO::
 
 
 jr_002_43db:
-    ld a, [$c31e]                                 ; $43db: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $43db: $fa $1e $c3
     cp $02                                        ; $43de: $fe $02
     ret nz                                        ; $43e0: $c0
 
@@ -653,7 +653,7 @@ GS02_StatePhase_02_TODO::
     ld b, $00                                     ; $4432: $06 $00
     ld hl, $a078                                  ; $4434: $21 $78 $a0
     add hl, bc                                    ; $4437: $09
-    ld a, [$d637]                                 ; $4438: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $4438: $fa $37 $d6
     ld [hl], a                                    ; $443b: $77
     ld c, a                                       ; $443c: $4f
     ld b, $00                                     ; $443d: $06 $00
@@ -703,7 +703,7 @@ GS02_StatePhase_03_TODO::
     ld b, $00                                     ; $449c: $06 $00
     ld hl, $a078                                  ; $449e: $21 $78 $a0
     add hl, bc                                    ; $44a1: $09
-    ld a, [$d637]                                 ; $44a2: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $44a2: $fa $37 $d6
     ld [hl], a                                    ; $44a5: $77
     xor a                                         ; $44a6: $af
     ld [rStatePhase_Current], a                   ; $44a7: $ea $35 $d6
@@ -942,12 +942,12 @@ Call_002_4531:
     nop                                           ; $45b0: $00
 
 Call_002_45b1:
-    ld a, [$c322]                                 ; $45b1: $fa $22 $c3
+    ld a, [rInputButtonsPressedOrRepeated]        ; $45b1: $fa $22 $c3
     and $c0                                       ; $45b4: $e6 $c0
     ret z                                         ; $45b6: $c8
 
     push af                                       ; $45b7: $f5
-    ld a, [$d637]                                 ; $45b8: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $45b8: $fa $37 $d6
     call Call_002_4531                            ; $45bb: $cd $31 $45
     rst RST_08                                    ; $45be: $cf
     ld c, $0a                                     ; $45bf: $0e $0a
@@ -957,7 +957,7 @@ Call_002_45b1:
     and $40                                       ; $45c7: $e6 $40
     jr z, jr_002_45dc                             ; $45c9: $28 $11
 
-    ld a, [$d637]                                 ; $45cb: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $45cb: $fa $37 $d6
     dec a                                         ; $45ce: $3d
     cp $ff                                        ; $45cf: $fe $ff
     jr nz, jr_002_45d6                            ; $45d1: $20 $03
@@ -965,12 +965,12 @@ Call_002_45b1:
     ld a, [$d63b]                                 ; $45d3: $fa $3b $d6
 
 jr_002_45d6:
-    ld [$d637], a                                 ; $45d6: $ea $37 $d6
+    ld [rPuzzleCursorRow], a                      ; $45d6: $ea $37 $d6
     jp Jump_002_44b1                              ; $45d9: $c3 $b1 $44
 
 
 jr_002_45dc:
-    ld a, [$d637]                                 ; $45dc: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $45dc: $fa $37 $d6
     ld hl, $d63b                                  ; $45df: $21 $3b $d6
     cp [hl]                                       ; $45e2: $be
     jr nz, jr_002_45e7                            ; $45e3: $20 $02
@@ -979,7 +979,7 @@ jr_002_45dc:
 
 jr_002_45e7:
     inc a                                         ; $45e7: $3c
-    ld [$d637], a                                 ; $45e8: $ea $37 $d6
+    ld [rPuzzleCursorRow], a                      ; $45e8: $ea $37 $d6
     jp Jump_002_44b1                              ; $45eb: $c3 $b1 $44
 
 
@@ -1042,7 +1042,7 @@ StatePointer_0a::
     ld a, $3c                                     ; $463d: $3e $3c
     ld bc, $4038                                  ; $463f: $01 $38 $40
     call CopyOAMSpriteById                        ; $4642: $cd $ce $20
-    ld a, [$c322]                                 ; $4645: $fa $22 $c3
+    ld a, [rInputButtonsPressedOrRepeated]        ; $4645: $fa $22 $c3
     and $c0                                       ; $4648: $e6 $c0
     jr z, jr_002_466f                             ; $464a: $28 $23
 
@@ -1084,7 +1084,7 @@ jr_002_466f:
     ld a, $3f                                     ; $467d: $3e $3f
     ld bc, $4038                                  ; $467f: $01 $38 $40
     call CopyOAMSpriteById                        ; $4682: $cd $ce $20
-    ld a, [$c322]                                 ; $4685: $fa $22 $c3
+    ld a, [rInputButtonsPressedOrRepeated]        ; $4685: $fa $22 $c3
     and $c0                                       ; $4688: $e6 $c0
     jr z, jr_002_46af                             ; $468a: $28 $23
 
@@ -1126,7 +1126,7 @@ jr_002_46af:
     ld a, $3e                                     ; $46bd: $3e $3e
     ld bc, $4038                                  ; $46bf: $01 $38 $40
     call CopyOAMSpriteById                        ; $46c2: $cd $ce $20
-    ld a, [$c322]                                 ; $46c5: $fa $22 $c3
+    ld a, [rInputButtonsPressedOrRepeated]        ; $46c5: $fa $22 $c3
     and $c0                                       ; $46c8: $e6 $c0
     jr z, jr_002_4706                             ; $46ca: $28 $3a
 
@@ -1183,7 +1183,7 @@ jr_002_4706:
     ld a, $3f                                     ; $471a: $3e $3f
     ld bc, $4038                                  ; $471c: $01 $38 $40
     call CopyOAMSpriteById                        ; $471f: $cd $ce $20
-    ld a, [$c322]                                 ; $4722: $fa $22 $c3
+    ld a, [rInputButtonsPressedOrRepeated]        ; $4722: $fa $22 $c3
     and $c0                                       ; $4725: $e6 $c0
     jr z, jr_002_474c                             ; $4727: $28 $23
 
@@ -1264,7 +1264,7 @@ GS01_StatePhase_00_DataSelectScreenInit::
     ld a, $02                                     ; $47a7: $3e $02
     call $4ad5                                    ; $47a9: $cd $d5 $4a
     ld a, [$a065]                                 ; $47ac: $fa $65 $a0
-    ld [$d637], a                                 ; $47af: $ea $37 $d6
+    ld [rPuzzleCursorRow], a                      ; $47af: $ea $37 $d6
     call LoadPuzzleData                           ; $47b2: $cd $8e $49
     call ClearShadowOAMBuffer                     ; $47b5: $cd $b6 $05
     ld b, $03                                     ; $47b8: $06 $03
@@ -1297,7 +1297,7 @@ GS01_StatePhase_01_DataSelectScreenIdle::
     ld hl, $4ea6                                  ; $47f3: $21 $a6 $4e
     call SwitchBankToBAndJumpToHL                 ; $47f6: $cd $de $05
     call $4c1c                                    ; $47f9: $cd $1c $4c
-    ld a, [$c31a]                                 ; $47fc: $fa $1a $c3
+    ld a, [rInputButtonsHeld]                     ; $47fc: $fa $1a $c3
     bit 2, a                                      ; $47ff: $cb $57
     jr z, jr_002_4809                             ; $4801: $28 $06
 
@@ -1308,7 +1308,7 @@ GS01_StatePhase_01_DataSelectScreenIdle::
 
 
 jr_002_4809:
-    ld a, [$c31e]                                 ; $4809: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $4809: $fa $1e $c3
     and $09                                       ; $480c: $e6 $09
     jr z, jr_002_481c                             ; $480e: $28 $0c
 
@@ -1337,7 +1337,7 @@ jr_002_4826:
     bit 4, a                                      ; $4831: $cb $67
     jr nz, jr_002_4846                            ; $4833: $20 $11
 
-    ld a, [$d637]                                 ; $4835: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $4835: $fa $37 $d6
     swap a                                        ; $4838: $cb $37
     sla a                                         ; $483a: $cb $27
     add $10                                       ; $483c: $c6 $10
@@ -1347,11 +1347,11 @@ jr_002_4826:
     call CopyOAMSpriteById                        ; $4843: $cd $ce $20
 
 jr_002_4846:
-    ld a, [$c31e]                                 ; $4846: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $4846: $fa $1e $c3
     bit 0, a                                      ; $4849: $cb $47
     jr z, jr_002_4898                             ; $484b: $28 $4b
 
-    ld a, [$d637]                                 ; $484d: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $484d: $fa $37 $d6
     ld c, a                                       ; $4850: $4f
     ld b, $00                                     ; $4851: $06 $00
     ld hl, $48a2                                  ; $4853: $21 $a2 $48
@@ -1417,7 +1417,7 @@ jr_002_4881:
 
 jr_002_488d:
     call Call_000_1b1f                            ; $488d: $cd $1f $1b
-    ld a, [$d637]                                 ; $4890: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $4890: $fa $37 $d6
     call LoadPuzzleData                           ; $4893: $cd $8e $49
 
 jr_002_4896:
@@ -1592,7 +1592,7 @@ GS01_StatePhase_02_DataSelectScreenFinish::
     ld de, $0053                                  ; $4963: $11 $53 $00
     call Call_000_044e                            ; $4966: $cd $4e $04
     call Call_000_0483                            ; $4969: $cd $83 $04
-    ld a, [$d637]                                 ; $496c: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $496c: $fa $37 $d6
     ld [$a065], a                                 ; $496f: $ea $65 $a0
     ld c, a                                       ; $4972: $4f
     ld b, $00                                     ; $4973: $06 $00
@@ -2110,7 +2110,7 @@ Jump_002_4b96:
     ret z                                         ; $4c21: $c8
 
     push af                                       ; $4c22: $f5
-    ld a, [$d637]                                 ; $4c23: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $4c23: $fa $37 $d6
     call $4ad5                                    ; $4c26: $cd $d5 $4a
     rst RST_08                                    ; $4c29: $cf
     ld c, $0a                                     ; $4c2a: $0e $0a
@@ -2120,7 +2120,7 @@ Jump_002_4b96:
     and $40                                       ; $4c32: $e6 $40
     jr z, jr_002_4c46                             ; $4c34: $28 $10
 
-    ld a, [$d637]                                 ; $4c36: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $4c36: $fa $37 $d6
     dec a                                         ; $4c39: $3d
     cp $ff                                        ; $4c3a: $fe $ff
     jr nz, jr_002_4c40                            ; $4c3c: $20 $02
@@ -2128,12 +2128,12 @@ Jump_002_4b96:
     ld a, $02                                     ; $4c3e: $3e $02
 
 jr_002_4c40:
-    ld [$d637], a                                 ; $4c40: $ea $37 $d6
+    ld [rPuzzleCursorRow], a                      ; $4c40: $ea $37 $d6
     jp LoadPuzzleData                             ; $4c43: $c3 $8e $49
 
 
 jr_002_4c46:
-    ld a, [$d637]                                 ; $4c46: $fa $37 $d6
+    ld a, [rPuzzleCursorRow]                      ; $4c46: $fa $37 $d6
     inc a                                         ; $4c49: $3c
     cp $03                                        ; $4c4a: $fe $03
     jr nz, jr_002_4c4f                            ; $4c4c: $20 $01
@@ -2141,7 +2141,7 @@ jr_002_4c46:
     xor a                                         ; $4c4e: $af
 
 jr_002_4c4f:
-    ld [$d637], a                                 ; $4c4f: $ea $37 $d6
+    ld [rPuzzleCursorRow], a                      ; $4c4f: $ea $37 $d6
     jp LoadPuzzleData                             ; $4c52: $c3 $8e $49
 
 
@@ -2314,7 +2314,7 @@ Call_002_4d63:
 GS07_StatePhase_01_TODO::
     call Call_002_5298                            ; $4d8e: $cd $98 $52
     call Call_002_4ddc                            ; $4d91: $cd $dc $4d
-    ld a, [$c31e]                                 ; $4d94: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $4d94: $fa $1e $c3
     and $09                                       ; $4d97: $e6 $09
     jr z, jr_002_4db8                             ; $4d99: $28 $1d
 
@@ -2334,7 +2334,7 @@ GS07_StatePhase_01_TODO::
 
 
 jr_002_4db8:
-    ld a, [$c31e]                                 ; $4db8: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $4db8: $fa $1e $c3
     and $02                                       ; $4dbb: $e6 $02
     ret z                                         ; $4dbd: $c8
 
@@ -2425,7 +2425,7 @@ jr_002_4e34:
     pop af                                        ; $4e3a: $f1
 
 jr_002_4e3b:
-    ld a, [$c31e]                                 ; $4e3b: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $4e3b: $fa $1e $c3
     bit 3, a                                      ; $4e3e: $cb $5f
     jr nz, jr_002_4e4b                            ; $4e40: $20 $09
 
@@ -2559,7 +2559,7 @@ jr_002_4e4b:
     add d                                         ; $4ee0: $82
 
 Call_002_4ee1:
-    ld a, [$c322]                                 ; $4ee1: $fa $22 $c3
+    ld a, [rInputButtonsPressedOrRepeated]        ; $4ee1: $fa $22 $c3
     and $c0                                       ; $4ee4: $e6 $c0
     jr z, jr_002_4f13                             ; $4ee6: $28 $2b
 
@@ -2571,7 +2571,7 @@ Call_002_4ee1:
     ld b, $00                                     ; $4ef3: $06 $00
     ld hl, $d83f                                  ; $4ef5: $21 $3f $d8
     add hl, bc                                    ; $4ef8: $09
-    ld a, [$c322]                                 ; $4ef9: $fa $22 $c3
+    ld a, [rInputButtonsPressedOrRepeated]        ; $4ef9: $fa $22 $c3
     bit 6, a                                      ; $4efc: $cb $77
     jr z, jr_002_4f0a                             ; $4efe: $28 $0a
 
@@ -2601,7 +2601,7 @@ jr_002_4f11:
 
 
 jr_002_4f13:
-    ld a, [$c31e]                                 ; $4f13: $fa $1e $c3
+    ld a, [rInputButtonsPressed]                  ; $4f13: $fa $1e $c3
     bit 0, a                                      ; $4f16: $cb $47
     jr z, jr_002_4f2c                             ; $4f18: $28 $12
 

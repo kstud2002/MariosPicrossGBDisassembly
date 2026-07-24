@@ -4842,7 +4842,9 @@ jr_00f_566f:
     jr nz, @-$03                                  ; $56cb: $20 $fb
 
     ld de, $04d7                                  ; $56cd: $11 $d7 $04
-    call nc, Call_000_30fc                        ; $56d0: $d4 $fc $30
+
+    db $d4, $fc, $30
+
     ei                                            ; $56d3: $fb
     ld [hl+], a                                   ; $56d4: $22
     inc b                                         ; $56d5: $04
@@ -7450,7 +7452,9 @@ Call_00f_60ee:
     call nc, $a494                                ; $6263: $d4 $94 $a4
     sub h                                         ; $6266: $94
     ld d, h                                       ; $6267: $54
-    call nc, Call_000_2454                        ; $6268: $d4 $54 $24
+
+    db $d4, $54, $24
+
     call nc, $d707                                ; $626b: $d4 $07 $d7
     rlca                                          ; $626e: $07
     rst $10                                       ; $626f: $d7
@@ -9616,7 +9620,9 @@ Call_00f_60ee:
     nop                                           ; $6cf5: $00
     ldh [c], a                                    ; $6cf6: $e2
     ld a, [bc]                                    ; $6cf7: $0a
-    call nz, Call_000_2414                        ; $6cf8: $c4 $14 $24
+
+    db $c4, $14, $24
+
     inc [hl]                                      ; $6cfb: $34
     ld c, l                                       ; $6cfc: $4d
     rst $28                                       ; $6cfd: $ef
