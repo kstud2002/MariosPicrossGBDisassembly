@@ -41,6 +41,12 @@ DEF rPuzzleCursorRow EQU $d637
 DEF rStatePhaseTimer EQU $d63c
 DEF rCurrentGridSize EQU $d800
 DEF rPuzzleCellPendingActionMode EQU $d804
+DEF rPuzzleTimerCompletionState EQU $d806
+DEF rPuzzleTimerMinuteOnes EQU $d809
+DEF rPuzzleTimerMinuteTens EQU $d80a
+DEF rPuzzleTimerSecondOnes EQU $d80b
+DEF rPuzzleTimerSecondTens EQU $d80c
+DEF rPuzzleTimerActive EQU $d80d
 DEF rCellEffectFrameSourceBaseIndex EQU $d810
 DEF rMarioBlinkAnimationSpriteId EQU $d816
 DEF rMarioBlinkAnimationDelay EQU $d817

@@ -1427,11 +1427,11 @@ GS04_StatePhase_05_TODO::
     call Call_000_0483                            ; $47d6: $cd $83 $04
     call Call_001_49c8                            ; $47d9: $cd $c8 $49
     xor a                                         ; $47dc: $af
-    ld [$d80b], a                                 ; $47dd: $ea $0b $d8
-    ld [$d80c], a                                 ; $47e0: $ea $0c $d8
-    ld [$d809], a                                 ; $47e3: $ea $09 $d8
+    ld [rPuzzleTimerSecondOnes], a                ; $47dd: $ea $0b $d8
+    ld [rPuzzleTimerSecondTens], a                ; $47e0: $ea $0c $d8
+    ld [rPuzzleTimerMinuteOnes], a                ; $47e3: $ea $09 $d8
     ld a, $03                                     ; $47e6: $3e $03
-    ld [$d80a], a                                 ; $47e8: $ea $0a $d8
+    ld [rPuzzleTimerMinuteTens], a                ; $47e8: $ea $0a $d8
     xor a                                         ; $47eb: $af
     ld [$d833], a                                 ; $47ec: $ea $33 $d8
     ld a, $01                                     ; $47ef: $3e $01
@@ -2990,22 +2990,22 @@ jr_001_5149:
 
 Call_001_5154:
     push hl                                       ; $5154: $e5
-    ld a, [$d80c]                                 ; $5155: $fa $0c $d8
+    ld a, [rPuzzleTimerSecondTens]                ; $5155: $fa $0c $d8
     ld c, a                                       ; $5158: $4f
     sla a                                         ; $5159: $cb $27
     sla a                                         ; $515b: $cb $27
     add c                                         ; $515d: $81
     sla a                                         ; $515e: $cb $27
-    ld hl, $d80b                                  ; $5160: $21 $0b $d8
+    ld hl, rPuzzleTimerSecondOnes                 ; $5160: $21 $0b $d8
     add [hl]                                      ; $5163: $86
     ld c, a                                       ; $5164: $4f
-    ld a, [$d80a]                                 ; $5165: $fa $0a $d8
+    ld a, [rPuzzleTimerMinuteTens]                ; $5165: $fa $0a $d8
     ld b, a                                       ; $5168: $47
     sla a                                         ; $5169: $cb $27
     sla a                                         ; $516b: $cb $27
     add b                                         ; $516d: $80
     sla a                                         ; $516e: $cb $27
-    ld hl, $d809                                  ; $5170: $21 $09 $d8
+    ld hl, rPuzzleTimerMinuteOnes                 ; $5170: $21 $09 $d8
     add [hl]                                      ; $5173: $86
     ld b, a                                       ; $5174: $47
     xor a                                         ; $5175: $af
@@ -3616,11 +3616,11 @@ GS05_StatePhase_05_TODO::
     call Call_000_0483                            ; $55e8: $cd $83 $04
     call Call_001_5749                            ; $55eb: $cd $49 $57
     xor a                                         ; $55ee: $af
-    ld [$d80b], a                                 ; $55ef: $ea $0b $d8
-    ld [$d80c], a                                 ; $55f2: $ea $0c $d8
-    ld [$d809], a                                 ; $55f5: $ea $09 $d8
+    ld [rPuzzleTimerSecondOnes], a                ; $55ef: $ea $0b $d8
+    ld [rPuzzleTimerSecondTens], a                ; $55f2: $ea $0c $d8
+    ld [rPuzzleTimerMinuteOnes], a                ; $55f5: $ea $09 $d8
     ld a, $03                                     ; $55f8: $3e $03
-    ld [$d80a], a                                 ; $55fa: $ea $0a $d8
+    ld [rPuzzleTimerMinuteTens], a                ; $55fa: $ea $0a $d8
     xor a                                         ; $55fd: $af
     ld [$d833], a                                 ; $55fe: $ea $33 $d8
     ld a, $01                                     ; $5601: $3e $01
@@ -4690,7 +4690,7 @@ GS08_StatePhase_00_TODO::
     ld [$c333], a                                 ; $5dac: $ea $33 $c3
     call Call_000_05a0                            ; $5daf: $cd $a0 $05
     call Call_000_05ab                            ; $5db2: $cd $ab $05
-    call Call_000_07f1                            ; $5db5: $cd $f1 $07
+    call LoadPuzzleDataBuffer                     ; $5db5: $cd $f1 $07
     call LoadGameBoardTileData                    ; $5db8: $cd $b9 $69
     xor a                                         ; $5dbb: $af
     ld [rPuzzleCursorColumn], a                   ; $5dbc: $ea $36 $d6
@@ -4716,7 +4716,7 @@ GS08_StatePhase_00_TODO::
     ld [$c350], a                                 ; $5df1: $ea $50 $c3
     call Call_001_6f30                            ; $5df4: $cd $30 $6f
     call ClearShadowOAMBuffer                     ; $5df7: $cd $b6 $05
-    call Call_001_7beb                            ; $5dfa: $cd $eb $7b
+    call ResetPuzzleTimerState                    ; $5dfa: $cd $eb $7b
     call Call_001_786e                            ; $5dfd: $cd $6e $78
     ld a, [$a065]                                 ; $5e00: $fa $65 $a0
     ld c, a                                       ; $5e03: $4f
@@ -4820,7 +4820,7 @@ GS08_StatePhase_0b_TODO::
     ld [$c350], a                                 ; $5ecb: $ea $50 $c3
     call Call_001_6f30                            ; $5ece: $cd $30 $6f
     call ClearShadowOAMBuffer                     ; $5ed1: $cd $b6 $05
-    call Call_001_7c04                            ; $5ed4: $cd $04 $7c
+    call RenderPuzzleTimerDigits                  ; $5ed4: $cd $04 $7c
     call Call_001_786e                            ; $5ed7: $cd $6e $78
     ld a, [$a065]                                 ; $5eda: $fa $65 $a0
     ld c, a                                       ; $5edd: $4f
@@ -4965,12 +4965,12 @@ GS08_StatePhase_03_TODO::
     call TickMarioBlinkAnimation                  ; $5fd9: $cd $18 $79
     call Call_001_7e33                            ; $5fdc: $cd $33 $7e
     call Call_001_7e77                            ; $5fdf: $cd $77 $7e
-    call Call_001_7aea                            ; $5fe2: $cd $ea $7a
-    call Call_001_7a98                            ; $5fe5: $cd $98 $7a
+    call UpdatePuzzleTimerCountdown               ; $5fe2: $cd $ea $7a
+    call UpdatePuzzleTimerDisplayState            ; $5fe5: $cd $98 $7a
     call ProcessPuzzleCellActionInput             ; $5fe8: $cd $22 $72
     call TickPendingCellActionEffect              ; $5feb: $cd $16 $75
     call Call_001_75f6                            ; $5fee: $cd $f6 $75
-    call Call_001_7cc8                            ; $5ff1: $cd $c8 $7c
+    call TickPuzzleTimerCompletionState           ; $5ff1: $cd $c8 $7c
     ld a, [rInputButtonsPressed]                  ; $5ff4: $fa $1e $c3
     and $08                                       ; $5ff7: $e6 $08
     jr z, jr_001_6008                             ; $5ff9: $28 $0d
@@ -4999,7 +4999,7 @@ jr_001_6008:
     ld a, $01                                     ; $6023: $3e $01
     call TODO_Bank0FDispatcher                    ; $6025: $cd $b6 $03
     call ClearShadowOAMBuffer                     ; $6028: $cd $b6 $05
-    call Call_001_7635                            ; $602b: $cd $35 $76
+    call RedrawPuzzleBoard                        ; $602b: $cd $35 $76
 
 jr_001_602e:
     rst RST_08                                    ; $602e: $cf
@@ -5025,7 +5025,7 @@ jr_001_602e:
 
 
 jr_001_6059:
-    ld a, [$d806]                                 ; $6059: $fa $06 $d8
+    ld a, [rPuzzleTimerCompletionState]           ; $6059: $fa $06 $d8
     and a                                         ; $605c: $a7
     ret z                                         ; $605d: $c8
 
@@ -5037,7 +5037,7 @@ jr_001_6059:
     ld a, $01                                     ; $606a: $3e $01
     call TODO_Bank0FDispatcher                    ; $606c: $cd $b6 $03
     call ClearShadowOAMBuffer                     ; $606f: $cd $b6 $05
-    call Call_001_7ce3                            ; $6072: $cd $e3 $7c
+    call LoadGameOverMessageTileData              ; $6072: $cd $e3 $7c
     ld hl, rStatePhase_Current                    ; $6075: $21 $35 $d6
     inc [hl]                                      ; $6078: $34
     ret                                           ; $6079: $c9
@@ -5047,12 +5047,12 @@ Jump_001_607a:
     call UpdatePuzzleCursorFromDirectionalInput   ; $607a: $cd $ca $71
     call DrawPuzzleCursorSpritesAndTickStepSequence; $607d: $cd $3e $71
     call TickMarioBlinkAnimation                  ; $6080: $cd $18 $79
-    call Call_001_7aea                            ; $6083: $cd $ea $7a
-    call Call_001_7a98                            ; $6086: $cd $98 $7a
+    call UpdatePuzzleTimerCountdown               ; $6083: $cd $ea $7a
+    call UpdatePuzzleTimerDisplayState            ; $6086: $cd $98 $7a
     call ProcessPuzzleCellActionInput             ; $6089: $cd $22 $72
     call TickPendingCellActionEffect              ; $608c: $cd $16 $75
     call Call_001_75f6                            ; $608f: $cd $f6 $75
-    call Call_001_7cc8                            ; $6092: $cd $c8 $7c
+    call TickPuzzleTimerCompletionState           ; $6092: $cd $c8 $7c
     ld a, [rInputButtonsPressed]                  ; $6095: $fa $1e $c3
     and $08                                       ; $6098: $e6 $08
     jr z, jr_001_60a9                             ; $609a: $28 $0d
@@ -5081,7 +5081,7 @@ jr_001_60a9:
     ld a, $01                                     ; $60c5: $3e $01
     call TODO_Bank0FDispatcher                    ; $60c7: $cd $b6 $03
     call ClearShadowOAMBuffer                     ; $60ca: $cd $b6 $05
-    call Call_001_7635                            ; $60cd: $cd $35 $76
+    call RedrawPuzzleBoard                        ; $60cd: $cd $35 $76
     call GS06_CopyRedrawSourceToProgressionBuffer ; $60d0: $cd $2e $30
     ld a, $d2                                     ; $60d3: $3e $d2
     ld [rMessageScriptStreamPointerLow], a        ; $60d5: $ea $2d $d8
@@ -5135,7 +5135,7 @@ jr_001_60e0:
 
 
 Jump_001_613a:
-    ld a, [$d806]                                 ; $613a: $fa $06 $d8
+    ld a, [rPuzzleTimerCompletionState]           ; $613a: $fa $06 $d8
     and a                                         ; $613d: $a7
     ret z                                         ; $613e: $c8
 
@@ -5147,7 +5147,7 @@ Jump_001_613a:
     ld a, $01                                     ; $614b: $3e $01
     call TODO_Bank0FDispatcher                    ; $614d: $cd $b6 $03
     call ClearShadowOAMBuffer                     ; $6150: $cd $b6 $05
-    call Call_001_7ce3                            ; $6153: $cd $e3 $7c
+    call LoadGameOverMessageTileData              ; $6153: $cd $e3 $7c
     call GS06_CopyRedrawSourceToProgressionBuffer ; $6156: $cd $2e $30
     ld a, $e8                                     ; $6159: $3e $e8
     ld [rMessageScriptStreamPointerLow], a        ; $615b: $ea $2d $d8
@@ -5440,7 +5440,7 @@ GS08_StatePhase_09_TODO::
 
 jr_001_6364:
     ld a, $01                                     ; $6364: $3e $01
-    ld [$d806], a                                 ; $6366: $ea $06 $d8
+    ld [rPuzzleTimerCompletionState], a           ; $6366: $ea $06 $d8
     ld c, $00                                     ; $6369: $0e $00
     ld a, $01                                     ; $636b: $3e $01
     call TODO_Bank0FDispatcher                    ; $636d: $cd $b6 $03
@@ -5449,7 +5449,7 @@ jr_001_6364:
     ld a, $01                                     ; $6375: $3e $01
     call TODO_Bank0FDispatcher                    ; $6377: $cd $b6 $03
     call ClearShadowOAMBuffer                     ; $637a: $cd $b6 $05
-    call Call_001_7ce3                            ; $637d: $cd $e3 $7c
+    call LoadGameOverMessageTileData              ; $637d: $cd $e3 $7c
     ld a, $06                                     ; $6380: $3e $06
     ld hl, $4500                                  ; $6382: $21 $00 $45
     ld de, $8500                                  ; $6385: $11 $00 $85
@@ -5506,7 +5506,7 @@ GS08_StatePhase_0a_TODO::
     ld bc, $0300                                  ; $63e4: $01 $00 $03
     call BankedTileCopyVRAMSafe                   ; $63e7: $cd $38 $05
     call Call_001_6fb9                            ; $63ea: $cd $b9 $6f
-    call Call_001_7c04                            ; $63ed: $cd $04 $7c
+    call RenderPuzzleTimerDigits                  ; $63ed: $cd $04 $7c
     ld a, $03                                     ; $63f0: $3e $03
     ld [rStatePhase_Current], a                   ; $63f2: $ea $35 $d6
     xor a                                         ; $63f5: $af
@@ -5559,7 +5559,7 @@ GS09_StatePhase_00_TODO::
     ld [$c333], a                                 ; $6426: $ea $33 $c3
     call Call_000_05a0                            ; $6429: $cd $a0 $05
     call Call_000_05ab                            ; $642c: $cd $ab $05
-    call Call_000_07f1                            ; $642f: $cd $f1 $07
+    call LoadPuzzleDataBuffer                     ; $642f: $cd $f1 $07
     call LoadGameBoardTileData                    ; $6432: $cd $b9 $69
     xor a                                         ; $6435: $af
     ld [rPuzzleCursorColumn], a                   ; $6436: $ea $36 $d6
@@ -5582,7 +5582,7 @@ GS09_StatePhase_00_TODO::
     call Call_001_7dcb                            ; $6463: $cd $cb $7d
     call ClearShadowOAMBuffer                     ; $6466: $cd $b6 $05
     call DrawPuzzleCursorSpritesAndTickStepSequence; $6469: $cd $3e $71
-    call Call_001_7beb                            ; $646c: $cd $eb $7b
+    call ResetPuzzleTimerState                    ; $646c: $cd $eb $7b
     call Call_001_786e                            ; $646f: $cd $6e $78
     ld a, [$a065]                                 ; $6472: $fa $65 $a0
     ld c, a                                       ; $6475: $4f
@@ -5641,7 +5641,7 @@ GS09_StatePhase_09_TODO::
     ld [$c350], a                                 ; $64e9: $ea $50 $c3
     call Call_001_6f30                            ; $64ec: $cd $30 $6f
     call ClearShadowOAMBuffer                     ; $64ef: $cd $b6 $05
-    call Call_001_7c04                            ; $64f2: $cd $04 $7c
+    call RenderPuzzleTimerDigits                  ; $64f2: $cd $04 $7c
     call Call_001_786e                            ; $64f5: $cd $6e $78
     ld a, [$a065]                                 ; $64f8: $fa $65 $a0
     ld c, a                                       ; $64fb: $4f
@@ -5702,12 +5702,12 @@ GS09_StatePhase_09_TODO::
 GS09_StatePhase_01_TODO::
     call UpdatePuzzleCursorFromDirectionalInput   ; $656c: $cd $ca $71
     call DrawPuzzleCursorSpritesAndTickStepSequence; $656f: $cd $3e $71
-    call Call_001_7aea                            ; $6572: $cd $ea $7a
+    call UpdatePuzzleTimerCountdown               ; $6572: $cd $ea $7a
     call TickMarioBlinkAnimation                  ; $6575: $cd $18 $79
     call Call_001_682f                            ; $6578: $cd $2f $68
     call TickPendingCellActionEffect              ; $657b: $cd $16 $75
     call Call_001_75f6                            ; $657e: $cd $f6 $75
-    call Call_001_7cc8                            ; $6581: $cd $c8 $7c
+    call TickPuzzleTimerCompletionState           ; $6581: $cd $c8 $7c
     ld a, [rInputButtonsPressed]                  ; $6584: $fa $1e $c3
     and $08                                       ; $6587: $e6 $08
     jr z, jr_001_6598                             ; $6589: $28 $0d
@@ -5745,7 +5745,7 @@ jr_001_6598:
     ld a, $01                                     ; $65c8: $3e $01
     call TODO_Bank0FDispatcher                    ; $65ca: $cd $b6 $03
     call ClearShadowOAMBuffer                     ; $65cd: $cd $b6 $05
-    call Call_001_7635                            ; $65d0: $cd $35 $76
+    call RedrawPuzzleBoard                        ; $65d0: $cd $35 $76
 
 jr_001_65d3:
     rst RST_08                                    ; $65d3: $cf
@@ -5771,7 +5771,7 @@ jr_001_65d3:
 
 
 jr_001_65fe:
-    ld a, [$d806]                                 ; $65fe: $fa $06 $d8
+    ld a, [rPuzzleTimerCompletionState]           ; $65fe: $fa $06 $d8
     and a                                         ; $6601: $a7
     ret z                                         ; $6602: $c8
 
@@ -5783,7 +5783,7 @@ jr_001_65fe:
     ld a, $01                                     ; $660f: $3e $01
     call TODO_Bank0FDispatcher                    ; $6611: $cd $b6 $03
     call ClearShadowOAMBuffer                     ; $6614: $cd $b6 $05
-    call Call_001_7ce3                            ; $6617: $cd $e3 $7c
+    call LoadGameOverMessageTileData              ; $6617: $cd $e3 $7c
     ld hl, rStatePhase_Current                    ; $661a: $21 $35 $d6
     inc [hl]                                      ; $661d: $34
     ret                                           ; $661e: $c9
@@ -6005,7 +6005,7 @@ GS09_StatePhase_07_TODO::
 
 jr_001_67b9:
     ld a, $01                                     ; $67b9: $3e $01
-    ld [$d806], a                                 ; $67bb: $ea $06 $d8
+    ld [rPuzzleTimerCompletionState], a           ; $67bb: $ea $06 $d8
     ld c, $00                                     ; $67be: $0e $00
     ld a, $01                                     ; $67c0: $3e $01
     call TODO_Bank0FDispatcher                    ; $67c2: $cd $b6 $03
@@ -6014,7 +6014,7 @@ jr_001_67b9:
     ld a, $01                                     ; $67ca: $3e $01
     call TODO_Bank0FDispatcher                    ; $67cc: $cd $b6 $03
     call ClearShadowOAMBuffer                     ; $67cf: $cd $b6 $05
-    call Call_001_7ce3                            ; $67d2: $cd $e3 $7c
+    call LoadGameOverMessageTileData              ; $67d2: $cd $e3 $7c
     ld a, [$a065]                                 ; $67d5: $fa $65 $a0
     ld c, a                                       ; $67d8: $4f
     sla a                                         ; $67d9: $cb $27
@@ -6055,7 +6055,7 @@ GS09_StatePhase_08_TODO::
     ld bc, $0300                                  ; $6817: $01 $00 $03
     call BankedTileCopyVRAMSafe                   ; $681a: $cd $38 $05
     call Call_001_6fb9                            ; $681d: $cd $b9 $6f
-    call Call_001_7c04                            ; $6820: $cd $04 $7c
+    call RenderPuzzleTimerDigits                  ; $6820: $cd $04 $7c
     ld a, $01                                     ; $6823: $3e $01
     ld [rStatePhase_Current], a                   ; $6825: $ea $35 $d6
     xor a                                         ; $6828: $af
@@ -6156,7 +6156,7 @@ GS0A_StatePhase_00_TODO::
     ld [$c333], a                                 ; $689b: $ea $33 $c3
     call Call_000_05a0                            ; $689e: $cd $a0 $05
     call Call_000_05ab                            ; $68a1: $cd $ab $05
-    call Call_000_07f1                            ; $68a4: $cd $f1 $07
+    call LoadPuzzleDataBuffer                     ; $68a4: $cd $f1 $07
     call LoadGameBoardTileData                    ; $68a7: $cd $b9 $69
     xor a                                         ; $68aa: $af
     ld [rPuzzleCursorColumn], a                   ; $68ab: $ea $36 $d6
@@ -6182,7 +6182,7 @@ GS0A_StatePhase_00_TODO::
     ld [$c350], a                                 ; $68e0: $ea $50 $c3
     call Call_001_6f30                            ; $68e3: $cd $30 $6f
     call ClearShadowOAMBuffer                     ; $68e6: $cd $b6 $05
-    call Call_001_7beb                            ; $68e9: $cd $eb $7b
+    call ResetPuzzleTimerState                    ; $68e9: $cd $eb $7b
     call Call_001_786e                            ; $68ec: $cd $6e $78
     call Call_001_7dfe                            ; $68ef: $cd $fe $7d
     call Call_000_04a2                            ; $68f2: $cd $a2 $04
@@ -6227,8 +6227,8 @@ GS0A_StatePhase_0b_TODO::
     call Call_001_6f30                            ; $6950: $cd $30 $6f
     call ClearShadowOAMBuffer                     ; $6953: $cd $b6 $05
     xor a                                         ; $6956: $af
-    ld [$d80d], a                                 ; $6957: $ea $0d $d8
-    call Call_001_7c04                            ; $695a: $cd $04 $7c
+    ld [rPuzzleTimerActive], a                    ; $6957: $ea $0d $d8
+    call RenderPuzzleTimerDigits                  ; $695a: $cd $04 $7c
     call Call_001_786e                            ; $695d: $cd $6e $78
     call Call_001_7dfe                            ; $6960: $cd $fe $7d
     call Call_000_04a2                            ; $6963: $cd $a2 $04
@@ -6337,7 +6337,7 @@ Load15x15GameBoardTileData::
 jr_001_6a48:
     xor a                                         ; $6a48: $af
     ld [$d805], a                                 ; $6a49: $ea $05 $d8
-    ld [$d806], a                                 ; $6a4c: $ea $06 $d8
+    ld [rPuzzleTimerCompletionState], a           ; $6a4c: $ea $06 $d8
     ld [rMarioBlinkAnimationSequenceCursor], a    ; $6a4f: $ea $18 $d8
     ld [rMarioBlinkAnimationDelay], a             ; $6a52: $ea $17 $d8
     ld [$d81c], a                                 ; $6a55: $ea $1c $d8
@@ -6646,12 +6646,12 @@ GS0A_StatePhase_03_TODO::
     call TickMarioBlinkAnimation                  ; $6c47: $cd $18 $79
     call Call_001_7e33                            ; $6c4a: $cd $33 $7e
     call Call_001_7e77                            ; $6c4d: $cd $77 $7e
-    call Call_001_7aea                            ; $6c50: $cd $ea $7a
-    call Call_001_7a98                            ; $6c53: $cd $98 $7a
+    call UpdatePuzzleTimerCountdown               ; $6c50: $cd $ea $7a
+    call UpdatePuzzleTimerDisplayState            ; $6c53: $cd $98 $7a
     call ProcessPuzzleCellActionInput             ; $6c56: $cd $22 $72
     call TickPendingCellActionEffect              ; $6c59: $cd $16 $75
     call Call_001_75f6                            ; $6c5c: $cd $f6 $75
-    call Call_001_7cc8                            ; $6c5f: $cd $c8 $7c
+    call TickPuzzleTimerCompletionState           ; $6c5f: $cd $c8 $7c
     ld a, [rInputButtonsPressed]                  ; $6c62: $fa $1e $c3
     and $08                                       ; $6c65: $e6 $08
     jr z, jr_001_6c76                             ; $6c67: $28 $0d
@@ -6680,7 +6680,7 @@ jr_001_6c76:
     ld a, $01                                     ; $6c91: $3e $01
     call TODO_Bank0FDispatcher                    ; $6c93: $cd $b6 $03
     call ClearShadowOAMBuffer                     ; $6c96: $cd $b6 $05
-    call Call_001_7635                            ; $6c99: $cd $35 $76
+    call RedrawPuzzleBoard                        ; $6c99: $cd $35 $76
 
 jr_001_6c9c:
     rst RST_08                                    ; $6c9c: $cf
@@ -6715,7 +6715,7 @@ jr_001_6c9c:
 
 
 jr_001_6cde:
-    ld a, [$d806]                                 ; $6cde: $fa $06 $d8
+    ld a, [rPuzzleTimerCompletionState]           ; $6cde: $fa $06 $d8
     and a                                         ; $6ce1: $a7
     ret z                                         ; $6ce2: $c8
 
@@ -6727,7 +6727,7 @@ jr_001_6cde:
     ld a, $01                                     ; $6cef: $3e $01
     call TODO_Bank0FDispatcher                    ; $6cf1: $cd $b6 $03
     call ClearShadowOAMBuffer                     ; $6cf4: $cd $b6 $05
-    call Call_001_7ce3                            ; $6cf7: $cd $e3 $7c
+    call LoadGameOverMessageTileData              ; $6cf7: $cd $e3 $7c
     ld hl, rStatePhase_Current                    ; $6cfa: $21 $35 $d6
     inc [hl]                                      ; $6cfd: $34
     ret                                           ; $6cfe: $c9
@@ -6958,7 +6958,7 @@ GS0A_StatePhase_09_TODO::
 
 jr_001_6eaa:
     ld a, $01                                     ; $6eaa: $3e $01
-    ld [$d806], a                                 ; $6eac: $ea $06 $d8
+    ld [rPuzzleTimerCompletionState], a           ; $6eac: $ea $06 $d8
     ld c, $00                                     ; $6eaf: $0e $00
     ld a, $01                                     ; $6eb1: $3e $01
     call TODO_Bank0FDispatcher                    ; $6eb3: $cd $b6 $03
@@ -6967,7 +6967,7 @@ jr_001_6eaa:
     ld a, $01                                     ; $6ebb: $3e $01
     call TODO_Bank0FDispatcher                    ; $6ebd: $cd $b6 $03
     call ClearShadowOAMBuffer                     ; $6ec0: $cd $b6 $05
-    call Call_001_7ce3                            ; $6ec3: $cd $e3 $7c
+    call LoadGameOverMessageTileData              ; $6ec3: $cd $e3 $7c
     ld a, [$a065]                                 ; $6ec6: $fa $65 $a0
     ld c, a                                       ; $6ec9: $4f
     ld b, $00                                     ; $6eca: $06 $00
@@ -7016,7 +7016,7 @@ GS0A_StatePhase_0a_TODO::
     ld bc, $0300                                  ; $6f18: $01 $00 $03
     call BankedTileCopyVRAMSafe                   ; $6f1b: $cd $38 $05
     call Call_001_6fb9                            ; $6f1e: $cd $b9 $6f
-    call Call_001_7c04                            ; $6f21: $cd $04 $7c
+    call RenderPuzzleTimerDigits                  ; $6f21: $cd $04 $7c
     ld a, $03                                     ; $6f24: $3e $03
     ld [rStatePhase_Current], a                   ; $6f26: $ea $35 $d6
     xor a                                         ; $6f29: $af
@@ -7819,7 +7819,7 @@ ProcessPuzzleCellActionInput_ApplyFillAction::
     jr z, .BeginFillEffectSequence                ; $731d: $28 $09
 
     ld a, [rPendingCellEffectCode]                ; $731f: $fa $23 $d8
-    call EmitCellEffectFrameCopy                  ; $7322: $cd $49 $75
+    call PrepareCellEffectFrameCopy               ; $7322: $cd $49 $75
     call Call_001_7529                            ; $7325: $cd $29 $75
 
 .BeginFillEffectSequence:
@@ -7856,7 +7856,7 @@ ProcessPuzzleCellActionInput_ApplyFillAction::
     cp $06                                        ; $7368: $fe $06
     jr z, .TickFillActionFrameDelay               ; $736a: $28 $03
 
-    call Call_001_7aea                            ; $736c: $cd $ea $7a
+    call UpdatePuzzleTimerCountdown               ; $736c: $cd $ea $7a
 
 .TickFillActionFrameDelay:
     call TickMarioBlinkAnimation                  ; $736f: $cd $18 $79
@@ -7866,7 +7866,7 @@ ProcessPuzzleCellActionInput_ApplyFillAction::
     jr nz, .CheckLateFillEffectTrigger            ; $7376: $20 $0a
 
     ld a, $10                                     ; $7378: $3e $10
-    call EmitCellEffectFrameCopy                  ; $737a: $cd $49 $75
+    call PrepareCellEffectFrameCopy               ; $737a: $cd $49 $75
     call Call_001_7529                            ; $737d: $cd $29 $75
     jr .AdvanceFillAnimationFrame                 ; $7380: $18 $0f
 
@@ -7875,7 +7875,7 @@ ProcessPuzzleCellActionInput_ApplyFillAction::
     jr nz, .AdvanceFillAnimationFrame             ; $7384: $20 $0b
 
     ld a, [rPendingCellEffectCode]                ; $7386: $fa $23 $d8
-    call EmitCellEffectFrameCopy                  ; $7389: $cd $49 $75
+    call PrepareCellEffectFrameCopy               ; $7389: $cd $49 $75
     ld a, $10                                     ; $738c: $3e $10
     call Call_001_7529                            ; $738e: $cd $29 $75
 
@@ -7885,7 +7885,7 @@ ProcessPuzzleCellActionInput_ApplyFillAction::
     cp $58                                        ; $7393: $fe $58
     jr nz, .RunFillActionAnimationLoop            ; $7395: $20 $c3
 
-    call Call_001_7c88                            ; $7397: $cd $88 $7c
+    call TickPuzzleTimerInputAdjustment           ; $7397: $cd $88 $7c
     ld hl, $d80f                                  ; $739a: $21 $0f $d8
     inc [hl]                                      ; $739d: $34
     ret                                           ; $739e: $c9
@@ -7910,7 +7910,7 @@ jr_001_73aa:
     jr z, jr_001_73c4                             ; $73b9: $28 $09
 
     ld a, [rPendingCellEffectCode]                ; $73bb: $fa $23 $d8
-    call EmitCellEffectFrameCopy                  ; $73be: $cd $49 $75
+    call PrepareCellEffectFrameCopy               ; $73be: $cd $49 $75
     call Call_001_7529                            ; $73c1: $cd $29 $75
 
 jr_001_73c4:
@@ -7989,7 +7989,7 @@ ProcessPuzzleCellActionInput_ApplyMarkXAction::
     jr z, .BeginMarkXEffectSequence               ; $7440: $28 $09
 
     ld a, [rPendingCellEffectCode]                ; $7442: $fa $23 $d8
-    call EmitCellEffectFrameCopy                  ; $7445: $cd $49 $75
+    call PrepareCellEffectFrameCopy               ; $7445: $cd $49 $75
     call Call_001_7529                            ; $7448: $cd $29 $75
 
 .BeginMarkXEffectSequence:
@@ -8062,7 +8062,7 @@ ProcessPuzzleCellActionInput_ClearCellState::
     jr z, .BeginClearCellEffectSequence           ; $74bc: $28 $09
 
     ld a, [rPendingCellEffectCode]                ; $74be: $fa $23 $d8
-    call EmitCellEffectFrameCopy                  ; $74c1: $cd $49 $75
+    call PrepareCellEffectFrameCopy               ; $74c1: $cd $49 $75
     call Call_001_7529                            ; $74c4: $cd $29 $75
 
 .BeginClearCellEffectSequence:
@@ -8117,7 +8117,7 @@ TickPendingCellActionEffect::
     ret nz                                        ; $751f: $c0
 
     ld a, [rPendingCellEffectCode]                ; $7520: $fa $23 $d8
-    call EmitCellEffectFrameCopy                  ; $7523: $cd $49 $75
+    call PrepareCellEffectFrameCopy               ; $7523: $cd $49 $75
     jp Jump_001_7529                              ; $7526: $c3 $29 $75
 
 
@@ -8149,7 +8149,7 @@ jr_001_7541:
     ret                                           ; $7548: $c9
 
 
-EmitCellEffectFrameCopy::
+PrepareCellEffectFrameCopy::
     push af                                       ; $7549: $f5
     push bc                                       ; $754a: $c5
     push de                                       ; $754b: $d5
@@ -8225,7 +8225,7 @@ CellEffectFrameSourceBaseAddressTable::
     db $80, $6f
     db $b0, $6f
 
-Call_001_75cf:
+PrepareBGTileCopyFromCellEffectParams::
     push bc                                       ; $75cf: $c5
     push de                                       ; $75d0: $d5
     push hl                                       ; $75d1: $e5
@@ -8283,63 +8283,63 @@ jr_001_760f:
     ret                                           ; $7634: $c9
 
 
-Call_001_7635:
+RedrawPuzzleBoard::
     ld a, [rCurrentGridSize]                      ; $7635: $fa $00 $d8
     cp $05                                        ; $7638: $fe $05
-    jr nz, jr_001_763e                            ; $763a: $20 $02
+    jr nz, .Load10x10BoardTileData                ; $763a: $20 $02
 
-    jr jr_001_7660                                ; $763c: $18 $22
+    jr .RedrawBoardCells                          ; $763c: $18 $22
 
-jr_001_763e:
+.Load10x10BoardTileData:
     cp $0a                                        ; $763e: $fe $0a
-    jr nz, jr_001_7652                            ; $7640: $20 $10
+    jr nz, .Load15x15BoardTileData                ; $7640: $20 $10
 
     ld a, $08                                     ; $7642: $3e $08
     ld hl, $5a00                                  ; $7644: $21 $00 $5a
     ld de, $8800                                  ; $7647: $11 $00 $88
     ld bc, $0200                                  ; $764a: $01 $00 $02
     call BankedTileCopyVRAMSafe                   ; $764d: $cd $38 $05
-    jr jr_001_7660                                ; $7650: $18 $0e
+    jr .RedrawBoardCells                          ; $7650: $18 $0e
 
-jr_001_7652:
+.Load15x15BoardTileData:
     ld a, $06                                     ; $7652: $3e $06
     ld hl, $7200                                  ; $7654: $21 $00 $72
     ld de, $8800                                  ; $7657: $11 $00 $88
     ld bc, $0200                                  ; $765a: $01 $00 $02
     call BankedTileCopyVRAMSafe                   ; $765d: $cd $38 $05
 
-jr_001_7660:
+.RedrawBoardCells:
     ld hl, $d640                                  ; $7660: $21 $40 $d6
     ld c, $33                                     ; $7663: $0e $33
     ld e, $05                                     ; $7665: $1e $05
     ld a, [$d801]                                 ; $7667: $fa $01 $d8
 
-jr_001_766a:
+.ProcessBoardRows:
     push af                                       ; $766a: $f5
     ld b, $3b                                     ; $766b: $06 $3b
     ld d, $05                                     ; $766d: $16 $05
     ld a, [rCurrentGridSize]                      ; $766f: $fa $00 $d8
 
-jr_001_7672:
+.ProcessBoardCells:
     push af                                       ; $7672: $f5
     ld a, [hl+]                                   ; $7673: $2a
     and $01                                       ; $7674: $e6 $01
     swap a                                        ; $7676: $cb $37
-    call Call_001_75cf                            ; $7678: $cd $cf $75
+    call PrepareBGTileCopyFromCellEffectParams    ; $7678: $cd $cf $75
     ld a, b                                       ; $767b: $78
     add $06                                       ; $767c: $c6 $06
     ld b, a                                       ; $767e: $47
     pop af                                        ; $767f: $f1
     dec a                                         ; $7680: $3d
     cp $01                                        ; $7681: $fe $01
-    jr nz, jr_001_7688                            ; $7683: $20 $03
+    jr nz, .AdvanceToNextRow                      ; $7683: $20 $03
 
     dec d                                         ; $7685: $15
-    jr jr_001_7672                                ; $7686: $18 $ea
+    jr .ProcessBoardCells                         ; $7686: $18 $ea
 
-jr_001_7688:
+.AdvanceToNextRow:
     and a                                         ; $7688: $a7
-    jr nz, jr_001_7672                            ; $7689: $20 $e7
+    jr nz, .ProcessBoardCells                     ; $7689: $20 $e7
 
     ld a, [rCurrentGridSize]                      ; $768b: $fa $00 $d8
     sub $11                                       ; $768e: $d6 $11
@@ -8355,14 +8355,14 @@ jr_001_7688:
     pop af                                        ; $769c: $f1
     dec a                                         ; $769d: $3d
     cp $01                                        ; $769e: $fe $01
-    jr nz, jr_001_76a5                            ; $76a0: $20 $03
+    jr nz, .AdvanceToNextColumn                   ; $76a0: $20 $03
 
     dec e                                         ; $76a2: $1d
-    jr jr_001_766a                                ; $76a3: $18 $c5
+    jr .ProcessBoardRows                          ; $76a3: $18 $c5
 
-jr_001_76a5:
+.AdvanceToNextColumn:
     and a                                         ; $76a5: $a7
-    jr nz, jr_001_766a                            ; $76a6: $20 $c2
+    jr nz, .ProcessBoardRows                      ; $76a6: $20 $c2
 
     ret                                           ; $76a8: $c9
 
@@ -8394,7 +8394,7 @@ jr_001_76c7:
     jr z, jr_001_76d1                             ; $76ca: $28 $05
 
     swap a                                        ; $76cc: $cb $37
-    call Call_001_75cf                            ; $76ce: $cd $cf $75
+    call PrepareBGTileCopyFromCellEffectParams    ; $76ce: $cd $cf $75
 
 jr_001_76d1:
     ld a, b                                       ; $76d1: $78
@@ -8432,7 +8432,7 @@ jr_001_76f6:
     jr z, jr_001_7700                             ; $76f9: $28 $05
 
     swap a                                        ; $76fb: $cb $37
-    call Call_001_75cf                            ; $76fd: $cd $cf $75
+    call PrepareBGTileCopyFromCellEffectParams    ; $76fd: $cd $cf $75
 
 jr_001_7700:
     ld a, b                                       ; $7700: $78
@@ -8470,7 +8470,7 @@ jr_001_7725:
     jr z, jr_001_772f                             ; $7728: $28 $05
 
     swap a                                        ; $772a: $cb $37
-    call Call_001_75cf                            ; $772c: $cd $cf $75
+    call PrepareBGTileCopyFromCellEffectParams    ; $772c: $cd $cf $75
 
 jr_001_772f:
     ld a, b                                       ; $772f: $78
@@ -8678,7 +8678,7 @@ jr_001_7875:
     ld a, [hl+]                                   ; $787d: $2a
     srl a                                         ; $787e: $cb $3f
     swap a                                        ; $7880: $cb $37
-    call EmitCellEffectFrameCopy                  ; $7882: $cd $49 $75
+    call PrepareCellEffectFrameCopy               ; $7882: $cd $49 $75
     inc b                                         ; $7885: $04
     ld a, [rCurrentGridSize]                      ; $7886: $fa $00 $d8
     cp b                                          ; $7889: $b8
@@ -8727,7 +8727,7 @@ jr_001_78b4:
     ld a, $20                                     ; $78c4: $3e $20
 
 jr_001_78c6:
-    call EmitCellEffectFrameCopy                  ; $78c6: $cd $49 $75
+    call PrepareCellEffectFrameCopy               ; $78c6: $cd $49 $75
     pop af                                        ; $78c9: $f1
     jr z, jr_001_78d2                             ; $78ca: $28 $06
 
@@ -8769,7 +8769,7 @@ jr_001_78ed:
     ld a, $20                                     ; $78fd: $3e $20
 
 jr_001_78ff:
-    call EmitCellEffectFrameCopy                  ; $78ff: $cd $49 $75
+    call PrepareCellEffectFrameCopy               ; $78ff: $cd $49 $75
     pop af                                        ; $7902: $f1
     jr z, jr_001_790b                             ; $7903: $28 $06
 
@@ -9082,18 +9082,18 @@ jr_001_7a96:
     rst $38                                       ; $7a96: $ff
     nop                                           ; $7a97: $00
 
-Call_001_7a98:
+UpdatePuzzleTimerDisplayState::
     ld a, [$d80e]                                 ; $7a98: $fa $0e $d8
     and a                                         ; $7a9b: $a7
     ret nz                                        ; $7a9c: $c0
 
     ld a, $01                                     ; $7a9d: $3e $01
     ld [$d80e], a                                 ; $7a9f: $ea $0e $d8
-    ld a, [$d80a]                                 ; $7aa2: $fa $0a $d8
+    ld a, [rPuzzleTimerMinuteTens]                ; $7aa2: $fa $0a $d8
     and a                                         ; $7aa5: $a7
     ret nz                                        ; $7aa6: $c0
 
-    ld a, [$d809]                                 ; $7aa7: $fa $09 $d8
+    ld a, [rPuzzleTimerMinuteOnes]                ; $7aa7: $fa $09 $d8
     cp $03                                        ; $7aaa: $fe $03
     jr z, jr_001_7aba                             ; $7aac: $28 $0c
 
@@ -9110,8 +9110,8 @@ Call_001_7a98:
 
 
 jr_001_7aba:
-    ld a, [$d80c]                                 ; $7aba: $fa $0c $d8
-    ld hl, $d80b                                  ; $7abd: $21 $0b $d8
+    ld a, [rPuzzleTimerSecondTens]                ; $7aba: $fa $0c $d8
+    ld hl, rPuzzleTimerSecondOnes                 ; $7abd: $21 $0b $d8
     or [hl]                                       ; $7ac0: $b6
     jr z, jr_001_7ac4                             ; $7ac1: $28 $01
 
@@ -9119,8 +9119,8 @@ jr_001_7aba:
 
 
 jr_001_7ac4:
-    ld a, [$d80c]                                 ; $7ac4: $fa $0c $d8
-    ld hl, $d80b                                  ; $7ac7: $21 $0b $d8
+    ld a, [rPuzzleTimerSecondTens]                ; $7ac4: $fa $0c $d8
+    ld hl, rPuzzleTimerSecondOnes                 ; $7ac7: $21 $0b $d8
     or [hl]                                       ; $7aca: $b6
     jr z, jr_001_7ad6                             ; $7acb: $28 $09
 
@@ -9135,8 +9135,8 @@ jr_001_7ac4:
 
 
 jr_001_7ad6:
-    ld a, [$d80c]                                 ; $7ad6: $fa $0c $d8
-    ld hl, $d80b                                  ; $7ad9: $21 $0b $d8
+    ld a, [rPuzzleTimerSecondTens]                ; $7ad6: $fa $0c $d8
+    ld hl, rPuzzleTimerSecondOnes                 ; $7ad9: $21 $0b $d8
     or [hl]                                       ; $7adc: $b6
     jr z, jr_001_7ae2                             ; $7add: $28 $03
 
@@ -9150,28 +9150,28 @@ jr_001_7ae2:
     ret                                           ; $7ae9: $c9
 
 
-Call_001_7aea:
-    ld a, [$d80d]                                 ; $7aea: $fa $0d $d8
+UpdatePuzzleTimerCountdown::
+    ld a, [rPuzzleTimerActive]                    ; $7aea: $fa $0d $d8
     cp $3c                                        ; $7aed: $fe $3c
     ret c                                         ; $7aef: $d8
 
     xor a                                         ; $7af0: $af
-    ld [$d80d], a                                 ; $7af1: $ea $0d $d8
+    ld [rPuzzleTimerActive], a                    ; $7af1: $ea $0d $d8
     ld [$d80e], a                                 ; $7af4: $ea $0e $d8
     ld a, [rGameState_Current]                    ; $7af7: $fa $34 $d6
     cp $09                                        ; $7afa: $fe $09
     jr z, jr_001_7b6e                             ; $7afc: $28 $70
 
-    ld a, [$d80b]                                 ; $7afe: $fa $0b $d8
-    ld hl, $d80c                                  ; $7b01: $21 $0c $d8
+    ld a, [rPuzzleTimerSecondOnes]                ; $7afe: $fa $0b $d8
+    ld hl, rPuzzleTimerSecondTens                 ; $7b01: $21 $0c $d8
     or [hl]                                       ; $7b04: $b6
-    ld hl, $d809                                  ; $7b05: $21 $09 $d8
+    ld hl, rPuzzleTimerMinuteOnes                 ; $7b05: $21 $09 $d8
     or [hl]                                       ; $7b08: $b6
-    ld hl, $d80a                                  ; $7b09: $21 $0a $d8
+    ld hl, rPuzzleTimerMinuteTens                 ; $7b09: $21 $0a $d8
     or [hl]                                       ; $7b0c: $b6
     ret z                                         ; $7b0d: $c8
 
-    ld a, [$d80b]                                 ; $7b0e: $fa $0b $d8
+    ld a, [rPuzzleTimerSecondOnes]                ; $7b0e: $fa $0b $d8
     dec a                                         ; $7b11: $3d
     cp $ff                                        ; $7b12: $fe $ff
     jr nz, jr_001_7b18                            ; $7b14: $20 $02
@@ -9179,14 +9179,14 @@ Call_001_7aea:
     ld a, $09                                     ; $7b16: $3e $09
 
 jr_001_7b18:
-    ld [$d80b], a                                 ; $7b18: $ea $0b $d8
+    ld [rPuzzleTimerSecondOnes], a                ; $7b18: $ea $0b $d8
     push af                                       ; $7b1b: $f5
     ld bc, $2b27                                  ; $7b1c: $01 $27 $2b
-    call Call_001_7c29                            ; $7b1f: $cd $29 $7c
+    call RenderPuzzleTimerDigitTile               ; $7b1f: $cd $29 $7c
     pop af                                        ; $7b22: $f1
     ret nz                                        ; $7b23: $c0
 
-    ld a, [$d80c]                                 ; $7b24: $fa $0c $d8
+    ld a, [rPuzzleTimerSecondTens]                ; $7b24: $fa $0c $d8
     dec a                                         ; $7b27: $3d
     cp $ff                                        ; $7b28: $fe $ff
     jr nz, jr_001_7b2e                            ; $7b2a: $20 $02
@@ -9194,14 +9194,14 @@ jr_001_7b18:
     ld a, $05                                     ; $7b2c: $3e $05
 
 jr_001_7b2e:
-    ld [$d80c], a                                 ; $7b2e: $ea $0c $d8
+    ld [rPuzzleTimerSecondTens], a                ; $7b2e: $ea $0c $d8
     push af                                       ; $7b31: $f5
     ld bc, $2327                                  ; $7b32: $01 $27 $23
-    call Call_001_7c29                            ; $7b35: $cd $29 $7c
+    call RenderPuzzleTimerDigitTile               ; $7b35: $cd $29 $7c
     pop af                                        ; $7b38: $f1
     ret nz                                        ; $7b39: $c0
 
-    ld a, [$d809]                                 ; $7b3a: $fa $09 $d8
+    ld a, [rPuzzleTimerMinuteOnes]                ; $7b3a: $fa $09 $d8
     dec a                                         ; $7b3d: $3d
     cp $ff                                        ; $7b3e: $fe $ff
     jr nz, jr_001_7b44                            ; $7b40: $20 $02
@@ -9209,46 +9209,46 @@ jr_001_7b2e:
     ld a, $09                                     ; $7b42: $3e $09
 
 jr_001_7b44:
-    ld [$d809], a                                 ; $7b44: $ea $09 $d8
+    ld [rPuzzleTimerMinuteOnes], a                ; $7b44: $ea $09 $d8
     push af                                       ; $7b47: $f5
     ld bc, $1527                                  ; $7b48: $01 $27 $15
-    call Call_001_7c29                            ; $7b4b: $cd $29 $7c
+    call RenderPuzzleTimerDigitTile               ; $7b4b: $cd $29 $7c
     pop af                                        ; $7b4e: $f1
     ret nz                                        ; $7b4f: $c0
 
-    ld a, [$d80a]                                 ; $7b50: $fa $0a $d8
+    ld a, [rPuzzleTimerMinuteTens]                ; $7b50: $fa $0a $d8
     dec a                                         ; $7b53: $3d
     cp $ff                                        ; $7b54: $fe $ff
     jr nz, jr_001_7b62                            ; $7b56: $20 $0a
 
     xor a                                         ; $7b58: $af
-    ld [$d80b], a                                 ; $7b59: $ea $0b $d8
-    ld [$d80c], a                                 ; $7b5c: $ea $0c $d8
-    ld [$d809], a                                 ; $7b5f: $ea $09 $d8
+    ld [rPuzzleTimerSecondOnes], a                ; $7b59: $ea $0b $d8
+    ld [rPuzzleTimerSecondTens], a                ; $7b5c: $ea $0c $d8
+    ld [rPuzzleTimerMinuteOnes], a                ; $7b5f: $ea $09 $d8
 
 jr_001_7b62:
-    ld [$d80a], a                                 ; $7b62: $ea $0a $d8
+    ld [rPuzzleTimerMinuteTens], a                ; $7b62: $ea $0a $d8
     push af                                       ; $7b65: $f5
     ld bc, $0d27                                  ; $7b66: $01 $27 $0d
-    call Call_001_7c29                            ; $7b69: $cd $29 $7c
+    call RenderPuzzleTimerDigitTile               ; $7b69: $cd $29 $7c
     pop af                                        ; $7b6c: $f1
     ret                                           ; $7b6d: $c9
 
 
 jr_001_7b6e:
-    ld a, [$d80b]                                 ; $7b6e: $fa $0b $d8
+    ld a, [rPuzzleTimerSecondOnes]                ; $7b6e: $fa $0b $d8
     cp $09                                        ; $7b71: $fe $09
     jr nz, jr_001_7b8b                            ; $7b73: $20 $16
 
-    ld a, [$d80c]                                 ; $7b75: $fa $0c $d8
+    ld a, [rPuzzleTimerSecondTens]                ; $7b75: $fa $0c $d8
     cp $05                                        ; $7b78: $fe $05
     jr nz, jr_001_7b8b                            ; $7b7a: $20 $0f
 
-    ld a, [$d809]                                 ; $7b7c: $fa $09 $d8
+    ld a, [rPuzzleTimerMinuteOnes]                ; $7b7c: $fa $09 $d8
     cp $09                                        ; $7b7f: $fe $09
     jr nz, jr_001_7b8b                            ; $7b81: $20 $08
 
-    ld a, [$d80a]                                 ; $7b83: $fa $0a $d8
+    ld a, [rPuzzleTimerMinuteTens]                ; $7b83: $fa $0a $d8
     cp $09                                        ; $7b86: $fe $09
     jr nz, jr_001_7b8b                            ; $7b88: $20 $01
 
@@ -9256,7 +9256,7 @@ jr_001_7b6e:
 
 
 jr_001_7b8b:
-    ld a, [$d80b]                                 ; $7b8b: $fa $0b $d8
+    ld a, [rPuzzleTimerSecondOnes]                ; $7b8b: $fa $0b $d8
     inc a                                         ; $7b8e: $3c
     cp $0a                                        ; $7b8f: $fe $0a
     jr nz, jr_001_7b94                            ; $7b91: $20 $01
@@ -9264,14 +9264,14 @@ jr_001_7b8b:
     xor a                                         ; $7b93: $af
 
 jr_001_7b94:
-    ld [$d80b], a                                 ; $7b94: $ea $0b $d8
+    ld [rPuzzleTimerSecondOnes], a                ; $7b94: $ea $0b $d8
     push af                                       ; $7b97: $f5
     ld bc, $2b27                                  ; $7b98: $01 $27 $2b
-    call Call_001_7c29                            ; $7b9b: $cd $29 $7c
+    call RenderPuzzleTimerDigitTile               ; $7b9b: $cd $29 $7c
     pop af                                        ; $7b9e: $f1
     ret nz                                        ; $7b9f: $c0
 
-    ld a, [$d80c]                                 ; $7ba0: $fa $0c $d8
+    ld a, [rPuzzleTimerSecondTens]                ; $7ba0: $fa $0c $d8
     inc a                                         ; $7ba3: $3c
     cp $06                                        ; $7ba4: $fe $06
     jr nz, jr_001_7ba9                            ; $7ba6: $20 $01
@@ -9279,14 +9279,14 @@ jr_001_7b94:
     xor a                                         ; $7ba8: $af
 
 jr_001_7ba9:
-    ld [$d80c], a                                 ; $7ba9: $ea $0c $d8
+    ld [rPuzzleTimerSecondTens], a                ; $7ba9: $ea $0c $d8
     push af                                       ; $7bac: $f5
     ld bc, $2327                                  ; $7bad: $01 $27 $23
-    call Call_001_7c29                            ; $7bb0: $cd $29 $7c
+    call RenderPuzzleTimerDigitTile               ; $7bb0: $cd $29 $7c
     pop af                                        ; $7bb3: $f1
     ret nz                                        ; $7bb4: $c0
 
-    ld a, [$d809]                                 ; $7bb5: $fa $09 $d8
+    ld a, [rPuzzleTimerMinuteOnes]                ; $7bb5: $fa $09 $d8
     inc a                                         ; $7bb8: $3c
     cp $0a                                        ; $7bb9: $fe $0a
     jr nz, jr_001_7bbe                            ; $7bbb: $20 $01
@@ -9294,39 +9294,39 @@ jr_001_7ba9:
     xor a                                         ; $7bbd: $af
 
 jr_001_7bbe:
-    ld [$d809], a                                 ; $7bbe: $ea $09 $d8
+    ld [rPuzzleTimerMinuteOnes], a                ; $7bbe: $ea $09 $d8
     push af                                       ; $7bc1: $f5
     ld bc, $1527                                  ; $7bc2: $01 $27 $15
-    call Call_001_7c29                            ; $7bc5: $cd $29 $7c
+    call RenderPuzzleTimerDigitTile               ; $7bc5: $cd $29 $7c
     pop af                                        ; $7bc8: $f1
     ret nz                                        ; $7bc9: $c0
 
-    ld a, [$d80a]                                 ; $7bca: $fa $0a $d8
+    ld a, [rPuzzleTimerMinuteTens]                ; $7bca: $fa $0a $d8
     inc a                                         ; $7bcd: $3c
     cp $0a                                        ; $7bce: $fe $0a
     jr nz, jr_001_7bdf                            ; $7bd0: $20 $0d
 
     ld a, $05                                     ; $7bd2: $3e $05
-    ld [$d80c], a                                 ; $7bd4: $ea $0c $d8
+    ld [rPuzzleTimerSecondTens], a                ; $7bd4: $ea $0c $d8
     ld a, $09                                     ; $7bd7: $3e $09
-    ld [$d80b], a                                 ; $7bd9: $ea $0b $d8
-    ld [$d809], a                                 ; $7bdc: $ea $09 $d8
+    ld [rPuzzleTimerSecondOnes], a                ; $7bd9: $ea $0b $d8
+    ld [rPuzzleTimerMinuteOnes], a                ; $7bdc: $ea $09 $d8
 
 jr_001_7bdf:
-    ld [$d80a], a                                 ; $7bdf: $ea $0a $d8
+    ld [rPuzzleTimerMinuteTens], a                ; $7bdf: $ea $0a $d8
     push af                                       ; $7be2: $f5
     ld bc, $0d27                                  ; $7be3: $01 $27 $0d
-    call Call_001_7c29                            ; $7be6: $cd $29 $7c
+    call RenderPuzzleTimerDigitTile               ; $7be6: $cd $29 $7c
     pop af                                        ; $7be9: $f1
     ret                                           ; $7bea: $c9
 
 
-Call_001_7beb:
+ResetPuzzleTimerState::
     xor a                                         ; $7beb: $af
-    ld [$d80d], a                                 ; $7bec: $ea $0d $d8
-    ld [$d80b], a                                 ; $7bef: $ea $0b $d8
-    ld [$d80c], a                                 ; $7bf2: $ea $0c $d8
-    ld [$d809], a                                 ; $7bf5: $ea $09 $d8
+    ld [rPuzzleTimerActive], a                    ; $7bec: $ea $0d $d8
+    ld [rPuzzleTimerSecondOnes], a                ; $7bef: $ea $0b $d8
+    ld [rPuzzleTimerSecondTens], a                ; $7bf2: $ea $0c $d8
+    ld [rPuzzleTimerMinuteOnes], a                ; $7bf5: $ea $09 $d8
     ld a, [rGameState_Current]                    ; $7bf8: $fa $34 $d6
     sub $09                                       ; $7bfb: $d6 $09
     jr z, jr_001_7c01                             ; $7bfd: $28 $02
@@ -9334,26 +9334,25 @@ Call_001_7beb:
     ld a, $03                                     ; $7bff: $3e $03
 
 jr_001_7c01:
-    ld [$d80a], a                                 ; $7c01: $ea $0a $d8
+    ld [rPuzzleTimerMinuteTens], a                ; $7c01: $ea $0a $d8
 
-Call_001_7c04:
-Jump_001_7c04:
-    ld a, [$d80b]                                 ; $7c04: $fa $0b $d8
+RenderPuzzleTimerDigits::
+    ld a, [rPuzzleTimerSecondOnes]                ; $7c04: $fa $0b $d8
     ld bc, $2b27                                  ; $7c07: $01 $27 $2b
-    call Call_001_7c29                            ; $7c0a: $cd $29 $7c
-    ld a, [$d80c]                                 ; $7c0d: $fa $0c $d8
+    call RenderPuzzleTimerDigitTile               ; $7c0a: $cd $29 $7c
+    ld a, [rPuzzleTimerSecondTens]                ; $7c0d: $fa $0c $d8
     ld bc, $2327                                  ; $7c10: $01 $27 $23
-    call Call_001_7c29                            ; $7c13: $cd $29 $7c
-    ld a, [$d809]                                 ; $7c16: $fa $09 $d8
+    call RenderPuzzleTimerDigitTile               ; $7c13: $cd $29 $7c
+    ld a, [rPuzzleTimerMinuteOnes]                ; $7c16: $fa $09 $d8
     ld bc, $1527                                  ; $7c19: $01 $27 $15
-    call Call_001_7c29                            ; $7c1c: $cd $29 $7c
-    ld a, [$d80a]                                 ; $7c1f: $fa $0a $d8
+    call RenderPuzzleTimerDigitTile               ; $7c1c: $cd $29 $7c
+    ld a, [rPuzzleTimerMinuteTens]                ; $7c1f: $fa $0a $d8
     ld bc, $0d27                                  ; $7c22: $01 $27 $0d
-    call Call_001_7c29                            ; $7c25: $cd $29 $7c
+    call RenderPuzzleTimerDigitTile               ; $7c25: $cd $29 $7c
     ret                                           ; $7c28: $c9
 
 
-Call_001_7c29:
+RenderPuzzleTimerDigitTile::
     ld e, a                                       ; $7c29: $5f
     ld d, $00                                     ; $7c2a: $16 $00
     sla e                                         ; $7c2c: $cb $23
@@ -9400,30 +9399,30 @@ Call_001_7c29:
     jp PrepareBGTileCopy                          ; $7c85: $c3 $b3 $08
 
 
-Call_001_7c88:
+TickPuzzleTimerInputAdjustment::
     ld a, [$d811]                                 ; $7c88: $fa $11 $d8
     ld c, a                                       ; $7c8b: $4f
-    ld a, [$d809]                                 ; $7c8c: $fa $09 $d8
+    ld a, [rPuzzleTimerMinuteOnes]                ; $7c8c: $fa $09 $d8
     sub c                                         ; $7c8f: $91
-    ld [$d809], a                                 ; $7c90: $ea $09 $d8
+    ld [rPuzzleTimerMinuteOnes], a                ; $7c90: $ea $09 $d8
     bit 7, a                                      ; $7c93: $cb $7f
     jr z, jr_001_7cb9                             ; $7c95: $28 $22
 
     add $0a                                       ; $7c97: $c6 $0a
-    ld [$d809], a                                 ; $7c99: $ea $09 $d8
-    ld a, [$d80a]                                 ; $7c9c: $fa $0a $d8
+    ld [rPuzzleTimerMinuteOnes], a                ; $7c99: $ea $09 $d8
+    ld a, [rPuzzleTimerMinuteTens]                ; $7c9c: $fa $0a $d8
     dec a                                         ; $7c9f: $3d
-    ld [$d80a], a                                 ; $7ca0: $ea $0a $d8
+    ld [rPuzzleTimerMinuteTens], a                ; $7ca0: $ea $0a $d8
     bit 7, a                                      ; $7ca3: $cb $7f
     jr z, jr_001_7cb9                             ; $7ca5: $28 $12
 
     xor a                                         ; $7ca7: $af
-    ld [$d80b], a                                 ; $7ca8: $ea $0b $d8
-    ld [$d80c], a                                 ; $7cab: $ea $0c $d8
-    ld [$d809], a                                 ; $7cae: $ea $09 $d8
-    ld [$d80a], a                                 ; $7cb1: $ea $0a $d8
+    ld [rPuzzleTimerSecondOnes], a                ; $7ca8: $ea $0b $d8
+    ld [rPuzzleTimerSecondTens], a                ; $7cab: $ea $0c $d8
+    ld [rPuzzleTimerMinuteOnes], a                ; $7cae: $ea $09 $d8
+    ld [rPuzzleTimerMinuteTens], a                ; $7cb1: $ea $0a $d8
     ld a, $32                                     ; $7cb4: $3e $32
-    ld [$d80d], a                                 ; $7cb6: $ea $0d $d8
+    ld [rPuzzleTimerActive], a                    ; $7cb6: $ea $0d $d8
 
 jr_001_7cb9:
     ld a, [$d811]                                 ; $7cb9: $fa $11 $d8
@@ -9434,40 +9433,40 @@ jr_001_7cb9:
     ld [$d811], a                                 ; $7cc2: $ea $11 $d8
 
 jr_001_7cc5:
-    jp Jump_001_7c04                              ; $7cc5: $c3 $04 $7c
+    jp RenderPuzzleTimerDigits                    ; $7cc5: $c3 $04 $7c
 
 
-Call_001_7cc8:
-    ld a, [$d80d]                                 ; $7cc8: $fa $0d $d8
+TickPuzzleTimerCompletionState::
+    ld a, [rPuzzleTimerActive]                    ; $7cc8: $fa $0d $d8
     cp $32                                        ; $7ccb: $fe $32
     ret c                                         ; $7ccd: $d8
 
-    ld a, [$d80b]                                 ; $7cce: $fa $0b $d8
-    ld hl, $d80c                                  ; $7cd1: $21 $0c $d8
+    ld a, [rPuzzleTimerSecondOnes]                ; $7cce: $fa $0b $d8
+    ld hl, rPuzzleTimerSecondTens                 ; $7cd1: $21 $0c $d8
     or [hl]                                       ; $7cd4: $b6
-    ld hl, $d809                                  ; $7cd5: $21 $09 $d8
+    ld hl, rPuzzleTimerMinuteOnes                 ; $7cd5: $21 $09 $d8
     or [hl]                                       ; $7cd8: $b6
-    ld hl, $d80a                                  ; $7cd9: $21 $0a $d8
+    ld hl, rPuzzleTimerMinuteTens                 ; $7cd9: $21 $0a $d8
     or [hl]                                       ; $7cdc: $b6
     ret nz                                        ; $7cdd: $c0
 
-    ld hl, $d806                                  ; $7cde: $21 $06 $d8
+    ld hl, rPuzzleTimerCompletionState            ; $7cde: $21 $06 $d8
     inc [hl]                                      ; $7ce1: $34
     ret                                           ; $7ce2: $c9
 
 
-Call_001_7ce3:
+LoadGameOverMessageTileData::
     ld a, [rCurrentGridSize]                      ; $7ce3: $fa $00 $d8
     cp $05                                        ; $7ce6: $fe $05
-    jp z, Jump_001_7cf3                           ; $7ce8: $ca $f3 $7c
+    jp z, Load5x5GameOverMessageTileData          ; $7ce8: $ca $f3 $7c
 
     cp $0a                                        ; $7ceb: $fe $0a
-    jp z, Jump_001_7d19                           ; $7ced: $ca $19 $7d
+    jp z, Load10x10GameOverMessageTileData        ; $7ced: $ca $19 $7d
 
-    jp Jump_001_7d4d                              ; $7cf0: $c3 $4d $7d
+    jp Load15x15GameOverMessageTileData           ; $7cf0: $c3 $4d $7d
 
 
-Jump_001_7cf3:
+Load5x5GameOverMessageTileData::
     ld a, $00                                     ; $7cf3: $3e $00
     ld [rBGTileCopyBankAddressLow], a             ; $7cf5: $ea $55 $c3
     ld a, $63                                     ; $7cf8: $3e $63
@@ -9485,7 +9484,7 @@ Jump_001_7cf3:
     jp PrepareBGTileCopy                          ; $7d16: $c3 $b3 $08
 
 
-Jump_001_7d19:
+Load10x10GameOverMessageTileData::
     ld a, $08                                     ; $7d19: $3e $08
     ld hl, $5c00                                  ; $7d1b: $21 $00 $5c
     ld de, $8800                                  ; $7d1e: $11 $00 $88
@@ -9508,7 +9507,7 @@ Jump_001_7d19:
     jp PrepareBGTileCopy                          ; $7d4a: $c3 $b3 $08
 
 
-Jump_001_7d4d:
+Load15x15GameOverMessageTileData::
     ld a, $06                                     ; $7d4d: $3e $06
     ld hl, $7400                                  ; $7d4f: $21 $00 $74
     ld de, $8800                                  ; $7d52: $11 $00 $88
@@ -9666,11 +9665,11 @@ Call_001_7dfe:
 Call_001_7e33:
     ld hl, $d81c                                  ; $7e33: $21 $1c $d8
     inc [hl]                                      ; $7e36: $34
-    ld a, [$d80a]                                 ; $7e37: $fa $0a $d8
+    ld a, [rPuzzleTimerMinuteTens]                ; $7e37: $fa $0a $d8
     and a                                         ; $7e3a: $a7
     ret nz                                        ; $7e3b: $c0
 
-    ld a, [$d809]                                 ; $7e3c: $fa $09 $d8
+    ld a, [rPuzzleTimerMinuteOnes]                ; $7e3c: $fa $09 $d8
     cp $02                                        ; $7e3f: $fe $02
     jr z, jr_001_7e4b                             ; $7e41: $28 $08
 
@@ -9739,11 +9738,11 @@ Call_001_7e77:
     and a                                         ; $7e7a: $a7
     ret nz                                        ; $7e7b: $c0
 
-    ld a, [$d80a]                                 ; $7e7c: $fa $0a $d8
+    ld a, [rPuzzleTimerMinuteTens]                ; $7e7c: $fa $0a $d8
     and a                                         ; $7e7f: $a7
     ret nz                                        ; $7e80: $c0
 
-    ld a, [$d809]                                 ; $7e81: $fa $09 $d8
+    ld a, [rPuzzleTimerMinuteOnes]                ; $7e81: $fa $09 $d8
     cp $03                                        ; $7e84: $fe $03
     ret nc                                        ; $7e86: $d0
 

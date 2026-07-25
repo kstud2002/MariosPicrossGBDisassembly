@@ -166,7 +166,7 @@ jr_000_0167:
     ld [rActiveROMBank], a                        ; $0192: $ea $12 $c3
     ld hl, $c000                                  ; $0195: $21 $00 $c0
     ld bc, $1fff                                  ; $0198: $01 $ff $1f
-    call Call_000_04d3                            ; $019b: $cd $d3 $04
+    call ZeroMemoryBlock                          ; $019b: $cd $d3 $04
     ld sp, $dfff                                  ; $019e: $31 $ff $df
     call Call_000_04bb                            ; $01a1: $cd $bb $04
     call ClearShadowOAMBuffer                     ; $01a4: $cd $b6 $05
@@ -715,18 +715,14 @@ jr_000_04cf:
     ret                                           ; $04d2: $c9
 
 
-Call_000_04d3:
-jr_000_04d3:
+ZeroMemoryBlock::
     xor a                                         ; $04d3: $af
     ld [hl+], a                                   ; $04d4: $22
     dec bc                                        ; $04d5: $0b
     ld a, c                                       ; $04d6: $79
-
-Call_000_04d7:
     or b                                          ; $04d7: $b0
-    jr nz, jr_000_04d3                            ; $04d8: $20 $f9
+    jr nz, ZeroMemoryBlock                        ; $04d8: $20 $f9
 
-Call_000_04da:
     ret                                           ; $04da: $c9
 
 
@@ -1370,10 +1366,10 @@ Jump_000_07e9:
     ret                                           ; $07f0: $c9
 
 
-Call_000_07f1:
+LoadPuzzleDataBuffer::
     ld hl, $d640                                  ; $07f1: $21 $40 $d6
     ld bc, $0100                                  ; $07f4: $01 $00 $01
-    call Call_000_04d3                            ; $07f7: $cd $d3 $04
+    call ZeroMemoryBlock                          ; $07f7: $cd $d3 $04
     ld a, [$d807]                                 ; $07fa: $fa $07 $d8
     ld c, a                                       ; $07fd: $4f
     ld a, [$d808]                                 ; $07fe: $fa $08 $d8
@@ -1401,7 +1397,7 @@ Call_000_07f1:
     ld b, $1e                                     ; $082c: $06 $1e
     ld hl, $d640                                  ; $082e: $21 $40 $d6
 
-jr_000_0831:
+.DecodePuzzleDataBitsLoop:
     ld a, [de]                                    ; $0831: $1a
     sla a                                         ; $0832: $cb $27
     rl [hl]                                       ; $0834: $cb $16
@@ -1429,7 +1425,7 @@ jr_000_0831:
     inc hl                                        ; $0859: $23
     inc de                                        ; $085a: $13
     dec b                                         ; $085b: $05
-    jr nz, jr_000_0831                            ; $085c: $20 $d3
+    jr nz, .DecodePuzzleDataBitsLoop              ; $085c: $20 $d3
 
     ld a, [de]                                    ; $085e: $1a
     ld [rCurrentGridSize], a                      ; $085f: $ea $00 $d8
@@ -1456,7 +1452,7 @@ jr_000_087a:
     ld a, [$c32e]                                 ; $087d: $fa $2e $c3
     res 4, a                                      ; $0880: $cb $a7
     ldh [rLCDC], a                                ; $0882: $e0 $40
-    ld hl, $d80d                                  ; $0884: $21 $0d $d8
+    ld hl, rPuzzleTimerActive                     ; $0884: $21 $0d $d8
     inc [hl]                                      ; $0887: $34
     ld a, [$c33b]                                 ; $0888: $fa $3b $c3
     inc a                                         ; $088b: $3c
@@ -3807,7 +3803,6 @@ jr_000_12dc:
     and b                                         ; $12dc: $a0
     sub e                                         ; $12dd: $93
 
-Call_000_12de:
 jr_000_12de:
     or b                                          ; $12de: $b0
     sub e                                         ; $12df: $93
@@ -6166,13 +6161,13 @@ jr_000_1c1c:
     ld [$aca3], a                                 ; $1c5a: $ea $a3 $ac
     ld a, [$d811]                                 ; $1c5d: $fa $11 $d8
     ld [$aca4], a                                 ; $1c60: $ea $a4 $ac
-    ld a, [$d809]                                 ; $1c63: $fa $09 $d8
+    ld a, [rPuzzleTimerMinuteOnes]                ; $1c63: $fa $09 $d8
     ld [$aca5], a                                 ; $1c66: $ea $a5 $ac
-    ld a, [$d80a]                                 ; $1c69: $fa $0a $d8
+    ld a, [rPuzzleTimerMinuteTens]                ; $1c69: $fa $0a $d8
     ld [$aca6], a                                 ; $1c6c: $ea $a6 $ac
-    ld a, [$d80b]                                 ; $1c6f: $fa $0b $d8
+    ld a, [rPuzzleTimerSecondOnes]                ; $1c6f: $fa $0b $d8
     ld [$aca7], a                                 ; $1c72: $ea $a7 $ac
-    ld a, [$d80c]                                 ; $1c75: $fa $0c $d8
+    ld a, [rPuzzleTimerSecondTens]                ; $1c75: $fa $0c $d8
     ld [$aca8], a                                 ; $1c78: $ea $a8 $ac
     ld a, [$d807]                                 ; $1c7b: $fa $07 $d8
     ld [$aca9], a                                 ; $1c7e: $ea $a9 $ac
@@ -6191,13 +6186,13 @@ Call_000_1c96:
     ld a, [$aca4]                                 ; $1c9c: $fa $a4 $ac
     ld [$d811], a                                 ; $1c9f: $ea $11 $d8
     ld a, [$aca5]                                 ; $1ca2: $fa $a5 $ac
-    ld [$d809], a                                 ; $1ca5: $ea $09 $d8
+    ld [rPuzzleTimerMinuteOnes], a                ; $1ca5: $ea $09 $d8
     ld a, [$aca6]                                 ; $1ca8: $fa $a6 $ac
-    ld [$d80a], a                                 ; $1cab: $ea $0a $d8
+    ld [rPuzzleTimerMinuteTens], a                ; $1cab: $ea $0a $d8
     ld a, [$aca7]                                 ; $1cae: $fa $a7 $ac
-    ld [$d80b], a                                 ; $1cb1: $ea $0b $d8
+    ld [rPuzzleTimerSecondOnes], a                ; $1cb1: $ea $0b $d8
     ld a, [$aca8]                                 ; $1cb4: $fa $a8 $ac
-    ld [$d80c], a                                 ; $1cb7: $ea $0c $d8
+    ld [rPuzzleTimerSecondTens], a                ; $1cb7: $ea $0c $d8
     ld a, [$aca9]                                 ; $1cba: $fa $a9 $ac
     ld [$d807], a                                 ; $1cbd: $ea $07 $d8
     ld a, [$acaa]                                 ; $1cc0: $fa $aa $ac
@@ -6206,7 +6201,7 @@ Call_000_1c96:
     ld [rPuzzleCursorColumn], a                   ; $1cc9: $ea $36 $d6
     ld a, [$acac]                                 ; $1ccc: $fa $ac $ac
     ld [rPuzzleCursorRow], a                      ; $1ccf: $ea $37 $d6
-    call Call_000_07f1                            ; $1cd2: $cd $f1 $07
+    call LoadPuzzleDataBuffer                     ; $1cd2: $cd $f1 $07
     ld b, $3c                                     ; $1cd5: $06 $3c
     ld de, $acad                                  ; $1cd7: $11 $ad $ac
     ld hl, $d640                                  ; $1cda: $21 $40 $d6
@@ -7052,7 +7047,7 @@ GS06_StatePhase_00_Init::
     ld [$c350], a                                 ; $21d8: $ea $50 $c3
     xor a                                         ; $21db: $af
     ld [$d805], a                                 ; $21dc: $ea $05 $d8
-    ld [$d806], a                                 ; $21df: $ea $06 $d8
+    ld [rPuzzleTimerCompletionState], a           ; $21df: $ea $06 $d8
     ld [rMarioBlinkAnimationSequenceCursor], a    ; $21e2: $ea $18 $d8
     ld [rMarioBlinkAnimationDelay], a             ; $21e5: $ea $17 $d8
     ld [$d80f], a                                 ; $21e8: $ea $0f $d8
@@ -7093,7 +7088,7 @@ GS06_StatePhase_00_Init::
     ld [rMessageScriptStreamPointerLow], a        ; $2245: $ea $2d $d8
     ld a, $6a                                     ; $2248: $3e $6a
     ld [rMessageScriptStreamPointerHigh], a       ; $224a: $ea $2e $d8
-    call Call_000_07f1                            ; $224d: $cd $f1 $07
+    call LoadPuzzleDataBuffer                     ; $224d: $cd $f1 $07
     call $6f30                                    ; $2250: $cd $30 $6f
     call ClearShadowOAMBuffer                     ; $2253: $cd $b6 $05
     call $7beb                                    ; $2256: $cd $eb $7b
@@ -7300,7 +7295,7 @@ GS06_StatePhase_08_SolvePuzzle_Prepare::
     ret                                           ; $23ef: $c9
 
 
-GS06_SolvePuzzleDemoInputSequenceData::
+GS06_SolvePuzzleInputSequenceData::
     db $00, $00, $01, $80
     db $01, $80, $01, $80
     db $01, $80, $01, $00
@@ -7356,7 +7351,7 @@ GS06_StatePhase_09_SolvePuzzle_Animation::
     ret                                           ; $2491: $c9
 
 
-GS06_StatePhase_0a_TODO::
+GS06_StatePhase_0a_SolvePuzzle_Finish::
     call GS06_ShowMessageArrowAndTickTransitionTimer; $2492: $cd $12 $30
     ret nz                                        ; $2495: $c0
 
@@ -7371,7 +7366,7 @@ GS06_StatePhase_0a_TODO::
     ret                                           ; $24aa: $c9
 
 
-GS06_StatePhase_0b_TODO::
+GS06_StatePhase_0b_Message::
     call $7918                                    ; $24ab: $cd $18 $79
     call AnimateMarioMouthDuringText              ; $24ae: $cd $93 $30
     call AdvanceMessageScriptStream               ; $24b1: $cd $6e $2b
@@ -7391,7 +7386,7 @@ GS06_StatePhase_0b_TODO::
     ret                                           ; $24d2: $c9
 
 
-GS06_StatePhase_0c_TODO::
+GS06_StatePhase_0c_ResetBoard::
     call $7918                                    ; $24d3: $cd $18 $79
     call AnimateMarioMouthDuringText              ; $24d6: $cd $93 $30
     call AdvanceMessageScriptStream               ; $24d9: $cd $6e $2b
@@ -7401,8 +7396,8 @@ GS06_StatePhase_0c_TODO::
     call GS06_ShowAButtonPromptAndWaitForAdvanceOrSkip; $24e0: $cd $b6 $2f
     call ClearShadowOAMBuffer                     ; $24e3: $cd $b6 $05
     call GS06_CopyRedrawSourceToProgressionBuffer ; $24e6: $cd $2e $30
-    call Call_000_3114                            ; $24e9: $cd $14 $31
-    call Call_000_07f1                            ; $24ec: $cd $f1 $07
+    call ClearGameBoard                           ; $24e9: $cd $14 $31
+    call LoadPuzzleDataBuffer                     ; $24ec: $cd $f1 $07
     ld a, $d0                                     ; $24ef: $3e $d0
     ld [rMessageScriptStreamPointerLow], a        ; $24f1: $ea $2d $d8
     ld a, $6c                                     ; $24f4: $3e $6c
@@ -7413,7 +7408,7 @@ GS06_StatePhase_0c_TODO::
     ret                                           ; $2500: $c9
 
 
-GS06_StatePhase_0d_TODO::
+GS06_StatePhase_0d_HighlightNumbersTop_Prepare::
     call $7918                                    ; $2501: $cd $18 $79
     call AnimateMarioMouthDuringText              ; $2504: $cd $93 $30
     call AdvanceMessageScriptStream               ; $2507: $cd $6e $2b
@@ -7440,18 +7435,14 @@ GS06_StatePhase_0d_TODO::
     ret                                           ; $2537: $c9
 
 
-    ld [$0000], sp                                ; $2538: $08 $00 $00
-    inc [hl]                                      ; $253b: $34
-    ld [$0000], sp                                ; $253c: $08 $00 $00
-    dec [hl]                                      ; $253f: $35
-    ld [$0000], sp                                ; $2540: $08 $00 $00
-    ld [hl], $08                                  ; $2543: $36 $08
-    nop                                           ; $2545: $00
-    nop                                           ; $2546: $00
-    dec [hl]                                      ; $2547: $35
-    nop                                           ; $2548: $00
+GS06_StatePhase_0d_HighlightNumbersTop_SequenceEventTable::
+    db $08, $00, $00, $34
+    db $08, $00, $00, $35
+    db $08, $00, $00, $36
+    db $08, $00, $00, $35
+    db $00
 
-GS06_StatePhase_0e_TODO::
+GS06_StatePhase_0e_HighlightNumbersTop_Animation::
     call $7918                                    ; $2549: $cd $18 $79
     ld a, $00                                     ; $254c: $3e $00
     call GS06_UpdateOAMSequenceEventAndCopySprite ; $254e: $cd $bd $19
@@ -7468,7 +7459,7 @@ GS06_StatePhase_0e_TODO::
     ret                                           ; $2566: $c9
 
 
-GS06_StatePhase_0f_TODO::
+GS06_StatePhase_0f_Message::
     call $7918                                    ; $2567: $cd $18 $79
     call AnimateMarioMouthDuringText              ; $256a: $cd $93 $30
     call AdvanceMessageScriptStream               ; $256d: $cd $6e $2b
@@ -7488,7 +7479,7 @@ GS06_StatePhase_0f_TODO::
     ret                                           ; $258e: $c9
 
 
-GS06_StatePhase_10_TODO::
+GS06_StatePhase_10_HighlightNumbersFirstColumn_Prepare::
     call $7918                                    ; $258f: $cd $18 $79
     call AnimateMarioMouthDuringText              ; $2592: $cd $93 $30
     call AdvanceMessageScriptStream               ; $2595: $cd $6e $2b
@@ -7515,20 +7506,14 @@ GS06_StatePhase_10_TODO::
     ret                                           ; $25c5: $c9
 
 
-    ld [$0000], sp                                ; $25c6: $08 $00 $00
-    ld l, $08                                     ; $25c9: $2e $08
-    nop                                           ; $25cb: $00
-    nop                                           ; $25cc: $00
-    cpl                                           ; $25cd: $2f
-    ld [$0000], sp                                ; $25ce: $08 $00 $00
-    jr nc, @+$0a                                  ; $25d1: $30 $08
+GS06_StatePhase_10_HighlightNumbersFirstColumn_SequenceEventTable::
+    db $08, $00, $00, $2e
+    db $08, $00, $00, $2f
+    db $08, $00, $00, $30
+    db $08, $00, $00, $2f
+    db $00
 
-    nop                                           ; $25d3: $00
-    nop                                           ; $25d4: $00
-    cpl                                           ; $25d5: $2f
-    nop                                           ; $25d6: $00
-
-GS06_StatePhase_11_TODO::
+GS06_StatePhase_11_HighlightNumbersFirstColumn_Animation::
     call $7918                                    ; $25d7: $cd $18 $79
     ld a, $00                                     ; $25da: $3e $00
     call GS06_UpdateOAMSequenceEventAndCopySprite ; $25dc: $cd $bd $19
@@ -7545,7 +7530,7 @@ GS06_StatePhase_11_TODO::
     ret                                           ; $25f4: $c9
 
 
-GS06_StatePhase_12_TODO::
+GS06_StatePhase_12_SolveFirstColumn_Prepare::
     call $7918                                    ; $25f5: $cd $18 $79
     call AnimateMarioMouthDuringText              ; $25f8: $cd $93 $30
     call AdvanceMessageScriptStream               ; $25fb: $cd $6e $2b
@@ -7567,27 +7552,22 @@ GS06_StatePhase_12_TODO::
     ret                                           ; $261e: $c9
 
 
-    nop                                           ; $261f: $00
-    nop                                           ; $2620: $00
-    ld bc, $0180                                  ; $2621: $01 $80 $01
-    add b                                         ; $2624: $80
-    ld bc, $0180                                  ; $2625: $01 $80 $01
-    add b                                         ; $2628: $80
-    ld bc, $0000                                  ; $2629: $01 $00 $00
-    nop                                           ; $262c: $00
-    nop                                           ; $262d: $00
-    rst $38                                       ; $262e: $ff
+GS06_SolveFirstColumnInputSequenceData::
+    db $00, $00, $01, $80
+    db $01, $80, $01, $80
+    db $01, $80, $01, $00
+    db $00, $00, $00, $ff
 
-GS06_StatePhase_13_TODO::
+GS06_StatePhase_13_SolveFirstColumn_Animation::
     call GS06_TickScriptedInputSequence           ; $262f: $cd $d6 $30
-    jr nz, jr_000_2658                            ; $2632: $20 $24
+    jr nz, .FrameLoop                             ; $2632: $20 $24
 
     ld hl, $03ed                                  ; $2634: $21 $ed $03
     call GS06_ShowAButtonPromptAndWaitForAdvanceOrSkip; $2637: $cd $b6 $2f
     call ClearShadowOAMBuffer                     ; $263a: $cd $b6 $05
     call GS06_CopyRedrawSourceToProgressionBuffer ; $263d: $cd $2e $30
-    call Call_000_3114                            ; $2640: $cd $14 $31
-    call Call_000_07f1                            ; $2643: $cd $f1 $07
+    call ClearGameBoard                           ; $2640: $cd $14 $31
+    call LoadPuzzleDataBuffer                     ; $2643: $cd $f1 $07
     ld a, $24                                     ; $2646: $3e $24
     ld [rMessageScriptStreamPointerLow], a        ; $2648: $ea $2d $d8
     ld a, $6e                                     ; $264b: $3e $6e
@@ -7598,7 +7578,7 @@ GS06_StatePhase_13_TODO::
     ret                                           ; $2657: $c9
 
 
-jr_000_2658:
+.FrameLoop:
     call $71ca                                    ; $2658: $cd $ca $71
     call $713e                                    ; $265b: $cd $3e $71
     call $7918                                    ; $265e: $cd $18 $79
@@ -7608,7 +7588,7 @@ jr_000_2658:
     ret                                           ; $266a: $c9
 
 
-GS06_StatePhase_14_TODO::
+GS06_StatePhase_14_HighlightNumbersLeft_Prepare::
     call $7918                                    ; $266b: $cd $18 $79
     call AnimateMarioMouthDuringText              ; $266e: $cd $93 $30
     call AdvanceMessageScriptStream               ; $2671: $cd $6e $2b
@@ -7635,18 +7615,14 @@ GS06_StatePhase_14_TODO::
     ret                                           ; $26a1: $c9
 
 
-    ld [$0000], sp                                ; $26a2: $08 $00 $00
-    inc [hl]                                      ; $26a5: $34
-    ld [$0000], sp                                ; $26a6: $08 $00 $00
-    dec [hl]                                      ; $26a9: $35
-    ld [$0000], sp                                ; $26aa: $08 $00 $00
-    ld [hl], $08                                  ; $26ad: $36 $08
-    nop                                           ; $26af: $00
-    nop                                           ; $26b0: $00
-    dec [hl]                                      ; $26b1: $35
-    nop                                           ; $26b2: $00
+GS06_StatePhase_14_HighlightNumbersLeft_SequenceEventTable::
+    db $08, $00, $00, $34
+    db $08, $00, $00, $35
+    db $08, $00, $00, $36
+    db $08, $00, $00, $35
+    db $00
 
-GS06_StatePhase_15_TODO::
+GS06_StatePhase_15_HighlightNumbersLeft_Animation::
     call $7918                                    ; $26b3: $cd $18 $79
     ld a, $00                                     ; $26b6: $3e $00
     call GS06_UpdateOAMSequenceEventAndCopySprite ; $26b8: $cd $bd $19
@@ -7663,7 +7639,7 @@ GS06_StatePhase_15_TODO::
     ret                                           ; $26d0: $c9
 
 
-GS06_StatePhase_16_TODO::
+GS06_StatePhase_16_Message::
     call $7918                                    ; $26d1: $cd $18 $79
     call AnimateMarioMouthDuringText              ; $26d4: $cd $93 $30
     call AdvanceMessageScriptStream               ; $26d7: $cd $6e $2b
@@ -7683,7 +7659,7 @@ GS06_StatePhase_16_TODO::
     ret                                           ; $26f8: $c9
 
 
-GS06_StatePhase_17_TODO::
+GS06_StatePhase_17_HighlightNumbersSecondRow_Prepare::
     call $7918                                    ; $26f9: $cd $18 $79
     call AnimateMarioMouthDuringText              ; $26fc: $cd $93 $30
     call AdvanceMessageScriptStream               ; $26ff: $cd $6e $2b
@@ -7710,17 +7686,14 @@ GS06_StatePhase_17_TODO::
     ret                                           ; $272f: $c9
 
 
-    ld [$0000], sp                                ; $2730: $08 $00 $00
-    ld sp, $0008                                  ; $2733: $31 $08 $00
-    nop                                           ; $2736: $00
-    ld [hl-], a                                   ; $2737: $32
-    ld [$0000], sp                                ; $2738: $08 $00 $00
-    inc sp                                        ; $273b: $33
-    ld [$0000], sp                                ; $273c: $08 $00 $00
-    ld [hl-], a                                   ; $273f: $32
-    nop                                           ; $2740: $00
+GS06_StatePhase_17_HighlightNumbersSecondRow_SequenceEventTable::
+    db $08, $00, $00, $31
+    db $08, $00, $00, $32
+    db $08, $00, $00, $33
+    db $08, $00, $00, $32
+    db $00
 
-GS06_StatePhase_18_TODO::
+GS06_StatePhase_18_HighlightNumbersSecondRow_Animation::
     call $7918                                    ; $2741: $cd $18 $79
     ld a, $00                                     ; $2744: $3e $00
     call GS06_UpdateOAMSequenceEventAndCopySprite ; $2746: $cd $bd $19
@@ -7737,7 +7710,7 @@ GS06_StatePhase_18_TODO::
     ret                                           ; $275e: $c9
 
 
-GS06_StatePhase_19_TODO::
+GS06_StatePhase_19_SolveSecondRow_Prepare::
     call $7918                                    ; $275f: $cd $18 $79
     call AnimateMarioMouthDuringText              ; $2762: $cd $93 $30
     call AdvanceMessageScriptStream               ; $2765: $cd $6e $2b
@@ -7760,22 +7733,16 @@ GS06_StatePhase_19_TODO::
     ret                                           ; $278a: $c9
 
 
-    nop                                           ; $278b: $00
-    nop                                           ; $278c: $00
-    ld bc, $0110                                  ; $278d: $01 $10 $01
-    db $10                                        ; $2790: $10
-    ld bc, $0000                                  ; $2791: $01 $00 $00
-    db $10                                        ; $2794: $10
-    stop                                          ; $2795: $10 $00
-    nop                                           ; $2797: $00
-    ld bc, $0000                                  ; $2798: $01 $00 $00
-    nop                                           ; $279b: $00
-    nop                                           ; $279c: $00
-    rst $38                                       ; $279d: $ff
+GS06_SolveSecondRowInputSequenceData::
+    db $00, $00, $01, $10
+    db $01, $10, $01, $00
+    db $00, $10, $10, $00
+    db $00, $01, $00, $00
+    db $00, $00, $ff
 
-GS06_StatePhase_1a_TODO::
+GS06_StatePhase_1a_SolveSecondRow_Animation::
     call GS06_TickScriptedInputSequence           ; $279e: $cd $d6 $30
-    jr nz, jr_000_27c1                            ; $27a1: $20 $1e
+    jr nz, .FrameLoop                             ; $27a1: $20 $1e
 
     ld hl, $03ed                                  ; $27a3: $21 $ed $03
     call GS06_ShowAButtonPromptAndWaitForAdvanceOrSkip; $27a6: $cd $b6 $2f
@@ -7791,7 +7758,7 @@ GS06_StatePhase_1a_TODO::
     ret                                           ; $27c0: $c9
 
 
-jr_000_27c1:
+.FrameLoop:
     call $71ca                                    ; $27c1: $cd $ca $71
     call $713e                                    ; $27c4: $cd $3e $71
     call $7918                                    ; $27c7: $cd $18 $79
@@ -7801,7 +7768,7 @@ jr_000_27c1:
     ret                                           ; $27d3: $c9
 
 
-GS06_StatePhase_1b_TODO::
+GS06_StatePhase_1b_Message::
     call $7918                                    ; $27d4: $cd $18 $79
     call AnimateMarioMouthDuringText              ; $27d7: $cd $93 $30
     call AdvanceMessageScriptStream               ; $27da: $cd $6e $2b
@@ -7813,12 +7780,12 @@ GS06_StatePhase_1b_TODO::
     ret                                           ; $27e5: $c9
 
 
-GS06_StatePhase_1c_TODO::
+GS06_StatePhase_1c_DecrementPuzzleTimer::
     call $7918                                    ; $27e6: $cd $18 $79
     call GS06_ShowMessageArrowAndTickTransitionTimer; $27e9: $cd $12 $30
-    call Call_000_3160                            ; $27ec: $cd $60 $31
+    call GS06_DecrementPuzzleTimer                ; $27ec: $cd $60 $31
     call $7cc8                                    ; $27ef: $cd $c8 $7c
-    ld a, [$d806]                                 ; $27f2: $fa $06 $d8
+    ld a, [rPuzzleTimerCompletionState]           ; $27f2: $fa $06 $d8
     cp $01                                        ; $27f5: $fe $01
     ret nz                                        ; $27f7: $c0
 
@@ -7832,7 +7799,7 @@ GS06_StatePhase_1c_TODO::
     ret                                           ; $2809: $c9
 
 
-GS06_StatePhase_1d_TODO::
+GS06_StatePhase_1d_GameOverMessage::
     call $7918                                    ; $280a: $cd $18 $79
     call AnimateMarioMouthDuringText              ; $280d: $cd $93 $30
     call AdvanceMessageScriptStream               ; $2810: $cd $6e $2b
@@ -7969,8 +7936,8 @@ GS06_StatePhase_22_TODO::
     call GS06_ShowAButtonPromptAndWaitForAdvanceOrSkip; $28ff: $cd $b6 $2f
     call ClearShadowOAMBuffer                     ; $2902: $cd $b6 $05
     call GS06_CopyRedrawSourceToProgressionBuffer ; $2905: $cd $2e $30
-    call Call_000_3114                            ; $2908: $cd $14 $31
-    call Call_000_07f1                            ; $290b: $cd $f1 $07
+    call ClearGameBoard                           ; $2908: $cd $14 $31
+    call LoadPuzzleDataBuffer                     ; $290b: $cd $f1 $07
     call $7beb                                    ; $290e: $cd $eb $7b
     ld a, $ca                                     ; $2911: $3e $ca
     ld [rMessageScriptStreamPointerLow], a        ; $2913: $ea $2d $d8
@@ -8202,8 +8169,8 @@ GS06_StatePhase_29_TODO::
     push af                                       ; $2ac9: $f5
     call ClearShadowOAMBuffer                     ; $2aca: $cd $b6 $05
     call GS06_CopyRedrawSourceToProgressionBuffer ; $2acd: $cd $2e $30
-    call Call_000_3114                            ; $2ad0: $cd $14 $31
-    call Call_000_07f1                            ; $2ad3: $cd $f1 $07
+    call ClearGameBoard                           ; $2ad0: $cd $14 $31
+    call LoadPuzzleDataBuffer                     ; $2ad3: $cd $f1 $07
     pop af                                        ; $2ad6: $f1
     bit 0, a                                      ; $2ad7: $cb $47
     jr z, jr_000_2ae0                             ; $2ad9: $28 $05
@@ -8218,7 +8185,7 @@ jr_000_2ae0:
     ld [rPuzzleCursorColumn], a                   ; $2ae1: $ea $36 $d6
     ld [rPuzzleCursorRow], a                      ; $2ae4: $ea $37 $d6
     ld [$d805], a                                 ; $2ae7: $ea $05 $d8
-    ld [$d806], a                                 ; $2aea: $ea $06 $d8
+    ld [rPuzzleTimerCompletionState], a           ; $2aea: $ea $06 $d8
     ld [$d80f], a                                 ; $2aed: $ea $0f $d8
     call GS06_ResetMessageSequenceState           ; $2af0: $cd $3e $32
     ld a, $02                                     ; $2af3: $3e $02
@@ -8793,7 +8760,7 @@ GS06_TickScriptedInputSequence::
     ret                                           ; $3113: $c9
 
 
-Call_000_3114:
+ClearGameBoard::
     ld a, $40                                     ; $3114: $3e $40
     ld [rBGTileCopyBankAddressLow], a             ; $3116: $ea $55 $c3
     ld a, $4c                                     ; $3119: $3e $4c
@@ -8829,68 +8796,68 @@ Call_000_313a:
     jp PrepareBGTileCopy                          ; $315d: $c3 $b3 $08
 
 
-Call_000_3160:
-    ld a, [$d80b]                                 ; $3160: $fa $0b $d8
-    ld hl, $d80c                                  ; $3163: $21 $0c $d8
+GS06_DecrementPuzzleTimer::
+    ld a, [rPuzzleTimerSecondOnes]                ; $3160: $fa $0b $d8
+    ld hl, rPuzzleTimerSecondTens                 ; $3163: $21 $0c $d8
     or [hl]                                       ; $3166: $b6
-    ld hl, $d809                                  ; $3167: $21 $09 $d8
+    ld hl, rPuzzleTimerMinuteOnes                 ; $3167: $21 $09 $d8
     or [hl]                                       ; $316a: $b6
-    ld hl, $d80a                                  ; $316b: $21 $0a $d8
+    ld hl, rPuzzleTimerMinuteTens                 ; $316b: $21 $0a $d8
     or [hl]                                       ; $316e: $b6
     ret z                                         ; $316f: $c8
 
     ld a, $ff                                     ; $3170: $3e $ff
-    ld [$d80d], a                                 ; $3172: $ea $0d $d8
-    ld a, [$d80b]                                 ; $3175: $fa $0b $d8
+    ld [rPuzzleTimerActive], a                    ; $3172: $ea $0d $d8
+    ld a, [rPuzzleTimerSecondOnes]                ; $3175: $fa $0b $d8
     sub $05                                       ; $3178: $d6 $05
-    jr nc, jr_000_317e                            ; $317a: $30 $02
+    jr nc, .DecrementPuzzleTimerSecondOnes        ; $317a: $30 $02
 
     add $0a                                       ; $317c: $c6 $0a
 
-jr_000_317e:
-    ld [$d80b], a                                 ; $317e: $ea $0b $d8
+.DecrementPuzzleTimerSecondOnes:
+    ld [rPuzzleTimerSecondOnes], a                ; $317e: $ea $0b $d8
     push af                                       ; $3181: $f5
     ld bc, $2b27                                  ; $3182: $01 $27 $2b
     call $7c29                                    ; $3185: $cd $29 $7c
     pop af                                        ; $3188: $f1
-    ld a, [$d80c]                                 ; $3189: $fa $0c $d8
+    ld a, [rPuzzleTimerSecondTens]                ; $3189: $fa $0c $d8
     sbc $01                                       ; $318c: $de $01
-    jr nc, jr_000_3192                            ; $318e: $30 $02
+    jr nc, .DecrementPuzzleTimerSecondTens        ; $318e: $30 $02
 
     add $06                                       ; $3190: $c6 $06
 
-jr_000_3192:
-    ld [$d80c], a                                 ; $3192: $ea $0c $d8
+.DecrementPuzzleTimerSecondTens:
+    ld [rPuzzleTimerSecondTens], a                ; $3192: $ea $0c $d8
     push af                                       ; $3195: $f5
     ld bc, $2327                                  ; $3196: $01 $27 $23
     call $7c29                                    ; $3199: $cd $29 $7c
     pop af                                        ; $319c: $f1
     ret nc                                        ; $319d: $d0
 
-    ld a, [$d809]                                 ; $319e: $fa $09 $d8
+    ld a, [rPuzzleTimerMinuteOnes]                ; $319e: $fa $09 $d8
     dec a                                         ; $31a1: $3d
     cp $ff                                        ; $31a2: $fe $ff
-    jr nz, jr_000_31a8                            ; $31a4: $20 $02
+    jr nz, .DecrementPuzzleTimerMinuteOnes        ; $31a4: $20 $02
 
     ld a, $09                                     ; $31a6: $3e $09
 
-jr_000_31a8:
-    ld [$d809], a                                 ; $31a8: $ea $09 $d8
+.DecrementPuzzleTimerMinuteOnes:
+    ld [rPuzzleTimerMinuteOnes], a                ; $31a8: $ea $09 $d8
     push af                                       ; $31ab: $f5
     ld bc, $1527                                  ; $31ac: $01 $27 $15
     call $7c29                                    ; $31af: $cd $29 $7c
     pop af                                        ; $31b2: $f1
     ret nz                                        ; $31b3: $c0
 
-    ld a, [$d80a]                                 ; $31b4: $fa $0a $d8
+    ld a, [rPuzzleTimerMinuteTens]                ; $31b4: $fa $0a $d8
     dec a                                         ; $31b7: $3d
     cp $ff                                        ; $31b8: $fe $ff
-    jr nz, jr_000_31be                            ; $31ba: $20 $02
+    jr nz, .DecrementPuzzleTimerMinuteTens        ; $31ba: $20 $02
 
     ld a, $09                                     ; $31bc: $3e $09
 
-jr_000_31be:
-    ld [$d80a], a                                 ; $31be: $ea $0a $d8
+.DecrementPuzzleTimerMinuteTens:
+    ld [rPuzzleTimerMinuteTens], a                ; $31be: $ea $0a $d8
     push af                                       ; $31c1: $f5
     ld bc, $0d27                                  ; $31c2: $01 $27 $0d
     call $7c29                                    ; $31c5: $cd $29 $7c

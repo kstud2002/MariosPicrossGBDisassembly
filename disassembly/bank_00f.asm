@@ -4072,7 +4072,9 @@ jr_00f_52c9:
 
 
     inc b                                         ; $5343: $04
-    call nc, Call_000_04d7                        ; $5344: $d4 $d7 $04
+
+    db $d4, $d7, $04
+
     reti                                          ; $5347: $d9
 
 
@@ -7368,7 +7370,9 @@ Call_00f_60ee:
     call nc, $d404                                ; $61d8: $d4 $04 $d4
     call c, Call_000_03f1                         ; $61db: $dc $f1 $03
     inc b                                         ; $61de: $04
-    call nc, Call_000_04da                        ; $61df: $d4 $da $04
+
+    db $d4, $da, $04
+
     reti                                          ; $61e2: $d9
 
 
@@ -7422,7 +7426,9 @@ Call_00f_60ee:
     inc b                                         ; $6234: $04
     call nc, $d904                                ; $6235: $d4 $04 $d9
     inc b                                         ; $6238: $04
-    call nc, Call_000_04d7                        ; $6239: $d4 $d7 $04
+
+    db $d4, $d7, $04
+
     rst $10                                       ; $623c: $d7
     inc b                                         ; $623d: $04
     rst $10                                       ; $623e: $d7
@@ -7962,7 +7968,9 @@ Call_00f_60ee:
     call nc, $d444                                ; $64db: $d4 $44 $d4
     ld b, h                                       ; $64de: $44
     ld b, h                                       ; $64df: $44
-    call nc, Call_000_04d7                        ; $64e0: $d4 $d7 $04
+
+    db $d4, $d7, $04
+
     ld [$e904], a                                 ; $64e3: $ea $04 $e9
     inc b                                         ; $64e6: $04
     ld [$e904], a                                 ; $64e7: $ea $04 $e9
