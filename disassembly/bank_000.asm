@@ -159,7 +159,7 @@ jr_000_0167:
     ld a, $0a                                     ; $0181: $3e $0a
     ld [$0000], a                                 ; $0183: $ea $00 $00
     ld a, $01                                     ; $0186: $3e $01
-    ld [ROMBankSwitchTrigger], a                  ; $0188: $ea $00 $20
+    ld [rROMB], a                                 ; $0188: $ea $00 $20
     ld a, $00                                     ; $018b: $3e $00
     ld [$4000], a                                 ; $018d: $ea $00 $40
     ld a, $01                                     ; $0190: $3e $01
@@ -249,7 +249,7 @@ jr_000_01e9:
     ld a, $0a                                     ; $024d: $3e $0a
     ld [$0000], a                                 ; $024f: $ea $00 $00
     ld a, $01                                     ; $0252: $3e $01
-    ld [ROMBankSwitchTrigger], a                  ; $0254: $ea $00 $20
+    ld [rROMB], a                                 ; $0254: $ea $00 $20
     ld a, $00                                     ; $0257: $3e $00
     ld [$4000], a                                 ; $0259: $ea $00 $40
     ld a, $01                                     ; $025c: $3e $01
@@ -455,7 +455,7 @@ GameStateDispatcher::
     push af                                       ; $0382: $f5
     ld a, [hl]                                    ; $0383: $7e
     ld [rActiveROMBank], a                        ; $0384: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $0387: $ea $00 $20
+    ld [rROMB], a                                 ; $0387: $ea $00 $20
     ld l, e                                       ; $038a: $6b
     ld h, d                                       ; $038b: $62
     ld de, $0391                                  ; $038c: $11 $91 $03
@@ -465,7 +465,7 @@ GameStateDispatcher::
 
     pop af                                        ; $0391: $f1
     ld [rActiveROMBank], a                        ; $0392: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $0395: $ea $00 $20
+    ld [rROMB], a                                 ; $0395: $ea $00 $20
     ret                                           ; $0398: $c9
 
 
@@ -516,7 +516,7 @@ CallSoundEffectDispatcher::
     push af                                       ; $03c5: $f5
     ld a, $0f                                     ; $03c6: $3e $0f
     ld [rActiveROMBank], a                        ; $03c8: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $03cb: $ea $00 $20
+    ld [rROMB], a                                 ; $03cb: $ea $00 $20
 
 jr_000_03ce:
     push bc                                       ; $03ce: $c5
@@ -537,7 +537,7 @@ jr_000_03ce:
 jr_000_03df:
     pop af                                        ; $03df: $f1
     ld [rActiveROMBank], a                        ; $03e0: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $03e3: $ea $00 $20
+    ld [rROMB], a                                 ; $03e3: $ea $00 $20
     pop af                                        ; $03e6: $f1
     ldh [rIE], a                                  ; $03e7: $e0 $ff
     pop hl                                        ; $03e9: $e1
@@ -558,11 +558,11 @@ CallSoundEngineUpdateRoutine_Unsure::
     push af                                       ; $03f5: $f5
     ld a, $0f                                     ; $03f6: $3e $0f
     ld [rActiveROMBank], a                        ; $03f8: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $03fb: $ea $00 $20
+    ld [rROMB], a                                 ; $03fb: $ea $00 $20
     call $4003                                    ; $03fe: $cd $03 $40
     pop af                                        ; $0401: $f1
     ld [rActiveROMBank], a                        ; $0402: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $0405: $ea $00 $20
+    ld [rROMB], a                                 ; $0405: $ea $00 $20
     pop hl                                        ; $0408: $e1
     pop de                                        ; $0409: $d1
     pop bc                                        ; $040a: $c1
@@ -579,7 +579,7 @@ PlayScreenTransitionFadeIn::
     push af                                       ; $0417: $f5
     ld a, b                                       ; $0418: $78
     ld [rActiveROMBank], a                        ; $0419: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $041c: $ea $00 $20
+    ld [rROMB], a                                 ; $041c: $ea $00 $20
     ld b, $04                                     ; $041f: $06 $04
 
 .ApplyFadeStepLoop:
@@ -604,7 +604,7 @@ PlayScreenTransitionFadeIn::
     ld [rHintCursorAnimationRowAccumulator], a    ; $0443: $ea $3f $d6
     pop af                                        ; $0446: $f1
     ld [rActiveROMBank], a                        ; $0447: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $044a: $ea $00 $20
+    ld [rROMB], a                                 ; $044a: $ea $00 $20
     ret                                           ; $044d: $c9
 
 
@@ -617,7 +617,7 @@ PlayScreenTransitionFadeOut::
     push af                                       ; $0458: $f5
     ld a, b                                       ; $0459: $78
     ld [rActiveROMBank], a                        ; $045a: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $045d: $ea $00 $20
+    ld [rROMB], a                                 ; $045d: $ea $00 $20
     ld b, $04                                     ; $0460: $06 $04
 
 .ApplyFadeStepLoop:
@@ -638,7 +638,7 @@ PlayScreenTransitionFadeOut::
 
     pop af                                        ; $047b: $f1
     ld [rActiveROMBank], a                        ; $047c: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $047f: $ea $00 $20
+    ld [rROMB], a                                 ; $047f: $ea $00 $20
     ret                                           ; $0482: $c9
 
 
@@ -744,7 +744,7 @@ BankedTileCopy::
     push af                                       ; $04ea: $f5
     ld a, [rRequestedROMBank]                     ; $04eb: $fa $14 $c3
     ld [rActiveROMBank], a                        ; $04ee: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $04f1: $ea $00 $20
+    ld [rROMB], a                                 ; $04f1: $ea $00 $20
 
 .CopyLoop:
     ld a, [hl+]                                   ; $04f4: $2a
@@ -757,7 +757,7 @@ BankedTileCopy::
 
     pop af                                        ; $04fc: $f1
     ld [rActiveROMBank], a                        ; $04fd: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $0500: $ea $00 $20
+    ld [rROMB], a                                 ; $0500: $ea $00 $20
     ret                                           ; $0503: $c9
 
 
@@ -767,7 +767,7 @@ BankedTransparentTileCopy::
     push af                                       ; $050a: $f5
     ld a, [rRequestedROMBank]                     ; $050b: $fa $14 $c3
     ld [rActiveROMBank], a                        ; $050e: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $0511: $ea $00 $20
+    ld [rROMB], a                                 ; $0511: $ea $00 $20
     srl b                                         ; $0514: $cb $38
     rr c                                          ; $0516: $cb $19
 
@@ -797,7 +797,7 @@ BankedTransparentTileCopy::
 
     pop af                                        ; $0530: $f1
     ld [rActiveROMBank], a                        ; $0531: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $0534: $ea $00 $20
+    ld [rROMB], a                                 ; $0534: $ea $00 $20
     ret                                           ; $0537: $c9
 
 
@@ -807,7 +807,7 @@ BankedTileCopyVRAMSafe::
     push af                                       ; $053e: $f5
     ld a, [rRequestedROMBank]                     ; $053f: $fa $14 $c3
     ld [rActiveROMBank], a                        ; $0542: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $0545: $ea $00 $20
+    ld [rROMB], a                                 ; $0545: $ea $00 $20
     ldh a, [rIE]                                  ; $0548: $f0 $ff
     push af                                       ; $054a: $f5
 
@@ -876,7 +876,7 @@ jr_000_0595:
     ldh [rIE], a                                  ; $0596: $e0 $ff
     pop af                                        ; $0598: $f1
     ld [rActiveROMBank], a                        ; $0599: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $059c: $ea $00 $20
+    ld [rROMB], a                                 ; $059c: $ea $00 $20
     ret                                           ; $059f: $c9
 
 
@@ -938,7 +938,7 @@ Call_000_05d7:
     ld [rActiveROMBank], a                        ; $05d7: $ea $12 $c3
 
 Jump_000_05da:
-    ld [ROMBankSwitchTrigger], a                  ; $05da: $ea $00 $20
+    ld [rROMB], a                                 ; $05da: $ea $00 $20
     jp hl                                         ; $05dd: $e9
 
 
@@ -947,7 +947,7 @@ SwitchBankToBAndJumpToHL::
     push af                                       ; $05e1: $f5
     ld a, b                                       ; $05e2: $78
     ld [rActiveROMBank], a                        ; $05e3: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $05e6: $ea $00 $20
+    ld [rROMB], a                                 ; $05e6: $ea $00 $20
     jp hl                                         ; $05e9: $e9
 
 
@@ -957,7 +957,7 @@ Jump_000_05ea:
     ld hl, sp+$05                                 ; $05ec: $f8 $05
     ld a, [hl]                                    ; $05ee: $7e
     ld [rActiveROMBank], a                        ; $05ef: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $05f2: $ea $00 $20
+    ld [rROMB], a                                 ; $05f2: $ea $00 $20
     pop hl                                        ; $05f5: $e1
     pop af                                        ; $05f6: $f1
 
@@ -1254,12 +1254,12 @@ jr_000_0772:
     push af                                       ; $077e: $f5
     ld a, [hl]                                    ; $077f: $7e
     ld [rActiveROMBank], a                        ; $0780: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $0783: $ea $00 $20
+    ld [rROMB], a                                 ; $0783: $ea $00 $20
     inc l                                         ; $0786: $2c
     call Call_000_0798                            ; $0787: $cd $98 $07
     pop af                                        ; $078a: $f1
     ld [rActiveROMBank], a                        ; $078b: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $078e: $ea $00 $20
+    ld [rROMB], a                                 ; $078e: $ea $00 $20
     jr jr_000_0772                                ; $0791: $18 $df
 
 jr_000_0793:
@@ -1378,19 +1378,19 @@ LoadPuzzleDataBuffer::
     push af                                       ; $080c: $f5
     ld a, $03                                     ; $080d: $3e $03
     ld [rActiveROMBank], a                        ; $080f: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $0812: $ea $00 $20
+    ld [rROMB], a                                 ; $0812: $ea $00 $20
     add hl, bc                                    ; $0815: $09
     ld e, [hl]                                    ; $0816: $5e
     inc hl                                        ; $0817: $23
     ld d, [hl]                                    ; $0818: $56
     pop af                                        ; $0819: $f1
     ld [rActiveROMBank], a                        ; $081a: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $081d: $ea $00 $20
+    ld [rROMB], a                                 ; $081d: $ea $00 $20
     ld a, [rActiveROMBank]                        ; $0820: $fa $12 $c3
     push af                                       ; $0823: $f5
     ld a, $02                                     ; $0824: $3e $02
     ld [rActiveROMBank], a                        ; $0826: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $0829: $ea $00 $20
+    ld [rROMB], a                                 ; $0829: $ea $00 $20
     ld b, $1e                                     ; $082c: $06 $1e
     ld hl, $d640                                  ; $082e: $21 $40 $d6
 
@@ -1431,7 +1431,7 @@ LoadPuzzleDataBuffer::
     ld [rPuzzleGridHeight], a                     ; $0864: $ea $01 $d8
     pop af                                        ; $0867: $f1
     ld [rActiveROMBank], a                        ; $0868: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $086b: $ea $00 $20
+    ld [rROMB], a                                 ; $086b: $ea $00 $20
     ret                                           ; $086e: $c9
 
 
@@ -1546,7 +1546,7 @@ PrepareBGTileCopy::
     push af                                       ; $0922: $f5
     ld a, [rBGTileCopyBank]                       ; $0923: $fa $57 $c3
     ld [rActiveROMBank], a                        ; $0926: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $0929: $ea $00 $20
+    ld [rROMB], a                                 ; $0929: $ea $00 $20
     ld de, $c363                                  ; $092c: $11 $63 $c3
     ld a, [rBGTileCopySourceY]                    ; $092f: $fa $52 $c3
     ld l, a                                       ; $0932: $6f
@@ -1866,13 +1866,10 @@ PrepareBGTileCopy::
 
 .RestoreInterrupts:
     pop af                                        ; $0ae8: $f1
-
-Call_000_0ae9:
-Jump_000_0ae9:
     ldh [rIE], a                                  ; $0ae9: $e0 $ff
     pop af                                        ; $0aeb: $f1
     ld [rActiveROMBank], a                        ; $0aec: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $0aef: $ea $00 $20
+    ld [rROMB], a                                 ; $0aef: $ea $00 $20
     ret                                           ; $0af2: $c9
 
 
@@ -1962,7 +1959,7 @@ Jump_000_0b0d:
     push af                                       ; $0b7c: $f5
     ld a, [rBGTileCopyBank]                       ; $0b7d: $fa $57 $c3
     ld [rActiveROMBank], a                        ; $0b80: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $0b83: $ea $00 $20
+    ld [rROMB], a                                 ; $0b83: $ea $00 $20
     ld de, $c363                                  ; $0b86: $11 $63 $c3
     ld a, [rBGTileCopySourceY]                    ; $0b89: $fa $52 $c3
     ld l, a                                       ; $0b8c: $6f
@@ -2282,7 +2279,7 @@ jr_000_0d34:
     ldh [rIE], a                                  ; $0d35: $e0 $ff
     pop af                                        ; $0d37: $f1
     ld [rActiveROMBank], a                        ; $0d38: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $0d3b: $ea $00 $20
+    ld [rROMB], a                                 ; $0d3b: $ea $00 $20
     ret                                           ; $0d3e: $c9
 
 
@@ -5349,7 +5346,7 @@ GS06_UpdateOAMSequenceEventAndCopySprite::
     push af                                       ; $19d3: $f5
     ld a, [hl]                                    ; $19d4: $7e
     ld [rActiveROMBank], a                        ; $19d5: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $19d8: $ea $00 $20
+    ld [rROMB], a                                 ; $19d8: $ea $00 $20
     ld hl, rGS06_OAMSequenceEventDelay            ; $19db: $21 $a5 $cd
     add hl, de                                    ; $19de: $19
     ld a, [hl]                                    ; $19df: $7e
@@ -5425,7 +5422,7 @@ GS06_UpdateOAMSequenceEventAndCopySprite::
     call CopyOAMSpriteById                        ; $1a3a: $cd $ce $20
     pop af                                        ; $1a3d: $f1
     ld [rActiveROMBank], a                        ; $1a3e: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $1a41: $ea $00 $20
+    ld [rROMB], a                                 ; $1a41: $ea $00 $20
     ret                                           ; $1a44: $c9
 
 
@@ -5434,7 +5431,7 @@ Call_000_1a45:
     push af                                       ; $1a48: $f5
     ld a, $03                                     ; $1a49: $3e $03
     ld [rActiveROMBank], a                        ; $1a4b: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $1a4e: $ea $00 $20
+    ld [rROMB], a                                 ; $1a4e: $ea $00 $20
     ld a, [rPuzzleDataIndexLow]                   ; $1a51: $fa $07 $d8
     ld c, a                                       ; $1a54: $4f
     ld a, [rPuzzleDataIndexHigh]                  ; $1a55: $fa $08 $d8
@@ -5478,7 +5475,7 @@ jr_000_1a6b:
 jr_000_1a80:
     pop af                                        ; $1a80: $f1
     ld [rActiveROMBank], a                        ; $1a81: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $1a84: $ea $00 $20
+    ld [rROMB], a                                 ; $1a84: $ea $00 $20
     ret                                           ; $1a87: $c9
 
 
@@ -5487,7 +5484,7 @@ Call_000_1a88:
     push af                                       ; $1a8b: $f5
     ld a, $00                                     ; $1a8c: $3e $00
     ld [rActiveROMBank], a                        ; $1a8e: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $1a91: $ea $00 $20
+    ld [rROMB], a                                 ; $1a91: $ea $00 $20
     push de                                       ; $1a94: $d5
     sla e                                         ; $1a95: $cb $23
     rl d                                          ; $1a97: $cb $12
@@ -5527,7 +5524,7 @@ jr_000_1ad0:
     ld e, a                                       ; $1ad0: $5f
     pop af                                        ; $1ad1: $f1
     ld [rActiveROMBank], a                        ; $1ad2: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $1ad5: $ea $00 $20
+    ld [rROMB], a                                 ; $1ad5: $ea $00 $20
     ld a, e                                       ; $1ad8: $7b
     ret                                           ; $1ad9: $c9
 
@@ -5996,11 +5993,11 @@ Call_000_1ddb:
     push af                                       ; $1de1: $f5
     ld a, [rRequestedROMBank]                     ; $1de2: $fa $14 $c3
     ld [rActiveROMBank], a                        ; $1de5: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $1de8: $ea $00 $20
+    ld [rROMB], a                                 ; $1de8: $ea $00 $20
     call Call_000_1df6                            ; $1deb: $cd $f6 $1d
     pop af                                        ; $1dee: $f1
     ld [rActiveROMBank], a                        ; $1def: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $1df2: $ea $00 $20
+    ld [rROMB], a                                 ; $1df2: $ea $00 $20
     ret                                           ; $1df5: $c9
 
 
@@ -6134,7 +6131,7 @@ Call_000_1e9e:
     push af                                       ; $1ea4: $f5
     ld a, [rRequestedROMBank]                     ; $1ea5: $fa $14 $c3
     ld [rActiveROMBank], a                        ; $1ea8: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $1eab: $ea $00 $20
+    ld [rROMB], a                                 ; $1eab: $ea $00 $20
     di                                            ; $1eae: $f3
     push hl                                       ; $1eaf: $e5
     ld a, $e4                                     ; $1eb0: $3e $e4
@@ -6177,7 +6174,7 @@ jr_000_1ecd:
     ei                                            ; $1ef4: $fb
     pop af                                        ; $1ef5: $f1
     ld [rActiveROMBank], a                        ; $1ef6: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $1ef9: $ea $00 $20
+    ld [rROMB], a                                 ; $1ef9: $ea $00 $20
     ret                                           ; $1efc: $c9
 
 
@@ -6293,7 +6290,7 @@ PlayScreenTransitionFadeIn_AlternatePath::
     push af                                       ; $1fe7: $f5
     ld a, b                                       ; $1fe8: $78
     ld [rActiveROMBank], a                        ; $1fe9: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $1fec: $ea $00 $20
+    ld [rROMB], a                                 ; $1fec: $ea $00 $20
     ld b, $04                                     ; $1fef: $06 $04
 
 jr_000_1ff1:
@@ -6318,7 +6315,7 @@ jr_000_1ff1:
     ld [rHintCursorAnimationRowAccumulator], a    ; $2013: $ea $3f $d6
     pop af                                        ; $2016: $f1
     ld [rActiveROMBank], a                        ; $2017: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $201a: $ea $00 $20
+    ld [rROMB], a                                 ; $201a: $ea $00 $20
     pop bc                                        ; $201d: $c1
     pop de                                        ; $201e: $d1
     ld a, c                                       ; $201f: $79
@@ -6410,7 +6407,7 @@ jr_000_206c:
     push af                                       ; $20a3: $f5
     ld a, b                                       ; $20a4: $78
     ld [rActiveROMBank], a                        ; $20a5: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $20a8: $ea $00 $20
+    ld [rROMB], a                                 ; $20a8: $ea $00 $20
     ld b, $04                                     ; $20ab: $06 $04
 
 jr_000_20ad:
@@ -6431,7 +6428,7 @@ jr_000_20ad:
 
     pop af                                        ; $20c6: $f1
     ld [rActiveROMBank], a                        ; $20c7: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $20ca: $ea $00 $20
+    ld [rROMB], a                                 ; $20ca: $ea $00 $20
     ret                                           ; $20cd: $c9
 
 
@@ -6445,7 +6442,7 @@ CopyOAMSpriteById::
     push af                                       ; $20d9: $f5
     ld a, $03                                     ; $20da: $3e $03
     ld [rActiveROMBank], a                        ; $20dc: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $20df: $ea $00 $20
+    ld [rROMB], a                                 ; $20df: $ea $00 $20
     ld hl, $6c63                                  ; $20e2: $21 $63 $6c
     add hl, de                                    ; $20e5: $19
     ld a, [hl+]                                   ; $20e6: $2a
@@ -6481,7 +6478,7 @@ CopyOAMSpriteById::
     ld [rShadowOAMWriteCursor], a                 ; $2105: $ea $11 $c3
     pop af                                        ; $2108: $f1
     ld [rActiveROMBank], a                        ; $2109: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $210c: $ea $00 $20
+    ld [rROMB], a                                 ; $210c: $ea $00 $20
     pop hl                                        ; $210f: $e1
     ret                                           ; $2110: $c9
 
@@ -7836,13 +7833,13 @@ AdvanceMessageScriptStream::
     push af                                       ; $2b71: $f5
     ld a, $05                                     ; $2b72: $3e $05
     ld [rActiveROMBank], a                        ; $2b74: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $2b77: $ea $00 $20
+    ld [rROMB], a                                 ; $2b77: $ea $00 $20
     call AdvanceMessageScriptStreamHelper         ; $2b7a: $cd $88 $2b
     pop bc                                        ; $2b7d: $c1
     push af                                       ; $2b7e: $f5
     ld a, b                                       ; $2b7f: $78
     ld [rActiveROMBank], a                        ; $2b80: $ea $12 $c3
-    ld [ROMBankSwitchTrigger], a                  ; $2b83: $ea $00 $20
+    ld [rROMB], a                                 ; $2b83: $ea $00 $20
     pop af                                        ; $2b86: $f1
     ret                                           ; $2b87: $c9
 

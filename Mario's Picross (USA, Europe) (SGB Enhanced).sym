@@ -114,6 +114,8 @@
 00:f636 rLevelSelectColumn
 00:f637 rLevelSelectRow
 
+00:2000 rROMB
+
 ; =============================================================================
 ; BANK 000
 ; =============================================================================
@@ -273,9 +275,6 @@
 00:133a .data:0028:2
 00:1362 GS06_ScreenTilemapTileDataAddressLookupRow11Table
 00:1362 .data:0028:2
-
-00:2000 ROMBankSwitchTrigger
-;00:4000 RAMBankSwitchTrigger
 
 00:19bd GS06_UpdateOAMSequenceEventAndCopySprite
 00:19eb .LoadNextSequenceEvent
@@ -3240,6 +3239,7 @@
 0f:56d7 .data:3
 0f:56f7 .data:3
 0f:5b0e .data:3
+0f:6180 .data:3
 0f:61db .data:3
 0f:61df .data:3
 0f:6239 .data:3
@@ -3248,5 +3248,7 @@
 0f:63e4 .data:3
 0f:64ab .data:3
 0f:64e0 .data:3
+0f:69a4 .data:3
+0f:69ca .data:3
 0f:6a99 .data:3
 0f:6cf8 .data:3

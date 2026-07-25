@@ -7290,7 +7290,8 @@ Call_00f_60ee:
 
     ld a, [hl+]                                   ; $617c: $2a
     ld [$7a5d], a                                 ; $617d: $ea $5d $7a
-    jp c, Jump_000_0ae9                           ; $6180: $da $e9 $0a
+
+    db $da, $e9, $0a
 
     ld [$0a7a], a                                 ; $6183: $ea $7a $0a
     jp hl                                         ; $6186: $e9
@@ -8927,7 +8928,9 @@ Call_00f_60ee:
     ld [bc], a                                    ; $699f: $02
     dec c                                         ; $69a0: $0d
     call $bdea                                    ; $69a1: $cd $ea $bd
-    call Call_000_0ae9                            ; $69a4: $cd $e9 $0a
+
+    db $cd, $e9, $0a
+
     ld [$77b7], a                                 ; $69a7: $ea $b7 $77
     call $cdcd                                    ; $69aa: $cd $cd $cd
     jp hl                                         ; $69ad: $e9
@@ -8949,7 +8952,9 @@ Call_00f_60ee:
     call $cd4d                                    ; $69c3: $cd $4d $cd
     dec c                                         ; $69c6: $0d
     call $bdea                                    ; $69c7: $cd $ea $bd
-    call Call_000_0ae9                            ; $69ca: $cd $e9 $0a
+
+    db $cd, $e9, $0a
+
     ld [$77b7], a                                 ; $69cd: $ea $b7 $77
     call $cdcd                                    ; $69d0: $cd $cd $cd
     jp hl                                         ; $69d3: $e9
