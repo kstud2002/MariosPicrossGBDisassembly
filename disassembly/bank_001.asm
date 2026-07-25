@@ -632,7 +632,7 @@ SECTION "ROM Bank $001", ROMX[$4000], BANK[$1]
     nop                                           ; $427b: $00
     call $d100                                    ; $427c: $cd $00 $d1
     nop                                           ; $427f: $00
-    call rCurrentGridSize                         ; $4280: $cd $00 $d8
+    call rPuzzleGridWidth                         ; $4280: $cd $00 $d8
     nop                                           ; $4283: $00
     db $eb                                        ; $4284: $eb
     nop                                           ; $4285: $00
@@ -644,7 +644,7 @@ SECTION "ROM Bank $001", ROMX[$4000], BANK[$1]
     cp $ff                                        ; $428c: $fe $ff
     call z, $cd00                                 ; $428e: $cc $00 $cd
     nop                                           ; $4291: $00
-    jp nc, rCurrentGridSize                       ; $4292: $d2 $00 $d8
+    jp nc, rPuzzleGridWidth                       ; $4292: $d2 $00 $d8
 
     nop                                           ; $4295: $00
     rst $10                                       ; $4296: $d7
@@ -919,15 +919,15 @@ GS04_PhasePointer_05::
 
 GS04_StatePhase_00_TODO::
     ld a, $43                                     ; $439a: $3e $43
-    ld [$c32e], a                                 ; $439c: $ea $2e $c3
+    ld [rLCDCShadow], a                           ; $439c: $ea $2e $c3
     xor a                                         ; $439f: $af
-    ld [$c32f], a                                 ; $43a0: $ea $2f $c3
-    ld [$c330], a                                 ; $43a3: $ea $30 $c3
-    ld [$c331], a                                 ; $43a6: $ea $31 $c3
-    ld [$c332], a                                 ; $43a9: $ea $32 $c3
-    ld [$c333], a                                 ; $43ac: $ea $33 $c3
-    call Call_000_05a0                            ; $43af: $cd $a0 $05
-    call Call_000_05ab                            ; $43b2: $cd $ab $05
+    ld [rBGPShadow], a                            ; $43a0: $ea $2f $c3
+    ld [rOBP0Shadow], a                           ; $43a3: $ea $30 $c3
+    ld [rOBP1Shadow], a                           ; $43a6: $ea $31 $c3
+    ld [rSCXShadow], a                            ; $43a9: $ea $32 $c3
+    ld [rSCYShadow], a                            ; $43ac: $ea $33 $c3
+    call FillBGMap0WithTile01                     ; $43af: $cd $a0 $05
+    call FillBGMap1WithTile01                     ; $43b2: $cd $ab $05
     ld a, $0b                                     ; $43b5: $3e $0b
     ld hl, $5000                                  ; $43b7: $21 $00 $50
     ld de, $8000                                  ; $43ba: $11 $00 $80
@@ -957,7 +957,7 @@ GS04_StatePhase_00_TODO::
     call Call_001_49ee                            ; $43fc: $cd $ee $49
     call Call_001_4dde                            ; $43ff: $cd $de $4d
     call Call_001_4a4e                            ; $4402: $cd $4e $4a
-    call Call_000_04a2                            ; $4405: $cd $a2 $04
+    call EnableLCDFromShadow                      ; $4405: $cd $a2 $04
     call Call_001_4b5a                            ; $4408: $cd $5a $4b
     ld hl, rStatePhase_Current                    ; $440b: $21 $35 $d6
     inc [hl]                                      ; $440e: $34
@@ -966,15 +966,15 @@ GS04_StatePhase_00_TODO::
 
 GS04_StatePhase_04_TODO::
     ld a, $43                                     ; $4410: $3e $43
-    ld [$c32e], a                                 ; $4412: $ea $2e $c3
+    ld [rLCDCShadow], a                           ; $4412: $ea $2e $c3
     xor a                                         ; $4415: $af
-    ld [$c32f], a                                 ; $4416: $ea $2f $c3
-    ld [$c330], a                                 ; $4419: $ea $30 $c3
-    ld [$c331], a                                 ; $441c: $ea $31 $c3
-    ld [$c332], a                                 ; $441f: $ea $32 $c3
-    ld [$c333], a                                 ; $4422: $ea $33 $c3
-    call Call_000_05a0                            ; $4425: $cd $a0 $05
-    call Call_000_05ab                            ; $4428: $cd $ab $05
+    ld [rBGPShadow], a                            ; $4416: $ea $2f $c3
+    ld [rOBP0Shadow], a                           ; $4419: $ea $30 $c3
+    ld [rOBP1Shadow], a                           ; $441c: $ea $31 $c3
+    ld [rSCXShadow], a                            ; $441f: $ea $32 $c3
+    ld [rSCYShadow], a                            ; $4422: $ea $33 $c3
+    call FillBGMap0WithTile01                     ; $4425: $cd $a0 $05
+    call FillBGMap1WithTile01                     ; $4428: $cd $ab $05
     ld a, $0b                                     ; $442b: $3e $0b
     ld hl, $5000                                  ; $442d: $21 $00 $50
     ld de, $8000                                  ; $4430: $11 $00 $80
@@ -1009,7 +1009,7 @@ jr_001_4470:
     ld b, $03                                     ; $4476: $06 $03
     ld hl, $4e80                                  ; $4478: $21 $80 $4e
     call SwitchBankToBAndJumpToHL                 ; $447b: $cd $de $05
-    ld a, [$d805]                                 ; $447e: $fa $05 $d8
+    ld a, [rPuzzleFlowVariant_Unsure]             ; $447e: $fa $05 $d8
     and a                                         ; $4481: $a7
     push af                                       ; $4482: $f5
     jr nz, jr_001_448d                            ; $4483: $20 $08
@@ -1022,7 +1022,7 @@ jr_001_448d:
     xor a                                         ; $448d: $af
     call Call_001_49ee                            ; $448e: $cd $ee $49
     call Call_001_4a4e                            ; $4491: $cd $4e $4a
-    call Call_000_04a2                            ; $4494: $cd $a2 $04
+    call EnableLCDFromShadow                      ; $4494: $cd $a2 $04
     call Call_001_4b5a                            ; $4497: $cd $5a $4b
     pop af                                        ; $449a: $f1
     jp z, Jump_001_46dc                           ; $449b: $ca $dc $46
@@ -1056,43 +1056,43 @@ jr_001_448d:
     ld [hl], a                                    ; $44cb: $77
     call Call_000_1b1f                            ; $44cc: $cd $1f $1b
     ld bc, $003c                                  ; $44cf: $01 $3c $00
-    call Call_000_05fa                            ; $44d2: $cd $fa $05
+    call DelayFramesByBC                          ; $44d2: $cd $fa $05
     ld a, $05                                     ; $44d5: $3e $05
-    call TODO_Bank0FDispatcher                    ; $44d7: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $44d7: $cd $b6 $03
     ld c, $00                                     ; $44da: $0e $00
     ld a, $01                                     ; $44dc: $3e $01
-    call TODO_Bank0FDispatcher                    ; $44de: $cd $b6 $03
-    call Call_000_0399                            ; $44e1: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $44de: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $44e1: $cd $99 $03
     ld c, $00                                     ; $44e4: $0e $00
     ld a, $01                                     ; $44e6: $3e $01
-    call TODO_Bank0FDispatcher                    ; $44e8: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $44e8: $cd $b6 $03
     call ClearShadowOAMBuffer                     ; $44eb: $cd $b6 $05
     call Call_001_4b84                            ; $44ee: $cd $84 $4b
-    call Call_000_0483                            ; $44f1: $cd $83 $04
+    call DisableLCDAtVBlank                       ; $44f1: $cd $83 $04
     ld b, $01                                     ; $44f4: $06 $01
     ld hl, $4ae4                                  ; $44f6: $21 $e4 $4a
     call SwitchBankToBAndJumpToHL                 ; $44f9: $cd $de $05
     ld a, $7e                                     ; $44fc: $3e $7e
-    ld [$cd63], a                                 ; $44fe: $ea $63 $cd
+    ld [rTilemapToTileDataAddressLookupTableLow], a; $44fe: $ea $63 $cd
     ld a, $16                                     ; $4501: $3e $16
-    ld [$cd64], a                                 ; $4503: $ea $64 $cd
+    ld [rTilemapToTileDataAddressLookupTableHigh], a; $4503: $ea $64 $cd
     ld c, $00                                     ; $4506: $0e $00
     ld a, $01                                     ; $4508: $3e $01
-    call TODO_Bank0FDispatcher                    ; $450a: $cd $b6 $03
-    call Call_000_0399                            ; $450d: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $450a: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $450d: $cd $99 $03
     ld c, $07                                     ; $4510: $0e $07
     ld a, $01                                     ; $4512: $3e $01
-    call TODO_Bank0FDispatcher                    ; $4514: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $4514: $cd $b6 $03
     ld a, $2f                                     ; $4517: $3e $2f
-    ld [$c336], a                                 ; $4519: $ea $36 $c3
-    ld hl, $c337                                  ; $451c: $21 $37 $c3
+    ld [rLYCShadow], a                            ; $4519: $ea $36 $c3
+    ld hl, rLCDCInterruptControlFlags_Unsure      ; $451c: $21 $37 $c3
     set 6, [hl]                                   ; $451f: $cb $f6
     ld hl, rIE                                    ; $4521: $21 $ff $ff
     set 1, [hl]                                   ; $4524: $cb $ce
     ld a, $02                                     ; $4526: $3e $02
-    ld [$c338], a                                 ; $4528: $ea $38 $c3
-    ld [$c350], a                                 ; $452b: $ea $50 $c3
-    call Call_000_04a2                            ; $452e: $cd $a2 $04
+    ld [rLCDCInterruptDispatchIndex], a           ; $4528: $ea $38 $c3
+    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $452b: $ea $50 $c3
+    call EnableLCDFromShadow                      ; $452e: $cd $a2 $04
     ld b, $01                                     ; $4531: $06 $01
     ld hl, $4bae                                  ; $4533: $21 $ae $4b
     call SwitchBankToBAndJumpToHL                 ; $4536: $cd $de $05
@@ -1116,27 +1116,27 @@ jr_001_448d:
     ld [rPuzzleCursorColumn], a                   ; $4564: $ea $36 $d6
     ld [rPuzzleCursorRow], a                      ; $4567: $ea $37 $d6
     ld bc, $003c                                  ; $456a: $01 $3c $00
-    call Call_000_05fa                            ; $456d: $cd $fa $05
+    call DelayFramesByBC                          ; $456d: $cd $fa $05
     ld a, $05                                     ; $4570: $3e $05
-    call TODO_Bank0FDispatcher                    ; $4572: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $4572: $cd $b6 $03
     ld c, $00                                     ; $4575: $0e $00
     ld a, $01                                     ; $4577: $3e $01
-    call TODO_Bank0FDispatcher                    ; $4579: $cd $b6 $03
-    call Call_000_0399                            ; $457c: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $4579: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $457c: $cd $99 $03
     ld c, $00                                     ; $457f: $0e $00
     ld a, $01                                     ; $4581: $3e $01
-    call TODO_Bank0FDispatcher                    ; $4583: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $4583: $cd $b6 $03
     ld b, $01                                     ; $4586: $06 $01
     ld hl, $4bdc                                  ; $4588: $21 $dc $4b
     call SwitchBankToBAndJumpToHL                 ; $458b: $cd $de $05
-    call Call_000_0483                            ; $458e: $cd $83 $04
-    ld hl, $c337                                  ; $4591: $21 $37 $c3
+    call DisableLCDAtVBlank                       ; $458e: $cd $83 $04
+    ld hl, rLCDCInterruptControlFlags_Unsure      ; $4591: $21 $37 $c3
     res 6, [hl]                                   ; $4594: $cb $b6
     ld hl, rIE                                    ; $4596: $21 $ff $ff
     res 1, [hl]                                   ; $4599: $cb $8e
     xor a                                         ; $459b: $af
-    ld [$c338], a                                 ; $459c: $ea $38 $c3
-    ld [$c350], a                                 ; $459f: $ea $50 $c3
+    ld [rLCDCInterruptDispatchIndex], a           ; $459c: $ea $38 $c3
+    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $459f: $ea $50 $c3
     ld a, [$a065]                                 ; $45a2: $fa $65 $a0
     ld c, a                                       ; $45a5: $4f
     ld b, $00                                     ; $45a6: $06 $00
@@ -1154,43 +1154,43 @@ jr_001_448d:
 Jump_001_45bb:
     call Call_000_1b1f                            ; $45bb: $cd $1f $1b
     ld bc, $003c                                  ; $45be: $01 $3c $00
-    call Call_000_05fa                            ; $45c1: $cd $fa $05
+    call DelayFramesByBC                          ; $45c1: $cd $fa $05
     ld a, $05                                     ; $45c4: $3e $05
-    call TODO_Bank0FDispatcher                    ; $45c6: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $45c6: $cd $b6 $03
     ld c, $00                                     ; $45c9: $0e $00
     ld a, $01                                     ; $45cb: $3e $01
-    call TODO_Bank0FDispatcher                    ; $45cd: $cd $b6 $03
-    call Call_000_0399                            ; $45d0: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $45cd: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $45d0: $cd $99 $03
     ld c, $00                                     ; $45d3: $0e $00
     ld a, $01                                     ; $45d5: $3e $01
-    call TODO_Bank0FDispatcher                    ; $45d7: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $45d7: $cd $b6 $03
     call ClearShadowOAMBuffer                     ; $45da: $cd $b6 $05
     call Call_001_4b84                            ; $45dd: $cd $84 $4b
-    call Call_000_0483                            ; $45e0: $cd $83 $04
+    call DisableLCDAtVBlank                       ; $45e0: $cd $83 $04
     ld b, $01                                     ; $45e3: $06 $01
     ld hl, $4ae4                                  ; $45e5: $21 $e4 $4a
     call SwitchBankToBAndJumpToHL                 ; $45e8: $cd $de $05
     ld a, $7e                                     ; $45eb: $3e $7e
-    ld [$cd63], a                                 ; $45ed: $ea $63 $cd
+    ld [rTilemapToTileDataAddressLookupTableLow], a; $45ed: $ea $63 $cd
     ld a, $16                                     ; $45f0: $3e $16
-    ld [$cd64], a                                 ; $45f2: $ea $64 $cd
+    ld [rTilemapToTileDataAddressLookupTableHigh], a; $45f2: $ea $64 $cd
     ld c, $00                                     ; $45f5: $0e $00
     ld a, $01                                     ; $45f7: $3e $01
-    call TODO_Bank0FDispatcher                    ; $45f9: $cd $b6 $03
-    call Call_000_0399                            ; $45fc: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $45f9: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $45fc: $cd $99 $03
     ld c, $06                                     ; $45ff: $0e $06
     ld a, $01                                     ; $4601: $3e $01
-    call TODO_Bank0FDispatcher                    ; $4603: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $4603: $cd $b6 $03
     ld a, $2f                                     ; $4606: $3e $2f
-    ld [$c336], a                                 ; $4608: $ea $36 $c3
-    ld hl, $c337                                  ; $460b: $21 $37 $c3
+    ld [rLYCShadow], a                            ; $4608: $ea $36 $c3
+    ld hl, rLCDCInterruptControlFlags_Unsure      ; $460b: $21 $37 $c3
     set 6, [hl]                                   ; $460e: $cb $f6
     ld hl, rIE                                    ; $4610: $21 $ff $ff
     set 1, [hl]                                   ; $4613: $cb $ce
     ld a, $02                                     ; $4615: $3e $02
-    ld [$c338], a                                 ; $4617: $ea $38 $c3
-    ld [$c350], a                                 ; $461a: $ea $50 $c3
-    call Call_000_04a2                            ; $461d: $cd $a2 $04
+    ld [rLCDCInterruptDispatchIndex], a           ; $4617: $ea $38 $c3
+    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $461a: $ea $50 $c3
+    call EnableLCDFromShadow                      ; $461d: $cd $a2 $04
     ld b, $01                                     ; $4620: $06 $01
     ld hl, $4bae                                  ; $4622: $21 $ae $4b
     call SwitchBankToBAndJumpToHL                 ; $4625: $cd $de $05
@@ -1232,27 +1232,27 @@ Jump_001_45bb:
     call Call_001_51dd                            ; $4685: $cd $dd $51
     call Call_001_5252                            ; $4688: $cd $52 $52
     ld bc, $003c                                  ; $468b: $01 $3c $00
-    call Call_000_05fa                            ; $468e: $cd $fa $05
+    call DelayFramesByBC                          ; $468e: $cd $fa $05
     ld a, $05                                     ; $4691: $3e $05
-    call TODO_Bank0FDispatcher                    ; $4693: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $4693: $cd $b6 $03
     ld c, $00                                     ; $4696: $0e $00
     ld a, $01                                     ; $4698: $3e $01
-    call TODO_Bank0FDispatcher                    ; $469a: $cd $b6 $03
-    call Call_000_0399                            ; $469d: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $469a: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $469d: $cd $99 $03
     ld c, $00                                     ; $46a0: $0e $00
     ld a, $01                                     ; $46a2: $3e $01
-    call TODO_Bank0FDispatcher                    ; $46a4: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $46a4: $cd $b6 $03
     ld b, $01                                     ; $46a7: $06 $01
     ld hl, $4bdc                                  ; $46a9: $21 $dc $4b
     call SwitchBankToBAndJumpToHL                 ; $46ac: $cd $de $05
-    call Call_000_0483                            ; $46af: $cd $83 $04
-    ld hl, $c337                                  ; $46b2: $21 $37 $c3
+    call DisableLCDAtVBlank                       ; $46af: $cd $83 $04
+    ld hl, rLCDCInterruptControlFlags_Unsure      ; $46b2: $21 $37 $c3
     res 6, [hl]                                   ; $46b5: $cb $b6
     ld hl, rIE                                    ; $46b7: $21 $ff $ff
     res 1, [hl]                                   ; $46ba: $cb $8e
     xor a                                         ; $46bc: $af
-    ld [$c338], a                                 ; $46bd: $ea $38 $c3
-    ld [$c350], a                                 ; $46c0: $ea $50 $c3
+    ld [rLCDCInterruptDispatchIndex], a           ; $46bd: $ea $38 $c3
+    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $46c0: $ea $50 $c3
     ld a, [$a065]                                 ; $46c3: $fa $65 $a0
     ld c, a                                       ; $46c6: $4f
     ld b, $00                                     ; $46c7: $06 $00
@@ -1308,7 +1308,7 @@ Call_001_46e4:
 
     ld c, $08                                     ; $4717: $0e $08
     ld a, $02                                     ; $4719: $3e $02
-    call TODO_Bank0FDispatcher                    ; $471b: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $471b: $cd $b6 $03
     ld c, $08                                     ; $471e: $0e $08
 
 jr_001_4720:
@@ -1388,7 +1388,7 @@ GS04_StatePhase_01_TODO::
 
     ld c, $03                                     ; $4796: $0e $03
     ld a, $02                                     ; $4798: $3e $02
-    call TODO_Bank0FDispatcher                    ; $479a: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $479a: $cd $b6 $03
     ld hl, rStatePhase_Current                    ; $479d: $21 $35 $d6
     inc [hl]                                      ; $47a0: $34
     ret                                           ; $47a1: $c9
@@ -1401,7 +1401,7 @@ jr_001_47a2:
 
     ld c, $04                                     ; $47a9: $0e $04
     ld a, $02                                     ; $47ab: $3e $02
-    call TODO_Bank0FDispatcher                    ; $47ad: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $47ad: $cd $b6 $03
     ld a, $03                                     ; $47b0: $3e $03
     ld [rStatePhase_Current], a                   ; $47b2: $ea $35 $d6
     ret                                           ; $47b5: $c9
@@ -1413,18 +1413,18 @@ jr_001_47b6:
 
 GS04_StatePhase_05_TODO::
     ld bc, $003c                                  ; $47b7: $01 $3c $00
-    call Call_000_05fa                            ; $47ba: $cd $fa $05
+    call DelayFramesByBC                          ; $47ba: $cd $fa $05
     ld a, $05                                     ; $47bd: $3e $05
-    call TODO_Bank0FDispatcher                    ; $47bf: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $47bf: $cd $b6 $03
     ld c, $00                                     ; $47c2: $0e $00
     ld a, $01                                     ; $47c4: $3e $01
-    call TODO_Bank0FDispatcher                    ; $47c6: $cd $b6 $03
-    call Call_000_0399                            ; $47c9: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $47c6: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $47c9: $cd $99 $03
     ld c, $00                                     ; $47cc: $0e $00
     ld a, $01                                     ; $47ce: $3e $01
-    call TODO_Bank0FDispatcher                    ; $47d0: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $47d0: $cd $b6 $03
     call Call_001_4b84                            ; $47d3: $cd $84 $4b
-    call Call_000_0483                            ; $47d6: $cd $83 $04
+    call DisableLCDAtVBlank                       ; $47d6: $cd $83 $04
     call Call_001_49c8                            ; $47d9: $cd $c8 $49
     xor a                                         ; $47dc: $af
     ld [rPuzzleTimerSecondOnes], a                ; $47dd: $ea $0b $d8
@@ -1433,9 +1433,9 @@ GS04_StatePhase_05_TODO::
     ld a, $03                                     ; $47e6: $3e $03
     ld [rPuzzleTimerMinuteTens], a                ; $47e8: $ea $0a $d8
     xor a                                         ; $47eb: $af
-    ld [$d833], a                                 ; $47ec: $ea $33 $d8
+    ld [rHintPopupSelection], a                   ; $47ec: $ea $33 $d8
     ld a, $01                                     ; $47ef: $3e $01
-    ld [$d805], a                                 ; $47f1: $ea $05 $d8
+    ld [rPuzzleFlowVariant_Unsure], a             ; $47f1: $ea $05 $d8
     call Call_001_49a2                            ; $47f4: $cd $a2 $49
     call Call_001_504b                            ; $47f7: $cd $4b $50
     call Call_001_4cbc                            ; $47fa: $cd $bc $4c
@@ -1448,18 +1448,18 @@ GS04_StatePhase_05_TODO::
 
 GS04_StatePhase_02_TODO::
     ld bc, $003c                                  ; $4809: $01 $3c $00
-    call Call_000_05fa                            ; $480c: $cd $fa $05
+    call DelayFramesByBC                          ; $480c: $cd $fa $05
     ld a, $05                                     ; $480f: $3e $05
-    call TODO_Bank0FDispatcher                    ; $4811: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $4811: $cd $b6 $03
     ld c, $00                                     ; $4814: $0e $00
     ld a, $01                                     ; $4816: $3e $01
-    call TODO_Bank0FDispatcher                    ; $4818: $cd $b6 $03
-    call Call_000_0399                            ; $481b: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $4818: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $481b: $cd $99 $03
     ld c, $00                                     ; $481e: $0e $00
     ld a, $01                                     ; $4820: $3e $01
-    call TODO_Bank0FDispatcher                    ; $4822: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $4822: $cd $b6 $03
     call Call_001_4b84                            ; $4825: $cd $84 $4b
-    call Call_000_0483                            ; $4828: $cd $83 $04
+    call DisableLCDAtVBlank                       ; $4828: $cd $83 $04
     call Call_001_49c8                            ; $482b: $cd $c8 $49
     call Call_001_504b                            ; $482e: $cd $4b $50
     call Call_001_4cbc                            ; $4831: $cd $bc $4c
@@ -1487,9 +1487,9 @@ GS04_StatePhase_02_TODO::
     ld b, $00                                     ; $4857: $06 $00
     add hl, bc                                    ; $4859: $09
     ld a, [hl+]                                   ; $485a: $2a
-    ld [$d807], a                                 ; $485b: $ea $07 $d8
+    ld [rPuzzleDataIndexLow], a                   ; $485b: $ea $07 $d8
     ld a, [hl]                                    ; $485e: $7e
-    ld [$d808], a                                 ; $485f: $ea $08 $d8
+    ld [rPuzzleDataIndexHigh], a                  ; $485f: $ea $08 $d8
     xor a                                         ; $4862: $af
     ld [rStatePhase_Current], a                   ; $4863: $ea $35 $d6
     ld a, $0a                                     ; $4866: $3e $0a
@@ -1761,18 +1761,18 @@ GS04_StatePhase_02_TODO::
 
 GS04_StatePhase_03_TODO::
     ld bc, $003c                                  ; $4972: $01 $3c $00
-    call Call_000_05fa                            ; $4975: $cd $fa $05
+    call DelayFramesByBC                          ; $4975: $cd $fa $05
     ld a, $05                                     ; $4978: $3e $05
-    call TODO_Bank0FDispatcher                    ; $497a: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $497a: $cd $b6 $03
     ld c, $00                                     ; $497d: $0e $00
     ld a, $01                                     ; $497f: $3e $01
-    call TODO_Bank0FDispatcher                    ; $4981: $cd $b6 $03
-    call Call_000_0399                            ; $4984: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $4981: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $4984: $cd $99 $03
     ld c, $00                                     ; $4987: $0e $00
     ld a, $01                                     ; $4989: $3e $01
-    call TODO_Bank0FDispatcher                    ; $498b: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $498b: $cd $b6 $03
     call Call_001_4b84                            ; $498e: $cd $84 $4b
-    call Call_000_0483                            ; $4991: $cd $83 $04
+    call DisableLCDAtVBlank                       ; $4991: $cd $83 $04
     call Call_001_49c8                            ; $4994: $cd $c8 $49
     xor a                                         ; $4997: $af
     ld [rStatePhase_Current], a                   ; $4998: $ea $35 $d6
@@ -1853,7 +1853,7 @@ Call_001_4a09:
 
     ld c, $0a                                     ; $4a0f: $0e $0a
     ld a, $02                                     ; $4a11: $3e $02
-    call TODO_Bank0FDispatcher                    ; $4a13: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $4a13: $cd $b6 $03
     ld hl, rInputButtonsPressedOrRepeated         ; $4a16: $21 $22 $c3
     bit 5, [hl]                                   ; $4a19: $cb $6e
     jr z, jr_001_4a26                             ; $4a1b: $28 $09
@@ -1906,22 +1906,22 @@ Call_001_4a4e:
 
     ld c, $00                                     ; $4a5c: $0e $00
     ld a, $01                                     ; $4a5e: $3e $01
-    call TODO_Bank0FDispatcher                    ; $4a60: $cd $b6 $03
-    call Call_000_0399                            ; $4a63: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $4a60: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $4a63: $cd $99 $03
     ld c, $04                                     ; $4a66: $0e $04
     ld a, $01                                     ; $4a68: $3e $01
-    call TODO_Bank0FDispatcher                    ; $4a6a: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $4a6a: $cd $b6 $03
     ret                                           ; $4a6d: $c9
 
 
 jr_001_4a6e:
     ld c, $00                                     ; $4a6e: $0e $00
     ld a, $01                                     ; $4a70: $3e $01
-    call TODO_Bank0FDispatcher                    ; $4a72: $cd $b6 $03
-    call Call_000_0399                            ; $4a75: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $4a72: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $4a75: $cd $99 $03
     ld c, $10                                     ; $4a78: $0e $10
     ld a, $01                                     ; $4a7a: $3e $01
-    call TODO_Bank0FDispatcher                    ; $4a7c: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $4a7c: $cd $b6 $03
     ret                                           ; $4a7f: $c9
 
 
@@ -2037,7 +2037,7 @@ Call_001_4b5a:
     ld hl, $46f4                                  ; $4b6a: $21 $f4 $46
     ld c, $09                                     ; $4b6d: $0e $09
     ld de, $0084                                  ; $4b6f: $11 $84 $00
-    call Call_000_040d                            ; $4b72: $cd $0d $04
+    call PlayScreenTransitionFadeIn               ; $4b72: $cd $0d $04
     ret                                           ; $4b75: $c9
 
 
@@ -2046,7 +2046,7 @@ jr_001_4b76:
     ld hl, $4700                                  ; $4b78: $21 $00 $47
     ld c, $0a                                     ; $4b7b: $0e $0a
     ld de, $0094                                  ; $4b7d: $11 $94 $00
-    call Call_000_040d                            ; $4b80: $cd $0d $04
+    call PlayScreenTransitionFadeIn               ; $4b80: $cd $0d $04
     ret                                           ; $4b83: $c9
 
 
@@ -2064,7 +2064,7 @@ Call_001_4b84:
     ld hl, $46ff                                  ; $4b94: $21 $ff $46
     ld c, $09                                     ; $4b97: $0e $09
     ld de, $0093                                  ; $4b99: $11 $93 $00
-    call Call_000_044e                            ; $4b9c: $cd $4e $04
+    call PlayScreenTransitionFadeOut              ; $4b9c: $cd $4e $04
     ret                                           ; $4b9f: $c9
 
 
@@ -2073,7 +2073,7 @@ jr_001_4ba0:
     ld hl, $470b                                  ; $4ba2: $21 $0b $47
     ld c, $0a                                     ; $4ba5: $0e $0a
     ld de, $00a3                                  ; $4ba7: $11 $a3 $00
-    call Call_000_044e                            ; $4baa: $cd $4e $04
+    call PlayScreenTransitionFadeOut              ; $4baa: $cd $4e $04
     ret                                           ; $4bad: $c9
 
 
@@ -2090,7 +2090,7 @@ jr_001_4ba0:
     ld hl, $46f4                                  ; $4bbe: $21 $f4 $46
     ld c, $0c                                     ; $4bc1: $0e $0c
     ld de, $0084                                  ; $4bc3: $11 $84 $00
-    call Call_000_040d                            ; $4bc6: $cd $0d $04
+    call PlayScreenTransitionFadeIn               ; $4bc6: $cd $0d $04
     jp Jump_000_05ea                              ; $4bc9: $c3 $ea $05
 
 
@@ -2099,7 +2099,7 @@ jr_001_4bcc:
     ld hl, $4700                                  ; $4bce: $21 $00 $47
     ld c, $0d                                     ; $4bd1: $0e $0d
     ld de, $0094                                  ; $4bd3: $11 $94 $00
-    call Call_000_040d                            ; $4bd6: $cd $0d $04
+    call PlayScreenTransitionFadeIn               ; $4bd6: $cd $0d $04
     jp Jump_000_05ea                              ; $4bd9: $c3 $ea $05
 
 
@@ -2116,7 +2116,7 @@ jr_001_4bcc:
     ld hl, $46ff                                  ; $4bec: $21 $ff $46
     ld c, $0c                                     ; $4bef: $0e $0c
     ld de, $0093                                  ; $4bf1: $11 $93 $00
-    call Call_000_044e                            ; $4bf4: $cd $4e $04
+    call PlayScreenTransitionFadeOut              ; $4bf4: $cd $4e $04
     jp Jump_000_05ea                              ; $4bf7: $c3 $ea $05
 
 
@@ -2125,7 +2125,7 @@ jr_001_4bfa:
     ld hl, $470b                                  ; $4bfc: $21 $0b $47
     ld c, $0d                                     ; $4bff: $0e $0d
     ld de, $00a3                                  ; $4c01: $11 $a3 $00
-    call Call_000_044e                            ; $4c04: $cd $4e $04
+    call PlayScreenTransitionFadeOut              ; $4c04: $cd $4e $04
     jp Jump_000_05ea                              ; $4c07: $c3 $ea $05
 
 
@@ -2380,7 +2380,7 @@ Call_001_4cef:
     ld [hl], a                                    ; $4d68: $77
     ld a, $01                                     ; $4d69: $3e $01
     ld [$d842], a                                 ; $4d6b: $ea $42 $d8
-    ld a, [$d833]                                 ; $4d6e: $fa $33 $d8
+    ld a, [rHintPopupSelection]                   ; $4d6e: $fa $33 $d8
     and a                                         ; $4d71: $a7
     jr nz, jr_001_4d76                            ; $4d72: $20 $02
 
@@ -2440,7 +2440,7 @@ jr_001_4dbb:
 
     jr nz, jr_001_4ddb                            ; $4dbf: $20 $1a
 
-    ld a, [$d833]                                 ; $4dc1: $fa $33 $d8
+    ld a, [rHintPopupSelection]                   ; $4dc1: $fa $33 $d8
     and a                                         ; $4dc4: $a7
     jr z, jr_001_4ddb                             ; $4dc5: $28 $14
 
@@ -2452,7 +2452,7 @@ jr_001_4dc7:
     or b                                          ; $4dcd: $b0
     ld [hl+], a                                   ; $4dce: $22
     ld [hl], c                                    ; $4dcf: $71
-    ld a, [$d833]                                 ; $4dd0: $fa $33 $d8
+    ld a, [rHintPopupSelection]                   ; $4dd0: $fa $33 $d8
     and a                                         ; $4dd3: $a7
     jr nz, jr_001_4ddc                            ; $4dd4: $20 $06
 
@@ -2984,7 +2984,7 @@ jr_001_5149:
     ld [rPuzzleCursorColumn], a                   ; $5149: $ea $36 $d6
     ld c, $0a                                     ; $514c: $0e $0a
     ld a, $02                                     ; $514e: $3e $02
-    call TODO_Bank0FDispatcher                    ; $5150: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $5150: $cd $b6 $03
     ret                                           ; $5153: $c9
 
 
@@ -3163,7 +3163,7 @@ jr_001_5252:
     ld b, $03                                     ; $5252: $06 $03
     ld hl, $4ea6                                  ; $5254: $21 $a6 $4e
     call SwitchBankToBAndJumpToHL                 ; $5257: $cd $de $05
-    call Call_000_05c5                            ; $525a: $cd $c5 $05
+    call ClearShadowOAMBufferFromCursor           ; $525a: $cd $c5 $05
     rst RST_08                                    ; $525d: $cf
     ld a, [rInputButtonsPressed]                  ; $525e: $fa $1e $c3
     and $01                                       ; $5261: $e6 $01
@@ -3171,7 +3171,7 @@ jr_001_5252:
 
     ld c, $03                                     ; $5265: $0e $03
     ld a, $02                                     ; $5267: $3e $02
-    call TODO_Bank0FDispatcher                    ; $5269: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $5269: $cd $b6 $03
     ret                                           ; $526c: $c9
 
 
@@ -3199,15 +3199,15 @@ GS05_PhasePointer_05::
 
 GS05_StatePhase_00_TODO::
     ld a, $43                                     ; $527d: $3e $43
-    ld [$c32e], a                                 ; $527f: $ea $2e $c3
+    ld [rLCDCShadow], a                           ; $527f: $ea $2e $c3
     xor a                                         ; $5282: $af
-    ld [$c32f], a                                 ; $5283: $ea $2f $c3
-    ld [$c330], a                                 ; $5286: $ea $30 $c3
-    ld [$c331], a                                 ; $5289: $ea $31 $c3
-    ld [$c332], a                                 ; $528c: $ea $32 $c3
-    ld [$c333], a                                 ; $528f: $ea $33 $c3
-    call Call_000_05a0                            ; $5292: $cd $a0 $05
-    call Call_000_05ab                            ; $5295: $cd $ab $05
+    ld [rBGPShadow], a                            ; $5283: $ea $2f $c3
+    ld [rOBP0Shadow], a                           ; $5286: $ea $30 $c3
+    ld [rOBP1Shadow], a                           ; $5289: $ea $31 $c3
+    ld [rSCXShadow], a                            ; $528c: $ea $32 $c3
+    ld [rSCYShadow], a                            ; $528f: $ea $33 $c3
+    call FillBGMap0WithTile01                     ; $5292: $cd $a0 $05
+    call FillBGMap1WithTile01                     ; $5295: $cd $ab $05
     ld a, $0b                                     ; $5298: $3e $0b
     ld hl, $5000                                  ; $529a: $21 $00 $50
     ld de, $8000                                  ; $529d: $11 $00 $80
@@ -3242,17 +3242,17 @@ GS05_StatePhase_00_TODO::
     call Call_001_595e                            ; $52ed: $cd $5e $59
     ld c, $00                                     ; $52f0: $0e $00
     ld a, $01                                     ; $52f2: $3e $01
-    call TODO_Bank0FDispatcher                    ; $52f4: $cd $b6 $03
-    call Call_000_0399                            ; $52f7: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $52f4: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $52f7: $cd $99 $03
     ld c, $04                                     ; $52fa: $0e $04
     ld a, $01                                     ; $52fc: $3e $01
-    call TODO_Bank0FDispatcher                    ; $52fe: $cd $b6 $03
-    call Call_000_04a2                            ; $5301: $cd $a2 $04
+    call CallSoundEffectDispatcher                ; $52fe: $cd $b6 $03
+    call EnableLCDFromShadow                      ; $5301: $cd $a2 $04
     ld b, $03                                     ; $5304: $06 $03
     ld hl, $46e8                                  ; $5306: $21 $e8 $46
     ld c, $08                                     ; $5309: $0e $08
     ld de, $0074                                  ; $530b: $11 $74 $00
-    call Call_000_040d                            ; $530e: $cd $0d $04
+    call PlayScreenTransitionFadeIn               ; $530e: $cd $0d $04
     ld hl, rStatePhase_Current                    ; $5311: $21 $35 $d6
     inc [hl]                                      ; $5314: $34
     ret                                           ; $5315: $c9
@@ -3260,15 +3260,15 @@ GS05_StatePhase_00_TODO::
 
 GS05_StatePhase_04_TODO::
     ld a, $43                                     ; $5316: $3e $43
-    ld [$c32e], a                                 ; $5318: $ea $2e $c3
+    ld [rLCDCShadow], a                           ; $5318: $ea $2e $c3
     xor a                                         ; $531b: $af
-    ld [$c32f], a                                 ; $531c: $ea $2f $c3
-    ld [$c330], a                                 ; $531f: $ea $30 $c3
-    ld [$c331], a                                 ; $5322: $ea $31 $c3
-    ld [$c332], a                                 ; $5325: $ea $32 $c3
-    ld [$c333], a                                 ; $5328: $ea $33 $c3
-    call Call_000_05a0                            ; $532b: $cd $a0 $05
-    call Call_000_05ab                            ; $532e: $cd $ab $05
+    ld [rBGPShadow], a                            ; $531c: $ea $2f $c3
+    ld [rOBP0Shadow], a                           ; $531f: $ea $30 $c3
+    ld [rOBP1Shadow], a                           ; $5322: $ea $31 $c3
+    ld [rSCXShadow], a                            ; $5325: $ea $32 $c3
+    ld [rSCYShadow], a                            ; $5328: $ea $33 $c3
+    call FillBGMap0WithTile01                     ; $532b: $cd $a0 $05
+    call FillBGMap1WithTile01                     ; $532e: $cd $ab $05
     ld a, $0b                                     ; $5331: $3e $0b
     ld hl, $5000                                  ; $5333: $21 $00 $50
     ld de, $8000                                  ; $5336: $11 $00 $80
@@ -3307,7 +3307,7 @@ jr_001_5381:
     ld b, $03                                     ; $5387: $06 $03
     ld hl, $4e80                                  ; $5389: $21 $80 $4e
     call SwitchBankToBAndJumpToHL                 ; $538c: $cd $de $05
-    ld a, [$d805]                                 ; $538f: $fa $05 $d8
+    ld a, [rPuzzleFlowVariant_Unsure]             ; $538f: $fa $05 $d8
     and a                                         ; $5392: $a7
     push af                                       ; $5393: $f5
     jr nz, jr_001_539e                            ; $5394: $20 $08
@@ -3321,17 +3321,17 @@ jr_001_539e:
     call Call_001_5760                            ; $539f: $cd $60 $57
     ld c, $00                                     ; $53a2: $0e $00
     ld a, $01                                     ; $53a4: $3e $01
-    call TODO_Bank0FDispatcher                    ; $53a6: $cd $b6 $03
-    call Call_000_0399                            ; $53a9: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $53a6: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $53a9: $cd $99 $03
     ld c, $04                                     ; $53ac: $0e $04
     ld a, $01                                     ; $53ae: $3e $01
-    call TODO_Bank0FDispatcher                    ; $53b0: $cd $b6 $03
-    call Call_000_04a2                            ; $53b3: $cd $a2 $04
+    call CallSoundEffectDispatcher                ; $53b0: $cd $b6 $03
+    call EnableLCDFromShadow                      ; $53b3: $cd $a2 $04
     ld b, $03                                     ; $53b6: $06 $03
     ld hl, $46e8                                  ; $53b8: $21 $e8 $46
     ld c, $08                                     ; $53bb: $0e $08
     ld de, $0074                                  ; $53bd: $11 $74 $00
-    call Call_000_040d                            ; $53c0: $cd $0d $04
+    call PlayScreenTransitionFadeIn               ; $53c0: $cd $0d $04
     pop af                                        ; $53c3: $f1
     jp z, Jump_001_54ed                           ; $53c4: $ca $ed $54
 
@@ -3363,54 +3363,54 @@ jr_001_539e:
     ld [hl], a                                    ; $53f4: $77
     call Call_000_1b1f                            ; $53f5: $cd $1f $1b
     ld bc, $00b4                                  ; $53f8: $01 $b4 $00
-    call Call_000_05fa                            ; $53fb: $cd $fa $05
+    call DelayFramesByBC                          ; $53fb: $cd $fa $05
     ld a, $05                                     ; $53fe: $3e $05
-    call TODO_Bank0FDispatcher                    ; $5400: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $5400: $cd $b6 $03
     ld c, $00                                     ; $5403: $0e $00
     ld a, $01                                     ; $5405: $3e $01
-    call TODO_Bank0FDispatcher                    ; $5407: $cd $b6 $03
-    call Call_000_0399                            ; $540a: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $5407: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $540a: $cd $99 $03
     ld c, $00                                     ; $540d: $0e $00
     ld a, $01                                     ; $540f: $3e $01
-    call TODO_Bank0FDispatcher                    ; $5411: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $5411: $cd $b6 $03
     call ClearShadowOAMBuffer                     ; $5414: $cd $b6 $05
     ld b, $03                                     ; $5417: $06 $03
     ld hl, $46f3                                  ; $5419: $21 $f3 $46
     ld c, $08                                     ; $541c: $0e $08
     ld de, $0083                                  ; $541e: $11 $83 $00
-    call Call_000_044e                            ; $5421: $cd $4e $04
-    call Call_000_0483                            ; $5424: $cd $83 $04
+    call PlayScreenTransitionFadeOut              ; $5421: $cd $4e $04
+    call DisableLCDAtVBlank                       ; $5424: $cd $83 $04
     ld a, $0c                                     ; $5427: $3e $0c
     ld hl, $7800                                  ; $5429: $21 $00 $78
     ld de, $9800                                  ; $542c: $11 $00 $98
     ld bc, $0400                                  ; $542f: $01 $00 $04
     call BankedTileCopy                           ; $5432: $cd $e4 $04
     ld a, $7e                                     ; $5435: $3e $7e
-    ld [$cd63], a                                 ; $5437: $ea $63 $cd
+    ld [rTilemapToTileDataAddressLookupTableLow], a; $5437: $ea $63 $cd
     ld a, $16                                     ; $543a: $3e $16
-    ld [$cd64], a                                 ; $543c: $ea $64 $cd
+    ld [rTilemapToTileDataAddressLookupTableHigh], a; $543c: $ea $64 $cd
     ld c, $00                                     ; $543f: $0e $00
     ld a, $01                                     ; $5441: $3e $01
-    call TODO_Bank0FDispatcher                    ; $5443: $cd $b6 $03
-    call Call_000_0399                            ; $5446: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $5443: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $5446: $cd $99 $03
     ld c, $07                                     ; $5449: $0e $07
     ld a, $01                                     ; $544b: $3e $01
-    call TODO_Bank0FDispatcher                    ; $544d: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $544d: $cd $b6 $03
     ld a, $2f                                     ; $5450: $3e $2f
-    ld [$c336], a                                 ; $5452: $ea $36 $c3
-    ld hl, $c337                                  ; $5455: $21 $37 $c3
+    ld [rLYCShadow], a                            ; $5452: $ea $36 $c3
+    ld hl, rLCDCInterruptControlFlags_Unsure      ; $5455: $21 $37 $c3
     set 6, [hl]                                   ; $5458: $cb $f6
     ld hl, rIE                                    ; $545a: $21 $ff $ff
     set 1, [hl]                                   ; $545d: $cb $ce
     ld a, $02                                     ; $545f: $3e $02
-    ld [$c338], a                                 ; $5461: $ea $38 $c3
-    ld [$c350], a                                 ; $5464: $ea $50 $c3
-    call Call_000_04a2                            ; $5467: $cd $a2 $04
+    ld [rLCDCInterruptDispatchIndex], a           ; $5461: $ea $38 $c3
+    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $5464: $ea $50 $c3
+    call EnableLCDFromShadow                      ; $5467: $cd $a2 $04
     ld b, $03                                     ; $546a: $06 $03
     ld hl, $46e8                                  ; $546c: $21 $e8 $46
     ld c, $0b                                     ; $546f: $0e $0b
     ld de, $0074                                  ; $5471: $11 $74 $00
-    call Call_000_040d                            ; $5474: $cd $0d $04
+    call PlayScreenTransitionFadeIn               ; $5474: $cd $0d $04
     ld a, $10                                     ; $5477: $3e $10
     ld [rMessageScriptStreamResetEntryLow], a     ; $5479: $ea $43 $d8
     ld [rMessageScriptStreamEntryLow], a          ; $547c: $ea $2b $d8
@@ -3428,29 +3428,29 @@ jr_001_539e:
     call Call_001_51dd                            ; $549b: $cd $dd $51
     call Call_001_5252                            ; $549e: $cd $52 $52
     ld bc, $003c                                  ; $54a1: $01 $3c $00
-    call Call_000_05fa                            ; $54a4: $cd $fa $05
+    call DelayFramesByBC                          ; $54a4: $cd $fa $05
     ld a, $05                                     ; $54a7: $3e $05
-    call TODO_Bank0FDispatcher                    ; $54a9: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $54a9: $cd $b6 $03
     ld c, $00                                     ; $54ac: $0e $00
     ld a, $01                                     ; $54ae: $3e $01
-    call TODO_Bank0FDispatcher                    ; $54b0: $cd $b6 $03
-    call Call_000_0399                            ; $54b3: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $54b0: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $54b3: $cd $99 $03
     ld c, $00                                     ; $54b6: $0e $00
     ld a, $01                                     ; $54b8: $3e $01
-    call TODO_Bank0FDispatcher                    ; $54ba: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $54ba: $cd $b6 $03
     ld b, $03                                     ; $54bd: $06 $03
     ld hl, $46f3                                  ; $54bf: $21 $f3 $46
     ld c, $0b                                     ; $54c2: $0e $0b
     ld de, $0083                                  ; $54c4: $11 $83 $00
-    call Call_000_044e                            ; $54c7: $cd $4e $04
-    call Call_000_0483                            ; $54ca: $cd $83 $04
-    ld hl, $c337                                  ; $54cd: $21 $37 $c3
+    call PlayScreenTransitionFadeOut              ; $54c7: $cd $4e $04
+    call DisableLCDAtVBlank                       ; $54ca: $cd $83 $04
+    ld hl, rLCDCInterruptControlFlags_Unsure      ; $54cd: $21 $37 $c3
     res 6, [hl]                                   ; $54d0: $cb $b6
     ld hl, rIE                                    ; $54d2: $21 $ff $ff
     res 1, [hl]                                   ; $54d5: $cb $8e
     xor a                                         ; $54d7: $af
-    ld [$c338], a                                 ; $54d8: $ea $38 $c3
-    ld [$c350], a                                 ; $54db: $ea $50 $c3
+    ld [rLCDCInterruptDispatchIndex], a           ; $54d8: $ea $38 $c3
+    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $54db: $ea $50 $c3
     call Call_001_5749                            ; $54de: $cd $49 $57
     xor a                                         ; $54e1: $af
     ld [rStatePhase_Current], a                   ; $54e2: $ea $35 $d6
@@ -3493,7 +3493,7 @@ Call_001_54f5:
 
     ld c, $08                                     ; $551f: $0e $08
     ld a, $02                                     ; $5521: $3e $02
-    call TODO_Bank0FDispatcher                    ; $5523: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $5523: $cd $b6 $03
     ld c, $08                                     ; $5526: $0e $08
 
 jr_001_5528:
@@ -3573,7 +3573,7 @@ GS05_StatePhase_01_TODO::
 
     ld c, $03                                     ; $559e: $0e $03
     ld a, $02                                     ; $55a0: $3e $02
-    call TODO_Bank0FDispatcher                    ; $55a2: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $55a2: $cd $b6 $03
     ld hl, rStatePhase_Current                    ; $55a5: $21 $35 $d6
     inc [hl]                                      ; $55a8: $34
     ret                                           ; $55a9: $c9
@@ -3586,7 +3586,7 @@ jr_001_55aa:
 
     ld c, $04                                     ; $55b1: $0e $04
     ld a, $02                                     ; $55b3: $3e $02
-    call TODO_Bank0FDispatcher                    ; $55b5: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $55b5: $cd $b6 $03
     ld a, $03                                     ; $55b8: $3e $03
     ld [rStatePhase_Current], a                   ; $55ba: $ea $35 $d6
     ret                                           ; $55bd: $c9
@@ -3598,22 +3598,22 @@ jr_001_55be:
 
 GS05_StatePhase_05_TODO::
     ld bc, $003c                                  ; $55bf: $01 $3c $00
-    call Call_000_05fa                            ; $55c2: $cd $fa $05
+    call DelayFramesByBC                          ; $55c2: $cd $fa $05
     ld a, $05                                     ; $55c5: $3e $05
-    call TODO_Bank0FDispatcher                    ; $55c7: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $55c7: $cd $b6 $03
     ld c, $00                                     ; $55ca: $0e $00
     ld a, $01                                     ; $55cc: $3e $01
-    call TODO_Bank0FDispatcher                    ; $55ce: $cd $b6 $03
-    call Call_000_0399                            ; $55d1: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $55ce: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $55d1: $cd $99 $03
     ld c, $00                                     ; $55d4: $0e $00
     ld a, $01                                     ; $55d6: $3e $01
-    call TODO_Bank0FDispatcher                    ; $55d8: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $55d8: $cd $b6 $03
     ld b, $03                                     ; $55db: $06 $03
     ld hl, $46f3                                  ; $55dd: $21 $f3 $46
     ld c, $08                                     ; $55e0: $0e $08
     ld de, $0083                                  ; $55e2: $11 $83 $00
-    call Call_000_044e                            ; $55e5: $cd $4e $04
-    call Call_000_0483                            ; $55e8: $cd $83 $04
+    call PlayScreenTransitionFadeOut              ; $55e5: $cd $4e $04
+    call DisableLCDAtVBlank                       ; $55e8: $cd $83 $04
     call Call_001_5749                            ; $55eb: $cd $49 $57
     xor a                                         ; $55ee: $af
     ld [rPuzzleTimerSecondOnes], a                ; $55ef: $ea $0b $d8
@@ -3622,9 +3622,9 @@ GS05_StatePhase_05_TODO::
     ld a, $03                                     ; $55f8: $3e $03
     ld [rPuzzleTimerMinuteTens], a                ; $55fa: $ea $0a $d8
     xor a                                         ; $55fd: $af
-    ld [$d833], a                                 ; $55fe: $ea $33 $d8
+    ld [rHintPopupSelection], a                   ; $55fe: $ea $33 $d8
     ld a, $01                                     ; $5601: $3e $01
-    ld [$d805], a                                 ; $5603: $ea $05 $d8
+    ld [rPuzzleFlowVariant_Unsure], a             ; $5603: $ea $05 $d8
     call Call_001_5732                            ; $5606: $cd $32 $57
     call Call_001_5bb0                            ; $5609: $cd $b0 $5b
     call Call_001_5860                            ; $560c: $cd $60 $58
@@ -3637,22 +3637,22 @@ GS05_StatePhase_05_TODO::
 
 GS05_StatePhase_02_TODO::
     ld bc, $003c                                  ; $561b: $01 $3c $00
-    call Call_000_05fa                            ; $561e: $cd $fa $05
+    call DelayFramesByBC                          ; $561e: $cd $fa $05
     ld a, $05                                     ; $5621: $3e $05
-    call TODO_Bank0FDispatcher                    ; $5623: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $5623: $cd $b6 $03
     ld c, $00                                     ; $5626: $0e $00
     ld a, $01                                     ; $5628: $3e $01
-    call TODO_Bank0FDispatcher                    ; $562a: $cd $b6 $03
-    call Call_000_0399                            ; $562d: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $562a: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $562d: $cd $99 $03
     ld c, $00                                     ; $5630: $0e $00
     ld a, $01                                     ; $5632: $3e $01
-    call TODO_Bank0FDispatcher                    ; $5634: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $5634: $cd $b6 $03
     ld b, $03                                     ; $5637: $06 $03
     ld hl, $46f3                                  ; $5639: $21 $f3 $46
     ld c, $08                                     ; $563c: $0e $08
     ld de, $0083                                  ; $563e: $11 $83 $00
-    call Call_000_044e                            ; $5641: $cd $4e $04
-    call Call_000_0483                            ; $5644: $cd $83 $04
+    call PlayScreenTransitionFadeOut              ; $5641: $cd $4e $04
+    call DisableLCDAtVBlank                       ; $5644: $cd $83 $04
     call Call_001_5749                            ; $5647: $cd $49 $57
     call Call_001_5bb0                            ; $564a: $cd $b0 $5b
     call Call_001_5860                            ; $564d: $cd $60 $58
@@ -3667,9 +3667,9 @@ GS05_StatePhase_02_TODO::
     ld hl, GS05_TODO_Data1                        ; $565f: $21 $77 $56
     add hl, bc                                    ; $5662: $09
     ld a, [hl+]                                   ; $5663: $2a
-    ld [$d807], a                                 ; $5664: $ea $07 $d8
+    ld [rPuzzleDataIndexLow], a                   ; $5664: $ea $07 $d8
     ld a, [hl]                                    ; $5667: $7e
-    ld [$d808], a                                 ; $5668: $ea $08 $d8
+    ld [rPuzzleDataIndexHigh], a                  ; $5668: $ea $08 $d8
     xor a                                         ; $566b: $af
     ld [rStatePhase_Current], a                   ; $566c: $ea $35 $d6
     ld a, $08                                     ; $566f: $3e $08
@@ -3697,22 +3697,22 @@ GS05_TODO_Data1::
 
 GS05_StatePhase_03_TODO::
     ld bc, $003c                                  ; $56f7: $01 $3c $00
-    call Call_000_05fa                            ; $56fa: $cd $fa $05
+    call DelayFramesByBC                          ; $56fa: $cd $fa $05
     ld a, $05                                     ; $56fd: $3e $05
-    call TODO_Bank0FDispatcher                    ; $56ff: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $56ff: $cd $b6 $03
     ld c, $00                                     ; $5702: $0e $00
     ld a, $01                                     ; $5704: $3e $01
-    call TODO_Bank0FDispatcher                    ; $5706: $cd $b6 $03
-    call Call_000_0399                            ; $5709: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $5706: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $5709: $cd $99 $03
     ld c, $00                                     ; $570c: $0e $00
     ld a, $01                                     ; $570e: $3e $01
-    call TODO_Bank0FDispatcher                    ; $5710: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $5710: $cd $b6 $03
     ld b, $03                                     ; $5713: $06 $03
     ld hl, $46f3                                  ; $5715: $21 $f3 $46
     ld c, $08                                     ; $5718: $0e $08
     ld de, $0083                                  ; $571a: $11 $83 $00
-    call Call_000_044e                            ; $571d: $cd $4e $04
-    call Call_000_0483                            ; $5720: $cd $83 $04
+    call PlayScreenTransitionFadeOut              ; $571d: $cd $4e $04
+    call DisableLCDAtVBlank                       ; $5720: $cd $83 $04
     call Call_001_5749                            ; $5723: $cd $49 $57
     xor a                                         ; $5726: $af
     ld [rStatePhase_Current], a                   ; $5727: $ea $35 $d6
@@ -3775,7 +3775,7 @@ Call_001_577b:
 
     ld c, $0a                                     ; $5781: $0e $0a
     ld a, $02                                     ; $5783: $3e $02
-    call TODO_Bank0FDispatcher                    ; $5785: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $5785: $cd $b6 $03
     ld hl, rInputButtonsPressedOrRepeated         ; $5788: $21 $22 $c3
     bit 5, [hl]                                   ; $578b: $cb $6e
     jr z, jr_001_5798                             ; $578d: $28 $09
@@ -4032,7 +4032,7 @@ Call_001_588a:
     ld [hl], a                                    ; $58f1: $77
     ld a, $01                                     ; $58f2: $3e $01
     ld [$d842], a                                 ; $58f4: $ea $42 $d8
-    ld a, [$d833]                                 ; $58f7: $fa $33 $d8
+    ld a, [rHintPopupSelection]                   ; $58f7: $fa $33 $d8
     and a                                         ; $58fa: $a7
     jr nz, jr_001_58ff                            ; $58fb: $20 $02
 
@@ -4085,7 +4085,7 @@ jr_001_593b:
 
     jr nz, jr_001_595b                            ; $593f: $20 $1a
 
-    ld a, [$d833]                                 ; $5941: $fa $33 $d8
+    ld a, [rHintPopupSelection]                   ; $5941: $fa $33 $d8
     and a                                         ; $5944: $a7
     jr z, jr_001_595b                             ; $5945: $28 $14
 
@@ -4097,7 +4097,7 @@ jr_001_5947:
     or b                                          ; $594d: $b0
     ld [hl+], a                                   ; $594e: $22
     ld [hl], c                                    ; $594f: $71
-    ld a, [$d833]                                 ; $5950: $fa $33 $d8
+    ld a, [rHintPopupSelection]                   ; $5950: $fa $33 $d8
     and a                                         ; $5953: $a7
     jr nz, jr_001_595c                            ; $5954: $20 $06
 
@@ -4587,7 +4587,7 @@ jr_001_5c93:
     ld [rPuzzleCursorColumn], a                   ; $5c93: $ea $36 $d6
     ld c, $0a                                     ; $5c96: $0e $0a
     ld a, $02                                     ; $5c98: $3e $02
-    call TODO_Bank0FDispatcher                    ; $5c9a: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $5c9a: $cd $b6 $03
     ret                                           ; $5c9d: $c9
 
 
@@ -4681,40 +4681,40 @@ GS08_PhasePointer_0b::
 
 GS08_StatePhase_00_TODO::
     ld a, $43                                     ; $5d9a: $3e $43
-    ld [$c32e], a                                 ; $5d9c: $ea $2e $c3
+    ld [rLCDCShadow], a                           ; $5d9c: $ea $2e $c3
     xor a                                         ; $5d9f: $af
-    ld [$c32f], a                                 ; $5da0: $ea $2f $c3
-    ld [$c330], a                                 ; $5da3: $ea $30 $c3
-    ld [$c331], a                                 ; $5da6: $ea $31 $c3
-    ld [$c332], a                                 ; $5da9: $ea $32 $c3
-    ld [$c333], a                                 ; $5dac: $ea $33 $c3
-    call Call_000_05a0                            ; $5daf: $cd $a0 $05
-    call Call_000_05ab                            ; $5db2: $cd $ab $05
+    ld [rBGPShadow], a                            ; $5da0: $ea $2f $c3
+    ld [rOBP0Shadow], a                           ; $5da3: $ea $30 $c3
+    ld [rOBP1Shadow], a                           ; $5da6: $ea $31 $c3
+    ld [rSCXShadow], a                            ; $5da9: $ea $32 $c3
+    ld [rSCYShadow], a                            ; $5dac: $ea $33 $c3
+    call FillBGMap0WithTile01                     ; $5daf: $cd $a0 $05
+    call FillBGMap1WithTile01                     ; $5db2: $cd $ab $05
     call LoadPuzzleDataBuffer                     ; $5db5: $cd $f1 $07
     call LoadGameBoardTileData                    ; $5db8: $cd $b9 $69
     xor a                                         ; $5dbb: $af
     ld [rPuzzleCursorColumn], a                   ; $5dbc: $ea $36 $d6
     ld [rPuzzleCursorRow], a                      ; $5dbf: $ea $37 $d6
     ld a, $00                                     ; $5dc2: $3e $00
-    ld [$d833], a                                 ; $5dc4: $ea $33 $d8
+    ld [rHintPopupSelection], a                   ; $5dc4: $ea $33 $d8
     ld a, $02                                     ; $5dc7: $3e $02
-    ld [$d811], a                                 ; $5dc9: $ea $11 $d8
+    ld [rPuzzleTimerAdjustmentStep], a            ; $5dc9: $ea $11 $d8
     ld a, $06                                     ; $5dcc: $3e $06
     ld hl, $7800                                  ; $5dce: $21 $00 $78
     ld de, $8500                                  ; $5dd1: $11 $00 $85
     ld bc, $0200                                  ; $5dd4: $01 $00 $02
     call BankedTileCopy                           ; $5dd7: $cd $e4 $04
     ld a, $2f                                     ; $5dda: $3e $2f
-    ld [$c336], a                                 ; $5ddc: $ea $36 $c3
-    ld hl, $c337                                  ; $5ddf: $21 $37 $c3
+    ld [rLYCShadow], a                            ; $5ddc: $ea $36 $c3
+    ld hl, rLCDCInterruptControlFlags_Unsure      ; $5ddf: $21 $37 $c3
     set 6, [hl]                                   ; $5de2: $cb $f6
     ld hl, rIE                                    ; $5de4: $21 $ff $ff
     set 1, [hl]                                   ; $5de7: $cb $ce
     ld a, $01                                     ; $5de9: $3e $01
-    ld [$c338], a                                 ; $5deb: $ea $38 $c3
-    ld [$c33c], a                                 ; $5dee: $ea $3c $c3
-    ld [$c350], a                                 ; $5df1: $ea $50 $c3
-    call Call_001_6f30                            ; $5df4: $cd $30 $6f
+    ld [rLCDCInterruptDispatchIndex], a           ; $5deb: $ea $38 $c3
+    ld [rVBlankLCDCBit4ForceFlag], a              ; $5dee: $ea $3c $c3
+    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $5df1: $ea $50 $c3
+    call BuildClueRunLengthBuffers                ; $5df4: $cd $30 $6f
     call ClearShadowOAMBuffer                     ; $5df7: $cd $b6 $05
     call ResetPuzzleTimerState                    ; $5dfa: $cd $eb $7b
     call Call_001_786e                            ; $5dfd: $cd $6e $78
@@ -4733,13 +4733,13 @@ GS08_StatePhase_00_TODO::
     add hl, bc                                    ; $5e16: $09
     ld c, $00                                     ; $5e17: $0e $00
     ld a, $01                                     ; $5e19: $3e $01
-    call TODO_Bank0FDispatcher                    ; $5e1b: $cd $b6 $03
-    call Call_000_0399                            ; $5e1e: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $5e1b: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $5e1e: $cd $99 $03
     ld c, [hl]                                    ; $5e21: $4e
     ld a, $01                                     ; $5e22: $3e $01
-    call TODO_Bank0FDispatcher                    ; $5e24: $cd $b6 $03
-    call Call_000_04a2                            ; $5e27: $cd $a2 $04
-    ld a, [rCurrentGridSize]                      ; $5e2a: $fa $00 $d8
+    call CallSoundEffectDispatcher                ; $5e24: $cd $b6 $03
+    call EnableLCDFromShadow                      ; $5e27: $cd $a2 $04
+    ld a, [rPuzzleGridWidth]                      ; $5e2a: $fa $00 $d8
     cp $05                                        ; $5e2d: $fe $05
     jr nz, jr_001_5e40                            ; $5e2f: $20 $0f
 
@@ -4747,7 +4747,7 @@ GS08_StatePhase_00_TODO::
     ld hl, $46a0                                  ; $5e33: $21 $a0 $46
     ld c, $01                                     ; $5e36: $0e $01
     ld de, $0014                                  ; $5e38: $11 $14 $00
-    call Call_000_040d                            ; $5e3b: $cd $0d $04
+    call PlayScreenTransitionFadeIn               ; $5e3b: $cd $0d $04
     jr jr_001_5e60                                ; $5e3e: $18 $20
 
 jr_001_5e40:
@@ -4758,7 +4758,7 @@ jr_001_5e40:
     ld hl, $46ac                                  ; $5e46: $21 $ac $46
     ld c, $02                                     ; $5e49: $0e $02
     ld de, $0024                                  ; $5e4b: $11 $24 $00
-    call Call_000_040d                            ; $5e4e: $cd $0d $04
+    call PlayScreenTransitionFadeIn               ; $5e4e: $cd $0d $04
     jr jr_001_5e60                                ; $5e51: $18 $0d
 
 jr_001_5e53:
@@ -4766,10 +4766,10 @@ jr_001_5e53:
     ld hl, $4694                                  ; $5e55: $21 $94 $46
     ld c, $00                                     ; $5e58: $0e $00
     ld de, $0004                                  ; $5e5a: $11 $04 $00
-    call Call_000_040d                            ; $5e5d: $cd $0d $04
+    call PlayScreenTransitionFadeIn               ; $5e5d: $cd $0d $04
 
 jr_001_5e60:
-    ld a, [rCurrentGridSize]                      ; $5e60: $fa $00 $d8
+    ld a, [rPuzzleGridWidth]                      ; $5e60: $fa $00 $d8
     cp $05                                        ; $5e63: $fe $05
     jr nz, jr_001_5e8e                            ; $5e65: $20 $27
 
@@ -4797,28 +4797,28 @@ jr_001_5e8e:
 
 GS08_StatePhase_0b_TODO::
     ld a, $43                                     ; $5e93: $3e $43
-    ld [$c32e], a                                 ; $5e95: $ea $2e $c3
+    ld [rLCDCShadow], a                           ; $5e95: $ea $2e $c3
     xor a                                         ; $5e98: $af
-    ld [$c32f], a                                 ; $5e99: $ea $2f $c3
-    ld [$c330], a                                 ; $5e9c: $ea $30 $c3
-    ld [$c331], a                                 ; $5e9f: $ea $31 $c3
-    ld [$c332], a                                 ; $5ea2: $ea $32 $c3
-    ld [$c333], a                                 ; $5ea5: $ea $33 $c3
-    call Call_000_05a0                            ; $5ea8: $cd $a0 $05
-    call Call_000_05ab                            ; $5eab: $cd $ab $05
+    ld [rBGPShadow], a                            ; $5e99: $ea $2f $c3
+    ld [rOBP0Shadow], a                           ; $5e9c: $ea $30 $c3
+    ld [rOBP1Shadow], a                           ; $5e9f: $ea $31 $c3
+    ld [rSCXShadow], a                            ; $5ea2: $ea $32 $c3
+    ld [rSCYShadow], a                            ; $5ea5: $ea $33 $c3
+    call FillBGMap0WithTile01                     ; $5ea8: $cd $a0 $05
+    call FillBGMap1WithTile01                     ; $5eab: $cd $ab $05
     call Call_000_1c96                            ; $5eae: $cd $96 $1c
     call LoadGameBoardTileData                    ; $5eb1: $cd $b9 $69
     ld a, $2f                                     ; $5eb4: $3e $2f
-    ld [$c336], a                                 ; $5eb6: $ea $36 $c3
-    ld hl, $c337                                  ; $5eb9: $21 $37 $c3
+    ld [rLYCShadow], a                            ; $5eb6: $ea $36 $c3
+    ld hl, rLCDCInterruptControlFlags_Unsure      ; $5eb9: $21 $37 $c3
     set 6, [hl]                                   ; $5ebc: $cb $f6
     ld hl, rIE                                    ; $5ebe: $21 $ff $ff
     set 1, [hl]                                   ; $5ec1: $cb $ce
     ld a, $01                                     ; $5ec3: $3e $01
-    ld [$c338], a                                 ; $5ec5: $ea $38 $c3
-    ld [$c33c], a                                 ; $5ec8: $ea $3c $c3
-    ld [$c350], a                                 ; $5ecb: $ea $50 $c3
-    call Call_001_6f30                            ; $5ece: $cd $30 $6f
+    ld [rLCDCInterruptDispatchIndex], a           ; $5ec5: $ea $38 $c3
+    ld [rVBlankLCDCBit4ForceFlag], a              ; $5ec8: $ea $3c $c3
+    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $5ecb: $ea $50 $c3
+    call BuildClueRunLengthBuffers                ; $5ece: $cd $30 $6f
     call ClearShadowOAMBuffer                     ; $5ed1: $cd $b6 $05
     call RenderPuzzleTimerDigits                  ; $5ed4: $cd $04 $7c
     call Call_001_786e                            ; $5ed7: $cd $6e $78
@@ -4837,13 +4837,13 @@ GS08_StatePhase_0b_TODO::
     add hl, bc                                    ; $5ef0: $09
     ld c, $00                                     ; $5ef1: $0e $00
     ld a, $01                                     ; $5ef3: $3e $01
-    call TODO_Bank0FDispatcher                    ; $5ef5: $cd $b6 $03
-    call Call_000_0399                            ; $5ef8: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $5ef5: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $5ef8: $cd $99 $03
     ld c, [hl]                                    ; $5efb: $4e
     ld a, $01                                     ; $5efc: $3e $01
-    call TODO_Bank0FDispatcher                    ; $5efe: $cd $b6 $03
-    call Call_000_04a2                            ; $5f01: $cd $a2 $04
-    ld a, [rCurrentGridSize]                      ; $5f04: $fa $00 $d8
+    call CallSoundEffectDispatcher                ; $5efe: $cd $b6 $03
+    call EnableLCDFromShadow                      ; $5f01: $cd $a2 $04
+    ld a, [rPuzzleGridWidth]                      ; $5f04: $fa $00 $d8
     cp $05                                        ; $5f07: $fe $05
     jr nz, jr_001_5f1a                            ; $5f09: $20 $0f
 
@@ -4851,7 +4851,7 @@ GS08_StatePhase_0b_TODO::
     ld hl, $46a0                                  ; $5f0d: $21 $a0 $46
     ld c, $01                                     ; $5f10: $0e $01
     ld de, $0014                                  ; $5f12: $11 $14 $00
-    call Call_000_040d                            ; $5f15: $cd $0d $04
+    call PlayScreenTransitionFadeIn               ; $5f15: $cd $0d $04
     jr jr_001_5f3a                                ; $5f18: $18 $20
 
 jr_001_5f1a:
@@ -4862,7 +4862,7 @@ jr_001_5f1a:
     ld hl, $46ac                                  ; $5f20: $21 $ac $46
     ld c, $02                                     ; $5f23: $0e $02
     ld de, $0024                                  ; $5f25: $11 $24 $00
-    call Call_000_040d                            ; $5f28: $cd $0d $04
+    call PlayScreenTransitionFadeIn               ; $5f28: $cd $0d $04
     jr jr_001_5f3a                                ; $5f2b: $18 $0d
 
 jr_001_5f2d:
@@ -4870,10 +4870,10 @@ jr_001_5f2d:
     ld hl, $4694                                  ; $5f2f: $21 $94 $46
     ld c, $00                                     ; $5f32: $0e $00
     ld de, $0004                                  ; $5f34: $11 $04 $00
-    call Call_000_040d                            ; $5f37: $cd $0d $04
+    call PlayScreenTransitionFadeIn               ; $5f37: $cd $0d $04
 
 jr_001_5f3a:
-    ld a, [rCurrentGridSize]                      ; $5f3a: $fa $00 $d8
+    ld a, [rPuzzleGridWidth]                      ; $5f3a: $fa $00 $d8
     cp $05                                        ; $5f3d: $fe $05
     jr nz, jr_001_5f68                            ; $5f3f: $20 $27
 
@@ -4934,7 +4934,7 @@ GS08_StatePhase_02_TODO::
 
 Call_001_5fab:
 jr_001_5fab:
-    call Call_000_05c5                            ; $5fab: $cd $c5 $05
+    call ClearShadowOAMBufferFromCursor           ; $5fab: $cd $c5 $05
     rst RST_08                                    ; $5fae: $cf
     call TickMarioBlinkAnimation                  ; $5faf: $cd $18 $79
     call AnimateMarioMouthDuringText              ; $5fb2: $cd $93 $30
@@ -4951,12 +4951,12 @@ jr_001_5fbb:
 
     call TickMarioBlinkAnimation                  ; $5fbf: $cd $18 $79
     call AnimateMarioMouthDuringText              ; $5fc2: $cd $93 $30
-    call Call_000_05c5                            ; $5fc5: $cd $c5 $05
+    call ClearShadowOAMBufferFromCursor           ; $5fc5: $cd $c5 $05
     rst RST_08                                    ; $5fc8: $cf
     jr jr_001_5fbb                                ; $5fc9: $18 $f0
 
 GS08_StatePhase_03_TODO::
-    ld a, [rCurrentGridSize]                      ; $5fcb: $fa $00 $d8
+    ld a, [rPuzzleGridWidth]                      ; $5fcb: $fa $00 $d8
     cp $05                                        ; $5fce: $fe $05
     jp z, Jump_001_607a                           ; $5fd0: $ca $7a $60
 
@@ -4977,14 +4977,14 @@ GS08_StatePhase_03_TODO::
 
     ld c, $10                                     ; $5ffb: $0e $10
     ld a, $02                                     ; $5ffd: $3e $02
-    call TODO_Bank0FDispatcher                    ; $5fff: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $5fff: $cd $b6 $03
     ld a, $05                                     ; $6002: $3e $05
     ld [rStatePhase_Current], a                   ; $6004: $ea $35 $d6
     ret                                           ; $6007: $c9
 
 
 jr_001_6008:
-    ld a, [$d805]                                 ; $6008: $fa $05 $d8
+    ld a, [rPuzzleFlowVariant_Unsure]             ; $6008: $fa $05 $d8
     and a                                         ; $600b: $a7
     jr z, jr_001_6059                             ; $600c: $28 $4b
 
@@ -4993,11 +4993,11 @@ jr_001_6008:
     call Call_000_1b1f                            ; $6014: $cd $1f $1b
     ld c, $00                                     ; $6017: $0e $00
     ld a, $01                                     ; $6019: $3e $01
-    call TODO_Bank0FDispatcher                    ; $601b: $cd $b6 $03
-    call Call_000_0399                            ; $601e: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $601b: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $601e: $cd $99 $03
     ld c, $09                                     ; $6021: $0e $09
     ld a, $01                                     ; $6023: $3e $01
-    call TODO_Bank0FDispatcher                    ; $6025: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $6025: $cd $b6 $03
     call ClearShadowOAMBuffer                     ; $6028: $cd $b6 $05
     call RedrawPuzzleBoard                        ; $602b: $cd $35 $76
 
@@ -5009,16 +5009,16 @@ jr_001_602e:
 
     ld c, $03                                     ; $6036: $0e $03
     ld a, $02                                     ; $6038: $3e $02
-    call TODO_Bank0FDispatcher                    ; $603a: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $603a: $cd $b6 $03
     call Call_001_76a9                            ; $603d: $cd $a9 $76
     call Call_000_1a45                            ; $6040: $cd $45 $1a
     ld c, $00                                     ; $6043: $0e $00
     ld a, $01                                     ; $6045: $3e $01
-    call TODO_Bank0FDispatcher                    ; $6047: $cd $b6 $03
-    call Call_000_0399                            ; $604a: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $6047: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $604a: $cd $99 $03
     ld c, $12                                     ; $604d: $0e $12
     ld a, $01                                     ; $604f: $3e $01
-    call TODO_Bank0FDispatcher                    ; $6051: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $6051: $cd $b6 $03
     ld hl, rStatePhase_Current                    ; $6054: $21 $35 $d6
     inc [hl]                                      ; $6057: $34
     ret                                           ; $6058: $c9
@@ -5031,11 +5031,11 @@ jr_001_6059:
 
     ld c, $00                                     ; $605e: $0e $00
     ld a, $01                                     ; $6060: $3e $01
-    call TODO_Bank0FDispatcher                    ; $6062: $cd $b6 $03
-    call Call_000_0399                            ; $6065: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $6062: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $6065: $cd $99 $03
     ld c, $08                                     ; $6068: $0e $08
     ld a, $01                                     ; $606a: $3e $01
-    call TODO_Bank0FDispatcher                    ; $606c: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $606c: $cd $b6 $03
     call ClearShadowOAMBuffer                     ; $606f: $cd $b6 $05
     call LoadGameOverMessageTileData              ; $6072: $cd $e3 $7c
     ld hl, rStatePhase_Current                    ; $6075: $21 $35 $d6
@@ -5059,14 +5059,14 @@ Jump_001_607a:
 
     ld c, $10                                     ; $609c: $0e $10
     ld a, $02                                     ; $609e: $3e $02
-    call TODO_Bank0FDispatcher                    ; $60a0: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $60a0: $cd $b6 $03
     ld a, $05                                     ; $60a3: $3e $05
     ld [rStatePhase_Current], a                   ; $60a5: $ea $35 $d6
     ret                                           ; $60a8: $c9
 
 
 jr_001_60a9:
-    ld a, [$d805]                                 ; $60a9: $fa $05 $d8
+    ld a, [rPuzzleFlowVariant_Unsure]             ; $60a9: $fa $05 $d8
     and a                                         ; $60ac: $a7
     jp z, Jump_001_613a                           ; $60ad: $ca $3a $61
 
@@ -5075,11 +5075,11 @@ jr_001_60a9:
     call Call_000_1b1f                            ; $60b6: $cd $1f $1b
     ld c, $00                                     ; $60b9: $0e $00
     ld a, $01                                     ; $60bb: $3e $01
-    call TODO_Bank0FDispatcher                    ; $60bd: $cd $b6 $03
-    call Call_000_0399                            ; $60c0: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $60bd: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $60c0: $cd $99 $03
     ld c, $09                                     ; $60c3: $0e $09
     ld a, $01                                     ; $60c5: $3e $01
-    call TODO_Bank0FDispatcher                    ; $60c7: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $60c7: $cd $b6 $03
     call ClearShadowOAMBuffer                     ; $60ca: $cd $b6 $05
     call RedrawPuzzleBoard                        ; $60cd: $cd $35 $76
     call GS06_CopyRedrawSourceToProgressionBuffer ; $60d0: $cd $2e $30
@@ -5091,7 +5091,7 @@ jr_001_60a9:
 
 jr_001_60e0:
     call TickMarioBlinkAnimation                  ; $60e0: $cd $18 $79
-    call Call_000_05c5                            ; $60e3: $cd $c5 $05
+    call ClearShadowOAMBufferFromCursor           ; $60e3: $cd $c5 $05
     rst RST_08                                    ; $60e6: $cf
     ld a, [rInputButtonsPressed]                  ; $60e7: $fa $1e $c3
     and $09                                       ; $60ea: $e6 $09
@@ -5099,7 +5099,7 @@ jr_001_60e0:
 
     ld c, $03                                     ; $60ee: $0e $03
     ld a, $02                                     ; $60f0: $3e $02
-    call TODO_Bank0FDispatcher                    ; $60f2: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $60f2: $cd $b6 $03
     call Call_001_76a9                            ; $60f5: $cd $a9 $76
     ld a, $0a                                     ; $60f8: $3e $0a
     ld [rMessageScriptStreamPointerLow], a        ; $60fa: $ea $2d $d8
@@ -5124,11 +5124,11 @@ jr_001_60e0:
     call Call_001_5fbb                            ; $6121: $cd $bb $5f
     ld c, $00                                     ; $6124: $0e $00
     ld a, $01                                     ; $6126: $3e $01
-    call TODO_Bank0FDispatcher                    ; $6128: $cd $b6 $03
-    call Call_000_0399                            ; $612b: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $6128: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $612b: $cd $99 $03
     ld c, $12                                     ; $612e: $0e $12
     ld a, $01                                     ; $6130: $3e $01
-    call TODO_Bank0FDispatcher                    ; $6132: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $6132: $cd $b6 $03
     ld hl, rStatePhase_Current                    ; $6135: $21 $35 $d6
     inc [hl]                                      ; $6138: $34
     ret                                           ; $6139: $c9
@@ -5141,11 +5141,11 @@ Jump_001_613a:
 
     ld c, $00                                     ; $613f: $0e $00
     ld a, $01                                     ; $6141: $3e $01
-    call TODO_Bank0FDispatcher                    ; $6143: $cd $b6 $03
-    call Call_000_0399                            ; $6146: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $6143: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $6146: $cd $99 $03
     ld c, $08                                     ; $6149: $0e $08
     ld a, $01                                     ; $614b: $3e $01
-    call TODO_Bank0FDispatcher                    ; $614d: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $614d: $cd $b6 $03
     call ClearShadowOAMBuffer                     ; $6150: $cd $b6 $05
     call LoadGameOverMessageTileData              ; $6153: $cd $e3 $7c
     call GS06_CopyRedrawSourceToProgressionBuffer ; $6156: $cd $2e $30
@@ -5182,19 +5182,19 @@ GS08_StatePhase_04_TODO::
 
     ld c, $03                                     ; $6181: $0e $03
     ld a, $02                                     ; $6183: $3e $02
-    call TODO_Bank0FDispatcher                    ; $6185: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $6185: $cd $b6 $03
     ld bc, $003c                                  ; $6188: $01 $3c $00
-    call Call_000_05fa                            ; $618b: $cd $fa $05
+    call DelayFramesByBC                          ; $618b: $cd $fa $05
     ld a, $05                                     ; $618e: $3e $05
-    call TODO_Bank0FDispatcher                    ; $6190: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $6190: $cd $b6 $03
     ld c, $00                                     ; $6193: $0e $00
     ld a, $01                                     ; $6195: $3e $01
-    call TODO_Bank0FDispatcher                    ; $6197: $cd $b6 $03
-    call Call_000_0399                            ; $619a: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $6197: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $619a: $cd $99 $03
     ld c, $00                                     ; $619d: $0e $00
     ld a, $01                                     ; $619f: $3e $01
-    call TODO_Bank0FDispatcher                    ; $61a1: $cd $b6 $03
-    ld a, [rCurrentGridSize]                      ; $61a4: $fa $00 $d8
+    call CallSoundEffectDispatcher                ; $61a1: $cd $b6 $03
+    ld a, [rPuzzleGridWidth]                      ; $61a4: $fa $00 $d8
     cp $05                                        ; $61a7: $fe $05
     jr nz, jr_001_61ba                            ; $61a9: $20 $0f
 
@@ -5202,7 +5202,7 @@ GS08_StatePhase_04_TODO::
     ld hl, $46ab                                  ; $61ad: $21 $ab $46
     ld c, $01                                     ; $61b0: $0e $01
     ld de, $0023                                  ; $61b2: $11 $23 $00
-    call Call_000_044e                            ; $61b5: $cd $4e $04
+    call PlayScreenTransitionFadeOut              ; $61b5: $cd $4e $04
     jr jr_001_61da                                ; $61b8: $18 $20
 
 jr_001_61ba:
@@ -5213,7 +5213,7 @@ jr_001_61ba:
     ld hl, $46b7                                  ; $61c0: $21 $b7 $46
     ld c, $02                                     ; $61c3: $0e $02
     ld de, $0033                                  ; $61c5: $11 $33 $00
-    call Call_000_044e                            ; $61c8: $cd $4e $04
+    call PlayScreenTransitionFadeOut              ; $61c8: $cd $4e $04
     jr jr_001_61da                                ; $61cb: $18 $0d
 
 jr_001_61cd:
@@ -5221,18 +5221,18 @@ jr_001_61cd:
     ld hl, $469f                                  ; $61cf: $21 $9f $46
     ld c, $00                                     ; $61d2: $0e $00
     ld de, $0013                                  ; $61d4: $11 $13 $00
-    call Call_000_044e                            ; $61d7: $cd $4e $04
+    call PlayScreenTransitionFadeOut              ; $61d7: $cd $4e $04
 
 jr_001_61da:
-    call Call_000_0483                            ; $61da: $cd $83 $04
-    ld hl, $c337                                  ; $61dd: $21 $37 $c3
+    call DisableLCDAtVBlank                       ; $61da: $cd $83 $04
+    ld hl, rLCDCInterruptControlFlags_Unsure      ; $61dd: $21 $37 $c3
     res 6, [hl]                                   ; $61e0: $cb $b6
     ld hl, rIE                                    ; $61e2: $21 $ff $ff
     res 1, [hl]                                   ; $61e5: $cb $8e
     xor a                                         ; $61e7: $af
-    ld [$c338], a                                 ; $61e8: $ea $38 $c3
-    ld [$c33c], a                                 ; $61eb: $ea $3c $c3
-    ld [$c350], a                                 ; $61ee: $ea $50 $c3
+    ld [rLCDCInterruptDispatchIndex], a           ; $61e8: $ea $38 $c3
+    ld [rVBlankLCDCBit4ForceFlag], a              ; $61eb: $ea $3c $c3
+    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $61ee: $ea $50 $c3
     ld a, $04                                     ; $61f1: $3e $04
     ld [rStatePhase_Current], a                   ; $61f3: $ea $35 $d6
     ld a, $05                                     ; $61f6: $3e $05
@@ -5281,7 +5281,7 @@ GS08_StatePhase_06_TODO::
 
     ld c, $03                                     ; $6247: $0e $03
     ld a, $02                                     ; $6249: $3e $02
-    call TODO_Bank0FDispatcher                    ; $624b: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $624b: $cd $b6 $03
     ld a, [$d83a]                                 ; $624e: $fa $3a $d8
     ld c, a                                       ; $6251: $4f
     ld b, $00                                     ; $6252: $06 $00
@@ -5298,7 +5298,7 @@ jr_001_625d:
 
     ld c, $04                                     ; $6260: $0e $04
     ld a, $02                                     ; $6262: $3e $02
-    call TODO_Bank0FDispatcher                    ; $6264: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $6264: $cd $b6 $03
     ld a, $0a                                     ; $6267: $3e $0a
     ld [rStatePhase_Current], a                   ; $6269: $ea $35 $d6
     ret                                           ; $626c: $c9
@@ -5317,7 +5317,7 @@ GS08_StatePhase_07_TODO::
 
     ld c, $04                                     ; $627e: $0e $04
     ld a, $02                                     ; $6280: $3e $02
-    call TODO_Bank0FDispatcher                    ; $6282: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $6282: $cd $b6 $03
     ld a, [$d83b]                                 ; $6285: $fa $3b $d8
     and a                                         ; $6288: $a7
     jr z, jr_001_6291                             ; $6289: $28 $06
@@ -5333,19 +5333,19 @@ jr_001_6291:
     ld [$aca2], a                                 ; $6296: $ea $a2 $ac
     ld c, $03                                     ; $6299: $0e $03
     ld a, $02                                     ; $629b: $3e $02
-    call TODO_Bank0FDispatcher                    ; $629d: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $629d: $cd $b6 $03
     ld bc, $003c                                  ; $62a0: $01 $3c $00
-    call Call_000_05fa                            ; $62a3: $cd $fa $05
+    call DelayFramesByBC                          ; $62a3: $cd $fa $05
     ld a, $05                                     ; $62a6: $3e $05
-    call TODO_Bank0FDispatcher                    ; $62a8: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $62a8: $cd $b6 $03
     ld c, $00                                     ; $62ab: $0e $00
     ld a, $01                                     ; $62ad: $3e $01
-    call TODO_Bank0FDispatcher                    ; $62af: $cd $b6 $03
-    call Call_000_0399                            ; $62b2: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $62af: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $62b2: $cd $99 $03
     ld c, $00                                     ; $62b5: $0e $00
     ld a, $01                                     ; $62b7: $3e $01
-    call TODO_Bank0FDispatcher                    ; $62b9: $cd $b6 $03
-    ld a, [rCurrentGridSize]                      ; $62bc: $fa $00 $d8
+    call CallSoundEffectDispatcher                ; $62b9: $cd $b6 $03
+    ld a, [rPuzzleGridWidth]                      ; $62bc: $fa $00 $d8
     cp $05                                        ; $62bf: $fe $05
     jr nz, jr_001_62d2                            ; $62c1: $20 $0f
 
@@ -5353,7 +5353,7 @@ jr_001_6291:
     ld hl, $46ab                                  ; $62c5: $21 $ab $46
     ld c, $01                                     ; $62c8: $0e $01
     ld de, $0023                                  ; $62ca: $11 $23 $00
-    call Call_000_044e                            ; $62cd: $cd $4e $04
+    call PlayScreenTransitionFadeOut              ; $62cd: $cd $4e $04
     jr jr_001_62f2                                ; $62d0: $18 $20
 
 jr_001_62d2:
@@ -5364,7 +5364,7 @@ jr_001_62d2:
     ld hl, $46b7                                  ; $62d8: $21 $b7 $46
     ld c, $02                                     ; $62db: $0e $02
     ld de, $0033                                  ; $62dd: $11 $33 $00
-    call Call_000_044e                            ; $62e0: $cd $4e $04
+    call PlayScreenTransitionFadeOut              ; $62e0: $cd $4e $04
     jr jr_001_62f2                                ; $62e3: $18 $0d
 
 jr_001_62e5:
@@ -5372,18 +5372,18 @@ jr_001_62e5:
     ld hl, $469f                                  ; $62e7: $21 $9f $46
     ld c, $00                                     ; $62ea: $0e $00
     ld de, $0013                                  ; $62ec: $11 $13 $00
-    call Call_000_044e                            ; $62ef: $cd $4e $04
+    call PlayScreenTransitionFadeOut              ; $62ef: $cd $4e $04
 
 jr_001_62f2:
-    call Call_000_0483                            ; $62f2: $cd $83 $04
-    ld hl, $c337                                  ; $62f5: $21 $37 $c3
+    call DisableLCDAtVBlank                       ; $62f2: $cd $83 $04
+    ld hl, rLCDCInterruptControlFlags_Unsure      ; $62f5: $21 $37 $c3
     res 6, [hl]                                   ; $62f8: $cb $b6
     ld hl, rIE                                    ; $62fa: $21 $ff $ff
     res 1, [hl]                                   ; $62fd: $cb $8e
     xor a                                         ; $62ff: $af
-    ld [$c338], a                                 ; $6300: $ea $38 $c3
-    ld [$c33c], a                                 ; $6303: $ea $3c $c3
-    ld [$c350], a                                 ; $6306: $ea $50 $c3
+    ld [rLCDCInterruptDispatchIndex], a           ; $6300: $ea $38 $c3
+    ld [rVBlankLCDCBit4ForceFlag], a              ; $6303: $ea $3c $c3
+    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $6306: $ea $50 $c3
     ld c, a                                       ; $6309: $4f
     sla a                                         ; $630a: $cb $27
     sla a                                         ; $630c: $cb $27
@@ -5412,7 +5412,7 @@ GS08_StatePhase_08_TODO::
 
     ld c, $04                                     ; $6336: $0e $04
     ld a, $02                                     ; $6338: $3e $02
-    call TODO_Bank0FDispatcher                    ; $633a: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $633a: $cd $b6 $03
     ld a, $06                                     ; $633d: $3e $06
     ld [rStatePhase_Current], a                   ; $633f: $ea $35 $d6
     ret                                           ; $6342: $c9
@@ -5428,7 +5428,7 @@ GS08_StatePhase_09_TODO::
 
     ld c, $04                                     ; $6351: $0e $04
     ld a, $02                                     ; $6353: $3e $02
-    call TODO_Bank0FDispatcher                    ; $6355: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $6355: $cd $b6 $03
     ld a, [$d83d]                                 ; $6358: $fa $3d $d8
     and a                                         ; $635b: $a7
     jr z, jr_001_6364                             ; $635c: $28 $06
@@ -5443,11 +5443,11 @@ jr_001_6364:
     ld [rPuzzleTimerCompletionState], a           ; $6366: $ea $06 $d8
     ld c, $00                                     ; $6369: $0e $00
     ld a, $01                                     ; $636b: $3e $01
-    call TODO_Bank0FDispatcher                    ; $636d: $cd $b6 $03
-    call Call_000_0399                            ; $6370: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $636d: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $6370: $cd $99 $03
     ld c, $08                                     ; $6373: $0e $08
     ld a, $01                                     ; $6375: $3e $01
-    call TODO_Bank0FDispatcher                    ; $6377: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $6377: $cd $b6 $03
     call ClearShadowOAMBuffer                     ; $637a: $cd $b6 $05
     call LoadGameOverMessageTileData              ; $637d: $cd $e3 $7c
     ld a, $06                                     ; $6380: $3e $06
@@ -5455,7 +5455,7 @@ jr_001_6364:
     ld de, $8500                                  ; $6385: $11 $00 $85
     ld bc, $0300                                  ; $6388: $01 $00 $03
     call BankedTileCopyVRAMSafe                   ; $638b: $cd $38 $05
-    ld a, [rCurrentGridSize]                      ; $638e: $fa $00 $d8
+    ld a, [rPuzzleGridWidth]                      ; $638e: $fa $00 $d8
     cp $05                                        ; $6391: $fe $05
     jr nz, jr_001_63a5                            ; $6393: $20 $10
 
@@ -5505,7 +5505,7 @@ GS08_StatePhase_0a_TODO::
     ld de, $8500                                  ; $63e1: $11 $00 $85
     ld bc, $0300                                  ; $63e4: $01 $00 $03
     call BankedTileCopyVRAMSafe                   ; $63e7: $cd $38 $05
-    call Call_001_6fb9                            ; $63ea: $cd $b9 $6f
+    call DrawClueNumbersFromRunLengthBuffers      ; $63ea: $cd $b9 $6f
     call RenderPuzzleTimerDigits                  ; $63ed: $cd $04 $7c
     ld a, $03                                     ; $63f0: $3e $03
     ld [rStatePhase_Current], a                   ; $63f2: $ea $35 $d6
@@ -5550,35 +5550,35 @@ GS09_PhasePointer_09::
 
 GS09_StatePhase_00_TODO::
     ld a, $43                                     ; $6414: $3e $43
-    ld [$c32e], a                                 ; $6416: $ea $2e $c3
+    ld [rLCDCShadow], a                           ; $6416: $ea $2e $c3
     xor a                                         ; $6419: $af
-    ld [$c32f], a                                 ; $641a: $ea $2f $c3
-    ld [$c330], a                                 ; $641d: $ea $30 $c3
-    ld [$c331], a                                 ; $6420: $ea $31 $c3
-    ld [$c332], a                                 ; $6423: $ea $32 $c3
-    ld [$c333], a                                 ; $6426: $ea $33 $c3
-    call Call_000_05a0                            ; $6429: $cd $a0 $05
-    call Call_000_05ab                            ; $642c: $cd $ab $05
+    ld [rBGPShadow], a                            ; $641a: $ea $2f $c3
+    ld [rOBP0Shadow], a                           ; $641d: $ea $30 $c3
+    ld [rOBP1Shadow], a                           ; $6420: $ea $31 $c3
+    ld [rSCXShadow], a                            ; $6423: $ea $32 $c3
+    ld [rSCYShadow], a                            ; $6426: $ea $33 $c3
+    call FillBGMap0WithTile01                     ; $6429: $cd $a0 $05
+    call FillBGMap1WithTile01                     ; $642c: $cd $ab $05
     call LoadPuzzleDataBuffer                     ; $642f: $cd $f1 $07
     call LoadGameBoardTileData                    ; $6432: $cd $b9 $69
     xor a                                         ; $6435: $af
     ld [rPuzzleCursorColumn], a                   ; $6436: $ea $36 $d6
     ld [rPuzzleCursorRow], a                      ; $6439: $ea $37 $d6
     ld a, $00                                     ; $643c: $3e $00
-    ld [$d833], a                                 ; $643e: $ea $33 $d8
+    ld [rHintPopupSelection], a                   ; $643e: $ea $33 $d8
     ld a, $02                                     ; $6441: $3e $02
-    ld [$d811], a                                 ; $6443: $ea $11 $d8
+    ld [rPuzzleTimerAdjustmentStep], a            ; $6443: $ea $11 $d8
     ld a, $2f                                     ; $6446: $3e $2f
-    ld [$c336], a                                 ; $6448: $ea $36 $c3
-    ld hl, $c337                                  ; $644b: $21 $37 $c3
+    ld [rLYCShadow], a                            ; $6448: $ea $36 $c3
+    ld hl, rLCDCInterruptControlFlags_Unsure      ; $644b: $21 $37 $c3
     set 6, [hl]                                   ; $644e: $cb $f6
     ld hl, rIE                                    ; $6450: $21 $ff $ff
     set 1, [hl]                                   ; $6453: $cb $ce
     ld a, $01                                     ; $6455: $3e $01
-    ld [$c338], a                                 ; $6457: $ea $38 $c3
-    ld [$c33c], a                                 ; $645a: $ea $3c $c3
-    ld [$c350], a                                 ; $645d: $ea $50 $c3
-    call Call_001_6f30                            ; $6460: $cd $30 $6f
+    ld [rLCDCInterruptDispatchIndex], a           ; $6457: $ea $38 $c3
+    ld [rVBlankLCDCBit4ForceFlag], a              ; $645a: $ea $3c $c3
+    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $645d: $ea $50 $c3
+    call BuildClueRunLengthBuffers                ; $6460: $cd $30 $6f
     call Call_001_7dcb                            ; $6463: $cd $cb $7d
     call ClearShadowOAMBuffer                     ; $6466: $cd $b6 $05
     call DrawPuzzleCursorSpritesAndTickStepSequence; $6469: $cd $3e $71
@@ -5599,47 +5599,47 @@ GS09_StatePhase_00_TODO::
     add hl, bc                                    ; $6488: $09
     ld c, $00                                     ; $6489: $0e $00
     ld a, $01                                     ; $648b: $3e $01
-    call TODO_Bank0FDispatcher                    ; $648d: $cd $b6 $03
-    call Call_000_0399                            ; $6490: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $648d: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $6490: $cd $99 $03
     ld c, [hl]                                    ; $6493: $4e
     ld a, $01                                     ; $6494: $3e $01
-    call TODO_Bank0FDispatcher                    ; $6496: $cd $b6 $03
-    call Call_000_04a2                            ; $6499: $cd $a2 $04
+    call CallSoundEffectDispatcher                ; $6496: $cd $b6 $03
+    call EnableLCDFromShadow                      ; $6499: $cd $a2 $04
     ld b, $03                                     ; $649c: $06 $03
     ld hl, $4694                                  ; $649e: $21 $94 $46
     ld c, $00                                     ; $64a1: $0e $00
     ld de, $0004                                  ; $64a3: $11 $04 $00
-    call Call_000_040d                            ; $64a6: $cd $0d $04
+    call PlayScreenTransitionFadeIn               ; $64a6: $cd $0d $04
     ld hl, rStatePhase_Current                    ; $64a9: $21 $35 $d6
     inc [hl]                                      ; $64ac: $34
-    call Call_001_6fb9                            ; $64ad: $cd $b9 $6f
+    call DrawClueNumbersFromRunLengthBuffers      ; $64ad: $cd $b9 $6f
     ret                                           ; $64b0: $c9
 
 
 GS09_StatePhase_09_TODO::
     ld a, $43                                     ; $64b1: $3e $43
-    ld [$c32e], a                                 ; $64b3: $ea $2e $c3
+    ld [rLCDCShadow], a                           ; $64b3: $ea $2e $c3
     xor a                                         ; $64b6: $af
-    ld [$c32f], a                                 ; $64b7: $ea $2f $c3
-    ld [$c330], a                                 ; $64ba: $ea $30 $c3
-    ld [$c331], a                                 ; $64bd: $ea $31 $c3
-    ld [$c332], a                                 ; $64c0: $ea $32 $c3
-    ld [$c333], a                                 ; $64c3: $ea $33 $c3
-    call Call_000_05a0                            ; $64c6: $cd $a0 $05
-    call Call_000_05ab                            ; $64c9: $cd $ab $05
+    ld [rBGPShadow], a                            ; $64b7: $ea $2f $c3
+    ld [rOBP0Shadow], a                           ; $64ba: $ea $30 $c3
+    ld [rOBP1Shadow], a                           ; $64bd: $ea $31 $c3
+    ld [rSCXShadow], a                            ; $64c0: $ea $32 $c3
+    ld [rSCYShadow], a                            ; $64c3: $ea $33 $c3
+    call FillBGMap0WithTile01                     ; $64c6: $cd $a0 $05
+    call FillBGMap1WithTile01                     ; $64c9: $cd $ab $05
     call Call_000_1c96                            ; $64cc: $cd $96 $1c
     call LoadGameBoardTileData                    ; $64cf: $cd $b9 $69
     ld a, $2f                                     ; $64d2: $3e $2f
-    ld [$c336], a                                 ; $64d4: $ea $36 $c3
-    ld hl, $c337                                  ; $64d7: $21 $37 $c3
+    ld [rLYCShadow], a                            ; $64d4: $ea $36 $c3
+    ld hl, rLCDCInterruptControlFlags_Unsure      ; $64d7: $21 $37 $c3
     set 6, [hl]                                   ; $64da: $cb $f6
     ld hl, rIE                                    ; $64dc: $21 $ff $ff
     set 1, [hl]                                   ; $64df: $cb $ce
     ld a, $01                                     ; $64e1: $3e $01
-    ld [$c338], a                                 ; $64e3: $ea $38 $c3
-    ld [$c33c], a                                 ; $64e6: $ea $3c $c3
-    ld [$c350], a                                 ; $64e9: $ea $50 $c3
-    call Call_001_6f30                            ; $64ec: $cd $30 $6f
+    ld [rLCDCInterruptDispatchIndex], a           ; $64e3: $ea $38 $c3
+    ld [rVBlankLCDCBit4ForceFlag], a              ; $64e6: $ea $3c $c3
+    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $64e9: $ea $50 $c3
+    call BuildClueRunLengthBuffers                ; $64ec: $cd $30 $6f
     call ClearShadowOAMBuffer                     ; $64ef: $cd $b6 $05
     call RenderPuzzleTimerDigits                  ; $64f2: $cd $04 $7c
     call Call_001_786e                            ; $64f5: $cd $6e $78
@@ -5658,17 +5658,17 @@ GS09_StatePhase_09_TODO::
     add hl, bc                                    ; $650e: $09
     ld c, $00                                     ; $650f: $0e $00
     ld a, $01                                     ; $6511: $3e $01
-    call TODO_Bank0FDispatcher                    ; $6513: $cd $b6 $03
-    call Call_000_0399                            ; $6516: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $6513: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $6516: $cd $99 $03
     ld c, [hl]                                    ; $6519: $4e
     ld a, $01                                     ; $651a: $3e $01
-    call TODO_Bank0FDispatcher                    ; $651c: $cd $b6 $03
-    call Call_000_04a2                            ; $651f: $cd $a2 $04
+    call CallSoundEffectDispatcher                ; $651c: $cd $b6 $03
+    call EnableLCDFromShadow                      ; $651f: $cd $a2 $04
     ld b, $03                                     ; $6522: $06 $03
     ld hl, $4694                                  ; $6524: $21 $94 $46
     ld c, $00                                     ; $6527: $0e $00
     ld de, $0004                                  ; $6529: $11 $04 $00
-    call Call_000_040d                            ; $652c: $cd $0d $04
+    call PlayScreenTransitionFadeIn               ; $652c: $cd $0d $04
     call ClearShadowOAMBuffer                     ; $652f: $cd $b6 $05
     rst RST_08                                    ; $6532: $cf
     xor a                                         ; $6533: $af
@@ -5714,36 +5714,36 @@ GS09_StatePhase_01_TODO::
 
     ld c, $10                                     ; $658b: $0e $10
     ld a, $02                                     ; $658d: $3e $02
-    call TODO_Bank0FDispatcher                    ; $658f: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $658f: $cd $b6 $03
     ld a, $03                                     ; $6592: $3e $03
     ld [rStatePhase_Current], a                   ; $6594: $ea $35 $d6
     ret                                           ; $6597: $c9
 
 
 jr_001_6598:
-    ld a, [$d805]                                 ; $6598: $fa $05 $d8
+    ld a, [rPuzzleFlowVariant_Unsure]             ; $6598: $fa $05 $d8
     and a                                         ; $659b: $a7
     jr z, jr_001_65fe                             ; $659c: $28 $60
 
     ld c, $00                                     ; $659e: $0e $00
     ld a, $05                                     ; $65a0: $3e $05
-    call TODO_Bank0FDispatcher                    ; $65a2: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $65a2: $cd $b6 $03
     ld c, $00                                     ; $65a5: $0e $00
     ld a, $01                                     ; $65a7: $3e $01
-    call TODO_Bank0FDispatcher                    ; $65a9: $cd $b6 $03
-    call Call_000_0399                            ; $65ac: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $65a9: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $65ac: $cd $99 $03
     ld c, $00                                     ; $65af: $0e $00
     ld a, $01                                     ; $65b1: $3e $01
-    call TODO_Bank0FDispatcher                    ; $65b3: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $65b3: $cd $b6 $03
     ld bc, $0003                                  ; $65b6: $01 $03 $00
-    call Call_000_0603                            ; $65b9: $cd $03 $06
+    call BusyWaitDelayByBC                        ; $65b9: $cd $03 $06
     ld c, $00                                     ; $65bc: $0e $00
     ld a, $01                                     ; $65be: $3e $01
-    call TODO_Bank0FDispatcher                    ; $65c0: $cd $b6 $03
-    call Call_000_0399                            ; $65c3: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $65c0: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $65c3: $cd $99 $03
     ld c, $09                                     ; $65c6: $0e $09
     ld a, $01                                     ; $65c8: $3e $01
-    call TODO_Bank0FDispatcher                    ; $65ca: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $65ca: $cd $b6 $03
     call ClearShadowOAMBuffer                     ; $65cd: $cd $b6 $05
     call RedrawPuzzleBoard                        ; $65d0: $cd $35 $76
 
@@ -5755,16 +5755,16 @@ jr_001_65d3:
 
     ld c, $03                                     ; $65db: $0e $03
     ld a, $02                                     ; $65dd: $3e $02
-    call TODO_Bank0FDispatcher                    ; $65df: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $65df: $cd $b6 $03
     call Call_001_76a9                            ; $65e2: $cd $a9 $76
     call Call_000_1a45                            ; $65e5: $cd $45 $1a
     ld c, $00                                     ; $65e8: $0e $00
     ld a, $01                                     ; $65ea: $3e $01
-    call TODO_Bank0FDispatcher                    ; $65ec: $cd $b6 $03
-    call Call_000_0399                            ; $65ef: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $65ec: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $65ef: $cd $99 $03
     ld c, $12                                     ; $65f2: $0e $12
     ld a, $01                                     ; $65f4: $3e $01
-    call TODO_Bank0FDispatcher                    ; $65f6: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $65f6: $cd $b6 $03
     ld hl, rStatePhase_Current                    ; $65f9: $21 $35 $d6
     inc [hl]                                      ; $65fc: $34
     ret                                           ; $65fd: $c9
@@ -5777,11 +5777,11 @@ jr_001_65fe:
 
     ld c, $00                                     ; $6603: $0e $00
     ld a, $01                                     ; $6605: $3e $01
-    call TODO_Bank0FDispatcher                    ; $6607: $cd $b6 $03
-    call Call_000_0399                            ; $660a: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $6607: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $660a: $cd $99 $03
     ld c, $08                                     ; $660d: $0e $08
     ld a, $01                                     ; $660f: $3e $01
-    call TODO_Bank0FDispatcher                    ; $6611: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $6611: $cd $b6 $03
     call ClearShadowOAMBuffer                     ; $6614: $cd $b6 $05
     call LoadGameOverMessageTileData              ; $6617: $cd $e3 $7c
     ld hl, rStatePhase_Current                    ; $661a: $21 $35 $d6
@@ -5796,32 +5796,32 @@ GS09_StatePhase_02_TODO::
 
     ld c, $03                                     ; $6625: $0e $03
     ld a, $02                                     ; $6627: $3e $02
-    call TODO_Bank0FDispatcher                    ; $6629: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $6629: $cd $b6 $03
     ld bc, $003c                                  ; $662c: $01 $3c $00
-    call Call_000_05fa                            ; $662f: $cd $fa $05
+    call DelayFramesByBC                          ; $662f: $cd $fa $05
     ld a, $05                                     ; $6632: $3e $05
-    call TODO_Bank0FDispatcher                    ; $6634: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $6634: $cd $b6 $03
     ld c, $00                                     ; $6637: $0e $00
     ld a, $01                                     ; $6639: $3e $01
-    call TODO_Bank0FDispatcher                    ; $663b: $cd $b6 $03
-    call Call_000_0399                            ; $663e: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $663b: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $663e: $cd $99 $03
     ld c, $00                                     ; $6641: $0e $00
     ld a, $01                                     ; $6643: $3e $01
-    call TODO_Bank0FDispatcher                    ; $6645: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $6645: $cd $b6 $03
     ld b, $03                                     ; $6648: $06 $03
     ld hl, $469f                                  ; $664a: $21 $9f $46
     ld c, $00                                     ; $664d: $0e $00
     ld de, $0013                                  ; $664f: $11 $13 $00
-    call Call_000_044e                            ; $6652: $cd $4e $04
-    call Call_000_0483                            ; $6655: $cd $83 $04
-    ld hl, $c337                                  ; $6658: $21 $37 $c3
+    call PlayScreenTransitionFadeOut              ; $6652: $cd $4e $04
+    call DisableLCDAtVBlank                       ; $6655: $cd $83 $04
+    ld hl, rLCDCInterruptControlFlags_Unsure      ; $6658: $21 $37 $c3
     res 6, [hl]                                   ; $665b: $cb $b6
     ld hl, rIE                                    ; $665d: $21 $ff $ff
     res 1, [hl]                                   ; $6660: $cb $8e
     xor a                                         ; $6662: $af
-    ld [$c338], a                                 ; $6663: $ea $38 $c3
-    ld [$c33c], a                                 ; $6666: $ea $3c $c3
-    ld [$c350], a                                 ; $6669: $ea $50 $c3
+    ld [rLCDCInterruptDispatchIndex], a           ; $6663: $ea $38 $c3
+    ld [rVBlankLCDCBit4ForceFlag], a              ; $6666: $ea $3c $c3
+    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $6669: $ea $50 $c3
     ld a, $04                                     ; $666c: $3e $04
     ld [rStatePhase_Current], a                   ; $666e: $ea $35 $d6
     ld a, $07                                     ; $6671: $3e $07
@@ -5870,7 +5870,7 @@ GS09_StatePhase_04_TODO::
 
     ld c, $03                                     ; $66c2: $0e $03
     ld a, $02                                     ; $66c4: $3e $02
-    call TODO_Bank0FDispatcher                    ; $66c6: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $66c6: $cd $b6 $03
     ld a, [$d83a]                                 ; $66c9: $fa $3a $d8
     ld c, a                                       ; $66cc: $4f
     ld b, $00                                     ; $66cd: $06 $00
@@ -5887,7 +5887,7 @@ jr_001_66d8:
 
     ld c, $04                                     ; $66db: $0e $04
     ld a, $02                                     ; $66dd: $3e $02
-    call TODO_Bank0FDispatcher                    ; $66df: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $66df: $cd $b6 $03
     ld a, $08                                     ; $66e2: $3e $08
     ld [rStatePhase_Current], a                   ; $66e4: $ea $35 $d6
     ret                                           ; $66e7: $c9
@@ -5906,7 +5906,7 @@ GS09_StatePhase_05_TODO::
 
     ld c, $04                                     ; $66f9: $0e $04
     ld a, $02                                     ; $66fb: $3e $02
-    call TODO_Bank0FDispatcher                    ; $66fd: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $66fd: $cd $b6 $03
     ld a, [$d83b]                                 ; $6700: $fa $3b $d8
     and a                                         ; $6703: $a7
     jr z, jr_001_670c                             ; $6704: $28 $06
@@ -5922,32 +5922,32 @@ jr_001_670c:
     ld [$aca2], a                                 ; $6711: $ea $a2 $ac
     ld c, $03                                     ; $6714: $0e $03
     ld a, $02                                     ; $6716: $3e $02
-    call TODO_Bank0FDispatcher                    ; $6718: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $6718: $cd $b6 $03
     ld bc, $003c                                  ; $671b: $01 $3c $00
-    call Call_000_05fa                            ; $671e: $cd $fa $05
+    call DelayFramesByBC                          ; $671e: $cd $fa $05
     ld a, $05                                     ; $6721: $3e $05
-    call TODO_Bank0FDispatcher                    ; $6723: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $6723: $cd $b6 $03
     ld c, $00                                     ; $6726: $0e $00
     ld a, $01                                     ; $6728: $3e $01
-    call TODO_Bank0FDispatcher                    ; $672a: $cd $b6 $03
-    call Call_000_0399                            ; $672d: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $672a: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $672d: $cd $99 $03
     ld c, $00                                     ; $6730: $0e $00
     ld a, $01                                     ; $6732: $3e $01
-    call TODO_Bank0FDispatcher                    ; $6734: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $6734: $cd $b6 $03
     ld b, $03                                     ; $6737: $06 $03
     ld hl, $469f                                  ; $6739: $21 $9f $46
     ld c, $00                                     ; $673c: $0e $00
     ld de, $0013                                  ; $673e: $11 $13 $00
-    call Call_000_044e                            ; $6741: $cd $4e $04
-    call Call_000_0483                            ; $6744: $cd $83 $04
-    ld hl, $c337                                  ; $6747: $21 $37 $c3
+    call PlayScreenTransitionFadeOut              ; $6741: $cd $4e $04
+    call DisableLCDAtVBlank                       ; $6744: $cd $83 $04
+    ld hl, rLCDCInterruptControlFlags_Unsure      ; $6747: $21 $37 $c3
     res 6, [hl]                                   ; $674a: $cb $b6
     ld hl, rIE                                    ; $674c: $21 $ff $ff
     res 1, [hl]                                   ; $674f: $cb $8e
     xor a                                         ; $6751: $af
-    ld [$c338], a                                 ; $6752: $ea $38 $c3
-    ld [$c33c], a                                 ; $6755: $ea $3c $c3
-    ld [$c350], a                                 ; $6758: $ea $50 $c3
+    ld [rLCDCInterruptDispatchIndex], a           ; $6752: $ea $38 $c3
+    ld [rVBlankLCDCBit4ForceFlag], a              ; $6755: $ea $3c $c3
+    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $6758: $ea $50 $c3
     ld a, [$a065]                                 ; $675b: $fa $65 $a0
     ld c, a                                       ; $675e: $4f
     sla a                                         ; $675f: $cb $27
@@ -5977,7 +5977,7 @@ GS09_StatePhase_06_TODO::
 
     ld c, $04                                     ; $678b: $0e $04
     ld a, $02                                     ; $678d: $3e $02
-    call TODO_Bank0FDispatcher                    ; $678f: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $678f: $cd $b6 $03
     ld a, $04                                     ; $6792: $3e $04
     ld [rStatePhase_Current], a                   ; $6794: $ea $35 $d6
     ret                                           ; $6797: $c9
@@ -5993,7 +5993,7 @@ GS09_StatePhase_07_TODO::
 
     ld c, $04                                     ; $67a6: $0e $04
     ld a, $02                                     ; $67a8: $3e $02
-    call TODO_Bank0FDispatcher                    ; $67aa: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $67aa: $cd $b6 $03
     ld a, [$d83d]                                 ; $67ad: $fa $3d $d8
     and a                                         ; $67b0: $a7
     jr z, jr_001_67b9                             ; $67b1: $28 $06
@@ -6008,11 +6008,11 @@ jr_001_67b9:
     ld [rPuzzleTimerCompletionState], a           ; $67bb: $ea $06 $d8
     ld c, $00                                     ; $67be: $0e $00
     ld a, $01                                     ; $67c0: $3e $01
-    call TODO_Bank0FDispatcher                    ; $67c2: $cd $b6 $03
-    call Call_000_0399                            ; $67c5: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $67c2: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $67c5: $cd $99 $03
     ld c, $08                                     ; $67c8: $0e $08
     ld a, $01                                     ; $67ca: $3e $01
-    call TODO_Bank0FDispatcher                    ; $67cc: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $67cc: $cd $b6 $03
     call ClearShadowOAMBuffer                     ; $67cf: $cd $b6 $05
     call LoadGameOverMessageTileData              ; $67d2: $cd $e3 $7c
     ld a, [$a065]                                 ; $67d5: $fa $65 $a0
@@ -6054,7 +6054,7 @@ GS09_StatePhase_08_TODO::
     ld de, $8500                                  ; $6814: $11 $00 $85
     ld bc, $0300                                  ; $6817: $01 $00 $03
     call BankedTileCopyVRAMSafe                   ; $681a: $cd $38 $05
-    call Call_001_6fb9                            ; $681d: $cd $b9 $6f
+    call DrawClueNumbersFromRunLengthBuffers      ; $681d: $cd $b9 $6f
     call RenderPuzzleTimerDigits                  ; $6820: $cd $04 $7c
     ld a, $01                                     ; $6823: $3e $01
     ld [rStatePhase_Current], a                   ; $6825: $ea $35 $d6
@@ -6074,7 +6074,7 @@ Call_001_682f:
 
 jr_001_683d:
     xor a                                         ; $683d: $af
-    ld [$d80f], a                                 ; $683e: $ea $0f $d8
+    ld [rPuzzleActionRepeatGuard], a              ; $683e: $ea $0f $d8
 
 jr_001_6841:
     ld a, [rPuzzleCursorRow]                      ; $6841: $fa $37 $d6
@@ -6147,50 +6147,50 @@ GS0A_PhasePointer_0b::
 
 GS0A_StatePhase_00_TODO::
     ld a, $43                                     ; $6889: $3e $43
-    ld [$c32e], a                                 ; $688b: $ea $2e $c3
+    ld [rLCDCShadow], a                           ; $688b: $ea $2e $c3
     xor a                                         ; $688e: $af
-    ld [$c32f], a                                 ; $688f: $ea $2f $c3
-    ld [$c330], a                                 ; $6892: $ea $30 $c3
-    ld [$c331], a                                 ; $6895: $ea $31 $c3
-    ld [$c332], a                                 ; $6898: $ea $32 $c3
-    ld [$c333], a                                 ; $689b: $ea $33 $c3
-    call Call_000_05a0                            ; $689e: $cd $a0 $05
-    call Call_000_05ab                            ; $68a1: $cd $ab $05
+    ld [rBGPShadow], a                            ; $688f: $ea $2f $c3
+    ld [rOBP0Shadow], a                           ; $6892: $ea $30 $c3
+    ld [rOBP1Shadow], a                           ; $6895: $ea $31 $c3
+    ld [rSCXShadow], a                            ; $6898: $ea $32 $c3
+    ld [rSCYShadow], a                            ; $689b: $ea $33 $c3
+    call FillBGMap0WithTile01                     ; $689e: $cd $a0 $05
+    call FillBGMap1WithTile01                     ; $68a1: $cd $ab $05
     call LoadPuzzleDataBuffer                     ; $68a4: $cd $f1 $07
     call LoadGameBoardTileData                    ; $68a7: $cd $b9 $69
     xor a                                         ; $68aa: $af
     ld [rPuzzleCursorColumn], a                   ; $68ab: $ea $36 $d6
     ld [rPuzzleCursorRow], a                      ; $68ae: $ea $37 $d6
     ld a, $00                                     ; $68b1: $3e $00
-    ld [$d833], a                                 ; $68b3: $ea $33 $d8
+    ld [rHintPopupSelection], a                   ; $68b3: $ea $33 $d8
     ld a, $02                                     ; $68b6: $3e $02
-    ld [$d811], a                                 ; $68b8: $ea $11 $d8
+    ld [rPuzzleTimerAdjustmentStep], a            ; $68b8: $ea $11 $d8
     ld a, $06                                     ; $68bb: $3e $06
     ld hl, $7800                                  ; $68bd: $21 $00 $78
     ld de, $8500                                  ; $68c0: $11 $00 $85
     ld bc, $0200                                  ; $68c3: $01 $00 $02
     call BankedTileCopy                           ; $68c6: $cd $e4 $04
     ld a, $2f                                     ; $68c9: $3e $2f
-    ld [$c336], a                                 ; $68cb: $ea $36 $c3
-    ld hl, $c337                                  ; $68ce: $21 $37 $c3
+    ld [rLYCShadow], a                            ; $68cb: $ea $36 $c3
+    ld hl, rLCDCInterruptControlFlags_Unsure      ; $68ce: $21 $37 $c3
     set 6, [hl]                                   ; $68d1: $cb $f6
     ld hl, rIE                                    ; $68d3: $21 $ff $ff
     set 1, [hl]                                   ; $68d6: $cb $ce
     ld a, $01                                     ; $68d8: $3e $01
-    ld [$c338], a                                 ; $68da: $ea $38 $c3
-    ld [$c33c], a                                 ; $68dd: $ea $3c $c3
-    ld [$c350], a                                 ; $68e0: $ea $50 $c3
-    call Call_001_6f30                            ; $68e3: $cd $30 $6f
+    ld [rLCDCInterruptDispatchIndex], a           ; $68da: $ea $38 $c3
+    ld [rVBlankLCDCBit4ForceFlag], a              ; $68dd: $ea $3c $c3
+    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $68e0: $ea $50 $c3
+    call BuildClueRunLengthBuffers                ; $68e3: $cd $30 $6f
     call ClearShadowOAMBuffer                     ; $68e6: $cd $b6 $05
     call ResetPuzzleTimerState                    ; $68e9: $cd $eb $7b
     call Call_001_786e                            ; $68ec: $cd $6e $78
     call Call_001_7dfe                            ; $68ef: $cd $fe $7d
-    call Call_000_04a2                            ; $68f2: $cd $a2 $04
+    call EnableLCDFromShadow                      ; $68f2: $cd $a2 $04
     ld b, $03                                     ; $68f5: $06 $03
     ld hl, $4694                                  ; $68f7: $21 $94 $46
     ld c, $00                                     ; $68fa: $0e $00
     ld de, $0004                                  ; $68fc: $11 $04 $00
-    call Call_000_040d                            ; $68ff: $cd $0d $04
+    call PlayScreenTransitionFadeIn               ; $68ff: $cd $0d $04
     ld hl, rStatePhase_Current                    ; $6902: $21 $35 $d6
     inc [hl]                                      ; $6905: $34
     ret                                           ; $6906: $c9
@@ -6198,15 +6198,15 @@ GS0A_StatePhase_00_TODO::
 
 GS0A_StatePhase_0b_TODO::
     ld a, $43                                     ; $6907: $3e $43
-    ld [$c32e], a                                 ; $6909: $ea $2e $c3
+    ld [rLCDCShadow], a                           ; $6909: $ea $2e $c3
     xor a                                         ; $690c: $af
-    ld [$c32f], a                                 ; $690d: $ea $2f $c3
-    ld [$c330], a                                 ; $6910: $ea $30 $c3
-    ld [$c331], a                                 ; $6913: $ea $31 $c3
-    ld [$c332], a                                 ; $6916: $ea $32 $c3
-    ld [$c333], a                                 ; $6919: $ea $33 $c3
-    call Call_000_05a0                            ; $691c: $cd $a0 $05
-    call Call_000_05ab                            ; $691f: $cd $ab $05
+    ld [rBGPShadow], a                            ; $690d: $ea $2f $c3
+    ld [rOBP0Shadow], a                           ; $6910: $ea $30 $c3
+    ld [rOBP1Shadow], a                           ; $6913: $ea $31 $c3
+    ld [rSCXShadow], a                            ; $6916: $ea $32 $c3
+    ld [rSCYShadow], a                            ; $6919: $ea $33 $c3
+    call FillBGMap0WithTile01                     ; $691c: $cd $a0 $05
+    call FillBGMap1WithTile01                     ; $691f: $cd $ab $05
     call Call_000_1c96                            ; $6922: $cd $96 $1c
     call LoadGameBoardTileData                    ; $6925: $cd $b9 $69
     ld a, $06                                     ; $6928: $3e $06
@@ -6215,28 +6215,28 @@ GS0A_StatePhase_0b_TODO::
     ld bc, $0200                                  ; $6930: $01 $00 $02
     call BankedTileCopy                           ; $6933: $cd $e4 $04
     ld a, $2f                                     ; $6936: $3e $2f
-    ld [$c336], a                                 ; $6938: $ea $36 $c3
-    ld hl, $c337                                  ; $693b: $21 $37 $c3
+    ld [rLYCShadow], a                            ; $6938: $ea $36 $c3
+    ld hl, rLCDCInterruptControlFlags_Unsure      ; $693b: $21 $37 $c3
     set 6, [hl]                                   ; $693e: $cb $f6
     ld hl, rIE                                    ; $6940: $21 $ff $ff
     set 1, [hl]                                   ; $6943: $cb $ce
     ld a, $01                                     ; $6945: $3e $01
-    ld [$c338], a                                 ; $6947: $ea $38 $c3
-    ld [$c33c], a                                 ; $694a: $ea $3c $c3
-    ld [$c350], a                                 ; $694d: $ea $50 $c3
-    call Call_001_6f30                            ; $6950: $cd $30 $6f
+    ld [rLCDCInterruptDispatchIndex], a           ; $6947: $ea $38 $c3
+    ld [rVBlankLCDCBit4ForceFlag], a              ; $694a: $ea $3c $c3
+    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $694d: $ea $50 $c3
+    call BuildClueRunLengthBuffers                ; $6950: $cd $30 $6f
     call ClearShadowOAMBuffer                     ; $6953: $cd $b6 $05
     xor a                                         ; $6956: $af
     ld [rPuzzleTimerActive], a                    ; $6957: $ea $0d $d8
     call RenderPuzzleTimerDigits                  ; $695a: $cd $04 $7c
     call Call_001_786e                            ; $695d: $cd $6e $78
     call Call_001_7dfe                            ; $6960: $cd $fe $7d
-    call Call_000_04a2                            ; $6963: $cd $a2 $04
+    call EnableLCDFromShadow                      ; $6963: $cd $a2 $04
     ld b, $03                                     ; $6966: $06 $03
     ld hl, $4694                                  ; $6968: $21 $94 $46
     ld c, $00                                     ; $696b: $0e $00
     ld de, $0004                                  ; $696d: $11 $04 $00
-    call Call_000_040d                            ; $6970: $cd $0d $04
+    call PlayScreenTransitionFadeIn               ; $6970: $cd $0d $04
     call ClearShadowOAMBuffer                     ; $6973: $cd $b6 $05
     rst RST_08                                    ; $6976: $cf
     xor a                                         ; $6977: $af
@@ -6273,7 +6273,7 @@ GS0A_StatePhase_0b_TODO::
 
 
 LoadGameBoardTileData::
-    ld a, [rCurrentGridSize]                      ; $69b9: $fa $00 $d8
+    ld a, [rPuzzleGridWidth]                      ; $69b9: $fa $00 $d8
     cp $05                                        ; $69bc: $fe $05
     jr nz, Load10x10GameBoardTileData             ; $69be: $20 $36
 
@@ -6293,9 +6293,9 @@ LoadGameBoardTileData::
     ld bc, $0400                                  ; $69e4: $01 $00 $04
     call BankedTileCopy                           ; $69e7: $cd $e4 $04
     ld a, $96                                     ; $69ea: $3e $96
-    ld [$cd63], a                                 ; $69ec: $ea $63 $cd
+    ld [rTilemapToTileDataAddressLookupTableLow], a; $69ec: $ea $63 $cd
     ld a, $10                                     ; $69ef: $3e $10
-    ld [$cd64], a                                 ; $69f1: $ea $64 $cd
+    ld [rTilemapToTileDataAddressLookupTableHigh], a; $69f1: $ea $64 $cd
     jr jr_001_6a48                                ; $69f4: $18 $52
 
 Load10x10GameBoardTileData::
@@ -6313,9 +6313,9 @@ Load10x10GameBoardTileData::
     ld bc, $0400                                  ; $6a10: $01 $00 $04
     call BankedTileCopy                           ; $6a13: $cd $e4 $04
     ld a, $8a                                     ; $6a16: $3e $8a
-    ld [$cd63], a                                 ; $6a18: $ea $63 $cd
+    ld [rTilemapToTileDataAddressLookupTableLow], a; $6a18: $ea $63 $cd
     ld a, $13                                     ; $6a1b: $3e $13
-    ld [$cd64], a                                 ; $6a1d: $ea $64 $cd
+    ld [rTilemapToTileDataAddressLookupTableHigh], a; $6a1d: $ea $64 $cd
     jr jr_001_6a48                                ; $6a20: $18 $26
 
 Load15x15GameBoardTileData::
@@ -6330,19 +6330,19 @@ Load15x15GameBoardTileData::
     ld bc, $0400                                  ; $6a38: $01 $00 $04
     call BankedTileCopy                           ; $6a3b: $cd $e4 $04
     ld a, $a2                                     ; $6a3e: $3e $a2
-    ld [$cd63], a                                 ; $6a40: $ea $63 $cd
+    ld [rTilemapToTileDataAddressLookupTableLow], a; $6a40: $ea $63 $cd
     ld a, $0d                                     ; $6a43: $3e $0d
-    ld [$cd64], a                                 ; $6a45: $ea $64 $cd
+    ld [rTilemapToTileDataAddressLookupTableHigh], a; $6a45: $ea $64 $cd
 
 jr_001_6a48:
     xor a                                         ; $6a48: $af
-    ld [$d805], a                                 ; $6a49: $ea $05 $d8
+    ld [rPuzzleFlowVariant_Unsure], a             ; $6a49: $ea $05 $d8
     ld [rPuzzleTimerCompletionState], a           ; $6a4c: $ea $06 $d8
     ld [rMarioBlinkAnimationSequenceCursor], a    ; $6a4f: $ea $18 $d8
     ld [rMarioBlinkAnimationDelay], a             ; $6a52: $ea $17 $d8
     ld [$d81c], a                                 ; $6a55: $ea $1c $d8
     ld [$d81d], a                                 ; $6a58: $ea $1d $d8
-    ld [$d80f], a                                 ; $6a5b: $ea $0f $d8
+    ld [rPuzzleActionRepeatGuard], a              ; $6a5b: $ea $0f $d8
     ld [rMessageStepDelayTimer], a                ; $6a5e: $ea $1f $d8
     ld [rMessageStepSequenceCursor], a            ; $6a61: $ea $20 $d8
     ld [rMessageStepSequenceState], a             ; $6a64: $ea $21 $d8
@@ -6351,8 +6351,8 @@ jr_001_6a48:
     ld [rPendingCellEffectCode], a                ; $6a6d: $ea $23 $d8
     ld [rPendingCellEffectDelay], a               ; $6a70: $ea $22 $d8
     ld a, $01                                     ; $6a73: $3e $01
-    ld [$d812], a                                 ; $6a75: $ea $12 $d8
-    ld [$d813], a                                 ; $6a78: $ea $13 $d8
+    ld [rHintCursorAnimationColumnThreshold], a   ; $6a75: $ea $12 $d8
+    ld [rHintCursorAnimationRowThreshold], a      ; $6a78: $ea $13 $d8
     call Call_000_0614                            ; $6a7b: $cd $14 $06
     sla a                                         ; $6a7e: $cb $27
     add $b4                                       ; $6a80: $c6 $b4
@@ -6361,13 +6361,13 @@ jr_001_6a48:
     adc $00                                       ; $6a87: $ce $00
     ld [$d815], a                                 ; $6a89: $ea $15 $d8
     ld a, $05                                     ; $6a8c: $3e $05
-    ld [$d82a], a                                 ; $6a8e: $ea $2a $d8
+    ld [rCountdownSfxTimer], a                    ; $6a8e: $ea $2a $d8
     ret                                           ; $6a91: $c9
 
 
 GS0A_StatePhase_01_TODO::
     call TickMarioBlinkAnimation                  ; $6a92: $cd $18 $79
-    ld a, [$d833]                                 ; $6a95: $fa $33 $d8
+    ld a, [rHintPopupSelection]                   ; $6a95: $fa $33 $d8
     add $3a                                       ; $6a98: $c6 $3a
     ld bc, $2848                                  ; $6a9a: $01 $48 $28
     call CopyOAMSpriteById                        ; $6a9d: $cd $ce $20
@@ -6377,10 +6377,10 @@ GS0A_StatePhase_01_TODO::
 
     ld c, $0a                                     ; $6aa7: $0e $0a
     ld a, $02                                     ; $6aa9: $3e $02
-    call TODO_Bank0FDispatcher                    ; $6aab: $cd $b6 $03
-    ld a, [$d833]                                 ; $6aae: $fa $33 $d8
+    call CallSoundEffectDispatcher                ; $6aab: $cd $b6 $03
+    ld a, [rHintPopupSelection]                   ; $6aae: $fa $33 $d8
     xor $01                                       ; $6ab1: $ee $01
-    ld [$d833], a                                 ; $6ab3: $ea $33 $d8
+    ld [rHintPopupSelection], a                   ; $6ab3: $ea $33 $d8
     ret                                           ; $6ab6: $c9
 
 
@@ -6393,28 +6393,28 @@ jr_001_6ab7:
     and $02                                       ; $6ac1: $e6 $02
     ret z                                         ; $6ac3: $c8
 
-    call Call_000_05c5                            ; $6ac4: $cd $c5 $05
+    call ClearShadowOAMBufferFromCursor           ; $6ac4: $cd $c5 $05
     rst RST_08                                    ; $6ac7: $cf
     ld c, $04                                     ; $6ac8: $0e $04
     ld a, $02                                     ; $6aca: $3e $02
-    call TODO_Bank0FDispatcher                    ; $6acc: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $6acc: $cd $b6 $03
     call ClearShadowOAMBuffer                     ; $6acf: $cd $b6 $05
     ld a, $01                                     ; $6ad2: $3e $01
-    ld [$d833], a                                 ; $6ad4: $ea $33 $d8
+    ld [rHintPopupSelection], a                   ; $6ad4: $ea $33 $d8
     add $3a                                       ; $6ad7: $c6 $3a
     ld bc, $2848                                  ; $6ad9: $01 $48 $28
     call CopyOAMSpriteById                        ; $6adc: $cd $ce $20
     ld bc, $001e                                  ; $6adf: $01 $1e $00
-    call Call_000_05fa                            ; $6ae2: $cd $fa $05
+    call DelayFramesByBC                          ; $6ae2: $cd $fa $05
     jr jr_001_6aee                                ; $6ae5: $18 $07
 
 jr_001_6ae7:
     ld c, $03                                     ; $6ae7: $0e $03
     ld a, $02                                     ; $6ae9: $3e $02
-    call TODO_Bank0FDispatcher                    ; $6aeb: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $6aeb: $cd $b6 $03
 
 jr_001_6aee:
-    ld a, [$d833]                                 ; $6aee: $fa $33 $d8
+    ld a, [rHintPopupSelection]                   ; $6aee: $fa $33 $d8
     and a                                         ; $6af1: $a7
     jr nz, jr_001_6afa                            ; $6af2: $20 $06
 
@@ -6432,8 +6432,8 @@ jr_001_6afa:
 jr_001_6b05:
     call ClearShadowOAMBuffer                     ; $6b05: $cd $b6 $05
     rst RST_08                                    ; $6b08: $cf
-    call Call_001_6fb9                            ; $6b09: $cd $b9 $6f
-    ld a, [rCurrentGridSize]                      ; $6b0c: $fa $00 $d8
+    call DrawClueNumbersFromRunLengthBuffers      ; $6b09: $cd $b9 $6f
+    ld a, [rPuzzleGridWidth]                      ; $6b0c: $fa $00 $d8
     cp $05                                        ; $6b0f: $fe $05
     jr nz, jr_001_6b22                            ; $6b11: $20 $0f
 
@@ -6467,7 +6467,7 @@ jr_001_6b35:
 
 
 GS0A_StatePhase_02_TODO::
-    ld a, [$d812]                                 ; $6b44: $fa $12 $d8
+    ld a, [rHintCursorAnimationColumnThreshold]   ; $6b44: $fa $12 $d8
     cp $3f                                        ; $6b47: $fe $3f
     jr z, jr_001_6b7f                             ; $6b49: $28 $34
 
@@ -6481,13 +6481,13 @@ GS0A_StatePhase_02_TODO::
     jr z, jr_001_6b5d                             ; $6b55: $28 $06
 
     scf                                           ; $6b57: $37
-    ld hl, $d812                                  ; $6b58: $21 $12 $d8
+    ld hl, rHintCursorAnimationColumnThreshold    ; $6b58: $21 $12 $d8
     rl [hl]                                       ; $6b5b: $cb $16
 
 jr_001_6b5d:
     ld a, [rPuzzleCursorColumn]                   ; $6b5d: $fa $36 $d6
     inc a                                         ; $6b60: $3c
-    ld hl, rCurrentGridSize                       ; $6b61: $21 $00 $d8
+    ld hl, rPuzzleGridWidth                       ; $6b61: $21 $00 $d8
     cp [hl]                                       ; $6b64: $be
     jr nz, jr_001_6b68                            ; $6b65: $20 $01
 
@@ -6507,10 +6507,10 @@ jr_001_6b68:
     and a                                         ; $6b79: $a7
     jr z, jr_001_6b5d                             ; $6b7a: $28 $e1
 
-    call Call_001_6c2c                            ; $6b7c: $cd $2c $6c
+    call TickCountdownAndEmitSfx                  ; $6b7c: $cd $2c $6c
 
 jr_001_6b7f:
-    ld a, [$d813]                                 ; $6b7f: $fa $13 $d8
+    ld a, [rHintCursorAnimationRowThreshold]      ; $6b7f: $fa $13 $d8
     cp $3f                                        ; $6b82: $fe $3f
     jr z, jr_001_6bba                             ; $6b84: $28 $34
 
@@ -6524,13 +6524,13 @@ jr_001_6b7f:
     jr z, jr_001_6b98                             ; $6b90: $28 $06
 
     scf                                           ; $6b92: $37
-    ld hl, $d813                                  ; $6b93: $21 $13 $d8
+    ld hl, rHintCursorAnimationRowThreshold       ; $6b93: $21 $13 $d8
     rl [hl]                                       ; $6b96: $cb $16
 
 jr_001_6b98:
     ld a, [rPuzzleCursorRow]                      ; $6b98: $fa $37 $d6
     inc a                                         ; $6b9b: $3c
-    ld hl, $d801                                  ; $6b9c: $21 $01 $d8
+    ld hl, rPuzzleGridHeight                      ; $6b9c: $21 $01 $d8
     cp [hl]                                       ; $6b9f: $be
     jr nz, jr_001_6ba3                            ; $6ba0: $20 $01
 
@@ -6550,19 +6550,19 @@ jr_001_6ba3:
     and a                                         ; $6bb4: $a7
     jr z, jr_001_6b98                             ; $6bb5: $28 $e1
 
-    call Call_001_6c2c                            ; $6bb7: $cd $2c $6c
+    call TickCountdownAndEmitSfx                  ; $6bb7: $cd $2c $6c
 
 jr_001_6bba:
-    call Call_001_7185                            ; $6bba: $cd $85 $71
+    call DrawPuzzleCursorSprites                  ; $6bba: $cd $85 $71
     call TickMarioBlinkAnimation                  ; $6bbd: $cd $18 $79
-    ld a, [$d812]                                 ; $6bc0: $fa $12 $d8
+    ld a, [rHintCursorAnimationColumnThreshold]   ; $6bc0: $fa $12 $d8
     ld c, a                                       ; $6bc3: $4f
-    ld a, [$d813]                                 ; $6bc4: $fa $13 $d8
+    ld a, [rHintCursorAnimationRowThreshold]      ; $6bc4: $fa $13 $d8
     and c                                         ; $6bc7: $a1
     cp $3f                                        ; $6bc8: $fe $3f
     jr nz, jr_001_6bd7                            ; $6bca: $20 $0b
 
-    call Call_001_78a2                            ; $6bcc: $cd $a2 $78
+    call ApplyHintSelectionToRowAndColumn         ; $6bcc: $cd $a2 $78
     call Call_001_7dcb                            ; $6bcf: $cd $cb $7d
     ld hl, rStatePhase_Current                    ; $6bd2: $21 $35 $d6
     inc [hl]                                      ; $6bd5: $34
@@ -6570,7 +6570,7 @@ jr_001_6bba:
 
 
 jr_001_6bd7:
-    ld a, [$d813]                                 ; $6bd7: $fa $13 $d8
+    ld a, [rHintCursorAnimationRowThreshold]      ; $6bd7: $fa $13 $d8
     cp $01                                        ; $6bda: $fe $01
     ret nz                                        ; $6bdc: $c0
 
@@ -6591,13 +6591,13 @@ jr_001_6bd7:
     ret z                                         ; $6bf2: $c8
 
 jr_001_6bf3:
-    ld a, [$d812]                                 ; $6bf3: $fa $12 $d8
+    ld a, [rHintCursorAnimationColumnThreshold]   ; $6bf3: $fa $12 $d8
     cp $01                                        ; $6bf6: $fe $01
     jr nz, jr_001_6c18                            ; $6bf8: $20 $1e
 
     scf                                           ; $6bfa: $37
     rl a                                          ; $6bfb: $cb $17
-    ld [$d812], a                                 ; $6bfd: $ea $12 $d8
+    ld [rHintCursorAnimationColumnThreshold], a   ; $6bfd: $ea $12 $d8
     ld hl, $d814                                  ; $6c00: $21 $14 $d8
     call Call_000_0614                            ; $6c03: $cd $14 $06
     sla a                                         ; $6c06: $cb $27
@@ -6608,35 +6608,35 @@ jr_001_6bf3:
     ld [hl], a                                    ; $6c0f: $77
     ld c, $03                                     ; $6c10: $0e $03
     ld a, $02                                     ; $6c12: $3e $02
-    call TODO_Bank0FDispatcher                    ; $6c14: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $6c14: $cd $b6 $03
     ret                                           ; $6c17: $c9
 
 
 jr_001_6c18:
-    ld a, [$d813]                                 ; $6c18: $fa $13 $d8
+    ld a, [rHintCursorAnimationRowThreshold]      ; $6c18: $fa $13 $d8
     cp $01                                        ; $6c1b: $fe $01
     ret nz                                        ; $6c1d: $c0
 
     scf                                           ; $6c1e: $37
     rl a                                          ; $6c1f: $cb $17
-    ld [$d813], a                                 ; $6c21: $ea $13 $d8
+    ld [rHintCursorAnimationRowThreshold], a      ; $6c21: $ea $13 $d8
     ld c, $03                                     ; $6c24: $0e $03
     ld a, $02                                     ; $6c26: $3e $02
-    call TODO_Bank0FDispatcher                    ; $6c28: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $6c28: $cd $b6 $03
     ret                                           ; $6c2b: $c9
 
 
-Call_001_6c2c:
-    ld a, [$d82a]                                 ; $6c2c: $fa $2a $d8
+TickCountdownAndEmitSfx::
+    ld a, [rCountdownSfxTimer]                    ; $6c2c: $fa $2a $d8
     dec a                                         ; $6c2f: $3d
-    ld [$d82a], a                                 ; $6c30: $ea $2a $d8
+    ld [rCountdownSfxTimer], a                    ; $6c30: $ea $2a $d8
     ret nz                                        ; $6c33: $c0
 
     ld a, $05                                     ; $6c34: $3e $05
-    ld [$d82a], a                                 ; $6c36: $ea $2a $d8
+    ld [rCountdownSfxTimer], a                    ; $6c36: $ea $2a $d8
     ld c, $02                                     ; $6c39: $0e $02
     ld a, $02                                     ; $6c3b: $3e $02
-    call TODO_Bank0FDispatcher                    ; $6c3d: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $6c3d: $cd $b6 $03
     ret                                           ; $6c40: $c9
 
 
@@ -6658,14 +6658,14 @@ GS0A_StatePhase_03_TODO::
 
     ld c, $10                                     ; $6c69: $0e $10
     ld a, $02                                     ; $6c6b: $3e $02
-    call TODO_Bank0FDispatcher                    ; $6c6d: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $6c6d: $cd $b6 $03
     ld a, $05                                     ; $6c70: $3e $05
     ld [rStatePhase_Current], a                   ; $6c72: $ea $35 $d6
     ret                                           ; $6c75: $c9
 
 
 jr_001_6c76:
-    ld a, [$d805]                                 ; $6c76: $fa $05 $d8
+    ld a, [rPuzzleFlowVariant_Unsure]             ; $6c76: $fa $05 $d8
     and a                                         ; $6c79: $a7
     jr z, jr_001_6cde                             ; $6c7a: $28 $62
 
@@ -6674,11 +6674,11 @@ jr_001_6c76:
     call Call_000_1b1f                            ; $6c82: $cd $1f $1b
     ld c, $00                                     ; $6c85: $0e $00
     ld a, $01                                     ; $6c87: $3e $01
-    call TODO_Bank0FDispatcher                    ; $6c89: $cd $b6 $03
-    call Call_000_0399                            ; $6c8c: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $6c89: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $6c8c: $cd $99 $03
     ld c, $09                                     ; $6c8f: $0e $09
     ld a, $01                                     ; $6c91: $3e $01
-    call TODO_Bank0FDispatcher                    ; $6c93: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $6c93: $cd $b6 $03
     call ClearShadowOAMBuffer                     ; $6c96: $cd $b6 $05
     call RedrawPuzzleBoard                        ; $6c99: $cd $35 $76
 
@@ -6690,25 +6690,25 @@ jr_001_6c9c:
 
     ld c, $03                                     ; $6ca4: $0e $03
     ld a, $02                                     ; $6ca6: $3e $02
-    call TODO_Bank0FDispatcher                    ; $6ca8: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $6ca8: $cd $b6 $03
     call Call_001_76a9                            ; $6cab: $cd $a9 $76
     ld c, $00                                     ; $6cae: $0e $00
     ld a, $01                                     ; $6cb0: $3e $01
-    call TODO_Bank0FDispatcher                    ; $6cb2: $cd $b6 $03
-    call Call_000_0399                            ; $6cb5: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $6cb2: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $6cb5: $cd $99 $03
     ld c, $00                                     ; $6cb8: $0e $00
     ld a, $01                                     ; $6cba: $3e $01
-    call TODO_Bank0FDispatcher                    ; $6cbc: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $6cbc: $cd $b6 $03
     call Call_000_1a45                            ; $6cbf: $cd $45 $1a
     ld bc, $0004                                  ; $6cc2: $01 $04 $00
-    call Call_000_05fa                            ; $6cc5: $cd $fa $05
+    call DelayFramesByBC                          ; $6cc5: $cd $fa $05
     ld c, $00                                     ; $6cc8: $0e $00
     ld a, $01                                     ; $6cca: $3e $01
-    call TODO_Bank0FDispatcher                    ; $6ccc: $cd $b6 $03
-    call Call_000_0399                            ; $6ccf: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $6ccc: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $6ccf: $cd $99 $03
     ld c, $12                                     ; $6cd2: $0e $12
     ld a, $01                                     ; $6cd4: $3e $01
-    call TODO_Bank0FDispatcher                    ; $6cd6: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $6cd6: $cd $b6 $03
     ld hl, rStatePhase_Current                    ; $6cd9: $21 $35 $d6
     inc [hl]                                      ; $6cdc: $34
     ret                                           ; $6cdd: $c9
@@ -6721,11 +6721,11 @@ jr_001_6cde:
 
     ld c, $00                                     ; $6ce3: $0e $00
     ld a, $01                                     ; $6ce5: $3e $01
-    call TODO_Bank0FDispatcher                    ; $6ce7: $cd $b6 $03
-    call Call_000_0399                            ; $6cea: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $6ce7: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $6cea: $cd $99 $03
     ld c, $08                                     ; $6ced: $0e $08
     ld a, $01                                     ; $6cef: $3e $01
-    call TODO_Bank0FDispatcher                    ; $6cf1: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $6cf1: $cd $b6 $03
     call ClearShadowOAMBuffer                     ; $6cf4: $cd $b6 $05
     call LoadGameOverMessageTileData              ; $6cf7: $cd $e3 $7c
     ld hl, rStatePhase_Current                    ; $6cfa: $21 $35 $d6
@@ -6740,32 +6740,32 @@ GS0A_StatePhase_04_TODO::
 
     ld c, $03                                     ; $6d05: $0e $03
     ld a, $02                                     ; $6d07: $3e $02
-    call TODO_Bank0FDispatcher                    ; $6d09: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $6d09: $cd $b6 $03
     ld bc, $003c                                  ; $6d0c: $01 $3c $00
-    call Call_000_05fa                            ; $6d0f: $cd $fa $05
+    call DelayFramesByBC                          ; $6d0f: $cd $fa $05
     ld a, $05                                     ; $6d12: $3e $05
-    call TODO_Bank0FDispatcher                    ; $6d14: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $6d14: $cd $b6 $03
     ld c, $00                                     ; $6d17: $0e $00
     ld a, $01                                     ; $6d19: $3e $01
-    call TODO_Bank0FDispatcher                    ; $6d1b: $cd $b6 $03
-    call Call_000_0399                            ; $6d1e: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $6d1b: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $6d1e: $cd $99 $03
     ld c, $00                                     ; $6d21: $0e $00
     ld a, $01                                     ; $6d23: $3e $01
-    call TODO_Bank0FDispatcher                    ; $6d25: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $6d25: $cd $b6 $03
     ld b, $03                                     ; $6d28: $06 $03
     ld hl, $469f                                  ; $6d2a: $21 $9f $46
     ld c, $00                                     ; $6d2d: $0e $00
     ld de, $0013                                  ; $6d2f: $11 $13 $00
-    call Call_000_044e                            ; $6d32: $cd $4e $04
-    call Call_000_0483                            ; $6d35: $cd $83 $04
-    ld hl, $c337                                  ; $6d38: $21 $37 $c3
+    call PlayScreenTransitionFadeOut              ; $6d32: $cd $4e $04
+    call DisableLCDAtVBlank                       ; $6d35: $cd $83 $04
+    ld hl, rLCDCInterruptControlFlags_Unsure      ; $6d38: $21 $37 $c3
     res 6, [hl]                                   ; $6d3b: $cb $b6
     ld hl, rIE                                    ; $6d3d: $21 $ff $ff
     res 1, [hl]                                   ; $6d40: $cb $8e
     xor a                                         ; $6d42: $af
-    ld [$c338], a                                 ; $6d43: $ea $38 $c3
-    ld [$c33c], a                                 ; $6d46: $ea $3c $c3
-    ld [$c350], a                                 ; $6d49: $ea $50 $c3
+    ld [rLCDCInterruptDispatchIndex], a           ; $6d43: $ea $38 $c3
+    ld [rVBlankLCDCBit4ForceFlag], a              ; $6d46: $ea $3c $c3
+    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $6d49: $ea $50 $c3
     ld a, $04                                     ; $6d4c: $3e $04
     ld [rStatePhase_Current], a                   ; $6d4e: $ea $35 $d6
     ld a, $04                                     ; $6d51: $3e $04
@@ -6819,7 +6819,7 @@ GS0A_StatePhase_06_TODO::
 
     ld c, $03                                     ; $6dab: $0e $03
     ld a, $02                                     ; $6dad: $3e $02
-    call TODO_Bank0FDispatcher                    ; $6daf: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $6daf: $cd $b6 $03
     ld a, [$d83a]                                 ; $6db2: $fa $3a $d8
     ld c, a                                       ; $6db5: $4f
     ld b, $00                                     ; $6db6: $06 $00
@@ -6836,7 +6836,7 @@ jr_001_6dc1:
 
     ld c, $04                                     ; $6dc4: $0e $04
     ld a, $02                                     ; $6dc6: $3e $02
-    call TODO_Bank0FDispatcher                    ; $6dc8: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $6dc8: $cd $b6 $03
     ld a, $0a                                     ; $6dcb: $3e $0a
     ld [rStatePhase_Current], a                   ; $6dcd: $ea $35 $d6
     ret                                           ; $6dd0: $c9
@@ -6855,7 +6855,7 @@ GS0A_StatePhase_07_TODO::
 
     ld c, $04                                     ; $6de2: $0e $04
     ld a, $02                                     ; $6de4: $3e $02
-    call TODO_Bank0FDispatcher                    ; $6de6: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $6de6: $cd $b6 $03
     ld a, [$d83b]                                 ; $6de9: $fa $3b $d8
     and a                                         ; $6dec: $a7
     jr z, jr_001_6df5                             ; $6ded: $28 $06
@@ -6871,32 +6871,32 @@ jr_001_6df5:
     ld [$aca2], a                                 ; $6dfa: $ea $a2 $ac
     ld c, $03                                     ; $6dfd: $0e $03
     ld a, $02                                     ; $6dff: $3e $02
-    call TODO_Bank0FDispatcher                    ; $6e01: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $6e01: $cd $b6 $03
     ld bc, $003c                                  ; $6e04: $01 $3c $00
-    call Call_000_05fa                            ; $6e07: $cd $fa $05
+    call DelayFramesByBC                          ; $6e07: $cd $fa $05
     ld a, $05                                     ; $6e0a: $3e $05
-    call TODO_Bank0FDispatcher                    ; $6e0c: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $6e0c: $cd $b6 $03
     ld c, $00                                     ; $6e0f: $0e $00
     ld a, $01                                     ; $6e11: $3e $01
-    call TODO_Bank0FDispatcher                    ; $6e13: $cd $b6 $03
-    call Call_000_0399                            ; $6e16: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $6e13: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $6e16: $cd $99 $03
     ld c, $00                                     ; $6e19: $0e $00
     ld a, $01                                     ; $6e1b: $3e $01
-    call TODO_Bank0FDispatcher                    ; $6e1d: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $6e1d: $cd $b6 $03
     ld b, $03                                     ; $6e20: $06 $03
     ld hl, $469f                                  ; $6e22: $21 $9f $46
     ld c, $00                                     ; $6e25: $0e $00
     ld de, $0013                                  ; $6e27: $11 $13 $00
-    call Call_000_044e                            ; $6e2a: $cd $4e $04
-    call Call_000_0483                            ; $6e2d: $cd $83 $04
-    ld hl, $c337                                  ; $6e30: $21 $37 $c3
+    call PlayScreenTransitionFadeOut              ; $6e2a: $cd $4e $04
+    call DisableLCDAtVBlank                       ; $6e2d: $cd $83 $04
+    ld hl, rLCDCInterruptControlFlags_Unsure      ; $6e30: $21 $37 $c3
     res 6, [hl]                                   ; $6e33: $cb $b6
     ld hl, rIE                                    ; $6e35: $21 $ff $ff
     res 1, [hl]                                   ; $6e38: $cb $8e
     xor a                                         ; $6e3a: $af
-    ld [$c338], a                                 ; $6e3b: $ea $38 $c3
-    ld [$c33c], a                                 ; $6e3e: $ea $3c $c3
-    ld [$c350], a                                 ; $6e41: $ea $50 $c3
+    ld [rLCDCInterruptDispatchIndex], a           ; $6e3b: $ea $38 $c3
+    ld [rVBlankLCDCBit4ForceFlag], a              ; $6e3e: $ea $3c $c3
+    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $6e41: $ea $50 $c3
     ld a, [$a065]                                 ; $6e44: $fa $65 $a0
     ld c, a                                       ; $6e47: $4f
     ld b, $00                                     ; $6e48: $06 $00
@@ -6930,7 +6930,7 @@ GS0A_StatePhase_08_TODO::
 
     ld c, $04                                     ; $6e7c: $0e $04
     ld a, $02                                     ; $6e7e: $3e $02
-    call TODO_Bank0FDispatcher                    ; $6e80: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $6e80: $cd $b6 $03
     ld a, $06                                     ; $6e83: $3e $06
     ld [rStatePhase_Current], a                   ; $6e85: $ea $35 $d6
     ret                                           ; $6e88: $c9
@@ -6946,7 +6946,7 @@ GS0A_StatePhase_09_TODO::
 
     ld c, $04                                     ; $6e97: $0e $04
     ld a, $02                                     ; $6e99: $3e $02
-    call TODO_Bank0FDispatcher                    ; $6e9b: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $6e9b: $cd $b6 $03
     ld a, [$d83d]                                 ; $6e9e: $fa $3d $d8
     and a                                         ; $6ea1: $a7
     jr z, jr_001_6eaa                             ; $6ea2: $28 $06
@@ -6961,11 +6961,11 @@ jr_001_6eaa:
     ld [rPuzzleTimerCompletionState], a           ; $6eac: $ea $06 $d8
     ld c, $00                                     ; $6eaf: $0e $00
     ld a, $01                                     ; $6eb1: $3e $01
-    call TODO_Bank0FDispatcher                    ; $6eb3: $cd $b6 $03
-    call Call_000_0399                            ; $6eb6: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $6eb3: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $6eb6: $cd $99 $03
     ld c, $08                                     ; $6eb9: $0e $08
     ld a, $01                                     ; $6ebb: $3e $01
-    call TODO_Bank0FDispatcher                    ; $6ebd: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $6ebd: $cd $b6 $03
     call ClearShadowOAMBuffer                     ; $6ec0: $cd $b6 $05
     call LoadGameOverMessageTileData              ; $6ec3: $cd $e3 $7c
     ld a, [$a065]                                 ; $6ec6: $fa $65 $a0
@@ -7015,7 +7015,7 @@ GS0A_StatePhase_0a_TODO::
     ld de, $8500                                  ; $6f15: $11 $00 $85
     ld bc, $0300                                  ; $6f18: $01 $00 $03
     call BankedTileCopyVRAMSafe                   ; $6f1b: $cd $38 $05
-    call Call_001_6fb9                            ; $6f1e: $cd $b9 $6f
+    call DrawClueNumbersFromRunLengthBuffers      ; $6f1e: $cd $b9 $6f
     call RenderPuzzleTimerDigits                  ; $6f21: $cd $04 $7c
     ld a, $03                                     ; $6f24: $3e $03
     ld [rStatePhase_Current], a                   ; $6f26: $ea $35 $d6
@@ -7024,59 +7024,59 @@ GS0A_StatePhase_0a_TODO::
     jp Jump_000_1b1f                              ; $6f2d: $c3 $1f $1b
 
 
-Call_001_6f30:
-    call Call_001_6f37                            ; $6f30: $cd $37 $6f
-    call Call_001_6f6c                            ; $6f33: $cd $6c $6f
+BuildClueRunLengthBuffers::
+    call BuildHorizontalClueRunLengthBuffer       ; $6f30: $cd $37 $6f
+    call BuildVerticalClueRunLengthBuffer         ; $6f33: $cd $6c $6f
     ret                                           ; $6f36: $c9
 
 
-Call_001_6f37:
-    ld hl, $d73f                                  ; $6f37: $21 $3f $d7
-    ld de, $d799                                  ; $6f3a: $11 $99 $d7
+BuildHorizontalClueRunLengthBuffer::
+    ld hl, rPuzzleCellStateBufferEnd              ; $6f37: $21 $3f $d7
+    ld de, rClueRunLengthHorizontalBufferBuildBase; $6f3a: $11 $99 $d7
     ld c, $10                                     ; $6f3d: $0e $10
 
-jr_001_6f3f:
+.HorizontalRunLength_InitLine:
     push de                                       ; $6f3f: $d5
     xor a                                         ; $6f40: $af
     ld b, $06                                     ; $6f41: $06 $06
 
-jr_001_6f43:
+.HorizontalRunLength_ClearSixSlotsLoop:
     inc de                                        ; $6f43: $13
     ld [de], a                                    ; $6f44: $12
     dec b                                         ; $6f45: $05
-    jr nz, jr_001_6f43                            ; $6f46: $20 $fb
+    jr nz, .HorizontalRunLength_ClearSixSlotsLoop ; $6f46: $20 $fb
 
     ld b, $10                                     ; $6f48: $06 $10
 
-jr_001_6f4a:
+.HorizontalRunLength_ScanBitsLoop:
     bit 0, [hl]                                   ; $6f4a: $cb $46
-    jr z, jr_001_6f5a                             ; $6f4c: $28 $0c
+    jr z, .HorizontalRunLength_AdvanceBitLoop     ; $6f4c: $28 $0c
 
     xor a                                         ; $6f4e: $af
 
-jr_001_6f4f:
+.HorizontalRunLength_CountFilledRunLoop:
     inc a                                         ; $6f4f: $3c
     dec hl                                        ; $6f50: $2b
     dec b                                         ; $6f51: $05
-    jr z, jr_001_6f60                             ; $6f52: $28 $0c
+    jr z, .HorizontalRunLength_StoreTerminalRun   ; $6f52: $28 $0c
 
     bit 0, [hl]                                   ; $6f54: $cb $46
-    jr nz, jr_001_6f4f                            ; $6f56: $20 $f7
+    jr nz, .HorizontalRunLength_CountFilledRunLoop; $6f56: $20 $f7
 
     ld [de], a                                    ; $6f58: $12
     dec de                                        ; $6f59: $1b
 
-jr_001_6f5a:
+.HorizontalRunLength_AdvanceBitLoop:
     dec hl                                        ; $6f5a: $2b
     dec b                                         ; $6f5b: $05
-    jr nz, jr_001_6f4a                            ; $6f5c: $20 $ec
+    jr nz, .HorizontalRunLength_ScanBitsLoop      ; $6f5c: $20 $ec
 
-    jr jr_001_6f61                                ; $6f5e: $18 $01
+    jr .HorizontalRunLength_NextLine              ; $6f5e: $18 $01
 
-jr_001_6f60:
+.HorizontalRunLength_StoreTerminalRun:
     ld [de], a                                    ; $6f60: $12
 
-jr_001_6f61:
+.HorizontalRunLength_NextLine:
     pop de                                        ; $6f61: $d1
     dec de                                        ; $6f62: $1b
     dec de                                        ; $6f63: $1b
@@ -7085,36 +7085,36 @@ jr_001_6f61:
     dec de                                        ; $6f66: $1b
     dec de                                        ; $6f67: $1b
     dec c                                         ; $6f68: $0d
-    jr nz, jr_001_6f3f                            ; $6f69: $20 $d4
+    jr nz, .HorizontalRunLength_InitLine          ; $6f69: $20 $d4
 
     ret                                           ; $6f6b: $c9
 
 
-Call_001_6f6c:
-    ld hl, $d73f                                  ; $6f6c: $21 $3f $d7
-    ld de, $d7f9                                  ; $6f6f: $11 $f9 $d7
+BuildVerticalClueRunLengthBuffer::
+    ld hl, rPuzzleCellStateBufferEnd              ; $6f6c: $21 $3f $d7
+    ld de, rClueRunLengthVerticalBufferBuildBase  ; $6f6f: $11 $f9 $d7
     ld c, $10                                     ; $6f72: $0e $10
 
-jr_001_6f74:
+.VerticalRunLength_InitLine:
     push de                                       ; $6f74: $d5
     xor a                                         ; $6f75: $af
     ld b, $06                                     ; $6f76: $06 $06
 
-jr_001_6f78:
+.VerticalRunLength_ClearSixSlotsLoop:
     inc de                                        ; $6f78: $13
     ld [de], a                                    ; $6f79: $12
     dec b                                         ; $6f7a: $05
-    jr nz, jr_001_6f78                            ; $6f7b: $20 $fb
+    jr nz, .VerticalRunLength_ClearSixSlotsLoop   ; $6f7b: $20 $fb
 
     ld b, $10                                     ; $6f7d: $06 $10
 
-jr_001_6f7f:
+.VerticalRunLength_ScanBitsLoop:
     bit 0, [hl]                                   ; $6f7f: $cb $46
-    jr z, jr_001_6f98                             ; $6f81: $28 $15
+    jr z, .VerticalRunLength_AdvanceBitLoop       ; $6f81: $28 $15
 
     xor a                                         ; $6f83: $af
 
-jr_001_6f84:
+.VerticalRunLength_CountFilledRunLoop:
     inc a                                         ; $6f84: $3c
     push af                                       ; $6f85: $f5
     ld a, l                                       ; $6f86: $7d
@@ -7125,15 +7125,15 @@ jr_001_6f84:
     ld h, a                                       ; $6f8d: $67
     pop af                                        ; $6f8e: $f1
     dec b                                         ; $6f8f: $05
-    jr z, jr_001_6fa5                             ; $6f90: $28 $13
+    jr z, .VerticalRunLength_StoreTerminalRun     ; $6f90: $28 $13
 
     bit 0, [hl]                                   ; $6f92: $cb $46
-    jr nz, jr_001_6f84                            ; $6f94: $20 $ee
+    jr nz, .VerticalRunLength_CountFilledRunLoop  ; $6f94: $20 $ee
 
     ld [de], a                                    ; $6f96: $12
     dec de                                        ; $6f97: $1b
 
-jr_001_6f98:
+.VerticalRunLength_AdvanceBitLoop:
     ld a, l                                       ; $6f98: $7d
     sub $10                                       ; $6f99: $d6 $10
     ld l, a                                       ; $6f9b: $6f
@@ -7141,14 +7141,14 @@ jr_001_6f98:
     sbc $00                                       ; $6f9d: $de $00
     ld h, a                                       ; $6f9f: $67
     dec b                                         ; $6fa0: $05
-    jr nz, jr_001_6f7f                            ; $6fa1: $20 $dc
+    jr nz, .VerticalRunLength_ScanBitsLoop        ; $6fa1: $20 $dc
 
-    jr jr_001_6fa6                                ; $6fa3: $18 $01
+    jr .VerticalRunLength_NextLine                ; $6fa3: $18 $01
 
-jr_001_6fa5:
+.VerticalRunLength_StoreTerminalRun:
     ld [de], a                                    ; $6fa5: $12
 
-jr_001_6fa6:
+.VerticalRunLength_NextLine:
     ld a, l                                       ; $6fa6: $7d
     add $ff                                       ; $6fa7: $c6 $ff
     ld l, a                                       ; $6fa9: $6f
@@ -7163,43 +7163,43 @@ jr_001_6fa6:
     dec de                                        ; $6fb3: $1b
     dec de                                        ; $6fb4: $1b
     dec c                                         ; $6fb5: $0d
-    jr nz, jr_001_6f74                            ; $6fb6: $20 $bc
+    jr nz, .VerticalRunLength_InitLine            ; $6fb6: $20 $bc
 
     ret                                           ; $6fb8: $c9
 
 
-Call_001_6fb9:
-    call Call_001_6fc0                            ; $6fb9: $cd $c0 $6f
-    call Call_001_6fed                            ; $6fbc: $cd $ed $6f
+DrawClueNumbersFromRunLengthBuffers::
+    call DrawClueNumbersHorizontalPass            ; $6fb9: $cd $c0 $6f
+    call DrawClueNumbersVerticalPass              ; $6fbc: $cd $ed $6f
     ret                                           ; $6fbf: $c9
 
 
-Call_001_6fc0:
-    ld hl, $d740                                  ; $6fc0: $21 $40 $d7
+DrawClueNumbersHorizontalPass::
+    ld hl, rClueRunLengthHorizontalBufferStart    ; $6fc0: $21 $40 $d7
     ld e, $00                                     ; $6fc3: $1e $00
     ld b, $32                                     ; $6fc5: $06 $32
-    ld a, [$d801]                                 ; $6fc7: $fa $01 $d8
+    ld a, [rPuzzleGridHeight]                     ; $6fc7: $fa $01 $d8
 
-jr_001_6fca:
+.HorizontalPass_RowLoop:
     push af                                       ; $6fca: $f5
     ld c, $09                                     ; $6fcb: $0e $09
 
-jr_001_6fcd:
+.HorizontalPass_ColumnLoop:
     ld a, [hl+]                                   ; $6fcd: $2a
     and a                                         ; $6fce: $a7
-    jr z, jr_001_6fd4                             ; $6fcf: $28 $03
+    jr z, .HorizontalPass_NextColumn              ; $6fcf: $28 $03
 
-    call Call_001_701b                            ; $6fd1: $cd $1b $70
+    call PrepareBGTileCopyForClueDigit            ; $6fd1: $cd $1b $70
 
-jr_001_6fd4:
+.HorizontalPass_NextColumn:
     ld a, c                                       ; $6fd4: $79
     add $07                                       ; $6fd5: $c6 $07
     ld c, a                                       ; $6fd7: $4f
     cp $2c                                        ; $6fd8: $fe $2c
-    jr nz, jr_001_6fcd                            ; $6fda: $20 $f1
+    jr nz, .HorizontalPass_ColumnLoop             ; $6fda: $20 $f1
 
     ld a, [hl+]                                   ; $6fdc: $2a
-    call Call_001_701b                            ; $6fdd: $cd $1b $70
+    call PrepareBGTileCopyForClueDigit            ; $6fdd: $cd $1b $70
     ld a, e                                       ; $6fe0: $7b
     xor $ff                                       ; $6fe1: $ee $ff
     ld e, a                                       ; $6fe3: $5f
@@ -7208,38 +7208,38 @@ jr_001_6fd4:
     ld b, a                                       ; $6fe7: $47
     pop af                                        ; $6fe8: $f1
     dec a                                         ; $6fe9: $3d
-    jr nz, jr_001_6fca                            ; $6fea: $20 $de
+    jr nz, .HorizontalPass_RowLoop                ; $6fea: $20 $de
 
     ret                                           ; $6fec: $c9
 
 
-Call_001_6fed:
-    ld hl, $d7a0                                  ; $6fed: $21 $a0 $d7
+DrawClueNumbersVerticalPass::
+    ld hl, rClueRunLengthVerticalBufferStart      ; $6fed: $21 $a0 $d7
     ld e, $00                                     ; $6ff0: $1e $00
     ld c, $3a                                     ; $6ff2: $0e $3a
-    ld a, [rCurrentGridSize]                      ; $6ff4: $fa $00 $d8
+    ld a, [rPuzzleGridWidth]                      ; $6ff4: $fa $00 $d8
 
-jr_001_6ff7:
+.VerticalPass_ColumnLoop:
     push af                                       ; $6ff7: $f5
     ld b, $08                                     ; $6ff8: $06 $08
     ld a, [hl+]                                   ; $6ffa: $2a
 
-jr_001_6ffb:
+.VerticalPass_RowLoop:
     ld a, [hl+]                                   ; $6ffb: $2a
     and a                                         ; $6ffc: $a7
-    jr z, jr_001_7002                             ; $6ffd: $28 $03
+    jr z, .VerticalPass_NextRow                   ; $6ffd: $28 $03
 
-    call Call_001_701b                            ; $6fff: $cd $1b $70
+    call PrepareBGTileCopyForClueDigit            ; $6fff: $cd $1b $70
 
-jr_001_7002:
+.VerticalPass_NextRow:
     ld a, b                                       ; $7002: $78
     add $07                                       ; $7003: $c6 $07
     ld b, a                                       ; $7005: $47
     cp $24                                        ; $7006: $fe $24
-    jr nz, jr_001_6ffb                            ; $7008: $20 $f1
+    jr nz, .VerticalPass_RowLoop                  ; $7008: $20 $f1
 
     ld a, [hl+]                                   ; $700a: $2a
-    call Call_001_701b                            ; $700b: $cd $1b $70
+    call PrepareBGTileCopyForClueDigit            ; $700b: $cd $1b $70
     ld a, e                                       ; $700e: $7b
     xor $ff                                       ; $700f: $ee $ff
     ld e, a                                       ; $7011: $5f
@@ -7248,12 +7248,12 @@ jr_001_7002:
     ld c, a                                       ; $7015: $4f
     pop af                                        ; $7016: $f1
     dec a                                         ; $7017: $3d
-    jr nz, jr_001_6ff7                            ; $7018: $20 $dd
+    jr nz, .VerticalPass_ColumnLoop               ; $7018: $20 $dd
 
     ret                                           ; $701a: $c9
 
 
-Call_001_701b:
+PrepareBGTileCopyForClueDigit::
     push bc                                       ; $701b: $c5
     push de                                       ; $701c: $d5
     push hl                                       ; $701d: $e5
@@ -7272,25 +7272,25 @@ Call_001_701b:
     ld b, $00                                     ; $7035: $06 $00
     ld a, e                                       ; $7037: $7b
     and a                                         ; $7038: $a7
-    jr nz, jr_001_7049                            ; $7039: $20 $0e
+    jr nz, .UseGrayBGClueDigitSourceTable         ; $7039: $20 $0e
 
-    ld hl, $7061                                  ; $703b: $21 $61 $70
+    ld hl, ClueDigitTileSourceTableWhiteBG        ; $703b: $21 $61 $70
     add hl, bc                                    ; $703e: $09
     ld a, [hl+]                                   ; $703f: $2a
     ld [rBGTileCopyBankAddressLow], a             ; $7040: $ea $55 $c3
     ld a, [hl+]                                   ; $7043: $2a
     ld [rBGTileCopyBankAddressHigh], a            ; $7044: $ea $56 $c3
-    jr jr_001_7055                                ; $7047: $18 $0c
+    jr .ApplyClueDigitTileCopy                    ; $7047: $18 $0c
 
-jr_001_7049:
-    ld hl, $7081                                  ; $7049: $21 $81 $70
+.UseGrayBGClueDigitSourceTable:
+    ld hl, ClueDigitTileSourceTableGrayBG         ; $7049: $21 $81 $70
     add hl, bc                                    ; $704c: $09
     ld a, [hl+]                                   ; $704d: $2a
     ld [rBGTileCopyBankAddressLow], a             ; $704e: $ea $55 $c3
     ld a, [hl+]                                   ; $7051: $2a
     ld [rBGTileCopyBankAddressHigh], a            ; $7052: $ea $56 $c3
 
-jr_001_7055:
+.ApplyClueDigitTileCopy:
     ld a, $06                                     ; $7055: $3e $06
     ld [rBGTileCopyBank], a                       ; $7057: $ea $57 $c3
     call PrepareBGTileCopy                        ; $705a: $cd $b3 $08
@@ -7300,70 +7300,41 @@ jr_001_7055:
     ret                                           ; $7060: $c9
 
 
-    ldh a, [$ff59]                                ; $7061: $f0 $59
-    nop                                           ; $7063: $00
-    ld e, c                                       ; $7064: $59
-    db $10                                        ; $7065: $10
-    ld e, c                                       ; $7066: $59
-    jr nz, jr_001_70c2                            ; $7067: $20 $59
+ClueDigitTileSourceTableWhiteBG::
+    db $f0, $59
+    db $00, $59
+    db $10, $59
+    db $20, $59
+    db $30, $59
+    db $40, $59
+    db $50, $59
+    db $60, $59
+    db $70, $59
+    db $80, $59
+    db $90, $59
+    db $a0, $59
+    db $b0, $59
+    db $c0, $59
+    db $d0, $59
+    db $e0, $59
 
-    jr nc, jr_001_70c4                            ; $7069: $30 $59
-
-    ld b, b                                       ; $706b: $40
-    ld e, c                                       ; $706c: $59
-    ld d, b                                       ; $706d: $50
-    ld e, c                                       ; $706e: $59
-    ld h, b                                       ; $706f: $60
-    ld e, c                                       ; $7070: $59
-    ld [hl], b                                    ; $7071: $70
-    ld e, c                                       ; $7072: $59
-    add b                                         ; $7073: $80
-    ld e, c                                       ; $7074: $59
-    sub b                                         ; $7075: $90
-    ld e, c                                       ; $7076: $59
-    and b                                         ; $7077: $a0
-    ld e, c                                       ; $7078: $59
-    or b                                          ; $7079: $b0
-    ld e, c                                       ; $707a: $59
-    ret nz                                        ; $707b: $c0
-
-    ld e, c                                       ; $707c: $59
-    ret nc                                        ; $707d: $d0
-
-    ld e, c                                       ; $707e: $59
-    ldh [$ff59], a                                ; $707f: $e0 $59
-    ldh a, [$ff5a]                                ; $7081: $f0 $5a
-    nop                                           ; $7083: $00
-    ld e, d                                       ; $7084: $5a
-    db $10                                        ; $7085: $10
-    ld e, d                                       ; $7086: $5a
-    jr nz, jr_001_70e3                            ; $7087: $20 $5a
-
-    jr nc, jr_001_70e5                            ; $7089: $30 $5a
-
-    ld b, b                                       ; $708b: $40
-    ld e, d                                       ; $708c: $5a
-    ld d, b                                       ; $708d: $50
-    ld e, d                                       ; $708e: $5a
-    ld h, b                                       ; $708f: $60
-    ld e, d                                       ; $7090: $5a
-    ld [hl], b                                    ; $7091: $70
-    ld e, d                                       ; $7092: $5a
-    add b                                         ; $7093: $80
-    ld e, d                                       ; $7094: $5a
-    sub b                                         ; $7095: $90
-    ld e, d                                       ; $7096: $5a
-    and b                                         ; $7097: $a0
-    ld e, d                                       ; $7098: $5a
-    or b                                          ; $7099: $b0
-    ld e, d                                       ; $709a: $5a
-    ret nz                                        ; $709b: $c0
-
-    ld e, d                                       ; $709c: $5a
-    ret nc                                        ; $709d: $d0
-
-    ld e, d                                       ; $709e: $5a
-    ldh [$ff5a], a                                ; $709f: $e0 $5a
+ClueDigitTileSourceTableGrayBG::
+    db $f0, $5a
+    db $00, $5a
+    db $10, $5a
+    db $20, $5a
+    db $30, $5a
+    db $40, $5a
+    db $50, $5a
+    db $60, $5a
+    db $70, $5a
+    db $80, $5a
+    db $90, $5a
+    db $a0, $5a
+    db $b0, $5a
+    db $c0, $5a
+    db $d0, $5a
+    db $e0, $5a
 
 Call_001_70a1:
     call Call_001_70a8                            ; $70a1: $cd $a8 $70
@@ -7372,10 +7343,10 @@ Call_001_70a1:
 
 
 Call_001_70a8:
-    ld hl, $d740                                  ; $70a8: $21 $40 $d7
+    ld hl, rClueRunLengthHorizontalBufferStart    ; $70a8: $21 $40 $d7
     ld e, $00                                     ; $70ab: $1e $00
     ld b, $32                                     ; $70ad: $06 $32
-    ld a, [$d801]                                 ; $70af: $fa $01 $d8
+    ld a, [rPuzzleGridHeight]                     ; $70af: $fa $01 $d8
 
 jr_001_70b2:
     push af                                       ; $70b2: $f5
@@ -7393,11 +7364,8 @@ jr_001_70bc:
     add $07                                       ; $70bd: $c6 $07
     ld c, a                                       ; $70bf: $4f
     cp $2c                                        ; $70c0: $fe $2c
-
-jr_001_70c2:
     jr nz, jr_001_70b5                            ; $70c2: $20 $f1
 
-jr_001_70c4:
     ld a, [hl+]                                   ; $70c4: $2a
     call Call_001_7103                            ; $70c5: $cd $03 $71
     ld a, e                                       ; $70c8: $7b
@@ -7414,10 +7382,10 @@ jr_001_70c4:
 
 
 Call_001_70d5:
-    ld hl, $d7a0                                  ; $70d5: $21 $a0 $d7
+    ld hl, rClueRunLengthVerticalBufferStart      ; $70d5: $21 $a0 $d7
     ld e, $00                                     ; $70d8: $1e $00
     ld c, $3a                                     ; $70da: $0e $3a
-    ld a, [rCurrentGridSize]                      ; $70dc: $fa $00 $d8
+    ld a, [rPuzzleGridWidth]                      ; $70dc: $fa $00 $d8
 
 jr_001_70df:
     push af                                       ; $70df: $f5
@@ -7427,8 +7395,6 @@ jr_001_70df:
 jr_001_70e3:
     ld a, [hl+]                                   ; $70e3: $2a
     and a                                         ; $70e4: $a7
-
-jr_001_70e5:
     jr z, jr_001_70ea                             ; $70e5: $28 $03
 
     call Call_001_7103                            ; $70e7: $cd $03 $71
@@ -7535,7 +7501,7 @@ DrawPuzzleCursorSpritesAndTickStepSequence::
     jp TickMessageStepSequenceAndEmitSprite       ; $7182: $c3 $67 $79
 
 
-Call_001_7185:
+DrawPuzzleCursorSprites::
     ld a, [rPuzzleCursorColumn]                   ; $7185: $fa $36 $d6
     ld e, a                                       ; $7188: $5f
     sla a                                         ; $7189: $cb $27
@@ -7588,7 +7554,7 @@ UpdatePuzzleCursorFromDirectionalInput::
 
     ld c, $0b                                     ; $71d7: $0e $0b
     ld a, $02                                     ; $71d9: $3e $02
-    call TODO_Bank0FDispatcher                    ; $71db: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $71db: $cd $b6 $03
 
 .CheckLeft:
     ld hl, rInputButtonsPressedOrRepeated         ; $71de: $21 $22 $c3
@@ -7606,7 +7572,7 @@ UpdatePuzzleCursorFromDirectionalInput::
     bit 4, [hl]                                   ; $71ef: $cb $66
     jr z, .CheckUp                                ; $71f1: $28 $0e
 
-    ld a, [rCurrentGridSize]                      ; $71f3: $fa $00 $d8
+    ld a, [rPuzzleGridWidth]                      ; $71f3: $fa $00 $d8
     ld c, a                                       ; $71f6: $4f
     ld a, [rPuzzleCursorColumn]                   ; $71f7: $fa $36 $d6
     inc a                                         ; $71fa: $3c
@@ -7630,7 +7596,7 @@ UpdatePuzzleCursorFromDirectionalInput::
     bit 7, [hl]                                   ; $720f: $cb $7e
     jr z, .Return                                 ; $7211: $28 $0e
 
-    ld a, [$d801]                                 ; $7213: $fa $01 $d8
+    ld a, [rPuzzleGridHeight]                     ; $7213: $fa $01 $d8
     ld c, a                                       ; $7216: $4f
     ld a, [rPuzzleCursorRow]                      ; $7217: $fa $37 $d6
     inc a                                         ; $721a: $3c
@@ -7654,7 +7620,7 @@ ProcessPuzzleCellActionInput::
 
 .ClearActionRepeatState:
     xor a                                         ; $7230: $af
-    ld [$d80f], a                                 ; $7231: $ea $0f $d8
+    ld [rPuzzleActionRepeatGuard], a              ; $7231: $ea $0f $d8
 
 .LoadCursorCellAndTileState:
     ld a, [rPuzzleCursorRow]                      ; $7234: $fa $37 $d6
@@ -7796,7 +7762,7 @@ ProcessPuzzleCellActionInput_ApplyFillAction::
     cp $09                                        ; $72f3: $fe $09
     jp z, Jump_001_739f                           ; $72f5: $ca $9f $73
 
-    ld a, [$d80f]                                 ; $72f8: $fa $0f $d8
+    ld a, [rPuzzleActionRepeatGuard]              ; $72f8: $fa $0f $d8
     and a                                         ; $72fb: $a7
     ret nz                                        ; $72fc: $c0
 
@@ -7843,12 +7809,12 @@ ProcessPuzzleCellActionInput_ApplyFillAction::
     ld [rPendingCellEffectDelay], a               ; $734f: $ea $22 $d8
     ld c, $09                                     ; $7352: $0e $09
     ld a, $02                                     ; $7354: $3e $02
-    call TODO_Bank0FDispatcher                    ; $7356: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $7356: $cd $b6 $03
     xor a                                         ; $7359: $af
 
 .RunFillActionAnimationLoop:
     push af                                       ; $735a: $f5
-    call Call_000_05c5                            ; $735b: $cd $c5 $05
+    call ClearShadowOAMBufferFromCursor           ; $735b: $cd $c5 $05
     rst RST_08                                    ; $735e: $cf
     call Call_001_7d81                            ; $735f: $cd $81 $7d
     call DrawPuzzleCursorSpritesAndTickStepSequence; $7362: $cd $3e $71
@@ -7886,7 +7852,7 @@ ProcessPuzzleCellActionInput_ApplyFillAction::
     jr nz, .RunFillActionAnimationLoop            ; $7395: $20 $c3
 
     call TickPuzzleTimerInputAdjustment           ; $7397: $cd $88 $7c
-    ld hl, $d80f                                  ; $739a: $21 $0f $d8
+    ld hl, rPuzzleActionRepeatGuard               ; $739a: $21 $0f $d8
     inc [hl]                                      ; $739d: $34
     ret                                           ; $739e: $c9
 
@@ -8128,7 +8094,7 @@ Jump_001_7529:
 
     ld c, $05                                     ; $752d: $0e $05
     ld a, $02                                     ; $752f: $3e $02
-    call TODO_Bank0FDispatcher                    ; $7531: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $7531: $cd $b6 $03
     ret                                           ; $7534: $c9
 
 
@@ -8138,14 +8104,14 @@ jr_001_7535:
 
     ld c, $07                                     ; $7539: $0e $07
     ld a, $02                                     ; $753b: $3e $02
-    call TODO_Bank0FDispatcher                    ; $753d: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $753d: $cd $b6 $03
     ret                                           ; $7540: $c9
 
 
 jr_001_7541:
     ld c, $0c                                     ; $7541: $0e $0c
     ld a, $02                                     ; $7543: $3e $02
-    call TODO_Bank0FDispatcher                    ; $7545: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $7545: $cd $b6 $03
     ret                                           ; $7548: $c9
 
 
@@ -8257,14 +8223,14 @@ Call_001_75f6:
 
     ld c, $00                                     ; $75fe: $0e $00
     ld a, $01                                     ; $7600: $3e $01
-    call TODO_Bank0FDispatcher                    ; $7602: $cd $b6 $03
-    call Call_000_0399                            ; $7605: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $7602: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $7605: $cd $99 $03
     ld c, $00                                     ; $7608: $0e $00
     ld a, $01                                     ; $760a: $3e $01
-    call TODO_Bank0FDispatcher                    ; $760c: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $760c: $cd $b6 $03
 
 jr_001_760f:
-    call Call_000_05c5                            ; $760f: $cd $c5 $05
+    call ClearShadowOAMBufferFromCursor           ; $760f: $cd $c5 $05
     rst RST_08                                    ; $7612: $cf
     xor a                                         ; $7613: $af
     ld [rInputButtonsHeld], a                     ; $7614: $ea $1a $c3
@@ -8279,12 +8245,12 @@ jr_001_760f:
 
     call ClearShadowOAMBuffer                     ; $762c: $cd $b6 $05
     ld a, $ff                                     ; $762f: $3e $ff
-    ld [$d805], a                                 ; $7631: $ea $05 $d8
+    ld [rPuzzleFlowVariant_Unsure], a             ; $7631: $ea $05 $d8
     ret                                           ; $7634: $c9
 
 
 RedrawPuzzleBoard::
-    ld a, [rCurrentGridSize]                      ; $7635: $fa $00 $d8
+    ld a, [rPuzzleGridWidth]                      ; $7635: $fa $00 $d8
     cp $05                                        ; $7638: $fe $05
     jr nz, .Load10x10BoardTileData                ; $763a: $20 $02
 
@@ -8312,13 +8278,13 @@ RedrawPuzzleBoard::
     ld hl, $d640                                  ; $7660: $21 $40 $d6
     ld c, $33                                     ; $7663: $0e $33
     ld e, $05                                     ; $7665: $1e $05
-    ld a, [$d801]                                 ; $7667: $fa $01 $d8
+    ld a, [rPuzzleGridHeight]                     ; $7667: $fa $01 $d8
 
 .ProcessBoardRows:
     push af                                       ; $766a: $f5
     ld b, $3b                                     ; $766b: $06 $3b
     ld d, $05                                     ; $766d: $16 $05
-    ld a, [rCurrentGridSize]                      ; $766f: $fa $00 $d8
+    ld a, [rPuzzleGridWidth]                      ; $766f: $fa $00 $d8
 
 .ProcessBoardCells:
     push af                                       ; $7672: $f5
@@ -8341,7 +8307,7 @@ RedrawPuzzleBoard::
     and a                                         ; $7688: $a7
     jr nz, .ProcessBoardCells                     ; $7689: $20 $e7
 
-    ld a, [rCurrentGridSize]                      ; $768b: $fa $00 $d8
+    ld a, [rPuzzleGridWidth]                      ; $768b: $fa $00 $d8
     sub $11                                       ; $768e: $d6 $11
     xor $ff                                       ; $7690: $ee $ff
     add l                                         ; $7692: $85
@@ -8368,7 +8334,7 @@ RedrawPuzzleBoard::
 
 
 Call_001_76a9:
-    ld a, [rCurrentGridSize]                      ; $76a9: $fa $00 $d8
+    ld a, [rPuzzleGridWidth]                      ; $76a9: $fa $00 $d8
     cp $05                                        ; $76ac: $fe $05
     jp z, Jump_001_76b9                           ; $76ae: $ca $b9 $76
 
@@ -8680,11 +8646,11 @@ jr_001_7875:
     swap a                                        ; $7880: $cb $37
     call PrepareCellEffectFrameCopy               ; $7882: $cd $49 $75
     inc b                                         ; $7885: $04
-    ld a, [rCurrentGridSize]                      ; $7886: $fa $00 $d8
+    ld a, [rPuzzleGridWidth]                      ; $7886: $fa $00 $d8
     cp b                                          ; $7889: $b8
     jr nz, jr_001_7875                            ; $788a: $20 $e9
 
-    ld a, [rCurrentGridSize]                      ; $788c: $fa $00 $d8
+    ld a, [rPuzzleGridWidth]                      ; $788c: $fa $00 $d8
     sub $11                                       ; $788f: $d6 $11
     xor $ff                                       ; $7891: $ee $ff
     add l                                         ; $7893: $85
@@ -8693,7 +8659,7 @@ jr_001_7875:
     adc h                                         ; $7897: $8c
     ld h, a                                       ; $7898: $67
     inc c                                         ; $7899: $0c
-    ld a, [$d801]                                 ; $789a: $fa $01 $d8
+    ld a, [rPuzzleGridHeight]                     ; $789a: $fa $01 $d8
     cp c                                          ; $789d: $b9
     jr nz, jr_001_7873                            ; $789e: $20 $d3
 
@@ -8701,7 +8667,7 @@ jr_001_7875:
     ret                                           ; $78a1: $c9
 
 
-Call_001_78a2:
+ApplyHintSelectionToRowAndColumn::
     ld a, [rPuzzleCursorColumn]                   ; $78a2: $fa $36 $d6
     ld c, a                                       ; $78a5: $4f
     ld a, [rPuzzleCursorRow]                      ; $78a6: $fa $37 $d6
@@ -8713,7 +8679,7 @@ Call_001_78a2:
     push bc                                       ; $78b1: $c5
     ld b, $00                                     ; $78b2: $06 $00
 
-jr_001_78b4:
+.ApplyHintSelectionToColumnLoop:
     ld a, c                                       ; $78b4: $79
     ld [rCellEffectTargetColumn], a               ; $78b5: $ea $24 $d8
     ld a, b                                       ; $78b8: $78
@@ -8722,30 +8688,30 @@ jr_001_78b4:
     and $01                                       ; $78bd: $e6 $01
     push af                                       ; $78bf: $f5
     swap a                                        ; $78c0: $cb $37
-    jr nz, jr_001_78c6                            ; $78c2: $20 $02
+    jr nz, .CopyHintSelectionColumnCellFrame      ; $78c2: $20 $02
 
     ld a, $20                                     ; $78c4: $3e $20
 
-jr_001_78c6:
+.CopyHintSelectionColumnCellFrame:
     call PrepareCellEffectFrameCopy               ; $78c6: $cd $49 $75
     pop af                                        ; $78c9: $f1
-    jr z, jr_001_78d2                             ; $78ca: $28 $06
+    jr z, .MarkHintSelectionColumnCellAsX         ; $78ca: $28 $06
 
     set 1, [hl]                                   ; $78cc: $cb $ce
     res 2, [hl]                                   ; $78ce: $cb $96
-    jr jr_001_78d6                                ; $78d0: $18 $04
+    jr .AdvanceHintSelectionColumnLoop            ; $78d0: $18 $04
 
-jr_001_78d2:
+.MarkHintSelectionColumnCellAsX:
     res 1, [hl]                                   ; $78d2: $cb $8e
     set 2, [hl]                                   ; $78d4: $cb $d6
 
-jr_001_78d6:
+.AdvanceHintSelectionColumnLoop:
     ld de, $0010                                  ; $78d6: $11 $10 $00
     add hl, de                                    ; $78d9: $19
     inc b                                         ; $78da: $04
-    ld a, [$d801]                                 ; $78db: $fa $01 $d8
+    ld a, [rPuzzleGridHeight]                     ; $78db: $fa $01 $d8
     cp b                                          ; $78de: $b8
-    jr nz, jr_001_78b4                            ; $78df: $20 $d3
+    jr nz, .ApplyHintSelectionToColumnLoop        ; $78df: $20 $d3
 
     pop bc                                        ; $78e1: $c1
     ld e, b                                       ; $78e2: $58
@@ -8755,7 +8721,7 @@ jr_001_78d6:
     add hl, de                                    ; $78ea: $19
     ld c, $00                                     ; $78eb: $0e $00
 
-jr_001_78ed:
+.ApplyHintSelectionToRowLoop:
     ld a, c                                       ; $78ed: $79
     ld [rCellEffectTargetColumn], a               ; $78ee: $ea $24 $d8
     ld a, b                                       ; $78f1: $78
@@ -8764,29 +8730,29 @@ jr_001_78ed:
     and $01                                       ; $78f6: $e6 $01
     push af                                       ; $78f8: $f5
     swap a                                        ; $78f9: $cb $37
-    jr nz, jr_001_78ff                            ; $78fb: $20 $02
+    jr nz, .CopyHintSelectionRowCellFrame         ; $78fb: $20 $02
 
     ld a, $20                                     ; $78fd: $3e $20
 
-jr_001_78ff:
+.CopyHintSelectionRowCellFrame:
     call PrepareCellEffectFrameCopy               ; $78ff: $cd $49 $75
     pop af                                        ; $7902: $f1
-    jr z, jr_001_790b                             ; $7903: $28 $06
+    jr z, .MarkHintSelectionRowCellAsX            ; $7903: $28 $06
 
     set 1, [hl]                                   ; $7905: $cb $ce
     res 2, [hl]                                   ; $7907: $cb $96
-    jr jr_001_790f                                ; $7909: $18 $04
+    jr .AdvanceHintSelectionRowLoop               ; $7909: $18 $04
 
-jr_001_790b:
+.MarkHintSelectionRowCellAsX:
     res 1, [hl]                                   ; $790b: $cb $8e
     set 2, [hl]                                   ; $790d: $cb $d6
 
-jr_001_790f:
+.AdvanceHintSelectionRowLoop:
     inc hl                                        ; $790f: $23
     inc c                                         ; $7910: $0c
-    ld a, [rCurrentGridSize]                      ; $7911: $fa $00 $d8
+    ld a, [rPuzzleGridWidth]                      ; $7911: $fa $00 $d8
     cp c                                          ; $7914: $b9
-    jr nz, jr_001_78ed                            ; $7915: $20 $d6
+    jr nz, .ApplyHintSelectionToRowLoop           ; $7915: $20 $d6
 
     ret                                           ; $7917: $c9
 
@@ -8946,7 +8912,7 @@ jr_001_79eb:
 
     ld c, $06                                     ; $79f7: $0e $06
     ld a, $02                                     ; $79f9: $3e $02
-    call TODO_Bank0FDispatcher                    ; $79fb: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $79fb: $cd $b6 $03
     ret                                           ; $79fe: $c9
 
 
@@ -9146,7 +9112,7 @@ jr_001_7ad6:
 jr_001_7ae2:
     ld c, $0d                                     ; $7ae2: $0e $0d
     ld a, $02                                     ; $7ae4: $3e $02
-    call TODO_Bank0FDispatcher                    ; $7ae6: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $7ae6: $cd $b6 $03
     ret                                           ; $7ae9: $c9
 
 
@@ -9400,7 +9366,7 @@ RenderPuzzleTimerDigitTile::
 
 
 TickPuzzleTimerInputAdjustment::
-    ld a, [$d811]                                 ; $7c88: $fa $11 $d8
+    ld a, [rPuzzleTimerAdjustmentStep]            ; $7c88: $fa $11 $d8
     ld c, a                                       ; $7c8b: $4f
     ld a, [rPuzzleTimerMinuteOnes]                ; $7c8c: $fa $09 $d8
     sub c                                         ; $7c8f: $91
@@ -9425,12 +9391,12 @@ TickPuzzleTimerInputAdjustment::
     ld [rPuzzleTimerActive], a                    ; $7cb6: $ea $0d $d8
 
 jr_001_7cb9:
-    ld a, [$d811]                                 ; $7cb9: $fa $11 $d8
+    ld a, [rPuzzleTimerAdjustmentStep]            ; $7cb9: $fa $11 $d8
     cp $08                                        ; $7cbc: $fe $08
     jr z, jr_001_7cc5                             ; $7cbe: $28 $05
 
     sla a                                         ; $7cc0: $cb $27
-    ld [$d811], a                                 ; $7cc2: $ea $11 $d8
+    ld [rPuzzleTimerAdjustmentStep], a            ; $7cc2: $ea $11 $d8
 
 jr_001_7cc5:
     jp RenderPuzzleTimerDigits                    ; $7cc5: $c3 $04 $7c
@@ -9456,7 +9422,7 @@ TickPuzzleTimerCompletionState::
 
 
 LoadGameOverMessageTileData::
-    ld a, [rCurrentGridSize]                      ; $7ce3: $fa $00 $d8
+    ld a, [rPuzzleGridWidth]                      ; $7ce3: $fa $00 $d8
     cp $05                                        ; $7ce6: $fe $05
     jp z, Load5x5GameOverMessageTileData          ; $7ce8: $ca $f3 $7c
 
@@ -9535,7 +9501,7 @@ Call_001_7d81:
     ld b, a                                       ; $7d84: $47
     ld a, [$d827]                                 ; $7d85: $fa $27 $d8
     ld c, a                                       ; $7d88: $4f
-    ld a, [$d811]                                 ; $7d89: $fa $11 $d8
+    ld a, [rPuzzleTimerAdjustmentStep]            ; $7d89: $fa $11 $d8
     cp $02                                        ; $7d8c: $fe $02
     jr nz, jr_001_7d94                            ; $7d8e: $20 $04
 
@@ -9649,11 +9615,11 @@ Call_001_7dfe:
     add hl, bc                                    ; $7e1b: $09
     ld c, $00                                     ; $7e1c: $0e $00
     ld a, $01                                     ; $7e1e: $3e $01
-    call TODO_Bank0FDispatcher                    ; $7e20: $cd $b6 $03
-    call Call_000_0399                            ; $7e23: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $7e20: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $7e23: $cd $99 $03
     ld c, [hl]                                    ; $7e26: $4e
     ld a, $01                                     ; $7e27: $3e $01
-    call TODO_Bank0FDispatcher                    ; $7e29: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $7e29: $cd $b6 $03
     ret                                           ; $7e2c: $c9
 
 
@@ -9748,7 +9714,7 @@ Call_001_7e77:
 
     ld a, $01                                     ; $7e87: $3e $01
     ld [$d81d], a                                 ; $7e89: $ea $1d $d8
-    ld a, [rCurrentGridSize]                      ; $7e8c: $fa $00 $d8
+    ld a, [rPuzzleGridWidth]                      ; $7e8c: $fa $00 $d8
     cp $05                                        ; $7e8f: $fe $05
     jr nz, jr_001_7e95                            ; $7e91: $20 $02
 

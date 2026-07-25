@@ -5,12 +5,12 @@
 
 SECTION "ROM Bank $00f", ROMX[$4000], BANK[$f]
 
-TODO_Jumpvector_4258::
-    jp TODO_Dispatcher1                           ; $4000: $c3 $58 $42
+Jumpvector_SoundEffectDispatcher::
+    jp SoundEffectDispatcher                      ; $4000: $c3 $58 $42
 
 
-TODO_Jumpvector_43ca::
-    jp TODO_FunctionCalledFromBank00              ; $4003: $c3 $ca $43
+Jumpvector_SoundEngineUpdateRoutine_Unsure::
+    jp SoundEngineUpdateRoutine_Unsure            ; $4003: $c3 $ca $43
 
 
     ; padding
@@ -26,7 +26,7 @@ HiddenMusicComposerCredits::
     ; padding
     ds $30, $ff
 
-TODO_Dispatcher1PointerTable::
+SoundEffectDispatcherPointerTable::
     db $64, $42
     db $a5, $42
     db $dd, $42
@@ -380,8 +380,8 @@ Call_00f_41fc:
     xor d                                         ; $4256: $aa
     xor a                                         ; $4257: $af
 
-TODO_Dispatcher1::
-    ld hl, TODO_Dispatcher1PointerTable           ; $4258: $21 $80 $40
+SoundEffectDispatcher::
+    ld hl, SoundEffectDispatcherPointerTable      ; $4258: $21 $80 $40
     push af                                       ; $425b: $f5
     add a                                         ; $425c: $87
     add l                                         ; $425d: $85
@@ -393,8 +393,8 @@ TODO_Dispatcher1::
     jp hl                                         ; $4263: $e9
 
 
-TODO_Dispatcher1_Event00::
-    ld hl, TODO_Dispatcher1_Event00_Data          ; $4264: $21 $86 $42
+SoundEffectDispatcher_Event00::
+    ld hl, SoundEffectDispatcher_Event00_Data     ; $4264: $21 $86 $42
 
 jr_00f_4267:
     ld a, [hl+]                                   ; $4267: $2a
@@ -423,7 +423,7 @@ jr_00f_4276:
     ret                                           ; $4285: $c9
 
 
-TODO_Dispatcher1_Event00_Data::
+SoundEffectDispatcher_Event00_Data::
     db $26, $80
     db $24, $77
     db $25, $ff
@@ -441,7 +441,7 @@ TODO_Dispatcher1_Event00_Data::
     db $20, $00
     db $00
 
-TODO_Dispatcher1_Event01::
+SoundEffectDispatcher_Event01::
     ld a, c                                       ; $42a5: $79
     ld [$dd00], a                                 ; $42a6: $ea $00 $dd
     ld de, $4a7d                                  ; $42a9: $11 $7d $4a
@@ -459,7 +459,7 @@ jr_00f_42b7:
     ld a, $f0                                     ; $42c0: $3e $f0
     or [hl]                                       ; $42c2: $b6
     ld [hl], a                                    ; $42c3: $77
-    ld hl, TODO_Dispatcher1_Event02_Data          ; $42c4: $21 $6b $43
+    ld hl, SoundEffectDispatcher_Event02_Data     ; $42c4: $21 $6b $43
 
 jr_00f_42c7:
     ld c, [hl]                                    ; $42c7: $4e
@@ -481,7 +481,7 @@ jr_00f_42c7:
     pop hl                                        ; $42da: $e1
     jr jr_00f_42c7                                ; $42db: $18 $ea
 
-TODO_Dispatcher1_Event02::
+SoundEffectDispatcher_Event02::
     push bc                                       ; $42dd: $c5
     ld hl, $dd02                                  ; $42de: $21 $02 $dd
     xor a                                         ; $42e1: $af
@@ -570,7 +570,7 @@ jr_00f_4346:
     ld [$dd04], a                                 ; $434f: $ea $04 $dd
 
 jr_00f_4352:
-    ld hl, TODO_Dispatcher1_Event02_Data          ; $4352: $21 $6b $43
+    ld hl, SoundEffectDispatcher_Event02_Data     ; $4352: $21 $6b $43
 
 jr_00f_4355:
     ld c, [hl]                                    ; $4355: $4e
@@ -592,7 +592,7 @@ jr_00f_4355:
     pop hl                                        ; $4368: $e1
     jr jr_00f_4355                                ; $4369: $18 $ea
 
-TODO_Dispatcher1_Event02_Data::
+SoundEffectDispatcher_Event02_Data::
     db $40, $dd, $00, $00
     db $70, $dd, $00, $00
     db $80, $dd, $00, $00
@@ -610,7 +610,7 @@ TODO_Dispatcher1_Event02_Data::
     db $a0, $dd, $0f, $ff
     db $00, $00
 
-TODO_Dispatcher1_Event03::
+SoundEffectDispatcher_Event03::
     ld hl, $dd0e                                  ; $43a9: $21 $0e $dd
     ld [hl], $41                                  ; $43ac: $36 $41
     inc hl                                        ; $43ae: $23
@@ -624,22 +624,22 @@ TODO_Dispatcher1_Event03::
     ret                                           ; $43b6: $c9
 
 
-TODO_Dispatcher1_Event04::
+SoundEffectDispatcher_Event04::
     ld c, $ff                                     ; $43b7: $0e $ff
-    jp TODO_Dispatcher1_Event01                   ; $43b9: $c3 $a5 $42
+    jp SoundEffectDispatcher_Event01              ; $43b9: $c3 $a5 $42
 
 
-TODO_Dispatcher1_Event05::
+SoundEffectDispatcher_Event05::
     ld c, $ff                                     ; $43bc: $0e $ff
-    jp TODO_Dispatcher1_Event02                   ; $43be: $c3 $dd $42
+    jp SoundEffectDispatcher_Event02              ; $43be: $c3 $dd $42
 
 
-TODO_Dispatcher1_Event06::
+SoundEffectDispatcher_Event06::
     ld a, [$dd00]                                 ; $43c1: $fa $00 $dd
     ret                                           ; $43c4: $c9
 
 
-TODO_Dispatcher1_Event07::
+SoundEffectDispatcher_Event07::
     ld a, [$dd01]                                 ; $43c5: $fa $01 $dd
     ret                                           ; $43c8: $c9
 
@@ -647,7 +647,7 @@ TODO_Dispatcher1_Event07::
     ret                                           ; $43c9: $c9
 
 
-TODO_FunctionCalledFromBank00::
+SoundEngineUpdateRoutine_Unsure::
     ld a, [$dd0e]                                 ; $43ca: $fa $0e $dd
     inc a                                         ; $43cd: $3c
     jr z, jr_00f_43d8                             ; $43ce: $28 $08
@@ -850,7 +850,7 @@ jr_00f_44b3:
     jp Jump_00f_4652                              ; $44c2: $c3 $52 $46
 
 
-TODO_Dispatcher1_Event15::
+SoundEffectDispatcher_Event15::
     ld a, c                                       ; $44c5: $79
     ld hl, $dd0c                                  ; $44c6: $21 $0c $dd
     srl a                                         ; $44c9: $cb $3f
@@ -864,10 +864,10 @@ TODO_Dispatcher1_Event15::
     ld a, $0f                                     ; $44d4: $3e $0f
     sub b                                         ; $44d6: $90
     ld [hl], a                                    ; $44d7: $77
-    jp TODO_Dispatcher1_Event13_14_1b_20_25_27    ; $44d8: $c3 $4d $46
+    jp SoundEffectDispatcher_Event13_14_1b_20_25_27; $44d8: $c3 $4d $46
 
 
-TODO_Dispatcher1_Event16::
+SoundEffectDispatcher_Event16::
     ld h, d                                       ; $44db: $62
     ld l, e                                       ; $44dc: $6b
     inc hl                                        ; $44dd: $23
@@ -877,7 +877,7 @@ TODO_Dispatcher1_Event16::
     jp Jump_00f_464e                              ; $44e1: $c3 $4e $46
 
 
-TODO_Dispatcher1_Event17::
+SoundEffectDispatcher_Event17::
     ld hl, $de40                                  ; $44e4: $21 $40 $de
     ld a, c                                       ; $44e7: $79
     add a                                         ; $44e8: $87
@@ -956,7 +956,7 @@ jr_00f_4544:
     ret                                           ; $4544: $c9
 
 
-TODO_Dispatcher1_Event26::
+SoundEffectDispatcher_Event26::
     ld hl, $de40                                  ; $4545: $21 $40 $de
     ld a, c                                       ; $4548: $79
     add a                                         ; $4549: $87
@@ -978,7 +978,7 @@ TODO_Dispatcher1_Event26::
     jp Jump_00f_464e                              ; $4559: $c3 $4e $46
 
 
-TODO_Dispatcher1_Event18::
+SoundEffectDispatcher_Event18::
     ld hl, $ddb0                                  ; $455c: $21 $b0 $dd
     ld a, c                                       ; $455f: $79
     add a                                         ; $4560: $87
@@ -996,10 +996,10 @@ TODO_Dispatcher1_Event18::
     ld a, [de]                                    ; $456e: $1a
     inc de                                        ; $456f: $13
     ld [hl], a                                    ; $4570: $77
-    jp TODO_Dispatcher1_Event13_14_1b_20_25_27    ; $4571: $c3 $4d $46
+    jp SoundEffectDispatcher_Event13_14_1b_20_25_27; $4571: $c3 $4d $46
 
 
-TODO_Dispatcher1_Event1d::
+SoundEffectDispatcher_Event1d::
     ld hl, $de00                                  ; $4574: $21 $00 $de
     ld a, c                                       ; $4577: $79
     add a                                         ; $4578: $87
@@ -1023,10 +1023,10 @@ TODO_Dispatcher1_Event1d::
     ld a, [de]                                    ; $458d: $1a
     pop hl                                        ; $458e: $e1
     ld [hl], a                                    ; $458f: $77
-    jp TODO_Dispatcher1_Event13_14_1b_20_25_27    ; $4590: $c3 $4d $46
+    jp SoundEffectDispatcher_Event13_14_1b_20_25_27; $4590: $c3 $4d $46
 
 
-TODO_Dispatcher1_Event19::
+SoundEffectDispatcher_Event19::
     ld hl, $de20                                  ; $4593: $21 $20 $de
     ld a, c                                       ; $4596: $79
     add a                                         ; $4597: $87
@@ -1047,14 +1047,14 @@ TODO_Dispatcher1_Event19::
     jp Jump_00f_464e                              ; $45a8: $c3 $4e $46
 
 
-TODO_Dispatcher1_Event1a::
+SoundEffectDispatcher_Event1a::
     ld hl, $de20                                  ; $45ab: $21 $20 $de
     ld a, c                                       ; $45ae: $79
     add a                                         ; $45af: $87
     add l                                         ; $45b0: $85
     ld l, a                                       ; $45b1: $6f
     dec [hl]                                      ; $45b2: $35
-    jp z, TODO_Dispatcher1_Event13_14_1b_20_25_27 ; $45b3: $ca $4d $46
+    jp z, SoundEffectDispatcher_Event13_14_1b_20_25_27; $45b3: $ca $4d $46
 
     ld hl, $de30                                  ; $45b6: $21 $30 $de
     ld a, c                                       ; $45b9: $79
@@ -1067,7 +1067,7 @@ TODO_Dispatcher1_Event1a::
     jp Jump_00f_464e                              ; $45c0: $c3 $4e $46
 
 
-TODO_Dispatcher1_Event22::
+SoundEffectDispatcher_Event22::
     ld hl, $dd50                                  ; $45c3: $21 $50 $dd
     ld a, c                                       ; $45c6: $79
     add a                                         ; $45c7: $87
@@ -1081,9 +1081,9 @@ TODO_Dispatcher1_Event22::
     ld a, [de]                                    ; $45d1: $1a
     and $0f                                       ; $45d2: $e6 $0f
     ld [hl], a                                    ; $45d4: $77
-    jr TODO_Dispatcher1_Event13_14_1b_20_25_27    ; $45d5: $18 $76
+    jr SoundEffectDispatcher_Event13_14_1b_20_25_27; $45d5: $18 $76
 
-TODO_Dispatcher1_Event1f::
+SoundEffectDispatcher_Event1f::
     ld hl, $dda0                                  ; $45d7: $21 $a0 $dd
     ld a, c                                       ; $45da: $79
     add a                                         ; $45db: $87
@@ -1094,9 +1094,9 @@ TODO_Dispatcher1_Event1f::
     and $0f                                       ; $45e0: $e6 $0f
     ld [hl+], a                                   ; $45e2: $22
     ld [hl], a                                    ; $45e3: $77
-    jr TODO_Dispatcher1_Event13_14_1b_20_25_27    ; $45e4: $18 $67
+    jr SoundEffectDispatcher_Event13_14_1b_20_25_27; $45e4: $18 $67
 
-TODO_Dispatcher1_Event1e::
+SoundEffectDispatcher_Event1e::
     ld hl, $de10                                  ; $45e6: $21 $10 $de
     ld a, c                                       ; $45e9: $79
     add a                                         ; $45ea: $87
@@ -1106,9 +1106,9 @@ TODO_Dispatcher1_Event1e::
     inc de                                        ; $45ee: $13
     ld a, [de]                                    ; $45ef: $1a
     ld [hl], a                                    ; $45f0: $77
-    jr TODO_Dispatcher1_Event13_14_1b_20_25_27    ; $45f1: $18 $5a
+    jr SoundEffectDispatcher_Event13_14_1b_20_25_27; $45f1: $18 $5a
 
-TODO_Dispatcher1_Event21::
+SoundEffectDispatcher_Event21::
     ld hl, $dde0                                  ; $45f3: $21 $e0 $dd
     ld a, c                                       ; $45f6: $79
     add a                                         ; $45f7: $87
@@ -1120,9 +1120,9 @@ TODO_Dispatcher1_Event21::
 Call_00f_45fc:
 Jump_00f_45fc:
     ld [hl], a                                    ; $45fc: $77
-    jr TODO_Dispatcher1_Event13_14_1b_20_25_27    ; $45fd: $18 $4e
+    jr SoundEffectDispatcher_Event13_14_1b_20_25_27; $45fd: $18 $4e
 
-TODO_Dispatcher1_Event1c::
+SoundEffectDispatcher_Event1c::
     ld hl, $de10                                  ; $45ff: $21 $10 $de
     ld a, c                                       ; $4602: $79
     add a                                         ; $4603: $87
@@ -1131,9 +1131,9 @@ TODO_Dispatcher1_Event1c::
     inc de                                        ; $4606: $13
     ld a, [de]                                    ; $4607: $1a
     ld [hl], a                                    ; $4608: $77
-    jr TODO_Dispatcher1_Event13_14_1b_20_25_27    ; $4609: $18 $42
+    jr SoundEffectDispatcher_Event13_14_1b_20_25_27; $4609: $18 $42
 
-TODO_Dispatcher1_Event24::
+SoundEffectDispatcher_Event24::
     ld hl, $ddd0                                  ; $460b: $21 $d0 $dd
     ld a, c                                       ; $460e: $79
     add a                                         ; $460f: $87
@@ -1142,9 +1142,9 @@ TODO_Dispatcher1_Event24::
     inc de                                        ; $4612: $13
     ld a, [de]                                    ; $4613: $1a
     ld [hl], a                                    ; $4614: $77
-    jr TODO_Dispatcher1_Event13_14_1b_20_25_27    ; $4615: $18 $36
+    jr SoundEffectDispatcher_Event13_14_1b_20_25_27; $4615: $18 $36
 
-TODO_Dispatcher1_Event23::
+SoundEffectDispatcher_Event23::
     ld hl, $dd90                                  ; $4617: $21 $90 $dd
     ld a, c                                       ; $461a: $79
     add a                                         ; $461b: $87
@@ -1153,9 +1153,9 @@ TODO_Dispatcher1_Event23::
     inc de                                        ; $461e: $13
     ld a, [de]                                    ; $461f: $1a
     ld [hl], a                                    ; $4620: $77
-    jr TODO_Dispatcher1_Event13_14_1b_20_25_27    ; $4621: $18 $2a
+    jr SoundEffectDispatcher_Event13_14_1b_20_25_27; $4621: $18 $2a
 
-TODO_Dispatcher1_Event08To10::
+SoundEffectDispatcher_Event08To10::
     ld hl, $dd30                                  ; $4623: $21 $30 $dd
     ld a, c                                       ; $4626: $79
     add a                                         ; $4627: $87
@@ -1164,9 +1164,9 @@ TODO_Dispatcher1_Event08To10::
     ld a, [de]                                    ; $462a: $1a
     and $0f                                       ; $462b: $e6 $0f
     ld [hl], a                                    ; $462d: $77
-    jr TODO_Dispatcher1_Event13_14_1b_20_25_27    ; $462e: $18 $1d
+    jr SoundEffectDispatcher_Event13_14_1b_20_25_27; $462e: $18 $1d
 
-TODO_Dispatcher1_Event11::
+SoundEffectDispatcher_Event11::
     ld hl, $dd30                                  ; $4630: $21 $30 $dd
     ld a, c                                       ; $4633: $79
     add a                                         ; $4634: $87
@@ -1174,12 +1174,12 @@ TODO_Dispatcher1_Event11::
     ld l, a                                       ; $4636: $6f
     ld a, [hl]                                    ; $4637: $7e
     cp $08                                        ; $4638: $fe $08
-    jr z, TODO_Dispatcher1_Event13_14_1b_20_25_27 ; $463a: $28 $11
+    jr z, SoundEffectDispatcher_Event13_14_1b_20_25_27; $463a: $28 $11
 
     inc [hl]                                      ; $463c: $34
-    jr TODO_Dispatcher1_Event13_14_1b_20_25_27    ; $463d: $18 $0e
+    jr SoundEffectDispatcher_Event13_14_1b_20_25_27; $463d: $18 $0e
 
-TODO_Dispatcher1_Event12::
+SoundEffectDispatcher_Event12::
     ld hl, $dd30                                  ; $463f: $21 $30 $dd
     ld a, c                                       ; $4642: $79
     add a                                         ; $4643: $87
@@ -1187,12 +1187,12 @@ TODO_Dispatcher1_Event12::
     ld l, a                                       ; $4645: $6f
     ld a, [hl]                                    ; $4646: $7e
     or a                                          ; $4647: $b7
-    jr z, TODO_Dispatcher1_Event13_14_1b_20_25_27 ; $4648: $28 $03
+    jr z, SoundEffectDispatcher_Event13_14_1b_20_25_27; $4648: $28 $03
 
     dec [hl]                                      ; $464a: $35
-    jr TODO_Dispatcher1_Event13_14_1b_20_25_27    ; $464b: $18 $00
+    jr SoundEffectDispatcher_Event13_14_1b_20_25_27; $464b: $18 $00
 
-TODO_Dispatcher1_Event13_14_1b_20_25_27::
+SoundEffectDispatcher_Event13_14_1b_20_25_27::
     inc de                                        ; $464d: $13
 
 Jump_00f_464e:
@@ -4051,7 +4051,7 @@ jr_00f_52c9:
     ei                                            ; $5328: $fb
     ld [hl+], a                                   ; $5329: $22
     inc b                                         ; $532a: $04
-    call nc, Call_000_10fc                        ; $532b: $d4 $fc $10
+    call nc, $10fc                                ; $532b: $d4 $fc $10
     ei                                            ; $532e: $fb
     ld de, $0404                                  ; $532f: $11 $04 $04
     ldh a, [c]                                    ; $5332: $f2
@@ -4060,7 +4060,7 @@ jr_00f_52c9:
 
     ld [hl+], a                                   ; $5336: $22
     inc b                                         ; $5337: $04
-    call nc, Call_000_10fc                        ; $5338: $d4 $fc $10
+    call nc, $10fc                                ; $5338: $d4 $fc $10
     ei                                            ; $533b: $fb
     ld de, $d904                                  ; $533c: $11 $04 $d9
     inc b                                         ; $533f: $04
@@ -4135,7 +4135,7 @@ jr_00f_5363:
 
     inc b                                         ; $537d: $04
     call nc, $0404                                ; $537e: $d4 $04 $04
-    call nc, Call_000_10fc                        ; $5381: $d4 $fc $10
+    call nc, $10fc                                ; $5381: $d4 $fc $10
     ei                                            ; $5384: $fb
     ld de, $0404                                  ; $5385: $11 $04 $04
     inc b                                         ; $5388: $04
@@ -4161,7 +4161,7 @@ jr_00f_5363:
 
     ld [hl+], a                                   ; $539f: $22
     inc b                                         ; $53a0: $04
-    call nc, Call_000_10fc                        ; $53a1: $d4 $fc $10
+    call nc, $10fc                                ; $53a1: $d4 $fc $10
     inc b                                         ; $53a4: $04
     call nc, $eff2                                ; $53a5: $d4 $f2 $ef
     pop af                                        ; $53a8: $f1
@@ -4208,7 +4208,9 @@ jr_00f_53bc:
     inc b                                         ; $53d9: $04
     inc b                                         ; $53da: $04
     inc b                                         ; $53db: $04
-    call nc, Call_000_03f1                        ; $53dc: $d4 $f1 $03
+
+    db $d4, $f1, $03
+
     db $fc                                        ; $53df: $fc
     db $10                                        ; $53e0: $10
     ei                                            ; $53e1: $fb
@@ -5770,7 +5772,7 @@ jr_00f_58ba:
     dec b                                         ; $5b0c: $05
     ret c                                         ; $5b0d: $d8
 
-    jp c, Jump_000_03f1                           ; $5b0e: $da $f1 $03
+    db $da, $f1, $03
 
     dec b                                         ; $5b11: $05
     ret c                                         ; $5b12: $d8
@@ -6198,7 +6200,7 @@ jr_00f_5ca5:
 
     ld b, h                                       ; $5cab: $44
     ei                                            ; $5cac: $fb
-    ld hl, $d805                                  ; $5cad: $21 $05 $d8
+    ld hl, rPuzzleFlowVariant_Unsure              ; $5cad: $21 $05 $d8
     dec b                                         ; $5cb0: $05
     ret c                                         ; $5cb1: $d8
 
@@ -7368,7 +7370,9 @@ Call_00f_60ee:
 
     inc b                                         ; $61d7: $04
     call nc, $d404                                ; $61d8: $d4 $04 $d4
-    call c, Call_000_03f1                         ; $61db: $dc $f1 $03
+
+    db $dc, $f1, $03
+
     inc b                                         ; $61de: $04
 
     db $d4, $da, $04
@@ -7484,7 +7488,7 @@ Call_00f_60ee:
     ld b, a                                       ; $6285: $47
     ld [hl], a                                    ; $6286: $77
     ld [hl], a                                    ; $6287: $77
-    ld a, [$0483]                                 ; $6288: $fa $83 $04
+    ld a, [DisableLCDAtVBlank]                    ; $6288: $fa $83 $04
     ld [$e9b4], a                                 ; $628b: $ea $b4 $e9
     inc b                                         ; $628e: $04
     inc h                                         ; $628f: $24
@@ -7515,7 +7519,7 @@ Call_00f_60ee:
     sbc h                                         ; $62ae: $9c
     ld [hl], a                                    ; $62af: $77
     ld b, a                                       ; $62b0: $47
-    ld a, [$0483]                                 ; $62b1: $fa $83 $04
+    ld a, [DisableLCDAtVBlank]                    ; $62b1: $fa $83 $04
     inc d                                         ; $62b4: $14
     inc h                                         ; $62b5: $24
     inc d                                         ; $62b6: $14
@@ -7939,7 +7943,9 @@ Call_00f_60ee:
     inc d                                         ; $64a6: $14
     inc h                                         ; $64a7: $24
     call nc, $b4ea                                ; $64a8: $d4 $ea $b4
-    call nc, Call_000_03f1                        ; $64ab: $d4 $f1 $03
+
+    db $d4, $f1, $03
+
     ld b, h                                       ; $64ae: $44
     ld [$e944], a                                 ; $64af: $ea $44 $e9
     ld b, h                                       ; $64b2: $44

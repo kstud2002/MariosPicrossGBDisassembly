@@ -4,11 +4,26 @@
 ; RAM ADDRESS LABELS (HRAM, WRAM, ECHO)
 ; =============================================================================
 
+00:c311 rShadowOAMWriteCursor
 00:c312 rActiveROMBank
 00:c314 rRequestedROMBank
 00:c31a rInputButtonsHeld
 00:c31e rInputButtonsPressed
 00:c322 rInputButtonsPressedOrRepeated
+00:c32e rLCDCShadow
+00:c32f rBGPShadow
+00:c330 rOBP0Shadow
+00:c331 rOBP1Shadow
+00:c332 rSCXShadow
+00:c333 rSCYShadow
+00:c336 rLYCShadow
+00:c337 rLCDCInterruptControlFlags_Unsure
+00:c338 rLCDCInterruptDispatchIndex
+00:c339 rVBlankSyncFlag
+00:c33b rLCDCFrameTickCounter
+00:c33c rVBlankLCDCBit4ForceFlag
+00:c33d rBootVariantFlag_Unsure
+00:c350 rVBlankSoundEngineUpdateEnabled_Unsure
 00:c351 rBGTileCopySourceX
 00:c352 rBGTileCopySourceY
 00:c353 rBGTileCopyDestX
@@ -27,6 +42,8 @@
 00:c360 rBGTileCopyValueG
 00:c361 rBGTileCopyValueH
 00:c362 rBGTileCopyValueI
+00:cd63 rTilemapToTileDataAddressLookupTableLow
+00:cd64 rTilemapToTileDataAddressLookupTableHigh
 00:cda2 rGS06_OAMSequenceBaseLow
 00:cda3 rGS06_OAMSequenceBaseHigh
 00:cda4 rGS06_OAMSequenceEventSpriteId
@@ -40,15 +57,31 @@
 00:d636 rPuzzleCursorColumn
 00:d637 rPuzzleCursorRow
 00:d63c rStatePhaseTimer
-00:d800 rCurrentGridSize
+00:d63d rHintCursorAnimationLastFrameTick
+00:d63e rHintCursorAnimationColumnAccumulator
+00:d63f rHintCursorAnimationRowAccumulator
+00:d73f rPuzzleCellStateBufferEnd
+00:d740 rClueRunLengthHorizontalBufferStart
+00:d799 rClueRunLengthHorizontalBufferBuildBase
+00:d7f9 rClueRunLengthVerticalBufferBuildBase
+00:d7a0 rClueRunLengthVerticalBufferStart
+00:d800 rPuzzleGridWidth
+00:d801 rPuzzleGridHeight
 00:d804 rPuzzleCellPendingActionMode
+00:d805 rPuzzleFlowVariant_Unsure
 00:d806 rPuzzleTimerCompletionState
+00:d807 rPuzzleDataIndexLow
+00:d808 rPuzzleDataIndexHigh
 00:d809 rPuzzleTimerMinuteOnes
 00:d80a rPuzzleTimerMinuteTens
 00:d80b rPuzzleTimerSecondOnes
 00:d80c rPuzzleTimerSecondTens
 00:d80d rPuzzleTimerActive
+00:d80f rPuzzleActionRepeatGuard
 00:d810 rCellEffectFrameSourceBaseIndex
+00:d811 rPuzzleTimerAdjustmentStep
+00:d812 rHintCursorAnimationColumnThreshold
+00:d813 rHintCursorAnimationRowThreshold
 00:d816 rMarioBlinkAnimationSpriteId
 00:d817 rMarioBlinkAnimationDelay
 00:d818 rMarioBlinkAnimationSequenceCursor
@@ -62,6 +95,7 @@
 00:d823 rPendingCellEffectCode
 00:d824 rCellEffectTargetColumn
 00:d825 rCellEffectTargetRow
+00:d82a rCountdownSfxTimer
 00:d82b rMessageScriptStreamEntryLow
 00:d82c rMessageScriptStreamEntryHigh
 00:d82d rMessageScriptStreamPointerLow
@@ -70,6 +104,9 @@
 00:d830 rGS06_ScriptedInputSequenceDelay
 00:d831 rGS06_ScriptedInputSequenceTableLow
 00:d832 rGS06_ScriptedInputSequenceTableHigh
+00:d833 rHintPopupSelection
+00:d835 rAdvanceOrSkipTimeoutEnabled
+00:d836 rAdvanceOrSkipTimeoutCounter
 00:d843 rMessageScriptStreamResetEntryLow
 00:d844 rMessageScriptStreamResetEntryHigh
 00:d845 rMessageScriptStreamLimitLow
@@ -83,6 +120,7 @@
 
 00:0004 .padding:4
 00:0008 .code:10
+00:0012 .WaitForVBlankSyncFlagLoop
 00:0018 .code:c
 00:0024 .padding:1c
 00:0043 .padding:5
@@ -94,9 +132,17 @@
 00:0150 GameInitEntryPoint
 
 00:02b9 VBlankInterruptHandler
+
 00:0333 LCDCInterruptHandler
+00:034d LCDCInterruptHandlerReturnAndReti
+00:0352 LCDCInterruptDispatchTable
+00:0352 .data:0008:2
+00:035a LCDCInterruptDispatchNoOpReturn
+
 00:035b TimerOverflowInterruptHandlerStub
+
 00:035c SerialTransferCompleteInterruptHandlerStub
+
 00:035d JoypadTransitionInterruptHandlerStub
 
 00:035e HiddenProgrammerCredits
@@ -107,8 +153,24 @@
 
 00:0373 GameStateDispatcher
 
-00:03b6 TODO_Bank0FDispatcher
-00:03f2 TODO_Bank0FCall4003
+00:0399 WaitForScanline40OrDelay
+00:03a3 .DelayLoop_LCDOff
+00:03ad .SyncAndWaitForScanline40
+00:03ae .WaitForScanline40Loop
+
+00:03b6 CallSoundEffectDispatcher
+00:03ee CallSoundEngineUpdateRoutine_Unsure_PreserveRegisters
+00:03f2 CallSoundEngineUpdateRoutine_Unsure
+
+00:040d PlayScreenTransitionFadeIn
+00:0421 .ApplyFadeStepLoop
+00:044e PlayScreenTransitionFadeOut
+00:0462 .ApplyFadeStepLoop
+
+00:0483 DisableLCDAtVBlank
+00:048e .WaitForVBlankLine91
+
+00:04a2 EnableLCDFromShadow
 
 00:04d3 ZeroMemoryBlock
 
@@ -120,16 +182,33 @@
 
 00:0538 BankedTileCopyVRAMSafe
 
+00:05a0 FillBGMap0WithTile01
+00:05a5 .FillBGMap0WithTile01Loop
+00:05ab FillBGMap1WithTile01
+00:05b0 .FillBGMap1WithTile01Loop
+
 00:05b6 ClearShadowOAMBuffer
 00:05bb .FillWithF0Loop
+00:05c5 ClearShadowOAMBufferFromCursor
+00:05cd .FillWithF0Loop
 
 00:05de SwitchBankToBAndJumpToHL
+00:05fa DelayFramesByBC
+00:0603 BusyWaitDelayByBC
+00:0606 .InnerDelayLoop
 
 00:0671 TODO_PointerOrOffsetTable
 00:0671 .data:0036:2
 
 00:07f1 LoadPuzzleDataBuffer
 00:0831 .DecodePuzzleDataBitsLoop
+
+00:086f LCDCInterruptDispatchRoutineAtLY2F_TickAndMaybeRunSoundEngineUpdate
+00:087a .WaitForSTATMode0Loop
+00:089d .Return
+
+00:089e LCDCInterruptDispatchRoutineAtLY2F_MaybeRunSoundEngineUpdate
+00:08b2 .Return
 
 00:08b3 PrepareBGTileCopy
 00:0939 .PrepareBGTileCopyLoop
@@ -153,6 +232,48 @@
 00:0ae8 .RestoreInterrupts
 00:0af3 .CopyTileDataLoopAlt
 
+00:0d6a ResolveTilemapTileDataAddressAndStoreToDE
+
+00:1096 GS06_ScreenTilemapTileDataAddressLookupTable
+00:1096 .data:0024:2
+
+00:10ba GS06_ScreenTilemapTileDataAddressLookupRow00Table
+00:10ba .data:0028:2
+00:10e2 GS06_ScreenTilemapTileDataAddressLookupRow01Table
+00:10e2 .data:0028:2
+00:110a GS06_ScreenTilemapTileDataAddressLookupRow02Table
+00:110a .data:0028:2
+00:1132 GS06_ScreenTilemapTileDataAddressLookupRow03Table
+00:1132 .data:0028:2
+00:115a GS06_ScreenTilemapTileDataAddressLookupRow04Table
+00:115a .data:0028:2
+00:1182 GS06_ScreenTilemapTileDataAddressLookupRow05Table
+00:1182 .data:0028:2
+00:11aa GS06_ScreenTilemapTileDataAddressLookupRow06Table
+00:11aa .data:0028:2
+00:11d2 GS06_ScreenTilemapTileDataAddressLookupRow07Table
+00:11d2 .data:0028:2
+00:11fa GS06_ScreenTilemapTileDataAddressLookupRow08Table
+00:11fa .data:0028:2
+00:1222 GS06_ScreenTilemapTileDataAddressLookupRow09Table
+00:1222 .data:0028:2
+00:124a GS06_ScreenTilemapTileDataAddressLookupRow0aTable
+00:124a .data:0028:2
+00:1272 GS06_ScreenTilemapTileDataAddressLookupRow0bTable
+00:1272 .data:0028:2
+00:129a GS06_ScreenTilemapTileDataAddressLookupRow0cTable
+00:129a .data:0028:2
+00:12c2 GS06_ScreenTilemapTileDataAddressLookupRow0dTable
+00:12c2 .data:0028:2
+00:12ea GS06_ScreenTilemapTileDataAddressLookupRow0eTable
+00:12ea .data:0028:2
+00:1312 GS06_ScreenTilemapTileDataAddressLookupRow0fTable
+00:1312 .data:0028:2
+00:133a GS06_ScreenTilemapTileDataAddressLookupRow10Table
+00:133a .data:0028:2
+00:1362 GS06_ScreenTilemapTileDataAddressLookupRow11Table
+00:1362 .data:0028:2
+
 00:2000 ROMBankSwitchTrigger
 ;00:4000 RAMBankSwitchTrigger
 
@@ -160,6 +281,10 @@
 00:19eb .LoadNextSequenceEvent
 00:19fc .ApplySequenceEvent
 00:1a23 .TickSequenceEventDelayAndEmit
+
+00:1fc8 PlayScreenTransitionFadeIn_AlternatePath
+
+00:204a PlayScreenTransitionFadeOut_AlternatePath
 
 00:20ce CopyOAMSpriteById
 00:20f0 .CopyOAMSpriteLoop
@@ -300,66 +425,79 @@
 00:218a GS06_StatePhase_00_Init
 00:2282 GS06_StatePhase_01_Message
 00:22aa GS06_StatePhase_02_HighlightNumbersTop_Prepare
-00:22e1 GS06_StatePhase_02_HighlightNumbersTop_SequenceEventTable
+00:22e1 GS06_StatePhase_02_HighlightNumbersTop_OAMSequenceEventTable
 00:22e1 .data:0011:4
 00:22f2 GS06_StatePhase_03_HighlightNumbersTop_Animation
 00:2310 GS06_StatePhase_04_HighlightNumbersLeft_Prepare
-00:2347 GS06_StatePhase_04_HighlightNumbersLeft_SequenceEventTable
+00:2347 GS06_StatePhase_04_HighlightNumbersLeft_OAMSequenceEventTable
 00:2347 .data:0011:4
 00:2358 GS06_StatePhase_05_HighlightNumbersLeft_Animation
 00:2376 GS06_StatePhase_06_Message
 00:239e GS06_StatePhase_07_Message
 00:23c6 GS06_StatePhase_08_SolvePuzzle_Prepare
 00:23f0 GS06_SolvePuzzleInputSequenceData
-00:23f0 .data:007d:4
+00:23f0 .data:007d:8
 00:246d GS06_StatePhase_09_SolvePuzzle_Animation
 00:247f .FrameLoop
 00:2492 GS06_StatePhase_0a_SolvePuzzle_Finish
 00:24ab GS06_StatePhase_0b_Message
 00:24d3 GS06_StatePhase_0c_ResetBoard
 00:2501 GS06_StatePhase_0d_HighlightNumbersTop_Prepare
-00:2538 GS06_StatePhase_0d_HighlightNumbersTop_SequenceEventTable
+00:2538 GS06_StatePhase_0d_HighlightNumbersTop_OAMSequenceEventTable
 00:2538 .data:0011:4
 00:2549 GS06_StatePhase_0e_HighlightNumbersTop_Animation
 00:2567 GS06_StatePhase_0f_Message
 00:258f GS06_StatePhase_10_HighlightNumbersFirstColumn_Prepare
-00:25c6 GS06_StatePhase_10_HighlightNumbersFirstColumn_SequenceEventTable
+00:25c6 GS06_StatePhase_10_HighlightNumbersFirstColumn_OAMSequenceEventTable
 00:25c6 .data:0011:4
 00:25d7 GS06_StatePhase_11_HighlightNumbersFirstColumn_Animation
 00:25f5 GS06_StatePhase_12_SolveFirstColumn_Prepare
 00:261f GS06_SolveFirstColumnInputSequenceData
-00:261f .data:0010:4
+00:261f .data:0010:8
 00:262f GS06_StatePhase_13_SolveFirstColumn_Animation
 00:2658 .FrameLoop
 00:266b GS06_StatePhase_14_HighlightNumbersLeft_Prepare
-00:26a2 GS06_StatePhase_14_HighlightNumbersLeft_SequenceEventTable
+00:26a2 GS06_StatePhase_14_HighlightNumbersLeft_OAMSequenceEventTable
 00:26a2 .data:0011:4
 00:26b3 GS06_StatePhase_15_HighlightNumbersLeft_Animation
 00:26d1 GS06_StatePhase_16_Message
 00:26f9 GS06_StatePhase_17_HighlightNumbersSecondRow_Prepare
-00:2730 GS06_StatePhase_17_HighlightNumbersSecondRow_SequenceEventTable
+00:2730 GS06_StatePhase_17_HighlightNumbersSecondRow_OAMSequenceEventTable
 00:2730 .data:0011:4
 00:2741 GS06_StatePhase_18_HighlightNumbersSecondRow_Animation
 00:275f GS06_StatePhase_19_SolveSecondRow_Prepare
 00:278b GS06_SolveSecondRowInputSequenceData
-00:278b .data:0013:4
+00:278b .data:0013:8
 00:279e GS06_StatePhase_1a_SolveSecondRow_Animation
 00:27c1 .FrameLoop
 00:27d4 GS06_StatePhase_1b_Message
 00:27e6 GS06_StatePhase_1c_DecrementPuzzleTimer
 00:280a GS06_StatePhase_1d_GameOverMessage
-00:283b GS06_StatePhase_1e_TODO
-00:2870 GS06_StatePhase_1f_TODO
-00:289a GS06_StatePhase_20_TODO
-00:28c2 GS06_StatePhase_21_TODO
-00:28f7 GS06_StatePhase_22_TODO
-00:2936 GS06_StatePhase_23_TODO
-00:2972 GS06_StatePhase_24_TODO
-00:29cc GS06_StatePhase_25_TODO
-00:29f4 GS06_StatePhase_26_TODO
-00:2a33 GS06_StatePhase_27_TODO
-00:2a7b GS06_StatePhase_28_TODO
-00:2aac GS06_StatePhase_29_TODO
+00:283b GS06_StatePhase_1e_MakeMistake_Prepare
+00:2868 GS06_MakeMistakeInputSequenceData
+00:2868 .data:0008:8
+00:2870 GS06_StatePhase_1f_MakeMistake_Animation
+00:2887 .FrameLoop
+00:289a GS06_StatePhase_20_Message
+00:28c2 GS06_StatePhase_21_MarkWithX_Prepare
+00:28ef GS06_MarkWithXInputSequenceData
+00:28ef .data:0008:8
+00:28f7 GS06_StatePhase_22_MarkWithX_Animation
+00:2923 .FrameLoop
+00:2936 GS06_StatePhase_23_WithHintPopUp_Prepare
+00:296c GS06_WithHintPopUpInputSequenceData
+00:296c .data:0006:8
+00:2972 GS06_StatePhase_24_WithHintPopUp_Demonstration
+00:29a7 .ToggleHintPopupVariant
+00:29c0 GS06_DrawWithHintPopUp
+00:29cc GS06_StatePhase_25_Message
+00:29f4 GS06_StatePhase_26_StopTopHintCursor
+00:2a10 .DecelerateTopHintCursorLoop
+00:2a33 GS06_StatePhase_27_StopLeftHintCursor
+00:2a4f .DecelerateLeftHintCursorLoop
+00:2a7b GS06_StatePhase_28_ApplyHintSolve
+00:2aac GS06_StatePhase_29_AdvanceOrRestart
+00:2ae0 .ResetTutorialStateAndRestart
 00:2b24 GS06_StatePhase_2a_CancelAndReturnToMenu
 
 00:2b6e AdvanceMessageScriptStream
@@ -367,9 +505,10 @@
 00:2bab .AdvanceMessageScriptStreamEntry
 00:2bb7 .ResetMessageScriptStreamEntry
 00:2bc5 .StoreMessageScriptStreamPointer
-00:2bd3 PrepareBGTileCopySetup
-00:2c06 .PrepareBGTileCopyParams
-00:2c17 .ApplyBGTileCopyParams
+
+00:2bd3 PrepareMessageBGTileCopySetup
+00:2c06 .PrepareMessageBGTileCopyParams
+00:2c17 .ApplyMessageBGTileCopyParams
 
 00:2cb6 MessageGlyphWidthTable
 00:2cb6 .data:0100:8
@@ -405,6 +544,14 @@
 00:3192 .DecrementPuzzleTimerSecondTens
 00:31a8 .DecrementPuzzleTimerMinuteOnes
 00:31be .DecrementPuzzleTimerMinuteTens
+
+00:31ca AdvanceHintCursorAnimation
+00:31ff .AdvanceHintCursorColumn
+00:3208 .HintCursorColumnNoWrap
+00:320e .AdvanceHintCursorRow
+00:322b .HintCursorRowNoWrap
+00:3234 .AdvanceHintCursorAnimationComplete
+00:323a .FinalizeHintCursorAnimation
 
 00:323e GS06_ResetMessageSequenceState
 
@@ -679,7 +826,48 @@
 01:69f6 Load10x10GameBoardTileData
 01:6a22 Load15x15GameBoardTileData
 
+01:6c2c TickCountdownAndEmitSfx
+
+01:6f30 BuildClueRunLengthBuffers
+01:6f37 BuildHorizontalClueRunLengthBuffer
+01:6f3f .HorizontalRunLength_InitLine
+01:6f43 .HorizontalRunLength_ClearSixSlotsLoop
+01:6f4a .HorizontalRunLength_ScanBitsLoop
+01:6f4f .HorizontalRunLength_CountFilledRunLoop
+01:6f5a .HorizontalRunLength_AdvanceBitLoop
+01:6f60 .HorizontalRunLength_StoreTerminalRun
+01:6f61 .HorizontalRunLength_NextLine
+
+01:6f6c BuildVerticalClueRunLengthBuffer
+01:6f74 .VerticalRunLength_InitLine
+01:6f78 .VerticalRunLength_ClearSixSlotsLoop
+01:6f7f .VerticalRunLength_ScanBitsLoop
+01:6f84 .VerticalRunLength_CountFilledRunLoop
+01:6f98 .VerticalRunLength_AdvanceBitLoop
+01:6fa5 .VerticalRunLength_StoreTerminalRun
+01:6fa6 .VerticalRunLength_NextLine
+
+01:6fb9 DrawClueNumbersFromRunLengthBuffers
+01:6fc0 DrawClueNumbersHorizontalPass
+01:6fca .HorizontalPass_RowLoop
+01:6fcd .HorizontalPass_ColumnLoop
+01:6fd4 .HorizontalPass_NextColumn
+
+01:6fed DrawClueNumbersVerticalPass
+01:6ff7 .VerticalPass_ColumnLoop
+01:6ffb .VerticalPass_RowLoop
+01:7002 .VerticalPass_NextRow
+
+01:701b PrepareBGTileCopyForClueDigit
+01:7049 .UseGrayBGClueDigitSourceTable
+01:7055 .ApplyClueDigitTileCopy
+01:7061 .data:0020:2
+01:7061 ClueDigitTileSourceTableWhiteBG
+01:7081 .data:0020:2
+01:7081 ClueDigitTileSourceTableGrayBG
+
 01:713e DrawPuzzleCursorSpritesAndTickStepSequence
+01:7185 DrawPuzzleCursorSprites
 
 01:71ca UpdatePuzzleCursorFromDirectionalInput
 01:71de .CheckLeft
@@ -738,6 +926,16 @@
 01:7672 .ProcessBoardCells
 01:7688 .AdvanceToNextRow
 01:76a5 .AdvanceToNextColumn
+
+01:78a2 ApplyHintSelectionToRowAndColumn
+01:78b4 .ApplyHintSelectionToColumnLoop
+01:78c6 .CopyHintSelectionColumnCellFrame
+01:78d2 .MarkHintSelectionColumnCellAsX
+01:78d6 .AdvanceHintSelectionColumnLoop
+01:78ed .ApplyHintSelectionToRowLoop
+01:78ff .CopyHintSelectionRowCellFrame
+01:790b .MarkHintSelectionRowCellAsX
+01:790f .AdvanceHintSelectionRowLoop
 
 01:7967 TickMessageStepSequenceAndEmitSprite
 
@@ -1446,6 +1644,10 @@
 ; =============================================================================
 ; BANK 003
 ; =============================================================================
+
+03:46a0 TransitionFadePaletteTable_GS06_Start
+03:46a0 .data:000c:3
+;03:46ab TransitionFadePaletteTable_GS06_End
 
 ; GameState 00 Phase pointer table entries (accessed via RST_18 dispatcher):
 ; Offset calculation: Phase_value * 2, added to return address $4f8b yields pointer location
@@ -2265,13 +2467,13 @@
 03:6d78 .data:000d:4
 03:6d85 OAMSpriteData_Event02
 03:6d85 .data:0005:4
-03:6d8a OAMSpriteData_Event03
+03:6d8a OAMSpriteData_Event03_PositionCursorTop_Frame1
 03:6d8a .data:0009:4
-03:6d93 OAMSpriteData_Event04
+03:6d93 OAMSpriteData_Event04_PositionCursorTop_Frame2
 03:6d93 .data:0009:4
-03:6d9c OAMSpriteData_Event05
+03:6d9c OAMSpriteData_Event05_PositionCursorLeft_Frame1
 03:6d9c .data:0009:4
-03:6da5 OAMSpriteData_Event06
+03:6da5 OAMSpriteData_Event06_PositionCursorLeft_Frame2
 03:6da5 .data:0009:4
 03:6dae OAMSpriteData_Event07
 03:6dae .data:0009:4
@@ -2375,9 +2577,9 @@
 03:7467 .data:0005:4
 03:746c OAMSpriteData_Event39_MarioMouthOpen
 03:746c .data:0005:4
-03:7471 OAMSpriteData_Event3a
+03:7471 OAMSpriteData_Event3a_WithHintPopUp_Yes
 03:7471 .data:0061:4
-03:74d2 OAMSpriteData_Event3b
+03:74d2 OAMSpriteData_Event3b_WithHintPopUp_No
 03:74d2 .data:0061:4
 03:7533 OAMSpriteData_Event3c
 03:7533 .data:0079:4
@@ -2691,8 +2893,21 @@
 06:5800 CellEffectTileDataSet00
 06:5800 .image:0030:pe1
 
+; buffer
+06:5830 .data:0010
+
 06:5840 PuzzleTimerDigitsTileData
-06:5840 .image:00a0:pe1,w80
+06:5840 .image:00c0:pe1,w80
+
+; buffer
+06:58e0 .data:0010
+06:58f0 .padding:10
+
+06:5900 ClueDigitsWhiteBGTileData
+06:5900 .image:0100:pe1
+
+06:5a00 ClueDigitsGreyBGTileData
+06:5a00 .image:0100:pe1
 
 06:5b00 Picross10x10And15x15GameOverMessageTileData
 06:5b00 .image:1000:pe1
@@ -2964,8 +3179,8 @@
 ; BANK 00F
 ; =============================================================================
 
-0f:4000 TODO_Jumpvector_4258
-0f:4003 TODO_Jumpvector_43ca
+0f:4000 Jumpvector_SoundEffectDispatcher
+0f:4003 Jumpvector_SoundEngineUpdateRoutine_Unsure
 
 0f:4006 .padding:a
 
@@ -2976,58 +3191,62 @@
 
 0f:4050 .padding:30
 
-0f:4080 TODO_Dispatcher1PointerTable
+0f:4080 SoundEffectDispatcherPointerTable
 0f:4080 .data:50:2
 
 0f:40d0 .padding:30
 
-0f:4258 TODO_Dispatcher1
-0f:43ca TODO_FunctionCalledFromBank00
+0f:4258 SoundEffectDispatcher
+0f:43ca SoundEngineUpdateRoutine_Unsure
 
-0f:4264 TODO_Dispatcher1_Event00
-0f:4286 TODO_Dispatcher1_Event00_Data
+0f:4264 SoundEffectDispatcher_Event00
+0f:4286 SoundEffectDispatcher_Event00_Data
 0f:4286 .data:001f:2
-0f:42a5 TODO_Dispatcher1_Event01
-0f:42dd TODO_Dispatcher1_Event02
-0f:436b TODO_Dispatcher1_Event02_Data
+0f:42a5 SoundEffectDispatcher_Event01
+0f:42dd SoundEffectDispatcher_Event02
+0f:436b SoundEffectDispatcher_Event02_Data
 0f:436b .data:003e:4
-0f:43a9 TODO_Dispatcher1_Event03
-0f:43b7 TODO_Dispatcher1_Event04
-0f:43bc TODO_Dispatcher1_Event05
-0f:43c1 TODO_Dispatcher1_Event06
-0f:43c5 TODO_Dispatcher1_Event07
-0f:4623 TODO_Dispatcher1_Event08To10
-0f:4630 TODO_Dispatcher1_Event11
-0f:463f TODO_Dispatcher1_Event12
-0f:464d TODO_Dispatcher1_Event13_14_1b_20_25_27
-0f:44c5 TODO_Dispatcher1_Event15
-0f:44db TODO_Dispatcher1_Event16
-0f:44e4 TODO_Dispatcher1_Event17
-0f:455c TODO_Dispatcher1_Event18
-0f:4593 TODO_Dispatcher1_Event19
-0f:45ab TODO_Dispatcher1_Event1a
-0f:45ff TODO_Dispatcher1_Event1c
-0f:4574 TODO_Dispatcher1_Event1d
-0f:45e6 TODO_Dispatcher1_Event1e
-0f:45d7 TODO_Dispatcher1_Event1f
-0f:45f3 TODO_Dispatcher1_Event21
-0f:45c3 TODO_Dispatcher1_Event22
-0f:4617 TODO_Dispatcher1_Event23
-0f:460b TODO_Dispatcher1_Event24
-0f:4545 TODO_Dispatcher1_Event26
+0f:43a9 SoundEffectDispatcher_Event03
+0f:43b7 SoundEffectDispatcher_Event04
+0f:43bc SoundEffectDispatcher_Event05
+0f:43c1 SoundEffectDispatcher_Event06
+0f:43c5 SoundEffectDispatcher_Event07
+0f:4623 SoundEffectDispatcher_Event08To10
+0f:4630 SoundEffectDispatcher_Event11
+0f:463f SoundEffectDispatcher_Event12
+0f:464d SoundEffectDispatcher_Event13_14_1b_20_25_27
+0f:44c5 SoundEffectDispatcher_Event15
+0f:44db SoundEffectDispatcher_Event16
+0f:44e4 SoundEffectDispatcher_Event17
+0f:455c SoundEffectDispatcher_Event18
+0f:4593 SoundEffectDispatcher_Event19
+0f:45ab SoundEffectDispatcher_Event1a
+0f:45ff SoundEffectDispatcher_Event1c
+0f:4574 SoundEffectDispatcher_Event1d
+0f:45e6 SoundEffectDispatcher_Event1e
+0f:45d7 SoundEffectDispatcher_Event1f
+0f:45f3 SoundEffectDispatcher_Event21
+0f:45c3 SoundEffectDispatcher_Event22
+0f:4617 SoundEffectDispatcher_Event23
+0f:460b SoundEffectDispatcher_Event24
+0f:4545 SoundEffectDispatcher_Event26
 
 0f:51ee .data:3
 0f:5208 .data:3
 0f:5344 .data:3
+0f:53dc .data:3
 0f:564d .data:3
 0f:56d0 .data:3
 0f:56d7 .data:3
 0f:56f7 .data:3
+0f:5b0e .data:3
+0f:61db .data:3
 0f:61df .data:3
 0f:6239 .data:3
 0f:6268 .data:3
 0f:6396 .data:3
 0f:63e4 .data:3
+0f:64ab .data:3
 0f:64e0 .data:3
 0f:6a99 .data:3
 0f:6cf8 .data:3

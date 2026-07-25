@@ -1637,7 +1637,7 @@ jr_004_4663:
     nop                                           ; $46cf: $00
     ld b, b                                       ; $46d0: $40
     ld [hl], b                                    ; $46d1: $70
-    jp nz, TODO_Bank0FCall4003                    ; $46d2: $c2 $f2 $03
+    jp nz, CallSoundEngineUpdateRoutine_Unsure    ; $46d2: $c2 $f2 $03
 
     di                                            ; $46d5: $f3
     ld [bc], a                                    ; $46d6: $02
@@ -1783,7 +1783,7 @@ jr_004_4726:
     nop                                           ; $476d: $00
     rst $38                                       ; $476e: $ff
     nop                                           ; $476f: $00
-    jp Jump_000_10e3                              ; $4770: $c3 $e3 $10
+    jp $10e3                                      ; $4770: $c3 $e3 $10
 
 
     ldh a, [rNR34]                                ; $4773: $f0 $1e
@@ -1923,7 +1923,7 @@ jr_004_4812:
     inc bc                                        ; $4812: $03
     ld hl, sp-$7d                                 ; $4813: $f8 $83
     ld a, b                                       ; $4815: $78
-    jp $c338                                      ; $4816: $c3 $38 $c3
+    jp rLCDCInterruptDispatchIndex                ; $4816: $c3 $38 $c3
 
 
 jr_004_4819:
@@ -3536,7 +3536,7 @@ jr_004_4e64:
     pop bc                                        ; $4ec6: $c1
     ld a, $c3                                     ; $4ec7: $3e $c3
     inc a                                         ; $4ec9: $3c
-    jp $c33c                                      ; $4eca: $c3 $3c $c3
+    jp rVBlankLCDCBit4ForceFlag                   ; $4eca: $c3 $3c $c3
 
 
     inc a                                         ; $4ecd: $3c
@@ -6099,7 +6099,7 @@ jr_004_58fb:
     rst $38                                       ; $596d: $ff
     nop                                           ; $596e: $00
     rst $38                                       ; $596f: $ff
-    jp $c33c                                      ; $5970: $c3 $3c $c3
+    jp rVBlankLCDCBit4ForceFlag                   ; $5970: $c3 $3c $c3
 
 
     inc a                                         ; $5973: $3c
@@ -10538,7 +10538,7 @@ jr_004_635c:
     rst $38                                       ; $6c1f: $ff
     rra                                           ; $6c20: $1f
     db $10                                        ; $6c21: $10
-    ld de, $1312                                  ; $6c22: $11 $12 $13
+    ld de, GS06_ScreenTilemapTileDataAddressLookupRow0fTable; $6c22: $11 $12 $13
     inc d                                         ; $6c25: $14
     dec d                                         ; $6c26: $15
     ld d, $17                                     ; $6c27: $16 $17
@@ -11529,7 +11529,7 @@ jr_004_6c44:
     rst $38                                       ; $701f: $ff
     rra                                           ; $7020: $1f
     db $10                                        ; $7021: $10
-    ld de, $1312                                  ; $7022: $11 $12 $13
+    ld de, GS06_ScreenTilemapTileDataAddressLookupRow0fTable; $7022: $11 $12 $13
     inc d                                         ; $7025: $14
     dec d                                         ; $7026: $15
     ld d, $17                                     ; $7027: $16 $17

@@ -18,15 +18,15 @@ RST_08::
     bit 7, a                                      ; $000a: $cb $7f
     ret z                                         ; $000c: $c8
 
-    ld hl, $c339                                  ; $000d: $21 $39 $c3
+    ld hl, rVBlankSyncFlag                        ; $000d: $21 $39 $c3
     xor a                                         ; $0010: $af
     ld [hl], a                                    ; $0011: $77
 
-jr_000_0012:
+.WaitForVBlankSyncFlagLoop:
     halt                                          ; $0012: $76
     ld a, [hl]                                    ; $0013: $7e
     and a                                         ; $0014: $a7
-    jr z, jr_000_0012                             ; $0015: $28 $fb
+    jr z, .WaitForVBlankSyncFlagLoop              ; $0015: $28 $fb
 
     ret                                           ; $0017: $c9
 
@@ -140,7 +140,7 @@ GameInitEntryPoint::
 
 jr_000_0161:
     ld bc, $0002                                  ; $0161: $01 $02 $00
-    call Call_000_0603                            ; $0164: $cd $03 $06
+    call BusyWaitDelayByBC                        ; $0164: $cd $03 $06
 
 jr_000_0167:
     ldh a, [rLY]                                  ; $0167: $f0 $44
@@ -154,8 +154,8 @@ jr_000_0167:
     ldh [rOBP0], a                                ; $0174: $e0 $48
     ldh [rOBP1], a                                ; $0176: $e0 $49
     ld bc, $0002                                  ; $0178: $01 $02 $00
-    call Call_000_0603                            ; $017b: $cd $03 $06
-    call Call_000_0483                            ; $017e: $cd $83 $04
+    call BusyWaitDelayByBC                        ; $017b: $cd $03 $06
+    call DisableLCDAtVBlank                       ; $017e: $cd $83 $04
     ld a, $0a                                     ; $0181: $3e $0a
     ld [$0000], a                                 ; $0183: $ea $00 $00
     ld a, $01                                     ; $0186: $3e $01
@@ -170,15 +170,15 @@ jr_000_0167:
     ld sp, $dfff                                  ; $019e: $31 $ff $df
     call Call_000_04bb                            ; $01a1: $cd $bb $04
     call ClearShadowOAMBuffer                     ; $01a4: $cd $b6 $05
-    call Call_000_05a0                            ; $01a7: $cd $a0 $05
-    call Call_000_05ab                            ; $01aa: $cd $ab $05
+    call FillBGMap0WithTile01                     ; $01a7: $cd $a0 $05
+    call FillBGMap1WithTile01                     ; $01aa: $cd $ab $05
     xor a                                         ; $01ad: $af
     ld [$c315], a                                 ; $01ae: $ea $15 $c3
     ld [$c316], a                                 ; $01b1: $ea $16 $c3
     ld [$c317], a                                 ; $01b4: $ea $17 $c3
-    ld [$c338], a                                 ; $01b7: $ea $38 $c3
-    ld [$c33c], a                                 ; $01ba: $ea $3c $c3
-    ld hl, $c32e                                  ; $01bd: $21 $2e $c3
+    ld [rLCDCInterruptDispatchIndex], a           ; $01b7: $ea $38 $c3
+    ld [rVBlankLCDCBit4ForceFlag], a              ; $01ba: $ea $3c $c3
+    ld hl, rLCDCShadow                            ; $01bd: $21 $2e $c3
     xor a                                         ; $01c0: $af
     ld [hl+], a                                   ; $01c1: $22
     ld [hl+], a                                   ; $01c2: $22
@@ -193,7 +193,7 @@ jr_000_0167:
     xor a                                         ; $01cd: $af
     ld [hl+], a                                   ; $01ce: $22
     ld [hl+], a                                   ; $01cf: $22
-    ld [$c350], a                                 ; $01d0: $ea $50 $c3
+    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $01d0: $ea $50 $c3
     ld a, $01                                     ; $01d3: $3e $01
     ldh [rIE], a                                  ; $01d5: $e0 $ff
     ldh [rIE], a                                  ; $01d7: $e0 $ff
@@ -201,7 +201,7 @@ jr_000_0167:
     call Call_000_1e43                            ; $01da: $cd $43 $1e
     rl a                                          ; $01dd: $cb $17
     and $01                                       ; $01df: $e6 $01
-    ld [$c33d], a                                 ; $01e1: $ea $3d $c3
+    ld [rBootVariantFlag_Unsure], a               ; $01e1: $ea $3d $c3
     jr z, jr_000_01e9                             ; $01e4: $28 $03
 
     call Call_000_1efd                            ; $01e6: $cd $fd $1e
@@ -210,7 +210,7 @@ jr_000_01e9:
     xor a                                         ; $01e9: $af
     ld [$c33e], a                                 ; $01ea: $ea $3e $c3
     ld a, $00                                     ; $01ed: $3e $00
-    call TODO_Bank0FDispatcher                    ; $01ef: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $01ef: $cd $b6 $03
     ld a, $40                                     ; $01f2: $3e $40
     ld [$cd69], a                                 ; $01f4: $ea $69 $cd
     call Call_000_0631                            ; $01f7: $cd $31 $06
@@ -225,27 +225,27 @@ jr_000_01e9:
     call Call_000_05d7                            ; $0211: $cd $d7 $05
     ld sp, $fffe                                  ; $0214: $31 $fe $ff
     ld bc, $003c                                  ; $0217: $01 $3c $00
-    call Call_000_0603                            ; $021a: $cd $03 $06
+    call BusyWaitDelayByBC                        ; $021a: $cd $03 $06
     ld a, $05                                     ; $021d: $3e $05
-    call TODO_Bank0FDispatcher                    ; $021f: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $021f: $cd $b6 $03
     ld c, $00                                     ; $0222: $0e $00
     ld a, $01                                     ; $0224: $3e $01
-    call TODO_Bank0FDispatcher                    ; $0226: $cd $b6 $03
-    call Call_000_0399                            ; $0229: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $0226: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $0229: $cd $99 $03
     ld c, $00                                     ; $022c: $0e $00
     ld a, $01                                     ; $022e: $3e $01
-    call TODO_Bank0FDispatcher                    ; $0230: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $0230: $cd $b6 $03
     xor a                                         ; $0233: $af
-    ld [$c32f], a                                 ; $0234: $ea $2f $c3
-    ld [$c330], a                                 ; $0237: $ea $30 $c3
-    ld [$c331], a                                 ; $023a: $ea $31 $c3
+    ld [rBGPShadow], a                            ; $0234: $ea $2f $c3
+    ld [rOBP0Shadow], a                           ; $0237: $ea $30 $c3
+    ld [rOBP1Shadow], a                           ; $023a: $ea $31 $c3
     ld bc, $0002                                  ; $023d: $01 $02 $00
-    call Call_000_0603                            ; $0240: $cd $03 $06
+    call BusyWaitDelayByBC                        ; $0240: $cd $03 $06
     di                                            ; $0243: $f3
     xor a                                         ; $0244: $af
     ldh [rIF], a                                  ; $0245: $e0 $0f
     ld sp, $fffe                                  ; $0247: $31 $fe $ff
-    call Call_000_0483                            ; $024a: $cd $83 $04
+    call DisableLCDAtVBlank                       ; $024a: $cd $83 $04
     ld a, $0a                                     ; $024d: $3e $0a
     ld [$0000], a                                 ; $024f: $ea $00 $00
     ld a, $01                                     ; $0252: $3e $01
@@ -257,16 +257,16 @@ jr_000_01e9:
     ld sp, $dfff                                  ; $0261: $31 $ff $df
     call Call_000_04bb                            ; $0264: $cd $bb $04
     call ClearShadowOAMBuffer                     ; $0267: $cd $b6 $05
-    call Call_000_05a0                            ; $026a: $cd $a0 $05
-    call Call_000_05ab                            ; $026d: $cd $ab $05
+    call FillBGMap0WithTile01                     ; $026a: $cd $a0 $05
+    call FillBGMap1WithTile01                     ; $026d: $cd $ab $05
     xor a                                         ; $0270: $af
     ld [$c315], a                                 ; $0271: $ea $15 $c3
     ld [$c316], a                                 ; $0274: $ea $16 $c3
     ld [$c317], a                                 ; $0277: $ea $17 $c3
-    ld [$c338], a                                 ; $027a: $ea $38 $c3
-    ld [$c33c], a                                 ; $027d: $ea $3c $c3
-    ld [$c350], a                                 ; $0280: $ea $50 $c3
-    ld hl, $c32e                                  ; $0283: $21 $2e $c3
+    ld [rLCDCInterruptDispatchIndex], a           ; $027a: $ea $38 $c3
+    ld [rVBlankLCDCBit4ForceFlag], a              ; $027d: $ea $3c $c3
+    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $0280: $ea $50 $c3
+    ld hl, rLCDCShadow                            ; $0283: $21 $2e $c3
     xor a                                         ; $0286: $af
     ld [hl+], a                                   ; $0287: $22
     ld [hl+], a                                   ; $0288: $22
@@ -288,7 +288,7 @@ jr_000_01e9:
     xor a                                         ; $029d: $af
     ld [$c33e], a                                 ; $029e: $ea $3e $c3
     ld a, $00                                     ; $02a1: $3e $00
-    call TODO_Bank0FDispatcher                    ; $02a3: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $02a3: $cd $b6 $03
     ld a, $40                                     ; $02a6: $3e $40
     ld [$cd69], a                                 ; $02a8: $ea $69 $cd
     call Call_000_0631                            ; $02ab: $cd $31 $06
@@ -305,16 +305,16 @@ VBlankInterruptHandler::
     call $ff80                                    ; $02bd: $cd $80 $ff
     call Call_000_0767                            ; $02c0: $cd $67 $07
     ldh a, [rLY]                                  ; $02c3: $f0 $44
-    ld a, [$c33c]                                 ; $02c5: $fa $3c $c3
+    ld a, [rVBlankLCDCBit4ForceFlag]              ; $02c5: $fa $3c $c3
     and a                                         ; $02c8: $a7
     jr nz, jr_000_02d2                            ; $02c9: $20 $07
 
-    ld a, [$c32e]                                 ; $02cb: $fa $2e $c3
+    ld a, [rLCDCShadow]                           ; $02cb: $fa $2e $c3
     ldh [rLCDC], a                                ; $02ce: $e0 $40
     jr jr_000_02d9                                ; $02d0: $18 $07
 
 jr_000_02d2:
-    ld a, [$c32e]                                 ; $02d2: $fa $2e $c3
+    ld a, [rLCDCShadow]                           ; $02d2: $fa $2e $c3
     set 4, a                                      ; $02d5: $cb $e7
     ldh [rLCDC], a                                ; $02d7: $e0 $40
 
@@ -323,7 +323,7 @@ jr_000_02d9:
     and a                                         ; $02dc: $a7
     jr nz, jr_000_0300                            ; $02dd: $20 $21
 
-    ld hl, $c32f                                  ; $02df: $21 $2f $c3
+    ld hl, rBGPShadow                             ; $02df: $21 $2f $c3
     ld a, [hl+]                                   ; $02e2: $2a
     ldh [rBGP], a                                 ; $02e3: $e0 $47
     ld a, [hl+]                                   ; $02e5: $2a
@@ -359,7 +359,7 @@ jr_000_0300:
 
 
 jr_000_0313:
-    ld a, [$c350]                                 ; $0313: $fa $50 $c3
+    ld a, [rVBlankSoundEngineUpdateEnabled_Unsure]; $0313: $fa $50 $c3
     and a                                         ; $0316: $a7
     jr nz, jr_000_0322                            ; $0317: $20 $09
 
@@ -367,14 +367,14 @@ jr_000_0313:
     and a                                         ; $031c: $a7
     jr nz, jr_000_0322                            ; $031d: $20 $03
 
-    call Call_000_03ee                            ; $031f: $cd $ee $03
+    call CallSoundEngineUpdateRoutine_Unsure_PreserveRegisters; $031f: $cd $ee $03
 
 jr_000_0322:
     ld a, [$c33a]                                 ; $0322: $fa $3a $c3
     inc a                                         ; $0325: $3c
     ld [$c33a], a                                 ; $0326: $ea $3a $c3
     ld a, $01                                     ; $0329: $3e $01
-    ld [$c339], a                                 ; $032b: $ea $39 $c3
+    ld [rVBlankSyncFlag], a                       ; $032b: $ea $39 $c3
     pop hl                                        ; $032e: $e1
     pop de                                        ; $032f: $d1
     pop bc                                        ; $0330: $c1
@@ -387,13 +387,13 @@ LCDCInterruptHandler::
     push bc                                       ; $0334: $c5
     push de                                       ; $0335: $d5
     push hl                                       ; $0336: $e5
-    ld hl, $034d                                  ; $0337: $21 $4d $03
+    ld hl, LCDCInterruptHandlerReturnAndReti      ; $0337: $21 $4d $03
     push hl                                       ; $033a: $e5
-    ld a, [$c338]                                 ; $033b: $fa $38 $c3
+    ld a, [rLCDCInterruptDispatchIndex]           ; $033b: $fa $38 $c3
     sla a                                         ; $033e: $cb $27
     ld c, a                                       ; $0340: $4f
     ld b, $00                                     ; $0341: $06 $00
-    ld hl, $0352                                  ; $0343: $21 $52 $03
+    ld hl, LCDCInterruptDispatchTable             ; $0343: $21 $52 $03
     add hl, bc                                    ; $0346: $09
     ld c, [hl]                                    ; $0347: $4e
     inc hl                                        ; $0348: $23
@@ -403,6 +403,7 @@ LCDCInterruptHandler::
     jp hl                                         ; $034c: $e9
 
 
+LCDCInterruptHandlerReturnAndReti::
     pop hl                                        ; $034d: $e1
     pop de                                        ; $034e: $d1
     pop bc                                        ; $034f: $c1
@@ -410,12 +411,13 @@ LCDCInterruptHandler::
     reti                                          ; $0351: $d9
 
 
-    ld e, d                                       ; $0352: $5a
-    inc bc                                        ; $0353: $03
-    ld l, a                                       ; $0354: $6f
-    ld [$089e], sp                                ; $0355: $08 $9e $08
-    ld e, d                                       ; $0358: $5a
-    inc bc                                        ; $0359: $03
+LCDCInterruptDispatchTable::
+    db $5a, $03
+    db $6f, $08
+    db $9e, $08
+    db $5a, $03
+
+LCDCInterruptDispatchNoOpReturn::
     ret                                           ; $035a: $c9
 
 
@@ -467,40 +469,40 @@ GameStateDispatcher::
     ret                                           ; $0398: $c9
 
 
-Call_000_0399:
+WaitForScanline40OrDelay::
     push hl                                       ; $0399: $e5
     ldh a, [rLCDC]                                ; $039a: $f0 $40
     bit 7, a                                      ; $039c: $cb $7f
-    jr nz, jr_000_03ad                            ; $039e: $20 $0d
+    jr nz, .SyncAndWaitForScanline40              ; $039e: $20 $0d
 
     ld de, $06d6                                  ; $03a0: $11 $d6 $06
 
-jr_000_03a3:
+.DelayLoop_LCDOff:
     nop                                           ; $03a3: $00
     nop                                           ; $03a4: $00
     nop                                           ; $03a5: $00
     dec de                                        ; $03a6: $1b
     ld a, d                                       ; $03a7: $7a
     or e                                          ; $03a8: $b3
-    jr nz, jr_000_03a3                            ; $03a9: $20 $f8
+    jr nz, .DelayLoop_LCDOff                      ; $03a9: $20 $f8
 
     pop hl                                        ; $03ab: $e1
     ret                                           ; $03ac: $c9
 
 
-jr_000_03ad:
+.SyncAndWaitForScanline40:
     rst RST_08                                    ; $03ad: $cf
 
-jr_000_03ae:
+.WaitForScanline40Loop:
     ldh a, [rLY]                                  ; $03ae: $f0 $44
     cp $40                                        ; $03b0: $fe $40
-    jr c, jr_000_03ae                             ; $03b2: $38 $fa
+    jr c, .WaitForScanline40Loop                  ; $03b2: $38 $fa
 
     pop hl                                        ; $03b4: $e1
     ret                                           ; $03b5: $c9
 
 
-TODO_Bank0FDispatcher::
+CallSoundEffectDispatcher::
     push af                                       ; $03b6: $f5
     push bc                                       ; $03b7: $c5
     push de                                       ; $03b8: $d5
@@ -545,16 +547,13 @@ jr_000_03df:
     ret                                           ; $03ed: $c9
 
 
-Call_000_03ee:
+CallSoundEngineUpdateRoutine_Unsure_PreserveRegisters::
     push af                                       ; $03ee: $f5
     push bc                                       ; $03ef: $c5
     push de                                       ; $03f0: $d5
-
-Call_000_03f1:
-Jump_000_03f1:
     push hl                                       ; $03f1: $e5
 
-TODO_Bank0FCall4003::
+CallSoundEngineUpdateRoutine_Unsure::
     ld a, [rActiveROMBank]                        ; $03f2: $fa $12 $c3
     push af                                       ; $03f5: $f5
     ld a, $0f                                     ; $03f6: $3e $0f
@@ -571,10 +570,10 @@ TODO_Bank0FCall4003::
     ret                                           ; $040c: $c9
 
 
-Call_000_040d:
-    ld a, [$c33d]                                 ; $040d: $fa $3d $c3
+PlayScreenTransitionFadeIn::
+    ld a, [rBootVariantFlag_Unsure]               ; $040d: $fa $3d $c3
     and a                                         ; $0410: $a7
-    jp nz, Jump_000_1fc8                          ; $0411: $c2 $c8 $1f
+    jp nz, PlayScreenTransitionFadeIn_AlternatePath; $0411: $c2 $c8 $1f
 
     ld a, [rActiveROMBank]                        ; $0414: $fa $12 $c3
     push af                                       ; $0417: $f5
@@ -583,36 +582,36 @@ Call_000_040d:
     ld [ROMBankSwitchTrigger], a                  ; $041c: $ea $00 $20
     ld b, $04                                     ; $041f: $06 $04
 
-jr_000_0421:
+.ApplyFadeStepLoop:
     ld a, [hl+]                                   ; $0421: $2a
-    ld [$c32f], a                                 ; $0422: $ea $2f $c3
+    ld [rBGPShadow], a                            ; $0422: $ea $2f $c3
     ld a, [hl+]                                   ; $0425: $2a
-    ld [$c330], a                                 ; $0426: $ea $30 $c3
+    ld [rOBP0Shadow], a                           ; $0426: $ea $30 $c3
     ld a, [hl+]                                   ; $0429: $2a
-    ld [$c331], a                                 ; $042a: $ea $31 $c3
+    ld [rOBP1Shadow], a                           ; $042a: $ea $31 $c3
     push bc                                       ; $042d: $c5
     push hl                                       ; $042e: $e5
     ld bc, $0004                                  ; $042f: $01 $04 $00
-    call Call_000_0603                            ; $0432: $cd $03 $06
+    call BusyWaitDelayByBC                        ; $0432: $cd $03 $06
     pop hl                                        ; $0435: $e1
     pop bc                                        ; $0436: $c1
     dec b                                         ; $0437: $05
-    jr nz, jr_000_0421                            ; $0438: $20 $e7
+    jr nz, .ApplyFadeStepLoop                     ; $0438: $20 $e7
 
     ld [rStatePhaseTimer], a                      ; $043a: $ea $3c $d6
-    ld [$d63d], a                                 ; $043d: $ea $3d $d6
-    ld [$d63e], a                                 ; $0440: $ea $3e $d6
-    ld [$d63f], a                                 ; $0443: $ea $3f $d6
+    ld [rHintCursorAnimationLastFrameTick], a     ; $043d: $ea $3d $d6
+    ld [rHintCursorAnimationColumnAccumulator], a ; $0440: $ea $3e $d6
+    ld [rHintCursorAnimationRowAccumulator], a    ; $0443: $ea $3f $d6
     pop af                                        ; $0446: $f1
     ld [rActiveROMBank], a                        ; $0447: $ea $12 $c3
     ld [ROMBankSwitchTrigger], a                  ; $044a: $ea $00 $20
     ret                                           ; $044d: $c9
 
 
-Call_000_044e:
-    ld a, [$c33d]                                 ; $044e: $fa $3d $c3
+PlayScreenTransitionFadeOut::
+    ld a, [rBootVariantFlag_Unsure]               ; $044e: $fa $3d $c3
     and a                                         ; $0451: $a7
-    jp nz, Jump_000_204a                          ; $0452: $c2 $4a $20
+    jp nz, PlayScreenTransitionFadeOut_AlternatePath; $0452: $c2 $4a $20
 
     ld a, [rActiveROMBank]                        ; $0455: $fa $12 $c3
     push af                                       ; $0458: $f5
@@ -621,21 +620,21 @@ Call_000_044e:
     ld [ROMBankSwitchTrigger], a                  ; $045d: $ea $00 $20
     ld b, $04                                     ; $0460: $06 $04
 
-jr_000_0462:
+.ApplyFadeStepLoop:
     ld a, [hl-]                                   ; $0462: $3a
-    ld [$c331], a                                 ; $0463: $ea $31 $c3
+    ld [rOBP1Shadow], a                           ; $0463: $ea $31 $c3
     ld a, [hl-]                                   ; $0466: $3a
-    ld [$c330], a                                 ; $0467: $ea $30 $c3
+    ld [rOBP0Shadow], a                           ; $0467: $ea $30 $c3
     ld a, [hl-]                                   ; $046a: $3a
-    ld [$c32f], a                                 ; $046b: $ea $2f $c3
+    ld [rBGPShadow], a                            ; $046b: $ea $2f $c3
     push bc                                       ; $046e: $c5
     push hl                                       ; $046f: $e5
     ld bc, $0004                                  ; $0470: $01 $04 $00
-    call Call_000_0603                            ; $0473: $cd $03 $06
+    call BusyWaitDelayByBC                        ; $0473: $cd $03 $06
     pop hl                                        ; $0476: $e1
     pop bc                                        ; $0477: $c1
     dec b                                         ; $0478: $05
-    jr nz, jr_000_0462                            ; $0479: $20 $e7
+    jr nz, .ApplyFadeStepLoop                     ; $0479: $20 $e7
 
     pop af                                        ; $047b: $f1
     ld [rActiveROMBank], a                        ; $047c: $ea $12 $c3
@@ -643,7 +642,7 @@ jr_000_0462:
     ret                                           ; $0482: $c9
 
 
-Call_000_0483:
+DisableLCDAtVBlank::
     ldh a, [rLCDC]                                ; $0483: $f0 $40
     bit 7, a                                      ; $0485: $cb $7f
     ret z                                         ; $0487: $c8
@@ -653,25 +652,25 @@ Call_000_0483:
     xor a                                         ; $048b: $af
     ldh [rIE], a                                  ; $048c: $e0 $ff
 
-jr_000_048e:
+.WaitForVBlankLine91:
     ldh a, [rLY]                                  ; $048e: $f0 $44
     cp $91                                        ; $0490: $fe $91
-    jr nz, jr_000_048e                            ; $0492: $20 $fa
+    jr nz, .WaitForVBlankLine91                   ; $0492: $20 $fa
 
-    ld a, [$c32e]                                 ; $0494: $fa $2e $c3
+    ld a, [rLCDCShadow]                           ; $0494: $fa $2e $c3
     res 7, a                                      ; $0497: $cb $bf
     ldh [rLCDC], a                                ; $0499: $e0 $40
-    ld [$c32e], a                                 ; $049b: $ea $2e $c3
+    ld [rLCDCShadow], a                           ; $049b: $ea $2e $c3
     pop af                                        ; $049e: $f1
     ldh [rIE], a                                  ; $049f: $e0 $ff
     ret                                           ; $04a1: $c9
 
 
-Call_000_04a2:
-    ld a, [$c32e]                                 ; $04a2: $fa $2e $c3
+EnableLCDFromShadow::
+    ld a, [rLCDCShadow]                           ; $04a2: $fa $2e $c3
     set 7, a                                      ; $04a5: $cb $ff
     ldh [rLCDC], a                                ; $04a7: $e0 $40
-    ld [$c32e], a                                 ; $04a9: $ea $2e $c3
+    ld [rLCDCShadow], a                           ; $04a9: $ea $2e $c3
     ret                                           ; $04ac: $c9
 
 
@@ -826,7 +825,7 @@ jr_000_0557:
     cp $90                                        ; $0559: $fe $90
     jr c, jr_000_0557                             ; $055b: $38 $fa
 
-    ld a, [$c32e]                                 ; $055d: $fa $2e $c3
+    ld a, [rLCDCShadow]                           ; $055d: $fa $2e $c3
     set 4, a                                      ; $0560: $cb $e7
     ldh [rLCDC], a                                ; $0562: $e0 $40
     ld a, $20                                     ; $0564: $3e $20
@@ -863,7 +862,7 @@ jr_000_0582:
     cp $90                                        ; $0584: $fe $90
     jr c, jr_000_0582                             ; $0586: $38 $fa
 
-    ld a, [$c32e]                                 ; $0588: $fa $2e $c3
+    ld a, [rLCDCShadow]                           ; $0588: $fa $2e $c3
     set 4, a                                      ; $058b: $cb $e7
     ldh [rLCDC], a                                ; $058d: $e0 $40
 
@@ -881,26 +880,26 @@ jr_000_0595:
     ret                                           ; $059f: $c9
 
 
-Call_000_05a0:
+FillBGMap0WithTile01::
     ld a, $01                                     ; $05a0: $3e $01
     ld hl, $9800                                  ; $05a2: $21 $00 $98
 
-jr_000_05a5:
+.FillBGMap0WithTile01Loop:
     ld [hl+], a                                   ; $05a5: $22
     bit 2, h                                      ; $05a6: $cb $54
-    jr z, jr_000_05a5                             ; $05a8: $28 $fb
+    jr z, .FillBGMap0WithTile01Loop               ; $05a8: $28 $fb
 
     ret                                           ; $05aa: $c9
 
 
-Call_000_05ab:
+FillBGMap1WithTile01::
     ld a, $01                                     ; $05ab: $3e $01
     ld hl, $9c00                                  ; $05ad: $21 $00 $9c
 
-jr_000_05b0:
+.FillBGMap1WithTile01Loop:
     ld [hl+], a                                   ; $05b0: $22
     bit 5, h                                      ; $05b1: $cb $6c
-    jr z, jr_000_05b0                             ; $05b3: $28 $fb
+    jr z, .FillBGMap1WithTile01Loop               ; $05b3: $28 $fb
 
     ret                                           ; $05b5: $c9
 
@@ -915,23 +914,23 @@ ClearShadowOAMBuffer::
     jr z, .FillWithF0Loop                         ; $05be: $28 $fb
 
     xor a                                         ; $05c0: $af
-    ld [$c311], a                                 ; $05c1: $ea $11 $c3
+    ld [rShadowOAMWriteCursor], a                 ; $05c1: $ea $11 $c3
     ret                                           ; $05c4: $c9
 
 
-Call_000_05c5:
-    ld a, [$c311]                                 ; $05c5: $fa $11 $c3
+ClearShadowOAMBufferFromCursor::
+    ld a, [rShadowOAMWriteCursor]                 ; $05c5: $fa $11 $c3
     ld l, a                                       ; $05c8: $6f
     ld h, $c0                                     ; $05c9: $26 $c0
     ld a, $f0                                     ; $05cb: $3e $f0
 
-jr_000_05cd:
+.FillWithF0Loop:
     ld [hl+], a                                   ; $05cd: $22
     bit 0, h                                      ; $05ce: $cb $44
-    jr z, jr_000_05cd                             ; $05d0: $28 $fb
+    jr z, .FillWithF0Loop                         ; $05d0: $28 $fb
 
     xor a                                         ; $05d2: $af
-    ld [$c311], a                                 ; $05d3: $ea $11 $c3
+    ld [rShadowOAMWriteCursor], a                 ; $05d3: $ea $11 $c3
     ret                                           ; $05d6: $c9
 
 
@@ -968,36 +967,34 @@ Jump_000_05f7:
     ret                                           ; $05f9: $c9
 
 
-Call_000_05fa:
-jr_000_05fa:
+DelayFramesByBC::
     push bc                                       ; $05fa: $c5
     rst RST_08                                    ; $05fb: $cf
     pop bc                                        ; $05fc: $c1
     dec bc                                        ; $05fd: $0b
     ld a, c                                       ; $05fe: $79
     or b                                          ; $05ff: $b0
-    jr nz, jr_000_05fa                            ; $0600: $20 $f8
+    jr nz, DelayFramesByBC                        ; $0600: $20 $f8
 
     ret                                           ; $0602: $c9
 
 
-Call_000_0603:
-jr_000_0603:
+BusyWaitDelayByBC::
     ld de, $06d6                                  ; $0603: $11 $d6 $06
 
-jr_000_0606:
+.InnerDelayLoop:
     nop                                           ; $0606: $00
     nop                                           ; $0607: $00
     nop                                           ; $0608: $00
     dec de                                        ; $0609: $1b
     ld a, d                                       ; $060a: $7a
     or e                                          ; $060b: $b3
-    jr nz, jr_000_0606                            ; $060c: $20 $f8
+    jr nz, .InnerDelayLoop                        ; $060c: $20 $f8
 
     dec bc                                        ; $060e: $0b
     ld a, b                                       ; $060f: $78
     or c                                          ; $0610: $b1
-    jr nz, jr_000_0603                            ; $0611: $20 $f0
+    jr nz, BusyWaitDelayByBC                      ; $0611: $20 $f0
 
     ret                                           ; $0613: $c9
 
@@ -1370,9 +1367,9 @@ LoadPuzzleDataBuffer::
     ld hl, $d640                                  ; $07f1: $21 $40 $d6
     ld bc, $0100                                  ; $07f4: $01 $00 $01
     call ZeroMemoryBlock                          ; $07f7: $cd $d3 $04
-    ld a, [$d807]                                 ; $07fa: $fa $07 $d8
+    ld a, [rPuzzleDataIndexLow]                   ; $07fa: $fa $07 $d8
     ld c, a                                       ; $07fd: $4f
-    ld a, [$d808]                                 ; $07fe: $fa $08 $d8
+    ld a, [rPuzzleDataIndexHigh]                  ; $07fe: $fa $08 $d8
     ld b, a                                       ; $0801: $47
     sla c                                         ; $0802: $cb $21
     rl b                                          ; $0804: $cb $10
@@ -1428,64 +1425,66 @@ LoadPuzzleDataBuffer::
     jr nz, .DecodePuzzleDataBitsLoop              ; $085c: $20 $d3
 
     ld a, [de]                                    ; $085e: $1a
-    ld [rCurrentGridSize], a                      ; $085f: $ea $00 $d8
+    ld [rPuzzleGridWidth], a                      ; $085f: $ea $00 $d8
     inc de                                        ; $0862: $13
     ld a, [de]                                    ; $0863: $1a
-    ld [$d801], a                                 ; $0864: $ea $01 $d8
+    ld [rPuzzleGridHeight], a                     ; $0864: $ea $01 $d8
     pop af                                        ; $0867: $f1
     ld [rActiveROMBank], a                        ; $0868: $ea $12 $c3
     ld [ROMBankSwitchTrigger], a                  ; $086b: $ea $00 $20
     ret                                           ; $086e: $c9
 
 
+LCDCInterruptDispatchRoutineAtLY2F_TickAndMaybeRunSoundEngineUpdate::
     ldh a, [rLY]                                  ; $086f: $f0 $44
     cp $2f                                        ; $0871: $fe $2f
-    jr nz, jr_000_089d                            ; $0873: $20 $28
+    jr nz, .Return                                ; $0873: $20 $28
 
     ld a, $03                                     ; $0875: $3e $03
     ld hl, rSTAT                                  ; $0877: $21 $41 $ff
 
-jr_000_087a:
+.WaitForSTATMode0Loop:
     and [hl]                                      ; $087a: $a6
-    jr nz, jr_000_087a                            ; $087b: $20 $fd
+    jr nz, .WaitForSTATMode0Loop                  ; $087b: $20 $fd
 
-    ld a, [$c32e]                                 ; $087d: $fa $2e $c3
+    ld a, [rLCDCShadow]                           ; $087d: $fa $2e $c3
     res 4, a                                      ; $0880: $cb $a7
     ldh [rLCDC], a                                ; $0882: $e0 $40
     ld hl, rPuzzleTimerActive                     ; $0884: $21 $0d $d8
     inc [hl]                                      ; $0887: $34
-    ld a, [$c33b]                                 ; $0888: $fa $3b $c3
+    ld a, [rLCDCFrameTickCounter]                 ; $0888: $fa $3b $c3
     inc a                                         ; $088b: $3c
-    ld [$c33b], a                                 ; $088c: $ea $3b $c3
-    ld a, [$c350]                                 ; $088f: $fa $50 $c3
+    ld [rLCDCFrameTickCounter], a                 ; $088c: $ea $3b $c3
+    ld a, [rVBlankSoundEngineUpdateEnabled_Unsure]; $088f: $fa $50 $c3
     and a                                         ; $0892: $a7
     ret z                                         ; $0893: $c8
 
     ld a, [$c33e]                                 ; $0894: $fa $3e $c3
     and a                                         ; $0897: $a7
-    jr nz, jr_000_089d                            ; $0898: $20 $03
+    jr nz, .Return                                ; $0898: $20 $03
 
-    call Call_000_03ee                            ; $089a: $cd $ee $03
+    call CallSoundEngineUpdateRoutine_Unsure_PreserveRegisters; $089a: $cd $ee $03
 
-jr_000_089d:
+.Return:
     ret                                           ; $089d: $c9
 
 
+LCDCInterruptDispatchRoutineAtLY2F_MaybeRunSoundEngineUpdate::
     ldh a, [rLY]                                  ; $089e: $f0 $44
     cp $2f                                        ; $08a0: $fe $2f
-    jr nz, jr_000_08b2                            ; $08a2: $20 $0e
+    jr nz, .Return                                ; $08a2: $20 $0e
 
-    ld a, [$c350]                                 ; $08a4: $fa $50 $c3
+    ld a, [rVBlankSoundEngineUpdateEnabled_Unsure]; $08a4: $fa $50 $c3
     and a                                         ; $08a7: $a7
     ret z                                         ; $08a8: $c8
 
     ld a, [$c33e]                                 ; $08a9: $fa $3e $c3
     and a                                         ; $08ac: $a7
-    jr nz, jr_000_08b2                            ; $08ad: $20 $03
+    jr nz, .Return                                ; $08ad: $20 $03
 
-    call Call_000_03ee                            ; $08af: $cd $ee $03
+    call CallSoundEngineUpdateRoutine_Unsure_PreserveRegisters; $08af: $cd $ee $03
 
-jr_000_08b2:
+.Return:
     ret                                           ; $08b2: $c9
 
 
@@ -1580,7 +1579,7 @@ PrepareBGTileCopy::
 
 .PrepareBGTileCopyRow:
     push hl                                       ; $0963: $e5
-    call Call_000_0d6a                            ; $0964: $cd $6a $0d
+    call ResolveTilemapTileDataAddressAndStoreToDE; $0964: $cd $6a $0d
     ld a, [rBGTileCopyMaskLow]                    ; $0967: $fa $58 $c3
     ld [de], a                                    ; $096a: $12
     inc de                                        ; $096b: $13
@@ -1625,7 +1624,7 @@ PrepareBGTileCopy::
 .PrepareBGTileCopyRowSpanLoop:
     push af                                       ; $09a7: $f5
     push hl                                       ; $09a8: $e5
-    call Call_000_0d6a                            ; $09a9: $cd $6a $0d
+    call ResolveTilemapTileDataAddressAndStoreToDE; $09a9: $cd $6a $0d
     ld a, $ff                                     ; $09ac: $3e $ff
     ld [de], a                                    ; $09ae: $12
     inc de                                        ; $09af: $13
@@ -1698,7 +1697,7 @@ PrepareBGTileCopy::
     ld [rBGTileCopyMaskLow], a                    ; $0a0e: $ea $58 $c3
 
 .PrepareBGTileCopyNextRow:
-    call Call_000_0d6a                            ; $0a11: $cd $6a $0d
+    call ResolveTilemapTileDataAddressAndStoreToDE; $0a11: $cd $6a $0d
     ld a, [rBGTileCopyMaskLow]                    ; $0a14: $fa $58 $c3
     ld [de], a                                    ; $0a17: $12
     inc de                                        ; $0a18: $13
@@ -1792,7 +1791,7 @@ PrepareBGTileCopy::
     res 0, a                                      ; $0a8c: $cb $87
     ldh [rIE], a                                  ; $0a8e: $e0 $ff
     ld bc, $c363                                  ; $0a90: $01 $63 $c3
-    ld a, [$c32e]                                 ; $0a93: $fa $2e $c3
+    ld a, [rLCDCShadow]                           ; $0a93: $fa $2e $c3
     bit 7, a                                      ; $0a96: $cb $7f
     jr z, .CopyTileDataLoopAlt                    ; $0a98: $28 $59
 
@@ -1801,7 +1800,7 @@ PrepareBGTileCopy::
     cp $90                                        ; $0a9c: $fe $90
     jr c, .WaitForDisplayLine                     ; $0a9e: $38 $fa
 
-    ld a, [$c32e]                                 ; $0aa0: $fa $2e $c3
+    ld a, [rLCDCShadow]                           ; $0aa0: $fa $2e $c3
     set 4, a                                      ; $0aa3: $cb $e7
     ldh [rLCDC], a                                ; $0aa5: $e0 $40
     ld a, $14                                     ; $0aa7: $3e $14
@@ -1856,7 +1855,7 @@ PrepareBGTileCopy::
     cp $90                                        ; $0ad7: $fe $90
     jr c, .WaitForDisplayLineAndRestore           ; $0ad9: $38 $fa
 
-    ld a, [$c32e]                                 ; $0adb: $fa $2e $c3
+    ld a, [rLCDCShadow]                           ; $0adb: $fa $2e $c3
     set 4, a                                      ; $0ade: $cb $e7
     ldh [rLCDC], a                                ; $0ae0: $e0 $40
 
@@ -1996,7 +1995,7 @@ Jump_000_0b93:
 
 jr_000_0bbd:
     push hl                                       ; $0bbd: $e5
-    call Call_000_0d6a                            ; $0bbe: $cd $6a $0d
+    call ResolveTilemapTileDataAddressAndStoreToDE; $0bbe: $cd $6a $0d
     ld a, [rBGTileCopyMaskLow]                    ; $0bc1: $fa $58 $c3
     ld [de], a                                    ; $0bc4: $12
     inc de                                        ; $0bc5: $13
@@ -2043,7 +2042,7 @@ Call_000_0bee:
 jr_000_0c01:
     push af                                       ; $0c01: $f5
     push hl                                       ; $0c02: $e5
-    call Call_000_0d6a                            ; $0c03: $cd $6a $0d
+    call ResolveTilemapTileDataAddressAndStoreToDE; $0c03: $cd $6a $0d
     ld a, $ff                                     ; $0c06: $3e $ff
     ld [de], a                                    ; $0c08: $12
     inc de                                        ; $0c09: $13
@@ -2116,7 +2115,7 @@ jr_000_0c65:
     ld [rBGTileCopyMaskLow], a                    ; $0c68: $ea $58 $c3
 
 Jump_000_0c6b:
-    call Call_000_0d6a                            ; $0c6b: $cd $6a $0d
+    call ResolveTilemapTileDataAddressAndStoreToDE; $0c6b: $cd $6a $0d
     ld a, [rBGTileCopyMaskLow]                    ; $0c6e: $fa $58 $c3
     ld [de], a                                    ; $0c71: $12
     inc de                                        ; $0c72: $13
@@ -2212,7 +2211,7 @@ jr_000_0cde:
     res 0, a                                      ; $0ce6: $cb $87
     ldh [rIE], a                                  ; $0ce8: $e0 $ff
     ld bc, $c363                                  ; $0cea: $01 $63 $c3
-    ld a, [$c32e]                                 ; $0ced: $fa $2e $c3
+    ld a, [rLCDCShadow]                           ; $0ced: $fa $2e $c3
     bit 7, a                                      ; $0cf0: $cb $7f
     jr z, jr_000_0d3f                             ; $0cf2: $28 $4b
 
@@ -2328,7 +2327,7 @@ jr_000_0d3f:
     ld hl, sp-$04                                 ; $0d66: $f8 $fc
     cp $ff                                        ; $0d68: $fe $ff
 
-Call_000_0d6a:
+ResolveTilemapTileDataAddressAndStoreToDE::
     push bc                                       ; $0d6a: $c5
     push de                                       ; $0d6b: $d5
     ld b, h                                       ; $0d6c: $44
@@ -2339,9 +2338,9 @@ Call_000_0d6a:
     srl a                                         ; $0d73: $cb $3f
     ld e, a                                       ; $0d75: $5f
     ld d, $00                                     ; $0d76: $16 $00
-    ld a, [$cd63]                                 ; $0d78: $fa $63 $cd
+    ld a, [rTilemapToTileDataAddressLookupTableLow]; $0d78: $fa $63 $cd
     ld l, a                                       ; $0d7b: $6f
-    ld a, [$cd64]                                 ; $0d7c: $fa $64 $cd
+    ld a, [rTilemapToTileDataAddressLookupTableHigh]; $0d7c: $fa $64 $cd
     ld h, a                                       ; $0d7f: $67
     add hl, de                                    ; $0d80: $19
     ld a, [hl+]                                   ; $0d81: $2a
@@ -3160,12 +3159,8 @@ jr_000_1013:
     ldh a, [$ff8b]                                ; $1072: $f0 $8b
     nop                                           ; $1074: $00
     sub a                                         ; $1075: $97
-
-jr_000_1076:
     db $10                                        ; $1076: $10
     sub a                                         ; $1077: $97
-
-jr_000_1078:
     jr nz, jr_000_1011                            ; $1078: $20 $97
 
     jr nc, jr_000_1013                            ; $107a: $30 $97
@@ -3196,794 +3191,423 @@ jr_000_1078:
     ldh a, [$ff97]                                ; $1092: $f0 $97
     ld [hl], b                                    ; $1094: $70
     adc d                                         ; $1095: $8a
-    cp d                                          ; $1096: $ba
-    db $10                                        ; $1097: $10
-    ldh [c], a                                    ; $1098: $e2
-    db $10                                        ; $1099: $10
-    ld a, [bc]                                    ; $109a: $0a
-    ld de, $1132                                  ; $109b: $11 $32 $11
-    ld e, d                                       ; $109e: $5a
 
-jr_000_109f:
-    ld de, $1182                                  ; $109f: $11 $82 $11
-    xor d                                         ; $10a2: $aa
-    ld de, $11d2                                  ; $10a3: $11 $d2 $11
-    ld a, [$2211]                                 ; $10a6: $fa $11 $22
-    ld [de], a                                    ; $10a9: $12
-    ld c, d                                       ; $10aa: $4a
-    ld [de], a                                    ; $10ab: $12
-    ld [hl], d                                    ; $10ac: $72
-    ld [de], a                                    ; $10ad: $12
-    sbc d                                         ; $10ae: $9a
-    ld [de], a                                    ; $10af: $12
-    jp nz, $ea12                                  ; $10b0: $c2 $12 $ea
+GS06_ScreenTilemapTileDataAddressLookupTable::
+    db $ba, $10
+    db $e2, $10
+    db $0a, $11
+    db $32, $11
+    db $5a, $11
+    db $82, $11
+    db $aa, $11
+    db $d2, $11
+    db $fa, $11
+    db $22, $12
+    db $4a, $12
+    db $72, $12
+    db $9a, $12
+    db $c2, $12
+    db $ea, $12
+    db $12, $13
+    db $3a, $13
+    db $62, $13
+
+GS06_ScreenTilemapTileDataAddressLookupRow00Table::
+    db $70, $8a
+    db $50, $88
+    db $60, $88
+    db $70, $88
+    db $80, $88
+    db $60, $8a
+    db $60, $8a
+    db $60, $8a
+    db $60, $8a
+    db $60, $8a
+    db $60, $8a
+    db $60, $8a
+    db $60, $8a
+    db $60, $8a
+    db $60, $8a
+    db $60, $8a
+    db $60, $8a
+    db $60, $8a
+    db $60, $8a
+    db $70, $8a
+
+GS06_ScreenTilemapTileDataAddressLookupRow01Table::
+    db $70, $8a
+    db $90, $88
+    db $a0, $88
+    db $b0, $88
+    db $c0, $88
+    db $d0, $88
+    db $e0, $87
+    db $00, $80
+    db $10, $80
+    db $20, $80
+    db $30, $80
+    db $e0, $87
+    db $90, $84
+    db $a0, $84
+    db $b0, $84
+    db $b0, $8e
+    db $c0, $8e
+    db $d0, $8f
+    db $e0, $87
+    db $70, $8a
+
+GS06_ScreenTilemapTileDataAddressLookupRow02Table::
+    db $70, $8a
+    db $e0, $88
+    db $f0, $88
+    db $00, $89
+    db $10, $89
+    db $20, $89
+    db $30, $89
+    db $00, $81
+    db $10, $81
+    db $20, $81
+    db $30, $81
+    db $d0, $8d
+    db $80, $8f
+    db $90, $8f
+    db $a0, $8f
+    db $b0, $8f
+    db $c0, $8f
+    db $e0, $8f
+    db $f0, $8d
+    db $70, $8a
+
+GS06_ScreenTilemapTileDataAddressLookupRow03Table::
+    db $70, $8a
+    db $40, $89
+    db $50, $89
+    db $60, $89
+    db $70, $89
+    db $80, $89
+    db $90, $89
+    db $00, $82
+    db $10, $82
+    db $20, $82
+    db $30, $82
+    db $d0, $8e
+    db $e0, $8e
+    db $e0, $8e
+    db $e0, $8e
+    db $e0, $8e
+    db $e0, $8e
+    db $e0, $8e
+    db $f0, $8e
+    db $70, $8a
+
+GS06_ScreenTilemapTileDataAddressLookupRow04Table::
+    db $70, $8a
+    db $a0, $89
+    db $b0, $89
+    db $c0, $89
+    db $d0, $89
+    db $e0, $89
+    db $f0, $89
+    db $00, $83
+    db $10, $83
+    db $20, $83
+    db $30, $83
+    db $d0, $8e
+    db $c0, $8c
+    db $d0, $8c
+    db $90, $8d
+    db $90, $8c
+    db $b0, $8d
+    db $80, $8d
+    db $f0, $8e
+    db $70, $8a
+
+GS06_ScreenTilemapTileDataAddressLookupRow05Table::
+    db $70, $8a
+    db $00, $8a
+    db $10, $8a
+    db $20, $8a
+    db $30, $8a
+    db $40, $8a
+    db $50, $8a
+    db $00, $84
+    db $10, $84
+    db $20, $84
+    db $30, $84
+    db $d0, $8e
+    db $e0, $8e
+    db $e0, $8e
+    db $e0, $8e
+    db $e0, $8e
+    db $e0, $8e
+    db $e0, $8e
+    db $f0, $8e
+    db $70, $8a
+
+GS06_ScreenTilemapTileDataAddressLookupRow06Table::
+    db $70, $8a
+    db $80, $8a
+    db $90, $8a
+    db $00, $8c
+    db $10, $8c
+    db $20, $8c
+    db $30, $8c
+    db $40, $8c
+    db $50, $8c
+    db $60, $8c
+    db $70, $8c
+    db $e0, $8b
+    db $a0, $8c
+    db $b0, $8c
+    db $90, $8d
+    db $90, $8c
+    db $b0, $8d
+    db $a0, $8d
+    db $f0, $8e
+    db $70, $8a
+
+GS06_ScreenTilemapTileDataAddressLookupRow07Table::
+    db $70, $8a
+    db $a0, $8a
+    db $b0, $8a
+    db $00, $8d
+    db $10, $8d
+    db $20, $8d
+    db $30, $8d
+    db $40, $8d
+    db $50, $8d
+    db $60, $8d
+    db $70, $8d
+    db $f0, $8b
+    db $e0, $8e
+    db $e0, $8e
+    db $e0, $8e
+    db $e0, $8e
+    db $e0, $8e
+    db $e0, $8e
+    db $f0, $8e
+    db $70, $8a
+
+GS06_ScreenTilemapTileDataAddressLookupRow08Table::
+    db $70, $8a
+    db $c0, $8a
+    db $d0, $8a
+    db $00, $8e
+    db $10, $8e
+    db $20, $8e
+    db $30, $8e
+    db $40, $8e
+    db $50, $8e
+    db $60, $8e
+    db $70, $8e
+    db $f0, $8b
+    db $c0, $8d
+    db $f0, $8f
+    db $80, $8c
+    db $80, $8e
+    db $90, $8e
+    db $a0, $8e
+    db $f0, $8e
+    db $70, $8a
+
+GS06_ScreenTilemapTileDataAddressLookupRow09Table::
+    db $70, $8a
+    db $e0, $8a
+    db $f0, $8a
+    db $00, $8f
+    db $10, $8f
+    db $20, $8f
+    db $30, $8f
+    db $40, $8f
+    db $50, $8f
+    db $60, $8f
+    db $70, $8f
+    db $f0, $8b
+    db $e0, $8e
+    db $e0, $8e
+    db $e0, $8e
+    db $e0, $8e
+    db $e0, $8e
+    db $e0, $8e
+    db $f0, $8e
+    db $70, $8a
+
+GS06_ScreenTilemapTileDataAddressLookupRow0aTable::
+    db $70, $8a
+    db $00, $8b
+    db $10, $8b
+    db $00, $90
+    db $10, $90
+    db $20, $90
+    db $30, $90
+    db $40, $90
+    db $50, $90
+    db $60, $90
+    db $70, $90
+    db $80, $90
+    db $90, $90
+    db $a0, $90
+    db $b0, $90
+    db $c0, $90
+    db $d0, $90
+    db $e0, $90
+    db $f0, $90
+    db $70, $8a
+
+GS06_ScreenTilemapTileDataAddressLookupRow0bTable::
+    db $70, $8a
+    db $20, $8b
+    db $30, $8b
+    db $00, $91
+    db $10, $91
+    db $20, $91
+    db $30, $91
+    db $40, $91
+    db $50, $91
+    db $60, $91
+    db $70, $91
+    db $80, $91
+    db $90, $91
+    db $a0, $91
+    db $b0, $91
+    db $c0, $91
+    db $d0, $91
+    db $e0, $91
+    db $f0, $91
+    db $70, $8a
+
+GS06_ScreenTilemapTileDataAddressLookupRow0cTable::
+    db $70, $8a
+    db $40, $8b
+    db $50, $8b
+    db $00, $92
+    db $10, $92
+    db $20, $92
+    db $30, $92
+    db $40, $92
+    db $50, $92
+    db $60, $92
+    db $70, $92
+    db $80, $92
+    db $90, $92
+    db $a0, $92
+    db $b0, $92
+    db $c0, $92
+    db $d0, $92
+    db $e0, $92
+    db $f0, $92
+    db $70, $8a
+
+GS06_ScreenTilemapTileDataAddressLookupRow0dTable::
+    db $70, $8a
+    db $60, $8b
+    db $70, $8b
+    db $00, $93
+    db $10, $93
+    db $20, $93
+    db $30, $93
+    db $40, $93
+    db $50, $93
+    db $60, $93
+    db $70, $93
+    db $80, $93
+    db $90, $93
+    db $a0, $93
+    db $b0, $93
+    db $c0, $93
+    db $d0, $93
+    db $e0, $93
+    db $f0, $93
+    db $70, $8a
+
+GS06_ScreenTilemapTileDataAddressLookupRow0eTable::
+    db $70, $8a
+    db $80, $8b
+    db $90, $8b
+    db $00, $94
+    db $10, $94
+    db $20, $94
+    db $30, $94
+    db $40, $94
+    db $50, $94
+    db $60, $94
+    db $70, $94
+    db $80, $94
+    db $90, $94
+    db $a0, $94
+    db $b0, $94
+    db $c0, $94
+    db $d0, $94
+    db $e0, $94
+    db $f0, $94
+    db $70, $8a
+
+GS06_ScreenTilemapTileDataAddressLookupRow0fTable::
+    db $70, $8a
+    db $a0, $8b
+    db $b0, $8b
+    db $00, $95
+    db $10, $95
+    db $20, $95
+    db $30, $95
+    db $40, $95
+    db $50, $95
+    db $60, $95
+    db $70, $95
+    db $80, $95
+    db $90, $95
+    db $a0, $95
+    db $b0, $95
+    db $c0, $95
+    db $d0, $95
+    db $e0, $95
+    db $f0, $95
+    db $70, $8a
+
+GS06_ScreenTilemapTileDataAddressLookupRow10Table::
+    db $70, $8a
+    db $e0, $8c
+    db $f0, $8c
+    db $00, $96
+    db $10, $96
+    db $20, $96
+    db $30, $96
+    db $40, $96
+    db $50, $96
+    db $60, $96
+    db $70, $96
+    db $80, $96
+    db $90, $96
+    db $a0, $96
+    db $b0, $96
+    db $c0, $96
+    db $d0, $96
+    db $e0, $96
+    db $f0, $96
+    db $70, $8a
+
+GS06_ScreenTilemapTileDataAddressLookupRow11Table::
+    db $70, $8a
+    db $c0, $8b
+    db $d0, $8b
+    db $00, $97
+    db $10, $97
+    db $20, $97
+    db $30, $97
+    db $40, $97
+    db $50, $97
+    db $60, $97
+    db $70, $97
+    db $80, $97
+    db $90, $97
+    db $a0, $97
+    db $b0, $97
+    db $c0, $97
+    db $d0, $97
+    db $e0, $97
+    db $f0, $97
+    db $70, $8a
 
-    ld [de], a                                    ; $10b3: $12
-    ld [de], a                                    ; $10b4: $12
-    inc de                                        ; $10b5: $13
-    ld a, [hl-]                                   ; $10b6: $3a
-    inc de                                        ; $10b7: $13
-    ld h, d                                       ; $10b8: $62
-    inc de                                        ; $10b9: $13
-    ld [hl], b                                    ; $10ba: $70
-    adc d                                         ; $10bb: $8a
-    ld d, b                                       ; $10bc: $50
-    adc b                                         ; $10bd: $88
-    ld h, b                                       ; $10be: $60
-    adc b                                         ; $10bf: $88
-    ld [hl], b                                    ; $10c0: $70
-    adc b                                         ; $10c1: $88
-    add b                                         ; $10c2: $80
-    adc b                                         ; $10c3: $88
-    ld h, b                                       ; $10c4: $60
-    adc d                                         ; $10c5: $8a
-    ld h, b                                       ; $10c6: $60
-    adc d                                         ; $10c7: $8a
-
-jr_000_10c8:
-    ld h, b                                       ; $10c8: $60
-    adc d                                         ; $10c9: $8a
-
-jr_000_10ca:
-    ld h, b                                       ; $10ca: $60
-    adc d                                         ; $10cb: $8a
-    ld h, b                                       ; $10cc: $60
-    adc d                                         ; $10cd: $8a
-    ld h, b                                       ; $10ce: $60
-    adc d                                         ; $10cf: $8a
-    ld h, b                                       ; $10d0: $60
-    adc d                                         ; $10d1: $8a
-    ld h, b                                       ; $10d2: $60
-    adc d                                         ; $10d3: $8a
-    ld h, b                                       ; $10d4: $60
-    adc d                                         ; $10d5: $8a
-    ld h, b                                       ; $10d6: $60
-    adc d                                         ; $10d7: $8a
-    ld h, b                                       ; $10d8: $60
-    adc d                                         ; $10d9: $8a
-    ld h, b                                       ; $10da: $60
-    adc d                                         ; $10db: $8a
-    ld h, b                                       ; $10dc: $60
-    adc d                                         ; $10dd: $8a
-    ld h, b                                       ; $10de: $60
-    adc d                                         ; $10df: $8a
-    ld [hl], b                                    ; $10e0: $70
-    adc d                                         ; $10e1: $8a
-    ld [hl], b                                    ; $10e2: $70
-
-Jump_000_10e3:
-    adc d                                         ; $10e3: $8a
-    sub b                                         ; $10e4: $90
-    adc b                                         ; $10e5: $88
-    and b                                         ; $10e6: $a0
-    adc b                                         ; $10e7: $88
-    or b                                          ; $10e8: $b0
-    adc b                                         ; $10e9: $88
-    ret nz                                        ; $10ea: $c0
-
-    adc b                                         ; $10eb: $88
-    ret nc                                        ; $10ec: $d0
-
-    adc b                                         ; $10ed: $88
-    ldh [$ff87], a                                ; $10ee: $e0 $87
-    nop                                           ; $10f0: $00
-
-jr_000_10f1:
-    add b                                         ; $10f1: $80
-    db $10                                        ; $10f2: $10
-
-jr_000_10f3:
-    add b                                         ; $10f3: $80
-    jr nz, jr_000_1076                            ; $10f4: $20 $80
-
-    jr nc, jr_000_1078                            ; $10f6: $30 $80
-
-    ldh [$ff87], a                                ; $10f8: $e0 $87
-    sub b                                         ; $10fa: $90
-    add h                                         ; $10fb: $84
-
-Call_000_10fc:
-    and b                                         ; $10fc: $a0
-    add h                                         ; $10fd: $84
-    or b                                          ; $10fe: $b0
-    add h                                         ; $10ff: $84
-    or b                                          ; $1100: $b0
-    adc [hl]                                      ; $1101: $8e
-    ret nz                                        ; $1102: $c0
-
-    adc [hl]                                      ; $1103: $8e
-    ret nc                                        ; $1104: $d0
-
-    adc a                                         ; $1105: $8f
-    ldh [$ff87], a                                ; $1106: $e0 $87
-    ld [hl], b                                    ; $1108: $70
-    adc d                                         ; $1109: $8a
-    ld [hl], b                                    ; $110a: $70
-    adc d                                         ; $110b: $8a
-    ldh [$ff88], a                                ; $110c: $e0 $88
-    ldh a, [$ff88]                                ; $110e: $f0 $88
-    nop                                           ; $1110: $00
-    adc c                                         ; $1111: $89
-    db $10                                        ; $1112: $10
-    adc c                                         ; $1113: $89
-
-jr_000_1114:
-    jr nz, jr_000_109f                            ; $1114: $20 $89
-
-jr_000_1116:
-    jr nc, @-$75                                  ; $1116: $30 $89
-
-    nop                                           ; $1118: $00
-    add c                                         ; $1119: $81
-
-jr_000_111a:
-    db $10                                        ; $111a: $10
-    add c                                         ; $111b: $81
-
-jr_000_111c:
-    jr nz, jr_000_109f                            ; $111c: $20 $81
-
-    jr nc, @-$7d                                  ; $111e: $30 $81
-
-    ret nc                                        ; $1120: $d0
-
-    adc l                                         ; $1121: $8d
-    add b                                         ; $1122: $80
-    adc a                                         ; $1123: $8f
-    sub b                                         ; $1124: $90
-    adc a                                         ; $1125: $8f
-    and b                                         ; $1126: $a0
-    adc a                                         ; $1127: $8f
-    or b                                          ; $1128: $b0
-    adc a                                         ; $1129: $8f
-    ret nz                                        ; $112a: $c0
-
-    adc a                                         ; $112b: $8f
-    ldh [$ff8f], a                                ; $112c: $e0 $8f
-    ldh a, [$ff8d]                                ; $112e: $f0 $8d
-    ld [hl], b                                    ; $1130: $70
-    adc d                                         ; $1131: $8a
-    ld [hl], b                                    ; $1132: $70
-    adc d                                         ; $1133: $8a
-    ld b, b                                       ; $1134: $40
-    adc c                                         ; $1135: $89
-    ld d, b                                       ; $1136: $50
-    adc c                                         ; $1137: $89
-    ld h, b                                       ; $1138: $60
-    adc c                                         ; $1139: $89
-    ld [hl], b                                    ; $113a: $70
-    adc c                                         ; $113b: $89
-    add b                                         ; $113c: $80
-    adc c                                         ; $113d: $89
-    sub b                                         ; $113e: $90
-    adc c                                         ; $113f: $89
-    nop                                           ; $1140: $00
-    add d                                         ; $1141: $82
-
-jr_000_1142:
-    db $10                                        ; $1142: $10
-    add d                                         ; $1143: $82
-
-jr_000_1144:
-    jr nz, jr_000_10c8                            ; $1144: $20 $82
-
-    jr nc, jr_000_10ca                            ; $1146: $30 $82
-
-    ret nc                                        ; $1148: $d0
-
-    adc [hl]                                      ; $1149: $8e
-    ldh [$ff8e], a                                ; $114a: $e0 $8e
-    ldh [$ff8e], a                                ; $114c: $e0 $8e
-    ldh [$ff8e], a                                ; $114e: $e0 $8e
-    ldh [$ff8e], a                                ; $1150: $e0 $8e
-    ldh [$ff8e], a                                ; $1152: $e0 $8e
-    ldh [$ff8e], a                                ; $1154: $e0 $8e
-    ldh a, [$ff8e]                                ; $1156: $f0 $8e
-    ld [hl], b                                    ; $1158: $70
-    adc d                                         ; $1159: $8a
-    ld [hl], b                                    ; $115a: $70
-    adc d                                         ; $115b: $8a
-    and b                                         ; $115c: $a0
-    adc c                                         ; $115d: $89
-    or b                                          ; $115e: $b0
-    adc c                                         ; $115f: $89
-    ret nz                                        ; $1160: $c0
-
-    adc c                                         ; $1161: $89
-    ret nc                                        ; $1162: $d0
-
-    adc c                                         ; $1163: $89
-    ldh [$ff89], a                                ; $1164: $e0 $89
-    ldh a, [$ff89]                                ; $1166: $f0 $89
-    nop                                           ; $1168: $00
-    add e                                         ; $1169: $83
-    db $10                                        ; $116a: $10
-
-jr_000_116b:
-    add e                                         ; $116b: $83
-    jr nz, jr_000_10f1                            ; $116c: $20 $83
-
-    jr nc, jr_000_10f3                            ; $116e: $30 $83
-
-    ret nc                                        ; $1170: $d0
-
-    adc [hl]                                      ; $1171: $8e
-    ret nz                                        ; $1172: $c0
-
-    adc h                                         ; $1173: $8c
-    ret nc                                        ; $1174: $d0
-
-    adc h                                         ; $1175: $8c
-    sub b                                         ; $1176: $90
-    adc l                                         ; $1177: $8d
-    sub b                                         ; $1178: $90
-    adc h                                         ; $1179: $8c
-    or b                                          ; $117a: $b0
-    adc l                                         ; $117b: $8d
-    add b                                         ; $117c: $80
-    adc l                                         ; $117d: $8d
-    ldh a, [$ff8e]                                ; $117e: $f0 $8e
-    ld [hl], b                                    ; $1180: $70
-    adc d                                         ; $1181: $8a
-    ld [hl], b                                    ; $1182: $70
-    adc d                                         ; $1183: $8a
-    nop                                           ; $1184: $00
-    adc d                                         ; $1185: $8a
-    db $10                                        ; $1186: $10
-    adc d                                         ; $1187: $8a
-    jr nz, jr_000_1114                            ; $1188: $20 $8a
-
-    jr nc, jr_000_1116                            ; $118a: $30 $8a
-
-    ld b, b                                       ; $118c: $40
-    adc d                                         ; $118d: $8a
-    ld d, b                                       ; $118e: $50
-    adc d                                         ; $118f: $8a
-    nop                                           ; $1190: $00
-    add h                                         ; $1191: $84
-    db $10                                        ; $1192: $10
-    add h                                         ; $1193: $84
-
-jr_000_1194:
-    jr nz, jr_000_111a                            ; $1194: $20 $84
-
-jr_000_1196:
-    jr nc, jr_000_111c                            ; $1196: $30 $84
-
-    ret nc                                        ; $1198: $d0
-
-    adc [hl]                                      ; $1199: $8e
-    ldh [$ff8e], a                                ; $119a: $e0 $8e
-    ldh [$ff8e], a                                ; $119c: $e0 $8e
-    ldh [$ff8e], a                                ; $119e: $e0 $8e
-    ldh [$ff8e], a                                ; $11a0: $e0 $8e
-    ldh [$ff8e], a                                ; $11a2: $e0 $8e
-    ldh [$ff8e], a                                ; $11a4: $e0 $8e
-    ldh a, [$ff8e]                                ; $11a6: $f0 $8e
-    ld [hl], b                                    ; $11a8: $70
-    adc d                                         ; $11a9: $8a
-    ld [hl], b                                    ; $11aa: $70
-    adc d                                         ; $11ab: $8a
-    add b                                         ; $11ac: $80
-    adc d                                         ; $11ad: $8a
-    sub b                                         ; $11ae: $90
-    adc d                                         ; $11af: $8a
-    nop                                           ; $11b0: $00
-    adc h                                         ; $11b1: $8c
-    db $10                                        ; $11b2: $10
-    adc h                                         ; $11b3: $8c
-    jr nz, jr_000_1142                            ; $11b4: $20 $8c
-
-    jr nc, jr_000_1144                            ; $11b6: $30 $8c
-
-    ld b, b                                       ; $11b8: $40
-    adc h                                         ; $11b9: $8c
-    ld d, b                                       ; $11ba: $50
-    adc h                                         ; $11bb: $8c
-    ld h, b                                       ; $11bc: $60
-
-jr_000_11bd:
-    adc h                                         ; $11bd: $8c
-    ld [hl], b                                    ; $11be: $70
-
-jr_000_11bf:
-    adc h                                         ; $11bf: $8c
-    ldh [$ff8b], a                                ; $11c0: $e0 $8b
-    and b                                         ; $11c2: $a0
-    adc h                                         ; $11c3: $8c
-    or b                                          ; $11c4: $b0
-    adc h                                         ; $11c5: $8c
-    sub b                                         ; $11c6: $90
-    adc l                                         ; $11c7: $8d
-    sub b                                         ; $11c8: $90
-    adc h                                         ; $11c9: $8c
-    or b                                          ; $11ca: $b0
-    adc l                                         ; $11cb: $8d
-    and b                                         ; $11cc: $a0
-    adc l                                         ; $11cd: $8d
-    ldh a, [$ff8e]                                ; $11ce: $f0 $8e
-    ld [hl], b                                    ; $11d0: $70
-    adc d                                         ; $11d1: $8a
-    ld [hl], b                                    ; $11d2: $70
-    adc d                                         ; $11d3: $8a
-    and b                                         ; $11d4: $a0
-    adc d                                         ; $11d5: $8a
-    or b                                          ; $11d6: $b0
-    adc d                                         ; $11d7: $8a
-    nop                                           ; $11d8: $00
-    adc l                                         ; $11d9: $8d
-    db $10                                        ; $11da: $10
-    adc l                                         ; $11db: $8d
-    jr nz, jr_000_116b                            ; $11dc: $20 $8d
-
-    jr nc, @-$71                                  ; $11de: $30 $8d
-
-    ld b, b                                       ; $11e0: $40
-    adc l                                         ; $11e1: $8d
-    ld d, b                                       ; $11e2: $50
-    adc l                                         ; $11e3: $8d
-    ld h, b                                       ; $11e4: $60
-    adc l                                         ; $11e5: $8d
-
-jr_000_11e6:
-    ld [hl], b                                    ; $11e6: $70
-    adc l                                         ; $11e7: $8d
-
-jr_000_11e8:
-    ldh a, [$ff8b]                                ; $11e8: $f0 $8b
-    ldh [$ff8e], a                                ; $11ea: $e0 $8e
-    ldh [$ff8e], a                                ; $11ec: $e0 $8e
-    ldh [$ff8e], a                                ; $11ee: $e0 $8e
-    ldh [$ff8e], a                                ; $11f0: $e0 $8e
-    ldh [$ff8e], a                                ; $11f2: $e0 $8e
-    ldh [$ff8e], a                                ; $11f4: $e0 $8e
-    ldh a, [$ff8e]                                ; $11f6: $f0 $8e
-    ld [hl], b                                    ; $11f8: $70
-    adc d                                         ; $11f9: $8a
-    ld [hl], b                                    ; $11fa: $70
-    adc d                                         ; $11fb: $8a
-    ret nz                                        ; $11fc: $c0
-
-    adc d                                         ; $11fd: $8a
-    ret nc                                        ; $11fe: $d0
-
-    adc d                                         ; $11ff: $8a
-    nop                                           ; $1200: $00
-
-jr_000_1201:
-    adc [hl]                                      ; $1201: $8e
-    db $10                                        ; $1202: $10
-
-jr_000_1203:
-    adc [hl]                                      ; $1203: $8e
-    jr nz, jr_000_1194                            ; $1204: $20 $8e
-
-    jr nc, jr_000_1196                            ; $1206: $30 $8e
-
-    ld b, b                                       ; $1208: $40
-    adc [hl]                                      ; $1209: $8e
-    ld d, b                                       ; $120a: $50
-    adc [hl]                                      ; $120b: $8e
-    ld h, b                                       ; $120c: $60
-    adc [hl]                                      ; $120d: $8e
-    ld [hl], b                                    ; $120e: $70
-
-jr_000_120f:
-    adc [hl]                                      ; $120f: $8e
-    ldh a, [$ff8b]                                ; $1210: $f0 $8b
-    ret nz                                        ; $1212: $c0
-
-    adc l                                         ; $1213: $8d
-    ldh a, [$ff8f]                                ; $1214: $f0 $8f
-    add b                                         ; $1216: $80
-    adc h                                         ; $1217: $8c
-    add b                                         ; $1218: $80
-    adc [hl]                                      ; $1219: $8e
-    sub b                                         ; $121a: $90
-    adc [hl]                                      ; $121b: $8e
-    and b                                         ; $121c: $a0
-    adc [hl]                                      ; $121d: $8e
-    ldh a, [$ff8e]                                ; $121e: $f0 $8e
-    ld [hl], b                                    ; $1220: $70
-    adc d                                         ; $1221: $8a
-    ld [hl], b                                    ; $1222: $70
-    adc d                                         ; $1223: $8a
-    ldh [$ff8a], a                                ; $1224: $e0 $8a
-    ldh a, [$ff8a]                                ; $1226: $f0 $8a
-    nop                                           ; $1228: $00
-    adc a                                         ; $1229: $8f
-    db $10                                        ; $122a: $10
-    adc a                                         ; $122b: $8f
-    jr nz, jr_000_11bd                            ; $122c: $20 $8f
-
-    jr nc, jr_000_11bf                            ; $122e: $30 $8f
-
-    ld b, b                                       ; $1230: $40
-    adc a                                         ; $1231: $8f
-    ld d, b                                       ; $1232: $50
-    adc a                                         ; $1233: $8f
-    ld h, b                                       ; $1234: $60
-    adc a                                         ; $1235: $8f
-    ld [hl], b                                    ; $1236: $70
-    adc a                                         ; $1237: $8f
-
-jr_000_1238:
-    ldh a, [$ff8b]                                ; $1238: $f0 $8b
-
-jr_000_123a:
-    ldh [$ff8e], a                                ; $123a: $e0 $8e
-    ldh [$ff8e], a                                ; $123c: $e0 $8e
-    ldh [$ff8e], a                                ; $123e: $e0 $8e
-    ldh [$ff8e], a                                ; $1240: $e0 $8e
-    ldh [$ff8e], a                                ; $1242: $e0 $8e
-    ldh [$ff8e], a                                ; $1244: $e0 $8e
-    ldh a, [$ff8e]                                ; $1246: $f0 $8e
-    ld [hl], b                                    ; $1248: $70
-    adc d                                         ; $1249: $8a
-    ld [hl], b                                    ; $124a: $70
-    adc d                                         ; $124b: $8a
-    nop                                           ; $124c: $00
-    adc e                                         ; $124d: $8b
-    db $10                                        ; $124e: $10
-    adc e                                         ; $124f: $8b
-    nop                                           ; $1250: $00
-    sub b                                         ; $1251: $90
-    db $10                                        ; $1252: $10
-    sub b                                         ; $1253: $90
-    jr nz, jr_000_11e6                            ; $1254: $20 $90
-
-    jr nc, jr_000_11e8                            ; $1256: $30 $90
-
-    ld b, b                                       ; $1258: $40
-    sub b                                         ; $1259: $90
-    ld d, b                                       ; $125a: $50
-    sub b                                         ; $125b: $90
-    ld h, b                                       ; $125c: $60
-    sub b                                         ; $125d: $90
-    ld [hl], b                                    ; $125e: $70
-    sub b                                         ; $125f: $90
-    add b                                         ; $1260: $80
-
-jr_000_1261:
-    sub b                                         ; $1261: $90
-    sub b                                         ; $1262: $90
-
-jr_000_1263:
-    sub b                                         ; $1263: $90
-    and b                                         ; $1264: $a0
-    sub b                                         ; $1265: $90
-    or b                                          ; $1266: $b0
-    sub b                                         ; $1267: $90
-    ret nz                                        ; $1268: $c0
-
-    sub b                                         ; $1269: $90
-    ret nc                                        ; $126a: $d0
-
-    sub b                                         ; $126b: $90
-    ldh [$ff90], a                                ; $126c: $e0 $90
-    ldh a, [$ff90]                                ; $126e: $f0 $90
-    ld [hl], b                                    ; $1270: $70
-    adc d                                         ; $1271: $8a
-    ld [hl], b                                    ; $1272: $70
-    adc d                                         ; $1273: $8a
-    jr nz, jr_000_1201                            ; $1274: $20 $8b
-
-    jr nc, jr_000_1203                            ; $1276: $30 $8b
-
-    nop                                           ; $1278: $00
-    sub c                                         ; $1279: $91
-    db $10                                        ; $127a: $10
-    sub c                                         ; $127b: $91
-    jr nz, jr_000_120f                            ; $127c: $20 $91
-
-    jr nc, @-$6d                                  ; $127e: $30 $91
-
-    ld b, b                                       ; $1280: $40
-    sub c                                         ; $1281: $91
-    ld d, b                                       ; $1282: $50
-    sub c                                         ; $1283: $91
-    ld h, b                                       ; $1284: $60
-    sub c                                         ; $1285: $91
-    ld [hl], b                                    ; $1286: $70
-    sub c                                         ; $1287: $91
-    add b                                         ; $1288: $80
-    sub c                                         ; $1289: $91
-
-jr_000_128a:
-    sub b                                         ; $128a: $90
-    sub c                                         ; $128b: $91
-
-jr_000_128c:
-    and b                                         ; $128c: $a0
-    sub c                                         ; $128d: $91
-    or b                                          ; $128e: $b0
-    sub c                                         ; $128f: $91
-    ret nz                                        ; $1290: $c0
-
-    sub c                                         ; $1291: $91
-    ret nc                                        ; $1292: $d0
-
-    sub c                                         ; $1293: $91
-    ldh [$ff91], a                                ; $1294: $e0 $91
-    ldh a, [$ff91]                                ; $1296: $f0 $91
-    ld [hl], b                                    ; $1298: $70
-    adc d                                         ; $1299: $8a
-    ld [hl], b                                    ; $129a: $70
-    adc d                                         ; $129b: $8a
-    ld b, b                                       ; $129c: $40
-    adc e                                         ; $129d: $8b
-    ld d, b                                       ; $129e: $50
-    adc e                                         ; $129f: $8b
-    nop                                           ; $12a0: $00
-    sub d                                         ; $12a1: $92
-    db $10                                        ; $12a2: $10
-    sub d                                         ; $12a3: $92
-    jr nz, jr_000_1238                            ; $12a4: $20 $92
-
-    jr nc, jr_000_123a                            ; $12a6: $30 $92
-
-    ld b, b                                       ; $12a8: $40
-    sub d                                         ; $12a9: $92
-    ld d, b                                       ; $12aa: $50
-    sub d                                         ; $12ab: $92
-    ld h, b                                       ; $12ac: $60
-    sub d                                         ; $12ad: $92
-    ld [hl], b                                    ; $12ae: $70
-    sub d                                         ; $12af: $92
-    add b                                         ; $12b0: $80
-    sub d                                         ; $12b1: $92
-    sub b                                         ; $12b2: $90
-
-jr_000_12b3:
-    sub d                                         ; $12b3: $92
-    and b                                         ; $12b4: $a0
-
-jr_000_12b5:
-    sub d                                         ; $12b5: $92
-    or b                                          ; $12b6: $b0
-    sub d                                         ; $12b7: $92
-    ret nz                                        ; $12b8: $c0
-
-    sub d                                         ; $12b9: $92
-    ret nc                                        ; $12ba: $d0
-
-    sub d                                         ; $12bb: $92
-    ldh [$ff92], a                                ; $12bc: $e0 $92
-    ldh a, [$ff92]                                ; $12be: $f0 $92
-    ld [hl], b                                    ; $12c0: $70
-    adc d                                         ; $12c1: $8a
-    ld [hl], b                                    ; $12c2: $70
-    adc d                                         ; $12c3: $8a
-    ld h, b                                       ; $12c4: $60
-    adc e                                         ; $12c5: $8b
-    ld [hl], b                                    ; $12c6: $70
-    adc e                                         ; $12c7: $8b
-    nop                                           ; $12c8: $00
-    sub e                                         ; $12c9: $93
-    db $10                                        ; $12ca: $10
-    sub e                                         ; $12cb: $93
-    jr nz, jr_000_1261                            ; $12cc: $20 $93
-
-    jr nc, jr_000_1263                            ; $12ce: $30 $93
-
-    ld b, b                                       ; $12d0: $40
-    sub e                                         ; $12d1: $93
-    ld d, b                                       ; $12d2: $50
-    sub e                                         ; $12d3: $93
-    ld h, b                                       ; $12d4: $60
-    sub e                                         ; $12d5: $93
-    ld [hl], b                                    ; $12d6: $70
-    sub e                                         ; $12d7: $93
-    add b                                         ; $12d8: $80
-    sub e                                         ; $12d9: $93
-    sub b                                         ; $12da: $90
-    sub e                                         ; $12db: $93
-
-jr_000_12dc:
-    and b                                         ; $12dc: $a0
-    sub e                                         ; $12dd: $93
-
-jr_000_12de:
-    or b                                          ; $12de: $b0
-    sub e                                         ; $12df: $93
-    ret nz                                        ; $12e0: $c0
-
-    sub e                                         ; $12e1: $93
-    ret nc                                        ; $12e2: $d0
-
-    sub e                                         ; $12e3: $93
-    ldh [$ff93], a                                ; $12e4: $e0 $93
-    ldh a, [$ff93]                                ; $12e6: $f0 $93
-    ld [hl], b                                    ; $12e8: $70
-    adc d                                         ; $12e9: $8a
-    ld [hl], b                                    ; $12ea: $70
-    adc d                                         ; $12eb: $8a
-    add b                                         ; $12ec: $80
-    adc e                                         ; $12ed: $8b
-    sub b                                         ; $12ee: $90
-    adc e                                         ; $12ef: $8b
-    nop                                           ; $12f0: $00
-    sub h                                         ; $12f1: $94
-    db $10                                        ; $12f2: $10
-    sub h                                         ; $12f3: $94
-    jr nz, jr_000_128a                            ; $12f4: $20 $94
-
-    jr nc, jr_000_128c                            ; $12f6: $30 $94
-
-    ld b, b                                       ; $12f8: $40
-    sub h                                         ; $12f9: $94
-    ld d, b                                       ; $12fa: $50
-    sub h                                         ; $12fb: $94
-    ld h, b                                       ; $12fc: $60
-    sub h                                         ; $12fd: $94
-    ld [hl], b                                    ; $12fe: $70
-    sub h                                         ; $12ff: $94
-    add b                                         ; $1300: $80
-    sub h                                         ; $1301: $94
-    sub b                                         ; $1302: $90
-    sub h                                         ; $1303: $94
-    and b                                         ; $1304: $a0
-
-jr_000_1305:
-    sub h                                         ; $1305: $94
-    or b                                          ; $1306: $b0
-
-jr_000_1307:
-    sub h                                         ; $1307: $94
-    ret nz                                        ; $1308: $c0
-
-    sub h                                         ; $1309: $94
-    ret nc                                        ; $130a: $d0
-
-    sub h                                         ; $130b: $94
-    ldh [$ff94], a                                ; $130c: $e0 $94
-    ldh a, [$ff94]                                ; $130e: $f0 $94
-    ld [hl], b                                    ; $1310: $70
-    adc d                                         ; $1311: $8a
-    ld [hl], b                                    ; $1312: $70
-    adc d                                         ; $1313: $8a
-    and b                                         ; $1314: $a0
-    adc e                                         ; $1315: $8b
-    or b                                          ; $1316: $b0
-    adc e                                         ; $1317: $8b
-    nop                                           ; $1318: $00
-    sub l                                         ; $1319: $95
-    db $10                                        ; $131a: $10
-    sub l                                         ; $131b: $95
-    jr nz, jr_000_12b3                            ; $131c: $20 $95
-
-    jr nc, jr_000_12b5                            ; $131e: $30 $95
-
-    ld b, b                                       ; $1320: $40
-    sub l                                         ; $1321: $95
-    ld d, b                                       ; $1322: $50
-    sub l                                         ; $1323: $95
-    ld h, b                                       ; $1324: $60
-    sub l                                         ; $1325: $95
-    ld [hl], b                                    ; $1326: $70
-    sub l                                         ; $1327: $95
-    add b                                         ; $1328: $80
-    sub l                                         ; $1329: $95
-    sub b                                         ; $132a: $90
-    sub l                                         ; $132b: $95
-    and b                                         ; $132c: $a0
-    sub l                                         ; $132d: $95
-    or b                                          ; $132e: $b0
-    sub l                                         ; $132f: $95
-    ret nz                                        ; $1330: $c0
-
-    sub l                                         ; $1331: $95
-    ret nc                                        ; $1332: $d0
-
-    sub l                                         ; $1333: $95
-    ldh [$ff95], a                                ; $1334: $e0 $95
-    ldh a, [$ff95]                                ; $1336: $f0 $95
-    ld [hl], b                                    ; $1338: $70
-    adc d                                         ; $1339: $8a
-    ld [hl], b                                    ; $133a: $70
-    adc d                                         ; $133b: $8a
-    ldh [$ff8c], a                                ; $133c: $e0 $8c
-    ldh a, [$ff8c]                                ; $133e: $f0 $8c
-    nop                                           ; $1340: $00
-    sub [hl]                                      ; $1341: $96
-    db $10                                        ; $1342: $10
-    sub [hl]                                      ; $1343: $96
-    jr nz, jr_000_12dc                            ; $1344: $20 $96
-
-    jr nc, jr_000_12de                            ; $1346: $30 $96
-
-    ld b, b                                       ; $1348: $40
-    sub [hl]                                      ; $1349: $96
-    ld d, b                                       ; $134a: $50
-    sub [hl]                                      ; $134b: $96
-    ld h, b                                       ; $134c: $60
-    sub [hl]                                      ; $134d: $96
-    ld [hl], b                                    ; $134e: $70
-    sub [hl]                                      ; $134f: $96
-    add b                                         ; $1350: $80
-    sub [hl]                                      ; $1351: $96
-    sub b                                         ; $1352: $90
-    sub [hl]                                      ; $1353: $96
-    and b                                         ; $1354: $a0
-    sub [hl]                                      ; $1355: $96
-    or b                                          ; $1356: $b0
-    sub [hl]                                      ; $1357: $96
-    ret nz                                        ; $1358: $c0
-
-    sub [hl]                                      ; $1359: $96
-    ret nc                                        ; $135a: $d0
-
-    sub [hl]                                      ; $135b: $96
-    ldh [$ff96], a                                ; $135c: $e0 $96
-    ldh a, [$ff96]                                ; $135e: $f0 $96
-    ld [hl], b                                    ; $1360: $70
-    adc d                                         ; $1361: $8a
-    ld [hl], b                                    ; $1362: $70
-    adc d                                         ; $1363: $8a
-    ret nz                                        ; $1364: $c0
-
-    adc e                                         ; $1365: $8b
-    ret nc                                        ; $1366: $d0
-
-    adc e                                         ; $1367: $8b
-    nop                                           ; $1368: $00
-    sub a                                         ; $1369: $97
-
-jr_000_136a:
-    db $10                                        ; $136a: $10
-    sub a                                         ; $136b: $97
-
-jr_000_136c:
-    jr nz, jr_000_1305                            ; $136c: $20 $97
-
-    jr nc, jr_000_1307                            ; $136e: $30 $97
-
-    ld b, b                                       ; $1370: $40
-    sub a                                         ; $1371: $97
-    ld d, b                                       ; $1372: $50
-    sub a                                         ; $1373: $97
-    ld h, b                                       ; $1374: $60
-    sub a                                         ; $1375: $97
-    ld [hl], b                                    ; $1376: $70
-    sub a                                         ; $1377: $97
-    add b                                         ; $1378: $80
-    sub a                                         ; $1379: $97
-    sub b                                         ; $137a: $90
-    sub a                                         ; $137b: $97
-    and b                                         ; $137c: $a0
-    sub a                                         ; $137d: $97
-    or b                                          ; $137e: $b0
-    sub a                                         ; $137f: $97
-    ret nz                                        ; $1380: $c0
-
-    sub a                                         ; $1381: $97
-    ret nc                                        ; $1382: $d0
-
-    sub a                                         ; $1383: $97
-    ldh [$ff97], a                                ; $1384: $e0 $97
-    ldh a, [$ff97]                                ; $1386: $f0 $97
-    ld [hl], b                                    ; $1388: $70
-    adc d                                         ; $1389: $8a
     xor [hl]                                      ; $138a: $ae
     inc de                                        ; $138b: $13
     sub $13                                       ; $138c: $d6 $13
@@ -4080,9 +3704,9 @@ jr_000_13e5:
 
 jr_000_13e7:
     add b                                         ; $13e7: $80
-    jr nz, jr_000_136a                            ; $13e8: $20 $80
+    jr nz, @-$7e                                  ; $13e8: $20 $80
 
-    jr nc, jr_000_136c                            ; $13ea: $30 $80
+    jr nc, @-$7e                                  ; $13ea: $30 $80
 
     ld b, b                                       ; $13ec: $40
     add b                                         ; $13ed: $80
@@ -5811,9 +5435,9 @@ Call_000_1a45:
     ld a, $03                                     ; $1a49: $3e $03
     ld [rActiveROMBank], a                        ; $1a4b: $ea $12 $c3
     ld [ROMBankSwitchTrigger], a                  ; $1a4e: $ea $00 $20
-    ld a, [$d807]                                 ; $1a51: $fa $07 $d8
+    ld a, [rPuzzleDataIndexLow]                   ; $1a51: $fa $07 $d8
     ld c, a                                       ; $1a54: $4f
-    ld a, [$d808]                                 ; $1a55: $fa $08 $d8
+    ld a, [rPuzzleDataIndexHigh]                  ; $1a55: $fa $08 $d8
     ld b, a                                       ; $1a58: $47
     sla c                                         ; $1a59: $cb $21
     rl b                                          ; $1a5b: $cb $10
@@ -6067,7 +5691,7 @@ jr_000_1b9c:
     ld bc, $000f                                  ; $1bd5: $01 $0f $00
     call Call_000_04db                            ; $1bd8: $cd $db $04
     ld bc, $003c                                  ; $1bdb: $01 $3c $00
-    call Call_000_0603                            ; $1bde: $cd $03 $06
+    call BusyWaitDelayByBC                        ; $1bde: $cd $03 $06
     ret                                           ; $1be1: $c9
 
 
@@ -6152,14 +5776,14 @@ jr_000_1c1c:
     dec b                                         ; $1c4b: $05
     jr nz, jr_000_1c1c                            ; $1c4c: $20 $ce
 
-    ld a, [rCurrentGridSize]                      ; $1c4e: $fa $00 $d8
+    ld a, [rPuzzleGridWidth]                      ; $1c4e: $fa $00 $d8
     ld [de], a                                    ; $1c51: $12
     inc de                                        ; $1c52: $13
-    ld a, [$d801]                                 ; $1c53: $fa $01 $d8
+    ld a, [rPuzzleGridHeight]                     ; $1c53: $fa $01 $d8
     ld [de], a                                    ; $1c56: $12
-    ld a, [$d833]                                 ; $1c57: $fa $33 $d8
+    ld a, [rHintPopupSelection]                   ; $1c57: $fa $33 $d8
     ld [$aca3], a                                 ; $1c5a: $ea $a3 $ac
-    ld a, [$d811]                                 ; $1c5d: $fa $11 $d8
+    ld a, [rPuzzleTimerAdjustmentStep]            ; $1c5d: $fa $11 $d8
     ld [$aca4], a                                 ; $1c60: $ea $a4 $ac
     ld a, [rPuzzleTimerMinuteOnes]                ; $1c63: $fa $09 $d8
     ld [$aca5], a                                 ; $1c66: $ea $a5 $ac
@@ -6169,9 +5793,9 @@ jr_000_1c1c:
     ld [$aca7], a                                 ; $1c72: $ea $a7 $ac
     ld a, [rPuzzleTimerSecondTens]                ; $1c75: $fa $0c $d8
     ld [$aca8], a                                 ; $1c78: $ea $a8 $ac
-    ld a, [$d807]                                 ; $1c7b: $fa $07 $d8
+    ld a, [rPuzzleDataIndexLow]                   ; $1c7b: $fa $07 $d8
     ld [$aca9], a                                 ; $1c7e: $ea $a9 $ac
-    ld a, [$d808]                                 ; $1c81: $fa $08 $d8
+    ld a, [rPuzzleDataIndexHigh]                  ; $1c81: $fa $08 $d8
     ld [$acaa], a                                 ; $1c84: $ea $aa $ac
     ld a, [rPuzzleCursorColumn]                   ; $1c87: $fa $36 $d6
     ld [$acab], a                                 ; $1c8a: $ea $ab $ac
@@ -6182,9 +5806,9 @@ jr_000_1c1c:
 
 Call_000_1c96:
     ld a, [$aca3]                                 ; $1c96: $fa $a3 $ac
-    ld [$d833], a                                 ; $1c99: $ea $33 $d8
+    ld [rHintPopupSelection], a                   ; $1c99: $ea $33 $d8
     ld a, [$aca4]                                 ; $1c9c: $fa $a4 $ac
-    ld [$d811], a                                 ; $1c9f: $ea $11 $d8
+    ld [rPuzzleTimerAdjustmentStep], a            ; $1c9f: $ea $11 $d8
     ld a, [$aca5]                                 ; $1ca2: $fa $a5 $ac
     ld [rPuzzleTimerMinuteOnes], a                ; $1ca5: $ea $09 $d8
     ld a, [$aca6]                                 ; $1ca8: $fa $a6 $ac
@@ -6194,9 +5818,9 @@ Call_000_1c96:
     ld a, [$aca8]                                 ; $1cb4: $fa $a8 $ac
     ld [rPuzzleTimerSecondTens], a                ; $1cb7: $ea $0c $d8
     ld a, [$aca9]                                 ; $1cba: $fa $a9 $ac
-    ld [$d807], a                                 ; $1cbd: $ea $07 $d8
+    ld [rPuzzleDataIndexLow], a                   ; $1cbd: $ea $07 $d8
     ld a, [$acaa]                                 ; $1cc0: $fa $aa $ac
-    ld [$d808], a                                 ; $1cc3: $ea $08 $d8
+    ld [rPuzzleDataIndexHigh], a                  ; $1cc3: $ea $08 $d8
     ld a, [$acab]                                 ; $1cc6: $fa $ab $ac
     ld [rPuzzleCursorColumn], a                   ; $1cc9: $ea $36 $d6
     ld a, [$acac]                                 ; $1ccc: $fa $ac $ac
@@ -6264,20 +5888,20 @@ jr_000_1d11:
     dec b                                         ; $1d13: $05
     jr nz, jr_000_1cdd                            ; $1d14: $20 $c7
 
-    ld a, [rCurrentGridSize]                      ; $1d16: $fa $00 $d8
+    ld a, [rPuzzleGridWidth]                      ; $1d16: $fa $00 $d8
     ld [de], a                                    ; $1d19: $12
     inc de                                        ; $1d1a: $13
-    ld a, [$d801]                                 ; $1d1b: $fa $01 $d8
+    ld a, [rPuzzleGridHeight]                     ; $1d1b: $fa $01 $d8
     ld [de], a                                    ; $1d1e: $12
     jp Jump_000_1b1f                              ; $1d1f: $c3 $1f $1b
 
 
 Call_000_1d22:
     ld a, $42                                     ; $1d22: $3e $42
-    ld [$c32e], a                                 ; $1d24: $ea $2e $c3
+    ld [rLCDCShadow], a                           ; $1d24: $ea $2e $c3
     xor a                                         ; $1d27: $af
-    ld [$c330], a                                 ; $1d28: $ea $30 $c3
-    ld [$c331], a                                 ; $1d2b: $ea $31 $c3
+    ld [rOBP0Shadow], a                           ; $1d28: $ea $30 $c3
+    ld [rOBP1Shadow], a                           ; $1d2b: $ea $31 $c3
     ld a, $0b                                     ; $1d2e: $3e $0b
     ld hl, $5000                                  ; $1d30: $21 $00 $50
     ld de, $8000                                  ; $1d33: $11 $00 $80
@@ -6285,15 +5909,15 @@ Call_000_1d22:
     call BankedTileCopy                           ; $1d39: $cd $e4 $04
     xor a                                         ; $1d3c: $af
     ld [rStatePhaseTimer], a                      ; $1d3d: $ea $3c $d6
-    ld [$d63d], a                                 ; $1d40: $ea $3d $d6
+    ld [rHintCursorAnimationLastFrameTick], a     ; $1d40: $ea $3d $d6
     call ClearShadowOAMBuffer                     ; $1d43: $cd $b6 $05
-    call Call_000_04a2                            ; $1d46: $cd $a2 $04
+    call EnableLCDFromShadow                      ; $1d46: $cd $a2 $04
     call Call_000_1fa5                            ; $1d49: $cd $a5 $1f
     ld b, $03                                     ; $1d4c: $06 $03
     ld hl, $4694                                  ; $1d4e: $21 $94 $46
     ld c, $00                                     ; $1d51: $0e $00
     ld de, $0004                                  ; $1d53: $11 $04 $00
-    call Call_000_040d                            ; $1d56: $cd $0d $04
+    call PlayScreenTransitionFadeIn               ; $1d56: $cd $0d $04
 
 jr_000_1d59:
     ld a, [rInputButtonsPressed]                  ; $1d59: $fa $1e $c3
@@ -6311,9 +5935,9 @@ jr_000_1d59:
     cp $46                                        ; $1d70: $fe $46
     jr c, jr_000_1d7d                             ; $1d72: $38 $09
 
-    ld a, [$d63d]                                 ; $1d74: $fa $3d $d6
+    ld a, [rHintCursorAnimationLastFrameTick]     ; $1d74: $fa $3d $d6
     xor $01                                       ; $1d77: $ee $01
-    ld [$d63d], a                                 ; $1d79: $ea $3d $d6
+    ld [rHintCursorAnimationLastFrameTick], a     ; $1d79: $ea $3d $d6
     xor a                                         ; $1d7c: $af
 
 jr_000_1d7d:
@@ -6321,29 +5945,29 @@ jr_000_1d7d:
     cp $30                                        ; $1d80: $fe $30
     jr nc, jr_000_1d8f                            ; $1d82: $30 $0b
 
-    ld a, [$d63d]                                 ; $1d84: $fa $3d $d6
+    ld a, [rHintCursorAnimationLastFrameTick]     ; $1d84: $fa $3d $d6
     add $4c                                       ; $1d87: $c6 $4c
     ld bc, $3050                                  ; $1d89: $01 $50 $30
     call CopyOAMSpriteById                        ; $1d8c: $cd $ce $20
 
 jr_000_1d8f:
-    call Call_000_05c5                            ; $1d8f: $cd $c5 $05
+    call ClearShadowOAMBufferFromCursor           ; $1d8f: $cd $c5 $05
     rst RST_08                                    ; $1d92: $cf
     jr jr_000_1d59                                ; $1d93: $18 $c4
 
 jr_000_1d95:
     ld c, $04                                     ; $1d95: $0e $04
     ld a, $02                                     ; $1d97: $3e $02
-    call TODO_Bank0FDispatcher                    ; $1d99: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $1d99: $cd $b6 $03
     ld bc, $003c                                  ; $1d9c: $01 $3c $00
-    call Call_000_0603                            ; $1d9f: $cd $03 $06
+    call BusyWaitDelayByBC                        ; $1d9f: $cd $03 $06
     call ClearShadowOAMBuffer                     ; $1da2: $cd $b6 $05
     ld b, $03                                     ; $1da5: $06 $03
     ld hl, $469f                                  ; $1da7: $21 $9f $46
     ld c, $00                                     ; $1daa: $0e $00
     ld de, $0013                                  ; $1dac: $11 $13 $00
-    call Call_000_044e                            ; $1daf: $cd $4e $04
-    call Call_000_0483                            ; $1db2: $cd $83 $04
+    call PlayScreenTransitionFadeOut              ; $1daf: $cd $4e $04
+    call DisableLCDAtVBlank                       ; $1db2: $cd $83 $04
     ld a, $ff                                     ; $1db5: $3e $ff
     and a                                         ; $1db7: $a7
     ret                                           ; $1db8: $c9
@@ -6352,16 +5976,16 @@ jr_000_1d95:
 jr_000_1db9:
     ld c, $03                                     ; $1db9: $0e $03
     ld a, $02                                     ; $1dbb: $3e $02
-    call TODO_Bank0FDispatcher                    ; $1dbd: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $1dbd: $cd $b6 $03
     ld bc, $003c                                  ; $1dc0: $01 $3c $00
-    call Call_000_0603                            ; $1dc3: $cd $03 $06
+    call BusyWaitDelayByBC                        ; $1dc3: $cd $03 $06
     call ClearShadowOAMBuffer                     ; $1dc6: $cd $b6 $05
     ld b, $03                                     ; $1dc9: $06 $03
     ld hl, $469f                                  ; $1dcb: $21 $9f $46
     ld c, $00                                     ; $1dce: $0e $00
     ld de, $0013                                  ; $1dd0: $11 $13 $00
-    call Call_000_044e                            ; $1dd3: $cd $4e $04
-    call Call_000_0483                            ; $1dd6: $cd $83 $04
+    call PlayScreenTransitionFadeOut              ; $1dd3: $cd $4e $04
+    call DisableLCDAtVBlank                       ; $1dd6: $cd $83 $04
     xor a                                         ; $1dd9: $af
     ret                                           ; $1dda: $c9
 
@@ -6541,14 +6165,14 @@ jr_000_1ecd:
     ld a, $81                                     ; $1ed6: $3e $81
     ldh [rLCDC], a                                ; $1ed8: $e0 $40
     ld bc, $0005                                  ; $1eda: $01 $05 $00
-    call Call_000_0603                            ; $1edd: $cd $03 $06
+    call BusyWaitDelayByBC                        ; $1edd: $cd $03 $06
     pop hl                                        ; $1ee0: $e1
     call Call_000_1df6                            ; $1ee1: $cd $f6 $1d
     ld bc, $0006                                  ; $1ee4: $01 $06 $00
-    call Call_000_0603                            ; $1ee7: $cd $03 $06
-    ld a, [$c32f]                                 ; $1eea: $fa $2f $c3
+    call BusyWaitDelayByBC                        ; $1ee7: $cd $03 $06
+    ld a, [rBGPShadow]                            ; $1eea: $fa $2f $c3
     ldh [rBGP], a                                 ; $1eed: $e0 $47
-    ld a, [$c32e]                                 ; $1eef: $fa $2e $c3
+    ld a, [rLCDCShadow]                           ; $1eef: $fa $2e $c3
     ldh [rLCDC], a                                ; $1ef2: $e0 $40
     ei                                            ; $1ef4: $fb
     pop af                                        ; $1ef5: $f1
@@ -6559,48 +6183,48 @@ jr_000_1ecd:
 
 Call_000_1efd:
     ld bc, $0078                                  ; $1efd: $01 $78 $00
-    call Call_000_0603                            ; $1f00: $cd $03 $06
+    call BusyWaitDelayByBC                        ; $1f00: $cd $03 $06
     call Call_000_1f87                            ; $1f03: $cd $87 $1f
     ld a, $03                                     ; $1f06: $3e $03
     ld hl, $4de0                                  ; $1f08: $21 $e0 $4d
     call Call_000_1ddb                            ; $1f0b: $cd $db $1d
     ld bc, $0004                                  ; $1f0e: $01 $04 $00
-    call Call_000_0603                            ; $1f11: $cd $03 $06
+    call BusyWaitDelayByBC                        ; $1f11: $cd $03 $06
     ld a, $03                                     ; $1f14: $3e $03
     ld hl, $4df0                                  ; $1f16: $21 $f0 $4d
     call Call_000_1ddb                            ; $1f19: $cd $db $1d
     ld bc, $0004                                  ; $1f1c: $01 $04 $00
-    call Call_000_0603                            ; $1f1f: $cd $03 $06
+    call BusyWaitDelayByBC                        ; $1f1f: $cd $03 $06
     ld a, $03                                     ; $1f22: $3e $03
     ld hl, $4e00                                  ; $1f24: $21 $00 $4e
     call Call_000_1ddb                            ; $1f27: $cd $db $1d
     ld bc, $0004                                  ; $1f2a: $01 $04 $00
-    call Call_000_0603                            ; $1f2d: $cd $03 $06
+    call BusyWaitDelayByBC                        ; $1f2d: $cd $03 $06
     ld a, $03                                     ; $1f30: $3e $03
     ld hl, $4e10                                  ; $1f32: $21 $10 $4e
     call Call_000_1ddb                            ; $1f35: $cd $db $1d
     ld bc, $0004                                  ; $1f38: $01 $04 $00
-    call Call_000_0603                            ; $1f3b: $cd $03 $06
+    call BusyWaitDelayByBC                        ; $1f3b: $cd $03 $06
     ld a, $03                                     ; $1f3e: $3e $03
     ld hl, $4e20                                  ; $1f40: $21 $20 $4e
     call Call_000_1ddb                            ; $1f43: $cd $db $1d
     ld bc, $0004                                  ; $1f46: $01 $04 $00
-    call Call_000_0603                            ; $1f49: $cd $03 $06
+    call BusyWaitDelayByBC                        ; $1f49: $cd $03 $06
     ld a, $03                                     ; $1f4c: $3e $03
     ld hl, $4e30                                  ; $1f4e: $21 $30 $4e
     call Call_000_1ddb                            ; $1f51: $cd $db $1d
     ld bc, $0004                                  ; $1f54: $01 $04 $00
-    call Call_000_0603                            ; $1f57: $cd $03 $06
+    call BusyWaitDelayByBC                        ; $1f57: $cd $03 $06
     ld a, $03                                     ; $1f5a: $3e $03
     ld hl, $4e40                                  ; $1f5c: $21 $40 $4e
     call Call_000_1ddb                            ; $1f5f: $cd $db $1d
     ld bc, $0004                                  ; $1f62: $01 $04 $00
-    call Call_000_0603                            ; $1f65: $cd $03 $06
+    call BusyWaitDelayByBC                        ; $1f65: $cd $03 $06
     ld a, $03                                     ; $1f68: $3e $03
     ld hl, $4e50                                  ; $1f6a: $21 $50 $4e
     call Call_000_1ddb                            ; $1f6d: $cd $db $1d
     ld bc, $0004                                  ; $1f70: $01 $04 $00
-    call Call_000_0603                            ; $1f73: $cd $03 $06
+    call BusyWaitDelayByBC                        ; $1f73: $cd $03 $06
     ld a, $03                                     ; $1f76: $3e $03
     ld hl, $4730                                  ; $1f78: $21 $30 $47
     call Call_000_1e9e                            ; $1f7b: $cd $9e $1e
@@ -6611,7 +6235,7 @@ Call_000_1efd:
 
 
 Call_000_1f87:
-    ld a, [$c33d]                                 ; $1f87: $fa $3d $c3
+    ld a, [rBootVariantFlag_Unsure]               ; $1f87: $fa $3d $c3
     and a                                         ; $1f8a: $a7
     ret z                                         ; $1f8b: $c8
 
@@ -6623,19 +6247,19 @@ Call_000_1f87:
     ld hl, $4e60                                  ; $1f93: $21 $60 $4e
     call Call_000_1ddb                            ; $1f96: $cd $db $1d
     ld bc, $0004                                  ; $1f99: $01 $04 $00
-    call Call_000_0603                            ; $1f9c: $cd $03 $06
+    call BusyWaitDelayByBC                        ; $1f9c: $cd $03 $06
     ld a, $ff                                     ; $1f9f: $3e $ff
     ld [$c33f], a                                 ; $1fa1: $ea $3f $c3
     ret                                           ; $1fa4: $c9
 
 
 Call_000_1fa5:
-    ld a, [$c33d]                                 ; $1fa5: $fa $3d $c3
+    ld a, [rBootVariantFlag_Unsure]               ; $1fa5: $fa $3d $c3
     and a                                         ; $1fa8: $a7
     ret z                                         ; $1fa9: $c8
 
     ld bc, $0002                                  ; $1faa: $01 $02 $00
-    call Call_000_0603                            ; $1fad: $cd $03 $06
+    call BusyWaitDelayByBC                        ; $1fad: $cd $03 $06
     ld a, [$c33f]                                 ; $1fb0: $fa $3f $c3
     and a                                         ; $1fb3: $a7
     ret z                                         ; $1fb4: $c8
@@ -6644,13 +6268,13 @@ Call_000_1fa5:
     ld hl, $4e70                                  ; $1fb7: $21 $70 $4e
     call Call_000_1ddb                            ; $1fba: $cd $db $1d
     ld bc, $0004                                  ; $1fbd: $01 $04 $00
-    call Call_000_0603                            ; $1fc0: $cd $03 $06
+    call BusyWaitDelayByBC                        ; $1fc0: $cd $03 $06
     xor a                                         ; $1fc3: $af
     ld [$c33f], a                                 ; $1fc4: $ea $3f $c3
     ret                                           ; $1fc7: $c9
 
 
-Jump_000_1fc8:
+PlayScreenTransitionFadeIn_AlternatePath::
     push de                                       ; $1fc8: $d5
     push bc                                       ; $1fc9: $c5
     push hl                                       ; $1fca: $e5
@@ -6674,24 +6298,24 @@ Jump_000_1fc8:
 
 jr_000_1ff1:
     ld a, [hl+]                                   ; $1ff1: $2a
-    ld [$c32f], a                                 ; $1ff2: $ea $2f $c3
+    ld [rBGPShadow], a                            ; $1ff2: $ea $2f $c3
     ld a, [hl+]                                   ; $1ff5: $2a
-    ld [$c330], a                                 ; $1ff6: $ea $30 $c3
+    ld [rOBP0Shadow], a                           ; $1ff6: $ea $30 $c3
     ld a, [hl+]                                   ; $1ff9: $2a
-    ld [$c331], a                                 ; $1ffa: $ea $31 $c3
+    ld [rOBP1Shadow], a                           ; $1ffa: $ea $31 $c3
     push bc                                       ; $1ffd: $c5
     push hl                                       ; $1ffe: $e5
     ld bc, $0002                                  ; $1fff: $01 $02 $00
-    call Call_000_0603                            ; $2002: $cd $03 $06
+    call BusyWaitDelayByBC                        ; $2002: $cd $03 $06
     pop hl                                        ; $2005: $e1
     pop bc                                        ; $2006: $c1
     dec b                                         ; $2007: $05
     jr nz, jr_000_1ff1                            ; $2008: $20 $e7
 
     ld [rStatePhaseTimer], a                      ; $200a: $ea $3c $d6
-    ld [$d63d], a                                 ; $200d: $ea $3d $d6
-    ld [$d63e], a                                 ; $2010: $ea $3e $d6
-    ld [$d63f], a                                 ; $2013: $ea $3f $d6
+    ld [rHintCursorAnimationLastFrameTick], a     ; $200d: $ea $3d $d6
+    ld [rHintCursorAnimationColumnAccumulator], a ; $2010: $ea $3e $d6
+    ld [rHintCursorAnimationRowAccumulator], a    ; $2013: $ea $3f $d6
     pop af                                        ; $2016: $f1
     ld [rActiveROMBank], a                        ; $2017: $ea $12 $c3
     ld [ROMBankSwitchTrigger], a                  ; $201a: $ea $00 $20
@@ -6721,7 +6345,7 @@ jr_000_202d:
     ld hl, $c340                                  ; $2038: $21 $40 $c3
     call Call_000_1ddb                            ; $203b: $cd $db $1d
     ld bc, $0006                                  ; $203e: $01 $06 $00
-    call Call_000_0603                            ; $2041: $cd $03 $06
+    call BusyWaitDelayByBC                        ; $2041: $cd $03 $06
     pop de                                        ; $2044: $d1
     pop bc                                        ; $2045: $c1
     dec b                                         ; $2046: $05
@@ -6730,7 +6354,7 @@ jr_000_202d:
     ret                                           ; $2049: $c9
 
 
-Jump_000_204a:
+PlayScreenTransitionFadeOut_AlternatePath::
     push hl                                       ; $204a: $e5
     push bc                                       ; $204b: $c5
     push de                                       ; $204c: $d5
@@ -6766,7 +6390,7 @@ jr_000_206c:
     ld hl, $c340                                  ; $2077: $21 $40 $c3
     call Call_000_1ddb                            ; $207a: $cd $db $1d
     ld bc, $0006                                  ; $207d: $01 $06 $00
-    call Call_000_0603                            ; $2080: $cd $03 $06
+    call BusyWaitDelayByBC                        ; $2080: $cd $03 $06
     pop de                                        ; $2083: $d1
     pop bc                                        ; $2084: $c1
     dec b                                         ; $2085: $05
@@ -6791,15 +6415,15 @@ jr_000_206c:
 
 jr_000_20ad:
     ld a, [hl-]                                   ; $20ad: $3a
-    ld [$c331], a                                 ; $20ae: $ea $31 $c3
+    ld [rOBP1Shadow], a                           ; $20ae: $ea $31 $c3
     ld a, [hl-]                                   ; $20b1: $3a
-    ld [$c330], a                                 ; $20b2: $ea $30 $c3
+    ld [rOBP0Shadow], a                           ; $20b2: $ea $30 $c3
     ld a, [hl-]                                   ; $20b5: $3a
-    ld [$c32f], a                                 ; $20b6: $ea $2f $c3
+    ld [rBGPShadow], a                            ; $20b6: $ea $2f $c3
     push bc                                       ; $20b9: $c5
     push hl                                       ; $20ba: $e5
     ld bc, $0002                                  ; $20bb: $01 $02 $00
-    call Call_000_0603                            ; $20be: $cd $03 $06
+    call BusyWaitDelayByBC                        ; $20be: $cd $03 $06
     pop hl                                        ; $20c1: $e1
     pop bc                                        ; $20c2: $c1
     dec b                                         ; $20c3: $05
@@ -6828,7 +6452,7 @@ CopyOAMSpriteById::
     ld e, a                                       ; $20e7: $5f
     ld a, [hl]                                    ; $20e8: $7e
     ld d, a                                       ; $20e9: $57
-    ld a, [$c311]                                 ; $20ea: $fa $11 $c3
+    ld a, [rShadowOAMWriteCursor]                 ; $20ea: $fa $11 $c3
     ld l, a                                       ; $20ed: $6f
     ld h, $c0                                     ; $20ee: $26 $c0
 
@@ -6854,7 +6478,7 @@ CopyOAMSpriteById::
 
 .DoneRestoreBank:
     ld a, l                                       ; $2104: $7d
-    ld [$c311], a                                 ; $2105: $ea $11 $c3
+    ld [rShadowOAMWriteCursor], a                 ; $2105: $ea $11 $c3
     pop af                                        ; $2108: $f1
     ld [rActiveROMBank], a                        ; $2109: $ea $12 $c3
     ld [ROMBankSwitchTrigger], a                  ; $210c: $ea $00 $20
@@ -6875,7 +6499,7 @@ GameState_06_HowToPlay_PhaseDispatcher::
 
     ld c, $04                                     ; $2124: $0e $04
     ld a, $02                                     ; $2126: $3e $02
-    call TODO_Bank0FDispatcher                    ; $2128: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $2128: $cd $b6 $03
 
 jr_000_212b:
     ld a, $2a                                     ; $212b: $3e $2a
@@ -7016,15 +6640,15 @@ GS06_PhasePointer_2a::
 
 GS06_StatePhase_00_Init::
     ld a, $43                                     ; $218a: $3e $43
-    ld [$c32e], a                                 ; $218c: $ea $2e $c3
+    ld [rLCDCShadow], a                           ; $218c: $ea $2e $c3
     xor a                                         ; $218f: $af
-    ld [$c32f], a                                 ; $2190: $ea $2f $c3
-    ld [$c330], a                                 ; $2193: $ea $30 $c3
-    ld [$c331], a                                 ; $2196: $ea $31 $c3
-    ld [$c332], a                                 ; $2199: $ea $32 $c3
-    ld [$c333], a                                 ; $219c: $ea $33 $c3
-    call Call_000_05a0                            ; $219f: $cd $a0 $05
-    call Call_000_05ab                            ; $21a2: $cd $ab $05
+    ld [rBGPShadow], a                            ; $2190: $ea $2f $c3
+    ld [rOBP0Shadow], a                           ; $2193: $ea $30 $c3
+    ld [rOBP1Shadow], a                           ; $2196: $ea $31 $c3
+    ld [rSCXShadow], a                            ; $2199: $ea $32 $c3
+    ld [rSCYShadow], a                            ; $219c: $ea $33 $c3
+    call FillBGMap0WithTile01                     ; $219f: $cd $a0 $05
+    call FillBGMap1WithTile01                     ; $21a2: $cd $ab $05
     ld a, $07                                     ; $21a5: $3e $07
     ld hl, $4000                                  ; $21a7: $21 $00 $40
     ld de, $8000                                  ; $21aa: $11 $00 $80
@@ -7036,44 +6660,44 @@ GS06_StatePhase_00_Init::
     ld bc, $0400                                  ; $21bb: $01 $00 $04
     call BankedTileCopy                           ; $21be: $cd $e4 $04
     ld a, $2f                                     ; $21c1: $3e $2f
-    ld [$c336], a                                 ; $21c3: $ea $36 $c3
-    ld hl, $c337                                  ; $21c6: $21 $37 $c3
+    ld [rLYCShadow], a                            ; $21c3: $ea $36 $c3
+    ld hl, rLCDCInterruptControlFlags_Unsure      ; $21c6: $21 $37 $c3
     set 6, [hl]                                   ; $21c9: $cb $f6
     ld hl, rIE                                    ; $21cb: $21 $ff $ff
     set 1, [hl]                                   ; $21ce: $cb $ce
     ld a, $01                                     ; $21d0: $3e $01
-    ld [$c338], a                                 ; $21d2: $ea $38 $c3
-    ld [$c33c], a                                 ; $21d5: $ea $3c $c3
-    ld [$c350], a                                 ; $21d8: $ea $50 $c3
+    ld [rLCDCInterruptDispatchIndex], a           ; $21d2: $ea $38 $c3
+    ld [rVBlankLCDCBit4ForceFlag], a              ; $21d5: $ea $3c $c3
+    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $21d8: $ea $50 $c3
     xor a                                         ; $21db: $af
-    ld [$d805], a                                 ; $21dc: $ea $05 $d8
+    ld [rPuzzleFlowVariant_Unsure], a             ; $21dc: $ea $05 $d8
     ld [rPuzzleTimerCompletionState], a           ; $21df: $ea $06 $d8
     ld [rMarioBlinkAnimationSequenceCursor], a    ; $21e2: $ea $18 $d8
     ld [rMarioBlinkAnimationDelay], a             ; $21e5: $ea $17 $d8
-    ld [$d80f], a                                 ; $21e8: $ea $0f $d8
+    ld [rPuzzleActionRepeatGuard], a              ; $21e8: $ea $0f $d8
     ld [rCellEffectTargetColumn], a               ; $21eb: $ea $24 $d8
     ld [rCellEffectTargetRow], a                  ; $21ee: $ea $25 $d8
     ld [rPendingCellEffectCode], a                ; $21f1: $ea $23 $d8
     ld [rPendingCellEffectDelay], a               ; $21f4: $ea $22 $d8
-    ld [$d63e], a                                 ; $21f7: $ea $3e $d6
-    ld [$d63f], a                                 ; $21fa: $ea $3f $d6
-    ld a, [$c33b]                                 ; $21fd: $fa $3b $c3
-    ld [$d63d], a                                 ; $2200: $ea $3d $d6
+    ld [rHintCursorAnimationColumnAccumulator], a ; $21f7: $ea $3e $d6
+    ld [rHintCursorAnimationRowAccumulator], a    ; $21fa: $ea $3f $d6
+    ld a, [rLCDCFrameTickCounter]                 ; $21fd: $fa $3b $c3
+    ld [rHintCursorAnimationLastFrameTick], a     ; $2200: $ea $3d $d6
     call GS06_ResetMessageSequenceState           ; $2203: $cd $3e $32
     xor a                                         ; $2206: $af
-    ld [$d807], a                                 ; $2207: $ea $07 $d8
-    ld [$d808], a                                 ; $220a: $ea $08 $d8
+    ld [rPuzzleDataIndexLow], a                   ; $2207: $ea $07 $d8
+    ld [rPuzzleDataIndexHigh], a                  ; $220a: $ea $08 $d8
     ld a, $02                                     ; $220d: $3e $02
-    ld [$d811], a                                 ; $220f: $ea $11 $d8
+    ld [rPuzzleTimerAdjustmentStep], a            ; $220f: $ea $11 $d8
     ld a, $02                                     ; $2212: $3e $02
-    ld [$d812], a                                 ; $2214: $ea $12 $d8
-    ld [$d813], a                                 ; $2217: $ea $13 $d8
+    ld [rHintCursorAnimationColumnThreshold], a   ; $2214: $ea $12 $d8
+    ld [rHintCursorAnimationRowThreshold], a      ; $2217: $ea $13 $d8
     ld a, $05                                     ; $221a: $3e $05
-    ld [$d82a], a                                 ; $221c: $ea $2a $d8
+    ld [rCountdownSfxTimer], a                    ; $221c: $ea $2a $d8
     ld a, $96                                     ; $221f: $3e $96
-    ld [$cd63], a                                 ; $2221: $ea $63 $cd
+    ld [rTilemapToTileDataAddressLookupTableLow], a; $2221: $ea $63 $cd
     ld a, $10                                     ; $2224: $3e $10
-    ld [$cd64], a                                 ; $2226: $ea $64 $cd
+    ld [rTilemapToTileDataAddressLookupTableHigh], a; $2226: $ea $64 $cd
     ld a, $0d                                     ; $2229: $3e $0d
     ld [rMessageScriptStreamResetEntryLow], a     ; $222b: $ea $43 $d8
     ld [rMessageScriptStreamEntryLow], a          ; $222e: $ea $2b $d8
@@ -7094,17 +6718,17 @@ GS06_StatePhase_00_Init::
     call $7beb                                    ; $2256: $cd $eb $7b
     ld c, $00                                     ; $2259: $0e $00
     ld a, $01                                     ; $225b: $3e $01
-    call TODO_Bank0FDispatcher                    ; $225d: $cd $b6 $03
-    call Call_000_0399                            ; $2260: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $225d: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $2260: $cd $99 $03
     ld c, $02                                     ; $2263: $0e $02
     ld a, $01                                     ; $2265: $3e $01
-    call TODO_Bank0FDispatcher                    ; $2267: $cd $b6 $03
-    call Call_000_04a2                            ; $226a: $cd $a2 $04
+    call CallSoundEffectDispatcher                ; $2267: $cd $b6 $03
+    call EnableLCDFromShadow                      ; $226a: $cd $a2 $04
     ld b, $03                                     ; $226d: $06 $03
     ld hl, $46a0                                  ; $226f: $21 $a0 $46
     ld c, $01                                     ; $2272: $0e $01
     ld de, $0014                                  ; $2274: $11 $14 $00
-    call Call_000_040d                            ; $2277: $cd $0d $04
+    call PlayScreenTransitionFadeIn               ; $2277: $cd $0d $04
     ld hl, rStatePhase_Current                    ; $227a: $21 $35 $d6
     inc [hl]                                      ; $227d: $34
     call $6fb9                                    ; $227e: $cd $b9 $6f
@@ -7158,7 +6782,7 @@ GS06_StatePhase_02_HighlightNumbersTop_Prepare::
     ret                                           ; $22e0: $c9
 
 
-GS06_StatePhase_02_HighlightNumbersTop_SequenceEventTable::
+GS06_StatePhase_02_HighlightNumbersTop_OAMSequenceEventTable::
     db $08, $00, $00, $34
     db $08, $00, $00, $35
     db $08, $00, $00, $36
@@ -7209,7 +6833,7 @@ GS06_StatePhase_04_HighlightNumbersLeft_Prepare::
     ret                                           ; $2346: $c9
 
 
-GS06_StatePhase_04_HighlightNumbersLeft_SequenceEventTable::
+GS06_StatePhase_04_HighlightNumbersLeft_OAMSequenceEventTable::
     db $08, $00, $00, $34
     db $08, $00, $00, $35
     db $08, $00, $00, $36
@@ -7296,38 +6920,22 @@ GS06_StatePhase_08_SolvePuzzle_Prepare::
 
 
 GS06_SolvePuzzleInputSequenceData::
-    db $00, $00, $01, $80
-    db $01, $80, $01, $80
-    db $01, $80, $01, $00
-    db $00, $40, $40, $40
-    db $40, $10, $00, $00
-    db $01, $80, $01, $80
-    db $01, $80, $01, $80
-    db $01, $00, $00, $40
-    db $40, $40, $40, $10
-    db $10, $10, $00, $00
-    db $01, $80, $01, $80
-    db $01, $80, $01, $80
-    db $01, $00, $00, $40
-    db $40, $40, $40, $20
-    db $20, $00, $00, $02
-    db $10, $02, $00, $00
-    db $20, $80, $80, $80
-    db $80, $00, $00, $02
-    db $10, $02, $00, $00
-    db $20, $20, $20, $40
-    db $40, $00, $00, $10
-    db $10, $01, $10, $01
-    db $10, $00, $00, $20
-    db $20, $20, $20, $40
-    db $00, $00, $10, $10
-    db $01, $10, $02, $10
-    db $00, $00, $20, $20
-    db $20, $20, $80, $80
-    db $00, $00, $10, $10
-    db $02, $10, $01, $10
-    db $00, $00, $00, $00
-    db $ff
+    db $00, $00, $01, $80, $01, $80, $01, $80
+    db $01, $80, $01, $00, $00, $40, $40, $40
+    db $40, $10, $00, $00, $01, $80, $01, $80
+    db $01, $80, $01, $80, $01, $00, $00, $40
+    db $40, $40, $40, $10, $10, $10, $00, $00
+    db $01, $80, $01, $80, $01, $80, $01, $80
+    db $01, $00, $00, $40, $40, $40, $40, $20
+    db $20, $00, $00, $02, $10, $02, $00, $00
+    db $20, $80, $80, $80, $80, $00, $00, $02
+    db $10, $02, $00, $00, $20, $20, $20, $40
+    db $40, $00, $00, $10, $10, $01, $10, $01
+    db $10, $00, $00, $20, $20, $20, $20, $40
+    db $00, $00, $10, $10, $01, $10, $02, $10
+    db $00, $00, $20, $20, $20, $20, $80, $80
+    db $00, $00, $10, $10, $02, $10, $01, $10
+    db $00, $00, $00, $00, $ff
 
 GS06_StatePhase_09_SolvePuzzle_Animation::
     call GS06_TickScriptedInputSequence           ; $246d: $cd $d6 $30
@@ -7435,7 +7043,7 @@ GS06_StatePhase_0d_HighlightNumbersTop_Prepare::
     ret                                           ; $2537: $c9
 
 
-GS06_StatePhase_0d_HighlightNumbersTop_SequenceEventTable::
+GS06_StatePhase_0d_HighlightNumbersTop_OAMSequenceEventTable::
     db $08, $00, $00, $34
     db $08, $00, $00, $35
     db $08, $00, $00, $36
@@ -7506,7 +7114,7 @@ GS06_StatePhase_10_HighlightNumbersFirstColumn_Prepare::
     ret                                           ; $25c5: $c9
 
 
-GS06_StatePhase_10_HighlightNumbersFirstColumn_SequenceEventTable::
+GS06_StatePhase_10_HighlightNumbersFirstColumn_OAMSequenceEventTable::
     db $08, $00, $00, $2e
     db $08, $00, $00, $2f
     db $08, $00, $00, $30
@@ -7553,10 +7161,8 @@ GS06_StatePhase_12_SolveFirstColumn_Prepare::
 
 
 GS06_SolveFirstColumnInputSequenceData::
-    db $00, $00, $01, $80
-    db $01, $80, $01, $80
-    db $01, $80, $01, $00
-    db $00, $00, $00, $ff
+    db $00, $00, $01, $80, $01, $80, $01, $80
+    db $01, $80, $01, $00, $00, $00, $00, $ff
 
 GS06_StatePhase_13_SolveFirstColumn_Animation::
     call GS06_TickScriptedInputSequence           ; $262f: $cd $d6 $30
@@ -7615,7 +7221,7 @@ GS06_StatePhase_14_HighlightNumbersLeft_Prepare::
     ret                                           ; $26a1: $c9
 
 
-GS06_StatePhase_14_HighlightNumbersLeft_SequenceEventTable::
+GS06_StatePhase_14_HighlightNumbersLeft_OAMSequenceEventTable::
     db $08, $00, $00, $34
     db $08, $00, $00, $35
     db $08, $00, $00, $36
@@ -7686,7 +7292,7 @@ GS06_StatePhase_17_HighlightNumbersSecondRow_Prepare::
     ret                                           ; $272f: $c9
 
 
-GS06_StatePhase_17_HighlightNumbersSecondRow_SequenceEventTable::
+GS06_StatePhase_17_HighlightNumbersSecondRow_OAMSequenceEventTable::
     db $08, $00, $00, $31
     db $08, $00, $00, $32
     db $08, $00, $00, $33
@@ -7734,10 +7340,8 @@ GS06_StatePhase_19_SolveSecondRow_Prepare::
 
 
 GS06_SolveSecondRowInputSequenceData::
-    db $00, $00, $01, $10
-    db $01, $10, $01, $00
-    db $00, $10, $10, $00
-    db $00, $01, $00, $00
+    db $00, $00, $01, $10, $01, $10, $01, $00
+    db $00, $10, $10, $00, $00, $01, $00, $00
     db $00, $00, $ff
 
 GS06_StatePhase_1a_SolveSecondRow_Animation::
@@ -7822,7 +7426,7 @@ GS06_StatePhase_1d_GameOverMessage::
     ret                                           ; $283a: $c9
 
 
-GS06_StatePhase_1e_TODO::
+GS06_StatePhase_1e_MakeMistake_Prepare::
     call $7918                                    ; $283b: $cd $18 $79
     call AnimateMarioMouthDuringText              ; $283e: $cd $93 $30
     call AdvanceMessageScriptStream               ; $2841: $cd $6e $2b
@@ -7845,16 +7449,12 @@ GS06_StatePhase_1e_TODO::
     ret                                           ; $2867: $c9
 
 
-    nop                                           ; $2868: $00
-    nop                                           ; $2869: $00
-    ld bc, $0000                                  ; $286a: $01 $00 $00
-    nop                                           ; $286d: $00
-    nop                                           ; $286e: $00
-    rst $38                                       ; $286f: $ff
+GS06_MakeMistakeInputSequenceData::
+    db $00, $00, $01, $00, $00, $00, $00, $ff
 
-GS06_StatePhase_1f_TODO::
+GS06_StatePhase_1f_MakeMistake_Animation::
     call GS06_TickScriptedInputSequence           ; $2870: $cd $d6 $30
-    jr nz, jr_000_2887                            ; $2873: $20 $12
+    jr nz, .FrameLoop                             ; $2873: $20 $12
 
     ld a, $1a                                     ; $2875: $3e $1a
     ld [rMessageScriptStreamPointerLow], a        ; $2877: $ea $2d $d8
@@ -7866,7 +7466,7 @@ GS06_StatePhase_1f_TODO::
     ret                                           ; $2886: $c9
 
 
-jr_000_2887:
+.FrameLoop:
     call $71ca                                    ; $2887: $cd $ca $71
     call $713e                                    ; $288a: $cd $3e $71
     call $7918                                    ; $288d: $cd $18 $79
@@ -7876,7 +7476,7 @@ jr_000_2887:
     ret                                           ; $2899: $c9
 
 
-GS06_StatePhase_20_TODO::
+GS06_StatePhase_20_Message::
     call $7918                                    ; $289a: $cd $18 $79
     call AnimateMarioMouthDuringText              ; $289d: $cd $93 $30
     call AdvanceMessageScriptStream               ; $28a0: $cd $6e $2b
@@ -7896,7 +7496,7 @@ GS06_StatePhase_20_TODO::
     ret                                           ; $28c1: $c9
 
 
-GS06_StatePhase_21_TODO::
+GS06_StatePhase_21_MarkWithX_Prepare::
     call $7918                                    ; $28c2: $cd $18 $79
     call AnimateMarioMouthDuringText              ; $28c5: $cd $93 $30
     call AdvanceMessageScriptStream               ; $28c8: $cd $6e $2b
@@ -7919,18 +7519,12 @@ GS06_StatePhase_21_TODO::
     ret                                           ; $28ee: $c9
 
 
-    nop                                           ; $28ef: $00
-    nop                                           ; $28f0: $00
-    ld [bc], a                                    ; $28f1: $02
-    nop                                           ; $28f2: $00
-    nop                                           ; $28f3: $00
-    nop                                           ; $28f4: $00
-    nop                                           ; $28f5: $00
-    rst $38                                       ; $28f6: $ff
+GS06_MarkWithXInputSequenceData::
+    db $00, $00, $02, $00, $00, $00, $00, $ff
 
-GS06_StatePhase_22_TODO::
+GS06_StatePhase_22_MarkWithX_Animation::
     call GS06_TickScriptedInputSequence           ; $28f7: $cd $d6 $30
-    jr nz, jr_000_2923                            ; $28fa: $20 $27
+    jr nz, .FrameLoop                             ; $28fa: $20 $27
 
     ld hl, $03ed                                  ; $28fc: $21 $ed $03
     call GS06_ShowAButtonPromptAndWaitForAdvanceOrSkip; $28ff: $cd $b6 $2f
@@ -7949,7 +7543,7 @@ GS06_StatePhase_22_TODO::
     ret                                           ; $2922: $c9
 
 
-jr_000_2923:
+.FrameLoop:
     call $71ca                                    ; $2923: $cd $ca $71
     call $713e                                    ; $2926: $cd $3e $71
     call $7918                                    ; $2929: $cd $18 $79
@@ -7959,14 +7553,14 @@ jr_000_2923:
     ret                                           ; $2935: $c9
 
 
-GS06_StatePhase_23_TODO::
+GS06_StatePhase_23_WithHintPopUp_Prepare::
     call $7918                                    ; $2936: $cd $18 $79
     call AnimateMarioMouthDuringText              ; $2939: $cd $93 $30
     call AdvanceMessageScriptStream               ; $293c: $cd $6e $2b
     ret nz                                        ; $293f: $c0
 
     ld a, $01                                     ; $2940: $3e $01
-    ld [$d833], a                                 ; $2942: $ea $33 $d8
+    ld [rHintPopupSelection], a                   ; $2942: $ea $33 $d8
     ld a, $06                                     ; $2945: $3e $06
     ld hl, $7800                                  ; $2947: $21 $00 $78
     ld de, $8500                                  ; $294a: $11 $00 $85
@@ -7985,20 +7579,15 @@ GS06_StatePhase_23_TODO::
     ret                                           ; $296b: $c9
 
 
-    nop                                           ; $296c: $00
-    nop                                           ; $296d: $00
-    jr nz, jr_000_2970                            ; $296e: $20 $00
+GS06_WithHintPopUpInputSequenceData::
+    db $00, $00, $20, $00, $00, $ff
 
-jr_000_2970:
-    nop                                           ; $2970: $00
-    rst $38                                       ; $2971: $ff
-
-GS06_StatePhase_24_TODO::
-    call Call_000_29c0                            ; $2972: $cd $c0 $29
+GS06_StatePhase_24_WithHintPopUp_Demonstration::
+    call GS06_DrawWithHintPopUp                   ; $2972: $cd $c0 $29
     call GS06_TickScriptedInputSequence           ; $2975: $cd $d6 $30
-    jr nz, jr_000_29a7                            ; $2978: $20 $2d
+    jr nz, .ToggleHintPopupVariant                ; $2978: $20 $2d
 
-    ld hl, $29c0                                  ; $297a: $21 $c0 $29
+    ld hl, GS06_DrawWithHintPopUp                 ; $297a: $21 $c0 $29
     call GS06_ShowAButtonPromptAndWaitForAdvanceOrSkip; $297d: $cd $b6 $2f
     call ClearShadowOAMBuffer                     ; $2980: $cd $b6 $05
     call GS06_CopyRedrawSourceToProgressionBuffer ; $2983: $cd $2e $30
@@ -8018,7 +7607,7 @@ GS06_StatePhase_24_TODO::
     ret                                           ; $29a6: $c9
 
 
-jr_000_29a7:
+.ToggleHintPopupVariant:
     call $7918                                    ; $29a7: $cd $18 $79
     ld a, [rInputButtonsPressed]                  ; $29aa: $fa $1e $c3
     and $f0                                       ; $29ad: $e6 $f0
@@ -8026,22 +7615,22 @@ jr_000_29a7:
 
     ld c, $0a                                     ; $29b0: $0e $0a
     ld a, $02                                     ; $29b2: $3e $02
-    call TODO_Bank0FDispatcher                    ; $29b4: $cd $b6 $03
-    ld a, [$d833]                                 ; $29b7: $fa $33 $d8
+    call CallSoundEffectDispatcher                ; $29b4: $cd $b6 $03
+    ld a, [rHintPopupSelection]                   ; $29b7: $fa $33 $d8
     xor $01                                       ; $29ba: $ee $01
-    ld [$d833], a                                 ; $29bc: $ea $33 $d8
+    ld [rHintPopupSelection], a                   ; $29bc: $ea $33 $d8
     ret                                           ; $29bf: $c9
 
 
-Call_000_29c0:
-    ld a, [$d833]                                 ; $29c0: $fa $33 $d8
+GS06_DrawWithHintPopUp::
+    ld a, [rHintPopupSelection]                   ; $29c0: $fa $33 $d8
     add $3a                                       ; $29c3: $c6 $3a
     ld bc, $2a36                                  ; $29c5: $01 $36 $2a
     call CopyOAMSpriteById                        ; $29c8: $cd $ce $20
     ret                                           ; $29cb: $c9
 
 
-GS06_StatePhase_25_TODO::
+GS06_StatePhase_25_Message::
     call $7918                                    ; $29cc: $cd $18 $79
     call AnimateMarioMouthDuringText              ; $29cf: $cd $93 $30
     call AdvanceMessageScriptStream               ; $29d2: $cd $6e $2b
@@ -8061,28 +7650,28 @@ GS06_StatePhase_25_TODO::
     ret                                           ; $29f3: $c9
 
 
-GS06_StatePhase_26_TODO::
-    call Call_000_31ca                            ; $29f4: $cd $ca $31
+GS06_StatePhase_26_StopTopHintCursor::
+    call AdvanceHintCursorAnimation               ; $29f4: $cd $ca $31
     call $7918                                    ; $29f7: $cd $18 $79
     call AnimateMarioMouthDuringText              ; $29fa: $cd $93 $30
     call AdvanceMessageScriptStream               ; $29fd: $cd $6e $2b
     ret nz                                        ; $2a00: $c0
 
-    ld hl, $31ca                                  ; $2a01: $21 $ca $31
+    ld hl, AdvanceHintCursorAnimation             ; $2a01: $21 $ca $31
     call GS06_ShowAButtonPromptAndWaitForAdvanceOrSkip; $2a04: $cd $b6 $2f
-    ld a, [$d812]                                 ; $2a07: $fa $12 $d8
+    ld a, [rHintCursorAnimationColumnThreshold]   ; $2a07: $fa $12 $d8
     scf                                           ; $2a0a: $37
     rl a                                          ; $2a0b: $cb $17
-    ld [$d812], a                                 ; $2a0d: $ea $12 $d8
+    ld [rHintCursorAnimationColumnThreshold], a   ; $2a0d: $ea $12 $d8
 
-jr_000_2a10:
+.DecelerateTopHintCursorLoop:
     call GS06_ShowMessageArrowAndTickTransitionTimer; $2a10: $cd $12 $30
-    call Call_000_05c5                            ; $2a13: $cd $c5 $05
+    call ClearShadowOAMBufferFromCursor           ; $2a13: $cd $c5 $05
     rst RST_08                                    ; $2a16: $cf
-    call Call_000_31ca                            ; $2a17: $cd $ca $31
-    ld a, [$d812]                                 ; $2a1a: $fa $12 $d8
+    call AdvanceHintCursorAnimation               ; $2a17: $cd $ca $31
+    ld a, [rHintCursorAnimationColumnThreshold]   ; $2a1a: $fa $12 $d8
     cp $3f                                        ; $2a1d: $fe $3f
-    jr c, jr_000_2a10                             ; $2a1f: $38 $ef
+    jr c, .DecelerateTopHintCursorLoop            ; $2a1f: $38 $ef
 
     ld a, $78                                     ; $2a21: $3e $78
     ld [rMessageScriptStreamPointerLow], a        ; $2a23: $ea $2d $d8
@@ -8094,31 +7683,31 @@ jr_000_2a10:
     ret                                           ; $2a32: $c9
 
 
-GS06_StatePhase_27_TODO::
-    call Call_000_31ca                            ; $2a33: $cd $ca $31
+GS06_StatePhase_27_StopLeftHintCursor::
+    call AdvanceHintCursorAnimation               ; $2a33: $cd $ca $31
     call $7918                                    ; $2a36: $cd $18 $79
     call AnimateMarioMouthDuringText              ; $2a39: $cd $93 $30
     call AdvanceMessageScriptStream               ; $2a3c: $cd $6e $2b
     ret nz                                        ; $2a3f: $c0
 
-    ld hl, $31ca                                  ; $2a40: $21 $ca $31
+    ld hl, AdvanceHintCursorAnimation             ; $2a40: $21 $ca $31
     call GS06_ShowAButtonPromptAndWaitForAdvanceOrSkip; $2a43: $cd $b6 $2f
-    ld a, [$d813]                                 ; $2a46: $fa $13 $d8
+    ld a, [rHintCursorAnimationRowThreshold]      ; $2a46: $fa $13 $d8
     scf                                           ; $2a49: $37
     rl a                                          ; $2a4a: $cb $17
-    ld [$d813], a                                 ; $2a4c: $ea $13 $d8
+    ld [rHintCursorAnimationRowThreshold], a      ; $2a4c: $ea $13 $d8
 
-jr_000_2a4f:
+.DecelerateLeftHintCursorLoop:
     call GS06_ShowMessageArrowAndTickTransitionTimer; $2a4f: $cd $12 $30
-    call Call_000_05c5                            ; $2a52: $cd $c5 $05
+    call ClearShadowOAMBufferFromCursor           ; $2a52: $cd $c5 $05
     rst RST_08                                    ; $2a55: $cf
-    call Call_000_31ca                            ; $2a56: $cd $ca $31
-    ld a, [$d813]                                 ; $2a59: $fa $13 $d8
+    call AdvanceHintCursorAnimation               ; $2a56: $cd $ca $31
+    ld a, [rHintCursorAnimationRowThreshold]      ; $2a59: $fa $13 $d8
     cp $3f                                        ; $2a5c: $fe $3f
-    jr c, jr_000_2a4f                             ; $2a5e: $38 $ef
+    jr c, .DecelerateLeftHintCursorLoop           ; $2a5e: $38 $ef
 
     call ClearShadowOAMBuffer                     ; $2a60: $cd $b6 $05
-    call Call_000_31ca                            ; $2a63: $cd $ca $31
+    call AdvanceHintCursorAnimation               ; $2a63: $cd $ca $31
     call GS06_CopyRedrawSourceToProgressionBuffer ; $2a66: $cd $2e $30
     ld a, $ca                                     ; $2a69: $3e $ca
     ld [rMessageScriptStreamPointerLow], a        ; $2a6b: $ea $2d $d8
@@ -8130,8 +7719,8 @@ jr_000_2a4f:
     ret                                           ; $2a7a: $c9
 
 
-GS06_StatePhase_28_TODO::
-    call Call_000_31ca                            ; $2a7b: $cd $ca $31
+GS06_StatePhase_28_ApplyHintSolve::
+    call AdvanceHintCursorAnimation               ; $2a7b: $cd $ca $31
     call $7918                                    ; $2a7e: $cd $18 $79
     call AnimateMarioMouthDuringText              ; $2a81: $cd $93 $30
     call AdvanceMessageScriptStream               ; $2a84: $cd $6e $2b
@@ -8153,16 +7742,16 @@ GS06_StatePhase_28_TODO::
     ret                                           ; $2aab: $c9
 
 
-GS06_StatePhase_29_TODO::
+GS06_StatePhase_29_AdvanceOrRestart::
     call $7918                                    ; $2aac: $cd $18 $79
     call AnimateMarioMouthDuringText              ; $2aaf: $cd $93 $30
     call AdvanceMessageScriptStream               ; $2ab2: $cd $6e $2b
     ret nz                                        ; $2ab5: $c0
 
     ld a, $01                                     ; $2ab6: $3e $01
-    ld [$d835], a                                 ; $2ab8: $ea $35 $d8
+    ld [rAdvanceOrSkipTimeoutEnabled], a          ; $2ab8: $ea $35 $d8
     ld a, $ff                                     ; $2abb: $3e $ff
-    ld [$d836], a                                 ; $2abd: $ea $36 $d8
+    ld [rAdvanceOrSkipTimeoutCounter], a          ; $2abd: $ea $36 $d8
     ld hl, $03ed                                  ; $2ac0: $21 $ed $03
     call GS06_WaitForAdvanceOrSkip_PollLoop       ; $2ac3: $cd $bb $2f
     ld a, [rInputButtonsHeld]                     ; $2ac6: $fa $1a $c3
@@ -8173,28 +7762,28 @@ GS06_StatePhase_29_TODO::
     call LoadPuzzleDataBuffer                     ; $2ad3: $cd $f1 $07
     pop af                                        ; $2ad6: $f1
     bit 0, a                                      ; $2ad7: $cb $47
-    jr z, jr_000_2ae0                             ; $2ad9: $28 $05
+    jr z, .ResetTutorialStateAndRestart           ; $2ad9: $28 $05
 
     ld hl, rStatePhase_Current                    ; $2adb: $21 $35 $d6
     inc [hl]                                      ; $2ade: $34
     ret                                           ; $2adf: $c9
 
 
-jr_000_2ae0:
+.ResetTutorialStateAndRestart:
     xor a                                         ; $2ae0: $af
     ld [rPuzzleCursorColumn], a                   ; $2ae1: $ea $36 $d6
     ld [rPuzzleCursorRow], a                      ; $2ae4: $ea $37 $d6
-    ld [$d805], a                                 ; $2ae7: $ea $05 $d8
+    ld [rPuzzleFlowVariant_Unsure], a             ; $2ae7: $ea $05 $d8
     ld [rPuzzleTimerCompletionState], a           ; $2aea: $ea $06 $d8
-    ld [$d80f], a                                 ; $2aed: $ea $0f $d8
+    ld [rPuzzleActionRepeatGuard], a              ; $2aed: $ea $0f $d8
     call GS06_ResetMessageSequenceState           ; $2af0: $cd $3e $32
     ld a, $02                                     ; $2af3: $3e $02
-    ld [$d811], a                                 ; $2af5: $ea $11 $d8
+    ld [rPuzzleTimerAdjustmentStep], a            ; $2af5: $ea $11 $d8
     ld a, $02                                     ; $2af8: $3e $02
-    ld [$d812], a                                 ; $2afa: $ea $12 $d8
-    ld [$d813], a                                 ; $2afd: $ea $13 $d8
+    ld [rHintCursorAnimationColumnThreshold], a   ; $2afa: $ea $12 $d8
+    ld [rHintCursorAnimationRowThreshold], a      ; $2afd: $ea $13 $d8
     ld a, $05                                     ; $2b00: $3e $05
-    ld [$d82a], a                                 ; $2b02: $ea $2a $d8
+    ld [rCountdownSfxTimer], a                    ; $2b02: $ea $2a $d8
     ld a, [rMessageScriptStreamResetEntryLow]     ; $2b05: $fa $43 $d8
     ld [rMessageScriptStreamEntryLow], a          ; $2b08: $ea $2b $d8
     ld a, [rMessageScriptStreamResetEntryHigh]    ; $2b0b: $fa $44 $d8
@@ -8211,30 +7800,30 @@ jr_000_2ae0:
 
 GS06_StatePhase_2a_CancelAndReturnToMenu::
     ld bc, $003c                                  ; $2b24: $01 $3c $00
-    call Call_000_05fa                            ; $2b27: $cd $fa $05
+    call DelayFramesByBC                          ; $2b27: $cd $fa $05
     ld a, $05                                     ; $2b2a: $3e $05
-    call TODO_Bank0FDispatcher                    ; $2b2c: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $2b2c: $cd $b6 $03
     ld c, $00                                     ; $2b2f: $0e $00
     ld a, $01                                     ; $2b31: $3e $01
-    call TODO_Bank0FDispatcher                    ; $2b33: $cd $b6 $03
-    call Call_000_0399                            ; $2b36: $cd $99 $03
+    call CallSoundEffectDispatcher                ; $2b33: $cd $b6 $03
+    call WaitForScanline40OrDelay                 ; $2b36: $cd $99 $03
     ld c, $00                                     ; $2b39: $0e $00
     ld a, $01                                     ; $2b3b: $3e $01
-    call TODO_Bank0FDispatcher                    ; $2b3d: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $2b3d: $cd $b6 $03
     ld b, $03                                     ; $2b40: $06 $03
     ld hl, $46ab                                  ; $2b42: $21 $ab $46
     ld c, $01                                     ; $2b45: $0e $01
     ld de, $0023                                  ; $2b47: $11 $23 $00
-    call Call_000_044e                            ; $2b4a: $cd $4e $04
-    call Call_000_0483                            ; $2b4d: $cd $83 $04
-    ld hl, $c337                                  ; $2b50: $21 $37 $c3
+    call PlayScreenTransitionFadeOut              ; $2b4a: $cd $4e $04
+    call DisableLCDAtVBlank                       ; $2b4d: $cd $83 $04
+    ld hl, rLCDCInterruptControlFlags_Unsure      ; $2b50: $21 $37 $c3
     res 6, [hl]                                   ; $2b53: $cb $b6
     ld hl, rIE                                    ; $2b55: $21 $ff $ff
     res 1, [hl]                                   ; $2b58: $cb $8e
     xor a                                         ; $2b5a: $af
-    ld [$c338], a                                 ; $2b5b: $ea $38 $c3
-    ld [$c33c], a                                 ; $2b5e: $ea $3c $c3
-    ld [$c350], a                                 ; $2b61: $ea $50 $c3
+    ld [rLCDCInterruptDispatchIndex], a           ; $2b5b: $ea $38 $c3
+    ld [rVBlankLCDCBit4ForceFlag], a              ; $2b5e: $ea $3c $c3
+    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $2b61: $ea $50 $c3
     xor a                                         ; $2b64: $af
     ld [rStatePhase_Current], a                   ; $2b65: $ea $35 $d6
     ld a, $02                                     ; $2b68: $3e $02
@@ -8285,7 +7874,7 @@ AdvanceMessageScriptStreamHelper::
     jr z, .ResetMessageScriptStreamEntry          ; $2ba9: $28 $0c
 
 .AdvanceMessageScriptStreamEntry:
-    call PrepareBGTileCopySetup                   ; $2bab: $cd $d3 $2b
+    call PrepareMessageBGTileCopySetup            ; $2bab: $cd $d3 $2b
     ld hl, rMessageScriptStreamEntryLow           ; $2bae: $21 $2b $d8
     add $01                                       ; $2bb1: $c6 $01
     add [hl]                                      ; $2bb3: $86
@@ -8311,7 +7900,7 @@ AdvanceMessageScriptStreamHelper::
     ret                                           ; $2bd2: $c9
 
 
-PrepareBGTileCopySetup::
+PrepareMessageBGTileCopySetup::
     push de                                       ; $2bd3: $d5
     sla e                                         ; $2bd4: $cb $23
     rl d                                          ; $2bd6: $cb $12
@@ -8341,26 +7930,26 @@ PrepareBGTileCopySetup::
     add b                                         ; $2bfd: $80
     ld hl, rMessageScriptStreamLimitLow           ; $2bfe: $21 $45 $d8
     cp [hl]                                       ; $2c01: $be
-    jr c, .PrepareBGTileCopyParams                ; $2c02: $38 $02
+    jr c, .PrepareMessageBGTileCopyParams         ; $2c02: $38 $02
 
     pop af                                        ; $2c04: $f1
     ret                                           ; $2c05: $c9
 
 
-.PrepareBGTileCopyParams:
+.PrepareMessageBGTileCopyParams:
     ld [rBGTileCopyDestX], a                      ; $2c06: $ea $53 $c3
     ld a, c                                       ; $2c09: $79
     ld [rBGTileCopySourceY], a                    ; $2c0a: $ea $52 $c3
     add $08                                       ; $2c0d: $c6 $08
     ld hl, rMessageScriptStreamLimitHigh          ; $2c0f: $21 $46 $d8
     cp [hl]                                       ; $2c12: $be
-    jr c, .ApplyBGTileCopyParams                  ; $2c13: $38 $02
+    jr c, .ApplyMessageBGTileCopyParams           ; $2c13: $38 $02
 
     pop af                                        ; $2c15: $f1
     ret                                           ; $2c16: $c9
 
 
-.ApplyBGTileCopyParams:
+.ApplyMessageBGTileCopyParams:
     ld [rBGTileCopyDestY], a                      ; $2c17: $ea $54 $c3
     call PrepareBGTileCopy                        ; $2c1a: $cd $b3 $08
     pop af                                        ; $2c1d: $f1
@@ -8546,16 +8135,16 @@ MessageGlyphSourceOffsetTable::
 
 GS06_ShowAButtonPromptAndWaitForAdvanceOrSkip::
     ld a, $78                                     ; $2fb6: $3e $78
-    ld [$d836], a                                 ; $2fb8: $ea $36 $d8
+    ld [rAdvanceOrSkipTimeoutCounter], a          ; $2fb8: $ea $36 $d8
 
 GS06_WaitForAdvanceOrSkip_PollLoop::
-    ld a, [$d835]                                 ; $2fbb: $fa $35 $d8
+    ld a, [rAdvanceOrSkipTimeoutEnabled]          ; $2fbb: $fa $35 $d8
     and a                                         ; $2fbe: $a7
     jr z, .CheckAdvanceInputA                     ; $2fbf: $28 $08
 
-    ld a, [$d836]                                 ; $2fc1: $fa $36 $d8
+    ld a, [rAdvanceOrSkipTimeoutCounter]          ; $2fc1: $fa $36 $d8
     dec a                                         ; $2fc4: $3d
-    ld [$d836], a                                 ; $2fc5: $ea $36 $d8
+    ld [rAdvanceOrSkipTimeoutCounter], a          ; $2fc5: $ea $36 $d8
     ret z                                         ; $2fc8: $c8
 
 .CheckAdvanceInputA:
@@ -8565,7 +8154,7 @@ GS06_WaitForAdvanceOrSkip_PollLoop::
 
     ld c, $03                                     ; $2fd0: $0e $03
     ld a, $02                                     ; $2fd2: $3e $02
-    call TODO_Bank0FDispatcher                    ; $2fd4: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $2fd4: $cd $b6 $03
     ret                                           ; $2fd7: $c9
 
 
@@ -8577,16 +8166,16 @@ GS06_WaitForAdvanceOrSkip_PollLoop::
     ld [$d837], a                                 ; $2fdf: $ea $37 $d8
     ld c, $04                                     ; $2fe2: $0e $04
     ld a, $02                                     ; $2fe4: $3e $02
-    call TODO_Bank0FDispatcher                    ; $2fe6: $cd $b6 $03
+    call CallSoundEffectDispatcher                ; $2fe6: $cd $b6 $03
     ret                                           ; $2fe9: $c9
 
 
 .WaitLoopBody:
     push hl                                       ; $2fea: $e5
-    call Call_000_05c5                            ; $2feb: $cd $c5 $05
+    call ClearShadowOAMBufferFromCursor           ; $2feb: $cd $c5 $05
     rst RST_08                                    ; $2fee: $cf
     call $7918                                    ; $2fef: $cd $18 $79
-    ld a, [$c33b]                                 ; $2ff2: $fa $3b $c3
+    ld a, [rLCDCFrameTickCounter]                 ; $2ff2: $fa $3b $c3
     bit 4, a                                      ; $2ff5: $cb $67
     jr nz, .LoopCallbackReturn                    ; $2ff7: $20 $0f
 
@@ -8611,7 +8200,7 @@ GS06_WaitForAdvanceOrSkip_PollLoop::
     jr GS06_WaitForAdvanceOrSkip_PollLoop         ; $3010: $18 $a9
 
 GS06_ShowMessageArrowAndTickTransitionTimer::
-    ld a, [$c33b]                                 ; $3012: $fa $3b $c3
+    ld a, [rLCDCFrameTickCounter]                 ; $3012: $fa $3b $c3
     bit 4, a                                      ; $3015: $cb $67
     jr nz, .TickTransitionTimer                   ; $3017: $20 $10
 
@@ -8865,85 +8454,85 @@ GS06_DecrementPuzzleTimer::
     ret                                           ; $31c9: $c9
 
 
-Call_000_31ca:
-    ld a, [$c33b]                                 ; $31ca: $fa $3b $c3
+AdvanceHintCursorAnimation::
+    ld a, [rLCDCFrameTickCounter]                 ; $31ca: $fa $3b $c3
     push af                                       ; $31cd: $f5
-    ld hl, $d63d                                  ; $31ce: $21 $3d $d6
+    ld hl, rHintCursorAnimationLastFrameTick      ; $31ce: $21 $3d $d6
     sub [hl]                                      ; $31d1: $96
     push af                                       ; $31d2: $f5
-    ld hl, $d63e                                  ; $31d3: $21 $3e $d6
+    ld hl, rHintCursorAnimationColumnAccumulator  ; $31d3: $21 $3e $d6
     add [hl]                                      ; $31d6: $86
     ld [hl], a                                    ; $31d7: $77
     pop af                                        ; $31d8: $f1
-    ld hl, $d63f                                  ; $31d9: $21 $3f $d6
+    ld hl, rHintCursorAnimationRowAccumulator     ; $31d9: $21 $3f $d6
     add [hl]                                      ; $31dc: $86
     ld [hl], a                                    ; $31dd: $77
     pop af                                        ; $31de: $f1
-    ld [$d63d], a                                 ; $31df: $ea $3d $d6
-    ld a, [$d812]                                 ; $31e2: $fa $12 $d8
+    ld [rHintCursorAnimationLastFrameTick], a     ; $31df: $ea $3d $d6
+    ld a, [rHintCursorAnimationColumnThreshold]   ; $31e2: $fa $12 $d8
     cp $3f                                        ; $31e5: $fe $3f
-    jr nc, jr_000_320e                            ; $31e7: $30 $25
+    jr nc, .AdvanceHintCursorRow                  ; $31e7: $30 $25
 
     ld c, a                                       ; $31e9: $4f
-    ld a, [$d63e]                                 ; $31ea: $fa $3e $d6
+    ld a, [rHintCursorAnimationColumnAccumulator] ; $31ea: $fa $3e $d6
     cp c                                          ; $31ed: $b9
-    jr c, jr_000_320e                             ; $31ee: $38 $1e
+    jr c, .AdvanceHintCursorRow                   ; $31ee: $38 $1e
 
     xor a                                         ; $31f0: $af
-    ld [$d63e], a                                 ; $31f1: $ea $3e $d6
+    ld [rHintCursorAnimationColumnAccumulator], a ; $31f1: $ea $3e $d6
     ld a, c                                       ; $31f4: $79
     cp $02                                        ; $31f5: $fe $02
-    jr z, jr_000_31ff                             ; $31f7: $28 $06
+    jr z, .AdvanceHintCursorColumn                ; $31f7: $28 $06
 
     scf                                           ; $31f9: $37
-    ld hl, $d812                                  ; $31fa: $21 $12 $d8
+    ld hl, rHintCursorAnimationColumnThreshold    ; $31fa: $21 $12 $d8
     rl [hl]                                       ; $31fd: $cb $16
 
-jr_000_31ff:
+.AdvanceHintCursorColumn:
     ld a, [rPuzzleCursorColumn]                   ; $31ff: $fa $36 $d6
     inc a                                         ; $3202: $3c
     cp $05                                        ; $3203: $fe $05
-    jr nz, jr_000_3208                            ; $3205: $20 $01
+    jr nz, .HintCursorColumnNoWrap                ; $3205: $20 $01
 
     xor a                                         ; $3207: $af
 
-jr_000_3208:
+.HintCursorColumnNoWrap:
     ld [rPuzzleCursorColumn], a                   ; $3208: $ea $36 $d6
     call $6c2c                                    ; $320b: $cd $2c $6c
 
-jr_000_320e:
-    ld a, [$d813]                                 ; $320e: $fa $13 $d8
+.AdvanceHintCursorRow:
+    ld a, [rHintCursorAnimationRowThreshold]      ; $320e: $fa $13 $d8
     cp $3f                                        ; $3211: $fe $3f
-    jr nc, jr_000_323a                            ; $3213: $30 $25
+    jr nc, .FinalizeHintCursorAnimation           ; $3213: $30 $25
 
     ld c, a                                       ; $3215: $4f
-    ld a, [$d63f]                                 ; $3216: $fa $3f $d6
+    ld a, [rHintCursorAnimationRowAccumulator]    ; $3216: $fa $3f $d6
     cp c                                          ; $3219: $b9
-    jr c, jr_000_323a                             ; $321a: $38 $1e
+    jr c, .FinalizeHintCursorAnimation            ; $321a: $38 $1e
 
     xor a                                         ; $321c: $af
-    ld [$d63f], a                                 ; $321d: $ea $3f $d6
+    ld [rHintCursorAnimationRowAccumulator], a    ; $321d: $ea $3f $d6
     ld a, c                                       ; $3220: $79
     cp $02                                        ; $3221: $fe $02
-    jr z, jr_000_322b                             ; $3223: $28 $06
+    jr z, .HintCursorRowNoWrap                    ; $3223: $28 $06
 
     scf                                           ; $3225: $37
-    ld hl, $d813                                  ; $3226: $21 $13 $d8
+    ld hl, rHintCursorAnimationRowThreshold       ; $3226: $21 $13 $d8
     rl [hl]                                       ; $3229: $cb $16
 
-jr_000_322b:
+.HintCursorRowNoWrap:
     ld a, [rPuzzleCursorRow]                      ; $322b: $fa $37 $d6
     inc a                                         ; $322e: $3c
     cp $05                                        ; $322f: $fe $05
-    jr nz, jr_000_3234                            ; $3231: $20 $01
+    jr nz, .AdvanceHintCursorAnimationComplete    ; $3231: $20 $01
 
     xor a                                         ; $3233: $af
 
-jr_000_3234:
+.AdvanceHintCursorAnimationComplete:
     ld [rPuzzleCursorRow], a                      ; $3234: $ea $37 $d6
     call $6c2c                                    ; $3237: $cd $2c $6c
 
-jr_000_323a:
+.FinalizeHintCursorAnimation:
     call $7185                                    ; $323a: $cd $85 $71
     ret                                           ; $323d: $c9
 

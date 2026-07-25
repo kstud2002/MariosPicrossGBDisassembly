@@ -1,5 +1,7 @@
 *.gb
 *.sav
+*.1bpp
+*.2bpp
 .github/
 __pycache__/
 disassembly/game.map
