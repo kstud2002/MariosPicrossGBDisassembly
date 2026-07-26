@@ -3,9 +3,27 @@
 ; mgbdis v3.0 - Game Boy ROM disassembler by Matt Currie and contributors.
 ; https://github.com/mattcurrie/mgbdis
 
+DEF rSaveDataPrimaryBlockStart EQU $a000
+DEF rPuzzleOrderTableCursor EQU $a001
+DEF rPuzzleOrderTableStart EQU $a002
+DEF rSaveDataDefaultBlockADest EQU $a042
+DEF rSaveDataDefaultBlockBDest EQU $a069
+DEF rHiddenProgrammerCreditsMirror EQU $aced
+DEF rSaveValidationMagicBytesMirror EQU $acfd
+DEF rSaveDataPrimaryChecksumSum EQU $ad02
+DEF rSaveDataPrimaryChecksumXor EQU $ad03
+DEF rSaveDataMirrorBlockStart EQU $ad04
+DEF rSaveDataMirrorChecksumSum EQU $ba06
+DEF rSaveDataMirrorChecksumXor EQU $ba07
+DEF rMainLoopInitScratchFlag_Unsure EQU $c310
 DEF rShadowOAMWriteCursor EQU $c311
 DEF rActiveROMBank EQU $c312
 DEF rRequestedROMBank EQU $c314
+DEF rCommandQueueWriteCursor EQU $c315
+DEF rCommandQueueReadCursor EQU $c316
+DEF rCommandQueueReservedOrUnused EQU $c317
+DEF rInputRepeatInitialDelay EQU $c318
+DEF rInputRepeatSubsequentInterval EQU $c319
 DEF rInputButtonsHeld EQU $c31a
 DEF rInputButtonsPressed EQU $c31e
 DEF rInputButtonsPressedOrRepeated EQU $c322
@@ -21,7 +39,8 @@ DEF rLCDCInterruptDispatchIndex EQU $c338
 DEF rVBlankSyncFlag EQU $c339
 DEF rLCDCFrameTickCounter EQU $c33b
 DEF rVBlankLCDCBit4ForceFlag EQU $c33c
-DEF rBootVariantFlag_Unsure EQU $c33d
+DEF rIsSuperGameBoyMode EQU $c33d
+DEF rSGBPacketTransferBusyFlag EQU $c33e
 DEF rVBlankSoundEngineUpdateEnabled_Unsure EQU $c350
 DEF rBGTileCopySourceX EQU $c351
 DEF rBGTileCopySourceY EQU $c352
@@ -43,6 +62,13 @@ DEF rBGTileCopyValueH EQU $c361
 DEF rBGTileCopyValueI EQU $c362
 DEF rTilemapToTileDataAddressLookupTableLow EQU $cd63
 DEF rTilemapToTileDataAddressLookupTableHigh EQU $cd64
+DEF rSubtractiveRNGStateSeed EQU $cd68
+DEF rSubtractiveRNGModulus EQU $cd69
+DEF rSubtractiveRNGStateCursor EQU $cd6a
+DEF rSubtractiveRNGStateTableStart EQU $cd6b
+DEF rSubtractiveRNGStateTableOffset18 EQU $cd83
+DEF rSubtractiveRNGStateTableOffset1f EQU $cd8a
+DEF rSubtractiveRNGStateTableEnd EQU $cda1
 DEF rGS06_OAMSequenceBaseLow EQU $cda2
 DEF rGS06_OAMSequenceBaseHigh EQU $cda3
 DEF rGS06_OAMSequenceEventSpriteId EQU $cda4
@@ -56,7 +82,7 @@ DEF rStatePhase_Current EQU $d635
 DEF rPuzzleCursorColumn EQU $d636
 DEF rPuzzleCursorRow EQU $d637
 DEF rStatePhaseTimer EQU $d63c
-DEF rHintCursorAnimationLastFrameTick EQU $d63d
+DEF rSharedAnimationFrameState EQU $d63d
 DEF rHintCursorAnimationColumnAccumulator EQU $d63e
 DEF rHintCursorAnimationRowAccumulator EQU $d63f
 DEF rPuzzleCellStateBufferEnd EQU $d73f
@@ -110,5 +136,6 @@ DEF rMessageScriptStreamResetEntryLow EQU $d843
 DEF rMessageScriptStreamResetEntryHigh EQU $d844
 DEF rMessageScriptStreamLimitLow EQU $d845
 DEF rMessageScriptStreamLimitHigh EQU $d846
+DEF rSubtractiveRNGSeedSourceByte EQU $dfff
 DEF rLevelSelectColumn EQU $f636
 DEF rLevelSelectRow EQU $f637

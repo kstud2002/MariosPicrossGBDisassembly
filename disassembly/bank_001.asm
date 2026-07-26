@@ -1054,7 +1054,7 @@ jr_001_448d:
     add hl, bc                                    ; $44c9: $09
     xor a                                         ; $44ca: $af
     ld [hl], a                                    ; $44cb: $77
-    call Call_000_1b1f                            ; $44cc: $cd $1f $1b
+    call RefreshSaveValidationChecksumsAndMirrors ; $44cc: $cd $1f $1b
     ld bc, $003c                                  ; $44cf: $01 $3c $00
     call DelayFramesByBC                          ; $44d2: $cd $fa $05
     ld a, $05                                     ; $44d5: $3e $05
@@ -1148,11 +1148,11 @@ jr_001_448d:
     ld [rStatePhase_Current], a                   ; $45b1: $ea $35 $d6
     ld hl, rGameState_Current                     ; $45b4: $21 $34 $d6
     dec [hl]                                      ; $45b7: $35
-    jp Jump_000_1b1f                              ; $45b8: $c3 $1f $1b
+    jp RefreshSaveValidationChecksumsAndMirrors   ; $45b8: $c3 $1f $1b
 
 
 Jump_001_45bb:
-    call Call_000_1b1f                            ; $45bb: $cd $1f $1b
+    call RefreshSaveValidationChecksumsAndMirrors ; $45bb: $cd $1f $1b
     ld bc, $003c                                  ; $45be: $01 $3c $00
     call DelayFramesByBC                          ; $45c1: $cd $fa $05
     ld a, $05                                     ; $45c4: $3e $05
@@ -1264,13 +1264,13 @@ Jump_001_45bb:
     ld [rStatePhase_Current], a                   ; $46d2: $ea $35 $d6
     ld hl, rGameState_Current                     ; $46d5: $21 $34 $d6
     dec [hl]                                      ; $46d8: $35
-    jp Jump_000_1b1f                              ; $46d9: $c3 $1f $1b
+    jp RefreshSaveValidationChecksumsAndMirrors   ; $46d9: $c3 $1f $1b
 
 
 Jump_001_46dc:
     ld a, $01                                     ; $46dc: $3e $01
     ld [rStatePhase_Current], a                   ; $46de: $ea $35 $d6
-    jp Jump_000_1b1f                              ; $46e1: $c3 $1f $1b
+    jp RefreshSaveValidationChecksumsAndMirrors   ; $46e1: $c3 $1f $1b
 
 
 Call_001_46e4:
@@ -1440,7 +1440,7 @@ GS04_StatePhase_05_TODO::
     call Call_001_504b                            ; $47f7: $cd $4b $50
     call Call_001_4cbc                            ; $47fa: $cd $bc $4c
     call Call_001_4cef                            ; $47fd: $cd $ef $4c
-    call Call_000_1b1f                            ; $4800: $cd $1f $1b
+    call RefreshSaveValidationChecksumsAndMirrors ; $4800: $cd $1f $1b
     ld a, $04                                     ; $4803: $3e $04
     ld [rStatePhase_Current], a                   ; $4805: $ea $35 $d6
     ret                                           ; $4808: $c9
@@ -1494,7 +1494,7 @@ GS04_StatePhase_02_TODO::
     ld [rStatePhase_Current], a                   ; $4863: $ea $35 $d6
     ld a, $0a                                     ; $4866: $3e $0a
     ld [rGameState_Current], a                    ; $4868: $ea $34 $d6
-    jp Jump_000_1b1f                              ; $486b: $c3 $1f $1b
+    jp RefreshSaveValidationChecksumsAndMirrors   ; $486b: $c3 $1f $1b
 
 
     inc bc                                        ; $486e: $03
@@ -1778,7 +1778,7 @@ GS04_StatePhase_03_TODO::
     ld [rStatePhase_Current], a                   ; $4998: $ea $35 $d6
     ld hl, rGameState_Current                     ; $499b: $21 $34 $d6
     dec [hl]                                      ; $499e: $35
-    jp Jump_000_1b1f                              ; $499f: $c3 $1f $1b
+    jp RefreshSaveValidationChecksumsAndMirrors   ; $499f: $c3 $1f $1b
 
 
 Call_001_49a2:
@@ -1996,7 +1996,7 @@ jr_001_4ab9:
     ld de, $9800                                  ; $4b13: $11 $00 $98
     ld bc, $0400                                  ; $4b16: $01 $00 $04
     call BankedTileCopy                           ; $4b19: $cd $e4 $04
-    jp Jump_000_05ea                              ; $4b1c: $c3 $ea $05
+    jp ReturnFromBankedJumpRestoreBank            ; $4b1c: $c3 $ea $05
 
 
 jr_001_4b1f:
@@ -2020,7 +2020,7 @@ jr_001_4b1f:
     ld de, $9800                                  ; $4b4e: $11 $00 $98
     ld bc, $0400                                  ; $4b51: $01 $00 $04
     call BankedTileCopy                           ; $4b54: $cd $e4 $04
-    jp Jump_000_05ea                              ; $4b57: $c3 $ea $05
+    jp ReturnFromBankedJumpRestoreBank            ; $4b57: $c3 $ea $05
 
 
 Call_001_4b5a:
@@ -2091,7 +2091,7 @@ jr_001_4ba0:
     ld c, $0c                                     ; $4bc1: $0e $0c
     ld de, $0084                                  ; $4bc3: $11 $84 $00
     call PlayScreenTransitionFadeIn               ; $4bc6: $cd $0d $04
-    jp Jump_000_05ea                              ; $4bc9: $c3 $ea $05
+    jp ReturnFromBankedJumpRestoreBank            ; $4bc9: $c3 $ea $05
 
 
 jr_001_4bcc:
@@ -2100,7 +2100,7 @@ jr_001_4bcc:
     ld c, $0d                                     ; $4bd1: $0e $0d
     ld de, $0094                                  ; $4bd3: $11 $94 $00
     call PlayScreenTransitionFadeIn               ; $4bd6: $cd $0d $04
-    jp Jump_000_05ea                              ; $4bd9: $c3 $ea $05
+    jp ReturnFromBankedJumpRestoreBank            ; $4bd9: $c3 $ea $05
 
 
     ld a, [$a065]                                 ; $4bdc: $fa $65 $a0
@@ -2117,7 +2117,7 @@ jr_001_4bcc:
     ld c, $0c                                     ; $4bef: $0e $0c
     ld de, $0093                                  ; $4bf1: $11 $93 $00
     call PlayScreenTransitionFadeOut              ; $4bf4: $cd $4e $04
-    jp Jump_000_05ea                              ; $4bf7: $c3 $ea $05
+    jp ReturnFromBankedJumpRestoreBank            ; $4bf7: $c3 $ea $05
 
 
 jr_001_4bfa:
@@ -2126,7 +2126,7 @@ jr_001_4bfa:
     ld c, $0d                                     ; $4bff: $0e $0d
     ld de, $00a3                                  ; $4c01: $11 $a3 $00
     call PlayScreenTransitionFadeOut              ; $4c04: $cd $4e $04
-    jp Jump_000_05ea                              ; $4c07: $c3 $ea $05
+    jp ReturnFromBankedJumpRestoreBank            ; $4c07: $c3 $ea $05
 
 
 Call_001_4c0a:
@@ -3361,7 +3361,7 @@ jr_001_539e:
     add hl, bc                                    ; $53f1: $09
     ld a, $02                                     ; $53f2: $3e $02
     ld [hl], a                                    ; $53f4: $77
-    call Call_000_1b1f                            ; $53f5: $cd $1f $1b
+    call RefreshSaveValidationChecksumsAndMirrors ; $53f5: $cd $1f $1b
     ld bc, $00b4                                  ; $53f8: $01 $b4 $00
     call DelayFramesByBC                          ; $53fb: $cd $fa $05
     ld a, $05                                     ; $53fe: $3e $05
@@ -3456,13 +3456,13 @@ jr_001_539e:
     ld [rStatePhase_Current], a                   ; $54e2: $ea $35 $d6
     ld a, $02                                     ; $54e5: $3e $02
     ld [rGameState_Current], a                    ; $54e7: $ea $34 $d6
-    jp Jump_000_1b1f                              ; $54ea: $c3 $1f $1b
+    jp RefreshSaveValidationChecksumsAndMirrors   ; $54ea: $c3 $1f $1b
 
 
 Jump_001_54ed:
     ld a, $01                                     ; $54ed: $3e $01
     ld [rStatePhase_Current], a                   ; $54ef: $ea $35 $d6
-    jp Jump_000_1b1f                              ; $54f2: $c3 $1f $1b
+    jp RefreshSaveValidationChecksumsAndMirrors   ; $54f2: $c3 $1f $1b
 
 
 Call_001_54f5:
@@ -3629,7 +3629,7 @@ GS05_StatePhase_05_TODO::
     call Call_001_5bb0                            ; $5609: $cd $b0 $5b
     call Call_001_5860                            ; $560c: $cd $60 $58
     call Call_001_588a                            ; $560f: $cd $8a $58
-    call Call_000_1b1f                            ; $5612: $cd $1f $1b
+    call RefreshSaveValidationChecksumsAndMirrors ; $5612: $cd $1f $1b
     ld a, $04                                     ; $5615: $3e $04
     ld [rStatePhase_Current], a                   ; $5617: $ea $35 $d6
     ret                                           ; $561a: $c9
@@ -3674,7 +3674,7 @@ GS05_StatePhase_02_TODO::
     ld [rStatePhase_Current], a                   ; $566c: $ea $35 $d6
     ld a, $08                                     ; $566f: $3e $08
     ld [rGameState_Current], a                    ; $5671: $ea $34 $d6
-    jp Jump_000_1b1f                              ; $5674: $c3 $1f $1b
+    jp RefreshSaveValidationChecksumsAndMirrors   ; $5674: $c3 $1f $1b
 
 
 GS05_TODO_Data1::
@@ -3718,7 +3718,7 @@ GS05_StatePhase_03_TODO::
     ld [rStatePhase_Current], a                   ; $5727: $ea $35 $d6
     ld a, $02                                     ; $572a: $3e $02
     ld [rGameState_Current], a                    ; $572c: $ea $34 $d6
-    jp Jump_000_1b1f                              ; $572f: $c3 $1f $1b
+    jp RefreshSaveValidationChecksumsAndMirrors   ; $572f: $c3 $1f $1b
 
 
 Call_001_5732:
@@ -4725,7 +4725,7 @@ GS08_StatePhase_00_TODO::
     add c                                         ; $5e08: $81
     ld c, a                                       ; $5e09: $4f
     ld b, $00                                     ; $5e0a: $06 $00
-    ld hl, $a069                                  ; $5e0c: $21 $69 $a0
+    ld hl, rSaveDataDefaultBlockBDest             ; $5e0c: $21 $69 $a0
     add hl, bc                                    ; $5e0f: $09
     ld c, [hl]                                    ; $5e10: $4e
     ld b, $00                                     ; $5e11: $06 $00
@@ -4829,7 +4829,7 @@ GS08_StatePhase_0b_TODO::
     add c                                         ; $5ee2: $81
     ld c, a                                       ; $5ee3: $4f
     ld b, $00                                     ; $5ee4: $06 $00
-    ld hl, $a069                                  ; $5ee6: $21 $69 $a0
+    ld hl, rSaveDataDefaultBlockBDest             ; $5ee6: $21 $69 $a0
     add hl, bc                                    ; $5ee9: $09
     ld c, [hl]                                    ; $5eea: $4e
     ld b, $00                                     ; $5eeb: $06 $00
@@ -4907,7 +4907,7 @@ jr_001_5f68:
     add c                                         ; $5f7d: $81
     ld c, a                                       ; $5f7e: $4f
     ld b, $00                                     ; $5f7f: $06 $00
-    ld hl, $a069                                  ; $5f81: $21 $69 $a0
+    ld hl, rSaveDataDefaultBlockBDest             ; $5f81: $21 $69 $a0
     add hl, bc                                    ; $5f84: $09
     ld a, [hl]                                    ; $5f85: $7e
     ld [$d83c], a                                 ; $5f86: $ea $3c $d8
@@ -4990,7 +4990,7 @@ jr_001_6008:
 
     call Call_001_5732                            ; $600e: $cd $32 $57
     call Call_001_588a                            ; $6011: $cd $8a $58
-    call Call_000_1b1f                            ; $6014: $cd $1f $1b
+    call RefreshSaveValidationChecksumsAndMirrors ; $6014: $cd $1f $1b
     ld c, $00                                     ; $6017: $0e $00
     ld a, $01                                     ; $6019: $3e $01
     call CallSoundEffectDispatcher                ; $601b: $cd $b6 $03
@@ -5072,7 +5072,7 @@ jr_001_60a9:
 
     call Call_001_5732                            ; $60b0: $cd $32 $57
     call Call_001_588a                            ; $60b3: $cd $8a $58
-    call Call_000_1b1f                            ; $60b6: $cd $1f $1b
+    call RefreshSaveValidationChecksumsAndMirrors ; $60b6: $cd $1f $1b
     ld c, $00                                     ; $60b9: $0e $00
     ld a, $01                                     ; $60bb: $3e $01
     call CallSoundEffectDispatcher                ; $60bd: $cd $b6 $03
@@ -5254,7 +5254,7 @@ GS08_StatePhase_05_TODO::
     add c                                         ; $6211: $81
     ld c, a                                       ; $6212: $4f
     ld b, $00                                     ; $6213: $06 $00
-    ld hl, $a069                                  ; $6215: $21 $69 $a0
+    ld hl, rSaveDataDefaultBlockBDest             ; $6215: $21 $69 $a0
     add hl, bc                                    ; $6218: $09
     ld a, [hl]                                    ; $6219: $7e
     ld [$d83c], a                                 ; $621a: $ea $3c $d8
@@ -5390,7 +5390,7 @@ jr_001_62f2:
     add c                                         ; $630e: $81
     ld c, a                                       ; $630f: $4f
     ld b, $00                                     ; $6310: $06 $00
-    ld hl, $a069                                  ; $6312: $21 $69 $a0
+    ld hl, rSaveDataDefaultBlockBDest             ; $6312: $21 $69 $a0
     add hl, bc                                    ; $6315: $09
     ld a, [hl]                                    ; $6316: $7e
     ld a, [$d83c]                                 ; $6317: $fa $3c $d8
@@ -5399,7 +5399,7 @@ jr_001_62f2:
     ld [rStatePhase_Current], a                   ; $631d: $ea $35 $d6
     ld a, $00                                     ; $6320: $3e $00
     ld [rGameState_Current], a                    ; $6322: $ea $34 $d6
-    jp Jump_000_1b1f                              ; $6325: $c3 $1f $1b
+    jp RefreshSaveValidationChecksumsAndMirrors   ; $6325: $c3 $1f $1b
 
 
 GS08_StatePhase_08_TODO::
@@ -5473,7 +5473,7 @@ jr_001_63a5:
     add c                                         ; $63aa: $81
     ld c, a                                       ; $63ab: $4f
     ld b, $00                                     ; $63ac: $06 $00
-    ld hl, $a069                                  ; $63ae: $21 $69 $a0
+    ld hl, rSaveDataDefaultBlockBDest             ; $63ae: $21 $69 $a0
     add hl, bc                                    ; $63b1: $09
     ld a, [hl]                                    ; $63b2: $7e
     ld a, [$d83c]                                 ; $63b3: $fa $3c $d8
@@ -5482,7 +5482,7 @@ jr_001_63a5:
     ld [rStatePhase_Current], a                   ; $63b9: $ea $35 $d6
     xor a                                         ; $63bc: $af
     ld [$aca2], a                                 ; $63bd: $ea $a2 $ac
-    jp Jump_000_1b1f                              ; $63c0: $c3 $1f $1b
+    jp RefreshSaveValidationChecksumsAndMirrors   ; $63c0: $c3 $1f $1b
 
 
 GS08_StatePhase_0a_TODO::
@@ -5495,7 +5495,7 @@ GS08_StatePhase_0a_TODO::
     add c                                         ; $63cf: $81
     ld c, a                                       ; $63d0: $4f
     ld b, $00                                     ; $63d1: $06 $00
-    ld hl, $a069                                  ; $63d3: $21 $69 $a0
+    ld hl, rSaveDataDefaultBlockBDest             ; $63d3: $21 $69 $a0
     add hl, bc                                    ; $63d6: $09
     ld a, [hl]                                    ; $63d7: $7e
     ld a, [$d83c]                                 ; $63d8: $fa $3c $d8
@@ -5511,7 +5511,7 @@ GS08_StatePhase_0a_TODO::
     ld [rStatePhase_Current], a                   ; $63f2: $ea $35 $d6
     xor a                                         ; $63f5: $af
     ld [$aca2], a                                 ; $63f6: $ea $a2 $ac
-    jp Jump_000_1b1f                              ; $63f9: $c3 $1f $1b
+    jp RefreshSaveValidationChecksumsAndMirrors   ; $63f9: $c3 $1f $1b
 
 
 GameState_09_TODO_PhaseDispatcher::
@@ -5964,7 +5964,7 @@ jr_001_670c:
     ld [rStatePhase_Current], a                   ; $6772: $ea $35 $d6
     ld a, $00                                     ; $6775: $3e $00
     ld [rGameState_Current], a                    ; $6777: $ea $34 $d6
-    jp Jump_000_1b1f                              ; $677a: $c3 $1f $1b
+    jp RefreshSaveValidationChecksumsAndMirrors   ; $677a: $c3 $1f $1b
 
 
 GS09_StatePhase_06_TODO::
@@ -6031,7 +6031,7 @@ jr_001_67b9:
     ld [rStatePhase_Current], a                   ; $67ec: $ea $35 $d6
     xor a                                         ; $67ef: $af
     ld [$aca2], a                                 ; $67f0: $ea $a2 $ac
-    jp Jump_000_1b1f                              ; $67f3: $c3 $1f $1b
+    jp RefreshSaveValidationChecksumsAndMirrors   ; $67f3: $c3 $1f $1b
 
 
 GS09_StatePhase_08_TODO::
@@ -6060,7 +6060,7 @@ GS09_StatePhase_08_TODO::
     ld [rStatePhase_Current], a                   ; $6825: $ea $35 $d6
     xor a                                         ; $6828: $af
     ld [$aca2], a                                 ; $6829: $ea $a2 $ac
-    jp Jump_000_1b1f                              ; $682c: $c3 $1f $1b
+    jp RefreshSaveValidationChecksumsAndMirrors   ; $682c: $c3 $1f $1b
 
 
 Call_001_682f:
@@ -6353,7 +6353,7 @@ jr_001_6a48:
     ld a, $01                                     ; $6a73: $3e $01
     ld [rHintCursorAnimationColumnThreshold], a   ; $6a75: $ea $12 $d8
     ld [rHintCursorAnimationRowThreshold], a      ; $6a78: $ea $13 $d8
-    call Call_000_0614                            ; $6a7b: $cd $14 $06
+    call GetSubtractiveRNGStateByte               ; $6a7b: $cd $14 $06
     sla a                                         ; $6a7e: $cb $27
     add $b4                                       ; $6a80: $c6 $b4
     ld [$d814], a                                 ; $6a82: $ea $14 $d8
@@ -6599,7 +6599,7 @@ jr_001_6bf3:
     rl a                                          ; $6bfb: $cb $17
     ld [rHintCursorAnimationColumnThreshold], a   ; $6bfd: $ea $12 $d8
     ld hl, $d814                                  ; $6c00: $21 $14 $d8
-    call Call_000_0614                            ; $6c03: $cd $14 $06
+    call GetSubtractiveRNGStateByte               ; $6c03: $cd $14 $06
     sla a                                         ; $6c06: $cb $27
     add $78                                       ; $6c08: $c6 $78
     ld [hl+], a                                   ; $6c0a: $22
@@ -6671,7 +6671,7 @@ jr_001_6c76:
 
     call Call_001_49a2                            ; $6c7c: $cd $a2 $49
     call Call_001_4cef                            ; $6c7f: $cd $ef $4c
-    call Call_000_1b1f                            ; $6c82: $cd $1f $1b
+    call RefreshSaveValidationChecksumsAndMirrors ; $6c82: $cd $1f $1b
     ld c, $00                                     ; $6c85: $0e $00
     ld a, $01                                     ; $6c87: $3e $01
     call CallSoundEffectDispatcher                ; $6c89: $cd $b6 $03
@@ -6917,7 +6917,7 @@ jr_001_6df5:
     ld [rStatePhase_Current], a                   ; $6e63: $ea $35 $d6
     ld a, $00                                     ; $6e66: $3e $00
     ld [rGameState_Current], a                    ; $6e68: $ea $34 $d6
-    jp Jump_000_1b1f                              ; $6e6b: $c3 $1f $1b
+    jp RefreshSaveValidationChecksumsAndMirrors   ; $6e6b: $c3 $1f $1b
 
 
 GS0A_StatePhase_08_TODO::
@@ -6988,7 +6988,7 @@ jr_001_6eaa:
     ld [rStatePhase_Current], a                   ; $6ee5: $ea $35 $d6
     xor a                                         ; $6ee8: $af
     ld [$aca2], a                                 ; $6ee9: $ea $a2 $ac
-    jp Jump_000_1b1f                              ; $6eec: $c3 $1f $1b
+    jp RefreshSaveValidationChecksumsAndMirrors   ; $6eec: $c3 $1f $1b
 
 
 GS0A_StatePhase_0a_TODO::
@@ -7021,7 +7021,7 @@ GS0A_StatePhase_0a_TODO::
     ld [rStatePhase_Current], a                   ; $6f26: $ea $35 $d6
     xor a                                         ; $6f29: $af
     ld [$aca2], a                                 ; $6f2a: $ea $a2 $ac
-    jp Jump_000_1b1f                              ; $6f2d: $c3 $1f $1b
+    jp RefreshSaveValidationChecksumsAndMirrors   ; $6f2d: $c3 $1f $1b
 
 
 BuildClueRunLengthBuffers::

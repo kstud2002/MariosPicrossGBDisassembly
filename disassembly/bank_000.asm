@@ -133,19 +133,19 @@ GameInitEntryPoint::
     ldh [rIF], a                                  ; $0155: $e0 $0f
     ldh a, [rLCDC]                                ; $0157: $f0 $40
     bit 7, a                                      ; $0159: $cb $7f
-    jr nz, jr_000_0161                            ; $015b: $20 $04
+    jr nz, .EnsureLCDCEnabledAndInitialDelay      ; $015b: $20 $04
 
     set 7, a                                      ; $015d: $cb $ff
     ldh [rLCDC], a                                ; $015f: $e0 $40
 
-jr_000_0161:
+.EnsureLCDCEnabledAndInitialDelay:
     ld bc, $0002                                  ; $0161: $01 $02 $00
     call BusyWaitDelayByBC                        ; $0164: $cd $03 $06
 
-jr_000_0167:
+.WaitForScanline91:
     ldh a, [rLY]                                  ; $0167: $f0 $44
     cp $91                                        ; $0169: $fe $91
-    jr c, jr_000_0167                             ; $016b: $38 $fa
+    jr c, .WaitForScanline91                      ; $016b: $38 $fa
 
     ld a, $80                                     ; $016d: $3e $80
     ldh [rLCDC], a                                ; $016f: $e0 $40
@@ -167,15 +167,15 @@ jr_000_0167:
     ld hl, $c000                                  ; $0195: $21 $00 $c0
     ld bc, $1fff                                  ; $0198: $01 $ff $1f
     call ZeroMemoryBlock                          ; $019b: $cd $d3 $04
-    ld sp, $dfff                                  ; $019e: $31 $ff $df
-    call Call_000_04bb                            ; $01a1: $cd $bb $04
+    ld sp, rSubtractiveRNGSeedSourceByte          ; $019e: $31 $ff $df
+    call InstallHRAMOAMDMAStub                    ; $01a1: $cd $bb $04
     call ClearShadowOAMBuffer                     ; $01a4: $cd $b6 $05
     call FillBGMap0WithTile01                     ; $01a7: $cd $a0 $05
     call FillBGMap1WithTile01                     ; $01aa: $cd $ab $05
     xor a                                         ; $01ad: $af
-    ld [$c315], a                                 ; $01ae: $ea $15 $c3
-    ld [$c316], a                                 ; $01b1: $ea $16 $c3
-    ld [$c317], a                                 ; $01b4: $ea $17 $c3
+    ld [rCommandQueueWriteCursor], a              ; $01ae: $ea $15 $c3
+    ld [rCommandQueueReadCursor], a               ; $01b1: $ea $16 $c3
+    ld [rCommandQueueReservedOrUnused], a         ; $01b4: $ea $17 $c3
     ld [rLCDCInterruptDispatchIndex], a           ; $01b7: $ea $38 $c3
     ld [rVBlankLCDCBit4ForceFlag], a              ; $01ba: $ea $3c $c3
     ld hl, rLCDCShadow                            ; $01bd: $21 $2e $c3
@@ -198,31 +198,31 @@ jr_000_0167:
     ldh [rIE], a                                  ; $01d5: $e0 $ff
     ldh [rIE], a                                  ; $01d7: $e0 $ff
     ei                                            ; $01d9: $fb
-    call Call_000_1e43                            ; $01da: $cd $43 $1e
+    call DetectSuperGameBoyViaMltReqHandshake     ; $01da: $cd $43 $1e
     rl a                                          ; $01dd: $cb $17
     and $01                                       ; $01df: $e6 $01
-    ld [rBootVariantFlag_Unsure], a               ; $01e1: $ea $3d $c3
-    jr z, jr_000_01e9                             ; $01e4: $28 $03
+    ld [rIsSuperGameBoyMode], a                   ; $01e1: $ea $3d $c3
+    jr z, .AfterSGBStartupTransferCheck           ; $01e4: $28 $03
 
-    call Call_000_1efd                            ; $01e6: $cd $fd $1e
+    call RunSGBStartupTransferPacketSequence      ; $01e6: $cd $fd $1e
 
-jr_000_01e9:
+.AfterSGBStartupTransferCheck:
     xor a                                         ; $01e9: $af
-    ld [$c33e], a                                 ; $01ea: $ea $3e $c3
+    ld [rSGBPacketTransferBusyFlag], a            ; $01ea: $ea $3e $c3
     ld a, $00                                     ; $01ed: $3e $00
     call CallSoundEffectDispatcher                ; $01ef: $cd $b6 $03
     ld a, $40                                     ; $01f2: $3e $40
-    ld [$cd69], a                                 ; $01f4: $ea $69 $cd
-    call Call_000_0631                            ; $01f7: $cd $31 $06
-    call Call_000_1ada                            ; $01fa: $cd $da $1a
-    ld hl, $1c05                                  ; $01fd: $21 $05 $1c
-    ld de, $a069                                  ; $0200: $11 $69 $a0
+    ld [rSubtractiveRNGModulus], a                ; $01f4: $ea $69 $cd
+    call InitializeSubtractiveRNGState            ; $01f7: $cd $31 $06
+    call HandleStartupSaveDataIntegrityCheck      ; $01fa: $cd $da $1a
+    ld hl, SaveDataDefaultBlockB                  ; $01fd: $21 $05 $1c
+    ld de, rSaveDataDefaultBlockBDest             ; $0200: $11 $69 $a0
     ld bc, $000f                                  ; $0203: $01 $0f $00
-    call Call_000_04db                            ; $0206: $cd $db $04
-    call Call_000_1b1f                            ; $0209: $cd $1f $1b
+    call CopyMemoryBlock                          ; $0206: $cd $db $04
+    call RefreshSaveValidationChecksumsAndMirrors ; $0209: $cd $1f $1b
     ld a, $02                                     ; $020c: $3e $02
     ld hl, $45ee                                  ; $020e: $21 $ee $45
-    call Call_000_05d7                            ; $0211: $cd $d7 $05
+    call SwitchBankToAAndJumpToHL                 ; $0211: $cd $d7 $05
     ld sp, $fffe                                  ; $0214: $31 $fe $ff
     ld bc, $003c                                  ; $0217: $01 $3c $00
     call BusyWaitDelayByBC                        ; $021a: $cd $03 $06
@@ -254,15 +254,15 @@ jr_000_01e9:
     ld [$4000], a                                 ; $0259: $ea $00 $40
     ld a, $01                                     ; $025c: $3e $01
     ld [rActiveROMBank], a                        ; $025e: $ea $12 $c3
-    ld sp, $dfff                                  ; $0261: $31 $ff $df
-    call Call_000_04bb                            ; $0264: $cd $bb $04
+    ld sp, rSubtractiveRNGSeedSourceByte          ; $0261: $31 $ff $df
+    call InstallHRAMOAMDMAStub                    ; $0264: $cd $bb $04
     call ClearShadowOAMBuffer                     ; $0267: $cd $b6 $05
     call FillBGMap0WithTile01                     ; $026a: $cd $a0 $05
     call FillBGMap1WithTile01                     ; $026d: $cd $ab $05
     xor a                                         ; $0270: $af
-    ld [$c315], a                                 ; $0271: $ea $15 $c3
-    ld [$c316], a                                 ; $0274: $ea $16 $c3
-    ld [$c317], a                                 ; $0277: $ea $17 $c3
+    ld [rCommandQueueWriteCursor], a              ; $0271: $ea $15 $c3
+    ld [rCommandQueueReadCursor], a               ; $0274: $ea $16 $c3
+    ld [rCommandQueueReservedOrUnused], a         ; $0277: $ea $17 $c3
     ld [rLCDCInterruptDispatchIndex], a           ; $027a: $ea $38 $c3
     ld [rVBlankLCDCBit4ForceFlag], a              ; $027d: $ea $3c $c3
     ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $0280: $ea $50 $c3
@@ -286,16 +286,16 @@ jr_000_01e9:
     ldh [rIE], a                                  ; $029a: $e0 $ff
     ei                                            ; $029c: $fb
     xor a                                         ; $029d: $af
-    ld [$c33e], a                                 ; $029e: $ea $3e $c3
+    ld [rSGBPacketTransferBusyFlag], a            ; $029e: $ea $3e $c3
     ld a, $00                                     ; $02a1: $3e $00
     call CallSoundEffectDispatcher                ; $02a3: $cd $b6 $03
     ld a, $40                                     ; $02a6: $3e $40
-    ld [$cd69], a                                 ; $02a8: $ea $69 $cd
-    call Call_000_0631                            ; $02ab: $cd $31 $06
-    call Call_000_1ada                            ; $02ae: $cd $da $1a
+    ld [rSubtractiveRNGModulus], a                ; $02a8: $ea $69 $cd
+    call InitializeSubtractiveRNGState            ; $02ab: $cd $31 $06
+    call HandleStartupSaveDataIntegrityCheck      ; $02ae: $cd $da $1a
     ld a, $02                                     ; $02b1: $3e $02
     ld hl, $45ee                                  ; $02b3: $21 $ee $45
-    call Call_000_05d7                            ; $02b6: $cd $d7 $05
+    call SwitchBankToAAndJumpToHL                 ; $02b6: $cd $d7 $05
 
 VBlankInterruptHandler::
     push af                                       ; $02b9: $f5
@@ -319,7 +319,7 @@ jr_000_02d2:
     ldh [rLCDC], a                                ; $02d7: $e0 $40
 
 jr_000_02d9:
-    ld a, [$c33e]                                 ; $02d9: $fa $3e $c3
+    ld a, [rSGBPacketTransferBusyFlag]            ; $02d9: $fa $3e $c3
     and a                                         ; $02dc: $a7
     jr nz, jr_000_0300                            ; $02dd: $20 $21
 
@@ -363,7 +363,7 @@ jr_000_0313:
     and a                                         ; $0316: $a7
     jr nz, jr_000_0322                            ; $0317: $20 $09
 
-    ld a, [$c33e]                                 ; $0319: $fa $3e $c3
+    ld a, [rSGBPacketTransferBusyFlag]            ; $0319: $fa $3e $c3
     and a                                         ; $031c: $a7
     jr nz, jr_000_0322                            ; $031d: $20 $03
 
@@ -436,7 +436,7 @@ JoypadTransitionInterruptHandlerStub::
 HiddenProgrammerCredits::
     db "NoriakiTeramotoE"
 
-TODO::
+SaveValidationMagicBytes::
     db $5f, $02, $03, $0f, $00
 
 GameStateDispatcher::
@@ -571,7 +571,7 @@ CallSoundEngineUpdateRoutine_Unsure::
 
 
 PlayScreenTransitionFadeIn::
-    ld a, [rBootVariantFlag_Unsure]               ; $040d: $fa $3d $c3
+    ld a, [rIsSuperGameBoyMode]                   ; $040d: $fa $3d $c3
     and a                                         ; $0410: $a7
     jp nz, PlayScreenTransitionFadeIn_AlternatePath; $0411: $c2 $c8 $1f
 
@@ -599,7 +599,7 @@ PlayScreenTransitionFadeIn::
     jr nz, .ApplyFadeStepLoop                     ; $0438: $20 $e7
 
     ld [rStatePhaseTimer], a                      ; $043a: $ea $3c $d6
-    ld [rHintCursorAnimationLastFrameTick], a     ; $043d: $ea $3d $d6
+    ld [rSharedAnimationFrameState], a            ; $043d: $ea $3d $d6
     ld [rHintCursorAnimationColumnAccumulator], a ; $0440: $ea $3e $d6
     ld [rHintCursorAnimationRowAccumulator], a    ; $0443: $ea $3f $d6
     pop af                                        ; $0446: $f1
@@ -609,7 +609,7 @@ PlayScreenTransitionFadeIn::
 
 
 PlayScreenTransitionFadeOut::
-    ld a, [rBootVariantFlag_Unsure]               ; $044e: $fa $3d $c3
+    ld a, [rIsSuperGameBoyMode]                   ; $044e: $fa $3d $c3
     and a                                         ; $0451: $a7
     jp nz, PlayScreenTransitionFadeOut_AlternatePath; $0452: $c2 $4a $20
 
@@ -686,30 +686,29 @@ EnableLCDFromShadow::
     ret                                           ; $04ba: $c9
 
 
-Call_000_04bb:
+InstallHRAMOAMDMAStub::
     ld c, $80                                     ; $04bb: $0e $80
     ld b, $0a                                     ; $04bd: $06 $0a
-    ld hl, $04c9                                  ; $04bf: $21 $c9 $04
+    ld hl, OAMDMAHRAMStubTemplate                 ; $04bf: $21 $c9 $04
 
-jr_000_04c2:
+.CopyHRAMOAMDMAStubByteLoop:
     ld a, [hl+]                                   ; $04c2: $2a
     ldh [c], a                                    ; $04c3: $e2
-
-Call_000_04c4:
     inc c                                         ; $04c4: $0c
     dec b                                         ; $04c5: $05
-    jr nz, jr_000_04c2                            ; $04c6: $20 $fa
+    jr nz, .CopyHRAMOAMDMAStubByteLoop            ; $04c6: $20 $fa
 
     ret                                           ; $04c8: $c9
 
 
+OAMDMAHRAMStubTemplate::
     ld a, $c0                                     ; $04c9: $3e $c0
     ldh [rDMA], a                                 ; $04cb: $e0 $46
     ld a, $28                                     ; $04cd: $3e $28
 
-jr_000_04cf:
+.WaitForDMATransferLoop:
     dec a                                         ; $04cf: $3d
-    jr nz, jr_000_04cf                            ; $04d0: $20 $fd
+    jr nz, .WaitForDMATransferLoop                ; $04d0: $20 $fd
 
     ret                                           ; $04d2: $c9
 
@@ -725,15 +724,14 @@ ZeroMemoryBlock::
     ret                                           ; $04da: $c9
 
 
-Call_000_04db:
-jr_000_04db:
+CopyMemoryBlock::
     ld a, [hl+]                                   ; $04db: $2a
     ld [de], a                                    ; $04dc: $12
     inc de                                        ; $04dd: $13
     dec bc                                        ; $04de: $0b
     ld a, c                                       ; $04df: $79
     or b                                          ; $04e0: $b0
-    jr nz, jr_000_04db                            ; $04e1: $20 $f8
+    jr nz, CopyMemoryBlock                        ; $04e1: $20 $f8
 
     ret                                           ; $04e3: $c9
 
@@ -934,10 +932,8 @@ ClearShadowOAMBufferFromCursor::
     ret                                           ; $05d6: $c9
 
 
-Call_000_05d7:
+SwitchBankToAAndJumpToHL::
     ld [rActiveROMBank], a                        ; $05d7: $ea $12 $c3
-
-Jump_000_05da:
     ld [rROMB], a                                 ; $05da: $ea $00 $20
     jp hl                                         ; $05dd: $e9
 
@@ -951,7 +947,7 @@ SwitchBankToBAndJumpToHL::
     jp hl                                         ; $05e9: $e9
 
 
-Jump_000_05ea:
+ReturnFromBankedJumpRestoreBank::
     push af                                       ; $05ea: $f5
     push hl                                       ; $05eb: $e5
     ld hl, sp+$05                                 ; $05ec: $f8 $05
@@ -999,78 +995,78 @@ BusyWaitDelayByBC::
     ret                                           ; $0613: $c9
 
 
-Call_000_0614:
+GetSubtractiveRNGStateByte::
     push hl                                       ; $0614: $e5
-    ld a, [$cd6a]                                 ; $0615: $fa $6a $cd
+    ld a, [rSubtractiveRNGStateCursor]            ; $0615: $fa $6a $cd
     ld c, a                                       ; $0618: $4f
     ld b, $00                                     ; $0619: $06 $00
     inc a                                         ; $061b: $3c
     cp $37                                        ; $061c: $fe $37
-    jr nz, jr_000_0627                            ; $061e: $20 $07
+    jr nz, .StoreRNGCursorAndReadStateByte        ; $061e: $20 $07
 
-    call Call_000_06a7                            ; $0620: $cd $a7 $06
+    call AdvanceSubtractiveRNGState               ; $0620: $cd $a7 $06
     xor a                                         ; $0623: $af
     ld bc, $0000                                  ; $0624: $01 $00 $00
 
-jr_000_0627:
-    ld [$cd6a], a                                 ; $0627: $ea $6a $cd
-    ld hl, $cd6b                                  ; $062a: $21 $6b $cd
+.StoreRNGCursorAndReadStateByte:
+    ld [rSubtractiveRNGStateCursor], a            ; $0627: $ea $6a $cd
+    ld hl, rSubtractiveRNGStateTableStart         ; $062a: $21 $6b $cd
     add hl, bc                                    ; $062d: $09
     ld a, [hl]                                    ; $062e: $7e
     pop hl                                        ; $062f: $e1
     ret                                           ; $0630: $c9
 
 
-Call_000_0631:
-    ld a, [$cd69]                                 ; $0631: $fa $69 $cd
+InitializeSubtractiveRNGState::
+    ld a, [rSubtractiveRNGModulus]                ; $0631: $fa $69 $cd
     ld d, a                                       ; $0634: $57
-    ld a, [$dfff]                                 ; $0635: $fa $ff $df
+    ld a, [rSubtractiveRNGSeedSourceByte]         ; $0635: $fa $ff $df
 
-jr_000_0638:
+.ReduceSeedModuloRangeLoop:
     cp d                                          ; $0638: $ba
-    jr c, jr_000_063e                             ; $0639: $38 $03
+    jr c, .InitializeRNGStateFromReducedSeed      ; $0639: $38 $03
 
     sub d                                         ; $063b: $92
-    jr jr_000_0638                                ; $063c: $18 $fa
+    jr .ReduceSeedModuloRangeLoop                 ; $063c: $18 $fa
 
-jr_000_063e:
-    ld [$cd68], a                                 ; $063e: $ea $68 $cd
-    ld [$cda1], a                                 ; $0641: $ea $a1 $cd
+.InitializeRNGStateFromReducedSeed:
+    ld [rSubtractiveRNGStateSeed], a              ; $063e: $ea $68 $cd
+    ld [rSubtractiveRNGStateTableEnd], a          ; $0641: $ea $a1 $cd
     ld e, $01                                     ; $0644: $1e $01
-    ld hl, TODO_PointerOrOffsetTable              ; $0646: $21 $71 $06
+    ld hl, SubtractiveRNGStateInitOffsetTable     ; $0646: $21 $71 $06
     ld a, $36                                     ; $0649: $3e $36
 
-jr_000_064b:
+.InitializeRNGStateEntryLoop:
     push af                                       ; $064b: $f5
     ld c, [hl]                                    ; $064c: $4e
     inc hl                                        ; $064d: $23
     ld b, $00                                     ; $064e: $06 $00
     push hl                                       ; $0650: $e5
-    ld hl, $cd6b                                  ; $0651: $21 $6b $cd
+    ld hl, rSubtractiveRNGStateTableStart         ; $0651: $21 $6b $cd
     add hl, bc                                    ; $0654: $09
     ld [hl], e                                    ; $0655: $73
-    ld a, [$cd68]                                 ; $0656: $fa $68 $cd
+    ld a, [rSubtractiveRNGStateSeed]              ; $0656: $fa $68 $cd
     sub e                                         ; $0659: $93
-    jr nc, jr_000_065d                            ; $065a: $30 $01
+    jr nc, .WrapAndStoreRNGStateByte              ; $065a: $30 $01
 
     add d                                         ; $065c: $82
 
-jr_000_065d:
+.WrapAndStoreRNGStateByte:
     ld e, a                                       ; $065d: $5f
     ld a, [hl]                                    ; $065e: $7e
-    ld [$cd68], a                                 ; $065f: $ea $68 $cd
+    ld [rSubtractiveRNGStateSeed], a              ; $065f: $ea $68 $cd
     pop hl                                        ; $0662: $e1
     pop af                                        ; $0663: $f1
     dec a                                         ; $0664: $3d
-    jr nz, jr_000_064b                            ; $0665: $20 $e4
+    jr nz, .InitializeRNGStateEntryLoop           ; $0665: $20 $e4
 
-    call Call_000_06a7                            ; $0667: $cd $a7 $06
-    call Call_000_06a7                            ; $066a: $cd $a7 $06
-    call Call_000_06a7                            ; $066d: $cd $a7 $06
+    call AdvanceSubtractiveRNGState               ; $0667: $cd $a7 $06
+    call AdvanceSubtractiveRNGState               ; $066a: $cd $a7 $06
+    call AdvanceSubtractiveRNGState               ; $066d: $cd $a7 $06
     ret                                           ; $0670: $c9
 
 
-TODO_PointerOrOffsetTable::
+SubtractiveRNGStateInitOffsetTable::
     db $14, $29
     db $07, $1c
     db $31, $0f
@@ -1099,40 +1095,40 @@ TODO_PointerOrOffsetTable::
     db $19, $2e
     db $0c, $21
 
-Call_000_06a7:
-    ld a, [$cd69]                                 ; $06a7: $fa $69 $cd
+AdvanceSubtractiveRNGState::
+    ld a, [rSubtractiveRNGModulus]                ; $06a7: $fa $69 $cd
     ld d, a                                       ; $06aa: $57
-    ld bc, $cd6b                                  ; $06ab: $01 $6b $cd
-    ld hl, $cd8a                                  ; $06ae: $21 $8a $cd
+    ld bc, rSubtractiveRNGStateTableStart         ; $06ab: $01 $6b $cd
+    ld hl, rSubtractiveRNGStateTableOffset1f      ; $06ae: $21 $8a $cd
     ld e, $18                                     ; $06b1: $1e $18
 
-jr_000_06b3:
+.FirstSubtractivePassLoop:
     ld a, [bc]                                    ; $06b3: $0a
     sub [hl]                                      ; $06b4: $96
-    jr nc, jr_000_06b8                            ; $06b5: $30 $01
+    jr nc, .StoreFirstSubtractivePassByte         ; $06b5: $30 $01
 
     add d                                         ; $06b7: $82
 
-jr_000_06b8:
+.StoreFirstSubtractivePassByte:
     ld [bc], a                                    ; $06b8: $02
     dec e                                         ; $06b9: $1d
-    jr nz, jr_000_06b3                            ; $06ba: $20 $f7
+    jr nz, .FirstSubtractivePassLoop              ; $06ba: $20 $f7
 
-    ld bc, $cd83                                  ; $06bc: $01 $83 $cd
-    ld hl, $cd6b                                  ; $06bf: $21 $6b $cd
+    ld bc, rSubtractiveRNGStateTableOffset18      ; $06bc: $01 $83 $cd
+    ld hl, rSubtractiveRNGStateTableStart         ; $06bf: $21 $6b $cd
     ld e, $1f                                     ; $06c2: $1e $1f
 
-jr_000_06c4:
+.SecondSubtractivePassLoop:
     ld a, [bc]                                    ; $06c4: $0a
     sub [hl]                                      ; $06c5: $96
-    jr nc, jr_000_06c9                            ; $06c6: $30 $01
+    jr nc, .StoreSecondSubtractivePassByte        ; $06c6: $30 $01
 
     add d                                         ; $06c8: $82
 
-jr_000_06c9:
+.StoreSecondSubtractivePassByte:
     ld [bc], a                                    ; $06c9: $02
     dec e                                         ; $06ca: $1d
-    jr nz, jr_000_06c4                            ; $06cb: $20 $f7
+    jr nz, .SecondSubtractivePassLoop             ; $06cb: $20 $f7
 
     ret                                           ; $06cd: $c9
 
@@ -1182,12 +1178,12 @@ Call_000_06ce:
 
     ld a, [rInputButtonsHeld]                     ; $071d: $fa $1a $c3
     ld [rInputButtonsPressedOrRepeated], a        ; $0720: $ea $22 $c3
-    ld a, [$c319]                                 ; $0723: $fa $19 $c3
+    ld a, [rInputRepeatSubsequentInterval]        ; $0723: $fa $19 $c3
     ld [$c32a], a                                 ; $0726: $ea $2a $c3
     jr jr_000_0731                                ; $0729: $18 $06
 
 jr_000_072b:
-    ld a, [$c318]                                 ; $072b: $fa $18 $c3
+    ld a, [rInputRepeatInitialDelay]              ; $072b: $fa $18 $c3
     ld [$c32a], a                                 ; $072e: $ea $2a $c3
 
 jr_000_0731:
@@ -1199,7 +1195,7 @@ jr_000_0731:
 Call_000_0738:
 Jump_000_0738:
     push af                                       ; $0738: $f5
-    ld hl, $c315                                  ; $0739: $21 $15 $c3
+    ld hl, rCommandQueueWriteCursor               ; $0739: $21 $15 $c3
     ld l, [hl]                                    ; $073c: $6e
     ld h, $c2                                     ; $073d: $26 $c2
     ld a, $ff                                     ; $073f: $3e $ff
@@ -1214,9 +1210,9 @@ Jump_000_0738:
     inc l                                         ; $0749: $2c
     xor a                                         ; $074a: $af
     ld [hl], a                                    ; $074b: $77
-    ld a, [$c315]                                 ; $074c: $fa $15 $c3
+    ld a, [rCommandQueueWriteCursor]              ; $074c: $fa $15 $c3
     add $04                                       ; $074f: $c6 $04
-    ld [$c315], a                                 ; $0751: $ea $15 $c3
+    ld [rCommandQueueWriteCursor], a              ; $0751: $ea $15 $c3
     ldh a, [rLCDC]                                ; $0754: $f0 $40
     bit 7, a                                      ; $0756: $cb $7f
     ret nz                                        ; $0758: $c0
@@ -1232,8 +1228,8 @@ Jump_000_0738:
 
 
 Call_000_0767:
-    ld a, [$c315]                                 ; $0767: $fa $15 $c3
-    ld hl, $c316                                  ; $076a: $21 $16 $c3
+    ld a, [rCommandQueueWriteCursor]              ; $0767: $fa $15 $c3
+    ld hl, rCommandQueueReadCursor                ; $076a: $21 $16 $c3
     cp [hl]                                       ; $076d: $be
     ret z                                         ; $076e: $c8
 
@@ -1264,7 +1260,7 @@ jr_000_0772:
 
 jr_000_0793:
     ld a, l                                       ; $0793: $7d
-    ld [$c316], a                                 ; $0794: $ea $16 $c3
+    ld [rCommandQueueReadCursor], a               ; $0794: $ea $16 $c3
     ret                                           ; $0797: $c9
 
 
@@ -1459,7 +1455,7 @@ LCDCInterruptDispatchRoutineAtLY2F_TickAndMaybeRunSoundEngineUpdate::
     and a                                         ; $0892: $a7
     ret z                                         ; $0893: $c8
 
-    ld a, [$c33e]                                 ; $0894: $fa $3e $c3
+    ld a, [rSGBPacketTransferBusyFlag]            ; $0894: $fa $3e $c3
     and a                                         ; $0897: $a7
     jr nz, .Return                                ; $0898: $20 $03
 
@@ -1478,7 +1474,7 @@ LCDCInterruptDispatchRoutineAtLY2F_MaybeRunSoundEngineUpdate::
     and a                                         ; $08a7: $a7
     ret z                                         ; $08a8: $c8
 
-    ld a, [$c33e]                                 ; $08a9: $fa $3e $c3
+    ld a, [rSGBPacketTransferBusyFlag]            ; $08a9: $fa $3e $c3
     and a                                         ; $08ac: $a7
     jr nz, .Return                                ; $08ad: $20 $03
 
@@ -2539,8 +2535,6 @@ jr_000_0e28:
     adc d                                         ; $0e3f: $8a
     ld b, b                                       ; $0e40: $40
     adc c                                         ; $0e41: $89
-
-Jump_000_0e42:
     ld d, b                                       ; $0e42: $50
     adc c                                         ; $0e43: $89
     ld h, b                                       ; $0e44: $60
@@ -4526,8 +4520,6 @@ jr_000_16c5:
     add c                                         ; $16cd: $81
     db $10                                        ; $16ce: $10
     add c                                         ; $16cf: $81
-
-Call_000_16d0:
     jr nz, jr_000_1653                            ; $16d0: $20 $81
 
     jr nc, jr_000_1655                            ; $16d2: $30 $81
@@ -5529,117 +5521,116 @@ jr_000_1ad0:
     ret                                           ; $1ad9: $c9
 
 
-Call_000_1ada:
+HandleStartupSaveDataIntegrityCheck::
     ld a, [rInputButtonsHeld]                     ; $1ada: $fa $1a $c3
     cp $64                                        ; $1add: $fe $64
-    jr nz, jr_000_1ae6                            ; $1adf: $20 $05
+    jr nz, .ValidateAndRecoverSaveData            ; $1adf: $20 $05
 
-    call Call_000_1d22                            ; $1ae1: $cd $22 $1d
-    jr z, jr_000_1b1c                             ; $1ae4: $28 $36
+    call RunEraseDataConfirmationPrompt           ; $1ae1: $cd $22 $1d
+    jr z, .ReinitializeSaveData                   ; $1ae4: $28 $36
 
-jr_000_1ae6:
-    ld hl, $ad04                                  ; $1ae6: $21 $04 $ad
-    call Call_000_1b83                            ; $1ae9: $cd $83 $1b
-    ld a, [$ba06]                                 ; $1aec: $fa $06 $ba
+.ValidateAndRecoverSaveData:
+    ld hl, rSaveDataMirrorBlockStart              ; $1ae6: $21 $04 $ad
+    call ComputeSumXorChecksumDE                  ; $1ae9: $cd $83 $1b
+    ld a, [rSaveDataMirrorChecksumSum]            ; $1aec: $fa $06 $ba
     cp d                                          ; $1aef: $ba
-    jr nz, jr_000_1b06                            ; $1af0: $20 $14
+    jr nz, .ValidatePrimarySaveDataBlock          ; $1af0: $20 $14
 
-    ld a, [$ba07]                                 ; $1af2: $fa $07 $ba
+    ld a, [rSaveDataMirrorChecksumXor]            ; $1af2: $fa $07 $ba
     cp e                                          ; $1af5: $bb
-    jr nz, jr_000_1b06                            ; $1af6: $20 $0e
+    jr nz, .ValidatePrimarySaveDataBlock          ; $1af6: $20 $0e
 
-    ld hl, $ad04                                  ; $1af8: $21 $04 $ad
-    ld de, $a000                                  ; $1afb: $11 $00 $a0
+    ld hl, rSaveDataMirrorBlockStart              ; $1af8: $21 $04 $ad
+    ld de, rSaveDataPrimaryBlockStart             ; $1afb: $11 $00 $a0
     ld bc, $0d02                                  ; $1afe: $01 $02 $0d
-    call Call_000_04db                            ; $1b01: $cd $db $04
-    jr jr_000_1b18                                ; $1b04: $18 $12
+    call CopyMemoryBlock                          ; $1b01: $cd $db $04
+    jr .FinalizeSaveDataValidation                ; $1b04: $18 $12
 
-jr_000_1b06:
-    ld hl, $a000                                  ; $1b06: $21 $00 $a0
-    call Call_000_1b83                            ; $1b09: $cd $83 $1b
-    ld a, [$ad02]                                 ; $1b0c: $fa $02 $ad
+.ValidatePrimarySaveDataBlock:
+    ld hl, rSaveDataPrimaryBlockStart             ; $1b06: $21 $00 $a0
+    call ComputeSumXorChecksumDE                  ; $1b09: $cd $83 $1b
+    ld a, [rSaveDataPrimaryChecksumSum]           ; $1b0c: $fa $02 $ad
     cp d                                          ; $1b0f: $ba
-    jr nz, jr_000_1b1c                            ; $1b10: $20 $0a
+    jr nz, .ReinitializeSaveData                  ; $1b10: $20 $0a
 
-    ld a, [$ad03]                                 ; $1b12: $fa $03 $ad
+    ld a, [rSaveDataPrimaryChecksumXor]           ; $1b12: $fa $03 $ad
     cp e                                          ; $1b15: $bb
-    jr nz, jr_000_1b1c                            ; $1b16: $20 $04
+    jr nz, .ReinitializeSaveData                  ; $1b16: $20 $04
 
-jr_000_1b18:
-    call Call_000_1b60                            ; $1b18: $cd $60 $1b
+.FinalizeSaveDataValidation:
+    call ValidateSaveMagicSignatures              ; $1b18: $cd $60 $1b
     ret z                                         ; $1b1b: $c8
 
-jr_000_1b1c:
-    jp Jump_000_1b96                              ; $1b1c: $c3 $96 $1b
+.ReinitializeSaveData:
+    jp ResetSaveDataAndLoadDefaults               ; $1b1c: $c3 $96 $1b
 
 
-Call_000_1b1f:
-Jump_000_1b1f:
+RefreshSaveValidationChecksumsAndMirrors::
     ld hl, HiddenProgrammerCredits                ; $1b1f: $21 $5e $03
-    ld de, $aced                                  ; $1b22: $11 $ed $ac
+    ld de, rHiddenProgrammerCreditsMirror         ; $1b22: $11 $ed $ac
     ld bc, $0010                                  ; $1b25: $01 $10 $00
-    call Call_000_04db                            ; $1b28: $cd $db $04
-    ld hl, TODO                                   ; $1b2b: $21 $6e $03
-    ld de, $acfd                                  ; $1b2e: $11 $fd $ac
+    call CopyMemoryBlock                          ; $1b28: $cd $db $04
+    ld hl, SaveValidationMagicBytes               ; $1b2b: $21 $6e $03
+    ld de, rSaveValidationMagicBytesMirror        ; $1b2e: $11 $fd $ac
     ld bc, $0005                                  ; $1b31: $01 $05 $00
-    call Call_000_04db                            ; $1b34: $cd $db $04
-    ld hl, $a000                                  ; $1b37: $21 $00 $a0
-    call Call_000_1b83                            ; $1b3a: $cd $83 $1b
+    call CopyMemoryBlock                          ; $1b34: $cd $db $04
+    ld hl, rSaveDataPrimaryBlockStart             ; $1b37: $21 $00 $a0
+    call ComputeSumXorChecksumDE                  ; $1b3a: $cd $83 $1b
     ld a, d                                       ; $1b3d: $7a
-    ld [$ad02], a                                 ; $1b3e: $ea $02 $ad
+    ld [rSaveDataPrimaryChecksumSum], a           ; $1b3e: $ea $02 $ad
     ld a, e                                       ; $1b41: $7b
-    ld [$ad03], a                                 ; $1b42: $ea $03 $ad
-    ld hl, $a000                                  ; $1b45: $21 $00 $a0
-    ld de, $ad04                                  ; $1b48: $11 $04 $ad
+    ld [rSaveDataPrimaryChecksumXor], a           ; $1b42: $ea $03 $ad
+    ld hl, rSaveDataPrimaryBlockStart             ; $1b45: $21 $00 $a0
+    ld de, rSaveDataMirrorBlockStart              ; $1b48: $11 $04 $ad
     ld bc, $0d02                                  ; $1b4b: $01 $02 $0d
-    call Call_000_04db                            ; $1b4e: $cd $db $04
-    ld hl, $ad04                                  ; $1b51: $21 $04 $ad
-    call Call_000_1b83                            ; $1b54: $cd $83 $1b
+    call CopyMemoryBlock                          ; $1b4e: $cd $db $04
+    ld hl, rSaveDataMirrorBlockStart              ; $1b51: $21 $04 $ad
+    call ComputeSumXorChecksumDE                  ; $1b54: $cd $83 $1b
     ld a, d                                       ; $1b57: $7a
-    ld [$ba06], a                                 ; $1b58: $ea $06 $ba
+    ld [rSaveDataMirrorChecksumSum], a            ; $1b58: $ea $06 $ba
     ld a, e                                       ; $1b5b: $7b
-    ld [$ba07], a                                 ; $1b5c: $ea $07 $ba
+    ld [rSaveDataMirrorChecksumXor], a            ; $1b5c: $ea $07 $ba
     ret                                           ; $1b5f: $c9
 
 
-Call_000_1b60:
-    ld hl, $aced                                  ; $1b60: $21 $ed $ac
+ValidateSaveMagicSignatures::
+    ld hl, rHiddenProgrammerCreditsMirror         ; $1b60: $21 $ed $ac
     ld de, HiddenProgrammerCredits                ; $1b63: $11 $5e $03
     ld c, $10                                     ; $1b66: $0e $10
 
-jr_000_1b68:
+.CompareHiddenProgrammerCreditsLoop:
     ld a, [de]                                    ; $1b68: $1a
     cp [hl]                                       ; $1b69: $be
-    jr nz, jr_000_1b82                            ; $1b6a: $20 $16
+    jr nz, .ReturnWithSignatureCompareFlags       ; $1b6a: $20 $16
 
     inc de                                        ; $1b6c: $13
     inc hl                                        ; $1b6d: $23
     dec c                                         ; $1b6e: $0d
-    jr nz, jr_000_1b68                            ; $1b6f: $20 $f7
+    jr nz, .CompareHiddenProgrammerCreditsLoop    ; $1b6f: $20 $f7
 
-    ld hl, $acfd                                  ; $1b71: $21 $fd $ac
-    ld de, TODO                                   ; $1b74: $11 $6e $03
+    ld hl, rSaveValidationMagicBytesMirror        ; $1b71: $21 $fd $ac
+    ld de, SaveValidationMagicBytes               ; $1b74: $11 $6e $03
     ld c, $05                                     ; $1b77: $0e $05
 
-jr_000_1b79:
+.CompareSaveValidationMagicBytesLoop:
     ld a, [de]                                    ; $1b79: $1a
     cp [hl]                                       ; $1b7a: $be
-    jr nz, jr_000_1b82                            ; $1b7b: $20 $05
+    jr nz, .ReturnWithSignatureCompareFlags       ; $1b7b: $20 $05
 
     inc de                                        ; $1b7d: $13
     inc hl                                        ; $1b7e: $23
     dec c                                         ; $1b7f: $0d
-    jr nz, jr_000_1b79                            ; $1b80: $20 $f7
+    jr nz, .CompareSaveValidationMagicBytesLoop   ; $1b80: $20 $f7
 
-jr_000_1b82:
+.ReturnWithSignatureCompareFlags:
     ret                                           ; $1b82: $c9
 
 
-Call_000_1b83:
+ComputeSumXorChecksumDE::
     ld bc, $0d02                                  ; $1b83: $01 $02 $0d
     ld de, $0000                                  ; $1b86: $11 $00 $00
 
-jr_000_1b89:
+.ChecksumByteLoop:
     ld a, d                                       ; $1b89: $7a
     add [hl]                                      ; $1b8a: $86
     ld d, a                                       ; $1b8b: $57
@@ -5650,22 +5641,22 @@ jr_000_1b89:
     dec bc                                        ; $1b90: $0b
     ld a, c                                       ; $1b91: $79
     or b                                          ; $1b92: $b0
-    jr nz, jr_000_1b89                            ; $1b93: $20 $f4
+    jr nz, .ChecksumByteLoop                      ; $1b93: $20 $f4
 
     ret                                           ; $1b95: $c9
 
 
-Jump_000_1b96:
+ResetSaveDataAndLoadDefaults::
     ld bc, $0d02                                  ; $1b96: $01 $02 $0d
-    ld hl, $a000                                  ; $1b99: $21 $00 $a0
+    ld hl, rSaveDataPrimaryBlockStart             ; $1b99: $21 $00 $a0
 
-jr_000_1b9c:
+.ClearSaveDataLoop:
     xor a                                         ; $1b9c: $af
     ld [hl+], a                                   ; $1b9d: $22
     dec bc                                        ; $1b9e: $0b
     ld a, b                                       ; $1b9f: $78
     or c                                          ; $1ba0: $b1
-    jr nz, jr_000_1b9c                            ; $1ba1: $20 $f9
+    jr nz, .ClearSaveDataLoop                     ; $1ba1: $20 $f9
 
     ld b, $02                                     ; $1ba3: $06 $02
     ld hl, $5267                                  ; $1ba5: $21 $67 $52
@@ -5679,63 +5670,34 @@ jr_000_1b9c:
     ld b, $02                                     ; $1bbb: $06 $02
     ld hl, $5274                                  ; $1bbd: $21 $74 $52
     call SwitchBankToBAndJumpToHL                 ; $1bc0: $cd $de $05
-    ld hl, $1be2                                  ; $1bc3: $21 $e2 $1b
-    ld de, $a042                                  ; $1bc6: $11 $42 $a0
+    ld hl, SaveDataDefaultBlockA                  ; $1bc3: $21 $e2 $1b
+    ld de, rSaveDataDefaultBlockADest             ; $1bc6: $11 $42 $a0
     ld bc, $0023                                  ; $1bc9: $01 $23 $00
-    call Call_000_04db                            ; $1bcc: $cd $db $04
-    ld hl, $1c05                                  ; $1bcf: $21 $05 $1c
-    ld de, $a069                                  ; $1bd2: $11 $69 $a0
+    call CopyMemoryBlock                          ; $1bcc: $cd $db $04
+    ld hl, SaveDataDefaultBlockB                  ; $1bcf: $21 $05 $1c
+    ld de, rSaveDataDefaultBlockBDest             ; $1bd2: $11 $69 $a0
     ld bc, $000f                                  ; $1bd5: $01 $0f $00
-    call Call_000_04db                            ; $1bd8: $cd $db $04
+    call CopyMemoryBlock                          ; $1bd8: $cd $db $04
     ld bc, $003c                                  ; $1bdb: $01 $3c $00
     call BusyWaitDelayByBC                        ; $1bde: $cd $03 $06
     ret                                           ; $1be1: $c9
 
 
-    ld bc, $0005                                  ; $1be2: $01 $05 $00
-    nop                                           ; $1be5: $00
-    ld c, [hl]                                    ; $1be6: $4e
-    ld c, c                                       ; $1be7: $49
-    ld c, [hl]                                    ; $1be8: $4e
-    ld [bc], a                                    ; $1be9: $02
-    nop                                           ; $1bea: $00
-    nop                                           ; $1beb: $00
-    nop                                           ; $1bec: $00
-    ld b, c                                       ; $1bed: $41
-    ld d, b                                       ; $1bee: $50
-    ld b, l                                       ; $1bef: $45
-    inc bc                                        ; $1bf0: $03
-    nop                                           ; $1bf1: $00
-    nop                                           ; $1bf2: $00
-    nop                                           ; $1bf3: $00
-    ld c, d                                       ; $1bf4: $4a
-    ld d, l                                       ; $1bf5: $55
-    ld d, b                                       ; $1bf6: $50
-    inc b                                         ; $1bf7: $04
-    nop                                           ; $1bf8: $00
-    nop                                           ; $1bf9: $00
-    nop                                           ; $1bfa: $00
-    ld c, l                                       ; $1bfb: $4d
-    ld b, c                                       ; $1bfc: $41
-    ld d, d                                       ; $1bfd: $52
-    dec b                                         ; $1bfe: $05
-    nop                                           ; $1bff: $00
+SaveDataDefaultBlockA::
+    db $01, $05, $00, $00, "NIN"
 
-Call_000_1c00:
-    nop                                           ; $1c00: $00
-    nop                                           ; $1c01: $00
-    ld d, b                                       ; $1c02: $50
-    ld c, c                                       ; $1c03: $49
-    ld b, e                                       ; $1c04: $43
-    nop                                           ; $1c05: $00
-    ld bc, $0302                                  ; $1c06: $01 $02 $03
-    inc b                                         ; $1c09: $04
-    nop                                           ; $1c0a: $00
-    ld bc, $0302                                  ; $1c0b: $01 $02 $03
-    inc b                                         ; $1c0e: $04
-    nop                                           ; $1c0f: $00
-    ld bc, $0302                                  ; $1c10: $01 $02 $03
-    inc b                                         ; $1c13: $04
+    db $02, $00, $00, $00, "APE"
+
+    db $03, $00, $00, $00, "JUP"
+
+    db $04, $00, $00, $00, "MAR"
+
+    db $05, $00, $00, $00, "PIC"
+
+SaveDataDefaultBlockB::
+    db $00, $01, $02, $03, $04
+    db $00, $01, $02, $03, $04
+    db $00, $01, $02, $03, $04
 
 Call_000_1c14:
     ld b, $3c                                     ; $1c14: $06 $3c
@@ -5798,7 +5760,7 @@ jr_000_1c1c:
     ld [$acab], a                                 ; $1c8a: $ea $ab $ac
     ld a, [rPuzzleCursorRow]                      ; $1c8d: $fa $37 $d6
     ld [$acac], a                                 ; $1c90: $ea $ac $ac
-    jp Jump_000_1b1f                              ; $1c93: $c3 $1f $1b
+    jp RefreshSaveValidationChecksumsAndMirrors   ; $1c93: $c3 $1f $1b
 
 
 Call_000_1c96:
@@ -5890,10 +5852,10 @@ jr_000_1d11:
     inc de                                        ; $1d1a: $13
     ld a, [rPuzzleGridHeight]                     ; $1d1b: $fa $01 $d8
     ld [de], a                                    ; $1d1e: $12
-    jp Jump_000_1b1f                              ; $1d1f: $c3 $1f $1b
+    jp RefreshSaveValidationChecksumsAndMirrors   ; $1d1f: $c3 $1f $1b
 
 
-Call_000_1d22:
+RunEraseDataConfirmationPrompt::
     ld a, $42                                     ; $1d22: $3e $42
     ld [rLCDCShadow], a                           ; $1d24: $ea $2e $c3
     xor a                                         ; $1d27: $af
@@ -5906,23 +5868,23 @@ Call_000_1d22:
     call BankedTileCopy                           ; $1d39: $cd $e4 $04
     xor a                                         ; $1d3c: $af
     ld [rStatePhaseTimer], a                      ; $1d3d: $ea $3c $d6
-    ld [rHintCursorAnimationLastFrameTick], a     ; $1d40: $ea $3d $d6
+    ld [rSharedAnimationFrameState], a            ; $1d40: $ea $3d $d6
     call ClearShadowOAMBuffer                     ; $1d43: $cd $b6 $05
     call EnableLCDFromShadow                      ; $1d46: $cd $a2 $04
-    call Call_000_1fa5                            ; $1d49: $cd $a5 $1f
+    call EnsureSGBMaskFreezeDisabled              ; $1d49: $cd $a5 $1f
     ld b, $03                                     ; $1d4c: $06 $03
     ld hl, $4694                                  ; $1d4e: $21 $94 $46
     ld c, $00                                     ; $1d51: $0e $00
     ld de, $0004                                  ; $1d53: $11 $04 $00
     call PlayScreenTransitionFadeIn               ; $1d56: $cd $0d $04
 
-jr_000_1d59:
+.WaitForConfirmOrCancelInput:
     ld a, [rInputButtonsPressed]                  ; $1d59: $fa $1e $c3
     bit 0, a                                      ; $1d5c: $cb $47
-    jr nz, jr_000_1db9                            ; $1d5e: $20 $59
+    jr nz, .HandleConfirmSelection                ; $1d5e: $20 $59
 
     bit 1, a                                      ; $1d60: $cb $4f
-    jr nz, jr_000_1d95                            ; $1d62: $20 $31
+    jr nz, .HandleCancelSelection                 ; $1d62: $20 $31
 
     ld bc, $3040                                  ; $1d64: $01 $40 $30
     ld a, $4b                                     ; $1d67: $3e $4b
@@ -5930,29 +5892,29 @@ jr_000_1d59:
     ld a, [rStatePhaseTimer]                      ; $1d6c: $fa $3c $d6
     inc a                                         ; $1d6f: $3c
     cp $46                                        ; $1d70: $fe $46
-    jr c, jr_000_1d7d                             ; $1d72: $38 $09
+    jr c, .UpdateCursorBlinkAndTimer              ; $1d72: $38 $09
 
-    ld a, [rHintCursorAnimationLastFrameTick]     ; $1d74: $fa $3d $d6
+    ld a, [rSharedAnimationFrameState]            ; $1d74: $fa $3d $d6
     xor $01                                       ; $1d77: $ee $01
-    ld [rHintCursorAnimationLastFrameTick], a     ; $1d79: $ea $3d $d6
+    ld [rSharedAnimationFrameState], a            ; $1d79: $ea $3d $d6
     xor a                                         ; $1d7c: $af
 
-jr_000_1d7d:
+.UpdateCursorBlinkAndTimer:
     ld [rStatePhaseTimer], a                      ; $1d7d: $ea $3c $d6
     cp $30                                        ; $1d80: $fe $30
-    jr nc, jr_000_1d8f                            ; $1d82: $30 $0b
+    jr nc, .PresentFrameAndContinueInputLoop      ; $1d82: $30 $0b
 
-    ld a, [rHintCursorAnimationLastFrameTick]     ; $1d84: $fa $3d $d6
+    ld a, [rSharedAnimationFrameState]            ; $1d84: $fa $3d $d6
     add $4c                                       ; $1d87: $c6 $4c
     ld bc, $3050                                  ; $1d89: $01 $50 $30
     call CopyOAMSpriteById                        ; $1d8c: $cd $ce $20
 
-jr_000_1d8f:
+.PresentFrameAndContinueInputLoop:
     call ClearShadowOAMBufferFromCursor           ; $1d8f: $cd $c5 $05
     rst RST_08                                    ; $1d92: $cf
-    jr jr_000_1d59                                ; $1d93: $18 $c4
+    jr .WaitForConfirmOrCancelInput               ; $1d93: $18 $c4
 
-jr_000_1d95:
+.HandleCancelSelection:
     ld c, $04                                     ; $1d95: $0e $04
     ld a, $02                                     ; $1d97: $3e $02
     call CallSoundEffectDispatcher                ; $1d99: $cd $b6 $03
@@ -5970,7 +5932,7 @@ jr_000_1d95:
     ret                                           ; $1db8: $c9
 
 
-jr_000_1db9:
+.HandleConfirmSelection:
     ld c, $03                                     ; $1db9: $0e $03
     ld a, $02                                     ; $1dbb: $3e $02
     call CallSoundEffectDispatcher                ; $1dbd: $cd $b6 $03
@@ -5987,21 +5949,21 @@ jr_000_1db9:
     ret                                           ; $1dda: $c9
 
 
-Call_000_1ddb:
+SendSGBPacketStreamFromBankedAddress::
     ld [rRequestedROMBank], a                     ; $1ddb: $ea $14 $c3
     ld a, [rActiveROMBank]                        ; $1dde: $fa $12 $c3
     push af                                       ; $1de1: $f5
     ld a, [rRequestedROMBank]                     ; $1de2: $fa $14 $c3
     ld [rActiveROMBank], a                        ; $1de5: $ea $12 $c3
     ld [rROMB], a                                 ; $1de8: $ea $00 $20
-    call Call_000_1df6                            ; $1deb: $cd $f6 $1d
+    call SendSGBPacketStreamFromHL                ; $1deb: $cd $f6 $1d
     pop af                                        ; $1dee: $f1
     ld [rActiveROMBank], a                        ; $1def: $ea $12 $c3
     ld [rROMB], a                                 ; $1df2: $ea $00 $20
     ret                                           ; $1df5: $c9
 
 
-Call_000_1df6:
+SendSGBPacketStreamFromHL::
     ld a, [hl]                                    ; $1df6: $7e
     and $07                                       ; $1df7: $e6 $07
     ret z                                         ; $1df9: $c8
@@ -6009,9 +5971,9 @@ Call_000_1df6:
     ld b, a                                       ; $1dfa: $47
     ld c, $00                                     ; $1dfb: $0e $00
     ld a, $ff                                     ; $1dfd: $3e $ff
-    ld [$c33e], a                                 ; $1dff: $ea $3e $c3
+    ld [rSGBPacketTransferBusyFlag], a            ; $1dff: $ea $3e $c3
 
-jr_000_1e02:
+.SendNextSGBPacket:
     push bc                                       ; $1e02: $c5
     ld a, $00                                     ; $1e03: $3e $00
     ldh [c], a                                    ; $1e05: $e2
@@ -6019,28 +5981,28 @@ jr_000_1e02:
     ldh [c], a                                    ; $1e08: $e2
     ld b, $10                                     ; $1e09: $06 $10
 
-jr_000_1e0b:
+.SendPacketByteLoop:
     ld e, $08                                     ; $1e0b: $1e $08
     ld a, [hl+]                                   ; $1e0d: $2a
     ld d, a                                       ; $1e0e: $57
 
-jr_000_1e0f:
+.SendPacketBitLoop:
     bit 0, d                                      ; $1e0f: $cb $42
     ld a, $10                                     ; $1e11: $3e $10
-    jr nz, jr_000_1e17                            ; $1e13: $20 $02
+    jr nz, .ClockOutCurrentSGBBit                 ; $1e13: $20 $02
 
     ld a, $20                                     ; $1e15: $3e $20
 
-jr_000_1e17:
+.ClockOutCurrentSGBBit:
     ldh [c], a                                    ; $1e17: $e2
     ld a, $30                                     ; $1e18: $3e $30
     ldh [c], a                                    ; $1e1a: $e2
     rr d                                          ; $1e1b: $cb $1a
     dec e                                         ; $1e1d: $1d
-    jr nz, jr_000_1e0f                            ; $1e1e: $20 $ef
+    jr nz, .SendPacketBitLoop                     ; $1e1e: $20 $ef
 
     dec b                                         ; $1e20: $05
-    jr nz, jr_000_1e0b                            ; $1e21: $20 $e8
+    jr nz, .SendPacketByteLoop                    ; $1e21: $20 $e8
 
     ld a, $20                                     ; $1e23: $3e $20
     ldh [c], a                                    ; $1e25: $e2
@@ -6048,41 +6010,41 @@ jr_000_1e17:
     ldh [c], a                                    ; $1e28: $e2
     pop bc                                        ; $1e29: $c1
     dec b                                         ; $1e2a: $05
-    jr z, jr_000_1e32                             ; $1e2b: $28 $05
+    jr z, .ClearSGBTransferBusyFlagAndReturn      ; $1e2b: $28 $05
 
-    call Call_000_1e37                            ; $1e2d: $cd $37 $1e
-    jr jr_000_1e02                                ; $1e30: $18 $d0
+    call BusyWaitDelayForSGBPacketTiming          ; $1e2d: $cd $37 $1e
+    jr .SendNextSGBPacket                         ; $1e30: $18 $d0
 
-jr_000_1e32:
+.ClearSGBTransferBusyFlagAndReturn:
     xor a                                         ; $1e32: $af
-    ld [$c33e], a                                 ; $1e33: $ea $3e $c3
+    ld [rSGBPacketTransferBusyFlag], a            ; $1e33: $ea $3e $c3
     ret                                           ; $1e36: $c9
 
 
-Call_000_1e37:
+BusyWaitDelayForSGBPacketTiming::
     ld de, $1b58                                  ; $1e37: $11 $58 $1b
 
-jr_000_1e3a:
+.DelayLoop:
     nop                                           ; $1e3a: $00
     nop                                           ; $1e3b: $00
     nop                                           ; $1e3c: $00
     dec de                                        ; $1e3d: $1b
     ld a, d                                       ; $1e3e: $7a
     or e                                          ; $1e3f: $b3
-    jr nz, jr_000_1e3a                            ; $1e40: $20 $f8
+    jr nz, .DelayLoop                             ; $1e40: $20 $f8
 
     ret                                           ; $1e42: $c9
 
 
-Call_000_1e43:
+DetectSuperGameBoyViaMltReqHandshake::
     ld a, $03                                     ; $1e43: $3e $03
     ld hl, $4010                                  ; $1e45: $21 $10 $40
-    call Call_000_1ddb                            ; $1e48: $cd $db $1d
-    call Call_000_1e37                            ; $1e4b: $cd $37 $1e
+    call SendSGBPacketStreamFromBankedAddress     ; $1e48: $cd $db $1d
+    call BusyWaitDelayForSGBPacketTiming          ; $1e4b: $cd $37 $1e
     ldh a, [rP1]                                  ; $1e4e: $f0 $00
     and $03                                       ; $1e50: $e6 $03
     cp $03                                        ; $1e52: $fe $03
-    jr nz, jr_000_1e91                            ; $1e54: $20 $3b
+    jr nz, .MltReqDetectionFailedPath             ; $1e54: $20 $3b
 
     ld a, $20                                     ; $1e56: $3e $20
     ldh [rP1], a                                  ; $1e58: $e0 $00
@@ -6106,26 +6068,26 @@ Call_000_1e43:
     ldh a, [rP1]                                  ; $1e7c: $f0 $00
     and $03                                       ; $1e7e: $e6 $03
     cp $03                                        ; $1e80: $fe $03
-    jr nz, jr_000_1e91                            ; $1e82: $20 $0d
+    jr nz, .MltReqDetectionFailedPath             ; $1e82: $20 $0d
 
     ld a, $03                                     ; $1e84: $3e $03
     ld hl, $4000                                  ; $1e86: $21 $00 $40
-    call Call_000_1ddb                            ; $1e89: $cd $db $1d
-    call Call_000_1e37                            ; $1e8c: $cd $37 $1e
+    call SendSGBPacketStreamFromBankedAddress     ; $1e89: $cd $db $1d
+    call BusyWaitDelayForSGBPacketTiming          ; $1e8c: $cd $37 $1e
     sub a                                         ; $1e8f: $97
     ret                                           ; $1e90: $c9
 
 
-jr_000_1e91:
+.MltReqDetectionFailedPath:
     ld a, $03                                     ; $1e91: $3e $03
     ld hl, $4000                                  ; $1e93: $21 $00 $40
-    call Call_000_1ddb                            ; $1e96: $cd $db $1d
-    call Call_000_1e37                            ; $1e99: $cd $37 $1e
+    call SendSGBPacketStreamFromBankedAddress     ; $1e96: $cd $db $1d
+    call BusyWaitDelayForSGBPacketTiming          ; $1e99: $cd $37 $1e
     scf                                           ; $1e9c: $37
     ret                                           ; $1e9d: $c9
 
 
-Call_000_1e9e:
+SendSGBTransferPacketStreamWithVRAMBufferFromBankedAddress::
     ld [rRequestedROMBank], a                     ; $1e9e: $ea $14 $c3
     ld a, [rActiveROMBank]                        ; $1ea1: $fa $12 $c3
     push af                                       ; $1ea4: $f5
@@ -6140,31 +6102,31 @@ Call_000_1e9e:
     add hl, bc                                    ; $1eb7: $09
     ld de, $8800                                  ; $1eb8: $11 $00 $88
     ld bc, $1000                                  ; $1ebb: $01 $00 $10
-    call Call_000_04db                            ; $1ebe: $cd $db $04
+    call CopyMemoryBlock                          ; $1ebe: $cd $db $04
     ld hl, $9800                                  ; $1ec1: $21 $00 $98
     ld de, $000c                                  ; $1ec4: $11 $0c $00
     ld a, $80                                     ; $1ec7: $3e $80
     ld c, $0d                                     ; $1ec9: $0e $0d
 
-jr_000_1ecb:
+.FillTransferTilemapRowsLoop:
     ld b, $14                                     ; $1ecb: $06 $14
 
-jr_000_1ecd:
+.FillTransferTilemapRowLoop:
     ld [hl+], a                                   ; $1ecd: $22
     inc a                                         ; $1ece: $3c
     dec b                                         ; $1ecf: $05
-    jr nz, jr_000_1ecd                            ; $1ed0: $20 $fb
+    jr nz, .FillTransferTilemapRowLoop            ; $1ed0: $20 $fb
 
     add hl, de                                    ; $1ed2: $19
     dec c                                         ; $1ed3: $0d
-    jr nz, jr_000_1ecb                            ; $1ed4: $20 $f5
+    jr nz, .FillTransferTilemapRowsLoop           ; $1ed4: $20 $f5
 
     ld a, $81                                     ; $1ed6: $3e $81
     ldh [rLCDC], a                                ; $1ed8: $e0 $40
     ld bc, $0005                                  ; $1eda: $01 $05 $00
     call BusyWaitDelayByBC                        ; $1edd: $cd $03 $06
     pop hl                                        ; $1ee0: $e1
-    call Call_000_1df6                            ; $1ee1: $cd $f6 $1d
+    call SendSGBPacketStreamFromHL                ; $1ee1: $cd $f6 $1d
     ld bc, $0006                                  ; $1ee4: $01 $06 $00
     call BusyWaitDelayByBC                        ; $1ee7: $cd $03 $06
     ld a, [rBGPShadow]                            ; $1eea: $fa $2f $c3
@@ -6178,61 +6140,61 @@ jr_000_1ecd:
     ret                                           ; $1efc: $c9
 
 
-Call_000_1efd:
+RunSGBStartupTransferPacketSequence::
     ld bc, $0078                                  ; $1efd: $01 $78 $00
     call BusyWaitDelayByBC                        ; $1f00: $cd $03 $06
-    call Call_000_1f87                            ; $1f03: $cd $87 $1f
+    call EnsureSGBMaskFreezeEnabled               ; $1f03: $cd $87 $1f
     ld a, $03                                     ; $1f06: $3e $03
     ld hl, $4de0                                  ; $1f08: $21 $e0 $4d
-    call Call_000_1ddb                            ; $1f0b: $cd $db $1d
+    call SendSGBPacketStreamFromBankedAddress     ; $1f0b: $cd $db $1d
     ld bc, $0004                                  ; $1f0e: $01 $04 $00
     call BusyWaitDelayByBC                        ; $1f11: $cd $03 $06
     ld a, $03                                     ; $1f14: $3e $03
     ld hl, $4df0                                  ; $1f16: $21 $f0 $4d
-    call Call_000_1ddb                            ; $1f19: $cd $db $1d
+    call SendSGBPacketStreamFromBankedAddress     ; $1f19: $cd $db $1d
     ld bc, $0004                                  ; $1f1c: $01 $04 $00
     call BusyWaitDelayByBC                        ; $1f1f: $cd $03 $06
     ld a, $03                                     ; $1f22: $3e $03
     ld hl, $4e00                                  ; $1f24: $21 $00 $4e
-    call Call_000_1ddb                            ; $1f27: $cd $db $1d
+    call SendSGBPacketStreamFromBankedAddress     ; $1f27: $cd $db $1d
     ld bc, $0004                                  ; $1f2a: $01 $04 $00
     call BusyWaitDelayByBC                        ; $1f2d: $cd $03 $06
     ld a, $03                                     ; $1f30: $3e $03
     ld hl, $4e10                                  ; $1f32: $21 $10 $4e
-    call Call_000_1ddb                            ; $1f35: $cd $db $1d
+    call SendSGBPacketStreamFromBankedAddress     ; $1f35: $cd $db $1d
     ld bc, $0004                                  ; $1f38: $01 $04 $00
     call BusyWaitDelayByBC                        ; $1f3b: $cd $03 $06
     ld a, $03                                     ; $1f3e: $3e $03
     ld hl, $4e20                                  ; $1f40: $21 $20 $4e
-    call Call_000_1ddb                            ; $1f43: $cd $db $1d
+    call SendSGBPacketStreamFromBankedAddress     ; $1f43: $cd $db $1d
     ld bc, $0004                                  ; $1f46: $01 $04 $00
     call BusyWaitDelayByBC                        ; $1f49: $cd $03 $06
     ld a, $03                                     ; $1f4c: $3e $03
     ld hl, $4e30                                  ; $1f4e: $21 $30 $4e
-    call Call_000_1ddb                            ; $1f51: $cd $db $1d
+    call SendSGBPacketStreamFromBankedAddress     ; $1f51: $cd $db $1d
     ld bc, $0004                                  ; $1f54: $01 $04 $00
     call BusyWaitDelayByBC                        ; $1f57: $cd $03 $06
     ld a, $03                                     ; $1f5a: $3e $03
     ld hl, $4e40                                  ; $1f5c: $21 $40 $4e
-    call Call_000_1ddb                            ; $1f5f: $cd $db $1d
+    call SendSGBPacketStreamFromBankedAddress     ; $1f5f: $cd $db $1d
     ld bc, $0004                                  ; $1f62: $01 $04 $00
     call BusyWaitDelayByBC                        ; $1f65: $cd $03 $06
     ld a, $03                                     ; $1f68: $3e $03
     ld hl, $4e50                                  ; $1f6a: $21 $50 $4e
-    call Call_000_1ddb                            ; $1f6d: $cd $db $1d
+    call SendSGBPacketStreamFromBankedAddress     ; $1f6d: $cd $db $1d
     ld bc, $0004                                  ; $1f70: $01 $04 $00
     call BusyWaitDelayByBC                        ; $1f73: $cd $03 $06
     ld a, $03                                     ; $1f76: $3e $03
     ld hl, $4730                                  ; $1f78: $21 $30 $47
-    call Call_000_1e9e                            ; $1f7b: $cd $9e $1e
+    call SendSGBTransferPacketStreamWithVRAMBufferFromBankedAddress; $1f7b: $cd $9e $1e
     ld a, $03                                     ; $1f7e: $3e $03
     ld hl, $4030                                  ; $1f80: $21 $30 $40
-    call Call_000_1e9e                            ; $1f83: $cd $9e $1e
+    call SendSGBTransferPacketStreamWithVRAMBufferFromBankedAddress; $1f83: $cd $9e $1e
     ret                                           ; $1f86: $c9
 
 
-Call_000_1f87:
-    ld a, [rBootVariantFlag_Unsure]               ; $1f87: $fa $3d $c3
+EnsureSGBMaskFreezeEnabled::
+    ld a, [rIsSuperGameBoyMode]                   ; $1f87: $fa $3d $c3
     and a                                         ; $1f8a: $a7
     ret z                                         ; $1f8b: $c8
 
@@ -6242,7 +6204,7 @@ Call_000_1f87:
 
     ld a, $03                                     ; $1f91: $3e $03
     ld hl, $4e60                                  ; $1f93: $21 $60 $4e
-    call Call_000_1ddb                            ; $1f96: $cd $db $1d
+    call SendSGBPacketStreamFromBankedAddress     ; $1f96: $cd $db $1d
     ld bc, $0004                                  ; $1f99: $01 $04 $00
     call BusyWaitDelayByBC                        ; $1f9c: $cd $03 $06
     ld a, $ff                                     ; $1f9f: $3e $ff
@@ -6250,8 +6212,8 @@ Call_000_1f87:
     ret                                           ; $1fa4: $c9
 
 
-Call_000_1fa5:
-    ld a, [rBootVariantFlag_Unsure]               ; $1fa5: $fa $3d $c3
+EnsureSGBMaskFreezeDisabled::
+    ld a, [rIsSuperGameBoyMode]                   ; $1fa5: $fa $3d $c3
     and a                                         ; $1fa8: $a7
     ret z                                         ; $1fa9: $c8
 
@@ -6263,7 +6225,7 @@ Call_000_1fa5:
 
     ld a, $03                                     ; $1fb5: $3e $03
     ld hl, $4e70                                  ; $1fb7: $21 $70 $4e
-    call Call_000_1ddb                            ; $1fba: $cd $db $1d
+    call SendSGBPacketStreamFromBankedAddress     ; $1fba: $cd $db $1d
     ld bc, $0004                                  ; $1fbd: $01 $04 $00
     call BusyWaitDelayByBC                        ; $1fc0: $cd $03 $06
     xor a                                         ; $1fc3: $af
@@ -6282,7 +6244,7 @@ PlayScreenTransitionFadeIn_AlternatePath::
     call BankedTileCopy                           ; $1fd6: $cd $e4 $04
     ld a, $00                                     ; $1fd9: $3e $00
     ld hl, $c340                                  ; $1fdb: $21 $40 $c3
-    call Call_000_1ddb                            ; $1fde: $cd $db $1d
+    call SendSGBPacketStreamFromBankedAddress     ; $1fde: $cd $db $1d
     pop hl                                        ; $1fe1: $e1
     pop bc                                        ; $1fe2: $c1
     push bc                                       ; $1fe3: $c5
@@ -6310,7 +6272,7 @@ jr_000_1ff1:
     jr nz, jr_000_1ff1                            ; $2008: $20 $e7
 
     ld [rStatePhaseTimer], a                      ; $200a: $ea $3c $d6
-    ld [rHintCursorAnimationLastFrameTick], a     ; $200d: $ea $3d $d6
+    ld [rSharedAnimationFrameState], a            ; $200d: $ea $3d $d6
     ld [rHintCursorAnimationColumnAccumulator], a ; $2010: $ea $3e $d6
     ld [rHintCursorAnimationRowAccumulator], a    ; $2013: $ea $3f $d6
     pop af                                        ; $2016: $f1
@@ -6340,7 +6302,7 @@ jr_000_202d:
     push de                                       ; $2035: $d5
     ld a, $00                                     ; $2036: $3e $00
     ld hl, $c340                                  ; $2038: $21 $40 $c3
-    call Call_000_1ddb                            ; $203b: $cd $db $1d
+    call SendSGBPacketStreamFromBankedAddress     ; $203b: $cd $db $1d
     ld bc, $0006                                  ; $203e: $01 $06 $00
     call BusyWaitDelayByBC                        ; $2041: $cd $03 $06
     pop de                                        ; $2044: $d1
@@ -6385,7 +6347,7 @@ jr_000_206c:
     push de                                       ; $2074: $d5
     ld a, $00                                     ; $2075: $3e $00
     ld hl, $c340                                  ; $2077: $21 $40 $c3
-    call Call_000_1ddb                            ; $207a: $cd $db $1d
+    call SendSGBPacketStreamFromBankedAddress     ; $207a: $cd $db $1d
     ld bc, $0006                                  ; $207d: $01 $06 $00
     call BusyWaitDelayByBC                        ; $2080: $cd $03 $06
     pop de                                        ; $2083: $d1
@@ -6400,7 +6362,7 @@ jr_000_206c:
     call BankedTileCopy                           ; $2093: $cd $e4 $04
     ld a, $00                                     ; $2096: $3e $00
     ld hl, $c340                                  ; $2098: $21 $40 $c3
-    call Call_000_1ddb                            ; $209b: $cd $db $1d
+    call SendSGBPacketStreamFromBankedAddress     ; $209b: $cd $db $1d
     pop bc                                        ; $209e: $c1
     pop hl                                        ; $209f: $e1
     ld a, [rActiveROMBank]                        ; $20a0: $fa $12 $c3
@@ -6679,7 +6641,7 @@ GS06_StatePhase_00_Init::
     ld [rHintCursorAnimationColumnAccumulator], a ; $21f7: $ea $3e $d6
     ld [rHintCursorAnimationRowAccumulator], a    ; $21fa: $ea $3f $d6
     ld a, [rLCDCFrameTickCounter]                 ; $21fd: $fa $3b $c3
-    ld [rHintCursorAnimationLastFrameTick], a     ; $2200: $ea $3d $d6
+    ld [rSharedAnimationFrameState], a            ; $2200: $ea $3d $d6
     call GS06_ResetMessageSequenceState           ; $2203: $cd $3e $32
     xor a                                         ; $2206: $af
     ld [rPuzzleDataIndexLow], a                   ; $2207: $ea $07 $d8
@@ -8454,7 +8416,7 @@ GS06_DecrementPuzzleTimer::
 AdvanceHintCursorAnimation::
     ld a, [rLCDCFrameTickCounter]                 ; $31ca: $fa $3b $c3
     push af                                       ; $31cd: $f5
-    ld hl, rHintCursorAnimationLastFrameTick      ; $31ce: $21 $3d $d6
+    ld hl, rSharedAnimationFrameState             ; $31ce: $21 $3d $d6
     sub [hl]                                      ; $31d1: $96
     push af                                       ; $31d2: $f5
     ld hl, rHintCursorAnimationColumnAccumulator  ; $31d3: $21 $3e $d6
@@ -8465,7 +8427,7 @@ AdvanceHintCursorAnimation::
     add [hl]                                      ; $31dc: $86
     ld [hl], a                                    ; $31dd: $77
     pop af                                        ; $31de: $f1
-    ld [rHintCursorAnimationLastFrameTick], a     ; $31df: $ea $3d $d6
+    ld [rSharedAnimationFrameState], a            ; $31df: $ea $3d $d6
     ld a, [rHintCursorAnimationColumnThreshold]   ; $31e2: $fa $12 $d8
     cp $3f                                        ; $31e5: $fe $3f
     jr nc, .AdvanceHintCursorRow                  ; $31e7: $30 $25

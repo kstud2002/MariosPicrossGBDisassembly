@@ -2670,27 +2670,27 @@ jr_00f_4c72:
     inc bc                                        ; $4c93: $03
     ei                                            ; $4c94: $fb
     ld [hl+], a                                   ; $4c95: $22
-    ld [$05ea], sp                                ; $4c96: $08 $ea $05
+    ld [ReturnFromBankedJumpRestoreBank], sp      ; $4c96: $08 $ea $05
     jp hl                                         ; $4c99: $e9
 
 
-    ld [$05ea], sp                                ; $4c9a: $08 $ea $05
+    ld [ReturnFromBankedJumpRestoreBank], sp      ; $4c9a: $08 $ea $05
     jp hl                                         ; $4c9d: $e9
 
 
-    ld [$05ea], sp                                ; $4c9e: $08 $ea $05
+    ld [ReturnFromBankedJumpRestoreBank], sp      ; $4c9e: $08 $ea $05
     jp hl                                         ; $4ca1: $e9
 
 
-    ld [$05ea], sp                                ; $4ca2: $08 $ea $05
+    ld [ReturnFromBankedJumpRestoreBank], sp      ; $4ca2: $08 $ea $05
     jp hl                                         ; $4ca5: $e9
 
 
-    ld [$05ea], sp                                ; $4ca6: $08 $ea $05
+    ld [ReturnFromBankedJumpRestoreBank], sp      ; $4ca6: $08 $ea $05
     jp hl                                         ; $4ca9: $e9
 
 
-    ld [$05ea], sp                                ; $4caa: $08 $ea $05
+    ld [ReturnFromBankedJumpRestoreBank], sp      ; $4caa: $08 $ea $05
     jp hl                                         ; $4cad: $e9
 
 
@@ -2700,7 +2700,7 @@ jr_00f_4c72:
     jp hl                                         ; $4cb3: $e9
 
 
-    ld [$05ea], sp                                ; $4cb4: $08 $ea $05
+    ld [ReturnFromBankedJumpRestoreBank], sp      ; $4cb4: $08 $ea $05
     sbc b                                         ; $4cb7: $98
     dec b                                         ; $4cb8: $05
     cp b                                          ; $4cb9: $b8
@@ -2708,7 +2708,7 @@ jr_00f_4c72:
     jp hl                                         ; $4cbb: $e9
 
 
-    ld [$05ea], sp                                ; $4cbc: $08 $ea $05
+    ld [ReturnFromBankedJumpRestoreBank], sp      ; $4cbc: $08 $ea $05
     jp hl                                         ; $4cbf: $e9
 
 
@@ -2718,27 +2718,27 @@ jr_00f_4c72:
     ld a, [hl+]                                   ; $4cc5: $2a
     ld [$e945], a                                 ; $4cc6: $ea $45 $e9
     ld c, d                                       ; $4cc9: $4a
-    ld [$05ea], sp                                ; $4cca: $08 $ea $05
+    ld [ReturnFromBankedJumpRestoreBank], sp      ; $4cca: $08 $ea $05
     jp hl                                         ; $4ccd: $e9
 
 
-    ld [$05ea], sp                                ; $4cce: $08 $ea $05
+    ld [ReturnFromBankedJumpRestoreBank], sp      ; $4cce: $08 $ea $05
     jp hl                                         ; $4cd1: $e9
 
 
-    ld [$05ea], sp                                ; $4cd2: $08 $ea $05
+    ld [ReturnFromBankedJumpRestoreBank], sp      ; $4cd2: $08 $ea $05
     jp hl                                         ; $4cd5: $e9
 
 
-    ld [$05ea], sp                                ; $4cd6: $08 $ea $05
+    ld [ReturnFromBankedJumpRestoreBank], sp      ; $4cd6: $08 $ea $05
     jp hl                                         ; $4cd9: $e9
 
 
-    ld [$05ea], sp                                ; $4cda: $08 $ea $05
+    ld [ReturnFromBankedJumpRestoreBank], sp      ; $4cda: $08 $ea $05
     jp hl                                         ; $4cdd: $e9
 
 
-    ld [$05ea], sp                                ; $4cde: $08 $ea $05
+    ld [ReturnFromBankedJumpRestoreBank], sp      ; $4cde: $08 $ea $05
     dec b                                         ; $4ce1: $05
     ld b, l                                       ; $4ce2: $45
     sub l                                         ; $4ce3: $95
@@ -5131,7 +5131,7 @@ jr_00f_56e9:
 
     ld c, b                                       ; $5892: $48
     ld [$e945], a                                 ; $5893: $ea $45 $e9
-    ld [$05ea], sp                                ; $5896: $08 $ea $05
+    ld [ReturnFromBankedJumpRestoreBank], sp      ; $5896: $08 $ea $05
     ei                                            ; $5899: $fb
     inc hl                                        ; $589a: $23
     jp c, $da9a                                   ; $589b: $da $9a $da
@@ -5151,7 +5151,7 @@ jr_00f_589e:
     jp hl                                         ; $58ad: $e9
 
 
-    ld [$05ea], sp                                ; $58ae: $08 $ea $05
+    ld [ReturnFromBankedJumpRestoreBank], sp      ; $58ae: $08 $ea $05
     jp hl                                         ; $58b1: $e9
 
 
@@ -5161,7 +5161,7 @@ jr_00f_589e:
     jp hl                                         ; $58b5: $e9
 
 
-    ld [$05ea], sp                                ; $58b6: $08 $ea $05
+    ld [ReturnFromBankedJumpRestoreBank], sp      ; $58b6: $08 $ea $05
     ei                                            ; $58b9: $fb
 
 jr_00f_58ba:
@@ -5186,7 +5186,7 @@ jr_00f_58ba:
 
     ld c, b                                       ; $58d2: $48
     ld [$e945], a                                 ; $58d3: $ea $45 $e9
-    ld [$05ea], sp                                ; $58d6: $08 $ea $05
+    ld [ReturnFromBankedJumpRestoreBank], sp      ; $58d6: $08 $ea $05
     ei                                            ; $58d9: $fb
     inc hl                                        ; $58da: $23
     jp c, $da9a                                   ; $58db: $da $9a $da
@@ -5759,7 +5759,7 @@ jr_00f_58ba:
     dec b                                         ; $5b01: $05
     ret c                                         ; $5b02: $d8
 
-    jp c, Jump_000_05da                           ; $5b03: $da $da $05
+    db $da, $da, $05
 
     push de                                       ; $5b06: $d5
     dec b                                         ; $5b07: $05
@@ -9845,7 +9845,7 @@ jr_00f_6d72:
     jp hl                                         ; $6e1f: $e9
 
 
-    ld [$05ea], sp                                ; $6e20: $08 $ea $05
+    ld [ReturnFromBankedJumpRestoreBank], sp      ; $6e20: $08 $ea $05
     ret z                                         ; $6e23: $c8
 
     dec b                                         ; $6e24: $05
@@ -9857,7 +9857,7 @@ jr_00f_6d72:
     jp hl                                         ; $6e2a: $e9
 
 
-    ld [$05ea], sp                                ; $6e2b: $08 $ea $05
+    ld [ReturnFromBankedJumpRestoreBank], sp      ; $6e2b: $08 $ea $05
     ld a, [bc]                                    ; $6e2e: $0a
     jp hl                                         ; $6e2f: $e9
 
@@ -9867,7 +9867,7 @@ jr_00f_6d72:
     jp hl                                         ; $6e34: $e9
 
 
-    ld [$05ea], sp                                ; $6e35: $08 $ea $05
+    ld [ReturnFromBankedJumpRestoreBank], sp      ; $6e35: $08 $ea $05
     ret z                                         ; $6e38: $c8
 
     ld [$e9b5], a                                 ; $6e39: $ea $b5 $e9
@@ -9887,7 +9887,7 @@ jr_00f_6d72:
     jp hl                                         ; $6e4b: $e9
 
 
-    ld [$05ea], sp                                ; $6e4c: $08 $ea $05
+    ld [ReturnFromBankedJumpRestoreBank], sp      ; $6e4c: $08 $ea $05
     ret z                                         ; $6e4f: $c8
 
     dec b                                         ; $6e50: $05
@@ -9899,7 +9899,7 @@ jr_00f_6d72:
     jp hl                                         ; $6e56: $e9
 
 
-    ld [$05ea], sp                                ; $6e57: $08 $ea $05
+    ld [ReturnFromBankedJumpRestoreBank], sp      ; $6e57: $08 $ea $05
     ld [$e9ba], a                                 ; $6e5a: $ea $ba $e9
     cp b                                          ; $6e5d: $b8
     ld [$b5ba], a                                 ; $6e5e: $ea $ba $b5
@@ -9926,7 +9926,7 @@ jr_00f_6d72:
     jp hl                                         ; $6e79: $e9
 
 
-    ld [$05ea], sp                                ; $6e7a: $08 $ea $05
+    ld [ReturnFromBankedJumpRestoreBank], sp      ; $6e7a: $08 $ea $05
     ret z                                         ; $6e7d: $c8
 
     dec b                                         ; $6e7e: $05
@@ -9938,7 +9938,7 @@ jr_00f_6d72:
     jp hl                                         ; $6e84: $e9
 
 
-    ld [$05ea], sp                                ; $6e85: $08 $ea $05
+    ld [ReturnFromBankedJumpRestoreBank], sp      ; $6e85: $08 $ea $05
     ld a, [hl+]                                   ; $6e88: $2a
     jp hl                                         ; $6e89: $e9
 

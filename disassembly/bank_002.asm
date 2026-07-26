@@ -207,7 +207,7 @@ jr_002_416f:
     ld [rStatePhase_Current], a                   ; $4185: $ea $35 $d6
     ld hl, rGameState_Current                     ; $4188: $21 $34 $d6
     inc [hl]                                      ; $418b: $34
-    jp Jump_000_1b1f                              ; $418c: $c3 $1f $1b
+    jp RefreshSaveValidationChecksumsAndMirrors   ; $418c: $c3 $1f $1b
 
 
 jr_002_418f:
@@ -215,7 +215,7 @@ jr_002_418f:
     ld [rStatePhase_Current], a                   ; $4190: $ea $35 $d6
     ld a, $07                                     ; $4193: $3e $07
     ld [rGameState_Current], a                    ; $4195: $ea $34 $d6
-    jp Jump_000_1b1f                              ; $4198: $c3 $1f $1b
+    jp RefreshSaveValidationChecksumsAndMirrors   ; $4198: $c3 $1f $1b
 
 
 GS03_StatePhase_03_TODO::
@@ -261,7 +261,7 @@ jr_002_41da:
     ld [rStatePhase_Current], a                   ; $41ec: $ea $35 $d6
     ld hl, rGameState_Current                     ; $41ef: $21 $34 $d6
     dec [hl]                                      ; $41f2: $35
-    jp Jump_000_1b1f                              ; $41f3: $c3 $1f $1b
+    jp RefreshSaveValidationChecksumsAndMirrors   ; $41f3: $c3 $1f $1b
 
 
 Call_002_41f6:
@@ -581,7 +581,7 @@ GS02_StatePhase_00_TODO::
     ld a, $01                                     ; $43a0: $3e $01
     call CallSoundEffectDispatcher                ; $43a2: $cd $b6 $03
     call EnableLCDFromShadow                      ; $43a5: $cd $a2 $04
-    call Call_000_1fa5                            ; $43a8: $cd $a5 $1f
+    call EnsureSGBMaskFreezeDisabled              ; $43a8: $cd $a5 $1f
     ld b, $03                                     ; $43ab: $06 $03
     ld hl, $46d0                                  ; $43ad: $21 $d0 $46
     ld c, $06                                     ; $43b0: $0e $06
@@ -666,7 +666,7 @@ GS02_StatePhase_02_TODO::
     ld [rStatePhase_Current], a                   ; $444b: $ea $35 $d6
     ld a, [hl]                                    ; $444e: $7e
     ld [rGameState_Current], a                    ; $444f: $ea $34 $d6
-    jp Jump_000_1b1f                              ; $4452: $c3 $1f $1b
+    jp RefreshSaveValidationChecksumsAndMirrors   ; $4452: $c3 $1f $1b
 
 
 GS02_StatePhase_02_TODO_Data::
@@ -709,7 +709,7 @@ GS02_StatePhase_03_TODO::
     ld [rStatePhase_Current], a                   ; $44a7: $ea $35 $d6
     ld hl, rGameState_Current                     ; $44aa: $21 $34 $d6
     dec [hl]                                      ; $44ad: $35
-    jp Jump_000_1b1f                              ; $44ae: $c3 $1f $1b
+    jp RefreshSaveValidationChecksumsAndMirrors   ; $44ae: $c3 $1f $1b
 
 
 Call_002_44b1:
@@ -983,22 +983,23 @@ jr_002_45e7:
     jp Jump_002_44b1                              ; $45eb: $c3 $b1 $44
 
 
+InitializeMainLoopAndEnter::
     ld a, $0c                                     ; $45ee: $3e $0c
-    ld [$c318], a                                 ; $45f0: $ea $18 $c3
+    ld [rInputRepeatInitialDelay], a              ; $45f0: $ea $18 $c3
     ld a, $04                                     ; $45f3: $3e $04
-    ld [$c319], a                                 ; $45f5: $ea $19 $c3
+    ld [rInputRepeatSubsequentInterval], a        ; $45f5: $ea $19 $c3
     xor a                                         ; $45f8: $af
     ld [rGameState_Current], a                    ; $45f9: $ea $34 $d6
     ld [rStatePhase_Current], a                   ; $45fc: $ea $35 $d6
-    ld [$c310], a                                 ; $45ff: $ea $10 $c3
+    ld [rMainLoopInitScratchFlag_Unsure], a       ; $45ff: $ea $10 $c3
 
-jr_002_4602:
-    call Call_002_460b                            ; $4602: $cd $0b $46
+.MainLoop:
+    call DispatchCurrentGameState                 ; $4602: $cd $0b $46
     call ClearShadowOAMBufferFromCursor           ; $4605: $cd $c5 $05
     rst RST_08                                    ; $4608: $cf
-    jr jr_002_4602                                ; $4609: $18 $f7
+    jr .MainLoop                                  ; $4609: $18 $f7
 
-Call_002_460b:
+DispatchCurrentGameState::
     ld a, [rGameState_Current]                    ; $460b: $fa $34 $d6
     call GameStateDispatcher                      ; $460e: $cd $73 $03
 
@@ -1074,7 +1075,7 @@ jr_002_466b:
     pop af                                        ; $466e: $f1
 
 jr_002_466f:
-    jp Jump_000_05ea                              ; $466f: $c3 $ea $05
+    jp ReturnFromBankedJumpRestoreBank            ; $466f: $c3 $ea $05
 
 
     ld a, [$d83b]                                 ; $4672: $fa $3b $d8
@@ -1116,7 +1117,7 @@ jr_002_46ab:
     pop af                                        ; $46ae: $f1
 
 jr_002_46af:
-    jp Jump_000_05ea                              ; $46af: $c3 $ea $05
+    jp ReturnFromBankedJumpRestoreBank            ; $46af: $c3 $ea $05
 
 
     ld a, [$d83c]                                 ; $46b2: $fa $3c $d8
@@ -1169,7 +1170,7 @@ jr_002_46eb:
     pop af                                        ; $4705: $f1
 
 jr_002_4706:
-    jp Jump_000_05ea                              ; $4706: $c3 $ea $05
+    jp ReturnFromBankedJumpRestoreBank            ; $4706: $c3 $ea $05
 
 
     dec b                                         ; $4709: $05
@@ -1215,7 +1216,7 @@ jr_002_4748:
     pop af                                        ; $474b: $f1
 
 jr_002_474c:
-    jp Jump_000_05ea                              ; $474c: $c3 $ea $05
+    jp ReturnFromBankedJumpRestoreBank            ; $474c: $c3 $ea $05
 
 
 GameState_01_DataSelectScreen_PhaseDispatcher::
@@ -1281,7 +1282,7 @@ GS01_StatePhase_00_DataSelectScreenInit::
     ld a, $01                                     ; $47d4: $3e $01
     call CallSoundEffectDispatcher                ; $47d6: $cd $b6 $03
     call EnableLCDFromShadow                      ; $47d9: $cd $a2 $04
-    call Call_000_1fa5                            ; $47dc: $cd $a5 $1f
+    call EnsureSGBMaskFreezeDisabled              ; $47dc: $cd $a5 $1f
     ld b, $03                                     ; $47df: $06 $03
     ld hl, $46c4                                  ; $47e1: $21 $c4 $46
     ld c, $05                                     ; $47e4: $0e $05
@@ -1416,7 +1417,7 @@ jr_002_4881:
     jr jr_002_485c                                ; $488b: $18 $cf
 
 jr_002_488d:
-    call Call_000_1b1f                            ; $488d: $cd $1f $1b
+    call RefreshSaveValidationChecksumsAndMirrors ; $488d: $cd $1f $1b
     ld a, [rPuzzleCursorRow]                      ; $4890: $fa $37 $d6
     call LoadPuzzleData                           ; $4893: $cd $8e $49
 
@@ -1612,7 +1613,7 @@ jr_002_4983:
     ld [rStatePhase_Current], a                   ; $4984: $ea $35 $d6
     ld hl, rGameState_Current                     ; $4987: $21 $34 $d6
     inc [hl]                                      ; $498a: $34
-    jp Jump_000_1b1f                              ; $498b: $c3 $1f $1b
+    jp RefreshSaveValidationChecksumsAndMirrors   ; $498b: $c3 $1f $1b
 
 
 LoadPuzzleData::
@@ -2474,7 +2475,7 @@ jr_002_4e4b:
     ld [de], a                                    ; $4e84: $12
     ld a, $01                                     ; $4e85: $3e $01
     ld [rStatePhase_Current], a                   ; $4e87: $ea $35 $d6
-    jp Jump_000_1b1f                              ; $4e8a: $c3 $1f $1b
+    jp RefreshSaveValidationChecksumsAndMirrors   ; $4e8a: $c3 $1f $1b
 
 
     ld b, c                                       ; $4e8d: $41
@@ -2683,26 +2684,26 @@ GS07_StatePhase_02_TODO::
     call DisableLCDAtVBlank                       ; $4f92: $cd $83 $04
 
 jr_002_4f95:
-    ld a, [$a001]                                 ; $4f95: $fa $01 $a0
+    ld a, [rPuzzleOrderTableCursor]               ; $4f95: $fa $01 $a0
     ld c, a                                       ; $4f98: $4f
     ld b, $00                                     ; $4f99: $06 $00
-    ld hl, $a002                                  ; $4f9b: $21 $02 $a0
+    ld hl, rPuzzleOrderTableStart                 ; $4f9b: $21 $02 $a0
     add hl, bc                                    ; $4f9e: $09
     ld a, [hl]                                    ; $4f9f: $7e
     cp $40                                        ; $4fa0: $fe $40
     jr c, jr_002_4fc6                             ; $4fa2: $38 $22
 
     ld b, $02                                     ; $4fa4: $06 $02
-    ld hl, TODO_Jump1                             ; $4fa6: $21 $67 $52
+    ld hl, InitializePuzzleOrderTable             ; $4fa6: $21 $67 $52
     call SwitchBankToBAndJumpToHL                 ; $4fa9: $cd $de $05
     ld b, $02                                     ; $4fac: $06 $02
-    ld hl, TODO_Jump2                             ; $4fae: $21 $74 $52
+    ld hl, ShufflePuzzleOrderTable                ; $4fae: $21 $74 $52
     call SwitchBankToBAndJumpToHL                 ; $4fb1: $cd $de $05
     ld b, $02                                     ; $4fb4: $06 $02
-    ld hl, TODO_Jump2                             ; $4fb6: $21 $74 $52
+    ld hl, ShufflePuzzleOrderTable                ; $4fb6: $21 $74 $52
     call SwitchBankToBAndJumpToHL                 ; $4fb9: $cd $de $05
     ld b, $02                                     ; $4fbc: $06 $02
-    ld hl, TODO_Jump2                             ; $4fbe: $21 $74 $52
+    ld hl, ShufflePuzzleOrderTable                ; $4fbe: $21 $74 $52
     call SwitchBankToBAndJumpToHL                 ; $4fc1: $cd $de $05
     jr jr_002_4f95                                ; $4fc4: $18 $cf
 
@@ -2715,14 +2716,14 @@ jr_002_4fc6:
     ld [rPuzzleDataIndexLow], a                   ; $4fce: $ea $07 $d8
     ld a, [hl]                                    ; $4fd1: $7e
     ld [rPuzzleDataIndexHigh], a                  ; $4fd2: $ea $08 $d8
-    ld a, [$a001]                                 ; $4fd5: $fa $01 $a0
+    ld a, [rPuzzleOrderTableCursor]               ; $4fd5: $fa $01 $a0
     inc a                                         ; $4fd8: $3c
-    ld [$a001], a                                 ; $4fd9: $ea $01 $a0
+    ld [rPuzzleOrderTableCursor], a               ; $4fd9: $ea $01 $a0
     cp $40                                        ; $4fdc: $fe $40
     jr nz, jr_002_4fe8                            ; $4fde: $20 $08
 
     ld b, $02                                     ; $4fe0: $06 $02
-    ld hl, TODO_Jump2                             ; $4fe2: $21 $74 $52
+    ld hl, ShufflePuzzleOrderTable                ; $4fe2: $21 $74 $52
     call SwitchBankToBAndJumpToHL                 ; $4fe5: $cd $de $05
 
 jr_002_4fe8:
@@ -2730,7 +2731,7 @@ jr_002_4fe8:
     ld [rStatePhase_Current], a                   ; $4fe9: $ea $35 $d6
     ld a, $09                                     ; $4fec: $3e $09
     ld [rGameState_Current], a                    ; $4fee: $ea $34 $d6
-    jp Jump_000_1b1f                              ; $4ff1: $c3 $1f $1b
+    jp RefreshSaveValidationChecksumsAndMirrors   ; $4ff1: $c3 $1f $1b
 
 
 GS07_StatePhase_02_TODO_Data::
@@ -2768,7 +2769,7 @@ GS07_StatePhase_03_TODO::
     ld [rStatePhase_Current], a                   ; $50a8: $ea $35 $d6
     ld a, $03                                     ; $50ab: $3e $03
     ld [rGameState_Current], a                    ; $50ad: $ea $34 $d6
-    jp Jump_000_1b1f                              ; $50b0: $c3 $1f $1b
+    jp RefreshSaveValidationChecksumsAndMirrors   ; $50b0: $c3 $1f $1b
 
 
 Call_002_50b3:
@@ -2780,7 +2781,7 @@ Call_002_50b3:
     ld d, a                                       ; $50be: $57
     ld a, [rPuzzleTimerSecondOnes]                ; $50bf: $fa $0b $d8
     ld e, a                                       ; $50c2: $5f
-    ld hl, $a042                                  ; $50c3: $21 $42 $a0
+    ld hl, rSaveDataDefaultBlockADest             ; $50c3: $21 $42 $a0
     xor a                                         ; $50c6: $af
 
 jr_002_50c7:
@@ -2877,7 +2878,7 @@ jr_002_511c:
 
 
 Call_002_5132:
-    ld hl, $a042                                  ; $5132: $21 $42 $a0
+    ld hl, rSaveDataDefaultBlockADest             ; $5132: $21 $42 $a0
     ld de, $9300                                  ; $5135: $11 $00 $93
     ld a, $05                                     ; $5138: $3e $05
 
@@ -2966,7 +2967,7 @@ DrawUIFontGlyph::
     push hl                                       ; $51c0: $e5
     ld c, a                                       ; $51c1: $4f
     ld b, $00                                     ; $51c2: $06 $00
-    ld hl, DrawUIFontGlyph.PromptFontLookup       ; $51c4: $21 $e7 $51
+    ld hl, PromptFontLookup                       ; $51c4: $21 $e7 $51
     add hl, bc                                    ; $51c7: $09
     ld c, [hl]                                    ; $51c8: $4e
     sla c                                         ; $51c9: $cb $21
@@ -2988,7 +2989,7 @@ DrawUIFontGlyph::
 
 SETCHARMAP prompt
 
-DrawUIFontGlyph.PromptFontLookup::
+PromptFontLookup::
     db "                "
 
     db "            ➔   "
@@ -3005,32 +3006,32 @@ DrawUIFontGlyph.PromptFontLookup::
 
     db "                "
 
-TODO_Jump1::
-    ld hl, $a002                                  ; $5267: $21 $02 $a0
+InitializePuzzleOrderTable::
+    ld hl, rPuzzleOrderTableStart                 ; $5267: $21 $02 $a0
     xor a                                         ; $526a: $af
 
-jr_002_526b:
+.InitializePuzzleOrderTableLoop:
     ld [hl+], a                                   ; $526b: $22
     inc a                                         ; $526c: $3c
     cp $40                                        ; $526d: $fe $40
-    jr nz, jr_002_526b                            ; $526f: $20 $fa
+    jr nz, .InitializePuzzleOrderTableLoop        ; $526f: $20 $fa
 
-    jp Jump_000_05ea                              ; $5271: $c3 $ea $05
+    jp ReturnFromBankedJumpRestoreBank            ; $5271: $c3 $ea $05
 
 
-TODO_Jump2::
+ShufflePuzzleOrderTable::
     ld a, $40                                     ; $5274: $3e $40
-    ld de, $a002                                  ; $5276: $11 $02 $a0
+    ld de, rPuzzleOrderTableStart                 ; $5276: $11 $02 $a0
 
-jr_002_5279:
+.ShufflePuzzleOrderTableLoop:
     push af                                       ; $5279: $f5
     push de                                       ; $527a: $d5
-    call Call_000_0614                            ; $527b: $cd $14 $06
+    call GetSubtractiveRNGStateByte               ; $527b: $cd $14 $06
     and $3f                                       ; $527e: $e6 $3f
     pop de                                        ; $5280: $d1
     ld c, a                                       ; $5281: $4f
     ld b, $00                                     ; $5282: $06 $00
-    ld hl, $a002                                  ; $5284: $21 $02 $a0
+    ld hl, rPuzzleOrderTableStart                 ; $5284: $21 $02 $a0
     add hl, bc                                    ; $5287: $09
     ld c, [hl]                                    ; $5288: $4e
     ld a, [de]                                    ; $5289: $1a
@@ -3040,10 +3041,10 @@ jr_002_5279:
     pop af                                        ; $528d: $f1
     inc de                                        ; $528e: $13
     dec a                                         ; $528f: $3d
-    jr nz, jr_002_5279                            ; $5290: $20 $e7
+    jr nz, .ShufflePuzzleOrderTableLoop           ; $5290: $20 $e7
 
-    ld [$a001], a                                 ; $5292: $ea $01 $a0
-    jp Jump_000_05ea                              ; $5295: $c3 $ea $05
+    ld [rPuzzleOrderTableCursor], a               ; $5292: $ea $01 $a0
+    jp ReturnFromBankedJumpRestoreBank            ; $5295: $c3 $ea $05
 
 
 Call_002_5298:

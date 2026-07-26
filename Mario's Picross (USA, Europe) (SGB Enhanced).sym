@@ -4,9 +4,28 @@
 ; RAM ADDRESS LABELS (HRAM, WRAM, ECHO)
 ; =============================================================================
 
+00:a000 rSaveDataPrimaryBlockStart
+00:a001 rPuzzleOrderTableCursor
+00:a002 rPuzzleOrderTableStart
+00:a042 rSaveDataDefaultBlockADest
+00:a069 rSaveDataDefaultBlockBDest
+00:aced rHiddenProgrammerCreditsMirror
+00:acfd rSaveValidationMagicBytesMirror
+00:ad02 rSaveDataPrimaryChecksumSum
+00:ad03 rSaveDataPrimaryChecksumXor
+00:ad04 rSaveDataMirrorBlockStart
+00:ba06 rSaveDataMirrorChecksumSum
+00:ba07 rSaveDataMirrorChecksumXor
+
+00:c310 rMainLoopInitScratchFlag_Unsure
 00:c311 rShadowOAMWriteCursor
 00:c312 rActiveROMBank
 00:c314 rRequestedROMBank
+00:c315 rCommandQueueWriteCursor
+00:c316 rCommandQueueReadCursor
+00:c317 rCommandQueueReservedOrUnused
+00:c318 rInputRepeatInitialDelay
+00:c319 rInputRepeatSubsequentInterval
 00:c31a rInputButtonsHeld
 00:c31e rInputButtonsPressed
 00:c322 rInputButtonsPressedOrRepeated
@@ -22,7 +41,8 @@
 00:c339 rVBlankSyncFlag
 00:c33b rLCDCFrameTickCounter
 00:c33c rVBlankLCDCBit4ForceFlag
-00:c33d rBootVariantFlag_Unsure
+00:c33d rIsSuperGameBoyMode
+00:c33e rSGBPacketTransferBusyFlag
 00:c350 rVBlankSoundEngineUpdateEnabled_Unsure
 00:c351 rBGTileCopySourceX
 00:c352 rBGTileCopySourceY
@@ -44,6 +64,13 @@
 00:c362 rBGTileCopyValueI
 00:cd63 rTilemapToTileDataAddressLookupTableLow
 00:cd64 rTilemapToTileDataAddressLookupTableHigh
+00:cd68 rSubtractiveRNGStateSeed
+00:cd69 rSubtractiveRNGModulus
+00:cd6a rSubtractiveRNGStateCursor
+00:cd6b rSubtractiveRNGStateTableStart
+00:cd83 rSubtractiveRNGStateTableOffset18
+00:cd8a rSubtractiveRNGStateTableOffset1f
+00:cda1 rSubtractiveRNGStateTableEnd
 00:cda2 rGS06_OAMSequenceBaseLow
 00:cda3 rGS06_OAMSequenceBaseHigh
 00:cda4 rGS06_OAMSequenceEventSpriteId
@@ -57,14 +84,14 @@
 00:d636 rPuzzleCursorColumn
 00:d637 rPuzzleCursorRow
 00:d63c rStatePhaseTimer
-00:d63d rHintCursorAnimationLastFrameTick
+00:d63d rSharedAnimationFrameState
 00:d63e rHintCursorAnimationColumnAccumulator
 00:d63f rHintCursorAnimationRowAccumulator
 00:d73f rPuzzleCellStateBufferEnd
 00:d740 rClueRunLengthHorizontalBufferStart
 00:d799 rClueRunLengthHorizontalBufferBuildBase
-00:d7f9 rClueRunLengthVerticalBufferBuildBase
 00:d7a0 rClueRunLengthVerticalBufferStart
+00:d7f9 rClueRunLengthVerticalBufferBuildBase
 00:d800 rPuzzleGridWidth
 00:d801 rPuzzleGridHeight
 00:d804 rPuzzleCellPendingActionMode
@@ -111,6 +138,7 @@
 00:d844 rMessageScriptStreamResetEntryHigh
 00:d845 rMessageScriptStreamLimitLow
 00:d846 rMessageScriptStreamLimitHigh
+00:dfff rSubtractiveRNGSeedSourceByte
 00:f636 rLevelSelectColumn
 00:f637 rLevelSelectRow
 
@@ -132,6 +160,9 @@
 00:0063 .padding:9d
 
 00:0150 GameInitEntryPoint
+00:0161 .EnsureLCDCEnabledAndInitialDelay
+00:0167 .WaitForScanline91
+00:01e9 .AfterSGBStartupTransferCheck
 
 00:02b9 VBlankInterruptHandler
 
@@ -150,7 +181,7 @@
 00:035e HiddenProgrammerCredits
 00:035e .text:10
 
-00:036e TODO
+00:036e SaveValidationMagicBytes
 00:036e .data:0005
 
 00:0373 GameStateDispatcher
@@ -174,7 +205,14 @@
 
 00:04a2 EnableLCDFromShadow
 
+00:04bb InstallHRAMOAMDMAStub
+00:04c2 .CopyHRAMOAMDMAStubByteLoop
+00:04c9 OAMDMAHRAMStubTemplate
+00:04cf .WaitForDMATransferLoop
+
 00:04d3 ZeroMemoryBlock
+
+00:04db CopyMemoryBlock
 
 00:04e4 BankedTileCopy
 00:04f4 .CopyLoop
@@ -194,12 +232,28 @@
 00:05c5 ClearShadowOAMBufferFromCursor
 00:05cd .FillWithF0Loop
 
+00:05d7 SwitchBankToAAndJumpToHL
 00:05de SwitchBankToBAndJumpToHL
+00:05ea ReturnFromBankedJumpRestoreBank
 00:05fa DelayFramesByBC
 00:0603 BusyWaitDelayByBC
 00:0606 .InnerDelayLoop
+00:0614 GetSubtractiveRNGStateByte
+00:0627 .StoreRNGCursorAndReadStateByte
 
-00:0671 TODO_PointerOrOffsetTable
+00:0631 InitializeSubtractiveRNGState
+00:0638 .ReduceSeedModuloRangeLoop
+00:063e .InitializeRNGStateFromReducedSeed
+00:064b .InitializeRNGStateEntryLoop
+00:065d .WrapAndStoreRNGStateByte
+
+00:06a7 AdvanceSubtractiveRNGState
+00:06b3 .FirstSubtractivePassLoop
+00:06b8 .StoreFirstSubtractivePassByte
+00:06c4 .SecondSubtractivePassLoop
+00:06c9 .StoreSecondSubtractivePassByte
+
+00:0671 SubtractiveRNGStateInitOffsetTable
 00:0671 .data:0036:2
 
 00:07f1 LoadPuzzleDataBuffer
@@ -280,6 +334,65 @@
 00:19eb .LoadNextSequenceEvent
 00:19fc .ApplySequenceEvent
 00:1a23 .TickSequenceEventDelayAndEmit
+
+00:1ada HandleStartupSaveDataIntegrityCheck
+00:1ae6 .ValidateAndRecoverSaveData
+00:1b06 .ValidatePrimarySaveDataBlock
+00:1b18 .FinalizeSaveDataValidation
+00:1b1c .ReinitializeSaveData
+
+00:1b1f RefreshSaveValidationChecksumsAndMirrors
+
+00:1b60 ValidateSaveMagicSignatures
+00:1b68 .CompareHiddenProgrammerCreditsLoop
+00:1b79 .CompareSaveValidationMagicBytesLoop
+00:1b82 .ReturnWithSignatureCompareFlags
+
+00:1b83 ComputeSumXorChecksumDE
+00:1b89 .ChecksumByteLoop
+
+00:1b96 ResetSaveDataAndLoadDefaults
+00:1b9c .ClearSaveDataLoop
+00:1be2 SaveDataDefaultBlockA
+00:1be2 .text:0007
+00:1be9 .text:0007
+00:1bf0 .text:0007
+00:1bf7 .text:0007
+00:1bfe .text:0007
+00:1c05 SaveDataDefaultBlockB
+00:1c05 .data:000f:5
+
+00:1d22 RunEraseDataConfirmationPrompt
+00:1d59 .WaitForConfirmOrCancelInput
+00:1d7d .UpdateCursorBlinkAndTimer
+00:1d8f .PresentFrameAndContinueInputLoop
+00:1d95 .HandleCancelSelection
+00:1db9 .HandleConfirmSelection
+
+00:1ddb SendSGBPacketStreamFromBankedAddress
+
+00:1df6 SendSGBPacketStreamFromHL
+00:1e02 .SendNextSGBPacket
+00:1e0b .SendPacketByteLoop
+00:1e0f .SendPacketBitLoop
+00:1e17 .ClockOutCurrentSGBBit
+00:1e32 .ClearSGBTransferBusyFlagAndReturn
+
+00:1e37 BusyWaitDelayForSGBPacketTiming
+00:1e3a .DelayLoop
+
+00:1e43 DetectSuperGameBoyViaMltReqHandshake
+00:1e91 .MltReqDetectionFailedPath
+
+00:1e9e SendSGBTransferPacketStreamWithVRAMBufferFromBankedAddress
+00:1ecb .FillTransferTilemapRowsLoop
+00:1ecd .FillTransferTilemapRowLoop
+
+00:1efd RunSGBStartupTransferPacketSequence
+
+00:1f87 EnsureSGBMaskFreezeEnabled
+
+00:1fa5 EnsureSGBMaskFreezeDisabled
 
 00:1fc8 PlayScreenTransitionFadeIn_AlternatePath
 
@@ -1005,8 +1118,12 @@
 02:4455 .data:3
 02:4458 GS02_StatePhase_03_TODO
 
+02:45ee InitializeMainLoopAndEnter
+02:4602 .MainLoop
+02:460b DispatchCurrentGameState
+
 ; GameState handling
-; State pointer table entries (accessed via Call_000_0373 dispatcher)
+; State pointer table entries (accessed via GameStateDispatcher)
 ; Offset calculation: Phase_value * 3, added to return address $4611 yields pointer location
 ; Phase $00: $00 * 3 = $00 bytes -> pointer at $4611 + $00 = $4611
 02:4611 StatePointer_00
@@ -1105,7 +1222,7 @@
 02:4dff GS07_StatePhase_05_TODO
 
 02:51c0 DrawUIFontGlyph
-02:51e7 DrawUIFontGlyph.PromptFontLookup
+02:51e7 PromptFontLookup
 02:51e7 .text:10:cm=prompt
 02:51f7 .text:10:cm=prompt
 02:5207 .text:10:cm=prompt
@@ -1115,8 +1232,10 @@
 02:5247 .text:10:cm=prompt
 02:5257 .text:10:cm=prompt
 
-02:5267 TODO_Jump1
-02:5274 TODO_Jump2
+02:5267 InitializePuzzleOrderTable
+02:526b .InitializePuzzleOrderTableLoop
+02:5274 ShufflePuzzleOrderTable
+02:5279 .ShufflePuzzleOrderTableLoop
 
 ; Puzzle data
 ; How To Play: 52b0-52cf
@@ -1644,9 +1763,53 @@
 ; BANK 003
 ; =============================================================================
 
+03:4000 SGBPacket_MLT_REQ_DisableMultiplayer
+03:4000 .data:0010
+03:4010 SGBPacket_MLT_REQ_EnableTwoPlayers
+03:4010 .data:0010
+03:4030 SGBPacket_ATTR_TRN_StartupTransfer
+03:4030 .data:0010
+; ATTR_TRN reads a 0x1000-byte VRAM payload via SendSGBTransferPacketStreamWithVRAMBufferFromBankedAddress.
+; Kept conservative to avoid overlap with already-mapped symbols.
+; Pan Docs layout for full 0x1000 payload: 000-FD1 = ATF0..ATF44 (45*90=4050 bytes), FD2-FFF unused.
+; Each ATF is 20x18 attributes, 2 bits per cell (90 bytes total per ATF).
+03:4040 SGBTransferPayload_ATTR_TRN_Startup
+03:4040 .data:0660:5
+
 03:46a0 TransitionFadePaletteTable_GS06_Start
 03:46a0 .data:000c:3
 ;03:46ab TransitionFadePaletteTable_GS06_End
+
+03:4730 SGBPacket_PAL_TRN_StartupTransfer
+03:4730 .data:0010
+; PAL_TRN reads a 0x1000-byte VRAM payload via SendSGBTransferPacketStreamWithVRAMBufferFromBankedAddress.
+; Kept conservative to avoid overlap with already-mapped symbols.
+; Pan Docs layout for full 0x1000 payload: 512 palettes * 4 colors * 2 bytes = 4096 bytes.
+; Colors are little-endian BGR15 words in VRAM transfer order.
+03:4740 SGBTransferPayload_PAL_TRN_Startup
+03:4740 .data:06a0:8
+
+03:4de0 SGBPacket_DATA_SND_StartupTransfer_00
+03:4de0 .data:0010
+03:4df0 SGBPacket_DATA_SND_StartupTransfer_01
+03:4df0 .data:0010
+03:4e00 SGBPacket_DATA_SND_StartupTransfer_02
+03:4e00 .data:0010
+03:4e10 SGBPacket_DATA_SND_StartupTransfer_03
+03:4e10 .data:0010
+03:4e20 SGBPacket_DATA_SND_StartupTransfer_04
+03:4e20 .data:0010
+03:4e30 SGBPacket_DATA_SND_StartupTransfer_05
+03:4e30 .data:0010
+03:4e40 SGBPacket_DATA_SND_StartupTransfer_06
+03:4e40 .data:0010
+03:4e50 SGBPacket_DATA_SND_StartupTransfer_07
+03:4e50 .data:0010
+
+03:4e60 SGBPacket_MASK_EN_FreezeScreen
+03:4e60 .data:0010
+03:4e70 SGBPacket_MASK_EN_CancelMask
+03:4e70 .data:0010
 
 ; GameState 00 Phase pointer table entries (accessed via RST_18 dispatcher):
 ; Offset calculation: Phase_value * 2, added to return address $4f8b yields pointer location
@@ -2610,11 +2773,11 @@
 03:7870 .data:0041:4
 03:78b1 OAMSpriteData_Event4a
 03:78b1 .data:0041:4
-03:78f2 OAMSpriteData_Event4b
+03:78f2 OAMSpriteData_Event4b_SaveDataErasePrompt
 03:78f2 .data:0019:4
-03:790b OAMSpriteData_Event4c
+03:790b OAMSpriteData_Event4c_ButtonPrompt_A_OK
 03:790b .data:0011:4
-03:791c OAMSpriteData_Event4d
+03:791c OAMSpriteData_Event4d_ButtonPrompt_B_CANCEL
 03:791c .data:0021:4
 03:793d OAMSpriteData_Event4e
 03:793d .data:001d:4
@@ -3173,6 +3336,7 @@
 ; =============================================================================
 
 0e:4566 .data:3
+0e:45c8 .data:3
 
 ; =============================================================================
 ; BANK 00F
@@ -3252,3 +3416,4 @@
 0f:69ca .data:3
 0f:6a99 .data:3
 0f:6cf8 .data:3
+0f:5b03 .data:3

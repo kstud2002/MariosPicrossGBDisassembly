@@ -9570,7 +9570,7 @@ jr_00c_672c:
     inc d                                         ; $672f: $14
 
 jr_00c_6730:
-    jp $c318                                      ; $6730: $c3 $18 $c3
+    jp rInputRepeatInitialDelay                   ; $6730: $c3 $18 $c3
 
 
     jr jr_00c_66f8                                ; $6733: $18 $c3

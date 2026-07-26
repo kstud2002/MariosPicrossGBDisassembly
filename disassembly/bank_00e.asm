@@ -1509,7 +1509,9 @@ jr_00e_45c2:
     ld b, b                                       ; $45c5: $40
     cp b                                          ; $45c6: $b8
     cp b                                          ; $45c7: $b8
-    call nz, Call_000_04c4                        ; $45c8: $c4 $c4 $04
+
+    db $c4, $c4, $04
+
     inc b                                         ; $45cb: $04
     add h                                         ; $45cc: $84
     add h                                         ; $45cd: $84

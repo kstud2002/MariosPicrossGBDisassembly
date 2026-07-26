@@ -3592,7 +3592,7 @@ jr_004_4ed1:
     inc sp                                        ; $4f0a: $33
     call z, $cc33                                 ; $4f0b: $cc $33 $cc
     inc sp                                        ; $4f0e: $33
-    call z, Call_000_1c00                         ; $4f0f: $cc $00 $1c
+    call z, $1c00                                 ; $4f0f: $cc $00 $1c
     nop                                           ; $4f12: $00
     inc e                                         ; $4f13: $1c
     nop                                           ; $4f14: $00
@@ -9350,7 +9350,7 @@ jr_004_635c:
     db $10                                        ; $66d1: $10
     pop bc                                        ; $66d2: $c1
     db $10                                        ; $66d3: $10
-    jp nz, $c310                                  ; $66d4: $c2 $10 $c3
+    jp nz, rMainLoopInitScratchFlag_Unsure        ; $66d4: $c2 $10 $c3
 
     db $10                                        ; $66d7: $10
     call nz, $c510                                ; $66d8: $c4 $10 $c5
