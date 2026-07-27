@@ -5,7 +5,7 @@
 
 SECTION "ROM Bank $004", ROMX[$4000], BANK[$4]
 
-SGBPacket_CHR_TRN_TitleScreenBorderTileDataPart0::
+SGBPacket_CHR_TRN_TitleScreenBorder_TileDataPart0::
     db $99, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
 
 SGBTransferPayload_CHR_TRN_TitleScreenBorder_TileDataPart0::
@@ -266,9 +266,7 @@ SGBTransferPayload_CHR_TRN_TitleScreenBorder_TileDataPart0::
     db $00, $f3, $00, $f0, $00, $f8, $00, $fe, $00, $ff, $00, $ff, $00, $ff, $00, $ff
     db $1e, $e1, $0f, $f0, $07, $f8, $03, $fc, $00, $ff, $00, $ff, $00, $ff, $00, $ff
 
-SGBTransferPayload_CHR_TRN_TitleScreenBorder_TileDataPart0::
-
-SGBPacket_CHR_TRN_TitleScreenBorderTileDataPart1::
+SGBPacket_CHR_TRN_TitleScreenBorder_TileDataPart1::
     db $99, $01, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
 
 SGBTransferPayload_CHR_TRN_TitleScreenBorder_TileDataPart1::
@@ -529,9 +527,7 @@ SGBTransferPayload_CHR_TRN_TitleScreenBorder_TileDataPart1::
     db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
 
-SGBTransferPayload_CHR_TRN_TitleScreenBorder_TileDataPart1::
-
-SGBPacket_PCT_TRN_TitleScreenBorderTileMap::
+SGBPacket_PCT_TRN_TitleScreenBorder_TileMap::
     db $a1, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
 
 SGBTransferPayload_PCT_TRN_TitleScreenBorder_TileMap_Main::

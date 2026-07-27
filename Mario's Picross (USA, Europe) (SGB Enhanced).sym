@@ -2920,20 +2920,21 @@
 
 ; Used by GS00 title screen SGB transfer path via
 ; SendSGBTransferPacketStreamWithVRAMBufferFromBankedAddress with A=$04.
-04:4000 SGBPacket_CHR_TRN_TitleScreenBorderTileDataPart0
+04:4000 SGBPacket_CHR_TRN_TitleScreenBorder_TileDataPart0
 04:4000 .data:0010
 04:4010 SGBTransferPayload_CHR_TRN_TitleScreenBorder_TileDataPart0
-04:4010 .sgbborder:1000:4bpp,sgbstart=0x4010
+04:4010 .data:1000
 
-04:5010 SGBPacket_CHR_TRN_TitleScreenBorderTileDataPart1
+04:5010 SGBPacket_CHR_TRN_TitleScreenBorder_TileDataPart1
 04:5010 .data:0010
 04:5020 SGBTransferPayload_CHR_TRN_TitleScreenBorder_TileDataPart1
-04:5020 .sgbborder:1000:4bpp
+04:5020 .data:1000
 
-04:6020 SGBPacket_PCT_TRN_TitleScreenBorderTileMap
+04:6020 SGBPacket_PCT_TRN_TitleScreenBorder_TileMap
 04:6020 .data:0010
 04:6030 SGBTransferPayload_PCT_TRN_TitleScreenBorder_TileMap_Main
-04:6030 .data:0700:40
+04:6030 .data:700:40
+04:6030 .sgbborder:chr1=0x4010,chr2=0x5020
 04:6730 SGBTransferPayload_PCT_TRN_TitleScreenBorder_TileMap_ExtraRow
 04:6730 .data:0040:40
 04:6770 SGBTransferPayload_PCT_TRN_TitleScreenBorder_Unused
@@ -2949,22 +2950,30 @@
 
 ; Used by GS00 .SGBStandardBorderTransfer via
 ; SendSGBTransferPacketStreamWithVRAMBufferFromBankedAddress with A=$05.
-05:4000 SGBPacket_CHR_TRN_DefaultBorderTileDataPart0
+05:4000 SGBPacket_CHR_TRN_DefaultBorder_TileDataPart0
 05:4000 .data:0010
-05:4010 SGBTransferPayload_CHR_TRN_DefaultBorderTileDataPart0
-05:4010 .sgbborder:1000:4bpp,sgbstart=0x4010
+05:4010 SGBTransferPayload_CHR_TRN_DefaultBorder_TileDataPart0
+05:4010 .data:1000
 
-05:5010 SGBPacket_CHR_TRN_DefaultBorderTileDataPart1
+05:5010 SGBPacket_CHR_TRN_DefaultBorder_TileDataPart1
 05:5010 .data:0010
-05:5020 SGBTransferPayload_CHR_TRN_DefaultBorderTileDataPart1
-05:5020 .sgbborder:1000:4bpp
+05:5020 SGBTransferPayload_CHR_TRN_DefaultBorder_TileDataPart1
+05:5020 .data:1000
 
-05:6020 SGBPacket_PCT_TRN_DefaultBorderTileMap
+05:6020 SGBPacket_PCT_TRN_DefaultBorder_TileMap
 05:6020 .data:0010
-05:6030 SGBTransferPayload_PCT_TRN_DefaultBorderTileMap_Common
-05:6030 .data:0800
-
-; 0x40-byte tilemap patch regions copied into WRAM PCT_TRN payload buffer ($d5d2)
+05:6030 SGBTransferPayload_PCT_TRN_DefaultBorder_TileMap_Main
+05:6030 .data:700:40
+05:6030 .sgbborder:chr1=0x4010,chr2=0x5020,paladdr=0x6830
+05:6030 .sgbborder:chr1=0x4010,chr2=0x5020,paladdr=0x6870
+05:6030 .sgbborder:chr1=0x4010,chr2=0x5020,paladdr=0x68b0
+05:6030 .sgbborder:chr1=0x4010,chr2=0x5020,paladdr=0x68f0
+05:6030 .sgbborder:chr1=0x4010,chr2=0x5020,paladdr=0x6930
+05:6730 SGBTransferPayload_PCT_TRN_DefaultBorder_TileMap_ExtraRow
+05:6730 .data:0040:40
+05:6770 SGBTransferPayload_PCT_TRN_DefaultBorder_Unused
+05:6770 .data:00c0
+; 0x40-byte tilemap BGPaletteData regions copied into WRAM PCT_TRN payload buffer ($d5d2)
 ; by GS00 .SGBStandardBorderTransfer before sending the default border packet stream.
 ; Selection mapping from held input at title confirm:
 ; Default   -> Green
@@ -2972,16 +2981,16 @@
 ; Right     -> Red
 ; Up        -> Black
 ; Down      -> White
-05:6830 SGBTransferPayload_PCT_TRN_DefaultBorderTileMapPatch_Green
-05:6830 .data:0040
-05:6870 SGBTransferPayload_PCT_TRN_DefaultBorderTileMapPatch_Yellow
-05:6870 .data:0040
-05:68b0 SGBTransferPayload_PCT_TRN_DefaultBorderTileMapPatch_Red
-05:68b0 .data:0040
-05:68f0 SGBTransferPayload_PCT_TRN_DefaultBorderTileMapPatch_Black
-05:68f0 .data:0040
-05:6930 SGBTransferPayload_PCT_TRN_DefaultBorderTileMapPatch_White
-05:6930 .data:0040
+05:6830 SGBTransferPayload_PCT_TRN_DefaultBorder_BGPaletteData_Green
+05:6830 .data:0040:6
+05:6870 SGBTransferPayload_PCT_TRN_DefaultBorder_BGPaletteData_Yellow
+05:6870 .data:0040:6
+05:68b0 SGBTransferPayload_PCT_TRN_DefaultBorder_BGPaletteData_Red
+05:68b0 .data:0040:6
+05:68f0 SGBTransferPayload_PCT_TRN_DefaultBorder_BGPaletteData_Black
+05:68f0 .data:0040:6
+05:6930 SGBTransferPayload_PCT_TRN_DefaultBorder_BGPaletteData_White
+05:6930 .data:0040:6
 
 05:6a30 HowToPlayText_State01
 05:6a30 .text:0016:cm=messages
@@ -3377,20 +3386,29 @@
 
 ; Used by GS00 title transition when the x-ray style SGB border is selected.
 ; Sent via SendSGBTransferPacketStreamWithVRAMBufferFromBankedAddress with A=$0c.
-0c:4000 SGBPacket_CHR_TRN_XRayBorderTileDataPart0
+0c:4000 SGBPacket_CHR_TRN_XRayBorder_TileDataPart0
 0c:4000 .data:0010
-0c:4010 SGBTransferPayload_CHR_TRN_XRayBorderTileDataPart0
-0c:4010 .sgbborder:1000:4bpp,sgbstart=0x4010
+0c:4010 SGBTransferPayload_CHR_TRN_XRayBorder_TileDataPart0
+0c:4010 .data:1000
 
-0c:5010 SGBPacket_CHR_TRN_XRayBorderTileDataPart1
+0c:5010 SGBPacket_CHR_TRN_XRayBorder_TileDataPart1
 0c:5010 .data:0010
-0c:5020 SGBTransferPayload_CHR_TRN_XRayBorderTileDataPart1
-0c:5020 .sgbborder:1000:4bpp
+0c:5020 SGBTransferPayload_CHR_TRN_XRayBorder_TileDataPart1
+0c:5020 .data:1000
 
-0c:6020 SGBPacket_PCT_TRN_XRayBorderTileMap
+0c:6020 SGBPacket_PCT_TRN_XRayBorder_TileMap
 0c:6020 .data:0010
-0c:6030 SGBTransferPayload_PCT_TRN_XRayBorderTileMap
-0c:6030 .data:1000
+0c:6030 SGBTransferPayload_PCT_TRN_XRayBorder_TileMap
+0c:6030 .data:0700:40
+0c:6030 .sgbborder:chr1=0x4010,chr2=0x5020
+0c:6730 SGBTransferPayload_PCT_TRN_XRayBorder_TileMap_ExtraRow
+0c:6730 .data:0040:40
+0c:6770 SGBTransferPayload_PCT_TRN_XRayBorder_Unused
+0c:6770 .data:00c0
+0c:6830 SGBTransferPayload_PCT_TRN_XRayBorder_BGPaletteData
+0c:6830 .data:0060:6
+0c:6890 SGBTransferPayload_PCT_TRN_XRayBorder_Unused
+0c:6890 .padding:0370
 
 0c:6c00 EasyPicrossLevelSelectScreenTileMap
 0c:6c00 .data:0400:20

@@ -2,6 +2,7 @@
 *.sav
 *.1bpp
 *.2bpp
+*.pdf
 .github/
 __pycache__/
 disassembly/game.map
