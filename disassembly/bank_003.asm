@@ -1114,7 +1114,7 @@ GS00_StatePhase_02_TitleScreenTransition::
     call SendSGBTransferPacketStreamWithVRAMBufferFromBankedAddress; $50db: $cd $9e $1e
     ld a, $05                                     ; $50de: $3e $05
     ld hl, $6020                                  ; $50e0: $21 $20 $60
-    ld de, $cdc2                                  ; $50e3: $11 $c2 $cd
+    ld de, rSGBDefaultBorderPCTPacketStreamBuffer ; $50e3: $11 $c2 $cd
     ld bc, $0810                                  ; $50e6: $01 $10 $08
     call BankedTileCopy                           ; $50e9: $cd $e4 $04
     ld hl, $d612                                  ; $50ec: $21 $12 $d6
@@ -1126,7 +1126,7 @@ GS00_StatePhase_02_TitleScreenTransition::
 
     ld a, $05                                     ; $50fc: $3e $05
     ld hl, $6870                                  ; $50fe: $21 $70 $68
-    ld de, $d5d2                                  ; $5101: $11 $d2 $d5
+    ld de, rSGBDefaultBorderPCTPalettePatchBuffer ; $5101: $11 $d2 $d5
     ld bc, $0040                                  ; $5104: $01 $40 $00
     call BankedTileCopy                           ; $5107: $cd $e4 $04
     jr .SendPatchedDefaultBorderPacket            ; $510a: $18 $4a
@@ -1137,7 +1137,7 @@ GS00_StatePhase_02_TitleScreenTransition::
 
     ld a, $05                                     ; $5110: $3e $05
     ld hl, $68b0                                  ; $5112: $21 $b0 $68
-    ld de, $d5d2                                  ; $5115: $11 $d2 $d5
+    ld de, rSGBDefaultBorderPCTPalettePatchBuffer ; $5115: $11 $d2 $d5
     ld bc, $0040                                  ; $5118: $01 $40 $00
     call BankedTileCopy                           ; $511b: $cd $e4 $04
     jr .SendPatchedDefaultBorderPacket            ; $511e: $18 $36
@@ -1148,7 +1148,7 @@ GS00_StatePhase_02_TitleScreenTransition::
 
     ld a, $05                                     ; $5124: $3e $05
     ld hl, $68f0                                  ; $5126: $21 $f0 $68
-    ld de, $d5d2                                  ; $5129: $11 $d2 $d5
+    ld de, rSGBDefaultBorderPCTPalettePatchBuffer ; $5129: $11 $d2 $d5
     ld bc, $0040                                  ; $512c: $01 $40 $00
     call BankedTileCopy                           ; $512f: $cd $e4 $04
     jr .SendPatchedDefaultBorderPacket            ; $5132: $18 $22
@@ -1159,7 +1159,7 @@ GS00_StatePhase_02_TitleScreenTransition::
 
     ld a, $05                                     ; $5138: $3e $05
     ld hl, $6930                                  ; $513a: $21 $30 $69
-    ld de, $d5d2                                  ; $513d: $11 $d2 $d5
+    ld de, rSGBDefaultBorderPCTPalettePatchBuffer ; $513d: $11 $d2 $d5
     ld bc, $0040                                  ; $5140: $01 $40 $00
     call BankedTileCopy                           ; $5143: $cd $e4 $04
     jr .SendPatchedDefaultBorderPacket            ; $5146: $18 $0e
@@ -1167,13 +1167,13 @@ GS00_StatePhase_02_TitleScreenTransition::
 .ApplyGreenBorderPatch:
     ld a, $05                                     ; $5148: $3e $05
     ld hl, $6830                                  ; $514a: $21 $30 $68
-    ld de, $d5d2                                  ; $514d: $11 $d2 $d5
+    ld de, rSGBDefaultBorderPCTPalettePatchBuffer ; $514d: $11 $d2 $d5
     ld bc, $0040                                  ; $5150: $01 $40 $00
     call BankedTileCopy                           ; $5153: $cd $e4 $04
 
 .SendPatchedDefaultBorderPacket:
     ld a, $00                                     ; $5156: $3e $00
-    ld hl, $cdc2                                  ; $5158: $21 $c2 $cd
+    ld hl, rSGBDefaultBorderPCTPacketStreamBuffer ; $5158: $21 $c2 $cd
     call SendSGBTransferPacketStreamWithVRAMBufferFromBankedAddress; $515b: $cd $9e $1e
 
 GS00_SP02_ContinueAfterBorderTransfer::

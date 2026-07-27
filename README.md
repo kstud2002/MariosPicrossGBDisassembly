@@ -59,6 +59,68 @@ mgbdis --print-hex --character-map-path "charmap.asm" --exclude-default-symbols 
 - symbol exclusion support: `--exclude-default-symbols` parameter filters out default interrupt vectors or other symbols
 - hardware register labels: automatic replacement of 16-bit addressing modes (`d16`, `a16`, `[a16]`) with hardware.inc register names when applicable)
 
+## SGB border extraction
+
+`sgbborder_extract.py` generates PNG previews of Super Game Boy border graphics from ROM data referenced by `.sgbborder` tags.
+
+### Separate symbol file workflow
+
+`mgbdis.py` does not understand `.sgbborder` block tags, so those entries are kept in a dedicated symbol file: `sgbborder.sym`.
+
+Run extraction with:
+
+```sh
+python3 sgbborder_extract.py --overwrite --sym "sgbborder.sym" "Mario's Picross (USA, Europe) (SGB Enhanced).gb"
+```
+
+Default output folder:
+
+- `disassembly/sgb`
+
+If `--sym` is omitted, the script uses `sgbborder.sym`.
+
+### `.sgbborder` tag format
+
+Current expected format:
+
+```txt
+BB:AAAA .sgbborder:chr1=...[,chr2=...][,optional_key=value,...]
+```
+
+Required key:
+
+- `chr1`: start address of first CHR chunk (default length `0x1000` unless overridden)
+
+Optional CHR key:
+
+- `chr2`: start address of second CHR chunk (default length `0x1000` unless overridden). If omitted, only `chr1` tile data is used.
+
+Optional keys:
+
+- `chr1bank`, `chr2bank`: bank override for CHR chunks (default is the block bank)
+- `chr1len`, `chr2len`: CHR chunk sizes (defaults to `0x1000`)
+- `pctbank`: bank containing PCT/map/palette payload (default is the block bank)
+- `pctaddr`: address of PCT payload (default is the block address)
+- `pctlen`: byte length of PCT payload (default `0x1000`)
+- `paladdr`: alternate palette source address copied into the PCT palette area
+- `palname`: optional filename suffix that replaces the default `pal_XXXX` variant suffix
+- `mapw`, `maph`: tilemap width/height in tiles (defaults `32` and `28`)
+- `mapoff`: tilemap offset within PCT payload (default `0x0`)
+- `paloff`: palette table offset within PCT payload (default `0x800`)
+- `palcount`: number of palettes to decode (default `3`)
+- `palbase`: palette index base for decoded palette slots (default `4`)
+- `tilepal`: fallback palette index for tile-sheet rendering (default `palbase`)
+- `wNNN`: tile-sheet preview width token in pixels (for example `w128`)
+
+Example tags:
+
+```txt
+04:6030 .sgbborder:chr1=0x4010,chr2=0x5020
+05:6030 .sgbborder:chr1=0x4010
+05:6030 .sgbborder:chr1=0x4010,chr2=0x5020,paladdr=0x6870
+05:6030 .sgbborder:chr1=0x4010,chr2=0x5020,paladdr=0x6870,palname=green
+```
+
 ## Verifying the disassembly round-trips
 
 The `disassembly/Makefile` reassembles the output with [rgbds](https://rgbds.gbdev.io/) and confirms the resulting ROM matches the original via md5:

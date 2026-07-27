@@ -79,6 +79,8 @@
 00:cda7 rGS06_OAMSequenceEventTableLow
 00:cda8 rGS06_OAMSequenceEventTableHigh
 00:cda9 rGS06_OAMSequenceEventTableBank
+00:cdc2 rSGBDefaultBorderPCTPacketStreamBuffer
+00:d5d2 rSGBDefaultBorderPCTPalettePatchBuffer
 00:d634 rGameState_Current
 00:d635 rStatePhase_Current
 00:d636 rPuzzleCursorColumn
@@ -2934,7 +2936,6 @@
 04:6020 .data:0010
 04:6030 SGBTransferPayload_PCT_TRN_TitleScreenBorder_TileMap_Main
 04:6030 .data:700:40
-04:6030 .sgbborder:chr1=0x4010,chr2=0x5020
 04:6730 SGBTransferPayload_PCT_TRN_TitleScreenBorder_TileMap_ExtraRow
 04:6730 .data:0040:40
 04:6770 SGBTransferPayload_PCT_TRN_TitleScreenBorder_Unused
@@ -2964,11 +2965,6 @@
 05:6020 .data:0010
 05:6030 SGBTransferPayload_PCT_TRN_DefaultBorder_TileMap_Main
 05:6030 .data:700:40
-05:6030 .sgbborder:chr1=0x4010,chr2=0x5020,paladdr=0x6830
-05:6030 .sgbborder:chr1=0x4010,chr2=0x5020,paladdr=0x6870
-05:6030 .sgbborder:chr1=0x4010,chr2=0x5020,paladdr=0x68b0
-05:6030 .sgbborder:chr1=0x4010,chr2=0x5020,paladdr=0x68f0
-05:6030 .sgbborder:chr1=0x4010,chr2=0x5020,paladdr=0x6930
 05:6730 SGBTransferPayload_PCT_TRN_DefaultBorder_TileMap_ExtraRow
 05:6730 .data:0040:40
 05:6770 SGBTransferPayload_PCT_TRN_DefaultBorder_Unused
@@ -3400,7 +3396,6 @@
 0c:6020 .data:0010
 0c:6030 SGBTransferPayload_PCT_TRN_XRayBorder_TileMap
 0c:6030 .data:0700:40
-0c:6030 .sgbborder:chr1=0x4010,chr2=0x5020
 0c:6730 SGBTransferPayload_PCT_TRN_XRayBorder_TileMap_ExtraRow
 0c:6730 .data:0040:40
 0c:6770 SGBTransferPayload_PCT_TRN_XRayBorder_Unused

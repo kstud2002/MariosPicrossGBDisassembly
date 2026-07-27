@@ -1,0 +1,10 @@
+04:6030 SGBTitleScreenBorder
+04:6030 .sgbborder:chr1=0x4010,chr2=0x5020
+05:6030 SGBDefaultBorder
+05:6030 .sgbborder:chr1=0x4010,chr2=0x5020,paladdr=0x6830,palname=green
+05:6030 .sgbborder:chr1=0x4010,chr2=0x5020,paladdr=0x6870,palname=yellow
+05:6030 .sgbborder:chr1=0x4010,chr2=0x5020,paladdr=0x68b0,palname=red
+05:6030 .sgbborder:chr1=0x4010,chr2=0x5020,paladdr=0x68f0,palname=black
+05:6030 .sgbborder:chr1=0x4010,chr2=0x5020,paladdr=0x6930,palname=white
+0c:6030 SGBXRayBorder
+0c:6030 .sgbborder:chr1=0x4010,chr2=0x5020

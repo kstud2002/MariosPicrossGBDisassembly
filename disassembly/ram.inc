@@ -77,6 +77,8 @@ DEF rGS06_OAMSequenceEventCursor EQU $cda6
 DEF rGS06_OAMSequenceEventTableLow EQU $cda7
 DEF rGS06_OAMSequenceEventTableHigh EQU $cda8
 DEF rGS06_OAMSequenceEventTableBank EQU $cda9
+DEF rSGBDefaultBorderPCTPacketStreamBuffer EQU $cdc2
+DEF rSGBDefaultBorderPCTPalettePatchBuffer EQU $d5d2
 DEF rGameState_Current EQU $d634
 DEF rStatePhase_Current EQU $d635
 DEF rPuzzleCursorColumn EQU $d636

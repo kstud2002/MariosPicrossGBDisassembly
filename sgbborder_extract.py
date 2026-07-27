@@ -303,12 +303,6 @@ def write_rgb_png(path, width, height, rows):
         writer.write(png_file, rows)
 
 
-def infer_layout_start(address):
-    if (address & 0xFF) == 0x20 and address >= 0x5010:
-        return address - 0x1010
-    return address
-
-
 def resolve_chr_spec(argument_map, block, key, fallback_address=None):
     if key in argument_map:
         address = parse_int(argument_map[key])
@@ -335,11 +329,11 @@ def build_border_tile_data(rom_data, block):
     chr2_spec = resolve_chr_spec(argument_map, block, "chr2")
 
     if chr1_spec is None:
-        layout_start = infer_layout_start(block["address"])
-        if "sgbstart" in argument_map:
-            layout_start = parse_int(argument_map["sgbstart"])
-        chr1_spec = resolve_chr_spec(argument_map, block, "chr1", fallback_address=layout_start)
-        chr2_spec = resolve_chr_spec(argument_map, block, "chr2", fallback_address=layout_start + 0x1010)
+        raise ValueError(
+            "Missing required .sgbborder argument chr1 at {:02x}:{:04x}".format(
+                block["bank"], block["address"]
+            )
+        )
 
     tile_data = b""
     for spec in [chr1_spec, chr2_spec]:
@@ -545,6 +539,14 @@ def make_color_preview(rom_data, output_dir, basename, block, tile_data, overwri
 
 def get_color_variant_basename(base, block_arguments):
     argument_map = parse_argument_map(block_arguments)
+    if "palname" in argument_map:
+        # Keep output filenames safe and predictable.
+        raw_name = argument_map["palname"].strip()
+        safe_name = "".join(ch if (ch.isalnum() or ch in "-_") else "_" for ch in raw_name)
+        safe_name = safe_name.strip("_")
+        if safe_name:
+            return "{}_{}".format(base, safe_name)
+
     if "paladdr" in argument_map:
         pal_address = parse_int(argument_map["paladdr"])
         return "{}_pal_{:04x}".format(base, pal_address)
@@ -613,7 +615,7 @@ def parse_args():
         "--sym",
         dest="sym_path",
         default=None,
-        help="Path to symbol file (default: <rom basename>.sym)",
+        help='Path to symbol file (default: "sgbborder.sym")',
     )
     parser.add_argument(
         "--output-dir",
@@ -636,7 +638,7 @@ def parse_args():
 def main():
     args = parse_args()
 
-    sym_path = args.sym_path if args.sym_path is not None else (os.path.splitext(args.rom_path)[0] + ".sym")
+    sym_path = args.sym_path if args.sym_path is not None else "sgbborder.sym"
 
     if not os.path.isfile(args.rom_path):
         abort('ROM file not found: "{}"'.format(args.rom_path))
