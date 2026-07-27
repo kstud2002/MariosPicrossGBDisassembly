@@ -971,7 +971,7 @@ GS00_StatePhase_00_TitleScreenInit::
     call EnsureSGBMaskFreezeEnabled               ; $4faa: $cd $87 $1f
     ld a, [rIsSuperGameBoyMode]                   ; $4fad: $fa $3d $c3
     and a                                         ; $4fb0: $a7
-    jr z, jr_003_4fd1                             ; $4fb1: $28 $1e
+    jr z, .ContinueAfterOptionalSGBTransfers      ; $4fb1: $28 $1e
 
     ld a, $04                                     ; $4fb3: $3e $04
     ld hl, SGBPacket_MLT_REQ_DisableMultiplayer   ; $4fb5: $21 $00 $40
@@ -985,7 +985,7 @@ GS00_StatePhase_00_TitleScreenInit::
     ld bc, $003c                                  ; $4fcb: $01 $3c $00
     call BusyWaitDelayByBC                        ; $4fce: $cd $03 $06
 
-jr_003_4fd1:
+.ContinueAfterOptionalSGBTransfers:
     call FillBGMap0WithTile01                     ; $4fd1: $cd $a0 $05
     call FillBGMap1WithTile01                     ; $4fd4: $cd $ab $05
     ld a, $08                                     ; $4fd7: $3e $08
@@ -1010,10 +1010,10 @@ jr_003_4fd1:
     ld [rMarioBlinkAnimationSequenceCursor], a    ; $500b: $ea $18 $d8
     ld [rMarioBlinkAnimationDelay], a             ; $500e: $ea $17 $d8
     ld [rCellEffectFrameSourceBaseIndex], a       ; $5011: $ea $10 $d8
-    ld [$d847], a                                 ; $5014: $ea $47 $d8
-    ld [$d848], a                                 ; $5017: $ea $48 $d8
+    ld [rGS00_TitleSGBXRayBorderFlag], a          ; $5014: $ea $47 $d8
+    ld [rGS00_TitleDPadXorHistory], a             ; $5017: $ea $48 $d8
     call ClearShadowOAMBuffer                     ; $501a: $cd $b6 $05
-    call Call_003_5425                            ; $501d: $cd $25 $54
+    call GS00_TickMarioBlinkAnimation             ; $501d: $cd $25 $54
     ld c, $00                                     ; $5020: $0e $00
     ld a, $01                                     ; $5022: $3e $01
     call CallSoundEffectDispatcher                ; $5024: $cd $b6 $03
@@ -1034,31 +1034,31 @@ jr_003_4fd1:
 
 
 GS00_StatePhase_01_TitleScreenIdle::
-    call Call_003_5425                            ; $5049: $cd $25 $54
+    call GS00_TickMarioBlinkAnimation             ; $5049: $cd $25 $54
     ld a, [rInputButtonsPressed]                  ; $504c: $fa $1e $c3
-    ld hl, $d848                                  ; $504f: $21 $48 $d8
+    ld hl, rGS00_TitleDPadXorHistory              ; $504f: $21 $48 $d8
     xor [hl]                                      ; $5052: $ae
     ld [hl], a                                    ; $5053: $77
     and $f0                                       ; $5054: $e6 $f0
     cp $f0                                        ; $5056: $fe $f0
-    jr nz, jr_003_506e                            ; $5058: $20 $14
+    jr nz, .ClearSGBBorderAlternateFlag           ; $5058: $20 $14
 
-    ld a, [$d847]                                 ; $505a: $fa $47 $d8
+    ld a, [rGS00_TitleSGBXRayBorderFlag]          ; $505a: $fa $47 $d8
     and a                                         ; $505d: $a7
-    jr nz, jr_003_5072                            ; $505e: $20 $12
+    jr nz, .CheckAdvanceInputAOrStart             ; $505e: $20 $12
 
     ld c, $03                                     ; $5060: $0e $03
     ld a, $02                                     ; $5062: $3e $02
     call CallSoundEffectDispatcher                ; $5064: $cd $b6 $03
     ld a, $01                                     ; $5067: $3e $01
-    ld [$d847], a                                 ; $5069: $ea $47 $d8
-    jr jr_003_5072                                ; $506c: $18 $04
+    ld [rGS00_TitleSGBXRayBorderFlag], a          ; $5069: $ea $47 $d8
+    jr .CheckAdvanceInputAOrStart                 ; $506c: $18 $04
 
-jr_003_506e:
+.ClearSGBBorderAlternateFlag:
     xor a                                         ; $506e: $af
-    ld [$d847], a                                 ; $506f: $ea $47 $d8
+    ld [rGS00_TitleSGBXRayBorderFlag], a          ; $506f: $ea $47 $d8
 
-jr_003_5072:
+.CheckAdvanceInputAOrStart:
     ld a, [rInputButtonsPressed]                  ; $5072: $fa $1e $c3
     and $09                                       ; $5075: $e6 $09
     ret z                                         ; $5077: $c8
@@ -1086,12 +1086,12 @@ GS00_StatePhase_02_TitleScreenTransition::
     call EnsureSGBMaskFreezeEnabled               ; $50a0: $cd $87 $1f
     ld a, [rIsSuperGameBoyMode]                   ; $50a3: $fa $3d $c3
     and a                                         ; $50a6: $a7
-    jp z, Jump_003_51a9                           ; $50a7: $ca $a9 $51
+    jp z, GS00_SP02_NonSGBFadeOut                 ; $50a7: $ca $a9 $51
 
     call DisableLCDAtVBlank                       ; $50aa: $cd $83 $04
-    ld a, [$d847]                                 ; $50ad: $fa $47 $d8
+    ld a, [rGS00_TitleSGBXRayBorderFlag]          ; $50ad: $fa $47 $d8
     and a                                         ; $50b0: $a7
-    jr z, jr_003_50ce                             ; $50b1: $28 $1b
+    jr z, .SGBStandardBorderTransfer              ; $50b1: $28 $1b
 
     ld a, $0c                                     ; $50b3: $3e $0c
     ld hl, SGBPacket_MLT_REQ_DisableMultiplayer   ; $50b5: $21 $00 $40
@@ -1102,10 +1102,10 @@ GS00_StatePhase_02_TitleScreenTransition::
     ld a, $0c                                     ; $50c3: $3e $0c
     ld hl, $6020                                  ; $50c5: $21 $20 $60
     call SendSGBTransferPacketStreamWithVRAMBufferFromBankedAddress; $50c8: $cd $9e $1e
-    jp Jump_003_515e                              ; $50cb: $c3 $5e $51
+    jp GS00_SP02_ContinueAfterBorderTransfer      ; $50cb: $c3 $5e $51
 
 
-jr_003_50ce:
+.SGBStandardBorderTransfer:
     ld a, $05                                     ; $50ce: $3e $05
     ld hl, SGBPacket_MLT_REQ_DisableMultiplayer   ; $50d0: $21 $00 $40
     call SendSGBTransferPacketStreamWithVRAMBufferFromBankedAddress; $50d3: $cd $9e $1e
@@ -1122,61 +1122,61 @@ jr_003_50ce:
     call ZeroMemoryBlock                          ; $50f2: $cd $d3 $04
     ld a, [rInputButtonsHeld]                     ; $50f5: $fa $1a $c3
     bit 5, a                                      ; $50f8: $cb $6f
-    jr z, jr_003_510c                             ; $50fa: $28 $10
+    jr z, .CheckRedBorderPatchInput               ; $50fa: $28 $10
 
     ld a, $05                                     ; $50fc: $3e $05
     ld hl, $6870                                  ; $50fe: $21 $70 $68
     ld de, $d5d2                                  ; $5101: $11 $d2 $d5
     ld bc, $0040                                  ; $5104: $01 $40 $00
     call BankedTileCopy                           ; $5107: $cd $e4 $04
-    jr jr_003_5156                                ; $510a: $18 $4a
+    jr .SendPatchedDefaultBorderPacket            ; $510a: $18 $4a
 
-jr_003_510c:
+.CheckRedBorderPatchInput:
     bit 4, a                                      ; $510c: $cb $67
-    jr z, jr_003_5120                             ; $510e: $28 $10
+    jr z, .CheckBlackBorderPatchInput             ; $510e: $28 $10
 
     ld a, $05                                     ; $5110: $3e $05
     ld hl, $68b0                                  ; $5112: $21 $b0 $68
     ld de, $d5d2                                  ; $5115: $11 $d2 $d5
     ld bc, $0040                                  ; $5118: $01 $40 $00
     call BankedTileCopy                           ; $511b: $cd $e4 $04
-    jr jr_003_5156                                ; $511e: $18 $36
+    jr .SendPatchedDefaultBorderPacket            ; $511e: $18 $36
 
-jr_003_5120:
+.CheckBlackBorderPatchInput:
     bit 6, a                                      ; $5120: $cb $77
-    jr z, jr_003_5134                             ; $5122: $28 $10
+    jr z, .CheckWhiteBorderPatchInput             ; $5122: $28 $10
 
     ld a, $05                                     ; $5124: $3e $05
     ld hl, $68f0                                  ; $5126: $21 $f0 $68
     ld de, $d5d2                                  ; $5129: $11 $d2 $d5
     ld bc, $0040                                  ; $512c: $01 $40 $00
     call BankedTileCopy                           ; $512f: $cd $e4 $04
-    jr jr_003_5156                                ; $5132: $18 $22
+    jr .SendPatchedDefaultBorderPacket            ; $5132: $18 $22
 
-jr_003_5134:
+.CheckWhiteBorderPatchInput:
     bit 7, a                                      ; $5134: $cb $7f
-    jr z, jr_003_5148                             ; $5136: $28 $10
+    jr z, .ApplyGreenBorderPatch                  ; $5136: $28 $10
 
     ld a, $05                                     ; $5138: $3e $05
     ld hl, $6930                                  ; $513a: $21 $30 $69
     ld de, $d5d2                                  ; $513d: $11 $d2 $d5
     ld bc, $0040                                  ; $5140: $01 $40 $00
     call BankedTileCopy                           ; $5143: $cd $e4 $04
-    jr jr_003_5156                                ; $5146: $18 $0e
+    jr .SendPatchedDefaultBorderPacket            ; $5146: $18 $0e
 
-jr_003_5148:
+.ApplyGreenBorderPatch:
     ld a, $05                                     ; $5148: $3e $05
     ld hl, $6830                                  ; $514a: $21 $30 $68
     ld de, $d5d2                                  ; $514d: $11 $d2 $d5
     ld bc, $0040                                  ; $5150: $01 $40 $00
     call BankedTileCopy                           ; $5153: $cd $e4 $04
 
-jr_003_5156:
+.SendPatchedDefaultBorderPacket:
     ld a, $00                                     ; $5156: $3e $00
     ld hl, $cdc2                                  ; $5158: $21 $c2 $cd
     call SendSGBTransferPacketStreamWithVRAMBufferFromBankedAddress; $515b: $cd $9e $1e
 
-Jump_003_515e:
+GS00_SP02_ContinueAfterBorderTransfer::
     ld a, $08                                     ; $515e: $3e $08
     ld hl, $6800                                  ; $5160: $21 $00 $68
     ld de, $8800                                  ; $5163: $11 $00 $88
@@ -1205,7 +1205,7 @@ Jump_003_515e:
     call BusyWaitDelayByBC                        ; $51a4: $cd $03 $06
     jr jr_003_51b6                                ; $51a7: $18 $0d
 
-Jump_003_51a9:
+GS00_SP02_NonSGBFadeOut::
     ld b, $03                                     ; $51a9: $06 $03
     ld hl, $4723                                  ; $51ab: $21 $23 $47
     ld c, $10                                     ; $51ae: $0e $10
@@ -1519,26 +1519,26 @@ jr_003_541f:
     ret                                           ; $5424: $c9
 
 
-Call_003_5425:
+GS00_TickMarioBlinkAnimation::
     ld a, [rMarioBlinkAnimationDelay]             ; $5425: $fa $17 $d8
     and a                                         ; $5428: $a7
-    jr nz, jr_003_544b                            ; $5429: $20 $20
+    jr nz, .TickBlinkFrameDelay                   ; $5429: $20 $20
 
     ld a, [rMarioBlinkAnimationSequenceCursor]    ; $542b: $fa $18 $d8
     ld c, a                                       ; $542e: $4f
     ld b, $00                                     ; $542f: $06 $00
 
-jr_003_5431:
-    ld hl, $545d                                  ; $5431: $21 $5d $54
+.FindNextBlinkFrameEntry:
+    ld hl, GS00_MarioBlinkFrameDelayAndSpriteIdTable; $5431: $21 $5d $54
     add hl, bc                                    ; $5434: $09
     ld a, [hl+]                                   ; $5435: $2a
     and a                                         ; $5436: $a7
-    jr nz, jr_003_543e                            ; $5437: $20 $05
+    jr nz, .LoadBlinkFrameEntry                   ; $5437: $20 $05
 
     ld bc, $0000                                  ; $5439: $01 $00 $00
-    jr jr_003_5431                                ; $543c: $18 $f3
+    jr .FindNextBlinkFrameEntry                   ; $543c: $18 $f3
 
-jr_003_543e:
+.LoadBlinkFrameEntry:
     ld [rMarioBlinkAnimationDelay], a             ; $543e: $ea $17 $d8
     ld a, [hl]                                    ; $5441: $7e
     ld [rMarioBlinkAnimationSpriteId], a          ; $5442: $ea $16 $d8
@@ -1547,7 +1547,7 @@ jr_003_543e:
     ld a, c                                       ; $5447: $79
     ld [rMarioBlinkAnimationSequenceCursor], a    ; $5448: $ea $18 $d8
 
-jr_003_544b:
+.TickBlinkFrameDelay:
     ld hl, rMarioBlinkAnimationDelay              ; $544b: $21 $17 $d8
     dec [hl]                                      ; $544e: $35
     ld a, [rMarioBlinkAnimationSpriteId]          ; $544f: $fa $16 $d8
@@ -1559,32 +1559,28 @@ jr_003_544b:
     jp CopyOAMSpriteById                          ; $545a: $c3 $ce $20
 
 
-    rst $38                                       ; $545d: $ff
-    nop                                           ; $545e: $00
-    rst $38                                       ; $545f: $ff
-    nop                                           ; $5460: $00
-    rst $38                                       ; $5461: $ff
-    nop                                           ; $5462: $00
-    inc bc                                        ; $5463: $03
-    ld bc, $0210                                  ; $5464: $01 $10 $02
-    inc bc                                        ; $5467: $03
-    ld bc, $0090                                  ; $5468: $01 $90 $00
-    sub b                                         ; $546b: $90
-    nop                                           ; $546c: $00
-    sub b                                         ; $546d: $90
-    nop                                           ; $546e: $00
-    inc bc                                        ; $546f: $03
-    ld bc, $0210                                  ; $5470: $01 $10 $02
-    inc bc                                        ; $5473: $03
-    ld bc, $0070                                  ; $5474: $01 $70 $00
-    ld [hl], b                                    ; $5477: $70
-    nop                                           ; $5478: $00
-    ld [hl], b                                    ; $5479: $70
-    nop                                           ; $547a: $00
-    inc bc                                        ; $547b: $03
-    ld bc, $0210                                  ; $547c: $01 $10 $02
-    inc bc                                        ; $547f: $03
-    ld bc, $4f00                                  ; $5480: $01 $00 $4f
+GS00_MarioBlinkFrameDelayAndSpriteIdTable::
+    db $ff, $00
+    db $ff, $00
+    db $ff, $00
+    db $03, $01
+    db $10, $02
+    db $03, $01
+    db $90, $00
+    db $90, $00
+    db $90, $00
+    db $03, $01
+    db $10, $02
+    db $03, $01
+    db $70, $00
+    db $70, $00
+    db $70, $00
+    db $03, $01
+    db $10, $02
+    db $03, $01
+    db $00
+
+    ld c, a                                       ; $5482: $4f
     ld b, $00                                     ; $5483: $06 $00
     ld hl, $5492                                  ; $5485: $21 $92 $54
     add hl, bc                                    ; $5488: $09
@@ -9421,7 +9417,7 @@ OAMSpriteData_Event82::
     db $10, $08, $1e, $00
     db $ff
 
-OAMSpriteData_Event83::
+OAMSpriteData_Event83_TitleScreenMarioBlinking_Frame1::
     db $f8, $f0, $04, $80
     db $f8, $f8, $05, $80
     db $f8, $00, $06, $80
@@ -9456,7 +9452,7 @@ OAMSpriteData_Event83::
     db $18, $00, $1f, $80
     db $ff
 
-OAMSpriteData_Event84::
+OAMSpriteData_Event84_TitleScreenMarioBlinking_Frame2::
     db $f0, $f8, $20, $80
     db $f0, $00, $21, $80
     db $f0, $08, $22, $80
@@ -9491,7 +9487,7 @@ OAMSpriteData_Event84::
     db $18, $00, $3f, $80
     db $ff
 
-OAMSpriteData_Event85::
+OAMSpriteData_Event85_TitleScreenMarioBlinking_Frame3::
     db $f0, $f8, $40, $80
     db $f0, $00, $41, $80
     db $f0, $08, $42, $80

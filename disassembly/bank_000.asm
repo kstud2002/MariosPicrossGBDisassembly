@@ -3012,8 +3012,6 @@ jr_000_0fea:
     ret nc                                        ; $0fee: $d0
 
     sub e                                         ; $0fef: $93
-
-Jump_000_0ff0:
     ldh [$ff93], a                                ; $0ff0: $e0 $93
     ldh a, [$ff93]                                ; $0ff2: $f0 $93
     ld [hl], b                                    ; $0ff4: $70

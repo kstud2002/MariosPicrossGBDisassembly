@@ -136,6 +136,8 @@ DEF rMessageScriptStreamResetEntryLow EQU $d843
 DEF rMessageScriptStreamResetEntryHigh EQU $d844
 DEF rMessageScriptStreamLimitLow EQU $d845
 DEF rMessageScriptStreamLimitHigh EQU $d846
+DEF rGS00_TitleSGBXRayBorderFlag EQU $d847
+DEF rGS00_TitleDPadXorHistory EQU $d848
 DEF rSubtractiveRNGSeedSourceByte EQU $dfff
 DEF rLevelSelectColumn EQU $f636
 DEF rLevelSelectRow EQU $f637

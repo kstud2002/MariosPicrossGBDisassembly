@@ -138,6 +138,8 @@
 00:d844 rMessageScriptStreamResetEntryHigh
 00:d845 rMessageScriptStreamLimitLow
 00:d846 rMessageScriptStreamLimitHigh
+00:d847 rGS00_TitleSGBXRayBorderFlag
+00:d848 rGS00_TitleDPadXorHistory
 00:dfff rSubtractiveRNGSeedSourceByte
 00:f636 rLevelSelectColumn
 00:f637 rLevelSelectRow
@@ -1830,14 +1832,32 @@
 03:4f93 .data:2
 
 03:4f95 GS00_StatePhase_00_TitleScreenInit
+03:4fd1 .ContinueAfterOptionalSGBTransfers
 03:5049 GS00_StatePhase_01_TitleScreenIdle
+03:506e .ClearSGBBorderAlternateFlag
+03:5072 .CheckAdvanceInputAOrStart
 03:5084 GS00_StatePhase_02_TitleScreenTransition
+03:50ce .SGBStandardBorderTransfer
+03:510c .CheckRedBorderPatchInput
+03:5120 .CheckBlackBorderPatchInput
+03:5134 .CheckWhiteBorderPatchInput
+03:5148 .ApplyGreenBorderPatch
+03:5156 .SendPatchedDefaultBorderPacket
+03:515e GS00_SP02_ContinueAfterBorderTransfer
+03:51a9 GS00_SP02_NonSGBFadeOut
 03:51f3 GS00_StatePhase_03_ContinueSavedGameScreenInit
 03:5366 GS00_SP03_ContinueSavedGameScreen_StatePhaseLookupTable
 03:5366 .data:3
 03:5369 GS00_SP03_ContinueSavedGameScreen_GameStateLookupTable
 03:5369 .data:3
 03:536c GS00_StatePhase_04_ContinueSavedGameScreenIdle
+
+03:5425 GS00_TickMarioBlinkAnimation
+03:5431 .FindNextBlinkFrameEntry
+03:543e .LoadBlinkFrameEntry
+03:544b .TickBlinkFrameDelay
+03:545d GS00_MarioBlinkFrameDelayAndSpriteIdTable
+03:545d .data:0025:2
 
 03:552e PuzzleDataBank2PointerTable_Puzzle000
 03:552e .data:0002
@@ -2885,35 +2905,83 @@
 03:7b14 .data:0005:4
 03:7b19 OAMSpriteData_Event82
 03:7b19 .data:0005:4
-03:7b1e OAMSpriteData_Event83
+03:7b1e OAMSpriteData_Event83_TitleScreenMarioBlinking_Frame1
 03:7b1e .data:0081:4
-03:7b9f OAMSpriteData_Event84
+03:7b9f OAMSpriteData_Event84_TitleScreenMarioBlinking_Frame2
 03:7b9f .data:0081:4
-03:7c20 OAMSpriteData_Event85
+03:7c20 OAMSpriteData_Event85_TitleScreenMarioBlinking_Frame3
 03:7c20 .data:0081:4
 
 03:7ca1 .padding:35f
 
 ; =============================================================================
+; BANK 004
+; =============================================================================
+
+; Used by GS00 title screen SGB transfer path via
+; SendSGBTransferPacketStreamWithVRAMBufferFromBankedAddress with A=$04.
+04:4000 SGBPacket_CHR_TRN_TitleScreenBorderTileDataPart0
+04:4000 .data:0010
+04:4010 SGBTransferPayload_CHR_TRN_TitleScreenBorder_TileDataPart0
+04:4010 .sgbborder:1000:4bpp,sgbstart=0x4010
+
+04:5010 SGBPacket_CHR_TRN_TitleScreenBorderTileDataPart1
+04:5010 .data:0010
+04:5020 SGBTransferPayload_CHR_TRN_TitleScreenBorder_TileDataPart1
+04:5020 .sgbborder:1000:4bpp
+
+04:6020 SGBPacket_PCT_TRN_TitleScreenBorderTileMap
+04:6020 .data:0010
+04:6030 SGBTransferPayload_PCT_TRN_TitleScreenBorder_TileMap_Main
+04:6030 .data:0700:40
+04:6730 SGBTransferPayload_PCT_TRN_TitleScreenBorder_TileMap_ExtraRow
+04:6730 .data:0040:40
+04:6770 SGBTransferPayload_PCT_TRN_TitleScreenBorder_Unused
+04:6770 .data:00c0
+04:6830 SGBTransferPayload_PCT_TRN_TitleScreenBorder_BGPaletteData
+04:6830 .data:0060:6
+04:6890 SGBTransferPayload_PCT_TRN_TitleScreenBorder_Unused
+04:6890 .data:07a0
+
+; =============================================================================
 ; BANK 005
 ; =============================================================================
 
-05:6730 .data:0100
+; Used by GS00 .SGBStandardBorderTransfer via
+; SendSGBTransferPacketStreamWithVRAMBufferFromBankedAddress with A=$05.
+05:4000 SGBPacket_CHR_TRN_DefaultBorderTileDataPart0
+05:4000 .data:0010
+05:4010 SGBTransferPayload_CHR_TRN_DefaultBorderTileDataPart0
+05:4010 .sgbborder:1000:4bpp,sgbstart=0x4010
 
-05:6830 .data:002a
-05:685a .data:0058
-05:68b2 .data:0020
-05:68d2 .data:0020
-05:68f2 .data:0020
-05:6912 .data:0020
-05:6932 .data:0020
-05:6952 .data:0020
-05:6972 .data:0020
-05:6992 .data:0020
-05:69b2 .data:0020
-05:69d2 .data:0020
-05:69f2 .data:0020
-05:6a12 .data:001e
+05:5010 SGBPacket_CHR_TRN_DefaultBorderTileDataPart1
+05:5010 .data:0010
+05:5020 SGBTransferPayload_CHR_TRN_DefaultBorderTileDataPart1
+05:5020 .sgbborder:1000:4bpp
+
+05:6020 SGBPacket_PCT_TRN_DefaultBorderTileMap
+05:6020 .data:0010
+05:6030 SGBTransferPayload_PCT_TRN_DefaultBorderTileMap_Common
+05:6030 .data:0800
+
+; 0x40-byte tilemap patch regions copied into WRAM PCT_TRN payload buffer ($d5d2)
+; by GS00 .SGBStandardBorderTransfer before sending the default border packet stream.
+; Selection mapping from held input at title confirm:
+; Default   -> Green
+; Left      -> Yellow
+; Right     -> Red
+; Up        -> Black
+; Down      -> White
+05:6830 SGBTransferPayload_PCT_TRN_DefaultBorderTileMapPatch_Green
+05:6830 .data:0040
+05:6870 SGBTransferPayload_PCT_TRN_DefaultBorderTileMapPatch_Yellow
+05:6870 .data:0040
+05:68b0 SGBTransferPayload_PCT_TRN_DefaultBorderTileMapPatch_Red
+05:68b0 .data:0040
+05:68f0 SGBTransferPayload_PCT_TRN_DefaultBorderTileMapPatch_Black
+05:68f0 .data:0040
+05:6930 SGBTransferPayload_PCT_TRN_DefaultBorderTileMapPatch_White
+05:6930 .data:0040
 
 05:6a30 HowToPlayText_State01
 05:6a30 .text:0016:cm=messages
@@ -3306,6 +3374,23 @@
 ; =============================================================================
 ; BANK 00C
 ; =============================================================================
+
+; Used by GS00 title transition when the x-ray style SGB border is selected.
+; Sent via SendSGBTransferPacketStreamWithVRAMBufferFromBankedAddress with A=$0c.
+0c:4000 SGBPacket_CHR_TRN_XRayBorderTileDataPart0
+0c:4000 .data:0010
+0c:4010 SGBTransferPayload_CHR_TRN_XRayBorderTileDataPart0
+0c:4010 .sgbborder:1000:4bpp,sgbstart=0x4010
+
+0c:5010 SGBPacket_CHR_TRN_XRayBorderTileDataPart1
+0c:5010 .data:0010
+0c:5020 SGBTransferPayload_CHR_TRN_XRayBorderTileDataPart1
+0c:5020 .sgbborder:1000:4bpp
+
+0c:6020 SGBPacket_PCT_TRN_XRayBorderTileMap
+0c:6020 .data:0010
+0c:6030 SGBTransferPayload_PCT_TRN_XRayBorderTileMap
+0c:6030 .data:1000
 
 0c:6c00 EasyPicrossLevelSelectScreenTileMap
 0c:6c00 .data:0400:20
