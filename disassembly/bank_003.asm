@@ -11,20 +11,8 @@ SGBPacket_MLT_REQ_DisableMultiplayer::
 SGBPacket_MLT_REQ_EnableTwoPlayers::
     db $89, $01, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
 
-    ld d, c                                       ; $4020: $51
-    nop                                           ; $4021: $00
-    nop                                           ; $4022: $00
-    ld bc, $0200                                  ; $4023: $01 $00 $02
-    nop                                           ; $4026: $00
-    inc bc                                        ; $4027: $03
-    nop                                           ; $4028: $00
-    nop                                           ; $4029: $00
-    nop                                           ; $402a: $00
-    nop                                           ; $402b: $00
-    nop                                           ; $402c: $00
-    nop                                           ; $402d: $00
-    nop                                           ; $402e: $00
-    nop                                           ; $402f: $00
+SGBPacket_PAL_SET_ScreenTransition::
+    db $51, $00, $00, $01, $00, $02, $00, $03, $00, $00, $00, $00, $00, $00, $00, $00
 
 SGBPacket_ATTR_TRN_StartupTransfer::
     db $a9, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
@@ -744,6 +732,7 @@ SGBPacket_MASK_EN_FreezeScreen::
 SGBPacket_MASK_EN_CancelMask::
     db $b9, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
 
+InitBottomPromptBlinkTimerAndFrameState::
     xor a                                         ; $4e80: $af
     ld [rStatePhaseTimer], a                      ; $4e81: $ea $3c $d6
     ld [rSharedAnimationFrameState], a            ; $4e84: $ea $3d $d6
@@ -768,14 +757,15 @@ jr_003_4e93:
     jp ReturnFromBankedJumpRestoreBank            ; $4ea3: $c3 $ea $05
 
 
+TickBottomPromptBlinkSprite4C_A_OK::
     ld a, [rStatePhaseTimer]                      ; $4ea6: $fa $3c $d6
     inc a                                         ; $4ea9: $3c
     cp $46                                        ; $4eaa: $fe $46
-    jr c, jr_003_4eaf                             ; $4eac: $38 $01
+    jr c, .StoreBlinkTimerAndCheckDrawWindowSprite4C; $4eac: $38 $01
 
     xor a                                         ; $4eae: $af
 
-jr_003_4eaf:
+.StoreBlinkTimerAndCheckDrawWindowSprite4C:
     ld [rStatePhaseTimer], a                      ; $4eaf: $ea $3c $d6
     cp $30                                        ; $4eb2: $fe $30
     jp nc, ReturnFromBankedJumpRestoreBank        ; $4eb4: $d2 $ea $05
@@ -786,17 +776,18 @@ jr_003_4eaf:
     jp ReturnFromBankedJumpRestoreBank            ; $4ebf: $c3 $ea $05
 
 
+TickBottomPromptBlinkSprite4C_A_OK_4D_B_CANCEL::
     ld a, [rStatePhaseTimer]                      ; $4ec2: $fa $3c $d6
     inc a                                         ; $4ec5: $3c
     cp $46                                        ; $4ec6: $fe $46
-    jr c, jr_003_4ed3                             ; $4ec8: $38 $09
+    jr c, .StoreBlinkTimerAndCheckDrawWindowSprite4C_4D; $4ec8: $38 $09
 
     ld a, [rSharedAnimationFrameState]            ; $4eca: $fa $3d $d6
     xor $01                                       ; $4ecd: $ee $01
     ld [rSharedAnimationFrameState], a            ; $4ecf: $ea $3d $d6
     xor a                                         ; $4ed2: $af
 
-jr_003_4ed3:
+.StoreBlinkTimerAndCheckDrawWindowSprite4C_4D:
     ld [rStatePhaseTimer], a                      ; $4ed3: $ea $3c $d6
     cp $30                                        ; $4ed6: $fe $30
     jp nc, ReturnFromBankedJumpRestoreBank        ; $4ed8: $d2 $ea $05
@@ -1203,7 +1194,7 @@ GS00_SP02_ContinueAfterBorderTransfer::
     call PlayScreenTransitionFadeOut              ; $519e: $cd $4e $04
     ld bc, $0028                                  ; $51a1: $01 $28 $00
     call BusyWaitDelayByBC                        ; $51a4: $cd $03 $06
-    jr jr_003_51b6                                ; $51a7: $18 $0d
+    jr .PostFadeOutFlowRouter                     ; $51a7: $18 $0d
 
 GS00_SP02_NonSGBFadeOut::
     ld b, $03                                     ; $51a9: $06 $03
@@ -1212,18 +1203,18 @@ GS00_SP02_NonSGBFadeOut::
     ld de, $00c3                                  ; $51b0: $11 $c3 $00
     call PlayScreenTransitionFadeOut              ; $51b3: $cd $4e $04
 
-jr_003_51b6:
+.PostFadeOutFlowRouter:
     call DisableLCDAtVBlank                       ; $51b6: $cd $83 $04
-    ld a, [$aca2]                                 ; $51b9: $fa $a2 $ac
+    ld a, [rContinueSavedGameFlowMode_Unsure]     ; $51b9: $fa $a2 $ac
     and a                                         ; $51bc: $a7
-    jr nz, jr_003_51ee                            ; $51bd: $20 $2f
+    jr nz, .AdvanceToContinueSavedGameScreen      ; $51bd: $20 $2f
 
-    ld hl, $a387                                  ; $51bf: $21 $87 $a3
+    ld hl, rSaveSlot1UnlockProgressState          ; $51bf: $21 $87 $a3
     ld a, [hl+]                                   ; $51c2: $2a
     or [hl]                                       ; $51c3: $b6
     inc hl                                        ; $51c4: $23
     or [hl]                                       ; $51c5: $b6
-    jr z, jr_003_51d1                             ; $51c6: $28 $09
+    jr z, .NoSaveDataInitPath                     ; $51c6: $28 $09
 
     xor a                                         ; $51c8: $af
     ld [rStatePhase_Current], a                   ; $51c9: $ea $35 $d6
@@ -1232,15 +1223,15 @@ jr_003_51b6:
     ret                                           ; $51d0: $c9
 
 
-jr_003_51d1:
+.NoSaveDataInitPath:
     xor a                                         ; $51d1: $af
-    ld [$a065], a                                 ; $51d2: $ea $65 $a0
+    ld [rSelectedSaveSlotIndex], a                ; $51d2: $ea $65 $a0
     ld c, a                                       ; $51d5: $4f
     ld b, $00                                     ; $51d6: $06 $00
-    ld hl, $a387                                  ; $51d8: $21 $87 $a3
+    ld hl, rSaveSlot1UnlockProgressState          ; $51d8: $21 $87 $a3
     add hl, bc                                    ; $51db: $09
     inc [hl]                                      ; $51dc: $34
-    ld hl, $a38a                                  ; $51dd: $21 $8a $a3
+    ld hl, rSaveSlot1PicrossKinokoStarClearedPuzzleCount; $51dd: $21 $8a $a3
     add hl, bc                                    ; $51e0: $09
     ld [hl], a                                    ; $51e1: $77
     xor a                                         ; $51e2: $af
@@ -1250,7 +1241,7 @@ jr_003_51d1:
     jp RefreshSaveValidationChecksumsAndMirrors   ; $51eb: $c3 $1f $1b
 
 
-jr_003_51ee:
+.AdvanceToContinueSavedGameScreen:
     ld hl, rStatePhase_Current                    ; $51ee: $21 $35 $d6
     inc [hl]                                      ; $51f1: $34
     ret                                           ; $51f2: $c9
@@ -1286,7 +1277,7 @@ GS00_StatePhase_03_ContinueSavedGameScreenInit::
     ld [rTilemapToTileDataAddressLookupTableLow], a; $523a: $ea $63 $cd
     ld a, $16                                     ; $523d: $3e $16
     ld [rTilemapToTileDataAddressLookupTableHigh], a; $523f: $ea $64 $cd
-    ld a, [$aca2]                                 ; $5242: $fa $a2 $ac
+    ld a, [rContinueSavedGameFlowMode_Unsure]     ; $5242: $fa $a2 $ac
     cp $02                                        ; $5245: $fe $02
     jr nz, jr_003_5253                            ; $5247: $20 $0a
 
@@ -1313,7 +1304,7 @@ jr_003_5253:
 jr_003_5273:
     call ClearShadowOAMBuffer                     ; $5273: $cd $b6 $05
     ld b, $03                                     ; $5276: $06 $03
-    ld hl, $4e80                                  ; $5278: $21 $80 $4e
+    ld hl, InitBottomPromptBlinkTimerAndFrameState; $5278: $21 $80 $4e
     call SwitchBankToBAndJumpToHL                 ; $527b: $cd $de $05
     ld b, $03                                     ; $527e: $06 $03
     ld hl, $4e8a                                  ; $5280: $21 $8a $4e
@@ -1335,7 +1326,7 @@ jr_003_5273:
     call Call_003_541f                            ; $52aa: $cd $1f $54
     call EnableLCDFromShadow                      ; $52ad: $cd $a2 $04
     call EnsureSGBMaskFreezeDisabled              ; $52b0: $cd $a5 $1f
-    ld a, [$aca2]                                 ; $52b3: $fa $a2 $ac
+    ld a, [rContinueSavedGameFlowMode_Unsure]     ; $52b3: $fa $a2 $ac
     cp $02                                        ; $52b6: $fe $02
     jr nz, jr_003_52c4                            ; $52b8: $20 $0a
 
@@ -1386,7 +1377,7 @@ jr_003_52e4:
     ld c, $00                                     ; $5313: $0e $00
     ld a, $01                                     ; $5315: $3e $01
     call CallSoundEffectDispatcher                ; $5317: $cd $b6 $03
-    ld a, [$aca2]                                 ; $531a: $fa $a2 $ac
+    ld a, [rContinueSavedGameFlowMode_Unsure]     ; $531a: $fa $a2 $ac
     cp $02                                        ; $531d: $fe $02
     jr nz, jr_003_532b                            ; $531f: $20 $0a
 
@@ -1415,7 +1406,7 @@ jr_003_533e:
 
 jr_003_534b:
     call DisableLCDAtVBlank                       ; $534b: $cd $83 $04
-    ld a, [$aca2]                                 ; $534e: $fa $a2 $ac
+    ld a, [rContinueSavedGameFlowMode_Unsure]     ; $534e: $fa $a2 $ac
     dec a                                         ; $5351: $3d
     ld c, a                                       ; $5352: $4f
     ld b, $00                                     ; $5353: $06 $00
@@ -1464,10 +1455,10 @@ GS00_StatePhase_04_ContinueSavedGameScreenIdle::
     call BankedTileCopy                           ; $53ae: $cd $e4 $04
     call ClearShadowOAMBuffer                     ; $53b1: $cd $b6 $05
     ld b, $03                                     ; $53b4: $06 $03
-    ld hl, $4e80                                  ; $53b6: $21 $80 $4e
+    ld hl, InitBottomPromptBlinkTimerAndFrameState; $53b6: $21 $80 $4e
     call SwitchBankToBAndJumpToHL                 ; $53b9: $cd $de $05
     ld b, $03                                     ; $53bc: $06 $03
-    ld hl, $4ea6                                  ; $53be: $21 $a6 $4e
+    ld hl, TickBottomPromptBlinkSprite4C_A_OK     ; $53be: $21 $a6 $4e
     call SwitchBankToBAndJumpToHL                 ; $53c1: $cd $de $05
     call EnableLCDFromShadow                      ; $53c4: $cd $a2 $04
     ld b, $03                                     ; $53c7: $06 $03
@@ -1480,7 +1471,7 @@ jr_003_53d4:
     call ClearShadowOAMBufferFromCursor           ; $53d4: $cd $c5 $05
     rst RST_08                                    ; $53d7: $cf
     ld b, $03                                     ; $53d8: $06 $03
-    ld hl, $4ea6                                  ; $53da: $21 $a6 $4e
+    ld hl, TickBottomPromptBlinkSprite4C_A_OK     ; $53da: $21 $a6 $4e
     call SwitchBankToBAndJumpToHL                 ; $53dd: $cd $de $05
     ld a, [rInputButtonsPressed]                  ; $53e0: $fa $1e $c3
     and $01                                       ; $53e3: $e6 $01
@@ -1589,7 +1580,7 @@ GS00_MarioBlinkFrameDelayAndSpriteIdTable::
     ld a, $03                                     ; $548b: $3e $03
     ld c, l                                       ; $548d: $4d
     ld b, h                                       ; $548e: $44
-    jp Jump_000_0738                              ; $548f: $c3 $38 $07
+    jp QueueCommandStreamAndProcessIfLCDOff       ; $548f: $c3 $38 $07
 
 
     inc bc                                        ; $5492: $03

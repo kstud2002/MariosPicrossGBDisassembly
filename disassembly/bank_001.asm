@@ -999,7 +999,7 @@ GS04_StatePhase_04_TODO::
 
     ld a, [rPuzzleCursorColumn]                   ; $4465: $fa $36 $d6
     ld c, a                                       ; $4468: $4f
-    ld a, [rPuzzleCursorRow]                      ; $4469: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $4469: $fa $37 $d6
     ld b, a                                       ; $446c: $47
     call Call_001_4c78                            ; $446d: $cd $78 $4c
 
@@ -1028,29 +1028,29 @@ jr_001_448d:
     jp z, Jump_001_46dc                           ; $449b: $ca $dc $46
 
     call Call_001_46e4                            ; $449e: $cd $e4 $46
-    ld a, [$a065]                                 ; $44a1: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $44a1: $fa $65 $a0
     ld c, a                                       ; $44a4: $4f
     ld b, $00                                     ; $44a5: $06 $00
-    ld hl, $a387                                  ; $44a7: $21 $87 $a3
+    ld hl, rSaveSlot1UnlockProgressState          ; $44a7: $21 $87 $a3
     add hl, bc                                    ; $44aa: $09
     ld a, [hl]                                    ; $44ab: $7e
     cp $03                                        ; $44ac: $fe $03
     jp z, Jump_001_46dc                           ; $44ae: $ca $dc $46
 
-    ld hl, $a38a                                  ; $44b1: $21 $8a $a3
+    ld hl, rSaveSlot1PicrossKinokoStarClearedPuzzleCount; $44b1: $21 $8a $a3
     add hl, bc                                    ; $44b4: $09
     ld a, [hl]                                    ; $44b5: $7e
     cp $40                                        ; $44b6: $fe $40
     jp nz, Jump_001_46dc                          ; $44b8: $c2 $dc $46
 
-    ld hl, $a387                                  ; $44bb: $21 $87 $a3
+    ld hl, rSaveSlot1UnlockProgressState          ; $44bb: $21 $87 $a3
     add hl, bc                                    ; $44be: $09
     inc [hl]                                      ; $44bf: $34
     ld a, [hl]                                    ; $44c0: $7e
     cp $03                                        ; $44c1: $fe $03
     jp z, Jump_001_45bb                           ; $44c3: $ca $bb $45
 
-    ld hl, $a38a                                  ; $44c6: $21 $8a $a3
+    ld hl, rSaveSlot1PicrossKinokoStarClearedPuzzleCount; $44c6: $21 $8a $a3
     add hl, bc                                    ; $44c9: $09
     xor a                                         ; $44ca: $af
     ld [hl], a                                    ; $44cb: $77
@@ -1114,7 +1114,7 @@ jr_001_448d:
     call Call_001_5252                            ; $4560: $cd $52 $52
     xor a                                         ; $4563: $af
     ld [rPuzzleCursorColumn], a                   ; $4564: $ea $36 $d6
-    ld [rPuzzleCursorRow], a                      ; $4567: $ea $37 $d6
+    ld [rPuzzleAndMenuCursorRow], a               ; $4567: $ea $37 $d6
     ld bc, $003c                                  ; $456a: $01 $3c $00
     call DelayFramesByBC                          ; $456d: $cd $fa $05
     ld a, $05                                     ; $4570: $3e $05
@@ -1137,7 +1137,7 @@ jr_001_448d:
     xor a                                         ; $459b: $af
     ld [rLCDCInterruptDispatchIndex], a           ; $459c: $ea $38 $c3
     ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $459f: $ea $50 $c3
-    ld a, [$a065]                                 ; $45a2: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $45a2: $fa $65 $a0
     ld c, a                                       ; $45a5: $4f
     ld b, $00                                     ; $45a6: $06 $00
     ld hl, $a38d                                  ; $45a8: $21 $8d $a3
@@ -1253,7 +1253,7 @@ Jump_001_45bb:
     xor a                                         ; $46bc: $af
     ld [rLCDCInterruptDispatchIndex], a           ; $46bd: $ea $38 $c3
     ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $46c0: $ea $50 $c3
-    ld a, [$a065]                                 ; $46c3: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $46c3: $fa $65 $a0
     ld c, a                                       ; $46c6: $4f
     ld b, $00                                     ; $46c7: $06 $00
     ld hl, $a38d                                  ; $46c9: $21 $8d $a3
@@ -1274,7 +1274,7 @@ Jump_001_46dc:
 
 
 Call_001_46e4:
-    ld a, [$a065]                                 ; $46e4: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $46e4: $fa $65 $a0
     ld c, a                                       ; $46e7: $4f
     ld b, $00                                     ; $46e8: $06 $00
     ld hl, $a38d                                  ; $46ea: $21 $8d $a3
@@ -1290,7 +1290,7 @@ Call_001_46e4:
     ld a, [hl+]                                   ; $46f9: $2a
     ld h, [hl]                                    ; $46fa: $66
     ld l, a                                       ; $46fb: $6f
-    ld a, [rPuzzleCursorRow]                      ; $46fc: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $46fc: $fa $37 $d6
     sla a                                         ; $46ff: $cb $27
     sla a                                         ; $4701: $cb $27
     sla a                                         ; $4703: $cb $27
@@ -1324,7 +1324,7 @@ jr_001_4720:
 
     ld a, [rPuzzleCursorColumn]                   ; $4731: $fa $36 $d6
     ld c, a                                       ; $4734: $4f
-    ld a, [rPuzzleCursorRow]                      ; $4735: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $4735: $fa $37 $d6
     ld b, a                                       ; $4738: $47
     call Call_001_4c78                            ; $4739: $cd $78 $4c
     ld c, $08                                     ; $473c: $0e $08
@@ -1350,7 +1350,7 @@ jr_001_4753:
     ld b, $03                                     ; $4757: $06 $03
     ld hl, $4ea6                                  ; $4759: $21 $a6 $4e
     call SwitchBankToBAndJumpToHL                 ; $475c: $cd $de $05
-    ld a, [$c33a]                                 ; $475f: $fa $3a $c3
+    ld a, [rVBlankFrameCounter]                   ; $475f: $fa $3a $c3
     bit 2, a                                      ; $4762: $cb $57
     jr nz, jr_001_476a                            ; $4764: $20 $04
 
@@ -1463,7 +1463,7 @@ GS04_StatePhase_02_TODO::
     call Call_001_49c8                            ; $482b: $cd $c8 $49
     call Call_001_504b                            ; $482e: $cd $4b $50
     call Call_001_4cbc                            ; $4831: $cd $bc $4c
-    ld a, [$a065]                                 ; $4834: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $4834: $fa $65 $a0
     ld c, a                                       ; $4837: $4f
     ld b, $00                                     ; $4838: $06 $00
     ld hl, $a38d                                  ; $483a: $21 $8d $a3
@@ -1480,7 +1480,7 @@ GS04_StatePhase_02_TODO::
     ld a, [rPuzzleCursorColumn]                   ; $484a: $fa $36 $d6
     sla a                                         ; $484d: $cb $27
     ld c, a                                       ; $484f: $4f
-    ld a, [rPuzzleCursorRow]                      ; $4850: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $4850: $fa $37 $d6
     swap a                                        ; $4853: $cb $37
     or c                                          ; $4855: $b1
     ld c, a                                       ; $4856: $4f
@@ -1782,12 +1782,12 @@ GS04_StatePhase_03_TODO::
 
 
 Call_001_49a2:
-    ld a, [$a065]                                 ; $49a2: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $49a2: $fa $65 $a0
     ld c, a                                       ; $49a5: $4f
     ld b, $00                                     ; $49a6: $06 $00
     ld hl, $a38d                                  ; $49a8: $21 $8d $a3
     add hl, bc                                    ; $49ab: $09
-    ld a, [$a065]                                 ; $49ac: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $49ac: $fa $65 $a0
     ld c, a                                       ; $49af: $4f
     sla a                                         ; $49b0: $cb $27
     add c                                         ; $49b2: $81
@@ -1801,17 +1801,17 @@ Call_001_49a2:
     ld hl, $a399                                  ; $49bf: $21 $99 $a3
     add hl, bc                                    ; $49c2: $09
     ld a, [hl]                                    ; $49c3: $7e
-    ld [rPuzzleCursorRow], a                      ; $49c4: $ea $37 $d6
+    ld [rPuzzleAndMenuCursorRow], a               ; $49c4: $ea $37 $d6
     ret                                           ; $49c7: $c9
 
 
 Call_001_49c8:
-    ld a, [$a065]                                 ; $49c8: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $49c8: $fa $65 $a0
     ld c, a                                       ; $49cb: $4f
     ld b, $00                                     ; $49cc: $06 $00
     ld hl, $a38d                                  ; $49ce: $21 $8d $a3
     add hl, bc                                    ; $49d1: $09
-    ld a, [$a065]                                 ; $49d2: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $49d2: $fa $65 $a0
     ld c, a                                       ; $49d5: $4f
     sla a                                         ; $49d6: $cb $27
     add c                                         ; $49d8: $81
@@ -1824,7 +1824,7 @@ Call_001_49c8:
     ld [hl], a                                    ; $49e4: $77
     ld hl, $a399                                  ; $49e5: $21 $99 $a3
     add hl, bc                                    ; $49e8: $09
-    ld a, [rPuzzleCursorRow]                      ; $49e9: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $49e9: $fa $37 $d6
     ld [hl], a                                    ; $49ec: $77
     ret                                           ; $49ed: $c9
 
@@ -1835,7 +1835,7 @@ Call_001_49ee:
     swap a                                        ; $49f2: $cb $37
     add $20                                       ; $49f4: $c6 $20
     ld b, a                                       ; $49f6: $47
-    ld a, [rPuzzleCursorRow]                      ; $49f7: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $49f7: $fa $37 $d6
     sla a                                         ; $49fa: $cb $27
     sla a                                         ; $49fc: $cb $27
     sla a                                         ; $49fe: $cb $27
@@ -1876,26 +1876,26 @@ jr_001_4a33:
     bit 6, [hl]                                   ; $4a33: $cb $76
     jr z, jr_001_4a40                             ; $4a35: $28 $09
 
-    ld a, [rPuzzleCursorRow]                      ; $4a37: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $4a37: $fa $37 $d6
     dec a                                         ; $4a3a: $3d
     and $07                                       ; $4a3b: $e6 $07
-    ld [rPuzzleCursorRow], a                      ; $4a3d: $ea $37 $d6
+    ld [rPuzzleAndMenuCursorRow], a               ; $4a3d: $ea $37 $d6
 
 jr_001_4a40:
     bit 7, [hl]                                   ; $4a40: $cb $7e
     jr z, jr_001_4a4d                             ; $4a42: $28 $09
 
-    ld a, [rPuzzleCursorRow]                      ; $4a44: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $4a44: $fa $37 $d6
     inc a                                         ; $4a47: $3c
     and $07                                       ; $4a48: $e6 $07
-    ld [rPuzzleCursorRow], a                      ; $4a4a: $ea $37 $d6
+    ld [rPuzzleAndMenuCursorRow], a               ; $4a4a: $ea $37 $d6
 
 jr_001_4a4d:
     ret                                           ; $4a4d: $c9
 
 
 Call_001_4a4e:
-    ld a, [$a065]                                 ; $4a4e: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $4a4e: $fa $65 $a0
     ld c, a                                       ; $4a51: $4f
     ld b, $00                                     ; $4a52: $06 $00
     ld hl, $a38d                                  ; $4a54: $21 $8d $a3
@@ -1926,7 +1926,7 @@ jr_001_4a6e:
 
 
 Call_001_4a80:
-    ld a, [$a065]                                 ; $4a80: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $4a80: $fa $65 $a0
     ld c, a                                       ; $4a83: $4f
     ld b, $00                                     ; $4a84: $06 $00
     ld hl, $a38d                                  ; $4a86: $21 $8d $a3
@@ -1972,7 +1972,7 @@ jr_001_4ab9:
     ret                                           ; $4ae3: $c9
 
 
-    ld a, [$a065]                                 ; $4ae4: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $4ae4: $fa $65 $a0
     ld c, a                                       ; $4ae7: $4f
     ld b, $00                                     ; $4ae8: $06 $00
     ld hl, $a38d                                  ; $4aea: $21 $8d $a3
@@ -2024,7 +2024,7 @@ jr_001_4b1f:
 
 
 Call_001_4b5a:
-    ld a, [$a065]                                 ; $4b5a: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $4b5a: $fa $65 $a0
     ld c, a                                       ; $4b5d: $4f
     ld b, $00                                     ; $4b5e: $06 $00
     ld hl, $a38d                                  ; $4b60: $21 $8d $a3
@@ -2051,7 +2051,7 @@ jr_001_4b76:
 
 
 Call_001_4b84:
-    ld a, [$a065]                                 ; $4b84: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $4b84: $fa $65 $a0
     ld c, a                                       ; $4b87: $4f
     ld b, $00                                     ; $4b88: $06 $00
     ld hl, $a38d                                  ; $4b8a: $21 $8d $a3
@@ -2077,7 +2077,7 @@ jr_001_4ba0:
     ret                                           ; $4bad: $c9
 
 
-    ld a, [$a065]                                 ; $4bae: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $4bae: $fa $65 $a0
     ld c, a                                       ; $4bb1: $4f
     ld b, $00                                     ; $4bb2: $06 $00
     ld hl, $a38d                                  ; $4bb4: $21 $8d $a3
@@ -2103,7 +2103,7 @@ jr_001_4bcc:
     jp ReturnFromBankedJumpRestoreBank            ; $4bd9: $c3 $ea $05
 
 
-    ld a, [$a065]                                 ; $4bdc: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $4bdc: $fa $65 $a0
     ld c, a                                       ; $4bdf: $4f
     ld b, $00                                     ; $4be0: $06 $00
     ld hl, $a38d                                  ; $4be2: $21 $8d $a3
@@ -2130,7 +2130,7 @@ jr_001_4bfa:
 
 
 Call_001_4c0a:
-    ld a, [$a065]                                 ; $4c0a: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $4c0a: $fa $65 $a0
     ld c, a                                       ; $4c0d: $4f
     ld b, $00                                     ; $4c0e: $06 $00
     ld hl, $a38d                                  ; $4c10: $21 $8d $a3
@@ -2173,7 +2173,7 @@ jr_001_4c2e:
 
 
 Call_001_4c3b:
-    ld a, [$a065]                                 ; $4c3b: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $4c3b: $fa $65 $a0
     ld c, a                                       ; $4c3e: $4f
     ld b, $00                                     ; $4c3f: $06 $00
     ld hl, $a38d                                  ; $4c41: $21 $8d $a3
@@ -2203,7 +2203,7 @@ jr_001_4c57:
     cp c                                          ; $4c5f: $b9
     jr nz, jr_001_4c68                            ; $4c60: $20 $06
 
-    ld a, [rPuzzleCursorRow]                      ; $4c62: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $4c62: $fa $37 $d6
     cp b                                          ; $4c65: $b8
     jr z, jr_001_4c6b                             ; $4c66: $28 $03
 
@@ -2245,25 +2245,25 @@ Call_001_4c78:
     ld bc, $98c4                                  ; $4c96: $01 $c4 $98
     add hl, bc                                    ; $4c99: $09
     ld a, h                                       ; $4c9a: $7c
-    ld [$c100], a                                 ; $4c9b: $ea $00 $c1
+    ld [rGS01_SaveSlotTemplateCommandStreamStart], a; $4c9b: $ea $00 $c1
     ld a, l                                       ; $4c9e: $7d
     ld [$c101], a                                 ; $4c9f: $ea $01 $c1
     ld a, $01                                     ; $4ca2: $3e $01
     ld [$c102], a                                 ; $4ca4: $ea $02 $c1
     ld a, $55                                     ; $4ca7: $3e $55
-    ld [$c103], a                                 ; $4ca9: $ea $03 $c1
+    ld [rGS01_SaveSlotTemplateRow1EasyPicrossIconPairLeft], a; $4ca9: $ea $03 $c1
     ld a, $00                                     ; $4cac: $3e $00
     ld [$c104], a                                 ; $4cae: $ea $04 $c1
     ld a, $00                                     ; $4cb1: $3e $00
-    ld bc, $c100                                  ; $4cb3: $01 $00 $c1
-    call Call_000_0738                            ; $4cb6: $cd $38 $07
+    ld bc, rGS01_SaveSlotTemplateCommandStreamStart; $4cb3: $01 $00 $c1
+    call QueueCommandStreamAndProcessIfLCDOff     ; $4cb6: $cd $38 $07
     pop hl                                        ; $4cb9: $e1
     pop bc                                        ; $4cba: $c1
     ret                                           ; $4cbb: $c9
 
 
 Call_001_4cbc:
-    ld a, [$a065]                                 ; $4cbc: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $4cbc: $fa $65 $a0
     ld c, a                                       ; $4cbf: $4f
     ld b, $00                                     ; $4cc0: $06 $00
     ld hl, $a38d                                  ; $4cc2: $21 $8d $a3
@@ -2279,7 +2279,7 @@ Call_001_4cbc:
     ld a, [hl+]                                   ; $4cd1: $2a
     ld h, [hl]                                    ; $4cd2: $66
     ld l, a                                       ; $4cd3: $6f
-    ld a, [rPuzzleCursorRow]                      ; $4cd4: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $4cd4: $fa $37 $d6
     sla a                                         ; $4cd7: $cb $27
     sla a                                         ; $4cd9: $cb $27
     sla a                                         ; $4cdb: $cb $27
@@ -2303,7 +2303,7 @@ Call_001_4cbc:
 Call_001_4cef:
     xor a                                         ; $4cef: $af
     ld [$d842], a                                 ; $4cf0: $ea $42 $d8
-    ld a, [$a065]                                 ; $4cf3: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $4cf3: $fa $65 $a0
     ld c, a                                       ; $4cf6: $4f
     ld b, $00                                     ; $4cf7: $06 $00
     ld hl, $a38d                                  ; $4cf9: $21 $8d $a3
@@ -2319,7 +2319,7 @@ Call_001_4cef:
     ld a, [hl+]                                   ; $4d08: $2a
     ld h, [hl]                                    ; $4d09: $66
     ld l, a                                       ; $4d0a: $6f
-    ld a, [rPuzzleCursorRow]                      ; $4d0b: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $4d0b: $fa $37 $d6
     sla a                                         ; $4d0e: $cb $27
     sla a                                         ; $4d10: $cb $27
     sla a                                         ; $4d12: $cb $27
@@ -2334,15 +2334,15 @@ Call_001_4cef:
     jr nz, jr_001_4d76                            ; $4d20: $20 $54
 
     push hl                                       ; $4d22: $e5
-    ld a, [$a065]                                 ; $4d23: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $4d23: $fa $65 $a0
     ld c, a                                       ; $4d26: $4f
     ld b, $00                                     ; $4d27: $06 $00
-    ld hl, $a38a                                  ; $4d29: $21 $8a $a3
+    ld hl, rSaveSlot1PicrossKinokoStarClearedPuzzleCount; $4d29: $21 $8a $a3
     add hl, bc                                    ; $4d2c: $09
     inc [hl]                                      ; $4d2d: $34
     pop hl                                        ; $4d2e: $e1
     set 7, [hl]                                   ; $4d2f: $cb $fe
-    ld a, [$a065]                                 ; $4d31: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $4d31: $fa $65 $a0
     ld c, a                                       ; $4d34: $4f
     ld b, $00                                     ; $4d35: $06 $00
     ld hl, $a38d                                  ; $4d37: $21 $8d $a3
@@ -2358,7 +2358,7 @@ Call_001_4cef:
     ld a, [hl+]                                   ; $4d46: $2a
     ld h, [hl]                                    ; $4d47: $66
     ld l, a                                       ; $4d48: $6f
-    ld a, [rPuzzleCursorRow]                      ; $4d49: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $4d49: $fa $37 $d6
     sla a                                         ; $4d4c: $cb $27
     sla a                                         ; $4d4e: $cb $27
     sla a                                         ; $4d50: $cb $27
@@ -2387,7 +2387,7 @@ Call_001_4cef:
     set 3, [hl]                                   ; $4d74: $cb $de
 
 jr_001_4d76:
-    ld a, [$a065]                                 ; $4d76: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $4d76: $fa $65 $a0
     ld c, a                                       ; $4d79: $4f
     ld b, $00                                     ; $4d7a: $06 $00
     ld hl, $a38d                                  ; $4d7c: $21 $8d $a3
@@ -2403,7 +2403,7 @@ jr_001_4d76:
     ld a, [hl+]                                   ; $4d8b: $2a
     ld h, [hl]                                    ; $4d8c: $66
     ld l, a                                       ; $4d8d: $6f
-    ld a, [rPuzzleCursorRow]                      ; $4d8e: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $4d8e: $fa $37 $d6
     sla a                                         ; $4d91: $cb $27
     sla a                                         ; $4d93: $cb $27
     sla a                                         ; $4d95: $cb $27
@@ -2469,7 +2469,7 @@ jr_001_4ddc:
 
 
 Call_001_4dde:
-    ld a, [$a065]                                 ; $4dde: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $4dde: $fa $65 $a0
     ld c, a                                       ; $4de1: $4f
     ld b, $00                                     ; $4de2: $06 $00
     ld hl, $a38d                                  ; $4de4: $21 $8d $a3
@@ -2485,7 +2485,7 @@ Call_001_4dde:
     ld a, [hl+]                                   ; $4df3: $2a
     ld h, [hl]                                    ; $4df4: $66
     ld l, a                                       ; $4df5: $6f
-    ld a, [rPuzzleCursorRow]                      ; $4df6: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $4df6: $fa $37 $d6
     sla a                                         ; $4df9: $cb $27
     sla a                                         ; $4dfb: $cb $27
     sla a                                         ; $4dfd: $cb $27
@@ -2498,7 +2498,7 @@ Call_001_4dde:
     ld a, [hl]                                    ; $4e08: $7e
     push af                                       ; $4e09: $f5
     and $7f                                       ; $4e0a: $e6 $7f
-    call Call_000_1972                            ; $4e0c: $cd $72 $19
+    call SplitAToDecimalDigitsAndPushHundredsTens ; $4e0c: $cd $72 $19
     add $51                                       ; $4e0f: $c6 $51
     ld bc, $4818                                  ; $4e11: $01 $18 $48
     call CopyOAMSpriteById                        ; $4e14: $cd $ce $20
@@ -2516,7 +2516,7 @@ jr_001_4e24:
     bit 7, a                                      ; $4e26: $cb $7f
     jp z, Jump_001_4f0d                           ; $4e28: $ca $0d $4f
 
-    ld a, [$a065]                                 ; $4e2b: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $4e2b: $fa $65 $a0
     ld c, a                                       ; $4e2e: $4f
     ld b, $00                                     ; $4e2f: $06 $00
     ld hl, $a38d                                  ; $4e31: $21 $8d $a3
@@ -2532,7 +2532,7 @@ jr_001_4e24:
     ld a, [hl+]                                   ; $4e40: $2a
     ld h, [hl]                                    ; $4e41: $66
     ld l, a                                       ; $4e42: $6f
-    ld a, [rPuzzleCursorRow]                      ; $4e43: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $4e43: $fa $37 $d6
     sla a                                         ; $4e46: $cb $27
     sla a                                         ; $4e48: $cb $27
     sla a                                         ; $4e4a: $cb $27
@@ -2579,7 +2579,7 @@ jr_001_4e24:
     call CopyOAMSpriteById                        ; $4e92: $cd $ce $20
     ld a, [hl]                                    ; $4e95: $7e
     call Call_001_50b4                            ; $4e96: $cd $b4 $50
-    ld a, [$a065]                                 ; $4e99: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $4e99: $fa $65 $a0
     ld c, a                                       ; $4e9c: $4f
     ld b, $00                                     ; $4e9d: $06 $00
     ld hl, $a38d                                  ; $4e9f: $21 $8d $a3
@@ -2595,7 +2595,7 @@ jr_001_4e24:
     ld a, [hl+]                                   ; $4eae: $2a
     ld h, [hl]                                    ; $4eaf: $66
     ld l, a                                       ; $4eb0: $6f
-    ld a, [rPuzzleCursorRow]                      ; $4eb1: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $4eb1: $fa $37 $d6
     sla a                                         ; $4eb4: $cb $27
     sla a                                         ; $4eb6: $cb $27
     sla a                                         ; $4eb8: $cb $27
@@ -2682,7 +2682,7 @@ Call_001_4f54:
     ld a, [$d84c]                                 ; $4f54: $fa $4c $d8
     push af                                       ; $4f57: $f5
     and $7f                                       ; $4f58: $e6 $7f
-    call Call_000_1972                            ; $4f5a: $cd $72 $19
+    call SplitAToDecimalDigitsAndPushHundredsTens ; $4f5a: $cd $72 $19
     add $51                                       ; $4f5d: $c6 $51
     ld bc, $4818                                  ; $4f5f: $01 $18 $48
     call CopyOAMSpriteById                        ; $4f62: $cd $ce $20
@@ -2806,7 +2806,7 @@ Jump_001_5004:
 
 
 Call_001_504b:
-    ld a, [$a065]                                 ; $504b: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $504b: $fa $65 $a0
     ld c, a                                       ; $504e: $4f
     ld b, $00                                     ; $504f: $06 $00
     ld hl, $a38d                                  ; $5051: $21 $8d $a3
@@ -2822,7 +2822,7 @@ Call_001_504b:
     ld a, [hl+]                                   ; $5060: $2a
     ld h, [hl]                                    ; $5061: $66
     ld l, a                                       ; $5062: $6f
-    ld a, [rPuzzleCursorRow]                      ; $5063: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $5063: $fa $37 $d6
     sla a                                         ; $5066: $cb $27
     sla a                                         ; $5068: $cb $27
     sla a                                         ; $506a: $cb $27
@@ -2834,7 +2834,7 @@ Call_001_504b:
     add hl, bc                                    ; $5074: $09
     ld a, [hl]                                    ; $5075: $7e
     ld [$d84c], a                                 ; $5076: $ea $4c $d8
-    ld a, [$a065]                                 ; $5079: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $5079: $fa $65 $a0
     ld c, a                                       ; $507c: $4f
     ld b, $00                                     ; $507d: $06 $00
     ld hl, $a38d                                  ; $507f: $21 $8d $a3
@@ -2850,7 +2850,7 @@ Call_001_504b:
     ld a, [hl+]                                   ; $508e: $2a
     ld h, [hl]                                    ; $508f: $66
     ld l, a                                       ; $5090: $6f
-    ld a, [rPuzzleCursorRow]                      ; $5091: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $5091: $fa $37 $d6
     sla a                                         ; $5094: $cb $27
     sla a                                         ; $5096: $cb $27
     sla a                                         ; $5098: $cb $27
@@ -2880,13 +2880,13 @@ Call_001_50b4:
 
     ld a, $01                                     ; $50ba: $3e $01
     ld bc, $50cf                                  ; $50bc: $01 $cf $50
-    call Call_000_0738                            ; $50bf: $cd $38 $07
+    call QueueCommandStreamAndProcessIfLCDOff     ; $50bf: $cd $38 $07
     jr jr_001_50cc                                ; $50c2: $18 $08
 
 jr_001_50c4:
     ld a, $01                                     ; $50c4: $3e $01
     ld bc, $50d4                                  ; $50c6: $01 $d4 $50
-    call Call_000_0738                            ; $50c9: $cd $38 $07
+    call QueueCommandStreamAndProcessIfLCDOff     ; $50c9: $cd $38 $07
 
 jr_001_50cc:
     pop hl                                        ; $50cc: $e1
@@ -2909,13 +2909,13 @@ Jump_001_50d9:
 
     ld a, $01                                     ; $50df: $3e $01
     ld bc, $50f4                                  ; $50e1: $01 $f4 $50
-    call Call_000_0738                            ; $50e4: $cd $38 $07
+    call QueueCommandStreamAndProcessIfLCDOff     ; $50e4: $cd $38 $07
     jr jr_001_50f1                                ; $50e7: $18 $08
 
 jr_001_50e9:
     ld a, $01                                     ; $50e9: $3e $01
     ld bc, $50f9                                  ; $50eb: $01 $f9 $50
-    call Call_000_0738                            ; $50ee: $cd $38 $07
+    call QueueCommandStreamAndProcessIfLCDOff     ; $50ee: $cd $38 $07
 
 jr_001_50f1:
     pop hl                                        ; $50f1: $e1
@@ -2931,7 +2931,7 @@ jr_001_50f1:
     ld bc, $002b                                  ; $50fb: $01 $2b $00
 
 Jump_001_50fe:
-    ld a, [rPuzzleCursorRow]                      ; $50fe: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $50fe: $fa $37 $d6
     cp $07                                        ; $5101: $fe $07
     jr nz, jr_001_510b                            ; $5103: $20 $06
 
@@ -2940,7 +2940,7 @@ Jump_001_50fe:
     ret z                                         ; $510a: $c8
 
 jr_001_510b:
-    ld a, [$a065]                                 ; $510b: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $510b: $fa $65 $a0
     ld c, a                                       ; $510e: $4f
     ld b, $00                                     ; $510f: $06 $00
     ld hl, $a38d                                  ; $5111: $21 $8d $a3
@@ -2956,7 +2956,7 @@ jr_001_510b:
     ld a, [hl+]                                   ; $5120: $2a
     ld h, [hl]                                    ; $5121: $66
     ld l, a                                       ; $5122: $6f
-    ld a, [rPuzzleCursorRow]                      ; $5123: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $5123: $fa $37 $d6
     sla a                                         ; $5126: $cb $27
     sla a                                         ; $5128: $cb $27
     sla a                                         ; $512a: $cb $27
@@ -2975,9 +2975,9 @@ jr_001_510b:
     cp $08                                        ; $513d: $fe $08
     jr nz, jr_001_5149                            ; $513f: $20 $08
 
-    ld a, [rPuzzleCursorRow]                      ; $5141: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $5141: $fa $37 $d6
     inc a                                         ; $5144: $3c
-    ld [rPuzzleCursorRow], a                      ; $5145: $ea $37 $d6
+    ld [rPuzzleAndMenuCursorRow], a               ; $5145: $ea $37 $d6
     xor a                                         ; $5148: $af
 
 jr_001_5149:
@@ -3297,7 +3297,7 @@ GS05_StatePhase_04_TODO::
 
     ld a, [rPuzzleCursorColumn]                   ; $5376: $fa $36 $d6
     ld c, a                                       ; $5379: $4f
-    ld a, [rPuzzleCursorRow]                      ; $537a: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $537a: $fa $37 $d6
     ld b, a                                       ; $537d: $47
     call Call_001_581c                            ; $537e: $cd $1c $58
 
@@ -3336,7 +3336,7 @@ jr_001_539e:
     jp z, Jump_001_54ed                           ; $53c4: $ca $ed $54
 
     call Call_001_54f5                            ; $53c7: $cd $f5 $54
-    ld a, [$a065]                                 ; $53ca: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $53ca: $fa $65 $a0
     ld c, a                                       ; $53cd: $4f
     ld b, $00                                     ; $53ce: $06 $00
     ld hl, $a07b                                  ; $53d0: $21 $7b $a0
@@ -3345,7 +3345,7 @@ jr_001_539e:
     and a                                         ; $53d5: $a7
     jp nz, Jump_001_54ed                          ; $53d6: $c2 $ed $54
 
-    ld hl, $a07e                                  ; $53d9: $21 $7e $a0
+    ld hl, rSaveSlot1EasyPicrossClearedPuzzleCount; $53d9: $21 $7e $a0
     add hl, bc                                    ; $53dc: $09
     ld a, [hl]                                    ; $53dd: $7e
     cp $40                                        ; $53de: $fe $40
@@ -3354,7 +3354,7 @@ jr_001_539e:
     ld hl, $a07b                                  ; $53e3: $21 $7b $a0
     add hl, bc                                    ; $53e6: $09
     inc [hl]                                      ; $53e7: $34
-    ld a, [$a065]                                 ; $53e8: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $53e8: $fa $65 $a0
     ld c, a                                       ; $53eb: $4f
     ld b, $00                                     ; $53ec: $06 $00
     ld hl, $a078                                  ; $53ee: $21 $78 $a0
@@ -3466,7 +3466,7 @@ Jump_001_54ed:
 
 
 Call_001_54f5:
-    ld a, [$a065]                                 ; $54f5: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $54f5: $fa $65 $a0
     sla a                                         ; $54f8: $cb $27
     ld c, a                                       ; $54fa: $4f
     ld b, $00                                     ; $54fb: $06 $00
@@ -3475,7 +3475,7 @@ Call_001_54f5:
     ld a, [hl+]                                   ; $5501: $2a
     ld h, [hl]                                    ; $5502: $66
     ld l, a                                       ; $5503: $6f
-    ld a, [rPuzzleCursorRow]                      ; $5504: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $5504: $fa $37 $d6
     sla a                                         ; $5507: $cb $27
     sla a                                         ; $5509: $cb $27
     sla a                                         ; $550b: $cb $27
@@ -3509,7 +3509,7 @@ jr_001_5528:
 
     ld a, [rPuzzleCursorColumn]                   ; $5539: $fa $36 $d6
     ld c, a                                       ; $553c: $4f
-    ld a, [rPuzzleCursorRow]                      ; $553d: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $553d: $fa $37 $d6
     ld b, a                                       ; $5540: $47
     call Call_001_581c                            ; $5541: $cd $1c $58
     ld c, $08                                     ; $5544: $0e $08
@@ -3535,7 +3535,7 @@ jr_001_555b:
     ld b, $03                                     ; $555f: $06 $03
     ld hl, $4ea6                                  ; $5561: $21 $a6 $4e
     call SwitchBankToBAndJumpToHL                 ; $5564: $cd $de $05
-    ld a, [$c33a]                                 ; $5567: $fa $3a $c3
+    ld a, [rVBlankFrameCounter]                   ; $5567: $fa $3a $c3
     bit 2, a                                      ; $556a: $cb $57
     jr nz, jr_001_5572                            ; $556c: $20 $04
 
@@ -3656,7 +3656,7 @@ GS05_StatePhase_02_TODO::
     call Call_001_5749                            ; $5647: $cd $49 $57
     call Call_001_5bb0                            ; $564a: $cd $b0 $5b
     call Call_001_5860                            ; $564d: $cd $60 $58
-    ld a, [rPuzzleCursorRow]                      ; $5650: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $5650: $fa $37 $d6
     swap a                                        ; $5653: $cb $37
     ld c, a                                       ; $5655: $4f
     ld a, [rPuzzleCursorColumn]                   ; $5656: $fa $36 $d6
@@ -3722,7 +3722,7 @@ GS05_StatePhase_03_TODO::
 
 
 Call_001_5732:
-    ld a, [$a065]                                 ; $5732: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $5732: $fa $65 $a0
     ld c, a                                       ; $5735: $4f
     ld b, $00                                     ; $5736: $06 $00
     ld hl, $a081                                  ; $5738: $21 $81 $a0
@@ -3732,12 +3732,12 @@ Call_001_5732:
     ld hl, $a084                                  ; $5740: $21 $84 $a0
     add hl, bc                                    ; $5743: $09
     ld a, [hl]                                    ; $5744: $7e
-    ld [rPuzzleCursorRow], a                      ; $5745: $ea $37 $d6
+    ld [rPuzzleAndMenuCursorRow], a               ; $5745: $ea $37 $d6
     ret                                           ; $5748: $c9
 
 
 Call_001_5749:
-    ld a, [$a065]                                 ; $5749: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $5749: $fa $65 $a0
     ld c, a                                       ; $574c: $4f
     ld b, $00                                     ; $574d: $06 $00
     ld hl, $a081                                  ; $574f: $21 $81 $a0
@@ -3746,7 +3746,7 @@ Call_001_5749:
     ld [hl], a                                    ; $5756: $77
     ld hl, $a084                                  ; $5757: $21 $84 $a0
     add hl, bc                                    ; $575a: $09
-    ld a, [rPuzzleCursorRow]                      ; $575b: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $575b: $fa $37 $d6
     ld [hl], a                                    ; $575e: $77
     ret                                           ; $575f: $c9
 
@@ -3757,7 +3757,7 @@ Call_001_5760:
     swap a                                        ; $5764: $cb $37
     add $20                                       ; $5766: $c6 $20
     ld b, a                                       ; $5768: $47
-    ld a, [rPuzzleCursorRow]                      ; $5769: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $5769: $fa $37 $d6
     sla a                                         ; $576c: $cb $27
     sla a                                         ; $576e: $cb $27
     sla a                                         ; $5770: $cb $27
@@ -3798,26 +3798,26 @@ jr_001_57a5:
     bit 6, [hl]                                   ; $57a5: $cb $76
     jr z, jr_001_57b2                             ; $57a7: $28 $09
 
-    ld a, [rPuzzleCursorRow]                      ; $57a9: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $57a9: $fa $37 $d6
     dec a                                         ; $57ac: $3d
     and $07                                       ; $57ad: $e6 $07
-    ld [rPuzzleCursorRow], a                      ; $57af: $ea $37 $d6
+    ld [rPuzzleAndMenuCursorRow], a               ; $57af: $ea $37 $d6
 
 jr_001_57b2:
     bit 7, [hl]                                   ; $57b2: $cb $7e
     jr z, jr_001_57bf                             ; $57b4: $28 $09
 
-    ld a, [rPuzzleCursorRow]                      ; $57b6: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $57b6: $fa $37 $d6
     inc a                                         ; $57b9: $3c
     and $07                                       ; $57ba: $e6 $07
-    ld [rPuzzleCursorRow], a                      ; $57bc: $ea $37 $d6
+    ld [rPuzzleAndMenuCursorRow], a               ; $57bc: $ea $37 $d6
 
 jr_001_57bf:
     ret                                           ; $57bf: $c9
 
 
 Call_001_57c0:
-    ld a, [$a065]                                 ; $57c0: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $57c0: $fa $65 $a0
     sla a                                         ; $57c3: $cb $27
     ld c, a                                       ; $57c5: $4f
     ld b, $00                                     ; $57c6: $06 $00
@@ -3853,7 +3853,7 @@ jr_001_57db:
 
 
 Call_001_57e8:
-    ld a, [$a065]                                 ; $57e8: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $57e8: $fa $65 $a0
     sla a                                         ; $57eb: $cb $27
     ld c, a                                       ; $57ed: $4f
     ld b, $00                                     ; $57ee: $06 $00
@@ -3876,7 +3876,7 @@ jr_001_57fb:
     cp c                                          ; $5803: $b9
     jr nz, jr_001_580c                            ; $5804: $20 $06
 
-    ld a, [rPuzzleCursorRow]                      ; $5806: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $5806: $fa $37 $d6
     cp b                                          ; $5809: $b8
     jr z, jr_001_580f                             ; $580a: $28 $03
 
@@ -3918,25 +3918,25 @@ Call_001_581c:
     ld bc, $98c4                                  ; $583a: $01 $c4 $98
     add hl, bc                                    ; $583d: $09
     ld a, h                                       ; $583e: $7c
-    ld [$c100], a                                 ; $583f: $ea $00 $c1
+    ld [rGS01_SaveSlotTemplateCommandStreamStart], a; $583f: $ea $00 $c1
     ld a, l                                       ; $5842: $7d
     ld [$c101], a                                 ; $5843: $ea $01 $c1
     ld a, $01                                     ; $5846: $3e $01
     ld [$c102], a                                 ; $5848: $ea $02 $c1
     ld a, $55                                     ; $584b: $3e $55
-    ld [$c103], a                                 ; $584d: $ea $03 $c1
+    ld [rGS01_SaveSlotTemplateRow1EasyPicrossIconPairLeft], a; $584d: $ea $03 $c1
     ld a, $00                                     ; $5850: $3e $00
     ld [$c104], a                                 ; $5852: $ea $04 $c1
     ld a, $00                                     ; $5855: $3e $00
-    ld bc, $c100                                  ; $5857: $01 $00 $c1
-    call Call_000_0738                            ; $585a: $cd $38 $07
+    ld bc, rGS01_SaveSlotTemplateCommandStreamStart; $5857: $01 $00 $c1
+    call QueueCommandStreamAndProcessIfLCDOff     ; $585a: $cd $38 $07
     pop hl                                        ; $585d: $e1
     pop bc                                        ; $585e: $c1
     ret                                           ; $585f: $c9
 
 
 Call_001_5860:
-    ld a, [$a065]                                 ; $5860: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $5860: $fa $65 $a0
     sla a                                         ; $5863: $cb $27
     ld c, a                                       ; $5865: $4f
     ld b, $00                                     ; $5866: $06 $00
@@ -3945,7 +3945,7 @@ Call_001_5860:
     ld a, [hl+]                                   ; $586c: $2a
     ld h, [hl]                                    ; $586d: $66
     ld l, a                                       ; $586e: $6f
-    ld a, [rPuzzleCursorRow]                      ; $586f: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $586f: $fa $37 $d6
     sla a                                         ; $5872: $cb $27
     sla a                                         ; $5874: $cb $27
     sla a                                         ; $5876: $cb $27
@@ -3969,7 +3969,7 @@ Call_001_5860:
 Call_001_588a:
     xor a                                         ; $588a: $af
     ld [$d842], a                                 ; $588b: $ea $42 $d8
-    ld a, [$a065]                                 ; $588e: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $588e: $fa $65 $a0
     sla a                                         ; $5891: $cb $27
     ld c, a                                       ; $5893: $4f
     ld b, $00                                     ; $5894: $06 $00
@@ -3978,7 +3978,7 @@ Call_001_588a:
     ld a, [hl+]                                   ; $589a: $2a
     ld h, [hl]                                    ; $589b: $66
     ld l, a                                       ; $589c: $6f
-    ld a, [rPuzzleCursorRow]                      ; $589d: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $589d: $fa $37 $d6
     sla a                                         ; $58a0: $cb $27
     sla a                                         ; $58a2: $cb $27
     sla a                                         ; $58a4: $cb $27
@@ -3993,15 +3993,15 @@ Call_001_588a:
     jr nz, jr_001_58ff                            ; $58b2: $20 $4b
 
     push hl                                       ; $58b4: $e5
-    ld a, [$a065]                                 ; $58b5: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $58b5: $fa $65 $a0
     ld c, a                                       ; $58b8: $4f
     ld b, $00                                     ; $58b9: $06 $00
-    ld hl, $a07e                                  ; $58bb: $21 $7e $a0
+    ld hl, rSaveSlot1EasyPicrossClearedPuzzleCount; $58bb: $21 $7e $a0
     add hl, bc                                    ; $58be: $09
     inc [hl]                                      ; $58bf: $34
     pop hl                                        ; $58c0: $e1
     set 7, [hl]                                   ; $58c1: $cb $fe
-    ld a, [$a065]                                 ; $58c3: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $58c3: $fa $65 $a0
     sla a                                         ; $58c6: $cb $27
     ld c, a                                       ; $58c8: $4f
     ld b, $00                                     ; $58c9: $06 $00
@@ -4010,7 +4010,7 @@ Call_001_588a:
     ld a, [hl+]                                   ; $58cf: $2a
     ld h, [hl]                                    ; $58d0: $66
     ld l, a                                       ; $58d1: $6f
-    ld a, [rPuzzleCursorRow]                      ; $58d2: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $58d2: $fa $37 $d6
     sla a                                         ; $58d5: $cb $27
     sla a                                         ; $58d7: $cb $27
     sla a                                         ; $58d9: $cb $27
@@ -4039,7 +4039,7 @@ Call_001_588a:
     set 3, [hl]                                   ; $58fd: $cb $de
 
 jr_001_58ff:
-    ld a, [$a065]                                 ; $58ff: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $58ff: $fa $65 $a0
     sla a                                         ; $5902: $cb $27
     ld c, a                                       ; $5904: $4f
     ld b, $00                                     ; $5905: $06 $00
@@ -4048,7 +4048,7 @@ jr_001_58ff:
     ld a, [hl+]                                   ; $590b: $2a
     ld h, [hl]                                    ; $590c: $66
     ld l, a                                       ; $590d: $6f
-    ld a, [rPuzzleCursorRow]                      ; $590e: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $590e: $fa $37 $d6
     sla a                                         ; $5911: $cb $27
     sla a                                         ; $5913: $cb $27
     sla a                                         ; $5915: $cb $27
@@ -4114,7 +4114,7 @@ jr_001_595c:
 
 
 Call_001_595e:
-    ld a, [$a065]                                 ; $595e: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $595e: $fa $65 $a0
     sla a                                         ; $5961: $cb $27
     ld c, a                                       ; $5963: $4f
     ld b, $00                                     ; $5964: $06 $00
@@ -4123,7 +4123,7 @@ Call_001_595e:
     ld a, [hl+]                                   ; $596a: $2a
     ld h, [hl]                                    ; $596b: $66
     ld l, a                                       ; $596c: $6f
-    ld a, [rPuzzleCursorRow]                      ; $596d: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $596d: $fa $37 $d6
     sla a                                         ; $5970: $cb $27
     sla a                                         ; $5972: $cb $27
     sla a                                         ; $5974: $cb $27
@@ -4136,7 +4136,7 @@ Call_001_595e:
     ld a, [hl]                                    ; $597f: $7e
     push af                                       ; $5980: $f5
     and $7f                                       ; $5981: $e6 $7f
-    call Call_000_1972                            ; $5983: $cd $72 $19
+    call SplitAToDecimalDigitsAndPushHundredsTens ; $5983: $cd $72 $19
     add $51                                       ; $5986: $c6 $51
     ld bc, $4818                                  ; $5988: $01 $18 $48
     call CopyOAMSpriteById                        ; $598b: $cd $ce $20
@@ -4154,7 +4154,7 @@ jr_001_599b:
     bit 7, a                                      ; $599d: $cb $7f
     jp z, Jump_001_5a72                           ; $599f: $ca $72 $5a
 
-    ld a, [$a065]                                 ; $59a2: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $59a2: $fa $65 $a0
     sla a                                         ; $59a5: $cb $27
     ld c, a                                       ; $59a7: $4f
     ld b, $00                                     ; $59a8: $06 $00
@@ -4163,7 +4163,7 @@ jr_001_599b:
     ld a, [hl+]                                   ; $59ae: $2a
     ld h, [hl]                                    ; $59af: $66
     ld l, a                                       ; $59b0: $6f
-    ld a, [rPuzzleCursorRow]                      ; $59b1: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $59b1: $fa $37 $d6
     sla a                                         ; $59b4: $cb $27
     sla a                                         ; $59b6: $cb $27
     sla a                                         ; $59b8: $cb $27
@@ -4210,7 +4210,7 @@ jr_001_599b:
     call CopyOAMSpriteById                        ; $5a00: $cd $ce $20
     ld a, [hl]                                    ; $5a03: $7e
     call Call_001_5c07                            ; $5a04: $cd $07 $5c
-    ld a, [$a065]                                 ; $5a07: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $5a07: $fa $65 $a0
     sla a                                         ; $5a0a: $cb $27
     ld c, a                                       ; $5a0c: $4f
     ld b, $00                                     ; $5a0d: $06 $00
@@ -4219,7 +4219,7 @@ jr_001_599b:
     ld a, [hl+]                                   ; $5a13: $2a
     ld h, [hl]                                    ; $5a14: $66
     ld l, a                                       ; $5a15: $6f
-    ld a, [rPuzzleCursorRow]                      ; $5a16: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $5a16: $fa $37 $d6
     sla a                                         ; $5a19: $cb $27
     sla a                                         ; $5a1b: $cb $27
     sla a                                         ; $5a1d: $cb $27
@@ -4306,7 +4306,7 @@ Call_001_5ab9:
     ld a, [$d84c]                                 ; $5ab9: $fa $4c $d8
     push af                                       ; $5abc: $f5
     and $7f                                       ; $5abd: $e6 $7f
-    call Call_000_1972                            ; $5abf: $cd $72 $19
+    call SplitAToDecimalDigitsAndPushHundredsTens ; $5abf: $cd $72 $19
     add $51                                       ; $5ac2: $c6 $51
     ld bc, $4818                                  ; $5ac4: $01 $18 $48
     call CopyOAMSpriteById                        ; $5ac7: $cd $ce $20
@@ -4430,7 +4430,7 @@ Jump_001_5b69:
 
 
 Call_001_5bb0:
-    ld a, [$a065]                                 ; $5bb0: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $5bb0: $fa $65 $a0
     sla a                                         ; $5bb3: $cb $27
     ld c, a                                       ; $5bb5: $4f
     ld b, $00                                     ; $5bb6: $06 $00
@@ -4439,7 +4439,7 @@ Call_001_5bb0:
     ld a, [hl+]                                   ; $5bbc: $2a
     ld h, [hl]                                    ; $5bbd: $66
     ld l, a                                       ; $5bbe: $6f
-    ld a, [rPuzzleCursorRow]                      ; $5bbf: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $5bbf: $fa $37 $d6
     sla a                                         ; $5bc2: $cb $27
     sla a                                         ; $5bc4: $cb $27
     sla a                                         ; $5bc6: $cb $27
@@ -4451,7 +4451,7 @@ Call_001_5bb0:
     add hl, bc                                    ; $5bd0: $09
     ld a, [hl]                                    ; $5bd1: $7e
     ld [$d84c], a                                 ; $5bd2: $ea $4c $d8
-    ld a, [$a065]                                 ; $5bd5: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $5bd5: $fa $65 $a0
     sla a                                         ; $5bd8: $cb $27
     ld c, a                                       ; $5bda: $4f
     ld b, $00                                     ; $5bdb: $06 $00
@@ -4460,7 +4460,7 @@ Call_001_5bb0:
     ld a, [hl+]                                   ; $5be1: $2a
     ld h, [hl]                                    ; $5be2: $66
     ld l, a                                       ; $5be3: $6f
-    ld a, [rPuzzleCursorRow]                      ; $5be4: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $5be4: $fa $37 $d6
     sla a                                         ; $5be7: $cb $27
     sla a                                         ; $5be9: $cb $27
     sla a                                         ; $5beb: $cb $27
@@ -4490,13 +4490,13 @@ Call_001_5c07:
 
     ld a, $01                                     ; $5c0d: $3e $01
     ld bc, $5c22                                  ; $5c0f: $01 $22 $5c
-    call Call_000_0738                            ; $5c12: $cd $38 $07
+    call QueueCommandStreamAndProcessIfLCDOff     ; $5c12: $cd $38 $07
     jr jr_001_5c1f                                ; $5c15: $18 $08
 
 jr_001_5c17:
     ld a, $01                                     ; $5c17: $3e $01
     ld bc, $5c27                                  ; $5c19: $01 $27 $5c
-    call Call_000_0738                            ; $5c1c: $cd $38 $07
+    call QueueCommandStreamAndProcessIfLCDOff     ; $5c1c: $cd $38 $07
 
 jr_001_5c1f:
     pop hl                                        ; $5c1f: $e1
@@ -4519,13 +4519,13 @@ Jump_001_5c2c:
 
     ld a, $01                                     ; $5c32: $3e $01
     ld bc, $5c47                                  ; $5c34: $01 $47 $5c
-    call Call_000_0738                            ; $5c37: $cd $38 $07
+    call QueueCommandStreamAndProcessIfLCDOff     ; $5c37: $cd $38 $07
     jr jr_001_5c44                                ; $5c3a: $18 $08
 
 jr_001_5c3c:
     ld a, $01                                     ; $5c3c: $3e $01
     ld bc, $5c4c                                  ; $5c3e: $01 $4c $5c
-    call Call_000_0738                            ; $5c41: $cd $38 $07
+    call QueueCommandStreamAndProcessIfLCDOff     ; $5c41: $cd $38 $07
 
 jr_001_5c44:
     pop hl                                        ; $5c44: $e1
@@ -4541,7 +4541,7 @@ jr_001_5c44:
     ld bc, $002b                                  ; $5c4e: $01 $2b $00
 
 Jump_001_5c51:
-    ld a, [rPuzzleCursorRow]                      ; $5c51: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $5c51: $fa $37 $d6
     cp $07                                        ; $5c54: $fe $07
     jr nz, jr_001_5c5e                            ; $5c56: $20 $06
 
@@ -4550,7 +4550,7 @@ Jump_001_5c51:
     ret z                                         ; $5c5d: $c8
 
 jr_001_5c5e:
-    ld a, [$a065]                                 ; $5c5e: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $5c5e: $fa $65 $a0
     sla a                                         ; $5c61: $cb $27
     ld c, a                                       ; $5c63: $4f
     ld b, $00                                     ; $5c64: $06 $00
@@ -4559,7 +4559,7 @@ jr_001_5c5e:
     ld a, [hl+]                                   ; $5c6a: $2a
     ld h, [hl]                                    ; $5c6b: $66
     ld l, a                                       ; $5c6c: $6f
-    ld a, [rPuzzleCursorRow]                      ; $5c6d: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $5c6d: $fa $37 $d6
     sla a                                         ; $5c70: $cb $27
     sla a                                         ; $5c72: $cb $27
     sla a                                         ; $5c74: $cb $27
@@ -4578,9 +4578,9 @@ jr_001_5c5e:
     cp $08                                        ; $5c87: $fe $08
     jr nz, jr_001_5c93                            ; $5c89: $20 $08
 
-    ld a, [rPuzzleCursorRow]                      ; $5c8b: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $5c8b: $fa $37 $d6
     inc a                                         ; $5c8e: $3c
-    ld [rPuzzleCursorRow], a                      ; $5c8f: $ea $37 $d6
+    ld [rPuzzleAndMenuCursorRow], a               ; $5c8f: $ea $37 $d6
     xor a                                         ; $5c92: $af
 
 jr_001_5c93:
@@ -4694,7 +4694,7 @@ GS08_StatePhase_00_TODO::
     call LoadGameBoardTileData                    ; $5db8: $cd $b9 $69
     xor a                                         ; $5dbb: $af
     ld [rPuzzleCursorColumn], a                   ; $5dbc: $ea $36 $d6
-    ld [rPuzzleCursorRow], a                      ; $5dbf: $ea $37 $d6
+    ld [rPuzzleAndMenuCursorRow], a               ; $5dbf: $ea $37 $d6
     ld a, $00                                     ; $5dc2: $3e $00
     ld [rHintPopupSelection], a                   ; $5dc4: $ea $33 $d8
     ld a, $02                                     ; $5dc7: $3e $02
@@ -4718,7 +4718,7 @@ GS08_StatePhase_00_TODO::
     call ClearShadowOAMBuffer                     ; $5df7: $cd $b6 $05
     call ResetPuzzleTimerState                    ; $5dfa: $cd $eb $7b
     call Call_001_786e                            ; $5dfd: $cd $6e $78
-    ld a, [$a065]                                 ; $5e00: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $5e00: $fa $65 $a0
     ld c, a                                       ; $5e03: $4f
     sla a                                         ; $5e04: $cb $27
     sla a                                         ; $5e06: $cb $27
@@ -4822,7 +4822,7 @@ GS08_StatePhase_0b_TODO::
     call ClearShadowOAMBuffer                     ; $5ed1: $cd $b6 $05
     call RenderPuzzleTimerDigits                  ; $5ed4: $cd $04 $7c
     call Call_001_786e                            ; $5ed7: $cd $6e $78
-    ld a, [$a065]                                 ; $5eda: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $5eda: $fa $65 $a0
     ld c, a                                       ; $5edd: $4f
     sla a                                         ; $5ede: $cb $27
     sla a                                         ; $5ee0: $cb $27
@@ -4900,7 +4900,7 @@ jr_001_5f68:
     ld [$d83a], a                                 ; $5f6d: $ea $3a $d8
     ld a, $01                                     ; $5f70: $3e $01
     ld [$d83b], a                                 ; $5f72: $ea $3b $d8
-    ld a, [$a065]                                 ; $5f75: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $5f75: $fa $65 $a0
     ld c, a                                       ; $5f78: $4f
     sla a                                         ; $5f79: $cb $27
     sla a                                         ; $5f7b: $cb $27
@@ -5106,7 +5106,7 @@ jr_001_60e0:
     ld a, $5d                                     ; $60fd: $3e $5d
     ld [rMessageScriptStreamPointerHigh], a       ; $60ff: $ea $2e $d8
     call Call_001_5fbb                            ; $6102: $cd $bb $5f
-    ld a, [$a065]                                 ; $6105: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $6105: $fa $65 $a0
     ld c, a                                       ; $6108: $4f
     ld b, $00                                     ; $6109: $06 $00
     ld hl, $a081                                  ; $610b: $21 $81 $a0
@@ -5247,7 +5247,7 @@ GS08_StatePhase_05_TODO::
     ld [$d83a], a                                 ; $6201: $ea $3a $d8
     ld a, $01                                     ; $6204: $3e $01
     ld [$d83b], a                                 ; $6206: $ea $3b $d8
-    ld a, [$a065]                                 ; $6209: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $6209: $fa $65 $a0
     ld c, a                                       ; $620c: $4f
     sla a                                         ; $620d: $cb $27
     sla a                                         ; $620f: $cb $27
@@ -5330,7 +5330,7 @@ GS08_StatePhase_07_TODO::
 jr_001_6291:
     call Call_000_1c14                            ; $6291: $cd $14 $1c
     ld a, $01                                     ; $6294: $3e $01
-    ld [$aca2], a                                 ; $6296: $ea $a2 $ac
+    ld [rContinueSavedGameFlowMode_Unsure], a     ; $6296: $ea $a2 $ac
     ld c, $03                                     ; $6299: $0e $03
     ld a, $02                                     ; $629b: $3e $02
     call CallSoundEffectDispatcher                ; $629d: $cd $b6 $03
@@ -5481,14 +5481,14 @@ jr_001_63a5:
     ld a, $04                                     ; $63b7: $3e $04
     ld [rStatePhase_Current], a                   ; $63b9: $ea $35 $d6
     xor a                                         ; $63bc: $af
-    ld [$aca2], a                                 ; $63bd: $ea $a2 $ac
+    ld [rContinueSavedGameFlowMode_Unsure], a     ; $63bd: $ea $a2 $ac
     jp RefreshSaveValidationChecksumsAndMirrors   ; $63c0: $c3 $1f $1b
 
 
 GS08_StatePhase_0a_TODO::
     call ClearShadowOAMBuffer                     ; $63c3: $cd $b6 $05
     rst RST_08                                    ; $63c6: $cf
-    ld a, [$a065]                                 ; $63c7: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $63c7: $fa $65 $a0
     ld c, a                                       ; $63ca: $4f
     sla a                                         ; $63cb: $cb $27
     sla a                                         ; $63cd: $cb $27
@@ -5510,7 +5510,7 @@ GS08_StatePhase_0a_TODO::
     ld a, $03                                     ; $63f0: $3e $03
     ld [rStatePhase_Current], a                   ; $63f2: $ea $35 $d6
     xor a                                         ; $63f5: $af
-    ld [$aca2], a                                 ; $63f6: $ea $a2 $ac
+    ld [rContinueSavedGameFlowMode_Unsure], a     ; $63f6: $ea $a2 $ac
     jp RefreshSaveValidationChecksumsAndMirrors   ; $63f9: $c3 $1f $1b
 
 
@@ -5563,7 +5563,7 @@ GS09_StatePhase_00_TODO::
     call LoadGameBoardTileData                    ; $6432: $cd $b9 $69
     xor a                                         ; $6435: $af
     ld [rPuzzleCursorColumn], a                   ; $6436: $ea $36 $d6
-    ld [rPuzzleCursorRow], a                      ; $6439: $ea $37 $d6
+    ld [rPuzzleAndMenuCursorRow], a               ; $6439: $ea $37 $d6
     ld a, $00                                     ; $643c: $3e $00
     ld [rHintPopupSelection], a                   ; $643e: $ea $33 $d8
     ld a, $02                                     ; $6441: $3e $02
@@ -5584,7 +5584,7 @@ GS09_StatePhase_00_TODO::
     call DrawPuzzleCursorSpritesAndTickStepSequence; $6469: $cd $3e $71
     call ResetPuzzleTimerState                    ; $646c: $cd $eb $7b
     call Call_001_786e                            ; $646f: $cd $6e $78
-    ld a, [$a065]                                 ; $6472: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $6472: $fa $65 $a0
     ld c, a                                       ; $6475: $4f
     sla a                                         ; $6476: $cb $27
     sla a                                         ; $6478: $cb $27
@@ -5643,7 +5643,7 @@ GS09_StatePhase_09_TODO::
     call ClearShadowOAMBuffer                     ; $64ef: $cd $b6 $05
     call RenderPuzzleTimerDigits                  ; $64f2: $cd $04 $7c
     call Call_001_786e                            ; $64f5: $cd $6e $78
-    ld a, [$a065]                                 ; $64f8: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $64f8: $fa $65 $a0
     ld c, a                                       ; $64fb: $4f
     sla a                                         ; $64fc: $cb $27
     sla a                                         ; $64fe: $cb $27
@@ -5675,7 +5675,7 @@ GS09_StatePhase_09_TODO::
     ld [$d83a], a                                 ; $6534: $ea $3a $d8
     ld a, $01                                     ; $6537: $3e $01
     ld [$d83b], a                                 ; $6539: $ea $3b $d8
-    ld a, [$a065]                                 ; $653c: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $653c: $fa $65 $a0
     ld c, a                                       ; $653f: $4f
     sla a                                         ; $6540: $cb $27
     sla a                                         ; $6542: $cb $27
@@ -5836,7 +5836,7 @@ GS09_StatePhase_03_TODO::
     ld [$d83a], a                                 ; $667c: $ea $3a $d8
     ld a, $01                                     ; $667f: $3e $01
     ld [$d83b], a                                 ; $6681: $ea $3b $d8
-    ld a, [$a065]                                 ; $6684: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $6684: $fa $65 $a0
     ld c, a                                       ; $6687: $4f
     sla a                                         ; $6688: $cb $27
     sla a                                         ; $668a: $cb $27
@@ -5919,7 +5919,7 @@ GS09_StatePhase_05_TODO::
 jr_001_670c:
     call Call_000_1c14                            ; $670c: $cd $14 $1c
     ld a, $03                                     ; $670f: $3e $03
-    ld [$aca2], a                                 ; $6711: $ea $a2 $ac
+    ld [rContinueSavedGameFlowMode_Unsure], a     ; $6711: $ea $a2 $ac
     ld c, $03                                     ; $6714: $0e $03
     ld a, $02                                     ; $6716: $3e $02
     call CallSoundEffectDispatcher                ; $6718: $cd $b6 $03
@@ -5948,7 +5948,7 @@ jr_001_670c:
     ld [rLCDCInterruptDispatchIndex], a           ; $6752: $ea $38 $c3
     ld [rVBlankLCDCBit4ForceFlag], a              ; $6755: $ea $3c $c3
     ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $6758: $ea $50 $c3
-    ld a, [$a065]                                 ; $675b: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $675b: $fa $65 $a0
     ld c, a                                       ; $675e: $4f
     sla a                                         ; $675f: $cb $27
     sla a                                         ; $6761: $cb $27
@@ -6015,7 +6015,7 @@ jr_001_67b9:
     call CallSoundEffectDispatcher                ; $67cc: $cd $b6 $03
     call ClearShadowOAMBuffer                     ; $67cf: $cd $b6 $05
     call LoadGameOverMessageTileData              ; $67d2: $cd $e3 $7c
-    ld a, [$a065]                                 ; $67d5: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $67d5: $fa $65 $a0
     ld c, a                                       ; $67d8: $4f
     sla a                                         ; $67d9: $cb $27
     sla a                                         ; $67db: $cb $27
@@ -6030,14 +6030,14 @@ jr_001_67b9:
     ld a, $02                                     ; $67ea: $3e $02
     ld [rStatePhase_Current], a                   ; $67ec: $ea $35 $d6
     xor a                                         ; $67ef: $af
-    ld [$aca2], a                                 ; $67f0: $ea $a2 $ac
+    ld [rContinueSavedGameFlowMode_Unsure], a     ; $67f0: $ea $a2 $ac
     jp RefreshSaveValidationChecksumsAndMirrors   ; $67f3: $c3 $1f $1b
 
 
 GS09_StatePhase_08_TODO::
     call ClearShadowOAMBuffer                     ; $67f6: $cd $b6 $05
     rst RST_08                                    ; $67f9: $cf
-    ld a, [$a065]                                 ; $67fa: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $67fa: $fa $65 $a0
     ld c, a                                       ; $67fd: $4f
     sla a                                         ; $67fe: $cb $27
     sla a                                         ; $6800: $cb $27
@@ -6059,7 +6059,7 @@ GS09_StatePhase_08_TODO::
     ld a, $01                                     ; $6823: $3e $01
     ld [rStatePhase_Current], a                   ; $6825: $ea $35 $d6
     xor a                                         ; $6828: $af
-    ld [$aca2], a                                 ; $6829: $ea $a2 $ac
+    ld [rContinueSavedGameFlowMode_Unsure], a     ; $6829: $ea $a2 $ac
     jp RefreshSaveValidationChecksumsAndMirrors   ; $682c: $c3 $1f $1b
 
 
@@ -6077,7 +6077,7 @@ jr_001_683d:
     ld [rPuzzleActionRepeatGuard], a              ; $683e: $ea $0f $d8
 
 jr_001_6841:
-    ld a, [rPuzzleCursorRow]                      ; $6841: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $6841: $fa $37 $d6
     sla a                                         ; $6844: $cb $27
     sla a                                         ; $6846: $cb $27
     sla a                                         ; $6848: $cb $27
@@ -6089,7 +6089,7 @@ jr_001_6841:
     ld hl, $d640                                  ; $6853: $21 $40 $d6
     add hl, bc                                    ; $6856: $09
     push hl                                       ; $6857: $e5
-    ld a, [$a065]                                 ; $6858: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $6858: $fa $65 $a0
     ld c, a                                       ; $685b: $4f
     ld b, $00                                     ; $685c: $06 $00
     ld hl, $a066                                  ; $685e: $21 $66 $a0
@@ -6160,7 +6160,7 @@ GS0A_StatePhase_00_TODO::
     call LoadGameBoardTileData                    ; $68a7: $cd $b9 $69
     xor a                                         ; $68aa: $af
     ld [rPuzzleCursorColumn], a                   ; $68ab: $ea $36 $d6
-    ld [rPuzzleCursorRow], a                      ; $68ae: $ea $37 $d6
+    ld [rPuzzleAndMenuCursorRow], a               ; $68ae: $ea $37 $d6
     ld a, $00                                     ; $68b1: $3e $00
     ld [rHintPopupSelection], a                   ; $68b3: $ea $33 $d8
     ld a, $02                                     ; $68b6: $3e $02
@@ -6243,12 +6243,12 @@ GS0A_StatePhase_0b_TODO::
     ld [$d83a], a                                 ; $6978: $ea $3a $d8
     ld a, $01                                     ; $697b: $3e $01
     ld [$d83b], a                                 ; $697d: $ea $3b $d8
-    ld a, [$a065]                                 ; $6980: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $6980: $fa $65 $a0
     ld c, a                                       ; $6983: $4f
     ld b, $00                                     ; $6984: $06 $00
     ld hl, $a38d                                  ; $6986: $21 $8d $a3
     add hl, bc                                    ; $6989: $09
-    ld a, [$a065]                                 ; $698a: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $698a: $fa $65 $a0
     ld c, a                                       ; $698d: $4f
     sla a                                         ; $698e: $cb $27
     sla a                                         ; $6990: $cb $27
@@ -6472,7 +6472,7 @@ GS0A_StatePhase_02_TODO::
     jr z, jr_001_6b7f                             ; $6b49: $28 $34
 
     ld c, a                                       ; $6b4b: $4f
-    ld a, [$c33a]                                 ; $6b4c: $fa $3a $c3
+    ld a, [rVBlankFrameCounter]                   ; $6b4c: $fa $3a $c3
     and c                                         ; $6b4f: $a1
     jr nz, jr_001_6b7f                            ; $6b50: $20 $2d
 
@@ -6515,7 +6515,7 @@ jr_001_6b7f:
     jr z, jr_001_6bba                             ; $6b84: $28 $34
 
     ld c, a                                       ; $6b86: $4f
-    ld a, [$c33a]                                 ; $6b87: $fa $3a $c3
+    ld a, [rVBlankFrameCounter]                   ; $6b87: $fa $3a $c3
     and c                                         ; $6b8a: $a1
     jr nz, jr_001_6bba                            ; $6b8b: $20 $2d
 
@@ -6528,7 +6528,7 @@ jr_001_6b7f:
     rl [hl]                                       ; $6b96: $cb $16
 
 jr_001_6b98:
-    ld a, [rPuzzleCursorRow]                      ; $6b98: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $6b98: $fa $37 $d6
     inc a                                         ; $6b9b: $3c
     ld hl, rPuzzleGridHeight                      ; $6b9c: $21 $01 $d8
     cp [hl]                                       ; $6b9f: $be
@@ -6537,7 +6537,7 @@ jr_001_6b98:
     xor a                                         ; $6ba2: $af
 
 jr_001_6ba3:
-    ld [rPuzzleCursorRow], a                      ; $6ba3: $ea $37 $d6
+    ld [rPuzzleAndMenuCursorRow], a               ; $6ba3: $ea $37 $d6
     ld c, a                                       ; $6ba6: $4f
     sla a                                         ; $6ba7: $cb $27
     add c                                         ; $6ba9: $81
@@ -6780,12 +6780,12 @@ GS0A_StatePhase_05_TODO::
     ld [$d83a], a                                 ; $6d5c: $ea $3a $d8
     ld a, $01                                     ; $6d5f: $3e $01
     ld [$d83b], a                                 ; $6d61: $ea $3b $d8
-    ld a, [$a065]                                 ; $6d64: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $6d64: $fa $65 $a0
     ld c, a                                       ; $6d67: $4f
     ld b, $00                                     ; $6d68: $06 $00
     ld hl, $a38d                                  ; $6d6a: $21 $8d $a3
     add hl, bc                                    ; $6d6d: $09
-    ld a, [$a065]                                 ; $6d6e: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $6d6e: $fa $65 $a0
     ld c, a                                       ; $6d71: $4f
     sla a                                         ; $6d72: $cb $27
     sla a                                         ; $6d74: $cb $27
@@ -6868,7 +6868,7 @@ GS0A_StatePhase_07_TODO::
 jr_001_6df5:
     call Call_000_1c14                            ; $6df5: $cd $14 $1c
     ld a, $02                                     ; $6df8: $3e $02
-    ld [$aca2], a                                 ; $6dfa: $ea $a2 $ac
+    ld [rContinueSavedGameFlowMode_Unsure], a     ; $6dfa: $ea $a2 $ac
     ld c, $03                                     ; $6dfd: $0e $03
     ld a, $02                                     ; $6dff: $3e $02
     call CallSoundEffectDispatcher                ; $6e01: $cd $b6 $03
@@ -6897,12 +6897,12 @@ jr_001_6df5:
     ld [rLCDCInterruptDispatchIndex], a           ; $6e3b: $ea $38 $c3
     ld [rVBlankLCDCBit4ForceFlag], a              ; $6e3e: $ea $3c $c3
     ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $6e41: $ea $50 $c3
-    ld a, [$a065]                                 ; $6e44: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $6e44: $fa $65 $a0
     ld c, a                                       ; $6e47: $4f
     ld b, $00                                     ; $6e48: $06 $00
     ld hl, $a38d                                  ; $6e4a: $21 $8d $a3
     add hl, bc                                    ; $6e4d: $09
-    ld a, [$a065]                                 ; $6e4e: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $6e4e: $fa $65 $a0
     ld c, a                                       ; $6e51: $4f
     sla a                                         ; $6e52: $cb $27
     sla a                                         ; $6e54: $cb $27
@@ -6968,12 +6968,12 @@ jr_001_6eaa:
     call CallSoundEffectDispatcher                ; $6ebd: $cd $b6 $03
     call ClearShadowOAMBuffer                     ; $6ec0: $cd $b6 $05
     call LoadGameOverMessageTileData              ; $6ec3: $cd $e3 $7c
-    ld a, [$a065]                                 ; $6ec6: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $6ec6: $fa $65 $a0
     ld c, a                                       ; $6ec9: $4f
     ld b, $00                                     ; $6eca: $06 $00
     ld hl, $a38d                                  ; $6ecc: $21 $8d $a3
     add hl, bc                                    ; $6ecf: $09
-    ld a, [$a065]                                 ; $6ed0: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $6ed0: $fa $65 $a0
     ld c, a                                       ; $6ed3: $4f
     sla a                                         ; $6ed4: $cb $27
     sla a                                         ; $6ed6: $cb $27
@@ -6987,19 +6987,19 @@ jr_001_6eaa:
     ld a, $04                                     ; $6ee3: $3e $04
     ld [rStatePhase_Current], a                   ; $6ee5: $ea $35 $d6
     xor a                                         ; $6ee8: $af
-    ld [$aca2], a                                 ; $6ee9: $ea $a2 $ac
+    ld [rContinueSavedGameFlowMode_Unsure], a     ; $6ee9: $ea $a2 $ac
     jp RefreshSaveValidationChecksumsAndMirrors   ; $6eec: $c3 $1f $1b
 
 
 GS0A_StatePhase_0a_TODO::
     call ClearShadowOAMBuffer                     ; $6eef: $cd $b6 $05
     rst RST_08                                    ; $6ef2: $cf
-    ld a, [$a065]                                 ; $6ef3: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $6ef3: $fa $65 $a0
     ld c, a                                       ; $6ef6: $4f
     ld b, $00                                     ; $6ef7: $06 $00
     ld hl, $a38d                                  ; $6ef9: $21 $8d $a3
     add hl, bc                                    ; $6efc: $09
-    ld a, [$a065]                                 ; $6efd: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $6efd: $fa $65 $a0
     ld c, a                                       ; $6f00: $4f
     sla a                                         ; $6f01: $cb $27
     sla a                                         ; $6f03: $cb $27
@@ -7020,7 +7020,7 @@ GS0A_StatePhase_0a_TODO::
     ld a, $03                                     ; $6f24: $3e $03
     ld [rStatePhase_Current], a                   ; $6f26: $ea $35 $d6
     xor a                                         ; $6f29: $af
-    ld [$aca2], a                                 ; $6f2a: $ea $a2 $ac
+    ld [rContinueSavedGameFlowMode_Unsure], a     ; $6f2a: $ea $a2 $ac
     jp RefreshSaveValidationChecksumsAndMirrors   ; $6f2d: $c3 $1f $1b
 
 
@@ -7466,7 +7466,7 @@ DrawPuzzleCursorSpritesAndTickStepSequence::
     add e                                         ; $7144: $83
     sla a                                         ; $7145: $cb $27
     ld b, a                                       ; $7147: $47
-    ld a, [rPuzzleCursorRow]                      ; $7148: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $7148: $fa $37 $d6
     ld e, a                                       ; $714b: $5f
     sla a                                         ; $714c: $cb $27
     add e                                         ; $714e: $83
@@ -7477,7 +7477,7 @@ DrawPuzzleCursorSpritesAndTickStepSequence::
     add $3a                                       ; $7154: $c6 $3a
     ld b, a                                       ; $7156: $47
     ld c, $00                                     ; $7157: $0e $00
-    ld a, [$c33a]                                 ; $7159: $fa $3a $c3
+    ld a, [rVBlankFrameCounter]                   ; $7159: $fa $3a $c3
     srl a                                         ; $715c: $cb $3f
     srl a                                         ; $715e: $cb $3f
     srl a                                         ; $7160: $cb $3f
@@ -7490,7 +7490,7 @@ DrawPuzzleCursorSpritesAndTickStepSequence::
     ld a, c                                       ; $716d: $79
     add $32                                       ; $716e: $c6 $32
     ld c, a                                       ; $7170: $4f
-    ld a, [$c33a]                                 ; $7171: $fa $3a $c3
+    ld a, [rVBlankFrameCounter]                   ; $7171: $fa $3a $c3
     srl a                                         ; $7174: $cb $3f
     srl a                                         ; $7176: $cb $3f
     srl a                                         ; $7178: $cb $3f
@@ -7508,7 +7508,7 @@ DrawPuzzleCursorSprites::
     add e                                         ; $718b: $83
     sla a                                         ; $718c: $cb $27
     ld b, a                                       ; $718e: $47
-    ld a, [rPuzzleCursorRow]                      ; $718f: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $718f: $fa $37 $d6
     ld e, a                                       ; $7192: $5f
     sla a                                         ; $7193: $cb $27
     add e                                         ; $7195: $83
@@ -7519,7 +7519,7 @@ DrawPuzzleCursorSprites::
     add $3a                                       ; $719b: $c6 $3a
     ld b, a                                       ; $719d: $47
     ld c, $00                                     ; $719e: $0e $00
-    ld a, [$c33a]                                 ; $71a0: $fa $3a $c3
+    ld a, [rVBlankFrameCounter]                   ; $71a0: $fa $3a $c3
     srl a                                         ; $71a3: $cb $3f
     srl a                                         ; $71a5: $cb $3f
     srl a                                         ; $71a7: $cb $3f
@@ -7532,7 +7532,7 @@ DrawPuzzleCursorSprites::
     ld a, c                                       ; $71b4: $79
     add $32                                       ; $71b5: $c6 $32
     ld c, a                                       ; $71b7: $4f
-    ld a, [$c33a]                                 ; $71b8: $fa $3a $c3
+    ld a, [rVBlankFrameCounter]                   ; $71b8: $fa $3a $c3
     srl a                                         ; $71bb: $cb $3f
     srl a                                         ; $71bd: $cb $3f
     srl a                                         ; $71bf: $cb $3f
@@ -7585,12 +7585,12 @@ UpdatePuzzleCursorFromDirectionalInput::
     bit 6, [hl]                                   ; $7201: $cb $76
     jr z, .CheckDown                              ; $7203: $28 $0a
 
-    ld a, [rPuzzleCursorRow]                      ; $7205: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $7205: $fa $37 $d6
     and a                                         ; $7208: $a7
     jr z, .CheckDown                              ; $7209: $28 $04
 
     dec a                                         ; $720b: $3d
-    ld [rPuzzleCursorRow], a                      ; $720c: $ea $37 $d6
+    ld [rPuzzleAndMenuCursorRow], a               ; $720c: $ea $37 $d6
 
 .CheckDown:
     bit 7, [hl]                                   ; $720f: $cb $7e
@@ -7598,12 +7598,12 @@ UpdatePuzzleCursorFromDirectionalInput::
 
     ld a, [rPuzzleGridHeight]                     ; $7213: $fa $01 $d8
     ld c, a                                       ; $7216: $4f
-    ld a, [rPuzzleCursorRow]                      ; $7217: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $7217: $fa $37 $d6
     inc a                                         ; $721a: $3c
     cp c                                          ; $721b: $b9
     jr z, .Return                                 ; $721c: $28 $03
 
-    ld [rPuzzleCursorRow], a                      ; $721e: $ea $37 $d6
+    ld [rPuzzleAndMenuCursorRow], a               ; $721e: $ea $37 $d6
 
 .Return:
     ret                                           ; $7221: $c9
@@ -7623,7 +7623,7 @@ ProcessPuzzleCellActionInput::
     ld [rPuzzleActionRepeatGuard], a              ; $7231: $ea $0f $d8
 
 .LoadCursorCellAndTileState:
-    ld a, [rPuzzleCursorRow]                      ; $7234: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $7234: $fa $37 $d6
     sla a                                         ; $7237: $cb $27
     sla a                                         ; $7239: $cb $27
     sla a                                         ; $723b: $cb $27
@@ -7635,7 +7635,7 @@ ProcessPuzzleCellActionInput::
     ld hl, $d640                                  ; $7246: $21 $40 $d6
     add hl, bc                                    ; $7249: $09
     push hl                                       ; $724a: $e5
-    ld a, [$a065]                                 ; $724b: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $724b: $fa $65 $a0
     ld c, a                                       ; $724e: $4f
     ld b, $00                                     ; $724f: $06 $00
     ld hl, $a066                                  ; $7251: $21 $66 $a0
@@ -7773,7 +7773,7 @@ ProcessPuzzleCellActionInput_ApplyFillAction::
     sla a                                         ; $7304: $cb $27
     add $32                                       ; $7306: $c6 $32
     ld [$d826], a                                 ; $7308: $ea $26 $d8
-    ld a, [rPuzzleCursorRow]                      ; $730b: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $730b: $fa $37 $d6
     ld e, a                                       ; $730e: $5f
     sla a                                         ; $730f: $cb $27
     add e                                         ; $7311: $83
@@ -7791,7 +7791,7 @@ ProcessPuzzleCellActionInput_ApplyFillAction::
 .BeginFillEffectSequence:
     ld a, [rPuzzleCursorColumn]                   ; $7328: $fa $36 $d6
     ld [rCellEffectTargetColumn], a               ; $732b: $ea $24 $d8
-    ld a, [rPuzzleCursorRow]                      ; $732e: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $732e: $fa $37 $d6
     ld [rCellEffectTargetRow], a                  ; $7331: $ea $25 $d8
     xor a                                         ; $7334: $af
     ld [rPendingCellEffectDelay], a               ; $7335: $ea $22 $d8
@@ -7898,7 +7898,7 @@ jr_001_73c4:
     ld [rPendingCellEffectCode], a                ; $73e2: $ea $23 $d8
     ld a, [rPuzzleCursorColumn]                   ; $73e5: $fa $36 $d6
     ld [rCellEffectTargetColumn], a               ; $73e8: $ea $24 $d8
-    ld a, [rPuzzleCursorRow]                      ; $73eb: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $73eb: $fa $37 $d6
     ld [rCellEffectTargetRow], a                  ; $73ee: $ea $25 $d8
     ret                                           ; $73f1: $c9
 
@@ -7921,7 +7921,7 @@ jr_001_7405:
     ld [rPendingCellEffectCode], a                ; $740c: $ea $23 $d8
     ld a, [rPuzzleCursorColumn]                   ; $740f: $fa $36 $d6
     ld [rCellEffectTargetColumn], a               ; $7412: $ea $24 $d8
-    ld a, [rPuzzleCursorRow]                      ; $7415: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $7415: $fa $37 $d6
     ld [rCellEffectTargetRow], a                  ; $7418: $ea $25 $d8
     ret                                           ; $741b: $c9
 
@@ -7974,7 +7974,7 @@ ProcessPuzzleCellActionInput_ApplyMarkXAction::
     ld [rPendingCellEffectCode], a                ; $7465: $ea $23 $d8
     ld a, [rPuzzleCursorColumn]                   ; $7468: $fa $36 $d6
     ld [rCellEffectTargetColumn], a               ; $746b: $ea $24 $d8
-    ld a, [rPuzzleCursorRow]                      ; $746e: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $746e: $fa $37 $d6
     ld [rCellEffectTargetRow], a                  ; $7471: $ea $25 $d8
     ret                                           ; $7474: $c9
 
@@ -7995,7 +7995,7 @@ ProcessPuzzleCellActionInput_ApplyMarkXAction::
     ld [rPendingCellEffectCode], a                ; $748a: $ea $23 $d8
     ld a, [rPuzzleCursorColumn]                   ; $748d: $fa $36 $d6
     ld [rCellEffectTargetColumn], a               ; $7490: $ea $24 $d8
-    ld a, [rPuzzleCursorRow]                      ; $7493: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $7493: $fa $37 $d6
     ld [rCellEffectTargetRow], a                  ; $7496: $ea $25 $d8
     ret                                           ; $7499: $c9
 
@@ -8047,7 +8047,7 @@ ProcessPuzzleCellActionInput_ClearCellState::
     ld [rPendingCellEffectCode], a                ; $74e1: $ea $23 $d8
     ld a, [rPuzzleCursorColumn]                   ; $74e4: $fa $36 $d6
     ld [rCellEffectTargetColumn], a               ; $74e7: $ea $24 $d8
-    ld a, [rPuzzleCursorRow]                      ; $74ea: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $74ea: $fa $37 $d6
     ld [rCellEffectTargetRow], a                  ; $74ed: $ea $25 $d8
     ret                                           ; $74f0: $c9
 
@@ -8068,7 +8068,7 @@ ProcessPuzzleCellActionInput_ClearCellState::
     ld [rPendingCellEffectCode], a                ; $7506: $ea $23 $d8
     ld a, [rPuzzleCursorColumn]                   ; $7509: $fa $36 $d6
     ld [rCellEffectTargetColumn], a               ; $750c: $ea $24 $d8
-    ld a, [rPuzzleCursorRow]                      ; $750f: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $750f: $fa $37 $d6
     ld [rCellEffectTargetRow], a                  ; $7512: $ea $25 $d8
     ret                                           ; $7515: $c9
 
@@ -8670,7 +8670,7 @@ jr_001_7875:
 ApplyHintSelectionToRowAndColumn::
     ld a, [rPuzzleCursorColumn]                   ; $78a2: $fa $36 $d6
     ld c, a                                       ; $78a5: $4f
-    ld a, [rPuzzleCursorRow]                      ; $78a6: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $78a6: $fa $37 $d6
     ld b, a                                       ; $78a9: $47
     ld e, c                                       ; $78aa: $59
     ld d, $00                                     ; $78ab: $16 $00
@@ -8885,7 +8885,7 @@ jr_001_79ba:
     sla a                                         ; $79cc: $cb $27
     add $3a                                       ; $79ce: $c6 $3a
     ld b, a                                       ; $79d0: $47
-    ld a, [rPuzzleCursorRow]                      ; $79d1: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $79d1: $fa $37 $d6
     ld e, a                                       ; $79d4: $5f
     sla a                                         ; $79d5: $cb $27
     add e                                         ; $79d7: $83
@@ -9520,7 +9520,7 @@ jr_001_7d9c:
 
 jr_001_7d9e:
     call CopyOAMSpriteById                        ; $7d9e: $cd $ce $20
-    ld a, [$c33a]                                 ; $7da1: $fa $3a $c3
+    ld a, [rVBlankFrameCounter]                   ; $7da1: $fa $3a $c3
     and $03                                       ; $7da4: $e6 $03
     jr nz, jr_001_7daf                            ; $7da6: $20 $07
 
@@ -9529,11 +9529,11 @@ jr_001_7d9e:
     ld [$d827], a                                 ; $7dac: $ea $27 $d8
 
 jr_001_7daf:
-    ld a, [$c33a]                                 ; $7daf: $fa $3a $c3
+    ld a, [rVBlankFrameCounter]                   ; $7daf: $fa $3a $c3
     and $03                                       ; $7db2: $e6 $03
     ret nz                                        ; $7db4: $c0
 
-    ld a, [$c33a]                                 ; $7db5: $fa $3a $c3
+    ld a, [rVBlankFrameCounter]                   ; $7db5: $fa $3a $c3
     bit 2, a                                      ; $7db8: $cb $57
     jr nz, jr_001_7dc4                            ; $7dba: $20 $08
 
@@ -9596,12 +9596,12 @@ jr_001_7df0:
 
 
 Call_001_7dfe:
-    ld a, [$a065]                                 ; $7dfe: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $7dfe: $fa $65 $a0
     ld c, a                                       ; $7e01: $4f
     ld b, $00                                     ; $7e02: $06 $00
     ld hl, $a38d                                  ; $7e04: $21 $8d $a3
     add hl, bc                                    ; $7e07: $09
-    ld a, [$a065]                                 ; $7e08: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $7e08: $fa $65 $a0
     ld c, a                                       ; $7e0b: $4f
     sla a                                         ; $7e0c: $cb $27
     sla a                                         ; $7e0e: $cb $27

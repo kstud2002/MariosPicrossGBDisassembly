@@ -302,8 +302,8 @@ VBlankInterruptHandler::
     push bc                                       ; $02ba: $c5
     push de                                       ; $02bb: $d5
     push hl                                       ; $02bc: $e5
-    call $ff80                                    ; $02bd: $cd $80 $ff
-    call Call_000_0767                            ; $02c0: $cd $67 $07
+    call rOAMDMAHRAMStubEntry                     ; $02bd: $cd $80 $ff
+    call ProcessPendingCommandQueueEntries        ; $02c0: $cd $67 $07
     ldh a, [rLY]                                  ; $02c3: $f0 $44
     ld a, [rVBlankLCDCBit4ForceFlag]              ; $02c5: $fa $3c $c3
     and a                                         ; $02c8: $a7
@@ -370,9 +370,9 @@ jr_000_0313:
     call CallSoundEngineUpdateRoutine_Unsure_PreserveRegisters; $031f: $cd $ee $03
 
 jr_000_0322:
-    ld a, [$c33a]                                 ; $0322: $fa $3a $c3
+    ld a, [rVBlankFrameCounter]                   ; $0322: $fa $3a $c3
     inc a                                         ; $0325: $3c
-    ld [$c33a], a                                 ; $0326: $ea $3a $c3
+    ld [rVBlankFrameCounter], a                   ; $0326: $ea $3a $c3
     ld a, $01                                     ; $0329: $3e $01
     ld [rVBlankSyncFlag], a                       ; $032b: $ea $39 $c3
     pop hl                                        ; $032e: $e1
@@ -573,7 +573,7 @@ CallSoundEngineUpdateRoutine_Unsure::
 PlayScreenTransitionFadeIn::
     ld a, [rIsSuperGameBoyMode]                   ; $040d: $fa $3d $c3
     and a                                         ; $0410: $a7
-    jp nz, PlayScreenTransitionFadeIn_AlternatePath; $0411: $c2 $c8 $1f
+    jp nz, PlayScreenTransitionFadeIn_SGB         ; $0411: $c2 $c8 $1f
 
     ld a, [rActiveROMBank]                        ; $0414: $fa $12 $c3
     push af                                       ; $0417: $f5
@@ -611,7 +611,7 @@ PlayScreenTransitionFadeIn::
 PlayScreenTransitionFadeOut::
     ld a, [rIsSuperGameBoyMode]                   ; $044e: $fa $3d $c3
     and a                                         ; $0451: $a7
-    jp nz, PlayScreenTransitionFadeOut_AlternatePath; $0452: $c2 $4a $20
+    jp nz, PlayScreenTransitionFadeOut_SGB        ; $0452: $c2 $4a $20
 
     ld a, [rActiveROMBank]                        ; $0455: $fa $12 $c3
     push af                                       ; $0458: $f5
@@ -1192,8 +1192,7 @@ jr_000_0731:
     ret                                           ; $0737: $c9
 
 
-Call_000_0738:
-Jump_000_0738:
+QueueCommandStreamAndProcessIfLCDOff::
     push af                                       ; $0738: $f5
     ld hl, rCommandQueueWriteCursor               ; $0739: $21 $15 $c3
     ld l, [hl]                                    ; $073c: $6e
@@ -1221,13 +1220,13 @@ Jump_000_0738:
     push af                                       ; $075b: $f5
     res 0, a                                      ; $075c: $cb $87
     ldh [rIE], a                                  ; $075e: $e0 $ff
-    call Call_000_0767                            ; $0760: $cd $67 $07
+    call ProcessPendingCommandQueueEntries        ; $0760: $cd $67 $07
     pop af                                        ; $0763: $f1
     ldh [rIE], a                                  ; $0764: $e0 $ff
     ret                                           ; $0766: $c9
 
 
-Call_000_0767:
+ProcessPendingCommandQueueEntries::
     ld a, [rCommandQueueWriteCursor]              ; $0767: $fa $15 $c3
     ld hl, rCommandQueueReadCursor                ; $076a: $21 $16 $c3
     cp [hl]                                       ; $076d: $be
@@ -1236,10 +1235,10 @@ Call_000_0767:
     ld l, [hl]                                    ; $076f: $6e
     ld h, $c2                                     ; $0770: $26 $c2
 
-jr_000_0772:
+.ProcessQueuedEntryLoop:
     ld a, [hl]                                    ; $0772: $7e
     and a                                         ; $0773: $a7
-    jr z, jr_000_0793                             ; $0774: $28 $1d
+    jr z, .CommitCommandQueueReadCursor           ; $0774: $28 $1d
 
     inc l                                         ; $0776: $2c
     ld e, [hl]                                    ; $0777: $5e
@@ -1252,26 +1251,26 @@ jr_000_0772:
     ld [rActiveROMBank], a                        ; $0780: $ea $12 $c3
     ld [rROMB], a                                 ; $0783: $ea $00 $20
     inc l                                         ; $0786: $2c
-    call Call_000_0798                            ; $0787: $cd $98 $07
+    call ExecuteQueuedCommandStream               ; $0787: $cd $98 $07
     pop af                                        ; $078a: $f1
     ld [rActiveROMBank], a                        ; $078b: $ea $12 $c3
     ld [rROMB], a                                 ; $078e: $ea $00 $20
-    jr jr_000_0772                                ; $0791: $18 $df
+    jr .ProcessQueuedEntryLoop                    ; $0791: $18 $df
 
-jr_000_0793:
+.CommitCommandQueueReadCursor:
     ld a, l                                       ; $0793: $7d
     ld [rCommandQueueReadCursor], a               ; $0794: $ea $16 $c3
     ret                                           ; $0797: $c9
 
 
-Call_000_0798:
+ExecuteQueuedCommandStream::
     ldh a, [rIE]                                  ; $0798: $f0 $ff
     push af                                       ; $079a: $f5
     res 0, a                                      ; $079b: $cb $87
     ldh [rIE], a                                  ; $079d: $e0 $ff
     push hl                                       ; $079f: $e5
 
-jr_000_07a0:
+.ReadNextCommandHeader:
     ld a, [de]                                    ; $07a0: $1a
     ld h, a                                       ; $07a1: $67
     inc de                                        ; $07a2: $13
@@ -1281,44 +1280,44 @@ jr_000_07a0:
     ld a, [de]                                    ; $07a6: $1a
     inc de                                        ; $07a7: $13
     bit 7, a                                      ; $07a8: $cb $7f
-    jr nz, jr_000_07c6                            ; $07aa: $20 $1a
+    jr nz, .DispatchVerticalCopyMode              ; $07aa: $20 $1a
 
     bit 6, a                                      ; $07ac: $cb $77
-    jr nz, jr_000_07bb                            ; $07ae: $20 $0b
+    jr nz, .SetupLinearRepeatFill                 ; $07ae: $20 $0b
 
     and $3f                                       ; $07b0: $e6 $3f
     ld b, a                                       ; $07b2: $47
 
-jr_000_07b3:
+.CopyLinearLiteralBytesLoop:
     ld a, [de]                                    ; $07b3: $1a
     ld [hl+], a                                   ; $07b4: $22
     inc de                                        ; $07b5: $13
     dec b                                         ; $07b6: $05
-    jr nz, jr_000_07b3                            ; $07b7: $20 $fa
+    jr nz, .CopyLinearLiteralBytesLoop            ; $07b7: $20 $fa
 
-    jr jr_000_07e8                                ; $07b9: $18 $2d
+    jr .CheckCommandStreamTerminator              ; $07b9: $18 $2d
 
-jr_000_07bb:
+.SetupLinearRepeatFill:
     and $3f                                       ; $07bb: $e6 $3f
     ld b, a                                       ; $07bd: $47
     ld a, [de]                                    ; $07be: $1a
 
-jr_000_07bf:
+.FillLinearRepeatedByteLoop:
     ld [hl+], a                                   ; $07bf: $22
     dec b                                         ; $07c0: $05
-    jr nz, jr_000_07bf                            ; $07c1: $20 $fc
+    jr nz, .FillLinearRepeatedByteLoop            ; $07c1: $20 $fc
 
     inc de                                        ; $07c3: $13
-    jr jr_000_07e8                                ; $07c4: $18 $22
+    jr .CheckCommandStreamTerminator              ; $07c4: $18 $22
 
-jr_000_07c6:
+.DispatchVerticalCopyMode:
     bit 6, a                                      ; $07c6: $cb $77
-    jr nz, jr_000_07da                            ; $07c8: $20 $10
+    jr nz, .SetupVerticalRepeatFill               ; $07c8: $20 $10
 
     and $3f                                       ; $07ca: $e6 $3f
     ld bc, $0020                                  ; $07cc: $01 $20 $00
 
-jr_000_07cf:
+.CopyVerticalLiteralBytesLoop:
     push af                                       ; $07cf: $f5
     ld a, [de]                                    ; $07d0: $1a
     ld [hl], a                                    ; $07d1: $77
@@ -1326,32 +1325,29 @@ jr_000_07cf:
     add hl, bc                                    ; $07d3: $09
     pop af                                        ; $07d4: $f1
     dec a                                         ; $07d5: $3d
-    jr nz, jr_000_07cf                            ; $07d6: $20 $f7
+    jr nz, .CopyVerticalLiteralBytesLoop          ; $07d6: $20 $f7
 
-    jr jr_000_07e8                                ; $07d8: $18 $0e
+    jr .CheckCommandStreamTerminator              ; $07d8: $18 $0e
 
-jr_000_07da:
+.SetupVerticalRepeatFill:
     and $3f                                       ; $07da: $e6 $3f
     ld bc, $0020                                  ; $07dc: $01 $20 $00
 
-jr_000_07df:
+.FillVerticalRepeatedByteLoop:
     push af                                       ; $07df: $f5
     ld a, [de]                                    ; $07e0: $1a
     ld [hl], a                                    ; $07e1: $77
     add hl, bc                                    ; $07e2: $09
     pop af                                        ; $07e3: $f1
     dec a                                         ; $07e4: $3d
-    jr nz, jr_000_07df                            ; $07e5: $20 $f8
+    jr nz, .FillVerticalRepeatedByteLoop          ; $07e5: $20 $f8
 
     inc de                                        ; $07e7: $13
 
-jr_000_07e8:
+.CheckCommandStreamTerminator:
     ld a, [de]                                    ; $07e8: $1a
-
-Call_000_07e9:
-Jump_000_07e9:
     and a                                         ; $07e9: $a7
-    jr nz, jr_000_07a0                            ; $07ea: $20 $b4
+    jr nz, .ReadNextCommandHeader                 ; $07ea: $20 $b4
 
     pop hl                                        ; $07ec: $e1
     pop af                                        ; $07ed: $f1
@@ -4504,7 +4500,7 @@ jr_000_1697:
     add b                                         ; $16bf: $80
     jr nc, jr_000_1642                            ; $16c0: $30 $80
 
-    ldh [$ff80], a                                ; $16c2: $e0 $80
+    ldh [rOAMDMAHRAMStubEntry], a                 ; $16c2: $e0 $80
     nop                                           ; $16c4: $00
 
 jr_000_16c5:
@@ -5244,40 +5240,40 @@ Call_000_18cc:
     ld b, b                                       ; $1970: $40
     add h                                         ; $1971: $84
 
-Call_000_1972:
+SplitAToDecimalDigitsAndPushHundredsTens::
     pop de                                        ; $1972: $d1
     ld bc, $0000                                  ; $1973: $01 $00 $00
 
-jr_000_1976:
+.SubtractHundredsLoop:
     cp $64                                        ; $1976: $fe $64
-    jr c, jr_000_197f                             ; $1978: $38 $05
+    jr c, .SubtractTensLoop                       ; $1978: $38 $05
 
     sub $64                                       ; $197a: $d6 $64
     inc c                                         ; $197c: $0c
-    jr jr_000_1976                                ; $197d: $18 $f7
+    jr .SubtractHundredsLoop                      ; $197d: $18 $f7
 
-jr_000_197f:
+.SubtractTensLoop:
     cp $0a                                        ; $197f: $fe $0a
-    jr c, jr_000_1988                             ; $1981: $38 $05
+    jr c, .ApplyLeadingBlankDigits                ; $1981: $38 $05
 
     sub $0a                                       ; $1983: $d6 $0a
     inc b                                         ; $1985: $04
-    jr jr_000_197f                                ; $1986: $18 $f7
+    jr .SubtractTensLoop                          ; $1986: $18 $f7
 
-jr_000_1988:
+.ApplyLeadingBlankDigits:
     ld l, a                                       ; $1988: $6f
     ld a, c                                       ; $1989: $79
     and a                                         ; $198a: $a7
-    jr nz, jr_000_1995                            ; $198b: $20 $08
+    jr nz, .PushDigitsAndReturnViaDE              ; $198b: $20 $08
 
     ld c, $0a                                     ; $198d: $0e $0a
     ld a, b                                       ; $198f: $78
     and a                                         ; $1990: $a7
-    jr nz, jr_000_1995                            ; $1991: $20 $02
+    jr nz, .PushDigitsAndReturnViaDE              ; $1991: $20 $02
 
     ld b, $0a                                     ; $1993: $06 $0a
 
-jr_000_1995:
+.PushDigitsAndReturnViaDE:
     ld a, c                                       ; $1995: $79
     push af                                       ; $1996: $f5
     ld a, b                                       ; $1997: $78
@@ -5756,7 +5752,7 @@ jr_000_1c1c:
     ld [$acaa], a                                 ; $1c84: $ea $aa $ac
     ld a, [rPuzzleCursorColumn]                   ; $1c87: $fa $36 $d6
     ld [$acab], a                                 ; $1c8a: $ea $ab $ac
-    ld a, [rPuzzleCursorRow]                      ; $1c8d: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $1c8d: $fa $37 $d6
     ld [$acac], a                                 ; $1c90: $ea $ac $ac
     jp RefreshSaveValidationChecksumsAndMirrors   ; $1c93: $c3 $1f $1b
 
@@ -5781,7 +5777,7 @@ Call_000_1c96:
     ld a, [$acab]                                 ; $1cc6: $fa $ab $ac
     ld [rPuzzleCursorColumn], a                   ; $1cc9: $ea $36 $d6
     ld a, [$acac]                                 ; $1ccc: $fa $ac $ac
-    ld [rPuzzleCursorRow], a                      ; $1ccf: $ea $37 $d6
+    ld [rPuzzleAndMenuCursorRow], a               ; $1ccf: $ea $37 $d6
     call LoadPuzzleDataBuffer                     ; $1cd2: $cd $f1 $07
     ld b, $3c                                     ; $1cd5: $06 $3c
     ld de, $acad                                  ; $1cd7: $11 $ad $ac
@@ -6231,17 +6227,17 @@ EnsureSGBMaskFreezeDisabled::
     ret                                           ; $1fc7: $c9
 
 
-PlayScreenTransitionFadeIn_AlternatePath::
+PlayScreenTransitionFadeIn_SGB::
     push de                                       ; $1fc8: $d5
     push bc                                       ; $1fc9: $c5
     push hl                                       ; $1fca: $e5
     ld a, $03                                     ; $1fcb: $3e $03
     ld hl, $4020                                  ; $1fcd: $21 $20 $40
-    ld de, $c340                                  ; $1fd0: $11 $40 $c3
+    ld de, rSGBScreenTransitionPAL_SETPacketBuffer; $1fd0: $11 $40 $c3
     ld bc, $0010                                  ; $1fd3: $01 $10 $00
     call BankedTileCopy                           ; $1fd6: $cd $e4 $04
     ld a, $00                                     ; $1fd9: $3e $00
-    ld hl, $c340                                  ; $1fdb: $21 $40 $c3
+    ld hl, rSGBScreenTransitionPAL_SETPacketBuffer; $1fdb: $21 $40 $c3
     call SendSGBPacketStreamFromBankedAddress     ; $1fde: $cd $db $1d
     pop hl                                        ; $1fe1: $e1
     pop bc                                        ; $1fe2: $c1
@@ -6253,7 +6249,7 @@ PlayScreenTransitionFadeIn_AlternatePath::
     ld [rROMB], a                                 ; $1fec: $ea $00 $20
     ld b, $04                                     ; $1fef: $06 $04
 
-jr_000_1ff1:
+.ApplyFadeStepLoop:
     ld a, [hl+]                                   ; $1ff1: $2a
     ld [rBGPShadow], a                            ; $1ff2: $ea $2f $c3
     ld a, [hl+]                                   ; $1ff5: $2a
@@ -6267,7 +6263,7 @@ jr_000_1ff1:
     pop hl                                        ; $2005: $e1
     pop bc                                        ; $2006: $c1
     dec b                                         ; $2007: $05
-    jr nz, jr_000_1ff1                            ; $2008: $20 $e7
+    jr nz, .ApplyFadeStepLoop                     ; $2008: $20 $e7
 
     ld [rStatePhaseTimer], a                      ; $200a: $ea $3c $d6
     ld [rSharedAnimationFrameState], a            ; $200d: $ea $3d $d6
@@ -6280,44 +6276,44 @@ jr_000_1ff1:
     pop de                                        ; $201e: $d1
     ld a, c                                       ; $201f: $79
     or $80                                        ; $2020: $f6 $80
-    ld [$c349], a                                 ; $2022: $ea $49 $c3
+    ld [rSGBScreenTransitionPAL_SETPacketControl], a; $2022: $ea $49 $c3
     ld b, $04                                     ; $2025: $06 $04
 
-jr_000_2027:
+.ApplySGBPalSetFadeStepLoop:
     push bc                                       ; $2027: $c5
-    ld hl, $c341                                  ; $2028: $21 $41 $c3
+    ld hl, rSGBScreenTransitionPAL_SETPacketColorData; $2028: $21 $41 $c3
     ld c, $04                                     ; $202b: $0e $04
 
-jr_000_202d:
+.WriteSGBPalSetPacketColorsLoop:
     ld a, e                                       ; $202d: $7b
     ld [hl+], a                                   ; $202e: $22
     ld a, d                                       ; $202f: $7a
     ld [hl+], a                                   ; $2030: $22
     inc de                                        ; $2031: $13
     dec c                                         ; $2032: $0d
-    jr nz, jr_000_202d                            ; $2033: $20 $f8
+    jr nz, .WriteSGBPalSetPacketColorsLoop        ; $2033: $20 $f8
 
     push de                                       ; $2035: $d5
     ld a, $00                                     ; $2036: $3e $00
-    ld hl, $c340                                  ; $2038: $21 $40 $c3
+    ld hl, rSGBScreenTransitionPAL_SETPacketBuffer; $2038: $21 $40 $c3
     call SendSGBPacketStreamFromBankedAddress     ; $203b: $cd $db $1d
     ld bc, $0006                                  ; $203e: $01 $06 $00
     call BusyWaitDelayByBC                        ; $2041: $cd $03 $06
     pop de                                        ; $2044: $d1
     pop bc                                        ; $2045: $c1
     dec b                                         ; $2046: $05
-    jr nz, jr_000_2027                            ; $2047: $20 $de
+    jr nz, .ApplySGBPalSetFadeStepLoop            ; $2047: $20 $de
 
     ret                                           ; $2049: $c9
 
 
-PlayScreenTransitionFadeOut_AlternatePath::
+PlayScreenTransitionFadeOut_SGB::
     push hl                                       ; $204a: $e5
     push bc                                       ; $204b: $c5
     push de                                       ; $204c: $d5
     ld a, $03                                     ; $204d: $3e $03
     ld hl, $4020                                  ; $204f: $21 $20 $40
-    ld de, $c340                                  ; $2052: $11 $40 $c3
+    ld de, rSGBScreenTransitionPAL_SETPacketBuffer; $2052: $11 $40 $c3
     ld bc, $0010                                  ; $2055: $01 $10 $00
     call BankedTileCopy                           ; $2058: $cd $e4 $04
     pop de                                        ; $205b: $d1
@@ -6325,41 +6321,41 @@ PlayScreenTransitionFadeOut_AlternatePath::
     push bc                                       ; $205d: $c5
     ld a, c                                       ; $205e: $79
     or $80                                        ; $205f: $f6 $80
-    ld [$c349], a                                 ; $2061: $ea $49 $c3
+    ld [rSGBScreenTransitionPAL_SETPacketControl], a; $2061: $ea $49 $c3
     ld b, $04                                     ; $2064: $06 $04
 
-jr_000_2066:
+.ApplySGBPalSetFadeStepLoop:
     push bc                                       ; $2066: $c5
     ld hl, $c348                                  ; $2067: $21 $48 $c3
     ld c, $04                                     ; $206a: $0e $04
 
-jr_000_206c:
+.WriteSGBPalSetPacketColorsLoop:
     ld a, d                                       ; $206c: $7a
     ld [hl-], a                                   ; $206d: $32
     ld a, e                                       ; $206e: $7b
     ld [hl-], a                                   ; $206f: $32
     dec de                                        ; $2070: $1b
     dec c                                         ; $2071: $0d
-    jr nz, jr_000_206c                            ; $2072: $20 $f8
+    jr nz, .WriteSGBPalSetPacketColorsLoop        ; $2072: $20 $f8
 
     push de                                       ; $2074: $d5
     ld a, $00                                     ; $2075: $3e $00
-    ld hl, $c340                                  ; $2077: $21 $40 $c3
+    ld hl, rSGBScreenTransitionPAL_SETPacketBuffer; $2077: $21 $40 $c3
     call SendSGBPacketStreamFromBankedAddress     ; $207a: $cd $db $1d
     ld bc, $0006                                  ; $207d: $01 $06 $00
     call BusyWaitDelayByBC                        ; $2080: $cd $03 $06
     pop de                                        ; $2083: $d1
     pop bc                                        ; $2084: $c1
     dec b                                         ; $2085: $05
-    jr nz, jr_000_2066                            ; $2086: $20 $de
+    jr nz, .ApplySGBPalSetFadeStepLoop            ; $2086: $20 $de
 
     ld a, $03                                     ; $2088: $3e $03
     ld hl, $4020                                  ; $208a: $21 $20 $40
-    ld de, $c340                                  ; $208d: $11 $40 $c3
+    ld de, rSGBScreenTransitionPAL_SETPacketBuffer; $208d: $11 $40 $c3
     ld bc, $0010                                  ; $2090: $01 $10 $00
     call BankedTileCopy                           ; $2093: $cd $e4 $04
     ld a, $00                                     ; $2096: $3e $00
-    ld hl, $c340                                  ; $2098: $21 $40 $c3
+    ld hl, rSGBScreenTransitionPAL_SETPacketBuffer; $2098: $21 $40 $c3
     call SendSGBPacketStreamFromBankedAddress     ; $209b: $cd $db $1d
     pop bc                                        ; $209e: $c1
     pop hl                                        ; $209f: $e1
@@ -6370,7 +6366,7 @@ jr_000_206c:
     ld [rROMB], a                                 ; $20a8: $ea $00 $20
     ld b, $04                                     ; $20ab: $06 $04
 
-jr_000_20ad:
+.ApplyFadeStepLoop:
     ld a, [hl-]                                   ; $20ad: $3a
     ld [rOBP1Shadow], a                           ; $20ae: $ea $31 $c3
     ld a, [hl-]                                   ; $20b1: $3a
@@ -6384,7 +6380,7 @@ jr_000_20ad:
     pop hl                                        ; $20c1: $e1
     pop bc                                        ; $20c2: $c1
     dec b                                         ; $20c3: $05
-    jr nz, jr_000_20ad                            ; $20c4: $20 $e7
+    jr nz, .ApplyFadeStepLoop                     ; $20c4: $20 $e7
 
     pop af                                        ; $20c6: $f1
     ld [rActiveROMBank], a                        ; $20c7: $ea $12 $c3
@@ -6862,7 +6858,7 @@ GS06_StatePhase_08_SolvePuzzle_Prepare::
 
     xor a                                         ; $23d0: $af
     ld [rPuzzleCursorColumn], a                   ; $23d1: $ea $36 $d6
-    ld [rPuzzleCursorRow], a                      ; $23d4: $ea $37 $d6
+    ld [rPuzzleAndMenuCursorRow], a               ; $23d4: $ea $37 $d6
     xor a                                         ; $23d7: $af
     ld [rGS06_ScriptedInputSequenceCursor], a     ; $23d8: $ea $2f $d8
     ld [rGS06_ScriptedInputSequenceDelay], a      ; $23db: $ea $30 $d8
@@ -7103,7 +7099,7 @@ GS06_StatePhase_12_SolveFirstColumn_Prepare::
 
     xor a                                         ; $25ff: $af
     ld [rPuzzleCursorColumn], a                   ; $2600: $ea $36 $d6
-    ld [rPuzzleCursorRow], a                      ; $2603: $ea $37 $d6
+    ld [rPuzzleAndMenuCursorRow], a               ; $2603: $ea $37 $d6
     xor a                                         ; $2606: $af
     ld [rGS06_ScriptedInputSequenceCursor], a     ; $2607: $ea $2f $d8
     ld [rGS06_ScriptedInputSequenceDelay], a      ; $260a: $ea $30 $d8
@@ -7282,7 +7278,7 @@ GS06_StatePhase_19_SolveSecondRow_Prepare::
     xor a                                         ; $2769: $af
     ld [rPuzzleCursorColumn], a                   ; $276a: $ea $36 $d6
     ld a, $01                                     ; $276d: $3e $01
-    ld [rPuzzleCursorRow], a                      ; $276f: $ea $37 $d6
+    ld [rPuzzleAndMenuCursorRow], a               ; $276f: $ea $37 $d6
     xor a                                         ; $2772: $af
     ld [rGS06_ScriptedInputSequenceCursor], a     ; $2773: $ea $2f $d8
     ld [rGS06_ScriptedInputSequenceDelay], a      ; $2776: $ea $30 $d8
@@ -7392,7 +7388,7 @@ GS06_StatePhase_1e_MakeMistake_Prepare::
     ld a, $03                                     ; $2845: $3e $03
     ld [rPuzzleCursorColumn], a                   ; $2847: $ea $36 $d6
     ld a, $01                                     ; $284a: $3e $01
-    ld [rPuzzleCursorRow], a                      ; $284c: $ea $37 $d6
+    ld [rPuzzleAndMenuCursorRow], a               ; $284c: $ea $37 $d6
     xor a                                         ; $284f: $af
     ld [rGS06_ScriptedInputSequenceCursor], a     ; $2850: $ea $2f $d8
     ld [rGS06_ScriptedInputSequenceDelay], a      ; $2853: $ea $30 $d8
@@ -7462,7 +7458,7 @@ GS06_StatePhase_21_MarkWithX_Prepare::
     ld a, $03                                     ; $28cc: $3e $03
     ld [rPuzzleCursorColumn], a                   ; $28ce: $ea $36 $d6
     ld a, $01                                     ; $28d1: $3e $01
-    ld [rPuzzleCursorRow], a                      ; $28d3: $ea $37 $d6
+    ld [rPuzzleAndMenuCursorRow], a               ; $28d3: $ea $37 $d6
     xor a                                         ; $28d6: $af
     ld [rGS06_ScriptedInputSequenceCursor], a     ; $28d7: $ea $2f $d8
     ld [rGS06_ScriptedInputSequenceDelay], a      ; $28da: $ea $30 $d8
@@ -7729,7 +7725,7 @@ GS06_StatePhase_29_AdvanceOrRestart::
 .ResetTutorialStateAndRestart:
     xor a                                         ; $2ae0: $af
     ld [rPuzzleCursorColumn], a                   ; $2ae1: $ea $36 $d6
-    ld [rPuzzleCursorRow], a                      ; $2ae4: $ea $37 $d6
+    ld [rPuzzleAndMenuCursorRow], a               ; $2ae4: $ea $37 $d6
     ld [rPuzzleFlowVariant_Unsure], a             ; $2ae7: $ea $05 $d8
     ld [rPuzzleTimerCompletionState], a           ; $2aea: $ea $06 $d8
     ld [rPuzzleActionRepeatGuard], a              ; $2aed: $ea $0f $d8
@@ -8478,7 +8474,7 @@ AdvanceHintCursorAnimation::
     rl [hl]                                       ; $3229: $cb $16
 
 .HintCursorRowNoWrap:
-    ld a, [rPuzzleCursorRow]                      ; $322b: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $322b: $fa $37 $d6
     inc a                                         ; $322e: $3c
     cp $05                                        ; $322f: $fe $05
     jr nz, .AdvanceHintCursorAnimationComplete    ; $3231: $20 $01
@@ -8486,7 +8482,7 @@ AdvanceHintCursorAnimation::
     xor a                                         ; $3233: $af
 
 .AdvanceHintCursorAnimationComplete:
-    ld [rPuzzleCursorRow], a                      ; $3234: $ea $37 $d6
+    ld [rPuzzleAndMenuCursorRow], a               ; $3234: $ea $37 $d6
     call $6c2c                                    ; $3237: $cd $2c $6c
 
 .FinalizeHintCursorAnimation:

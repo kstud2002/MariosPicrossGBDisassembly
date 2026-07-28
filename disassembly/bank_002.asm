@@ -47,10 +47,10 @@ GS03_StatePhase_00_TODO::
     ld de, $9800                                  ; $4048: $11 $00 $98
     ld bc, $0400                                  ; $404b: $01 $00 $04
     call BankedTileCopy                           ; $404e: $cd $e4 $04
-    ld a, [$a065]                                 ; $4051: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $4051: $fa $65 $a0
     ld c, a                                       ; $4054: $4f
     ld b, $00                                     ; $4055: $06 $00
-    ld hl, $a387                                  ; $4057: $21 $87 $a3
+    ld hl, rSaveSlot1UnlockProgressState          ; $4057: $21 $87 $a3
     add hl, bc                                    ; $405a: $09
     ld a, [hl]                                    ; $405b: $7e
     dec a                                         ; $405c: $3d
@@ -84,13 +84,13 @@ GS03_StatePhase_00_TODO::
     call BankedTileCopy                           ; $409c: $cd $e4 $04
 
 jr_002_409f:
-    ld a, [$a065]                                 ; $409f: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $409f: $fa $65 $a0
     ld c, a                                       ; $40a2: $4f
     ld b, $00                                     ; $40a3: $06 $00
     ld hl, $a38d                                  ; $40a5: $21 $8d $a3
     add hl, bc                                    ; $40a8: $09
     ld a, [hl]                                    ; $40a9: $7e
-    ld [rPuzzleCursorRow], a                      ; $40aa: $ea $37 $d6
+    ld [rPuzzleAndMenuCursorRow], a               ; $40aa: $ea $37 $d6
     call Call_002_41f6                            ; $40ad: $cd $f6 $41
     call ClearShadowOAMBuffer                     ; $40b0: $cd $b6 $05
     ld b, $03                                     ; $40b3: $06 $03
@@ -193,12 +193,12 @@ jr_002_4162:
 
 jr_002_416f:
     call DisableLCDAtVBlank                       ; $416f: $cd $83 $04
-    ld a, [$a065]                                 ; $4172: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $4172: $fa $65 $a0
     ld c, a                                       ; $4175: $4f
     ld b, $00                                     ; $4176: $06 $00
     ld hl, $a38d                                  ; $4178: $21 $8d $a3
     add hl, bc                                    ; $417b: $09
-    ld a, [rPuzzleCursorRow]                      ; $417c: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $417c: $fa $37 $d6
     ld [hl], a                                    ; $417f: $77
     cp $02                                        ; $4180: $fe $02
     jr z, jr_002_418f                             ; $4182: $28 $0b
@@ -250,12 +250,12 @@ jr_002_41cd:
 
 jr_002_41da:
     call DisableLCDAtVBlank                       ; $41da: $cd $83 $04
-    ld a, [$a065]                                 ; $41dd: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $41dd: $fa $65 $a0
     ld c, a                                       ; $41e0: $4f
     ld b, $00                                     ; $41e1: $06 $00
     ld hl, $a38d                                  ; $41e3: $21 $8d $a3
     add hl, bc                                    ; $41e6: $09
-    ld a, [rPuzzleCursorRow]                      ; $41e7: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $41e7: $fa $37 $d6
     ld [hl], a                                    ; $41ea: $77
     xor a                                         ; $41eb: $af
     ld [rStatePhase_Current], a                   ; $41ec: $ea $35 $d6
@@ -275,7 +275,7 @@ Jump_002_41f6:
     ld a, $02                                     ; $41ff: $3e $02
     ld c, l                                       ; $4201: $4d
     ld b, h                                       ; $4202: $44
-    jp Jump_000_0738                              ; $4203: $c3 $38 $07
+    jp QueueCommandStreamAndProcessIfLCDOff       ; $4203: $c3 $38 $07
 
 
     inc bc                                        ; $4206: $03
@@ -373,7 +373,7 @@ Call_002_425a:
     ld a, $02                                     ; $4263: $3e $02
     ld c, l                                       ; $4265: $4d
     ld b, h                                       ; $4266: $44
-    jp Jump_000_0738                              ; $4267: $c3 $38 $07
+    jp QueueCommandStreamAndProcessIfLCDOff       ; $4267: $c3 $38 $07
 
 
     inc bc                                        ; $426a: $03
@@ -466,7 +466,7 @@ jr_002_42be:
     ret z                                         ; $42c8: $c8
 
     push af                                       ; $42c9: $f5
-    ld a, [rPuzzleCursorRow]                      ; $42ca: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $42ca: $fa $37 $d6
     call Call_002_425a                            ; $42cd: $cd $5a $42
     rst RST_08                                    ; $42d0: $cf
     ld c, $0a                                     ; $42d1: $0e $0a
@@ -478,7 +478,7 @@ jr_002_42be:
 jr_002_42db:
     jr z, jr_002_42ee                             ; $42db: $28 $11
 
-    ld a, [rPuzzleCursorRow]                      ; $42dd: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $42dd: $fa $37 $d6
     dec a                                         ; $42e0: $3d
     cp $ff                                        ; $42e1: $fe $ff
     jr nz, jr_002_42e8                            ; $42e3: $20 $03
@@ -486,12 +486,12 @@ jr_002_42db:
     ld a, [$d63b]                                 ; $42e5: $fa $3b $d6
 
 jr_002_42e8:
-    ld [rPuzzleCursorRow], a                      ; $42e8: $ea $37 $d6
+    ld [rPuzzleAndMenuCursorRow], a               ; $42e8: $ea $37 $d6
     jp Jump_002_41f6                              ; $42eb: $c3 $f6 $41
 
 
 jr_002_42ee:
-    ld a, [rPuzzleCursorRow]                      ; $42ee: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $42ee: $fa $37 $d6
     ld hl, $d63b                                  ; $42f1: $21 $3b $d6
     cp [hl]                                       ; $42f4: $be
     jr nz, jr_002_42f9                            ; $42f5: $20 $02
@@ -500,7 +500,7 @@ jr_002_42ee:
 
 jr_002_42f9:
     inc a                                         ; $42f9: $3c
-    ld [rPuzzleCursorRow], a                      ; $42fa: $ea $37 $d6
+    ld [rPuzzleAndMenuCursorRow], a               ; $42fa: $ea $37 $d6
     jp Jump_002_41f6                              ; $42fd: $c3 $f6 $41
 
 
@@ -558,13 +558,13 @@ GS02_StatePhase_00_TODO::
     ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $4368: $ea $50 $c3
     ld a, $02                                     ; $436b: $3e $02
     ld [$d63b], a                                 ; $436d: $ea $3b $d6
-    ld a, [$a065]                                 ; $4370: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $4370: $fa $65 $a0
     ld c, a                                       ; $4373: $4f
     ld b, $00                                     ; $4374: $06 $00
     ld hl, $a078                                  ; $4376: $21 $78 $a0
     add hl, bc                                    ; $4379: $09
     ld a, [hl]                                    ; $437a: $7e
-    ld [rPuzzleCursorRow], a                      ; $437b: $ea $37 $d6
+    ld [rPuzzleAndMenuCursorRow], a               ; $437b: $ea $37 $d6
     call Call_002_44b1                            ; $437e: $cd $b1 $44
     call ClearShadowOAMBuffer                     ; $4381: $cd $b6 $05
     ld b, $03                                     ; $4384: $06 $03
@@ -648,12 +648,12 @@ GS02_StatePhase_02_TODO::
     ld [rLCDCInterruptDispatchIndex], a           ; $4425: $ea $38 $c3
     ld [rVBlankLCDCBit4ForceFlag], a              ; $4428: $ea $3c $c3
     ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $442b: $ea $50 $c3
-    ld a, [$a065]                                 ; $442e: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $442e: $fa $65 $a0
     ld c, a                                       ; $4431: $4f
     ld b, $00                                     ; $4432: $06 $00
     ld hl, $a078                                  ; $4434: $21 $78 $a0
     add hl, bc                                    ; $4437: $09
-    ld a, [rPuzzleCursorRow]                      ; $4438: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $4438: $fa $37 $d6
     ld [hl], a                                    ; $443b: $77
     ld c, a                                       ; $443c: $4f
     ld b, $00                                     ; $443d: $06 $00
@@ -698,12 +698,12 @@ GS02_StatePhase_03_TODO::
     ld [rLCDCInterruptDispatchIndex], a           ; $448f: $ea $38 $c3
     ld [rVBlankLCDCBit4ForceFlag], a              ; $4492: $ea $3c $c3
     ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $4495: $ea $50 $c3
-    ld a, [$a065]                                 ; $4498: $fa $65 $a0
+    ld a, [rSelectedSaveSlotIndex]                ; $4498: $fa $65 $a0
     ld c, a                                       ; $449b: $4f
     ld b, $00                                     ; $449c: $06 $00
     ld hl, $a078                                  ; $449e: $21 $78 $a0
     add hl, bc                                    ; $44a1: $09
-    ld a, [rPuzzleCursorRow]                      ; $44a2: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $44a2: $fa $37 $d6
     ld [hl], a                                    ; $44a5: $77
     xor a                                         ; $44a6: $af
     ld [rStatePhase_Current], a                   ; $44a7: $ea $35 $d6
@@ -723,7 +723,7 @@ Jump_002_44b1:
     ld a, $02                                     ; $44ba: $3e $02
     ld c, l                                       ; $44bc: $4d
     ld b, h                                       ; $44bd: $44
-    jp Jump_000_0738                              ; $44be: $c3 $38 $07
+    jp QueueCommandStreamAndProcessIfLCDOff       ; $44be: $c3 $38 $07
 
 
     inc b                                         ; $44c1: $04
@@ -832,7 +832,7 @@ Call_002_4531:
     ld a, $02                                     ; $453a: $3e $02
     ld c, l                                       ; $453c: $4d
     ld b, h                                       ; $453d: $44
-    jp Jump_000_0738                              ; $453e: $c3 $38 $07
+    jp QueueCommandStreamAndProcessIfLCDOff       ; $453e: $c3 $38 $07
 
 
     inc b                                         ; $4541: $04
@@ -947,7 +947,7 @@ Call_002_45b1:
     ret z                                         ; $45b6: $c8
 
     push af                                       ; $45b7: $f5
-    ld a, [rPuzzleCursorRow]                      ; $45b8: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $45b8: $fa $37 $d6
     call Call_002_4531                            ; $45bb: $cd $31 $45
     rst RST_08                                    ; $45be: $cf
     ld c, $0a                                     ; $45bf: $0e $0a
@@ -957,7 +957,7 @@ Call_002_45b1:
     and $40                                       ; $45c7: $e6 $40
     jr z, jr_002_45dc                             ; $45c9: $28 $11
 
-    ld a, [rPuzzleCursorRow]                      ; $45cb: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $45cb: $fa $37 $d6
     dec a                                         ; $45ce: $3d
     cp $ff                                        ; $45cf: $fe $ff
     jr nz, jr_002_45d6                            ; $45d1: $20 $03
@@ -965,12 +965,12 @@ Call_002_45b1:
     ld a, [$d63b]                                 ; $45d3: $fa $3b $d6
 
 jr_002_45d6:
-    ld [rPuzzleCursorRow], a                      ; $45d6: $ea $37 $d6
+    ld [rPuzzleAndMenuCursorRow], a               ; $45d6: $ea $37 $d6
     jp Jump_002_44b1                              ; $45d9: $c3 $b1 $44
 
 
 jr_002_45dc:
-    ld a, [rPuzzleCursorRow]                      ; $45dc: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $45dc: $fa $37 $d6
     ld hl, $d63b                                  ; $45df: $21 $3b $d6
     cp [hl]                                       ; $45e2: $be
     jr nz, jr_002_45e7                            ; $45e3: $20 $02
@@ -979,7 +979,7 @@ jr_002_45dc:
 
 jr_002_45e7:
     inc a                                         ; $45e7: $3c
-    ld [rPuzzleCursorRow], a                      ; $45e8: $ea $37 $d6
+    ld [rPuzzleAndMenuCursorRow], a               ; $45e8: $ea $37 $d6
     jp Jump_002_44b1                              ; $45eb: $c3 $b1 $44
 
 
@@ -1259,14 +1259,14 @@ GS01_StatePhase_00_DataSelectScreenInit::
     ld bc, $0400                                  ; $4798: $01 $00 $04
     call BankedTileCopy                           ; $479b: $cd $e4 $04
     xor a                                         ; $479e: $af
-    call $4ad5                                    ; $479f: $cd $d5 $4a
+    call GS01_BuildSaveSlotTemplateCommandStream  ; $479f: $cd $d5 $4a
     ld a, $01                                     ; $47a2: $3e $01
-    call $4ad5                                    ; $47a4: $cd $d5 $4a
+    call GS01_BuildSaveSlotTemplateCommandStream  ; $47a4: $cd $d5 $4a
     ld a, $02                                     ; $47a7: $3e $02
-    call $4ad5                                    ; $47a9: $cd $d5 $4a
-    ld a, [$a065]                                 ; $47ac: $fa $65 $a0
-    ld [rPuzzleCursorRow], a                      ; $47af: $ea $37 $d6
-    call LoadPuzzleData                           ; $47b2: $cd $8e $49
+    call GS01_BuildSaveSlotTemplateCommandStream  ; $47a9: $cd $d5 $4a
+    ld a, [rSelectedSaveSlotIndex]                ; $47ac: $fa $65 $a0
+    ld [rPuzzleAndMenuCursorRow], a               ; $47af: $ea $37 $d6
+    call GS01_BuildSelectedSaveSlotTemplateCommandStream; $47b2: $cd $8e $49
     call ClearShadowOAMBuffer                     ; $47b5: $cd $b6 $05
     ld b, $03                                     ; $47b8: $06 $03
     ld hl, $4e80                                  ; $47ba: $21 $80 $4e
@@ -1297,21 +1297,21 @@ GS01_StatePhase_01_DataSelectScreenIdle::
     ld b, $03                                     ; $47f1: $06 $03
     ld hl, $4ea6                                  ; $47f3: $21 $a6 $4e
     call SwitchBankToBAndJumpToHL                 ; $47f6: $cd $de $05
-    call $4c1c                                    ; $47f9: $cd $1c $4c
+    call GS01_HandleDataSelectVerticalInput       ; $47f9: $cd $1c $4c
     ld a, [rInputButtonsHeld]                     ; $47fc: $fa $1a $c3
     bit 2, a                                      ; $47ff: $cb $57
-    jr z, jr_002_4809                             ; $4801: $28 $06
+    jr z, .CheckDataSelectAOrStartInput           ; $4801: $28 $06
 
     cp $07                                        ; $4803: $fe $07
     ret nz                                        ; $4805: $c0
 
-    jp Jump_002_481d                              ; $4806: $c3 $1d $48
+    jp GS01_RunEraseSelectedSavePrompt            ; $4806: $c3 $1d $48
 
 
-jr_002_4809:
+.CheckDataSelectAOrStartInput:
     ld a, [rInputButtonsPressed]                  ; $4809: $fa $1e $c3
     and $09                                       ; $480c: $e6 $09
-    jr z, jr_002_481c                             ; $480e: $28 $0c
+    jr z, .ReturnIfNoDataSelectAOrStart           ; $480e: $28 $0c
 
     ld c, $03                                     ; $4810: $0e $03
     ld a, $02                                     ; $4812: $3e $02
@@ -1321,24 +1321,24 @@ jr_002_4809:
     ret                                           ; $481b: $c9
 
 
-jr_002_481c:
+.ReturnIfNoDataSelectAOrStart:
     ret                                           ; $481c: $c9
 
 
-Jump_002_481d:
+GS01_RunEraseSelectedSavePrompt::
     call ClearShadowOAMBufferFromCursor           ; $481d: $cd $c5 $05
     ld bc, $0014                                  ; $4820: $01 $14 $00
     call DelayFramesByBC                          ; $4823: $cd $fa $05
 
-jr_002_4826:
+.EraseSelectedSavePromptLoop:
     ld b, $03                                     ; $4826: $06 $03
     ld hl, $4ec2                                  ; $4828: $21 $c2 $4e
     call SwitchBankToBAndJumpToHL                 ; $482b: $cd $de $05
-    ld a, [$c33a]                                 ; $482e: $fa $3a $c3
+    ld a, [rVBlankFrameCounter]                   ; $482e: $fa $3a $c3
     bit 4, a                                      ; $4831: $cb $67
-    jr nz, jr_002_4846                            ; $4833: $20 $11
+    jr nz, .CheckEraseSelectedSaveConfirmInput    ; $4833: $20 $11
 
-    ld a, [rPuzzleCursorRow]                      ; $4835: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $4835: $fa $37 $d6
     swap a                                        ; $4838: $cb $37
     sla a                                         ; $483a: $cb $27
     add $10                                       ; $483c: $c6 $10
@@ -1347,32 +1347,32 @@ jr_002_4826:
     ld a, $4b                                     ; $4841: $3e $4b
     call CopyOAMSpriteById                        ; $4843: $cd $ce $20
 
-jr_002_4846:
+.CheckEraseSelectedSaveConfirmInput:
     ld a, [rInputButtonsPressed]                  ; $4846: $fa $1e $c3
     bit 0, a                                      ; $4849: $cb $47
-    jr z, jr_002_4898                             ; $484b: $28 $4b
+    jr z, .CheckEraseSelectedSaveCancelInput      ; $484b: $28 $4b
 
-    ld a, [rPuzzleCursorRow]                      ; $484d: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $484d: $fa $37 $d6
     ld c, a                                       ; $4850: $4f
     ld b, $00                                     ; $4851: $06 $00
-    ld hl, $48a2                                  ; $4853: $21 $a2 $48
+    ld hl, EraseSelectedSaveSlotDestinationPointerOffsetTable; $4853: $21 $a2 $48
     add hl, bc                                    ; $4856: $09
     ld c, [hl]                                    ; $4857: $4e
     add hl, bc                                    ; $4858: $09
-    ld bc, $490b                                  ; $4859: $01 $0b $49
+    ld bc, EraseSelectedSaveSlotRewriteScript     ; $4859: $01 $0b $49
 
-jr_002_485c:
+.RunEraseSelectedSaveRewriteStepLoop:
     ld a, [hl+]                                   ; $485c: $2a
     ld e, a                                       ; $485d: $5f
     ld d, [hl]                                    ; $485e: $56
     or d                                          ; $485f: $b2
-    jr z, jr_002_488d                             ; $4860: $28 $2b
+    jr z, .FinalizeEraseSelectedSaveRewrite       ; $4860: $28 $2b
 
     inc hl                                        ; $4862: $23
     ld a, [bc]                                    ; $4863: $0a
     inc bc                                        ; $4864: $03
     and a                                         ; $4865: $a7
-    jr nz, jr_002_487a                            ; $4866: $20 $12
+    jr nz, .CopyLiteralEraseSelectedSaveRange     ; $4866: $20 $12
 
     push hl                                       ; $4868: $e5
     ld a, [bc]                                    ; $4869: $0a
@@ -1382,19 +1382,19 @@ jr_002_485c:
     ld h, a                                       ; $486d: $67
     inc bc                                        ; $486e: $03
 
-jr_002_486f:
+.ZeroFillEraseSelectedSaveRangeLoop:
     xor a                                         ; $486f: $af
     ld [de], a                                    ; $4870: $12
     inc de                                        ; $4871: $13
     dec hl                                        ; $4872: $2b
     ld a, l                                       ; $4873: $7d
     or h                                          ; $4874: $b4
-    jr nz, jr_002_486f                            ; $4875: $20 $f8
+    jr nz, .ZeroFillEraseSelectedSaveRangeLoop    ; $4875: $20 $f8
 
     pop hl                                        ; $4877: $e1
-    jr jr_002_485c                                ; $4878: $18 $e2
+    jr .RunEraseSelectedSaveRewriteStepLoop       ; $4878: $18 $e2
 
-jr_002_487a:
+.CopyLiteralEraseSelectedSaveRange:
     push hl                                       ; $487a: $e5
     ld a, [bc]                                    ; $487b: $0a
     ld l, a                                       ; $487c: $6f
@@ -1403,7 +1403,7 @@ jr_002_487a:
     ld h, a                                       ; $487f: $67
     inc bc                                        ; $4880: $03
 
-jr_002_4881:
+.CopyLiteralEraseSelectedSaveRangeLoop:
     ld a, [bc]                                    ; $4881: $0a
     ld [de], a                                    ; $4882: $12
     inc bc                                        ; $4883: $03
@@ -1411,169 +1411,52 @@ jr_002_4881:
     dec hl                                        ; $4885: $2b
     ld a, l                                       ; $4886: $7d
     or h                                          ; $4887: $b4
-    jr nz, jr_002_4881                            ; $4888: $20 $f7
+    jr nz, .CopyLiteralEraseSelectedSaveRangeLoop ; $4888: $20 $f7
 
     pop hl                                        ; $488a: $e1
-    jr jr_002_485c                                ; $488b: $18 $cf
+    jr .RunEraseSelectedSaveRewriteStepLoop       ; $488b: $18 $cf
 
-jr_002_488d:
+.FinalizeEraseSelectedSaveRewrite:
     call RefreshSaveValidationChecksumsAndMirrors ; $488d: $cd $1f $1b
-    ld a, [rPuzzleCursorRow]                      ; $4890: $fa $37 $d6
-    call LoadPuzzleData                           ; $4893: $cd $8e $49
+    ld a, [rPuzzleAndMenuCursorRow]               ; $4890: $fa $37 $d6
+    call GS01_BuildSelectedSaveSlotTemplateCommandStream; $4893: $cd $8e $49
 
-jr_002_4896:
+.PresentFrameAndReturnFromEraseSelectedSavePrompt:
     rst RST_08                                    ; $4896: $cf
     ret                                           ; $4897: $c9
 
 
-jr_002_4898:
+.CheckEraseSelectedSaveCancelInput:
     bit 1, a                                      ; $4898: $cb $4f
-    jr nz, jr_002_4896                            ; $489a: $20 $fa
+    jr nz, .PresentFrameAndReturnFromEraseSelectedSavePrompt; $489a: $20 $fa
 
     call ClearShadowOAMBufferFromCursor           ; $489c: $cd $c5 $05
     rst RST_08                                    ; $489f: $cf
-    jr jr_002_4826                                ; $48a0: $18 $84
+    jr .EraseSelectedSavePromptLoop               ; $48a0: $18 $84
 
-    inc bc                                        ; $48a2: $03
-    inc h                                         ; $48a3: $24
-    ld b, l                                       ; $48a4: $45
-    ld h, [hl]                                    ; $48a5: $66
-    and b                                         ; $48a6: $a0
-    ld l, c                                       ; $48a7: $69
-    and b                                         ; $48a8: $a0
-    ld a, b                                       ; $48a9: $78
-    and b                                         ; $48aa: $a0
-    ld a, e                                       ; $48ab: $7b
-    and b                                         ; $48ac: $a0
-    ld a, [hl]                                    ; $48ad: $7e
-    and b                                         ; $48ae: $a0
-    add c                                         ; $48af: $81
-    and b                                         ; $48b0: $a0
-    add h                                         ; $48b1: $84
-    and b                                         ; $48b2: $a0
-    add a                                         ; $48b3: $87
-    and b                                         ; $48b4: $a0
-    rst RST_00                                    ; $48b5: $c7
-    and d                                         ; $48b6: $a2
-    add a                                         ; $48b7: $87
-    and e                                         ; $48b8: $a3
-    adc d                                         ; $48b9: $8a
-    and e                                         ; $48ba: $a3
-    adc l                                         ; $48bb: $8d
-    and e                                         ; $48bc: $a3
-    sub b                                         ; $48bd: $90
-    and e                                         ; $48be: $a3
-    sbc c                                         ; $48bf: $99
-    and e                                         ; $48c0: $a3
-    and d                                         ; $48c1: $a2
-    and e                                         ; $48c2: $a3
-    ld h, d                                       ; $48c3: $62
-    xor d                                         ; $48c4: $aa
-    nop                                           ; $48c5: $00
-    nop                                           ; $48c6: $00
-    ld h, a                                       ; $48c7: $67
-    and b                                         ; $48c8: $a0
-    ld l, [hl]                                    ; $48c9: $6e
-    and b                                         ; $48ca: $a0
-    ld a, c                                       ; $48cb: $79
-    and b                                         ; $48cc: $a0
-    ld a, h                                       ; $48cd: $7c
-    and b                                         ; $48ce: $a0
-    ld a, a                                       ; $48cf: $7f
-    and b                                         ; $48d0: $a0
-    add d                                         ; $48d1: $82
-    and b                                         ; $48d2: $a0
-    add l                                         ; $48d3: $85
-    and b                                         ; $48d4: $a0
-    ld b, a                                       ; $48d5: $47
-    and c                                         ; $48d6: $a1
-    rlca                                          ; $48d7: $07
-    and e                                         ; $48d8: $a3
-    adc b                                         ; $48d9: $88
-    and e                                         ; $48da: $a3
-    adc e                                         ; $48db: $8b
-    and e                                         ; $48dc: $a3
-    adc [hl]                                      ; $48dd: $8e
-    and e                                         ; $48de: $a3
-    sub e                                         ; $48df: $93
-    and e                                         ; $48e0: $a3
-    sbc h                                         ; $48e1: $9c
-    and e                                         ; $48e2: $a3
-    ldh [c], a                                    ; $48e3: $e2
-    and l                                         ; $48e4: $a5
-    ld [hl+], a                                   ; $48e5: $22
-    xor e                                         ; $48e6: $ab
-    nop                                           ; $48e7: $00
-    nop                                           ; $48e8: $00
-    ld l, b                                       ; $48e9: $68
-    and b                                         ; $48ea: $a0
-    ld [hl], e                                    ; $48eb: $73
-    and b                                         ; $48ec: $a0
-    ld a, d                                       ; $48ed: $7a
-    and b                                         ; $48ee: $a0
-    ld a, l                                       ; $48ef: $7d
-    and b                                         ; $48f0: $a0
-    add b                                         ; $48f1: $80
-    and b                                         ; $48f2: $a0
-    add e                                         ; $48f3: $83
-    and b                                         ; $48f4: $a0
-    add [hl]                                      ; $48f5: $86
-    and b                                         ; $48f6: $a0
-    rlca                                          ; $48f7: $07
-    and d                                         ; $48f8: $a2
-    ld b, a                                       ; $48f9: $47
-    and e                                         ; $48fa: $a3
-    adc c                                         ; $48fb: $89
-    and e                                         ; $48fc: $a3
-    adc h                                         ; $48fd: $8c
-    and e                                         ; $48fe: $a3
-    adc a                                         ; $48ff: $8f
-    and e                                         ; $4900: $a3
-    sub [hl]                                      ; $4901: $96
-    and e                                         ; $4902: $a3
-    sbc a                                         ; $4903: $9f
-    and e                                         ; $4904: $a3
-    ld [hl+], a                                   ; $4905: $22
-    xor b                                         ; $4906: $a8
-    ldh [c], a                                    ; $4907: $e2
-    xor e                                         ; $4908: $ab
-    nop                                           ; $4909: $00
-    nop                                           ; $490a: $00
-    nop                                           ; $490b: $00
-    ld bc, rP1                                    ; $490c: $01 $00 $ff
-    dec b                                         ; $490f: $05
-    nop                                           ; $4910: $00
-    nop                                           ; $4911: $00
-    ld bc, $0302                                  ; $4912: $01 $02 $03
-    inc b                                         ; $4915: $04
-    nop                                           ; $4916: $00
-    ld bc, $0000                                  ; $4917: $01 $00 $00
-    ld bc, $0000                                  ; $491a: $01 $00 $00
-    ld bc, $0000                                  ; $491d: $01 $00 $00
-    ld bc, $0000                                  ; $4920: $01 $00 $00
-    ld bc, $0000                                  ; $4923: $01 $00 $00
-    ret nz                                        ; $4926: $c0
+EraseSelectedSaveSlotDestinationPointerOffsetTable::
+    db $03, $24, $45
 
-    nop                                           ; $4927: $00
-    nop                                           ; $4928: $00
-    ld b, b                                       ; $4929: $40
-    nop                                           ; $492a: $00
-    nop                                           ; $492b: $00
-    ld bc, $0000                                  ; $492c: $01 $00 $00
-    ld bc, $0000                                  ; $492f: $01 $00 $00
-    ld bc, $0000                                  ; $4932: $01 $00 $00
-    inc bc                                        ; $4935: $03
-    nop                                           ; $4936: $00
-    nop                                           ; $4937: $00
-    inc bc                                        ; $4938: $03
-    nop                                           ; $4939: $00
-    nop                                           ; $493a: $00
-    ld b, b                                       ; $493b: $40
-    ld [bc], a                                    ; $493c: $02
-    nop                                           ; $493d: $00
-    ret nz                                        ; $493e: $c0
+EraseSelectedSaveSlot1DestinationList::
+    db $66, $a0, $69, $a0, $78, $a0, $7b, $a0, $7e, $a0, $81, $a0, $84, $a0, $87, $a0
+    db $c7, $a2, $87, $a3, $8a, $a3, $8d, $a3, $90, $a3, $99, $a3, $a2, $a3, $62, $aa
+    db $00, $00
 
-    nop                                           ; $493f: $00
+EraseSelectedSaveSlot2DestinationList::
+    db $67, $a0, $6e, $a0, $79, $a0, $7c, $a0, $7f, $a0, $82, $a0, $85, $a0, $47, $a1
+    db $07, $a3, $88, $a3, $8b, $a3, $8e, $a3, $93, $a3, $9c, $a3, $e2, $a5, $22, $ab
+    db $00, $00
+
+EraseSelectedSaveSlot3DestinationList::
+    db $68, $a0, $73, $a0, $7a, $a0, $7d, $a0, $80, $a0, $83, $a0, $86, $a0, $07, $a2
+    db $47, $a3, $89, $a3, $8c, $a3, $8f, $a3, $96, $a3, $9f, $a3, $22, $a8, $e2, $ab
+    db $00, $00
+
+EraseSelectedSaveSlotRewriteScript::
+    db $00, $01, $00, $ff, $05, $00, $00, $01, $02, $03, $04, $00, $01, $00, $00, $01
+    db $00, $00, $01, $00, $00, $01, $00, $00, $01, $00, $00, $c0, $00, $00, $40, $00
+    db $00, $01, $00, $00, $01, $00, $00, $01, $00, $00, $03, $00, $00, $03, $00, $00
+    db $40, $02, $00, $c0, $00
 
 GS01_StatePhase_02_DataSelectScreenFinish::
     ld bc, $003c                                  ; $4940: $01 $3c $00
@@ -1593,22 +1476,22 @@ GS01_StatePhase_02_DataSelectScreenFinish::
     ld de, $0053                                  ; $4963: $11 $53 $00
     call PlayScreenTransitionFadeOut              ; $4966: $cd $4e $04
     call DisableLCDAtVBlank                       ; $4969: $cd $83 $04
-    ld a, [rPuzzleCursorRow]                      ; $496c: $fa $37 $d6
-    ld [$a065], a                                 ; $496f: $ea $65 $a0
+    ld a, [rPuzzleAndMenuCursorRow]               ; $496c: $fa $37 $d6
+    ld [rSelectedSaveSlotIndex], a                ; $496f: $ea $65 $a0
     ld c, a                                       ; $4972: $4f
     ld b, $00                                     ; $4973: $06 $00
-    ld hl, $a387                                  ; $4975: $21 $87 $a3
+    ld hl, rSaveSlot1UnlockProgressState          ; $4975: $21 $87 $a3
     add hl, bc                                    ; $4978: $09
     ld a, [hl]                                    ; $4979: $7e
     and a                                         ; $497a: $a7
-    jr nz, jr_002_4983                            ; $497b: $20 $06
+    jr nz, .AdvanceFromDataSelectAndCommitSaveChecksums; $497b: $20 $06
 
     inc [hl]                                      ; $497d: $34
-    ld hl, $a38a                                  ; $497e: $21 $8a $a3
+    ld hl, rSaveSlot1PicrossKinokoStarClearedPuzzleCount; $497e: $21 $8a $a3
     add hl, bc                                    ; $4981: $09
     ld [hl], a                                    ; $4982: $77
 
-jr_002_4983:
+.AdvanceFromDataSelectAndCommitSaveChecksums:
     xor a                                         ; $4983: $af
     ld [rStatePhase_Current], a                   ; $4984: $ea $35 $d6
     ld hl, rGameState_Current                     ; $4987: $21 $34 $d6
@@ -1616,534 +1499,361 @@ jr_002_4983:
     jp RefreshSaveValidationChecksumsAndMirrors   ; $498b: $c3 $1f $1b
 
 
-LoadPuzzleData::
+GS01_BuildSelectedSaveSlotTemplateCommandStream::
     push af                                       ; $498e: $f5
     ld c, a                                       ; $498f: $4f
     ld b, $00                                     ; $4990: $06 $00
-    ld hl, PuzzleDataOffsetTable                  ; $4992: $21 $57 $4a
+    ld hl, SelectedSaveSlotTemplateCommandOffsetTable; $4992: $21 $57 $4a
     add hl, bc                                    ; $4995: $09
     ld c, [hl]                                    ; $4996: $4e
     add hl, bc                                    ; $4997: $09
     ld a, $02                                     ; $4998: $3e $02
-    ld de, $c100                                  ; $499a: $11 $00 $c1
+    ld de, rGS01_SaveSlotTemplateCommandStreamStart; $499a: $11 $00 $c1
     ld bc, $0023                                  ; $499d: $01 $23 $00
     call BankedTileCopy                           ; $49a0: $cd $e4 $04
     pop af                                        ; $49a3: $f1
     ld c, a                                       ; $49a4: $4f
     ld b, $00                                     ; $49a5: $06 $00
-    ld hl, $a387                                  ; $49a7: $21 $87 $a3
+    ld hl, rSaveSlot1UnlockProgressState          ; $49a7: $21 $87 $a3
     add hl, bc                                    ; $49aa: $09
     ld a, [hl]                                    ; $49ab: $7e
     and a                                         ; $49ac: $a7
-    jp z, Jump_002_4a4f                           ; $49ad: $ca $4f $4a
+    jp z, GS01_CommitSelectedSaveSlotTemplateCommandStream; $49ad: $ca $4f $4a
 
     push bc                                       ; $49b0: $c5
     cp $03                                        ; $49b1: $fe $03
-    jr nz, jr_002_49b6                            ; $49b3: $20 $01
+    jr nz, .NormalizeSelectedSaveSlotStateToIconVariantIndex; $49b3: $20 $01
 
     dec a                                         ; $49b5: $3d
 
-jr_002_49b6:
+.NormalizeSelectedSaveSlotStateToIconVariantIndex:
     dec a                                         ; $49b6: $3d
     ld c, a                                       ; $49b7: $4f
     ld b, $00                                     ; $49b8: $06 $00
-    ld hl, $4ac3                                  ; $49ba: $21 $c3 $4a
+    ld hl, SelectedSaveSlotIconVariantCommandOffsetTable; $49ba: $21 $c3 $4a
     add hl, bc                                    ; $49bd: $09
     ld c, [hl]                                    ; $49be: $4e
     add hl, bc                                    ; $49bf: $09
-    ld de, $c109                                  ; $49c0: $11 $09 $c1
+    ld de, rGS01_SaveSlotTemplateRow1KinokoStarIconChunkStart; $49c0: $11 $09 $c1
     ld c, $04                                     ; $49c3: $0e $04
 
-jr_002_49c5:
+.CopySelectedSaveSlotIconScriptRow1Loop:
     ld a, [hl+]                                   ; $49c5: $2a
     ld [de], a                                    ; $49c6: $12
     inc de                                        ; $49c7: $13
     dec c                                         ; $49c8: $0d
-    jr nz, jr_002_49c5                            ; $49c9: $20 $fa
+    jr nz, .CopySelectedSaveSlotIconScriptRow1Loop; $49c9: $20 $fa
 
-    ld de, $c11a                                  ; $49cb: $11 $1a $c1
+    ld de, rGS01_SaveSlotTemplateRow2KinokoStarIconChunkStart; $49cb: $11 $1a $c1
     ld c, $04                                     ; $49ce: $0e $04
 
-jr_002_49d0:
+.CopySelectedSaveSlotIconScriptRow2Loop:
     ld a, [hl+]                                   ; $49d0: $2a
     ld [de], a                                    ; $49d1: $12
     inc de                                        ; $49d2: $13
     dec c                                         ; $49d3: $0d
-    jr nz, jr_002_49d0                            ; $49d4: $20 $fa
+    jr nz, .CopySelectedSaveSlotIconScriptRow2Loop; $49d4: $20 $fa
 
     pop bc                                        ; $49d6: $c1
     push bc                                       ; $49d7: $c5
-    ld hl, $a38a                                  ; $49d8: $21 $8a $a3
+    ld hl, rSaveSlot1PicrossKinokoStarClearedPuzzleCount; $49d8: $21 $8a $a3
     add hl, bc                                    ; $49db: $09
     ld a, [hl]                                    ; $49dc: $7e
-    call Call_000_1972                            ; $49dd: $cd $72 $19
+    call SplitAToDecimalDigitsAndPushHundredsTens ; $49dd: $cd $72 $19
     add $60                                       ; $49e0: $c6 $60
-    ld hl, $c10e                                  ; $49e2: $21 $0e $c1
+    ld hl, rGS01_SaveSlotTemplateRow1KinokoStarCountDigitOnes; $49e2: $21 $0e $c1
     ld [hl], a                                    ; $49e5: $77
     add $10                                       ; $49e6: $c6 $10
-    ld hl, $c11f                                  ; $49e8: $21 $1f $c1
+    ld hl, rGS01_SaveSlotTemplateRow2KinokoStarCountDigitOnes; $49e8: $21 $1f $c1
     ld [hl], a                                    ; $49eb: $77
     pop af                                        ; $49ec: $f1
     add $60                                       ; $49ed: $c6 $60
-    ld hl, $c10d                                  ; $49ef: $21 $0d $c1
+    ld hl, rGS01_SaveSlotTemplateRow1KinokoStarCountDigitTens; $49ef: $21 $0d $c1
     ld [hl], a                                    ; $49f2: $77
     add $10                                       ; $49f3: $c6 $10
-    ld hl, $c11e                                  ; $49f5: $21 $1e $c1
+    ld hl, rGS01_SaveSlotTemplateRow2KinokoStarCountDigitTens; $49f5: $21 $1e $c1
     ld [hl], a                                    ; $49f8: $77
     pop af                                        ; $49f9: $f1
     ld a, $6b                                     ; $49fa: $3e $6b
-    ld hl, $c103                                  ; $49fc: $21 $03 $c1
+    ld hl, rGS01_SaveSlotTemplateRow1EasyPicrossIconPairLeft; $49fc: $21 $03 $c1
     ld [hl+], a                                   ; $49ff: $22
     inc a                                         ; $4a00: $3c
     ld [hl], a                                    ; $4a01: $77
     ld a, $7b                                     ; $4a02: $3e $7b
-    ld hl, $c114                                  ; $4a04: $21 $14 $c1
+    ld hl, rGS01_SaveSlotTemplateRow2EasyPicrossIconPairLeft; $4a04: $21 $14 $c1
     ld [hl+], a                                   ; $4a07: $22
     inc a                                         ; $4a08: $3c
     ld [hl], a                                    ; $4a09: $77
     pop bc                                        ; $4a0a: $c1
-    ld hl, $a07e                                  ; $4a0b: $21 $7e $a0
+    ld hl, rSaveSlot1EasyPicrossClearedPuzzleCount; $4a0b: $21 $7e $a0
     add hl, bc                                    ; $4a0e: $09
     ld a, [hl]                                    ; $4a0f: $7e
-    call Call_000_1972                            ; $4a10: $cd $72 $19
+    call SplitAToDecimalDigitsAndPushHundredsTens ; $4a10: $cd $72 $19
     add $60                                       ; $4a13: $c6 $60
-    ld hl, $c106                                  ; $4a15: $21 $06 $c1
+    ld hl, rGS01_SaveSlotTemplateRow1EasyPicrossCountDigitOnes; $4a15: $21 $06 $c1
     ld [hl], a                                    ; $4a18: $77
     add $10                                       ; $4a19: $c6 $10
-    ld hl, $c117                                  ; $4a1b: $21 $17 $c1
+    ld hl, rGS01_SaveSlotTemplateRow2EasyPicrossCountDigitOnes; $4a1b: $21 $17 $c1
     ld [hl], a                                    ; $4a1e: $77
     pop af                                        ; $4a1f: $f1
     add $60                                       ; $4a20: $c6 $60
-    ld hl, $c105                                  ; $4a22: $21 $05 $c1
+    ld hl, rGS01_SaveSlotTemplateRow1EasyPicrossCountDigitTens; $4a22: $21 $05 $c1
     ld [hl], a                                    ; $4a25: $77
     add $10                                       ; $4a26: $c6 $10
-    ld hl, $c116                                  ; $4a28: $21 $16 $c1
+    ld hl, rGS01_SaveSlotTemplateRow2EasyPicrossCountDigitTens; $4a28: $21 $16 $c1
     ld [hl], a                                    ; $4a2b: $77
     pop af                                        ; $4a2c: $f1
     ld a, $ac                                     ; $4a2d: $3e $ac
-    ld hl, $c107                                  ; $4a2f: $21 $07 $c1
+    ld hl, rGS01_SaveSlotTemplateRow1EasyPicrossCountSuffixPairLeft; $4a2f: $21 $07 $c1
     ld [hl+], a                                   ; $4a32: $22
     ld a, $ae                                     ; $4a33: $3e $ae
     ld [hl], a                                    ; $4a35: $77
     ld a, $bc                                     ; $4a36: $3e $bc
-    ld hl, $c118                                  ; $4a38: $21 $18 $c1
+    ld hl, rGS01_SaveSlotTemplateRow2EasyPicrossCountSuffixPairLeft; $4a38: $21 $18 $c1
     ld [hl+], a                                   ; $4a3b: $22
     ld a, $be                                     ; $4a3c: $3e $be
     ld [hl], a                                    ; $4a3e: $77
     ld a, $ac                                     ; $4a3f: $3e $ac
-    ld hl, $c10f                                  ; $4a41: $21 $0f $c1
+    ld hl, rGS01_SaveSlotTemplateRow1KinokoStarCountSuffixPairLeft; $4a41: $21 $0f $c1
     ld [hl+], a                                   ; $4a44: $22
     inc a                                         ; $4a45: $3c
     ld [hl], a                                    ; $4a46: $77
     ld a, $bc                                     ; $4a47: $3e $bc
-    ld hl, $c120                                  ; $4a49: $21 $20 $c1
+    ld hl, rGS01_SaveSlotTemplateRow2KinokoStarCountSuffixPairLeft; $4a49: $21 $20 $c1
     ld [hl+], a                                   ; $4a4c: $22
     inc a                                         ; $4a4d: $3c
     ld [hl], a                                    ; $4a4e: $77
 
-Jump_002_4a4f:
+GS01_CommitSelectedSaveSlotTemplateCommandStream::
     ld a, $00                                     ; $4a4f: $3e $00
-    ld bc, $c100                                  ; $4a51: $01 $00 $c1
-    jp Jump_000_0738                              ; $4a54: $c3 $38 $07
+    ld bc, rGS01_SaveSlotTemplateCommandStreamStart; $4a51: $01 $00 $c1
+    jp QueueCommandStreamAndProcessIfLCDOff       ; $4a54: $c3 $38 $07
 
 
-PuzzleDataOffsetTable::
-    db $03, $25, $47, $98, $83, $0e, $28, $a0
+SelectedSaveSlotTemplateCommandOffsetTable::
+    db $03, $25, $47
 
-    and c                                         ; $4a5f: $a1
-    and d                                         ; $4a60: $a2
-    and e                                         ; $4a61: $a3
-    and h                                         ; $4a62: $a4
-    and l                                         ; $4a63: $a5
-    and [hl]                                      ; $4a64: $a6
-    and a                                         ; $4a65: $a7
-    xor b                                         ; $4a66: $a8
-    xor c                                         ; $4a67: $a9
-    xor d                                         ; $4a68: $aa
-    xor e                                         ; $4a69: $ab
-    cpl                                           ; $4a6a: $2f
-    sbc b                                         ; $4a6b: $98
-    and e                                         ; $4a6c: $a3
-    ld c, $38                                     ; $4a6d: $0e $38
-    or b                                          ; $4a6f: $b0
-    or c                                          ; $4a70: $b1
-    or d                                          ; $4a71: $b2
-    or e                                          ; $4a72: $b3
-    or h                                          ; $4a73: $b4
-    or l                                          ; $4a74: $b5
-    or [hl]                                       ; $4a75: $b6
-    or a                                          ; $4a76: $b7
-    cp b                                          ; $4a77: $b8
-    cp c                                          ; $4a78: $b9
-    cp d                                          ; $4a79: $ba
-    cp e                                          ; $4a7a: $bb
-    ccf                                           ; $4a7b: $3f
-    nop                                           ; $4a7c: $00
-    sbc c                                         ; $4a7d: $99
-    inc bc                                        ; $4a7e: $03
-    ld c, $28                                     ; $4a7f: $0e $28
-    and b                                         ; $4a81: $a0
-    and c                                         ; $4a82: $a1
-    and d                                         ; $4a83: $a2
-    and e                                         ; $4a84: $a3
-    and h                                         ; $4a85: $a4
-    and l                                         ; $4a86: $a5
-    and [hl]                                      ; $4a87: $a6
-    and a                                         ; $4a88: $a7
-    xor b                                         ; $4a89: $a8
-    xor c                                         ; $4a8a: $a9
-    xor d                                         ; $4a8b: $aa
-    xor e                                         ; $4a8c: $ab
-    cpl                                           ; $4a8d: $2f
-    sbc c                                         ; $4a8e: $99
-    inc hl                                        ; $4a8f: $23
-    ld c, $38                                     ; $4a90: $0e $38
-    or b                                          ; $4a92: $b0
-    or c                                          ; $4a93: $b1
-    or d                                          ; $4a94: $b2
-    or e                                          ; $4a95: $b3
-    or h                                          ; $4a96: $b4
-    or l                                          ; $4a97: $b5
-    or [hl]                                       ; $4a98: $b6
-    or a                                          ; $4a99: $b7
-    cp b                                          ; $4a9a: $b8
-    cp c                                          ; $4a9b: $b9
-    cp d                                          ; $4a9c: $ba
-    cp e                                          ; $4a9d: $bb
-    ccf                                           ; $4a9e: $3f
-    nop                                           ; $4a9f: $00
-    sbc c                                         ; $4aa0: $99
-    add e                                         ; $4aa1: $83
-    ld c, $28                                     ; $4aa2: $0e $28
-    and b                                         ; $4aa4: $a0
-    and c                                         ; $4aa5: $a1
-    and d                                         ; $4aa6: $a2
-    and e                                         ; $4aa7: $a3
-    and h                                         ; $4aa8: $a4
-    and l                                         ; $4aa9: $a5
-    and [hl]                                      ; $4aaa: $a6
-    and a                                         ; $4aab: $a7
-    xor b                                         ; $4aac: $a8
-    xor c                                         ; $4aad: $a9
-    xor d                                         ; $4aae: $aa
-    xor e                                         ; $4aaf: $ab
-    cpl                                           ; $4ab0: $2f
-    sbc c                                         ; $4ab1: $99
-    and e                                         ; $4ab2: $a3
-    ld c, $38                                     ; $4ab3: $0e $38
-    or b                                          ; $4ab5: $b0
-    or c                                          ; $4ab6: $b1
-    or d                                          ; $4ab7: $b2
-    or e                                          ; $4ab8: $b3
-    or h                                          ; $4ab9: $b4
-    or l                                          ; $4aba: $b5
-    or [hl]                                       ; $4abb: $b6
-    or a                                          ; $4abc: $b7
-    cp b                                          ; $4abd: $b8
-    cp c                                          ; $4abe: $b9
-    cp d                                          ; $4abf: $ba
-    cp e                                          ; $4ac0: $bb
-    ccf                                           ; $4ac1: $3f
-    nop                                           ; $4ac2: $00
-    ld [bc], a                                    ; $4ac3: $02
-    add hl, bc                                    ; $4ac4: $09
-    add hl, hl                                    ; $4ac5: $29
-    ld a, [hl+]                                   ; $4ac6: $2a
-    ld l, d                                       ; $4ac7: $6a
-    ld l, d                                       ; $4ac8: $6a
-    add hl, sp                                    ; $4ac9: $39
-    ld a, [hl-]                                   ; $4aca: $3a
-    ld a, d                                       ; $4acb: $7a
-    ld a, d                                       ; $4acc: $7a
-    add hl, hl                                    ; $4acd: $29
-    ld a, [hl+]                                   ; $4ace: $2a
-    dec l                                         ; $4acf: $2d
-    ld l, $39                                     ; $4ad0: $2e $39
-    ld a, [hl-]                                   ; $4ad2: $3a
-    dec a                                         ; $4ad3: $3d
-    ld a, $f5                                     ; $4ad4: $3e $f5
+SelectedSaveSlot1TemplateCommandScript::
+    db $98, $83, $0e, $28, $a0, $a1, $a2, $a3, $a4, $a5, $a6, $a7, $a8, $a9, $aa, $ab, $2f
+    db $98, $a3, $0e, $38, $b0, $b1, $b2, $b3, $b4, $b5, $b6, $b7, $b8, $b9, $ba, $bb, $3f
+    db $00
+
+SelectedSaveSlot2TemplateCommandScript::
+    db $99, $03, $0e, $28, $a0, $a1, $a2, $a3, $a4, $a5, $a6, $a7, $a8, $a9, $aa, $ab, $2f
+    db $99, $23, $0e, $38, $b0, $b1, $b2, $b3, $b4, $b5, $b6, $b7, $b8, $b9, $ba, $bb, $3f
+    db $00
+
+SelectedSaveSlot3TemplateCommandScript::
+    db $99, $83, $0e, $28, $a0, $a1, $a2, $a3, $a4, $a5, $a6, $a7, $a8, $a9, $aa, $ab, $2f
+    db $99, $a3, $0e, $38, $b0, $b1, $b2, $b3, $b4, $b5, $b6, $b7, $b8, $b9, $ba, $bb, $3f
+    db $00
+
+SelectedSaveSlotIconVariantCommandOffsetTable::
+    db $02, $09
+
+SelectedSaveSlotIconKinokoOnlyCommandScript::
+    db $29, $2a, $6a, $6a, $39, $3a, $7a, $7a
+
+SelectedSaveSlotIconKinokoStarCommandScript::
+    db $29, $2a, $2d, $2e, $39, $3a, $3d, $3e
+
+GS01_BuildSaveSlotTemplateCommandStream::
+    push af                                       ; $4ad5: $f5
     ld c, a                                       ; $4ad6: $4f
     ld b, $00                                     ; $4ad7: $06 $00
-    ld hl, $4b9e                                  ; $4ad9: $21 $9e $4b
+    ld hl, SaveSlotTemplateCommandOffsetTable     ; $4ad9: $21 $9e $4b
     add hl, bc                                    ; $4adc: $09
     ld c, [hl]                                    ; $4add: $4e
     add hl, bc                                    ; $4ade: $09
     ld a, $02                                     ; $4adf: $3e $02
-    ld de, $c100                                  ; $4ae1: $11 $00 $c1
+    ld de, rGS01_SaveSlotTemplateCommandStreamStart; $4ae1: $11 $00 $c1
     ld bc, $0023                                  ; $4ae4: $01 $23 $00
     call BankedTileCopy                           ; $4ae7: $cd $e4 $04
     pop af                                        ; $4aea: $f1
     ld c, a                                       ; $4aeb: $4f
     ld b, $00                                     ; $4aec: $06 $00
-    ld hl, $a387                                  ; $4aee: $21 $87 $a3
+    ld hl, rSaveSlot1UnlockProgressState          ; $4aee: $21 $87 $a3
     add hl, bc                                    ; $4af1: $09
     ld a, [hl]                                    ; $4af2: $7e
     and a                                         ; $4af3: $a7
-    jp z, Jump_002_4b96                           ; $4af4: $ca $96 $4b
+    jp z, GS01_CommitSaveSlotTemplateCommandStream; $4af4: $ca $96 $4b
 
     push bc                                       ; $4af7: $c5
     cp $03                                        ; $4af8: $fe $03
-    jr nz, jr_002_4afd                            ; $4afa: $20 $01
+    jr nz, .NormalizeSaveSlotStateToIconVariantIndex; $4afa: $20 $01
 
     dec a                                         ; $4afc: $3d
 
-jr_002_4afd:
+.NormalizeSaveSlotStateToIconVariantIndex:
     dec a                                         ; $4afd: $3d
     ld c, a                                       ; $4afe: $4f
     ld b, $00                                     ; $4aff: $06 $00
-    ld hl, $4c0a                                  ; $4b01: $21 $0a $4c
+    ld hl, SaveSlotIconVariantCommandOffsetTable  ; $4b01: $21 $0a $4c
     add hl, bc                                    ; $4b04: $09
     ld c, [hl]                                    ; $4b05: $4e
     add hl, bc                                    ; $4b06: $09
-    ld de, $c109                                  ; $4b07: $11 $09 $c1
+    ld de, rGS01_SaveSlotTemplateRow1KinokoStarIconChunkStart; $4b07: $11 $09 $c1
     ld c, $04                                     ; $4b0a: $0e $04
 
-jr_002_4b0c:
+.CopySaveSlotIconScriptRow1Loop:
     ld a, [hl+]                                   ; $4b0c: $2a
     ld [de], a                                    ; $4b0d: $12
     inc de                                        ; $4b0e: $13
     dec c                                         ; $4b0f: $0d
-    jr nz, jr_002_4b0c                            ; $4b10: $20 $fa
+    jr nz, .CopySaveSlotIconScriptRow1Loop        ; $4b10: $20 $fa
 
-    ld de, $c11a                                  ; $4b12: $11 $1a $c1
+    ld de, rGS01_SaveSlotTemplateRow2KinokoStarIconChunkStart; $4b12: $11 $1a $c1
     ld c, $04                                     ; $4b15: $0e $04
 
-jr_002_4b17:
+.CopySaveSlotIconScriptRow2Loop:
     ld a, [hl+]                                   ; $4b17: $2a
     ld [de], a                                    ; $4b18: $12
     inc de                                        ; $4b19: $13
     dec c                                         ; $4b1a: $0d
-    jr nz, jr_002_4b17                            ; $4b1b: $20 $fa
+    jr nz, .CopySaveSlotIconScriptRow2Loop        ; $4b1b: $20 $fa
 
     pop bc                                        ; $4b1d: $c1
     push bc                                       ; $4b1e: $c5
-    ld hl, $a38a                                  ; $4b1f: $21 $8a $a3
+    ld hl, rSaveSlot1PicrossKinokoStarClearedPuzzleCount; $4b1f: $21 $8a $a3
     add hl, bc                                    ; $4b22: $09
     ld a, [hl]                                    ; $4b23: $7e
-    call Call_000_1972                            ; $4b24: $cd $72 $19
+    call SplitAToDecimalDigitsAndPushHundredsTens ; $4b24: $cd $72 $19
     add $40                                       ; $4b27: $c6 $40
-    ld hl, $c10e                                  ; $4b29: $21 $0e $c1
+    ld hl, rGS01_SaveSlotTemplateRow1KinokoStarCountDigitOnes; $4b29: $21 $0e $c1
     ld [hl], a                                    ; $4b2c: $77
     add $10                                       ; $4b2d: $c6 $10
-    ld hl, $c11f                                  ; $4b2f: $21 $1f $c1
+    ld hl, rGS01_SaveSlotTemplateRow2KinokoStarCountDigitOnes; $4b2f: $21 $1f $c1
     ld [hl], a                                    ; $4b32: $77
     pop af                                        ; $4b33: $f1
     add $40                                       ; $4b34: $c6 $40
-    ld hl, $c10d                                  ; $4b36: $21 $0d $c1
+    ld hl, rGS01_SaveSlotTemplateRow1KinokoStarCountDigitTens; $4b36: $21 $0d $c1
     ld [hl], a                                    ; $4b39: $77
     add $10                                       ; $4b3a: $c6 $10
-    ld hl, $c11e                                  ; $4b3c: $21 $1e $c1
+    ld hl, rGS01_SaveSlotTemplateRow2KinokoStarCountDigitTens; $4b3c: $21 $1e $c1
     ld [hl], a                                    ; $4b3f: $77
     pop af                                        ; $4b40: $f1
     ld a, $4b                                     ; $4b41: $3e $4b
-    ld hl, $c103                                  ; $4b43: $21 $03 $c1
+    ld hl, rGS01_SaveSlotTemplateRow1EasyPicrossIconPairLeft; $4b43: $21 $03 $c1
     ld [hl+], a                                   ; $4b46: $22
     inc a                                         ; $4b47: $3c
     ld [hl], a                                    ; $4b48: $77
     ld a, $5b                                     ; $4b49: $3e $5b
-    ld hl, $c114                                  ; $4b4b: $21 $14 $c1
+    ld hl, rGS01_SaveSlotTemplateRow2EasyPicrossIconPairLeft; $4b4b: $21 $14 $c1
     ld [hl+], a                                   ; $4b4e: $22
     inc a                                         ; $4b4f: $3c
     ld [hl], a                                    ; $4b50: $77
     pop bc                                        ; $4b51: $c1
-    ld hl, $a07e                                  ; $4b52: $21 $7e $a0
+    ld hl, rSaveSlot1EasyPicrossClearedPuzzleCount; $4b52: $21 $7e $a0
     add hl, bc                                    ; $4b55: $09
     ld a, [hl]                                    ; $4b56: $7e
-    call Call_000_1972                            ; $4b57: $cd $72 $19
+    call SplitAToDecimalDigitsAndPushHundredsTens ; $4b57: $cd $72 $19
     add $40                                       ; $4b5a: $c6 $40
-    ld hl, $c106                                  ; $4b5c: $21 $06 $c1
+    ld hl, rGS01_SaveSlotTemplateRow1EasyPicrossCountDigitOnes; $4b5c: $21 $06 $c1
     ld [hl], a                                    ; $4b5f: $77
     add $10                                       ; $4b60: $c6 $10
-    ld hl, $c117                                  ; $4b62: $21 $17 $c1
+    ld hl, rGS01_SaveSlotTemplateRow2EasyPicrossCountDigitOnes; $4b62: $21 $17 $c1
     ld [hl], a                                    ; $4b65: $77
     pop af                                        ; $4b66: $f1
     add $40                                       ; $4b67: $c6 $40
-    ld hl, $c105                                  ; $4b69: $21 $05 $c1
+    ld hl, rGS01_SaveSlotTemplateRow1EasyPicrossCountDigitTens; $4b69: $21 $05 $c1
     ld [hl], a                                    ; $4b6c: $77
     add $10                                       ; $4b6d: $c6 $10
-    ld hl, $c116                                  ; $4b6f: $21 $16 $c1
+    ld hl, rGS01_SaveSlotTemplateRow2EasyPicrossCountDigitTens; $4b6f: $21 $16 $c1
     ld [hl], a                                    ; $4b72: $77
     pop af                                        ; $4b73: $f1
     ld a, $8c                                     ; $4b74: $3e $8c
-    ld hl, $c107                                  ; $4b76: $21 $07 $c1
+    ld hl, rGS01_SaveSlotTemplateRow1EasyPicrossCountSuffixPairLeft; $4b76: $21 $07 $c1
     ld [hl+], a                                   ; $4b79: $22
     ld a, $8e                                     ; $4b7a: $3e $8e
     ld [hl], a                                    ; $4b7c: $77
     ld a, $9c                                     ; $4b7d: $3e $9c
-    ld hl, $c118                                  ; $4b7f: $21 $18 $c1
+    ld hl, rGS01_SaveSlotTemplateRow2EasyPicrossCountSuffixPairLeft; $4b7f: $21 $18 $c1
     ld [hl+], a                                   ; $4b82: $22
     ld a, $9e                                     ; $4b83: $3e $9e
     ld [hl], a                                    ; $4b85: $77
     ld a, $8c                                     ; $4b86: $3e $8c
-    ld hl, $c10f                                  ; $4b88: $21 $0f $c1
+    ld hl, rGS01_SaveSlotTemplateRow1KinokoStarCountSuffixPairLeft; $4b88: $21 $0f $c1
     ld [hl+], a                                   ; $4b8b: $22
     inc a                                         ; $4b8c: $3c
     ld [hl], a                                    ; $4b8d: $77
     ld a, $9c                                     ; $4b8e: $3e $9c
-    ld hl, $c120                                  ; $4b90: $21 $20 $c1
+    ld hl, rGS01_SaveSlotTemplateRow2KinokoStarCountSuffixPairLeft; $4b90: $21 $20 $c1
     ld [hl+], a                                   ; $4b93: $22
     inc a                                         ; $4b94: $3c
     ld [hl], a                                    ; $4b95: $77
 
-Jump_002_4b96:
+GS01_CommitSaveSlotTemplateCommandStream::
     ld a, $00                                     ; $4b96: $3e $00
-    ld bc, $c100                                  ; $4b98: $01 $00 $c1
-    jp Jump_000_0738                              ; $4b9b: $c3 $38 $07
+    ld bc, rGS01_SaveSlotTemplateCommandStreamStart; $4b98: $01 $00 $c1
+    jp QueueCommandStreamAndProcessIfLCDOff       ; $4b9b: $c3 $38 $07
 
 
-    inc bc                                        ; $4b9e: $03
-    dec h                                         ; $4b9f: $25
-    ld b, a                                       ; $4ba0: $47
-    sbc b                                         ; $4ba1: $98
-    add e                                         ; $4ba2: $83
-    ld c, $20                                     ; $4ba3: $0e $20
-    add b                                         ; $4ba5: $80
-    add c                                         ; $4ba6: $81
-    add d                                         ; $4ba7: $82
-    add e                                         ; $4ba8: $83
-    add h                                         ; $4ba9: $84
-    add l                                         ; $4baa: $85
-    add [hl]                                      ; $4bab: $86
-    add a                                         ; $4bac: $87
-    adc b                                         ; $4bad: $88
-    adc c                                         ; $4bae: $89
-    adc d                                         ; $4baf: $8a
-    adc e                                         ; $4bb0: $8b
-    daa                                           ; $4bb1: $27
-    sbc b                                         ; $4bb2: $98
-    and e                                         ; $4bb3: $a3
-    ld c, $30                                     ; $4bb4: $0e $30
-    sub b                                         ; $4bb6: $90
-    sub c                                         ; $4bb7: $91
-    sub d                                         ; $4bb8: $92
-    sub e                                         ; $4bb9: $93
-    sub h                                         ; $4bba: $94
-    sub l                                         ; $4bbb: $95
-    sub [hl]                                      ; $4bbc: $96
-    sub a                                         ; $4bbd: $97
-    sbc b                                         ; $4bbe: $98
-    sbc c                                         ; $4bbf: $99
-    sbc d                                         ; $4bc0: $9a
-    sbc e                                         ; $4bc1: $9b
-    scf                                           ; $4bc2: $37
-    nop                                           ; $4bc3: $00
-    sbc c                                         ; $4bc4: $99
-    inc bc                                        ; $4bc5: $03
-    ld c, $20                                     ; $4bc6: $0e $20
-    add b                                         ; $4bc8: $80
-    add c                                         ; $4bc9: $81
-    add d                                         ; $4bca: $82
-    add e                                         ; $4bcb: $83
-    add h                                         ; $4bcc: $84
-    add l                                         ; $4bcd: $85
-    add [hl]                                      ; $4bce: $86
-    add a                                         ; $4bcf: $87
-    adc b                                         ; $4bd0: $88
-    adc c                                         ; $4bd1: $89
-    adc d                                         ; $4bd2: $8a
-    adc e                                         ; $4bd3: $8b
-    daa                                           ; $4bd4: $27
-    sbc c                                         ; $4bd5: $99
-    inc hl                                        ; $4bd6: $23
-    ld c, $30                                     ; $4bd7: $0e $30
-    sub b                                         ; $4bd9: $90
-    sub c                                         ; $4bda: $91
-    sub d                                         ; $4bdb: $92
-    sub e                                         ; $4bdc: $93
-    sub h                                         ; $4bdd: $94
-    sub l                                         ; $4bde: $95
-    sub [hl]                                      ; $4bdf: $96
-    sub a                                         ; $4be0: $97
-    sbc b                                         ; $4be1: $98
-    sbc c                                         ; $4be2: $99
-    sbc d                                         ; $4be3: $9a
-    sbc e                                         ; $4be4: $9b
-    scf                                           ; $4be5: $37
-    nop                                           ; $4be6: $00
-    sbc c                                         ; $4be7: $99
-    add e                                         ; $4be8: $83
-    ld c, $20                                     ; $4be9: $0e $20
-    add b                                         ; $4beb: $80
-    add c                                         ; $4bec: $81
-    add d                                         ; $4bed: $82
-    add e                                         ; $4bee: $83
-    add h                                         ; $4bef: $84
-    add l                                         ; $4bf0: $85
-    add [hl]                                      ; $4bf1: $86
-    add a                                         ; $4bf2: $87
-    adc b                                         ; $4bf3: $88
-    adc c                                         ; $4bf4: $89
-    adc d                                         ; $4bf5: $8a
-    adc e                                         ; $4bf6: $8b
-    daa                                           ; $4bf7: $27
-    sbc c                                         ; $4bf8: $99
-    and e                                         ; $4bf9: $a3
-    ld c, $30                                     ; $4bfa: $0e $30
-    sub b                                         ; $4bfc: $90
-    sub c                                         ; $4bfd: $91
-    sub d                                         ; $4bfe: $92
-    sub e                                         ; $4bff: $93
-    sub h                                         ; $4c00: $94
-    sub l                                         ; $4c01: $95
-    sub [hl]                                      ; $4c02: $96
-    sub a                                         ; $4c03: $97
-    sbc b                                         ; $4c04: $98
-    sbc c                                         ; $4c05: $99
-    sbc d                                         ; $4c06: $9a
-    sbc e                                         ; $4c07: $9b
-    scf                                           ; $4c08: $37
-    nop                                           ; $4c09: $00
-    ld [bc], a                                    ; $4c0a: $02
-    add hl, bc                                    ; $4c0b: $09
-    ld hl, $4a22                                  ; $4c0c: $21 $22 $4a
-    ld c, d                                       ; $4c0f: $4a
-    ld sp, $5a32                                  ; $4c10: $31 $32 $5a
-    ld e, d                                       ; $4c13: $5a
-    ld hl, $2522                                  ; $4c14: $21 $22 $25
-    ld h, $31                                     ; $4c17: $26 $31
-    ld [hl-], a                                   ; $4c19: $32
-    dec [hl]                                      ; $4c1a: $35
-    ld [hl], $fa                                  ; $4c1b: $36 $fa
-    ld [hl+], a                                   ; $4c1d: $22
-    jp $c0e6                                      ; $4c1e: $c3 $e6 $c0
+SaveSlotTemplateCommandOffsetTable::
+    db $03, $25, $47
 
+SaveSlot1TemplateCommandScript::
+    db $98, $83, $0e, $20, $80, $81, $82, $83, $84, $85, $86, $87, $88, $89, $8a, $8b, $27
+    db $98, $a3, $0e, $30, $90, $91, $92, $93, $94, $95, $96, $97, $98, $99, $9a, $9b, $37
+    db $00
 
+SaveSlot2TemplateCommandScript::
+    db $99, $03, $0e, $20, $80, $81, $82, $83, $84, $85, $86, $87, $88, $89, $8a, $8b, $27
+    db $99, $23, $0e, $30, $90, $91, $92, $93, $94, $95, $96, $97, $98, $99, $9a, $9b, $37
+    db $00
+
+SaveSlot3TemplateCommandScript::
+    db $99, $83, $0e, $20, $80, $81, $82, $83, $84, $85, $86, $87, $88, $89, $8a, $8b, $27
+    db $99, $a3, $0e, $30, $90, $91, $92, $93, $94, $95, $96, $97, $98, $99, $9a, $9b, $37
+    db $00
+
+SaveSlotIconVariantCommandOffsetTable::
+    db $02, $09
+
+SaveSlotIconKinokoOnlyCommandScript::
+    db $21, $22, $4a, $4a, $31, $32, $5a, $5a
+
+SaveSlotIconKinokoStarCommandScript::
+    db $21, $22, $25, $26, $31, $32, $35, $36
+
+GS01_HandleDataSelectVerticalInput::
+    ld a, [rInputButtonsPressedOrRepeated]        ; $4c1c: $fa $22 $c3
+    and $c0                                       ; $4c1f: $e6 $c0
     ret z                                         ; $4c21: $c8
 
     push af                                       ; $4c22: $f5
-    ld a, [rPuzzleCursorRow]                      ; $4c23: $fa $37 $d6
-    call $4ad5                                    ; $4c26: $cd $d5 $4a
+    ld a, [rPuzzleAndMenuCursorRow]               ; $4c23: $fa $37 $d6
+    call GS01_BuildSaveSlotTemplateCommandStream  ; $4c26: $cd $d5 $4a
     rst RST_08                                    ; $4c29: $cf
     ld c, $0a                                     ; $4c2a: $0e $0a
     ld a, $02                                     ; $4c2c: $3e $02
     call CallSoundEffectDispatcher                ; $4c2e: $cd $b6 $03
     pop af                                        ; $4c31: $f1
     and $40                                       ; $4c32: $e6 $40
-    jr z, jr_002_4c46                             ; $4c34: $28 $10
+    jr z, .HandleDataSelectMoveDown               ; $4c34: $28 $10
 
-    ld a, [rPuzzleCursorRow]                      ; $4c36: $fa $37 $d6
+    ld a, [rPuzzleAndMenuCursorRow]               ; $4c36: $fa $37 $d6
     dec a                                         ; $4c39: $3d
     cp $ff                                        ; $4c3a: $fe $ff
-    jr nz, jr_002_4c40                            ; $4c3c: $20 $02
+    jr nz, .StoreCursorRowAndBuildSelectedTemplate_UpPath; $4c3c: $20 $02
 
     ld a, $02                                     ; $4c3e: $3e $02
 
-jr_002_4c40:
-    ld [rPuzzleCursorRow], a                      ; $4c40: $ea $37 $d6
-    jp LoadPuzzleData                             ; $4c43: $c3 $8e $49
+.StoreCursorRowAndBuildSelectedTemplate_UpPath:
+    ld [rPuzzleAndMenuCursorRow], a               ; $4c40: $ea $37 $d6
+    jp GS01_BuildSelectedSaveSlotTemplateCommandStream; $4c43: $c3 $8e $49
 
 
-jr_002_4c46:
-    ld a, [rPuzzleCursorRow]                      ; $4c46: $fa $37 $d6
+.HandleDataSelectMoveDown:
+    ld a, [rPuzzleAndMenuCursorRow]               ; $4c46: $fa $37 $d6
     inc a                                         ; $4c49: $3c
     cp $03                                        ; $4c4a: $fe $03
-    jr nz, jr_002_4c4f                            ; $4c4c: $20 $01
+    jr nz, .StoreCursorRowAndBuildSelectedTemplate_DownPath; $4c4c: $20 $01
 
     xor a                                         ; $4c4e: $af
 
-jr_002_4c4f:
-    ld [rPuzzleCursorRow], a                      ; $4c4f: $ea $37 $d6
-    jp LoadPuzzleData                             ; $4c52: $c3 $8e $49
+.StoreCursorRowAndBuildSelectedTemplate_DownPath:
+    ld [rPuzzleAndMenuCursorRow], a               ; $4c4f: $ea $37 $d6
+    jp GS01_BuildSelectedSaveSlotTemplateCommandStream; $4c52: $c3 $8e $49
 
 
 GameState_07_TODO_PhaseDispatcher::
@@ -2385,7 +2095,7 @@ GS07_StatePhase_05_TODO::
     ld hl, $4ec2                                  ; $4e01: $21 $c2 $4e
     call SwitchBankToBAndJumpToHL                 ; $4e04: $cd $de $05
     call Call_002_4ee1                            ; $4e07: $cd $e1 $4e
-    ld hl, $c33a                                  ; $4e0a: $21 $3a $c3
+    ld hl, rVBlankFrameCounter                    ; $4e0a: $21 $3a $c3
     ld a, [$d83e]                                 ; $4e0d: $fa $3e $d8
     and a                                         ; $4e10: $a7
     jr nz, jr_002_4e17                            ; $4e11: $20 $04

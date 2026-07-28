@@ -8,7 +8,20 @@
 00:a001 rPuzzleOrderTableCursor
 00:a002 rPuzzleOrderTableStart
 00:a042 rSaveDataDefaultBlockADest
+00:a065 rSelectedSaveSlotIndex
 00:a069 rSaveDataDefaultBlockBDest
+00:a07e rSaveSlot1EasyPicrossClearedPuzzleCount
+00:a07f rSaveSlot2EasyPicrossClearedPuzzleCount
+00:a080 rSaveSlot3EasyPicrossClearedPuzzleCount
+00:a387 rSaveSlot1UnlockProgressState
+00:a388 rSaveSlot2UnlockProgressState
+00:a389 rSaveSlot3UnlockProgressState
+; Observed values: $01=initialized/kinoko only, $02=star unlocked, $03=time trial unlocked
+; Shared Kinoko/Star cleared-puzzle counters (one byte per save slot)
+00:a38a rSaveSlot1PicrossKinokoStarClearedPuzzleCount
+00:a38b rSaveSlot2PicrossKinokoStarClearedPuzzleCount
+00:a38c rSaveSlot3PicrossKinokoStarClearedPuzzleCount
+00:aca2 rContinueSavedGameFlowMode_Unsure
 00:aced rHiddenProgrammerCreditsMirror
 00:acfd rSaveValidationMagicBytesMirror
 00:ad02 rSaveDataPrimaryChecksumSum
@@ -16,6 +29,24 @@
 00:ad04 rSaveDataMirrorBlockStart
 00:ba06 rSaveDataMirrorChecksumSum
 00:ba07 rSaveDataMirrorChecksumXor
+
+00:c100 rGS01_SaveSlotTemplateCommandStreamStart
+00:c103 rGS01_SaveSlotTemplateRow1EasyPicrossIconPairLeft
+00:c105 rGS01_SaveSlotTemplateRow1EasyPicrossCountDigitTens
+00:c106 rGS01_SaveSlotTemplateRow1EasyPicrossCountDigitOnes
+00:c107 rGS01_SaveSlotTemplateRow1EasyPicrossCountSuffixPairLeft
+00:c109 rGS01_SaveSlotTemplateRow1KinokoStarIconChunkStart
+00:c10d rGS01_SaveSlotTemplateRow1KinokoStarCountDigitTens
+00:c10e rGS01_SaveSlotTemplateRow1KinokoStarCountDigitOnes
+00:c10f rGS01_SaveSlotTemplateRow1KinokoStarCountSuffixPairLeft
+00:c114 rGS01_SaveSlotTemplateRow2EasyPicrossIconPairLeft
+00:c116 rGS01_SaveSlotTemplateRow2EasyPicrossCountDigitTens
+00:c117 rGS01_SaveSlotTemplateRow2EasyPicrossCountDigitOnes
+00:c118 rGS01_SaveSlotTemplateRow2EasyPicrossCountSuffixPairLeft
+00:c11a rGS01_SaveSlotTemplateRow2KinokoStarIconChunkStart
+00:c11e rGS01_SaveSlotTemplateRow2KinokoStarCountDigitTens
+00:c11f rGS01_SaveSlotTemplateRow2KinokoStarCountDigitOnes
+00:c120 rGS01_SaveSlotTemplateRow2KinokoStarCountSuffixPairLeft
 
 00:c310 rMainLoopInitScratchFlag_Unsure
 00:c311 rShadowOAMWriteCursor
@@ -39,10 +70,14 @@
 00:c337 rLCDCInterruptControlFlags_Unsure
 00:c338 rLCDCInterruptDispatchIndex
 00:c339 rVBlankSyncFlag
+00:c33a rVBlankFrameCounter
 00:c33b rLCDCFrameTickCounter
 00:c33c rVBlankLCDCBit4ForceFlag
 00:c33d rIsSuperGameBoyMode
 00:c33e rSGBPacketTransferBusyFlag
+00:c340 rSGBScreenTransitionPAL_SETPacketBuffer
+00:c341 rSGBScreenTransitionPAL_SETPacketColorData
+00:c349 rSGBScreenTransitionPAL_SETPacketControl
 00:c350 rVBlankSoundEngineUpdateEnabled_Unsure
 00:c351 rBGTileCopySourceX
 00:c352 rBGTileCopySourceY
@@ -84,7 +119,7 @@
 00:d634 rGameState_Current
 00:d635 rStatePhase_Current
 00:d636 rPuzzleCursorColumn
-00:d637 rPuzzleCursorRow
+00:d637 rPuzzleAndMenuCursorRow
 00:d63c rStatePhaseTimer
 00:d63d rSharedAnimationFrameState
 00:d63e rHintCursorAnimationColumnAccumulator
@@ -145,6 +180,7 @@
 00:dfff rSubtractiveRNGSeedSourceByte
 00:f636 rLevelSelectColumn
 00:f637 rLevelSelectRow
+00:ff80 rOAMDMAHRAMStubEntry
 
 00:2000 rROMB
 
@@ -260,6 +296,23 @@
 00:0671 SubtractiveRNGStateInitOffsetTable
 00:0671 .data:0036:2
 
+00:0738 QueueCommandStreamAndProcessIfLCDOff
+
+00:0767 ProcessPendingCommandQueueEntries
+00:0772 .ProcessQueuedEntryLoop
+00:0793 .CommitCommandQueueReadCursor
+
+00:0798 ExecuteQueuedCommandStream
+00:07a0 .ReadNextCommandHeader
+00:07b3 .CopyLinearLiteralBytesLoop
+00:07bb .SetupLinearRepeatFill
+00:07bf .FillLinearRepeatedByteLoop
+00:07c6 .DispatchVerticalCopyMode
+00:07cf .CopyVerticalLiteralBytesLoop
+00:07da .SetupVerticalRepeatFill
+00:07df .FillVerticalRepeatedByteLoop
+00:07e8 .CheckCommandStreamTerminator
+
 00:07f1 LoadPuzzleDataBuffer
 00:0831 .DecodePuzzleDataBitsLoop
 
@@ -334,6 +387,12 @@
 00:1362 GS06_ScreenTilemapTileDataAddressLookupRow11Table
 00:1362 .data:0028:2
 
+00:1972 SplitAToDecimalDigitsAndPushHundredsTens
+00:1976 .SubtractHundredsLoop
+00:197f .SubtractTensLoop
+00:1988 .ApplyLeadingBlankDigits
+00:1995 .PushDigitsAndReturnViaDE
+
 00:19bd GS06_UpdateOAMSequenceEventAndCopySprite
 00:19eb .LoadNextSequenceEvent
 00:19fc .ApplySequenceEvent
@@ -398,9 +457,15 @@
 
 00:1fa5 EnsureSGBMaskFreezeDisabled
 
-00:1fc8 PlayScreenTransitionFadeIn_AlternatePath
+00:1fc8 PlayScreenTransitionFadeIn_SGB
+00:1ff1 .ApplyFadeStepLoop
+00:2027 .ApplySGBPalSetFadeStepLoop
+00:202d .WriteSGBPalSetPacketColorsLoop
 
-00:204a PlayScreenTransitionFadeOut_AlternatePath
+00:204a PlayScreenTransitionFadeOut_SGB
+00:2066 .ApplySGBPalSetFadeStepLoop
+00:206c .WriteSGBPalSetPacketColorsLoop
+00:20ad .ApplyFadeStepLoop
 
 00:20ce CopyOAMSpriteById
 00:20f0 .CopyOAMSpriteLoop
@@ -1189,11 +1254,79 @@
 
 02:4759 GS01_StatePhase_00_DataSelectScreenInit
 02:47f1 GS01_StatePhase_01_DataSelectScreenIdle
+02:4809 .CheckDataSelectAOrStartInput
+02:481c .ReturnIfNoDataSelectAOrStart
+02:481d GS01_RunEraseSelectedSavePrompt
+02:4826 .EraseSelectedSavePromptLoop
+02:4846 .CheckEraseSelectedSaveConfirmInput
+02:485c .RunEraseSelectedSaveRewriteStepLoop
+02:486f .ZeroFillEraseSelectedSaveRangeLoop
+02:487a .CopyLiteralEraseSelectedSaveRange
+02:4881 .CopyLiteralEraseSelectedSaveRangeLoop
+02:488d .FinalizeEraseSelectedSaveRewrite
+02:4896 .PresentFrameAndReturnFromEraseSelectedSavePrompt
+02:4898 .CheckEraseSelectedSaveCancelInput
+02:48a2 EraseSelectedSaveSlotDestinationPointerOffsetTable
+02:48a2 .data:0003
+02:48a5 EraseSelectedSaveSlot1DestinationList
+02:48a5 .data:0022
+02:48c7 EraseSelectedSaveSlot2DestinationList
+02:48c7 .data:0022
+02:48e9 EraseSelectedSaveSlot3DestinationList
+02:48e9 .data:0022
+02:490b EraseSelectedSaveSlotRewriteScript
+02:490b .data:0035
 02:4940 GS01_StatePhase_02_DataSelectScreenFinish
+02:4983 .AdvanceFromDataSelectAndCommitSaveChecksums
 
-02:498e LoadPuzzleData
-02:4a57 PuzzleDataOffsetTable
-02:4a57 .data:8
+02:498e GS01_BuildSelectedSaveSlotTemplateCommandStream
+02:49b6 .NormalizeSelectedSaveSlotStateToIconVariantIndex
+02:49c5 .CopySelectedSaveSlotIconScriptRow1Loop
+02:49d0 .CopySelectedSaveSlotIconScriptRow2Loop
+02:4a4f GS01_CommitSelectedSaveSlotTemplateCommandStream
+
+02:4a57 SelectedSaveSlotTemplateCommandOffsetTable
+02:4a57 .data:0003
+02:4a5a SelectedSaveSlot1TemplateCommandScript
+02:4a5a .data:0023:11
+02:4a7d SelectedSaveSlot2TemplateCommandScript
+02:4a7d .data:0023:11
+02:4aa0 SelectedSaveSlot3TemplateCommandScript
+02:4aa0 .data:0023:11
+
+02:4ac3 SelectedSaveSlotIconVariantCommandOffsetTable
+02:4ac3 .data:0002
+02:4ac5 SelectedSaveSlotIconKinokoOnlyCommandScript
+02:4ac5 .data:0008
+02:4acd SelectedSaveSlotIconKinokoStarCommandScript
+02:4acd .data:0008
+
+02:4ad5 GS01_BuildSaveSlotTemplateCommandStream
+02:4afd .NormalizeSaveSlotStateToIconVariantIndex
+02:4b0c .CopySaveSlotIconScriptRow1Loop
+02:4b17 .CopySaveSlotIconScriptRow2Loop
+02:4b96 GS01_CommitSaveSlotTemplateCommandStream
+
+02:4b9e SaveSlotTemplateCommandOffsetTable
+02:4b9e .data:0003
+02:4ba1 SaveSlot1TemplateCommandScript
+02:4ba1 .data:0023:11
+02:4bc4 SaveSlot2TemplateCommandScript
+02:4bc4 .data:0023:11
+02:4be7 SaveSlot3TemplateCommandScript
+02:4be7 .data:0023:11
+
+02:4c0a SaveSlotIconVariantCommandOffsetTable
+02:4c0a .data:0002
+02:4c0c SaveSlotIconKinokoOnlyCommandScript
+02:4c0c .data:0008
+02:4c14 SaveSlotIconKinokoStarCommandScript
+02:4c14 .data:0008
+
+02:4c1c GS01_HandleDataSelectVerticalInput
+02:4c40 .StoreCursorRowAndBuildSelectedTemplate_UpPath
+02:4c46 .HandleDataSelectMoveDown
+02:4c4f .StoreCursorRowAndBuildSelectedTemplate_DownPath
 
 ; GameState 07 Phase pointer table entries (accessed via RST_18 dispatcher):
 ; Offset calculation: Phase_value * 2, added to return address $4c59 yields pointer location
@@ -1771,6 +1904,8 @@
 03:4000 .data:0010
 03:4010 SGBPacket_MLT_REQ_EnableTwoPlayers
 03:4010 .data:0010
+03:4020 SGBPacket_PAL_SET_ScreenTransition
+03:4020 .data:0010
 03:4030 SGBPacket_ATTR_TRN_StartupTransfer
 03:4030 .data:0010
 ; ATTR_TRN reads a 0x1000-byte VRAM payload via SendSGBTransferPacketStreamWithVRAMBufferFromBankedAddress.
@@ -1815,6 +1950,12 @@
 03:4e70 SGBPacket_MASK_EN_CancelMask
 03:4e70 .data:0010
 
+03:4e80 InitBottomPromptBlinkTimerAndFrameState
+03:4ea6 TickBottomPromptBlinkSprite4C_A_OK
+03:4eaf .StoreBlinkTimerAndCheckDrawWindowSprite4C
+03:4ec2 TickBottomPromptBlinkSprite4C_A_OK_4D_B_CANCEL
+03:4ed3 .StoreBlinkTimerAndCheckDrawWindowSprite4C_4D
+
 ; GameState 00 Phase pointer table entries (accessed via RST_18 dispatcher):
 ; Offset calculation: Phase_value * 2, added to return address $4f8b yields pointer location
 ; Phase $00: $00 * 2 = $00 bytes -> pointer at $4f8b + $00 = $4f8b
@@ -1847,6 +1988,9 @@
 03:5156 .SendPatchedDefaultBorderPacket
 03:515e GS00_SP02_ContinueAfterBorderTransfer
 03:51a9 GS00_SP02_NonSGBFadeOut
+03:51b6 .PostFadeOutFlowRouter
+03:51d1 .NoSaveDataInitPath
+03:51ee .AdvanceToContinueSavedGameScreen
 03:51f3 GS00_StatePhase_03_ContinueSavedGameScreenInit
 03:5366 GS00_SP03_ContinueSavedGameScreen_StatePhaseLookupTable
 03:5366 .data:3
@@ -3515,3 +3659,6 @@
 0f:6a99 .data:3
 0f:6cf8 .data:3
 0f:5b03 .data:3
+0f:668a .data:3
+0f:5519 .data:3
+0f:5542 .data:3
