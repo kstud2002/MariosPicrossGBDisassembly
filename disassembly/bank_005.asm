@@ -744,171 +744,243 @@ SGBTransferPayload_PCT_TRN_DefaultBorder_BGPaletteData_White::
 SETCHARMAP messages
 
 HowToPlayText_State01::
-    db "H⁣i⁣,⁣ ⁣K⁣i⁣d⁣s⁣!⁣!⁣", $fe, $ff
+    db "Hi, Kids!!"
+    dw $fffe
 
-    db "I⁣t⁣'⁣s⁣ ⁣t⁣i⁣m⁣e⁣ ⁣f⁣o⁣r⁣ ⁣u⁣s⁣ ⁣t⁣o⁣ ⁣s⁣o⁣l⁣v⁣e⁣", $fe, $ff
+    db "It's time for us to solve"
+    dw $fffe
 
-    db "t⁣h⁣e⁣ ⁣m⁣y⁣s⁣t⁣e⁣r⁣y⁣ ⁣o⁣f⁣", $fe, $ff
+    db "the mystery of"
+    dw $fffe
 
-    db "“⁣P⁣i⁣c⁣r⁣o⁣s⁣s⁣”⁣!⁣", $ff, $ff
+    db "“Picross”!"
+    dw $ffff
 
 HowToPlayText_State02::
-    db "T⁣h⁣e⁣ ⁣m⁣y⁣s⁣t⁣e⁣r⁣y⁣ ⁣l⁣i⁣e⁣s⁣ ⁣i⁣n⁣ ⁣t⁣h⁣e⁣", $fe, $ff
+    db "The mystery lies in the"
+    dw $fffe
 
-    db "n⁣u⁣m⁣b⁣e⁣r⁣s⁣ ⁣o⁣n⁣ ⁣t⁣h⁣e⁣ ⁣t⁣o⁣p⁣", $ff, $ff
+    db "numbers on the top"
+    dw $ffff
 
 HowToPlayText_State04::
-    db " ⁣a⁣n⁣d⁣", $fe, $ff
+    db " and"
+    dw $fffe
 
-    db "t⁣h⁣e⁣ ⁣l⁣e⁣f⁣t⁣ ⁣s⁣i⁣d⁣e⁣", $ff, $ff
+    db "the left side"
+    dw $ffff
 
 HowToPlayText_State06::
-    db " ⁣o⁣f⁣ ⁣t⁣h⁣e⁣", $fe, $ff
+    db " of the"
+    dw $fffe
 
-    db "w⁣i⁣n⁣d⁣o⁣w⁣,⁣", $ff, $ff
+    db "window,"
+    dw $ffff
 
 HowToPlayText_State07::
-    db "w⁣h⁣i⁣c⁣h⁣ ⁣t⁣o⁣g⁣e⁣t⁣h⁣e⁣r⁣ ⁣w⁣i⁣l⁣l⁣ ⁣h⁣e⁣l⁣p⁣", $fe, $ff
+    db "which together will help"
+    dw $fffe
 
-    db "y⁣o⁣u⁣ ⁣t⁣o⁣ ⁣d⁣r⁣a⁣w⁣ ⁣t⁣h⁣e⁣ ⁣s⁣e⁣c⁣r⁣e⁣t⁣", $fe, $ff
+    db "you to draw the secret"
+    dw $fffe
 
-    db "p⁣i⁣c⁣t⁣u⁣r⁣e⁣.⁣", $ff, $ff
+    db "picture."
+    dw $ffff
 
 HowToPlayText_State08::
-    db "I⁣f⁣ ⁣y⁣o⁣u⁣ ⁣s⁣o⁣l⁣v⁣e⁣ ⁣t⁣h⁣e⁣ ⁣p⁣u⁣z⁣z⁣l⁣e⁣", $fe, $ff
+    db "If you solve the puzzle"
+    dw $fffe
 
-    db "c⁣o⁣r⁣r⁣e⁣c⁣t⁣l⁣y⁣,⁣", $ff, $ff
+    db "correctly,"
+    dw $ffff
 
 HowToPlayText_State0b::
-    db " ⁣t⁣h⁣e⁣ ⁣e⁣n⁣t⁣i⁣r⁣e⁣", $fe, $ff
+    db " the entire"
+    dw $fffe
 
-    db "p⁣i⁣c⁣t⁣u⁣r⁣e⁣ ⁣w⁣i⁣l⁣l⁣ ⁣b⁣e⁣ ⁣s⁣h⁣o⁣w⁣n⁣.⁣", $fe, $ff
+    db "picture will be shown."
+    dw $fffe
 
-    db "(⁣I⁣t⁣'⁣s⁣ ⁣t⁣h⁣e⁣ ⁣l⁣e⁣t⁣t⁣e⁣r⁣ ⁣“⁣N⁣”⁣.⁣)⁣", $ff, $ff
+    db "(It's the letter “N”.)"
+    dw $ffff
 
 HowToPlayText_State0c::
-    db "H⁣e⁣r⁣e⁣ ⁣a⁣r⁣e⁣ ⁣t⁣h⁣e⁣ ⁣r⁣u⁣l⁣e⁣s⁣ ⁣t⁣o⁣", $fe, $ff
+    db "Here are the rules to"
+    dw $fffe
 
-    db "s⁣o⁣l⁣v⁣i⁣n⁣g⁣ ⁣t⁣h⁣e⁣ ⁣m⁣y⁣s⁣t⁣e⁣r⁣y⁣·⁣·⁣·⁣", $ff, $ff
+    db "solving the mystery···"
+    dw $ffff
 
 HowToPlayText_State0d::
-    db "T⁣h⁣e⁣ ⁣n⁣u⁣m⁣b⁣e⁣r⁣s⁣ ⁣a⁣b⁣o⁣v⁣e⁣ ⁣t⁣h⁣e⁣", $fe, $ff
+    db "The numbers above the"
+    dw $fffe
 
-    db "c⁣o⁣l⁣u⁣m⁣n⁣s⁣", $ff, $ff
+    db "columns"
+    dw $ffff
 
 HowToPlayText_State0f::
-    db " ⁣t⁣e⁣l⁣l⁣ ⁣y⁣o⁣u⁣ ⁣h⁣o⁣w⁣", $fe, $ff
+    db " tell you how"
+    dw $fffe
 
-    db "m⁣a⁣n⁣y⁣ ⁣b⁣o⁣x⁣e⁣s⁣ ⁣y⁣o⁣u⁣ ⁣n⁣e⁣e⁣d⁣ ⁣t⁣o⁣", $fe, $ff
+    db "many boxes you need to"
+    dw $fffe
 
-    db "c⁣h⁣i⁣s⁣e⁣l⁣ ⁣i⁣n⁣ ⁣t⁣h⁣e⁣ ⁣d⁣o⁣w⁣n⁣w⁣a⁣r⁣d⁣", $fe, $ff
+    db "chisel in the downward"
+    dw $fffe
 
-    db "d⁣i⁣r⁣e⁣c⁣t⁣i⁣o⁣n⁣.⁣", $ff, $ff
+    db "direction."
+    dw $ffff
 
 HowToPlayText_State10::
-    db "T⁣h⁣i⁣s⁣ ⁣o⁣n⁣e⁣ ⁣i⁣s⁣ ⁣a⁣ ⁣5⁣,⁣", $ff, $ff
+    db "This one is a 5,"
+    dw $ffff
 
 HowToPlayText_State12::
-    db " ⁣s⁣o⁣ ⁣y⁣o⁣u⁣", $fe, $ff
+    db " so you"
+    dw $fffe
 
-    db "w⁣i⁣l⁣l⁣ ⁣n⁣e⁣e⁣d⁣ ⁣t⁣o⁣ ⁣c⁣h⁣i⁣s⁣e⁣l⁣ ⁣i⁣n⁣ ⁣5⁣", $fe, $ff
+    db "will need to chisel in 5"
+    dw $fffe
 
-    db "c⁣o⁣n⁣s⁣e⁣c⁣u⁣t⁣i⁣v⁣e⁣ ⁣b⁣o⁣x⁣e⁣s⁣.⁣", $ff, $ff
+    db "consecutive boxes."
+    dw $ffff
 
 HowToPlayText_State14::
-    db "T⁣h⁣e⁣ ⁣n⁣u⁣m⁣b⁣e⁣r⁣s⁣ ⁣o⁣n⁣ ⁣t⁣h⁣e⁣ ⁣l⁣e⁣f⁣t⁣", $fe, $ff
+    db "The numbers on the left"
+    dw $fffe
 
-    db "o⁣f⁣ ⁣t⁣h⁣e⁣ ⁣r⁣o⁣w⁣s⁣", $ff, $ff
+    db "of the rows"
+    dw $ffff
 
 HowToPlayText_State16::
-    db " ⁣t⁣e⁣l⁣l⁣ ⁣y⁣o⁣u⁣", $fe, $ff
+    db " tell you"
+    dw $fffe
 
-    db "h⁣o⁣w⁣ ⁣m⁣a⁣n⁣y⁣ ⁣b⁣o⁣x⁣e⁣s⁣ ⁣y⁣o⁣u⁣", $fe, $ff
+    db "how many boxes you"
+    dw $fffe
 
-    db "n⁣e⁣e⁣d⁣ ⁣t⁣o⁣ ⁣c⁣h⁣i⁣s⁣e⁣l⁣ ⁣i⁣n⁣ ⁣t⁣h⁣e⁣", $fe, $ff
+    db "need to chisel in the"
+    dw $fffe
 
-    db "l⁣e⁣f⁣t⁣-⁣t⁣o⁣-⁣r⁣i⁣g⁣h⁣t⁣ ⁣d⁣i⁣r⁣e⁣c⁣t⁣i⁣o⁣n⁣.⁣", $ff, $ff
+    db "left-to-right direction."
+    dw $ffff
 
 HowToPlayText_State17::
-    db "T⁣h⁣i⁣s⁣ ⁣o⁣n⁣e⁣ ⁣i⁣s⁣ ⁣a⁣ ⁣3⁣ ⁣a⁣n⁣d⁣ ⁣a⁣ ⁣1⁣,⁣", $ff, $ff
+    db "This one is a 3 and a 1,"
+    dw $ffff
 
 HowToPlayText_State19::
-    db " ⁣s⁣o⁣", $fe, $ff
+    db " so"
+    dw $fffe
 
-    db "y⁣o⁣u⁣ ⁣w⁣i⁣l⁣l⁣ ⁣n⁣e⁣e⁣d⁣ ⁣t⁣o⁣ ⁣c⁣h⁣i⁣s⁣e⁣l⁣ ⁣i⁣n⁣", $fe, $ff
+    db "you will need to chisel in"
+    dw $fffe
 
-    db "3⁣ ⁣c⁣o⁣n⁣s⁣e⁣c⁣u⁣t⁣i⁣v⁣e⁣ ⁣b⁣o⁣x⁣e⁣s⁣ ⁣a⁣n⁣d⁣", $fe, $ff
+    db "3 consecutive boxes and"
+    dw $fffe
 
-    db "1⁣ ⁣s⁣i⁣n⁣g⁣l⁣e⁣ ⁣b⁣o⁣x⁣,⁣ ⁣s⁣e⁣p⁣a⁣r⁣a⁣t⁣e⁣d⁣", $fe, $ff
+    db "1 single box, separated"
+    dw $fffe
 
-    db "b⁣y⁣ ⁣a⁣t⁣ ⁣l⁣e⁣a⁣s⁣t⁣ ⁣1⁣ ⁣s⁣p⁣a⁣c⁣e⁣.⁣", $ff, $ff
+    db "by at least 1 space."
+    dw $ffff
 
 HowToPlayText_State1b::
-    db "I⁣f⁣ ⁣y⁣o⁣u⁣ ⁣d⁣o⁣ ⁣n⁣o⁣t⁣ ⁣s⁣o⁣l⁣v⁣e⁣ ⁣t⁣h⁣e⁣", $fe, $ff
+    db "If you do not solve the"
+    dw $fffe
 
-    db "s⁣e⁣c⁣r⁣e⁣t⁣ ⁣p⁣i⁣c⁣t⁣u⁣r⁣e⁣ ⁣i⁣n⁣ ⁣3⁣0⁣", $fe, $ff
+    db "secret picture in 30"
+    dw $fffe
 
-    db "m⁣i⁣n⁣u⁣t⁣e⁣s⁣,⁣", $ff, $ff
+    db "minutes,"
+    dw $ffff
 
 HowToPlayText_State1d::
-    db " ⁣t⁣h⁣e⁣n⁣ ⁣y⁣o⁣u⁣r⁣ ⁣g⁣a⁣m⁣e⁣", $fe, $ff
+    db " then your game"
+    dw $fffe
 
-    db "i⁣s⁣ ⁣o⁣v⁣e⁣r⁣.⁣", $ff, $ff
+    db "is over."
+    dw $ffff
 
 HowToPlayText_State1e::
-    db "I⁣f⁣ ⁣y⁣o⁣u⁣ ⁣m⁣a⁣k⁣e⁣ ⁣m⁣i⁣s⁣t⁣a⁣k⁣e⁣,⁣", $fe, $ff
+    db "If you make mistake,"
+    dw $fffe
 
-    db "t⁣h⁣e⁣n⁣ ⁣y⁣o⁣u⁣r⁣ ⁣r⁣e⁣m⁣a⁣i⁣n⁣i⁣n⁣g⁣ ⁣t⁣i⁣m⁣e⁣", $fe, $ff
+    db "then your remaining time"
+    dw $fffe
 
-    db "w⁣i⁣l⁣l⁣ ⁣b⁣e⁣ ⁣r⁣e⁣d⁣u⁣c⁣e⁣d⁣.⁣", $ff, $ff
+    db "will be reduced."
+    dw $ffff
 
 HowToPlayText_State20::
-    db $fe, $ff, "B⁣u⁣t⁣ ⁣t⁣r⁣y⁣ ⁣n⁣o⁣t⁣ ⁣t⁣o⁣ ⁣p⁣a⁣n⁣i⁣c⁣!⁣", $ff, $ff
+    dw $fffe
+    db "But try not to panic!"
+    dw $ffff
 
 HowToPlayText_State21::
-    db "Y⁣o⁣u⁣ ⁣c⁣a⁣n⁣ ⁣m⁣a⁣r⁣k⁣ ⁣b⁣o⁣x⁣e⁣s⁣ ⁣t⁣h⁣a⁣t⁣", $fe, $ff
+    db "You can mark boxes that"
+    dw $fffe
 
-    db "y⁣o⁣u⁣ ⁣t⁣h⁣i⁣n⁣k⁣ ⁣s⁣h⁣o⁣u⁣l⁣d⁣ ⁣s⁣t⁣a⁣y⁣", $fe, $ff
+    db "you think should stay"
+    dw $fffe
 
-    db "c⁣l⁣e⁣a⁣r⁣ ⁣w⁣i⁣t⁣h⁣ ⁣a⁣n⁣ ⁣“⁣⨯⁣”⁣.⁣", $ff, $ff
+    db "clear with an “⨯”."
+    dw $ffff
 
 HowToPlayText_State23::
-    db "T⁣o⁣ ⁣g⁣e⁣t⁣ ⁣h⁣i⁣n⁣t⁣s⁣ ⁣a⁣s⁣ ⁣y⁣o⁣u⁣ ⁣p⁣l⁣a⁣y⁣,⁣", $fe, $ff
+    db "To get hints as you play,"
+    dw $fffe
 
-    db "c⁣h⁣o⁣o⁣s⁣e⁣ ⁣“⁣Y⁣e⁣s⁣”⁣ ⁣o⁣n⁣ ⁣t⁣h⁣e⁣", $fe, $ff
+    db "choose “Yes” on the"
+    dw $fffe
 
-    db "“⁣W⁣i⁣t⁣h⁣ ⁣H⁣i⁣n⁣t⁣”⁣ ⁣o⁣p⁣t⁣i⁣o⁣n⁣ ⁣a⁣t⁣ ⁣t⁣h⁣e⁣", $fe, $ff
+    db "“With Hint” option at the"
+    dw $fffe
 
-    db "b⁣e⁣g⁣i⁣n⁣n⁣i⁣n⁣g⁣ ⁣o⁣f⁣ ⁣t⁣h⁣e⁣ ⁣g⁣a⁣m⁣e⁣.⁣", $ff, $ff
+    db "beginning of the game."
+    dw $ffff
 
 HowToPlayText_State25::
-    db "W⁣h⁣e⁣n⁣ ⁣y⁣o⁣u⁣ ⁣s⁣t⁣a⁣r⁣t⁣ ⁣a⁣ ⁣n⁣e⁣w⁣", $fe, $ff
+    db "When you start a new"
+    dw $fffe
 
-    db "s⁣e⁣c⁣r⁣e⁣t⁣ ⁣p⁣i⁣c⁣t⁣u⁣r⁣e⁣,⁣ ⁣t⁣h⁣e⁣ ⁣t⁣o⁣p⁣", $fe, $ff
+    db "secret picture, the top"
+    dw $fffe
 
-    db "a⁣n⁣d⁣ ⁣l⁣e⁣f⁣t⁣ ⁣c⁣u⁣r⁣s⁣o⁣r⁣s⁣ ⁣w⁣i⁣l⁣l⁣", $fe, $ff
+    db "and left cursors will"
+    dw $fffe
 
-    db "b⁣e⁣ ⁣m⁣o⁣v⁣i⁣n⁣g⁣.⁣", $ff, $ff
+    db "be moving."
+    dw $ffff
 
 HowToPlayText_State26::
-    db "P⁣u⁣s⁣h⁣ ⁣t⁣h⁣e⁣ ⁣A⁣ ⁣B⁣u⁣t⁣t⁣o⁣n⁣ ⁣t⁣o⁣", $fe, $ff
+    db "Push the A Button to"
+    dw $fffe
 
-    db "s⁣t⁣o⁣p⁣ ⁣t⁣h⁣e⁣ ⁣t⁣o⁣p⁣ ⁣c⁣u⁣r⁣s⁣o⁣r⁣.⁣", $ff, $ff
+    db "stop the top cursor."
+    dw $ffff
 
 HowToPlayText_State27::
-    db $fe, $ff, "P⁣r⁣e⁣s⁣s⁣ ⁣i⁣t⁣ ⁣a⁣g⁣a⁣i⁣n⁣ ⁣t⁣o⁣ ⁣s⁣t⁣o⁣p⁣", $fe, $ff
+    dw $fffe
+    db "Press it again to stop"
+    dw $fffe
 
-    db "t⁣h⁣e⁣ ⁣l⁣e⁣f⁣t⁣ ⁣c⁣u⁣r⁣s⁣o⁣r⁣.⁣", $ff, $ff
+    db "the left cursor."
+    dw $ffff
 
 HowToPlayText_State28::
-    db "T⁣h⁣e⁣n⁣ ⁣t⁣h⁣e⁣ ⁣a⁣n⁣s⁣w⁣e⁣r⁣s⁣ ⁣f⁣o⁣r⁣", $fe, $ff
+    db "Then the answers for"
+    dw $fffe
 
-    db "t⁣h⁣a⁣t⁣ ⁣c⁣o⁣m⁣b⁣i⁣n⁣a⁣t⁣i⁣o⁣n⁣ ⁣w⁣i⁣l⁣l⁣ ⁣b⁣e⁣", $fe, $ff
+    db "that combination will be"
+    dw $fffe
 
-    db "s⁣h⁣o⁣w⁣n⁣.⁣", $ff, $ff
+    db "shown."
+    dw $ffff
 
 HowToPlayText_State29::
-    db "G⁣O⁣O⁣D⁣ ⁣L⁣U⁣C⁣K⁣!⁣!⁣", $ff, $ff
+    db "GOOD LUCK!!"
+    dw $ffff
 
     ; padding
     ds $bb4, $00

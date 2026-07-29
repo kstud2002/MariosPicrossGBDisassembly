@@ -9,6 +9,9 @@ DEF rPuzzleOrderTableStart EQU $a002
 DEF rSaveDataDefaultBlockADest EQU $a042
 DEF rSelectedSaveSlotIndex EQU $a065
 DEF rSaveDataDefaultBlockBDest EQU $a069
+DEF rSaveSlot1GameSelectCursorRow EQU $a078
+DEF rSaveSlot2GameSelectCursorRow EQU $a079
+DEF rSaveSlot3GameSelectCursorRow EQU $a07a
 DEF rSaveSlot1EasyPicrossClearedPuzzleCount EQU $a07e
 DEF rSaveSlot2EasyPicrossClearedPuzzleCount EQU $a07f
 DEF rSaveSlot3EasyPicrossClearedPuzzleCount EQU $a080
@@ -18,6 +21,9 @@ DEF rSaveSlot3UnlockProgressState EQU $a389
 DEF rSaveSlot1PicrossKinokoStarClearedPuzzleCount EQU $a38a
 DEF rSaveSlot2PicrossKinokoStarClearedPuzzleCount EQU $a38b
 DEF rSaveSlot3PicrossKinokoStarClearedPuzzleCount EQU $a38c
+DEF rSaveSlot1CourseSelectCursorRow EQU $a38d
+DEF rSaveSlot2CourseSelectCursorRow EQU $a38e
+DEF rSaveSlot3CourseSelectCursorRow EQU $a38f
 DEF rContinueSavedGameFlowMode_Unsure EQU $aca2
 DEF rHiddenProgrammerCreditsMirror EQU $aced
 DEF rSaveValidationMagicBytesMirror EQU $acfd
@@ -115,6 +121,7 @@ DEF rGameState_Current EQU $d634
 DEF rStatePhase_Current EQU $d635
 DEF rPuzzleCursorColumn EQU $d636
 DEF rPuzzleAndMenuCursorRow EQU $d637
+DEF rMenuCursorRowMaxIndex EQU $d63b
 DEF rStatePhaseTimer EQU $d63c
 DEF rSharedAnimationFrameState EQU $d63d
 DEF rHintCursorAnimationColumnAccumulator EQU $d63e
@@ -166,6 +173,7 @@ DEF rGS06_ScriptedInputSequenceTableHigh EQU $d832
 DEF rHintPopupSelection EQU $d833
 DEF rAdvanceOrSkipTimeoutEnabled EQU $d835
 DEF rAdvanceOrSkipTimeoutCounter EQU $d836
+DEF rGS06_HowToPlaySkipRequestedFlag EQU $d837
 DEF rMessageScriptStreamResetEntryLow EQU $d843
 DEF rMessageScriptStreamResetEntryHigh EQU $d844
 DEF rMessageScriptStreamLimitLow EQU $d845

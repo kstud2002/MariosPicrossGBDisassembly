@@ -10,6 +10,9 @@
 00:a042 rSaveDataDefaultBlockADest
 00:a065 rSelectedSaveSlotIndex
 00:a069 rSaveDataDefaultBlockBDest
+00:a078 rSaveSlot1GameSelectCursorRow
+00:a079 rSaveSlot2GameSelectCursorRow
+00:a07a rSaveSlot3GameSelectCursorRow
 00:a07e rSaveSlot1EasyPicrossClearedPuzzleCount
 00:a07f rSaveSlot2EasyPicrossClearedPuzzleCount
 00:a080 rSaveSlot3EasyPicrossClearedPuzzleCount
@@ -21,6 +24,9 @@
 00:a38a rSaveSlot1PicrossKinokoStarClearedPuzzleCount
 00:a38b rSaveSlot2PicrossKinokoStarClearedPuzzleCount
 00:a38c rSaveSlot3PicrossKinokoStarClearedPuzzleCount
+00:a38d rSaveSlot1CourseSelectCursorRow
+00:a38e rSaveSlot2CourseSelectCursorRow
+00:a38f rSaveSlot3CourseSelectCursorRow
 00:aca2 rContinueSavedGameFlowMode_Unsure
 00:aced rHiddenProgrammerCreditsMirror
 00:acfd rSaveValidationMagicBytesMirror
@@ -120,6 +126,7 @@
 00:d635 rStatePhase_Current
 00:d636 rPuzzleCursorColumn
 00:d637 rPuzzleAndMenuCursorRow
+00:d63b rMenuCursorRowMaxIndex
 00:d63c rStatePhaseTimer
 00:d63d rSharedAnimationFrameState
 00:d63e rHintCursorAnimationColumnAccumulator
@@ -171,6 +178,7 @@
 00:d833 rHintPopupSelection
 00:d835 rAdvanceOrSkipTimeoutEnabled
 00:d836 rAdvanceOrSkipTimeoutCounter
+00:d837 rGS06_HowToPlaySkipRequestedFlag
 00:d843 rMessageScriptStreamResetEntryLow
 00:d844 rMessageScriptStreamResetEntryHigh
 00:d845 rMessageScriptStreamLimitLow
@@ -814,40 +822,40 @@
 01:5ca4 .data:0006:2
 
 01:5caa LetsTryThisOneText
-01:5caa .text:0028:cm=messages
+01:5caa .text16:0028:cm=messages
 
 01:5cd2 VeryGoodText
-01:5cd2 .text:0016:cm=messages
+01:5cd2 .text16:0016:cm=messages
 
 01:5ce8 LetsTryAgainText
-01:5ce8 .text:0022:cm=messages
+01:5ce8 .text16:0022:cm=messages
 
 01:5d0a ItsTheLetterText
-01:5d0a .text:0024:cm=messages
+01:5d0a .text16:0024:cm=messages
 
 01:5d2e LText
-01:5d2e .text:000a:cm=messages
+01:5d2e .text16:000a:cm=messages
 
 01:5d38 EText
-01:5d38 .text:000a:cm=messages
+01:5d38 .text16:000a:cm=messages
 
 01:5d42 TText
-01:5d42 .text:000a:cm=messages
+01:5d42 .text16:000a:cm=messages
 
 01:5d4c SText
-01:5d4c .text:000a:cm=messages
+01:5d4c .text16:000a:cm=messages
 
 01:5d56 WText
-01:5d56 .text:000a:cm=messages
+01:5d56 .text16:000a:cm=messages
 
 01:5d60 OText
-01:5d60 .text:000a:cm=messages
+01:5d60 .text16:000a:cm=messages
 
 01:5d6a RText
-01:5d6a .text:000a:cm=messages
+01:5d6a .text16:000a:cm=messages
 
 01:5d74 KText
-01:5d74 .text:000a:cm=messages
+01:5d74 .text16:000a:cm=messages
 
 ; GameState 08 Phase pointer table entries (accessed via RST_18 dispatcher):
 ; Offset calculation: Phase_value * 2, added to return address $5d82 yields pointer location
@@ -1160,10 +1168,45 @@
 02:400a GS03_PhasePointer_03
 02:400a .data:2
 
-02:400c GS03_StatePhase_00_TODO
-02:40ff GS03_StatePhase_01_TODO
-02:4130 GS03_StatePhase_02_TODO
-02:419b GS03_StatePhase_03_TODO
+02:400c GS03_StatePhase_00_CourseSelectScreenInit
+02:409f .ContinueCourseSelectInitAfterCourseTileLoad
+02:40ed .RunCourseSelectFadeIn_AllCoursesUnlocked
+02:40fa .AdvanceToCourseSelectIdlePhase
+02:40ff GS03_StatePhase_01_CourseSelectScreenIdle
+02:411d .CheckCourseSelectCancelInput
+02:4130 GS03_StatePhase_02_ConfirmSelectionTransition
+02:4162 .RunConfirmTransitionFadeOut_AllCoursesUnlocked
+02:416f .FinalizeConfirmSelectionTransition
+02:418f .SetNextGameState_TimeTrial
+02:419b GS03_StatePhase_03_CancelSelectionTransition
+02:41cd .RunCancelTransitionFadeOut_AllCoursesUnlocked
+02:41da .FinalizeCancelSelectionTransition
+
+02:41f6 GS03_QueueCourseSelectionHighlightCommandStream
+02:4206 CourseSelectHighlightCommandOffsetTable
+02:4206 .data:0003
+02:4209 KinokoCourseHighlightCommandScript
+02:4209 .data:001b:d
+02:4224 StarCourseHighlightCommandScript
+02:4224 .data:001b:d
+02:423f TimeTrialCourseHighlightCommandScript
+02:423f .data:001b:d
+
+02:425a GS03_QueueCourseSelectionUnhighlightCommandStream
+02:426a CourseSelectUnhighlightCommandOffsetTable
+02:426a .data:0003
+02:426d KinokoCourseUnhighlightCommandScript
+02:426d .data:001b:d
+02:4288 StarCourseUnhighlightCommandScript
+02:4288 .data:001b:d
+02:42a3 TimeTrialCourseUnhighlightCommandScript
+02:42a3 .data:001b:d
+
+02:42be GS03_HandleCourseSelectVerticalInput
+02:42db .HandleCourseSelectMoveUp
+02:42e8 .StoreCursorRowAndQueueSelectionUpdate_UpPath
+02:42ee .HandleCourseSelectMoveDown
+02:42f9 .StoreCursorRowAndQueueSelectionUpdate_DownPath
 
 ; GameState 02 Phase pointer table entries (accessed via RST_18 dispatcher):
 ; Offset calculation: Phase_value * 2, added to return address $4304 yields pointer location
@@ -1180,12 +1223,42 @@
 02:430a GS02_PhasePointer_03
 02:430a .data:2
 
-02:430c GS02_StatePhase_00_TODO
-02:43bd GS02_StatePhase_01_TODO
-02:43ee GS02_StatePhase_02_TODO
-02:4455 GS02_StatePhase_02_TODO_Data
+02:430c GS02_StatePhase_00_GameSelectScreenInit
+02:43bd GS02_StatePhase_01_GameSelectScreenIdle
+02:43db .CheckGameSelectCancelInput
+02:43ee GS02_StatePhase_02_ConfirmSelectionTransition
+02:4455 GS02_StatePhase_02_ConfirmSelectionTargetGameStateTable
 02:4455 .data:3
-02:4458 GS02_StatePhase_03_TODO
+02:4458 GS02_StatePhase_03_CancelSelectionTransition
+
+02:44b1 GS02_QueueSelectionHighlightCommandStream
+02:44c1 GameSelectHighlightCommandOffsetTable
+02:44c1 .data:0004
+02:44c5 HowToPlayHighlightCommandScript
+02:44c5 .data:001b:d
+02:44e0 EasyPicrossHighlightCommandScript
+02:44e0 .data:001b:d
+02:44fb PicrossHighlightCommandScript
+02:44fb .data:001b:d
+02:4516 UnusedHighlightCommandScript
+02:4516 .data:001b:d
+
+02:4531 GS02_QueueSelectionUnhighlightCommandStream
+02:4541 GameSelectUnhighlightCommandOffsetTable
+02:4541 .data:0004
+02:4545 HowToPlayUnhighlightCommandScript
+02:4545 .data:001b:d
+02:4560 EasyPicrossUnhighlightCommandScript
+02:4560 .data:001b:d
+02:457b PicrossUnhighlightCommandScript
+02:457b .data:001b:d
+02:4596 UnusedUnhighlightCommandScript
+02:4596 .data:001b:d
+
+02:45b1 GS02_HandleGameSelectVerticalInput
+02:45d6 .StoreCursorRowAndQueueSelectionUpdate_UpPath
+02:45dc .HandleGameSelectMoveDown
+02:45e7 .StoreCursorRowAndQueueSelectionUpdate_DownPath
 
 02:45ee InitializeMainLoopAndEnter
 02:4602 .MainLoop
@@ -1230,12 +1303,12 @@
 
 03:4f87 GameState_00_TitleScreen_PhaseDispatcher
 02:474f GameState_01_DataSelectScreen_PhaseDispatcher
-02:4300 GameState_02_TODO_PhaseDispatcher
-02:4000 GameState_03_TODO_PhaseDispatcher
-01:438a GameState_04_TODO_PhaseDispatcher
-01:526d GameState_05_TODO_PhaseDispatcher
+02:4300 GameState_02_GameSelectScreen_PhaseDispatcher
+02:4000 GameState_03_CourseSelectScreen_PhaseDispatcher
+01:438a GameState_04_PicrossCoursePuzzleSelectScreen_PhaseDispatcher
+01:526d GameState_05_EasyPicrossPuzzleSelectScreen_PhaseDispatcher
 00:2111 GameState_06_HowToPlay_PhaseDispatcher
-02:4c55 GameState_07_TODO_PhaseDispatcher
+02:4c55 GameState_07_TimeTrialRankingScreen_PhaseDispatcher
 01:5d7e GameState_08_TODO_PhaseDispatcher
 01:63fc GameState_09_TODO_PhaseDispatcher
 01:686d GameState_0A_TODO_PhaseDispatcher
@@ -1913,11 +1986,34 @@
 ; Pan Docs layout for full 0x1000 payload: 000-FD1 = ATF0..ATF44 (45*90=4050 bytes), FD2-FFF unused.
 ; Each ATF is 20x18 attributes, 2 bits per cell (90 bytes total per ATF).
 03:4040 SGBTransferPayload_ATTR_TRN_Startup
-03:4040 .data:0660:5
+03:4040 .data:0654:5a
 
-03:46a0 TransitionFadePaletteTable_GS06_Start
+03:4694 TransitionFadePaletteTable_GS06_GS08_GS09_GS0A_Start
+03:4694 .data:000c:3
+03:46a0 TransitionFadePaletteTable_GS06_GS08_Start
 03:46a0 .data:000c:3
-;03:46ab TransitionFadePaletteTable_GS06_End
+03:46ac TransitionFadePaletteTable_GS08_Start
+03:46ac .data:000c:3
+03:46b8 TransitionFadePaletteTable_GS03_Start
+03:46b8 .data:000c:3
+03:46c4 TransitionFadePaletteTable_GS01_Start
+03:46c4 .data:000c:3
+03:46d0 TransitionFadePaletteTable_GS02_Start
+03:46d0 .data:000c:3
+03:46dc TransitionFadePaletteTable_Unused
+03:46dc .data:000c:3
+03:46e8 TransitionFadePaletteTable_GS00_GS05_Start
+03:46e8 .data:000c:3
+03:46f4 TransitionFadePaletteTable_GS04_Start_1
+03:46f4 .data:000c:3
+03:4700 TransitionFadePaletteTable_GS04_Start_2
+03:4700 .data:000c:3
+03:470c TransitionFadePaletteTable_GS00_GS07_Start
+03:470c .data:000c:3
+03:4718 TransitionFadePaletteTable_GS00_TitleScreenInit_Start
+03:4718 .data:000c:3
+03:4724 TransitionFadePaletteTable_GS00_Start_2
+03:4724 .data:000c:3
 
 03:4730 SGBPacket_PAL_TRN_StartupTransfer
 03:4730 .data:0010
@@ -1926,7 +2022,7 @@
 ; Pan Docs layout for full 0x1000 payload: 512 palettes * 4 colors * 2 bytes = 4096 bytes.
 ; Colors are little-endian BGR15 words in VRAM transfer order.
 03:4740 SGBTransferPayload_PAL_TRN_Startup
-03:4740 .data:06a0:8
+03:4740 .data:06a0:10
 
 03:4de0 SGBPacket_DATA_SND_StartupTransfer_00
 03:4de0 .data:0010
@@ -3082,11 +3178,11 @@
 04:6030 .data:700:40
 04:6730 SGBTransferPayload_PCT_TRN_TitleScreenBorder_TileMap_ExtraRow
 04:6730 .data:0040:40
-04:6770 SGBTransferPayload_PCT_TRN_TitleScreenBorder_Unused
+04:6770 SGBTransferPayload_PCT_TRN_TitleScreenBorder_Unused_1
 04:6770 .data:00c0
 04:6830 SGBTransferPayload_PCT_TRN_TitleScreenBorder_BGPaletteData
 04:6830 .data:0060:6
-04:6890 SGBTransferPayload_PCT_TRN_TitleScreenBorder_Unused
+04:6890 SGBTransferPayload_PCT_TRN_TitleScreenBorder_Unused_2
 04:6890 .data:07a0
 
 ; =============================================================================
@@ -3133,128 +3229,128 @@
 05:6930 .data:0040:6
 
 05:6a30 HowToPlayText_State01
-05:6a30 .text:0016:cm=messages
-05:6a46 .text:0034:cm=messages
-05:6a7a .text:001e:cm=messages
-05:6a98 .text:0016:cm=messages
+05:6a30 .text16:0016:cm=messages
+05:6a46 .text16:0034:cm=messages
+05:6a7a .text16:001e:cm=messages
+05:6a98 .text16:0016:cm=messages
 
 05:6aae HowToPlayText_State02
-05:6aae .text:0030:cm=messages
-05:6ade .text:0026:cm=messages
+05:6aae .text16:0030:cm=messages
+05:6ade .text16:0026:cm=messages
 
 05:6b04 HowToPlayText_State04
-05:6b04 .text:000a:cm=messages
-05:6b0e .text:001c:cm=messages
+05:6b04 .text16:000a:cm=messages
+05:6b0e .text16:001c:cm=messages
 
 05:6b2a HowToPlayText_State06
-05:6b2a .text:0010:cm=messages
-05:6b3a .text:0010:cm=messages
+05:6b2a .text16:0010:cm=messages
+05:6b3a .text16:0010:cm=messages
 
 05:6b4a HowToPlayText_State07
-05:6b4a .text:0032:cm=messages
-05:6b7c .text:002e:cm=messages
-05:6baa .text:0012:cm=messages
+05:6b4a .text16:0032:cm=messages
+05:6b7c .text16:002e:cm=messages
+05:6baa .text16:0012:cm=messages
 
 05:6bbc HowToPlayText_State08
-05:6bbc .text:0030:cm=messages
-05:6bec .text:0016:cm=messages
+05:6bbc .text16:0030:cm=messages
+05:6bec .text16:0016:cm=messages
 
 05:6c02 HowToPlayText_State0b
-05:6c02 .text:0018:cm=messages
-05:6c1a .text:002e:cm=messages
-05:6c48 .text:002e:cm=messages
+05:6c02 .text16:0018:cm=messages
+05:6c1a .text16:002e:cm=messages
+05:6c48 .text16:002e:cm=messages
 
 05:6c76 HowToPlayText_State0c
-05:6c76 .text:002c:cm=messages
-05:6ca2 .text:002e:cm=messages
+05:6c76 .text16:002c:cm=messages
+05:6ca2 .text16:002e:cm=messages
 
 05:6cd0 HowToPlayText_State0d
-05:6cd0 .text:002c:cm=messages
-05:6cfc .text:0010:cm=messages
+05:6cd0 .text16:002c:cm=messages
+05:6cfc .text16:0010:cm=messages
 
 05:6d0c HowToPlayText_State0f
-05:6d0c .text:001c:cm=messages
-05:6d28 .text:002e:cm=messages
-05:6d56 .text:002e:cm=messages
-05:6d84 .text:0016:cm=messages
+05:6d0c .text16:001c:cm=messages
+05:6d28 .text16:002e:cm=messages
+05:6d56 .text16:002e:cm=messages
+05:6d84 .text16:0016:cm=messages
 
 05:6d9a HowToPlayText_State10
-05:6d9a .text:0022:cm=messages
+05:6d9a .text16:0022:cm=messages
 
 05:6dbc HowToPlayText_State12
-05:6dbc .text:0010:cm=messages
-05:6dcc .text:0032:cm=messages
-05:6dfe .text:0026:cm=messages
+05:6dbc .text16:0010:cm=messages
+05:6dcc .text16:0032:cm=messages
+05:6dfe .text16:0026:cm=messages
 
 05:6e24 HowToPlayText_State14
-05:6e24 .text:0030:cm=messages
-05:6e54 .text:0018:cm=messages
+05:6e24 .text16:0030:cm=messages
+05:6e54 .text16:0018:cm=messages
 
 05:6e6c HowToPlayText_State16
-05:6e6c .text:0014:cm=messages
-05:6e80 .text:0026:cm=messages
-05:6ea6 .text:002c:cm=messages
-05:6ed2 .text:0032:cm=messages
+05:6e6c .text16:0014:cm=messages
+05:6e80 .text16:0026:cm=messages
+05:6ea6 .text16:002c:cm=messages
+05:6ed2 .text16:0032:cm=messages
 
 05:6f04 HowToPlayText_State17
-05:6f04 .text:0032:cm=messages
+05:6f04 .text16:0032:cm=messages
 
 05:6f36 HowToPlayText_State19
-05:6f36 .text:0008:cm=messages
-05:6f3e .text:0036:cm=messages
-05:6f74 .text:0030:cm=messages
-05:6fa4 .text:0030:cm=messages
-05:6fd4 .text:002a:cm=messages
+05:6f36 .text16:0008:cm=messages
+05:6f3e .text16:0036:cm=messages
+05:6f74 .text16:0030:cm=messages
+05:6fa4 .text16:0030:cm=messages
+05:6fd4 .text16:002a:cm=messages
 
 05:6ffe HowToPlayText_State1b
-05:6ffe .text:0030:cm=messages
-05:702e .text:002a:cm=messages
-05:7058 .text:0012:cm=messages
+05:6ffe .text16:0030:cm=messages
+05:702e .text16:002a:cm=messages
+05:7058 .text16:0012:cm=messages
 
 05:706a HowToPlayText_State1d
-05:706a .text:0020:cm=messages
-05:708a .text:0012:cm=messages
+05:706a .text16:0020:cm=messages
+05:708a .text16:0012:cm=messages
 
 05:709c HowToPlayText_State1e
-05:709c .text:002a:cm=messages
-05:70c6 .text:0032:cm=messages
-05:70f8 .text:0022:cm=messages
+05:709c .text16:002a:cm=messages
+05:70c6 .text16:0032:cm=messages
+05:70f8 .text16:0022:cm=messages
 
 05:711a HowToPlayText_State20
-05:711a .text:002e:cm=messages
+05:711a .text16:002e:cm=messages
 
 05:7148 HowToPlayText_State21
-05:7148 .text:0030:cm=messages
-05:7178 .text:002c:cm=messages
-05:71a4 .text:0026:cm=messages
+05:7148 .text16:0030:cm=messages
+05:7178 .text16:002c:cm=messages
+05:71a4 .text16:0026:cm=messages
 
 05:71ca HowToPlayText_State23
-05:71ca .text:0034:cm=messages
-05:71fe .text:0028:cm=messages
-05:7226 .text:0034:cm=messages
-05:725a .text:002e:cm=messages
+05:71ca .text16:0034:cm=messages
+05:71fe .text16:0028:cm=messages
+05:7226 .text16:0034:cm=messages
+05:725a .text16:002e:cm=messages
 
 05:7288 HowToPlayText_State25
-05:7288 .text:002a:cm=messages
-05:72b2 .text:0030:cm=messages
-05:72e2 .text:002c:cm=messages
-05:730e .text:0016:cm=messages
+05:7288 .text16:002a:cm=messages
+05:72b2 .text16:0030:cm=messages
+05:72e2 .text16:002c:cm=messages
+05:730e .text16:0016:cm=messages
 
 05:7324 HowToPlayText_State26
-05:7324 .text:002a:cm=messages
-05:734e .text:002a:cm=messages
+05:7324 .text16:002a:cm=messages
+05:734e .text16:002a:cm=messages
 
 05:7378 HowToPlayText_State27
-05:7378 .text:0030:cm=messages
-05:73a8 .text:0022:cm=messages
+05:7378 .text16:0030:cm=messages
+05:73a8 .text16:0022:cm=messages
 
 05:73ca HowToPlayText_State28
-05:73ca .text:002a:cm=messages
-05:73f4 .text:0032:cm=messages
-05:7426 .text:000e:cm=messages
+05:73ca .text16:002a:cm=messages
+05:73f4 .text16:0032:cm=messages
+05:7426 .text16:000e:cm=messages
 
 05:7434 HowToPlayText_State29
-05:7434 .text:0018:cm=messages
+05:7434 .text16:0018:cm=messages
 
 05:744c .padding:bb4
 
@@ -3432,9 +3528,9 @@
 
 09:4000 CourseSelectScreenTileData
 09:4000 .image:1800:pe1
-09:5000 CourseSelectStarTopTileData
+09:5000 CourseSelectStarUnlockedTopTileData
 ;09:5000 .image:00a0:pe1
-09:5100 CourseSelectStarBottomTileData
+09:5100 CourseSelectStarUnlockedBottomTileData
 ;09:5100 .image:00a0:pe1
 09:5200 CourseSelectTimeTrialTopTileData
 ;09:5200 .image:00a0:pe1

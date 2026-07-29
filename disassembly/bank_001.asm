@@ -895,7 +895,7 @@ SECTION "ROM Bank $001", ROMX[$4000], BANK[$1]
     rst $38                                       ; $4388: $ff
     rst $38                                       ; $4389: $ff
 
-GameState_04_TODO_PhaseDispatcher::
+GameState_04_PicrossCoursePuzzleSelectScreen_PhaseDispatcher::
     ld a, [rStatePhase_Current]                   ; $438a: $fa $35 $d6
     rst RST_18                                    ; $438d: $df
 
@@ -1140,7 +1140,7 @@ jr_001_448d:
     ld a, [rSelectedSaveSlotIndex]                ; $45a2: $fa $65 $a0
     ld c, a                                       ; $45a5: $4f
     ld b, $00                                     ; $45a6: $06 $00
-    ld hl, $a38d                                  ; $45a8: $21 $8d $a3
+    ld hl, rSaveSlot1CourseSelectCursorRow        ; $45a8: $21 $8d $a3
     add hl, bc                                    ; $45ab: $09
     inc [hl]                                      ; $45ac: $34
     call Call_001_49c8                            ; $45ad: $cd $c8 $49
@@ -1256,7 +1256,7 @@ Jump_001_45bb:
     ld a, [rSelectedSaveSlotIndex]                ; $46c3: $fa $65 $a0
     ld c, a                                       ; $46c6: $4f
     ld b, $00                                     ; $46c7: $06 $00
-    ld hl, $a38d                                  ; $46c9: $21 $8d $a3
+    ld hl, rSaveSlot1CourseSelectCursorRow        ; $46c9: $21 $8d $a3
     add hl, bc                                    ; $46cc: $09
     inc [hl]                                      ; $46cd: $34
     call Call_001_49c8                            ; $46ce: $cd $c8 $49
@@ -1277,7 +1277,7 @@ Call_001_46e4:
     ld a, [rSelectedSaveSlotIndex]                ; $46e4: $fa $65 $a0
     ld c, a                                       ; $46e7: $4f
     ld b, $00                                     ; $46e8: $06 $00
-    ld hl, $a38d                                  ; $46ea: $21 $8d $a3
+    ld hl, rSaveSlot1CourseSelectCursorRow        ; $46ea: $21 $8d $a3
     add hl, bc                                    ; $46ed: $09
     ld a, [hl]                                    ; $46ee: $7e
     ld hl, $51c8                                  ; $46ef: $21 $c8 $51
@@ -1466,7 +1466,7 @@ GS04_StatePhase_02_TODO::
     ld a, [rSelectedSaveSlotIndex]                ; $4834: $fa $65 $a0
     ld c, a                                       ; $4837: $4f
     ld b, $00                                     ; $4838: $06 $00
-    ld hl, $a38d                                  ; $483a: $21 $8d $a3
+    ld hl, rSaveSlot1CourseSelectCursorRow        ; $483a: $21 $8d $a3
     add hl, bc                                    ; $483d: $09
     ld a, [hl]                                    ; $483e: $7e
     sla a                                         ; $483f: $cb $27
@@ -1785,7 +1785,7 @@ Call_001_49a2:
     ld a, [rSelectedSaveSlotIndex]                ; $49a2: $fa $65 $a0
     ld c, a                                       ; $49a5: $4f
     ld b, $00                                     ; $49a6: $06 $00
-    ld hl, $a38d                                  ; $49a8: $21 $8d $a3
+    ld hl, rSaveSlot1CourseSelectCursorRow        ; $49a8: $21 $8d $a3
     add hl, bc                                    ; $49ab: $09
     ld a, [rSelectedSaveSlotIndex]                ; $49ac: $fa $65 $a0
     ld c, a                                       ; $49af: $4f
@@ -1809,7 +1809,7 @@ Call_001_49c8:
     ld a, [rSelectedSaveSlotIndex]                ; $49c8: $fa $65 $a0
     ld c, a                                       ; $49cb: $4f
     ld b, $00                                     ; $49cc: $06 $00
-    ld hl, $a38d                                  ; $49ce: $21 $8d $a3
+    ld hl, rSaveSlot1CourseSelectCursorRow        ; $49ce: $21 $8d $a3
     add hl, bc                                    ; $49d1: $09
     ld a, [rSelectedSaveSlotIndex]                ; $49d2: $fa $65 $a0
     ld c, a                                       ; $49d5: $4f
@@ -1898,7 +1898,7 @@ Call_001_4a4e:
     ld a, [rSelectedSaveSlotIndex]                ; $4a4e: $fa $65 $a0
     ld c, a                                       ; $4a51: $4f
     ld b, $00                                     ; $4a52: $06 $00
-    ld hl, $a38d                                  ; $4a54: $21 $8d $a3
+    ld hl, rSaveSlot1CourseSelectCursorRow        ; $4a54: $21 $8d $a3
     add hl, bc                                    ; $4a57: $09
     ld a, [hl]                                    ; $4a58: $7e
     and a                                         ; $4a59: $a7
@@ -1929,7 +1929,7 @@ Call_001_4a80:
     ld a, [rSelectedSaveSlotIndex]                ; $4a80: $fa $65 $a0
     ld c, a                                       ; $4a83: $4f
     ld b, $00                                     ; $4a84: $06 $00
-    ld hl, $a38d                                  ; $4a86: $21 $8d $a3
+    ld hl, rSaveSlot1CourseSelectCursorRow        ; $4a86: $21 $8d $a3
     add hl, bc                                    ; $4a89: $09
     ld a, [hl]                                    ; $4a8a: $7e
     and a                                         ; $4a8b: $a7
@@ -1975,7 +1975,7 @@ jr_001_4ab9:
     ld a, [rSelectedSaveSlotIndex]                ; $4ae4: $fa $65 $a0
     ld c, a                                       ; $4ae7: $4f
     ld b, $00                                     ; $4ae8: $06 $00
-    ld hl, $a38d                                  ; $4aea: $21 $8d $a3
+    ld hl, rSaveSlot1CourseSelectCursorRow        ; $4aea: $21 $8d $a3
     add hl, bc                                    ; $4aed: $09
     ld a, [hl]                                    ; $4aee: $7e
     and a                                         ; $4aef: $a7
@@ -2027,7 +2027,7 @@ Call_001_4b5a:
     ld a, [rSelectedSaveSlotIndex]                ; $4b5a: $fa $65 $a0
     ld c, a                                       ; $4b5d: $4f
     ld b, $00                                     ; $4b5e: $06 $00
-    ld hl, $a38d                                  ; $4b60: $21 $8d $a3
+    ld hl, rSaveSlot1CourseSelectCursorRow        ; $4b60: $21 $8d $a3
     add hl, bc                                    ; $4b63: $09
     ld a, [hl]                                    ; $4b64: $7e
     and a                                         ; $4b65: $a7
@@ -2054,7 +2054,7 @@ Call_001_4b84:
     ld a, [rSelectedSaveSlotIndex]                ; $4b84: $fa $65 $a0
     ld c, a                                       ; $4b87: $4f
     ld b, $00                                     ; $4b88: $06 $00
-    ld hl, $a38d                                  ; $4b8a: $21 $8d $a3
+    ld hl, rSaveSlot1CourseSelectCursorRow        ; $4b8a: $21 $8d $a3
     add hl, bc                                    ; $4b8d: $09
     ld a, [hl]                                    ; $4b8e: $7e
     and a                                         ; $4b8f: $a7
@@ -2080,7 +2080,7 @@ jr_001_4ba0:
     ld a, [rSelectedSaveSlotIndex]                ; $4bae: $fa $65 $a0
     ld c, a                                       ; $4bb1: $4f
     ld b, $00                                     ; $4bb2: $06 $00
-    ld hl, $a38d                                  ; $4bb4: $21 $8d $a3
+    ld hl, rSaveSlot1CourseSelectCursorRow        ; $4bb4: $21 $8d $a3
     add hl, bc                                    ; $4bb7: $09
     ld a, [hl]                                    ; $4bb8: $7e
     and a                                         ; $4bb9: $a7
@@ -2106,7 +2106,7 @@ jr_001_4bcc:
     ld a, [rSelectedSaveSlotIndex]                ; $4bdc: $fa $65 $a0
     ld c, a                                       ; $4bdf: $4f
     ld b, $00                                     ; $4be0: $06 $00
-    ld hl, $a38d                                  ; $4be2: $21 $8d $a3
+    ld hl, rSaveSlot1CourseSelectCursorRow        ; $4be2: $21 $8d $a3
     add hl, bc                                    ; $4be5: $09
     ld a, [hl]                                    ; $4be6: $7e
     and a                                         ; $4be7: $a7
@@ -2133,7 +2133,7 @@ Call_001_4c0a:
     ld a, [rSelectedSaveSlotIndex]                ; $4c0a: $fa $65 $a0
     ld c, a                                       ; $4c0d: $4f
     ld b, $00                                     ; $4c0e: $06 $00
-    ld hl, $a38d                                  ; $4c10: $21 $8d $a3
+    ld hl, rSaveSlot1CourseSelectCursorRow        ; $4c10: $21 $8d $a3
     add hl, bc                                    ; $4c13: $09
     ld a, [hl]                                    ; $4c14: $7e
     ld hl, $51c8                                  ; $4c15: $21 $c8 $51
@@ -2176,7 +2176,7 @@ Call_001_4c3b:
     ld a, [rSelectedSaveSlotIndex]                ; $4c3b: $fa $65 $a0
     ld c, a                                       ; $4c3e: $4f
     ld b, $00                                     ; $4c3f: $06 $00
-    ld hl, $a38d                                  ; $4c41: $21 $8d $a3
+    ld hl, rSaveSlot1CourseSelectCursorRow        ; $4c41: $21 $8d $a3
     add hl, bc                                    ; $4c44: $09
     ld a, [hl]                                    ; $4c45: $7e
     ld hl, $51c8                                  ; $4c46: $21 $c8 $51
@@ -2266,7 +2266,7 @@ Call_001_4cbc:
     ld a, [rSelectedSaveSlotIndex]                ; $4cbc: $fa $65 $a0
     ld c, a                                       ; $4cbf: $4f
     ld b, $00                                     ; $4cc0: $06 $00
-    ld hl, $a38d                                  ; $4cc2: $21 $8d $a3
+    ld hl, rSaveSlot1CourseSelectCursorRow        ; $4cc2: $21 $8d $a3
     add hl, bc                                    ; $4cc5: $09
     ld a, [hl]                                    ; $4cc6: $7e
     ld hl, $51c8                                  ; $4cc7: $21 $c8 $51
@@ -2306,7 +2306,7 @@ Call_001_4cef:
     ld a, [rSelectedSaveSlotIndex]                ; $4cf3: $fa $65 $a0
     ld c, a                                       ; $4cf6: $4f
     ld b, $00                                     ; $4cf7: $06 $00
-    ld hl, $a38d                                  ; $4cf9: $21 $8d $a3
+    ld hl, rSaveSlot1CourseSelectCursorRow        ; $4cf9: $21 $8d $a3
     add hl, bc                                    ; $4cfc: $09
     ld a, [hl]                                    ; $4cfd: $7e
     ld hl, $51c8                                  ; $4cfe: $21 $c8 $51
@@ -2345,7 +2345,7 @@ Call_001_4cef:
     ld a, [rSelectedSaveSlotIndex]                ; $4d31: $fa $65 $a0
     ld c, a                                       ; $4d34: $4f
     ld b, $00                                     ; $4d35: $06 $00
-    ld hl, $a38d                                  ; $4d37: $21 $8d $a3
+    ld hl, rSaveSlot1CourseSelectCursorRow        ; $4d37: $21 $8d $a3
     add hl, bc                                    ; $4d3a: $09
     ld a, [hl]                                    ; $4d3b: $7e
     ld hl, $51b3                                  ; $4d3c: $21 $b3 $51
@@ -2390,7 +2390,7 @@ jr_001_4d76:
     ld a, [rSelectedSaveSlotIndex]                ; $4d76: $fa $65 $a0
     ld c, a                                       ; $4d79: $4f
     ld b, $00                                     ; $4d7a: $06 $00
-    ld hl, $a38d                                  ; $4d7c: $21 $8d $a3
+    ld hl, rSaveSlot1CourseSelectCursorRow        ; $4d7c: $21 $8d $a3
     add hl, bc                                    ; $4d7f: $09
     ld a, [hl]                                    ; $4d80: $7e
     ld hl, $51b3                                  ; $4d81: $21 $b3 $51
@@ -2472,7 +2472,7 @@ Call_001_4dde:
     ld a, [rSelectedSaveSlotIndex]                ; $4dde: $fa $65 $a0
     ld c, a                                       ; $4de1: $4f
     ld b, $00                                     ; $4de2: $06 $00
-    ld hl, $a38d                                  ; $4de4: $21 $8d $a3
+    ld hl, rSaveSlot1CourseSelectCursorRow        ; $4de4: $21 $8d $a3
     add hl, bc                                    ; $4de7: $09
     ld a, [hl]                                    ; $4de8: $7e
     ld hl, $51c8                                  ; $4de9: $21 $c8 $51
@@ -2519,7 +2519,7 @@ jr_001_4e24:
     ld a, [rSelectedSaveSlotIndex]                ; $4e2b: $fa $65 $a0
     ld c, a                                       ; $4e2e: $4f
     ld b, $00                                     ; $4e2f: $06 $00
-    ld hl, $a38d                                  ; $4e31: $21 $8d $a3
+    ld hl, rSaveSlot1CourseSelectCursorRow        ; $4e31: $21 $8d $a3
     add hl, bc                                    ; $4e34: $09
     ld a, [hl]                                    ; $4e35: $7e
     ld hl, $51b3                                  ; $4e36: $21 $b3 $51
@@ -2582,7 +2582,7 @@ jr_001_4e24:
     ld a, [rSelectedSaveSlotIndex]                ; $4e99: $fa $65 $a0
     ld c, a                                       ; $4e9c: $4f
     ld b, $00                                     ; $4e9d: $06 $00
-    ld hl, $a38d                                  ; $4e9f: $21 $8d $a3
+    ld hl, rSaveSlot1CourseSelectCursorRow        ; $4e9f: $21 $8d $a3
     add hl, bc                                    ; $4ea2: $09
     ld a, [hl]                                    ; $4ea3: $7e
     ld hl, $51b3                                  ; $4ea4: $21 $b3 $51
@@ -2809,7 +2809,7 @@ Call_001_504b:
     ld a, [rSelectedSaveSlotIndex]                ; $504b: $fa $65 $a0
     ld c, a                                       ; $504e: $4f
     ld b, $00                                     ; $504f: $06 $00
-    ld hl, $a38d                                  ; $5051: $21 $8d $a3
+    ld hl, rSaveSlot1CourseSelectCursorRow        ; $5051: $21 $8d $a3
     add hl, bc                                    ; $5054: $09
     ld a, [hl]                                    ; $5055: $7e
     ld hl, $51c8                                  ; $5056: $21 $c8 $51
@@ -2837,7 +2837,7 @@ Call_001_504b:
     ld a, [rSelectedSaveSlotIndex]                ; $5079: $fa $65 $a0
     ld c, a                                       ; $507c: $4f
     ld b, $00                                     ; $507d: $06 $00
-    ld hl, $a38d                                  ; $507f: $21 $8d $a3
+    ld hl, rSaveSlot1CourseSelectCursorRow        ; $507f: $21 $8d $a3
     add hl, bc                                    ; $5082: $09
     ld a, [hl]                                    ; $5083: $7e
     ld hl, $51b3                                  ; $5084: $21 $b3 $51
@@ -2943,7 +2943,7 @@ jr_001_510b:
     ld a, [rSelectedSaveSlotIndex]                ; $510b: $fa $65 $a0
     ld c, a                                       ; $510e: $4f
     ld b, $00                                     ; $510f: $06 $00
-    ld hl, $a38d                                  ; $5111: $21 $8d $a3
+    ld hl, rSaveSlot1CourseSelectCursorRow        ; $5111: $21 $8d $a3
     add hl, bc                                    ; $5114: $09
     ld a, [hl]                                    ; $5115: $7e
     ld hl, $51c8                                  ; $5116: $21 $c8 $51
@@ -3175,7 +3175,7 @@ jr_001_5252:
     ret                                           ; $526c: $c9
 
 
-GameState_05_TODO_PhaseDispatcher::
+GameState_05_EasyPicrossPuzzleSelectScreen_PhaseDispatcher::
     ld a, [rStatePhase_Current]                   ; $526d: $fa $35 $d6
     rst RST_18                                    ; $5270: $df
 
@@ -3357,7 +3357,7 @@ jr_001_539e:
     ld a, [rSelectedSaveSlotIndex]                ; $53e8: $fa $65 $a0
     ld c, a                                       ; $53eb: $4f
     ld b, $00                                     ; $53ec: $06 $00
-    ld hl, $a078                                  ; $53ee: $21 $78 $a0
+    ld hl, rSaveSlot1GameSelectCursorRow          ; $53ee: $21 $78 $a0
     add hl, bc                                    ; $53f1: $09
     ld a, $02                                     ; $53f2: $3e $02
     ld [hl], a                                    ; $53f4: $77
@@ -4604,40 +4604,53 @@ GS05_TODO_Data3::
 SETCHARMAP messages
 
 LetsTryThisOneText::
-    db "L⁣e⁣t⁣'⁣s⁣ ⁣t⁣r⁣y⁣ ⁣t⁣h⁣i⁣s⁣ ⁣o⁣n⁣e⁣.⁣", $ff, $ff
+    db "Let's try this one."
+    dw $ffff
 
 VeryGoodText::
-    db "V⁣e⁣r⁣y⁣ ⁣g⁣o⁣o⁣d⁣.⁣", $ff, $ff
+    db "Very good."
+    dw $ffff
 
 LetsTryAgainText::
-    db "L⁣e⁣t⁣'⁣s⁣ ⁣t⁣r⁣y⁣ ⁣a⁣g⁣a⁣i⁣n⁣.⁣", $ff, $ff
+    db "Let's try again."
+    dw $ffff
 
 ItsTheLetterText::
-    db $fe, $ff, "I⁣t⁣'⁣s⁣ ⁣t⁣h⁣e⁣ ⁣l⁣e⁣t⁣t⁣e⁣r⁣ ⁣", $ff, $ff
+    dw $fffe
+    db "It's the letter "
+    dw $ffff
 
 LText::
-    db "“⁣L⁣”⁣.⁣", $ff, $ff
+    db "“L”."
+    dw $ffff
 
 EText::
-    db "“⁣E⁣”⁣.⁣", $ff, $ff
+    db "“E”."
+    dw $ffff
 
 TText::
-    db "“⁣T⁣”⁣.⁣", $ff, $ff
+    db "“T”."
+    dw $ffff
 
 SText::
-    db "“⁣S⁣”⁣.⁣", $ff, $ff
+    db "“S”."
+    dw $ffff
 
 WText::
-    db "“⁣W⁣”⁣.⁣", $ff, $ff
+    db "“W”."
+    dw $ffff
 
 OText::
-    db "“⁣O⁣”⁣.⁣", $ff, $ff
+    db "“O”."
+    dw $ffff
 
 RText::
-    db "“⁣R⁣”⁣.⁣", $ff, $ff
+    db "“R”."
+    dw $ffff
 
 KText::
-    db "“⁣K⁣”⁣.⁣", $ff, $ff
+    db "“K”."
+    dw $ffff
 
 GameState_08_TODO_PhaseDispatcher::
     ld a, [rStatePhase_Current]                   ; $5d7e: $fa $35 $d6
@@ -6246,7 +6259,7 @@ GS0A_StatePhase_0b_TODO::
     ld a, [rSelectedSaveSlotIndex]                ; $6980: $fa $65 $a0
     ld c, a                                       ; $6983: $4f
     ld b, $00                                     ; $6984: $06 $00
-    ld hl, $a38d                                  ; $6986: $21 $8d $a3
+    ld hl, rSaveSlot1CourseSelectCursorRow        ; $6986: $21 $8d $a3
     add hl, bc                                    ; $6989: $09
     ld a, [rSelectedSaveSlotIndex]                ; $698a: $fa $65 $a0
     ld c, a                                       ; $698d: $4f
@@ -6783,7 +6796,7 @@ GS0A_StatePhase_05_TODO::
     ld a, [rSelectedSaveSlotIndex]                ; $6d64: $fa $65 $a0
     ld c, a                                       ; $6d67: $4f
     ld b, $00                                     ; $6d68: $06 $00
-    ld hl, $a38d                                  ; $6d6a: $21 $8d $a3
+    ld hl, rSaveSlot1CourseSelectCursorRow        ; $6d6a: $21 $8d $a3
     add hl, bc                                    ; $6d6d: $09
     ld a, [rSelectedSaveSlotIndex]                ; $6d6e: $fa $65 $a0
     ld c, a                                       ; $6d71: $4f
@@ -6900,7 +6913,7 @@ jr_001_6df5:
     ld a, [rSelectedSaveSlotIndex]                ; $6e44: $fa $65 $a0
     ld c, a                                       ; $6e47: $4f
     ld b, $00                                     ; $6e48: $06 $00
-    ld hl, $a38d                                  ; $6e4a: $21 $8d $a3
+    ld hl, rSaveSlot1CourseSelectCursorRow        ; $6e4a: $21 $8d $a3
     add hl, bc                                    ; $6e4d: $09
     ld a, [rSelectedSaveSlotIndex]                ; $6e4e: $fa $65 $a0
     ld c, a                                       ; $6e51: $4f
@@ -6971,7 +6984,7 @@ jr_001_6eaa:
     ld a, [rSelectedSaveSlotIndex]                ; $6ec6: $fa $65 $a0
     ld c, a                                       ; $6ec9: $4f
     ld b, $00                                     ; $6eca: $06 $00
-    ld hl, $a38d                                  ; $6ecc: $21 $8d $a3
+    ld hl, rSaveSlot1CourseSelectCursorRow        ; $6ecc: $21 $8d $a3
     add hl, bc                                    ; $6ecf: $09
     ld a, [rSelectedSaveSlotIndex]                ; $6ed0: $fa $65 $a0
     ld c, a                                       ; $6ed3: $4f
@@ -6997,7 +7010,7 @@ GS0A_StatePhase_0a_TODO::
     ld a, [rSelectedSaveSlotIndex]                ; $6ef3: $fa $65 $a0
     ld c, a                                       ; $6ef6: $4f
     ld b, $00                                     ; $6ef7: $06 $00
-    ld hl, $a38d                                  ; $6ef9: $21 $8d $a3
+    ld hl, rSaveSlot1CourseSelectCursorRow        ; $6ef9: $21 $8d $a3
     add hl, bc                                    ; $6efc: $09
     ld a, [rSelectedSaveSlotIndex]                ; $6efd: $fa $65 $a0
     ld c, a                                       ; $6f00: $4f
@@ -9599,7 +9612,7 @@ Call_001_7dfe:
     ld a, [rSelectedSaveSlotIndex]                ; $7dfe: $fa $65 $a0
     ld c, a                                       ; $7e01: $4f
     ld b, $00                                     ; $7e02: $06 $00
-    ld hl, $a38d                                  ; $7e04: $21 $8d $a3
+    ld hl, rSaveSlot1CourseSelectCursorRow        ; $7e04: $21 $8d $a3
     add hl, bc                                    ; $7e07: $09
     ld a, [rSelectedSaveSlotIndex]                ; $7e08: $fa $65 $a0
     ld c, a                                       ; $7e0b: $4f

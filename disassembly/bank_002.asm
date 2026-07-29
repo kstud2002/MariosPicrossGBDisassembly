@@ -5,7 +5,7 @@
 
 SECTION "ROM Bank $002", ROMX[$4000], BANK[$2]
 
-GameState_03_TODO_PhaseDispatcher::
+GameState_03_CourseSelectScreen_PhaseDispatcher::
     ld a, [rStatePhase_Current]                   ; $4000: $fa $35 $d6
     rst RST_18                                    ; $4003: $df
 
@@ -21,7 +21,7 @@ GS03_PhasePointer_02::
 GS03_PhasePointer_03::
     db $9b, $41
 
-GS03_StatePhase_00_TODO::
+GS03_StatePhase_00_CourseSelectScreenInit::
     ld a, $43                                     ; $400c: $3e $43
     ld [rLCDCShadow], a                           ; $400e: $ea $2e $c3
     xor a                                         ; $4011: $af
@@ -38,7 +38,7 @@ GS03_StatePhase_00_TODO::
     ld bc, $0300                                  ; $402f: $01 $00 $03
     call BankedTileCopy                           ; $4032: $cd $e4 $04
     ld a, $09                                     ; $4035: $3e $09
-    ld hl, GameState_03_TODO_PhaseDispatcher      ; $4037: $21 $00 $40
+    ld hl, GameState_03_CourseSelectScreen_PhaseDispatcher; $4037: $21 $00 $40
     ld de, $8800                                  ; $403a: $11 $00 $88
     ld bc, $1000                                  ; $403d: $01 $00 $10
     call BankedTileCopy                           ; $4040: $cd $e4 $04
@@ -54,8 +54,8 @@ GS03_StatePhase_00_TODO::
     add hl, bc                                    ; $405a: $09
     ld a, [hl]                                    ; $405b: $7e
     dec a                                         ; $405c: $3d
-    ld [$d63b], a                                 ; $405d: $ea $3b $d6
-    jr z, jr_002_409f                             ; $4060: $28 $3d
+    ld [rMenuCursorRowMaxIndex], a                ; $405d: $ea $3b $d6
+    jr z, .ContinueCourseSelectInitAfterCourseTileLoad; $4060: $28 $3d
 
     push af                                       ; $4062: $f5
     ld a, $09                                     ; $4063: $3e $09
@@ -70,7 +70,7 @@ GS03_StatePhase_00_TODO::
     call BankedTileCopy                           ; $407c: $cd $e4 $04
     pop af                                        ; $407f: $f1
     dec a                                         ; $4080: $3d
-    jr z, jr_002_409f                             ; $4081: $28 $1c
+    jr z, .ContinueCourseSelectInitAfterCourseTileLoad; $4081: $28 $1c
 
     ld a, $09                                     ; $4083: $3e $09
     ld hl, $5200                                  ; $4085: $21 $00 $52
@@ -83,15 +83,15 @@ GS03_StatePhase_00_TODO::
     ld bc, $00a0                                  ; $4099: $01 $a0 $00
     call BankedTileCopy                           ; $409c: $cd $e4 $04
 
-jr_002_409f:
+.ContinueCourseSelectInitAfterCourseTileLoad:
     ld a, [rSelectedSaveSlotIndex]                ; $409f: $fa $65 $a0
     ld c, a                                       ; $40a2: $4f
     ld b, $00                                     ; $40a3: $06 $00
-    ld hl, $a38d                                  ; $40a5: $21 $8d $a3
+    ld hl, rSaveSlot1CourseSelectCursorRow        ; $40a5: $21 $8d $a3
     add hl, bc                                    ; $40a8: $09
     ld a, [hl]                                    ; $40a9: $7e
     ld [rPuzzleAndMenuCursorRow], a               ; $40aa: $ea $37 $d6
-    call Call_002_41f6                            ; $40ad: $cd $f6 $41
+    call GS03_QueueCourseSelectionHighlightCommandStream; $40ad: $cd $f6 $41
     call ClearShadowOAMBuffer                     ; $40b0: $cd $b6 $05
     ld b, $03                                     ; $40b3: $06 $03
     ld hl, $4e80                                  ; $40b5: $21 $80 $4e
@@ -107,38 +107,38 @@ jr_002_409f:
     ld a, $01                                     ; $40cf: $3e $01
     call CallSoundEffectDispatcher                ; $40d1: $cd $b6 $03
     call EnableLCDFromShadow                      ; $40d4: $cd $a2 $04
-    ld a, [$d63b]                                 ; $40d7: $fa $3b $d6
+    ld a, [rMenuCursorRowMaxIndex]                ; $40d7: $fa $3b $d6
     cp $02                                        ; $40da: $fe $02
-    jr z, jr_002_40ed                             ; $40dc: $28 $0f
+    jr z, .RunCourseSelectFadeIn_AllCoursesUnlocked; $40dc: $28 $0f
 
     ld b, $03                                     ; $40de: $06 $03
     ld hl, $46b8                                  ; $40e0: $21 $b8 $46
     ld c, $03                                     ; $40e3: $0e $03
     ld de, $0034                                  ; $40e5: $11 $34 $00
     call PlayScreenTransitionFadeIn               ; $40e8: $cd $0d $04
-    jr jr_002_40fa                                ; $40eb: $18 $0d
+    jr .AdvanceToCourseSelectIdlePhase            ; $40eb: $18 $0d
 
-jr_002_40ed:
+.RunCourseSelectFadeIn_AllCoursesUnlocked:
     ld b, $03                                     ; $40ed: $06 $03
     ld hl, $46b8                                  ; $40ef: $21 $b8 $46
     ld c, $04                                     ; $40f2: $0e $04
     ld de, $0034                                  ; $40f4: $11 $34 $00
     call PlayScreenTransitionFadeIn               ; $40f7: $cd $0d $04
 
-jr_002_40fa:
+.AdvanceToCourseSelectIdlePhase:
     ld hl, rStatePhase_Current                    ; $40fa: $21 $35 $d6
     inc [hl]                                      ; $40fd: $34
     ret                                           ; $40fe: $c9
 
 
-GS03_StatePhase_01_TODO::
+GS03_StatePhase_01_CourseSelectScreenIdle::
     ld b, $03                                     ; $40ff: $06 $03
     ld hl, $4ec2                                  ; $4101: $21 $c2 $4e
     call SwitchBankToBAndJumpToHL                 ; $4104: $cd $de $05
-    call Call_002_42be                            ; $4107: $cd $be $42
+    call GS03_HandleCourseSelectVerticalInput     ; $4107: $cd $be $42
     ld a, [rInputButtonsPressed]                  ; $410a: $fa $1e $c3
     and $09                                       ; $410d: $e6 $09
-    jr z, jr_002_411d                             ; $410f: $28 $0c
+    jr z, .CheckCourseSelectCancelInput           ; $410f: $28 $0c
 
     ld c, $03                                     ; $4111: $0e $03
     ld a, $02                                     ; $4113: $3e $02
@@ -148,7 +148,7 @@ GS03_StatePhase_01_TODO::
     ret                                           ; $411c: $c9
 
 
-jr_002_411d:
+.CheckCourseSelectCancelInput:
     ld a, [rInputButtonsPressed]                  ; $411d: $fa $1e $c3
     and $02                                       ; $4120: $e6 $02
     ret z                                         ; $4122: $c8
@@ -161,7 +161,7 @@ jr_002_411d:
     ret                                           ; $412f: $c9
 
 
-GS03_StatePhase_02_TODO::
+GS03_StatePhase_02_ConfirmSelectionTransition::
     ld bc, $003c                                  ; $4130: $01 $3c $00
     call DelayFramesByBC                          ; $4133: $cd $fa $05
     ld a, $05                                     ; $4136: $3e $05
@@ -173,35 +173,35 @@ GS03_StatePhase_02_TODO::
     ld c, $00                                     ; $4145: $0e $00
     ld a, $01                                     ; $4147: $3e $01
     call CallSoundEffectDispatcher                ; $4149: $cd $b6 $03
-    ld a, [$d63b]                                 ; $414c: $fa $3b $d6
+    ld a, [rMenuCursorRowMaxIndex]                ; $414c: $fa $3b $d6
     cp $02                                        ; $414f: $fe $02
-    jr z, jr_002_4162                             ; $4151: $28 $0f
+    jr z, .RunConfirmTransitionFadeOut_AllCoursesUnlocked; $4151: $28 $0f
 
     ld b, $03                                     ; $4153: $06 $03
     ld hl, $46c3                                  ; $4155: $21 $c3 $46
     ld c, $03                                     ; $4158: $0e $03
     ld de, $0043                                  ; $415a: $11 $43 $00
     call PlayScreenTransitionFadeOut              ; $415d: $cd $4e $04
-    jr jr_002_416f                                ; $4160: $18 $0d
+    jr .FinalizeConfirmSelectionTransition        ; $4160: $18 $0d
 
-jr_002_4162:
+.RunConfirmTransitionFadeOut_AllCoursesUnlocked:
     ld b, $03                                     ; $4162: $06 $03
     ld hl, $46c3                                  ; $4164: $21 $c3 $46
     ld c, $04                                     ; $4167: $0e $04
     ld de, $0043                                  ; $4169: $11 $43 $00
     call PlayScreenTransitionFadeOut              ; $416c: $cd $4e $04
 
-jr_002_416f:
+.FinalizeConfirmSelectionTransition:
     call DisableLCDAtVBlank                       ; $416f: $cd $83 $04
     ld a, [rSelectedSaveSlotIndex]                ; $4172: $fa $65 $a0
     ld c, a                                       ; $4175: $4f
     ld b, $00                                     ; $4176: $06 $00
-    ld hl, $a38d                                  ; $4178: $21 $8d $a3
+    ld hl, rSaveSlot1CourseSelectCursorRow        ; $4178: $21 $8d $a3
     add hl, bc                                    ; $417b: $09
     ld a, [rPuzzleAndMenuCursorRow]               ; $417c: $fa $37 $d6
     ld [hl], a                                    ; $417f: $77
     cp $02                                        ; $4180: $fe $02
-    jr z, jr_002_418f                             ; $4182: $28 $0b
+    jr z, .SetNextGameState_TimeTrial             ; $4182: $28 $0b
 
     xor a                                         ; $4184: $af
     ld [rStatePhase_Current], a                   ; $4185: $ea $35 $d6
@@ -210,7 +210,7 @@ jr_002_416f:
     jp RefreshSaveValidationChecksumsAndMirrors   ; $418c: $c3 $1f $1b
 
 
-jr_002_418f:
+.SetNextGameState_TimeTrial:
     xor a                                         ; $418f: $af
     ld [rStatePhase_Current], a                   ; $4190: $ea $35 $d6
     ld a, $07                                     ; $4193: $3e $07
@@ -218,7 +218,7 @@ jr_002_418f:
     jp RefreshSaveValidationChecksumsAndMirrors   ; $4198: $c3 $1f $1b
 
 
-GS03_StatePhase_03_TODO::
+GS03_StatePhase_03_CancelSelectionTransition::
     ld bc, $003c                                  ; $419b: $01 $3c $00
     call DelayFramesByBC                          ; $419e: $cd $fa $05
     ld a, $05                                     ; $41a1: $3e $05
@@ -230,30 +230,30 @@ GS03_StatePhase_03_TODO::
     ld c, $00                                     ; $41b0: $0e $00
     ld a, $01                                     ; $41b2: $3e $01
     call CallSoundEffectDispatcher                ; $41b4: $cd $b6 $03
-    ld a, [$d63b]                                 ; $41b7: $fa $3b $d6
+    ld a, [rMenuCursorRowMaxIndex]                ; $41b7: $fa $3b $d6
     cp $02                                        ; $41ba: $fe $02
-    jr z, jr_002_41cd                             ; $41bc: $28 $0f
+    jr z, .RunCancelTransitionFadeOut_AllCoursesUnlocked; $41bc: $28 $0f
 
     ld b, $03                                     ; $41be: $06 $03
     ld hl, $46c3                                  ; $41c0: $21 $c3 $46
     ld c, $03                                     ; $41c3: $0e $03
     ld de, $0043                                  ; $41c5: $11 $43 $00
     call PlayScreenTransitionFadeOut              ; $41c8: $cd $4e $04
-    jr jr_002_41da                                ; $41cb: $18 $0d
+    jr .FinalizeCancelSelectionTransition         ; $41cb: $18 $0d
 
-jr_002_41cd:
+.RunCancelTransitionFadeOut_AllCoursesUnlocked:
     ld b, $03                                     ; $41cd: $06 $03
     ld hl, $46c3                                  ; $41cf: $21 $c3 $46
     ld c, $04                                     ; $41d2: $0e $04
     ld de, $0043                                  ; $41d4: $11 $43 $00
     call PlayScreenTransitionFadeOut              ; $41d7: $cd $4e $04
 
-jr_002_41da:
+.FinalizeCancelSelectionTransition:
     call DisableLCDAtVBlank                       ; $41da: $cd $83 $04
     ld a, [rSelectedSaveSlotIndex]                ; $41dd: $fa $65 $a0
     ld c, a                                       ; $41e0: $4f
     ld b, $00                                     ; $41e1: $06 $00
-    ld hl, $a38d                                  ; $41e3: $21 $8d $a3
+    ld hl, rSaveSlot1CourseSelectCursorRow        ; $41e3: $21 $8d $a3
     add hl, bc                                    ; $41e6: $09
     ld a, [rPuzzleAndMenuCursorRow]               ; $41e7: $fa $37 $d6
     ld [hl], a                                    ; $41ea: $77
@@ -264,11 +264,10 @@ jr_002_41da:
     jp RefreshSaveValidationChecksumsAndMirrors   ; $41f3: $c3 $1f $1b
 
 
-Call_002_41f6:
-Jump_002_41f6:
+GS03_QueueCourseSelectionHighlightCommandStream::
     ld c, a                                       ; $41f6: $4f
     ld b, $00                                     ; $41f7: $06 $00
-    ld hl, $4206                                  ; $41f9: $21 $06 $42
+    ld hl, CourseSelectHighlightCommandOffsetTable; $41f9: $21 $06 $42
     add hl, bc                                    ; $41fc: $09
     ld c, [hl]                                    ; $41fd: $4e
     add hl, bc                                    ; $41fe: $09
@@ -278,95 +277,28 @@ Jump_002_41f6:
     jp QueueCommandStreamAndProcessIfLCDOff       ; $4203: $c3 $38 $07
 
 
-    inc bc                                        ; $4206: $03
-    dec e                                         ; $4207: $1d
-    scf                                           ; $4208: $37
-    sbc b                                         ; $4209: $98
-    and l                                         ; $420a: $a5
-    ld a, [bc]                                    ; $420b: $0a
-    ld h, b                                       ; $420c: $60
-    ld h, c                                       ; $420d: $61
-    ld h, d                                       ; $420e: $62
-    ld h, e                                       ; $420f: $63
-    ld h, h                                       ; $4210: $64
-    ld h, l                                       ; $4211: $65
-    ld h, [hl]                                    ; $4212: $66
-    ld h, a                                       ; $4213: $67
-    ld l, b                                       ; $4214: $68
-    ld l, c                                       ; $4215: $69
-    sbc b                                         ; $4216: $98
-    push bc                                       ; $4217: $c5
-    ld a, [bc]                                    ; $4218: $0a
-    ld [hl], b                                    ; $4219: $70
-    ld [hl], c                                    ; $421a: $71
-    ld [hl], d                                    ; $421b: $72
-    ld [hl], e                                    ; $421c: $73
-    ld [hl], h                                    ; $421d: $74
-    ld [hl], l                                    ; $421e: $75
-    halt                                          ; $421f: $76
-    ld [hl], a                                    ; $4220: $77
-    ld a, b                                       ; $4221: $78
-    ld a, c                                       ; $4222: $79
-    nop                                           ; $4223: $00
-    sbc c                                         ; $4224: $99
-    dec h                                         ; $4225: $25
-    ld a, [bc]                                    ; $4226: $0a
-    add b                                         ; $4227: $80
-    add c                                         ; $4228: $81
-    add d                                         ; $4229: $82
-    add e                                         ; $422a: $83
-    add h                                         ; $422b: $84
-    add l                                         ; $422c: $85
-    add [hl]                                      ; $422d: $86
-    add a                                         ; $422e: $87
-    adc b                                         ; $422f: $88
-    adc c                                         ; $4230: $89
-    sbc c                                         ; $4231: $99
-    ld b, l                                       ; $4232: $45
-    ld a, [bc]                                    ; $4233: $0a
-    sub b                                         ; $4234: $90
-    sub c                                         ; $4235: $91
-    sub d                                         ; $4236: $92
-    sub e                                         ; $4237: $93
-    sub h                                         ; $4238: $94
-    sub l                                         ; $4239: $95
-    sub [hl]                                      ; $423a: $96
-    sub a                                         ; $423b: $97
-    sbc b                                         ; $423c: $98
-    sbc c                                         ; $423d: $99
-    nop                                           ; $423e: $00
-    sbc c                                         ; $423f: $99
-    and l                                         ; $4240: $a5
-    ld a, [bc]                                    ; $4241: $0a
-    and b                                         ; $4242: $a0
-    and c                                         ; $4243: $a1
-    and d                                         ; $4244: $a2
-    and e                                         ; $4245: $a3
-    and h                                         ; $4246: $a4
-    and l                                         ; $4247: $a5
-    and [hl]                                      ; $4248: $a6
-    and a                                         ; $4249: $a7
-    xor b                                         ; $424a: $a8
-    xor c                                         ; $424b: $a9
-    sbc c                                         ; $424c: $99
-    push bc                                       ; $424d: $c5
-    ld a, [bc]                                    ; $424e: $0a
-    or b                                          ; $424f: $b0
-    or c                                          ; $4250: $b1
-    or d                                          ; $4251: $b2
-    or e                                          ; $4252: $b3
-    or h                                          ; $4253: $b4
-    or l                                          ; $4254: $b5
-    or [hl]                                       ; $4255: $b6
-    or a                                          ; $4256: $b7
-    cp b                                          ; $4257: $b8
-    cp c                                          ; $4258: $b9
-    nop                                           ; $4259: $00
+CourseSelectHighlightCommandOffsetTable::
+    db $03, $1d, $37
 
-Call_002_425a:
+KinokoCourseHighlightCommandScript::
+    db $98, $a5, $0a, $60, $61, $62, $63, $64, $65, $66, $67, $68, $69
+    db $98, $c5, $0a, $70, $71, $72, $73, $74, $75, $76, $77, $78, $79
+    db $00
+
+StarCourseHighlightCommandScript::
+    db $99, $25, $0a, $80, $81, $82, $83, $84, $85, $86, $87, $88, $89
+    db $99, $45, $0a, $90, $91, $92, $93, $94, $95, $96, $97, $98, $99
+    db $00
+
+TimeTrialCourseHighlightCommandScript::
+    db $99, $a5, $0a, $a0, $a1, $a2, $a3, $a4, $a5, $a6, $a7, $a8, $a9
+    db $99, $c5, $0a, $b0, $b1, $b2, $b3, $b4, $b5, $b6, $b7, $b8, $b9
+    db $00
+
+GS03_QueueCourseSelectionUnhighlightCommandStream::
     ld c, a                                       ; $425a: $4f
     ld b, $00                                     ; $425b: $06 $00
-    ld hl, $426a                                  ; $425d: $21 $6a $42
+    ld hl, CourseSelectUnhighlightCommandOffsetTable; $425d: $21 $6a $42
     add hl, bc                                    ; $4260: $09
     ld c, [hl]                                    ; $4261: $4e
     add hl, bc                                    ; $4262: $09
@@ -376,88 +308,26 @@ Call_002_425a:
     jp QueueCommandStreamAndProcessIfLCDOff       ; $4267: $c3 $38 $07
 
 
-    inc bc                                        ; $426a: $03
-    dec e                                         ; $426b: $1d
-    scf                                           ; $426c: $37
-    sbc b                                         ; $426d: $98
-    and l                                         ; $426e: $a5
-    ld a, [bc]                                    ; $426f: $0a
-    nop                                           ; $4270: $00
-    ld bc, $0302                                  ; $4271: $01 $02 $03
-    inc b                                         ; $4274: $04
-    dec b                                         ; $4275: $05
-    ld b, $07                                     ; $4276: $06 $07
-    ld [$9809], sp                                ; $4278: $08 $09 $98
-    push bc                                       ; $427b: $c5
-    ld a, [bc]                                    ; $427c: $0a
-    db $10                                        ; $427d: $10
-    ld de, GS06_ScreenTilemapTileDataAddressLookupRow0fTable; $427e: $11 $12 $13
-    inc d                                         ; $4281: $14
-    dec d                                         ; $4282: $15
-    ld d, $17                                     ; $4283: $16 $17
-    jr jr_002_42a0                                ; $4285: $18 $19
+CourseSelectUnhighlightCommandOffsetTable::
+    db $03, $1d, $37
 
-    nop                                           ; $4287: $00
-    sbc c                                         ; $4288: $99
-    dec h                                         ; $4289: $25
-    ld a, [bc]                                    ; $428a: $0a
-    jr nz, jr_002_42ae                            ; $428b: $20 $21
+KinokoCourseUnhighlightCommandScript::
+    db $98, $a5, $0a, $00, $01, $02, $03, $04, $05, $06, $07, $08, $09
+    db $98, $c5, $0a, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19
+    db $00
 
-    ld [hl+], a                                   ; $428d: $22
-    inc hl                                        ; $428e: $23
-    inc h                                         ; $428f: $24
-    dec h                                         ; $4290: $25
-    ld h, $27                                     ; $4291: $26 $27
-    jr z, jr_002_42be                             ; $4293: $28 $29
+StarCourseUnhighlightCommandScript::
+    db $99, $25, $0a, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29
+    db $99, $45, $0a, $30, $31, $32, $33, $34, $35, $36, $37, $38, $39
+    db $00
 
-    sbc c                                         ; $4295: $99
-    ld b, l                                       ; $4296: $45
-    ld a, [bc]                                    ; $4297: $0a
-    jr nc, @+$33                                  ; $4298: $30 $31
+TimeTrialCourseUnhighlightCommandScript::
+    db $99, $a5, $0a, $40, $41, $42, $43, $44, $45, $46, $47, $48, $49
+    db $99, $c5, $0a, $50, $51, $52, $53, $54, $55, $56, $57, $58, $59
+    db $00
 
-    ld [hl-], a                                   ; $429a: $32
-    inc sp                                        ; $429b: $33
-    inc [hl]                                      ; $429c: $34
-    dec [hl]                                      ; $429d: $35
-    ld [hl], $37                                  ; $429e: $36 $37
-
-jr_002_42a0:
-    jr c, jr_002_42db                             ; $42a0: $38 $39
-
-    nop                                           ; $42a2: $00
-    sbc c                                         ; $42a3: $99
-    and l                                         ; $42a4: $a5
-    ld a, [bc]                                    ; $42a5: $0a
-    ld b, b                                       ; $42a6: $40
-    ld b, c                                       ; $42a7: $41
-    ld b, d                                       ; $42a8: $42
-    ld b, e                                       ; $42a9: $43
-    ld b, h                                       ; $42aa: $44
-    ld b, l                                       ; $42ab: $45
-    ld b, [hl]                                    ; $42ac: $46
-    ld b, a                                       ; $42ad: $47
-
-jr_002_42ae:
-    ld c, b                                       ; $42ae: $48
-    ld c, c                                       ; $42af: $49
-    sbc c                                         ; $42b0: $99
-    push bc                                       ; $42b1: $c5
-    ld a, [bc]                                    ; $42b2: $0a
-    ld d, b                                       ; $42b3: $50
-    ld d, c                                       ; $42b4: $51
-    ld d, d                                       ; $42b5: $52
-    ld d, e                                       ; $42b6: $53
-    ld d, h                                       ; $42b7: $54
-    ld d, l                                       ; $42b8: $55
-    ld d, [hl]                                    ; $42b9: $56
-    ld d, a                                       ; $42ba: $57
-    ld e, b                                       ; $42bb: $58
-    ld e, c                                       ; $42bc: $59
-    nop                                           ; $42bd: $00
-
-Call_002_42be:
-jr_002_42be:
-    ld a, [$d63b]                                 ; $42be: $fa $3b $d6
+GS03_HandleCourseSelectVerticalInput::
+    ld a, [rMenuCursorRowMaxIndex]                ; $42be: $fa $3b $d6
     and a                                         ; $42c1: $a7
     ret z                                         ; $42c2: $c8
 
@@ -467,7 +337,7 @@ jr_002_42be:
 
     push af                                       ; $42c9: $f5
     ld a, [rPuzzleAndMenuCursorRow]               ; $42ca: $fa $37 $d6
-    call Call_002_425a                            ; $42cd: $cd $5a $42
+    call GS03_QueueCourseSelectionUnhighlightCommandStream; $42cd: $cd $5a $42
     rst RST_08                                    ; $42d0: $cf
     ld c, $0a                                     ; $42d1: $0e $0a
     ld a, $02                                     ; $42d3: $3e $02
@@ -475,36 +345,36 @@ jr_002_42be:
     pop af                                        ; $42d8: $f1
     and $40                                       ; $42d9: $e6 $40
 
-jr_002_42db:
-    jr z, jr_002_42ee                             ; $42db: $28 $11
+.HandleCourseSelectMoveUp:
+    jr z, .HandleCourseSelectMoveDown             ; $42db: $28 $11
 
     ld a, [rPuzzleAndMenuCursorRow]               ; $42dd: $fa $37 $d6
     dec a                                         ; $42e0: $3d
     cp $ff                                        ; $42e1: $fe $ff
-    jr nz, jr_002_42e8                            ; $42e3: $20 $03
+    jr nz, .StoreCursorRowAndQueueSelectionUpdate_UpPath; $42e3: $20 $03
 
-    ld a, [$d63b]                                 ; $42e5: $fa $3b $d6
+    ld a, [rMenuCursorRowMaxIndex]                ; $42e5: $fa $3b $d6
 
-jr_002_42e8:
+.StoreCursorRowAndQueueSelectionUpdate_UpPath:
     ld [rPuzzleAndMenuCursorRow], a               ; $42e8: $ea $37 $d6
-    jp Jump_002_41f6                              ; $42eb: $c3 $f6 $41
+    jp GS03_QueueCourseSelectionHighlightCommandStream; $42eb: $c3 $f6 $41
 
 
-jr_002_42ee:
+.HandleCourseSelectMoveDown:
     ld a, [rPuzzleAndMenuCursorRow]               ; $42ee: $fa $37 $d6
-    ld hl, $d63b                                  ; $42f1: $21 $3b $d6
+    ld hl, rMenuCursorRowMaxIndex                 ; $42f1: $21 $3b $d6
     cp [hl]                                       ; $42f4: $be
-    jr nz, jr_002_42f9                            ; $42f5: $20 $02
+    jr nz, .StoreCursorRowAndQueueSelectionUpdate_DownPath; $42f5: $20 $02
 
     ld a, $ff                                     ; $42f7: $3e $ff
 
-jr_002_42f9:
+.StoreCursorRowAndQueueSelectionUpdate_DownPath:
     inc a                                         ; $42f9: $3c
     ld [rPuzzleAndMenuCursorRow], a               ; $42fa: $ea $37 $d6
-    jp Jump_002_41f6                              ; $42fd: $c3 $f6 $41
+    jp GS03_QueueCourseSelectionHighlightCommandStream; $42fd: $c3 $f6 $41
 
 
-GameState_02_TODO_PhaseDispatcher::
+GameState_02_GameSelectScreen_PhaseDispatcher::
     ld a, [rStatePhase_Current]                   ; $4300: $fa $35 $d6
     rst RST_18                                    ; $4303: $df
 
@@ -520,7 +390,7 @@ GS02_PhasePointer_02::
 GS02_PhasePointer_03::
     db $58, $44
 
-GS02_StatePhase_00_TODO::
+GS02_StatePhase_00_GameSelectScreenInit::
     ld a, $43                                     ; $430c: $3e $43
     ld [rLCDCShadow], a                           ; $430e: $ea $2e $c3
     xor a                                         ; $4311: $af
@@ -537,7 +407,7 @@ GS02_StatePhase_00_TODO::
     ld bc, $0300                                  ; $432f: $01 $00 $03
     call BankedTileCopy                           ; $4332: $cd $e4 $04
     ld a, $0a                                     ; $4335: $3e $0a
-    ld hl, GameState_02_TODO_PhaseDispatcher      ; $4337: $21 $00 $43
+    ld hl, GameState_02_GameSelectScreen_PhaseDispatcher; $4337: $21 $00 $43
     ld de, $8300                                  ; $433a: $11 $00 $83
     ld bc, $1500                                  ; $433d: $01 $00 $15
     call BankedTileCopy                           ; $4340: $cd $e4 $04
@@ -557,15 +427,15 @@ GS02_StatePhase_00_TODO::
     ld [rVBlankLCDCBit4ForceFlag], a              ; $4365: $ea $3c $c3
     ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $4368: $ea $50 $c3
     ld a, $02                                     ; $436b: $3e $02
-    ld [$d63b], a                                 ; $436d: $ea $3b $d6
+    ld [rMenuCursorRowMaxIndex], a                ; $436d: $ea $3b $d6
     ld a, [rSelectedSaveSlotIndex]                ; $4370: $fa $65 $a0
     ld c, a                                       ; $4373: $4f
     ld b, $00                                     ; $4374: $06 $00
-    ld hl, $a078                                  ; $4376: $21 $78 $a0
+    ld hl, rSaveSlot1GameSelectCursorRow          ; $4376: $21 $78 $a0
     add hl, bc                                    ; $4379: $09
     ld a, [hl]                                    ; $437a: $7e
     ld [rPuzzleAndMenuCursorRow], a               ; $437b: $ea $37 $d6
-    call Call_002_44b1                            ; $437e: $cd $b1 $44
+    call GS02_QueueSelectionHighlightCommandStream; $437e: $cd $b1 $44
     call ClearShadowOAMBuffer                     ; $4381: $cd $b6 $05
     ld b, $03                                     ; $4384: $06 $03
     ld hl, $4e80                                  ; $4386: $21 $80 $4e
@@ -592,14 +462,14 @@ GS02_StatePhase_00_TODO::
     ret                                           ; $43bc: $c9
 
 
-GS02_StatePhase_01_TODO::
+GS02_StatePhase_01_GameSelectScreenIdle::
     ld b, $03                                     ; $43bd: $06 $03
     ld hl, $4ec2                                  ; $43bf: $21 $c2 $4e
     call SwitchBankToBAndJumpToHL                 ; $43c2: $cd $de $05
-    call Call_002_45b1                            ; $43c5: $cd $b1 $45
+    call GS02_HandleGameSelectVerticalInput       ; $43c5: $cd $b1 $45
     ld a, [rInputButtonsPressed]                  ; $43c8: $fa $1e $c3
     and $09                                       ; $43cb: $e6 $09
-    jr z, jr_002_43db                             ; $43cd: $28 $0c
+    jr z, .CheckGameSelectCancelInput             ; $43cd: $28 $0c
 
     ld c, $03                                     ; $43cf: $0e $03
     ld a, $02                                     ; $43d1: $3e $02
@@ -609,7 +479,7 @@ GS02_StatePhase_01_TODO::
     ret                                           ; $43da: $c9
 
 
-jr_002_43db:
+.CheckGameSelectCancelInput:
     ld a, [rInputButtonsPressed]                  ; $43db: $fa $1e $c3
     cp $02                                        ; $43de: $fe $02
     ret nz                                        ; $43e0: $c0
@@ -622,7 +492,7 @@ jr_002_43db:
     ret                                           ; $43ed: $c9
 
 
-GS02_StatePhase_02_TODO::
+GS02_StatePhase_02_ConfirmSelectionTransition::
     ld bc, $003c                                  ; $43ee: $01 $3c $00
     call DelayFramesByBC                          ; $43f1: $cd $fa $05
     ld a, $05                                     ; $43f4: $3e $05
@@ -651,17 +521,17 @@ GS02_StatePhase_02_TODO::
     ld a, [rSelectedSaveSlotIndex]                ; $442e: $fa $65 $a0
     ld c, a                                       ; $4431: $4f
     ld b, $00                                     ; $4432: $06 $00
-    ld hl, $a078                                  ; $4434: $21 $78 $a0
+    ld hl, rSaveSlot1GameSelectCursorRow          ; $4434: $21 $78 $a0
     add hl, bc                                    ; $4437: $09
     ld a, [rPuzzleAndMenuCursorRow]               ; $4438: $fa $37 $d6
     ld [hl], a                                    ; $443b: $77
     ld c, a                                       ; $443c: $4f
     ld b, $00                                     ; $443d: $06 $00
-    ld hl, GS02_StatePhase_02_TODO_Data           ; $443f: $21 $55 $44
+    ld hl, GS02_StatePhase_02_ConfirmSelectionTargetGameStateTable; $443f: $21 $55 $44
     add hl, bc                                    ; $4442: $09
     xor a                                         ; $4443: $af
     ld [rAdvanceOrSkipTimeoutEnabled], a          ; $4444: $ea $35 $d8
-    ld [$d837], a                                 ; $4447: $ea $37 $d8
+    ld [rGS06_HowToPlaySkipRequestedFlag], a      ; $4447: $ea $37 $d8
     xor a                                         ; $444a: $af
     ld [rStatePhase_Current], a                   ; $444b: $ea $35 $d6
     ld a, [hl]                                    ; $444e: $7e
@@ -669,10 +539,10 @@ GS02_StatePhase_02_TODO::
     jp RefreshSaveValidationChecksumsAndMirrors   ; $4452: $c3 $1f $1b
 
 
-GS02_StatePhase_02_TODO_Data::
+GS02_StatePhase_02_ConfirmSelectionTargetGameStateTable::
     db $06, $05, $03
 
-GS02_StatePhase_03_TODO::
+GS02_StatePhase_03_CancelSelectionTransition::
     ld bc, $003c                                  ; $4458: $01 $3c $00
     call DelayFramesByBC                          ; $445b: $cd $fa $05
     ld a, $05                                     ; $445e: $3e $05
@@ -701,7 +571,7 @@ GS02_StatePhase_03_TODO::
     ld a, [rSelectedSaveSlotIndex]                ; $4498: $fa $65 $a0
     ld c, a                                       ; $449b: $4f
     ld b, $00                                     ; $449c: $06 $00
-    ld hl, $a078                                  ; $449e: $21 $78 $a0
+    ld hl, rSaveSlot1GameSelectCursorRow          ; $449e: $21 $78 $a0
     add hl, bc                                    ; $44a1: $09
     ld a, [rPuzzleAndMenuCursorRow]               ; $44a2: $fa $37 $d6
     ld [hl], a                                    ; $44a5: $77
@@ -712,11 +582,10 @@ GS02_StatePhase_03_TODO::
     jp RefreshSaveValidationChecksumsAndMirrors   ; $44ae: $c3 $1f $1b
 
 
-Call_002_44b1:
-Jump_002_44b1:
+GS02_QueueSelectionHighlightCommandStream::
     ld c, a                                       ; $44b1: $4f
     ld b, $00                                     ; $44b2: $06 $00
-    ld hl, $44c1                                  ; $44b4: $21 $c1 $44
+    ld hl, GameSelectHighlightCommandOffsetTable  ; $44b4: $21 $c1 $44
     add hl, bc                                    ; $44b7: $09
     ld c, [hl]                                    ; $44b8: $4e
     add hl, bc                                    ; $44b9: $09
@@ -726,106 +595,33 @@ Jump_002_44b1:
     jp QueueCommandStreamAndProcessIfLCDOff       ; $44be: $c3 $38 $07
 
 
-    inc b                                         ; $44c1: $04
-    ld e, $38                                     ; $44c2: $1e $38
-    ld d, d                                       ; $44c4: $52
-    sbc b                                         ; $44c5: $98
-    add l                                         ; $44c6: $85
-    ld a, [bc]                                    ; $44c7: $0a
-    or c                                          ; $44c8: $b1
-    or d                                          ; $44c9: $b2
-    or e                                          ; $44ca: $b3
-    or h                                          ; $44cb: $b4
-    or l                                          ; $44cc: $b5
-    or [hl]                                       ; $44cd: $b6
-    or a                                          ; $44ce: $b7
-    cp b                                          ; $44cf: $b8
-    cp c                                          ; $44d0: $b9
-    cp d                                          ; $44d1: $ba
-    sbc b                                         ; $44d2: $98
-    and l                                         ; $44d3: $a5
-    ld a, [bc]                                    ; $44d4: $0a
-    cp e                                          ; $44d5: $bb
-    cp h                                          ; $44d6: $bc
-    cp l                                          ; $44d7: $bd
-    cp [hl]                                       ; $44d8: $be
-    cp a                                          ; $44d9: $bf
-    ret nz                                        ; $44da: $c0
+GameSelectHighlightCommandOffsetTable::
+    db $04, $1e, $38, $52
 
-    pop bc                                        ; $44db: $c1
-    jp nz, $c4c3                                  ; $44dc: $c2 $c3 $c4
+HowToPlayHighlightCommandScript::
+    db $98, $85, $0a, $b1, $b2, $b3, $b4, $b5, $b6, $b7, $b8, $b9, $ba
+    db $98, $a5, $0a, $bb, $bc, $bd, $be, $bf, $c0, $c1, $c2, $c3, $c4
+    db $00
 
-    nop                                           ; $44df: $00
-    sbc c                                         ; $44e0: $99
-    dec b                                         ; $44e1: $05
-    ld a, [bc]                                    ; $44e2: $0a
-    push bc                                       ; $44e3: $c5
-    add $c7                                       ; $44e4: $c6 $c7
-    ret z                                         ; $44e6: $c8
+EasyPicrossHighlightCommandScript::
+    db $99, $05, $0a, $c5, $c6, $c7, $c8, $c9, $ca, $cb, $cc, $cd, $ce
+    db $99, $25, $0a, $cf, $d0, $d1, $d2, $d3, $d4, $d5, $d6, $d7, $d8
+    db $00
 
-    ret                                           ; $44e7: $c9
+PicrossHighlightCommandScript::
+    db $99, $85, $0a, $fe, $d9, $da, $db, $dc, $dd, $de, $df, $e0, $ff
+    db $99, $a5, $0a, $0e, $e1, $e2, $e3, $e4, $e5, $e6, $e7, $e8, $0f
+    db $00
 
+UnusedHighlightCommandScript::
+    db $99, $a5, $0a, $fd, $fe, $ff, $00, $01, $02, $03, $04, $05, $06
+    db $99, $c5, $0a, $07, $08, $09, $0a, $0b, $0c, $0d, $0e, $0f, $10
+    db $00
 
-    jp z, $cccb                                   ; $44e8: $ca $cb $cc
-
-    call $99ce                                    ; $44eb: $cd $ce $99
-    dec h                                         ; $44ee: $25
-    ld a, [bc]                                    ; $44ef: $0a
-    rst RST_08                                    ; $44f0: $cf
-    ret nc                                        ; $44f1: $d0
-
-    pop de                                        ; $44f2: $d1
-    jp nc, $d4d3                                  ; $44f3: $d2 $d3 $d4
-
-    push de                                       ; $44f6: $d5
-    sub $d7                                       ; $44f7: $d6 $d7
-    ret c                                         ; $44f9: $d8
-
-    nop                                           ; $44fa: $00
-    sbc c                                         ; $44fb: $99
-    add l                                         ; $44fc: $85
-    ld a, [bc]                                    ; $44fd: $0a
-    cp $d9                                        ; $44fe: $fe $d9
-    jp c, $dcdb                                   ; $4500: $da $db $dc
-
-    db $dd                                        ; $4503: $dd
-    sbc $df                                       ; $4504: $de $df
-    ldh [rIE], a                                  ; $4506: $e0 $ff
-    sbc c                                         ; $4508: $99
-    and l                                         ; $4509: $a5
-    ld a, [bc]                                    ; $450a: $0a
-    ld c, $e1                                     ; $450b: $0e $e1
-    ldh [c], a                                    ; $450d: $e2
-    db $e3                                        ; $450e: $e3
-    db $e4                                        ; $450f: $e4
-    push hl                                       ; $4510: $e5
-    and $e7                                       ; $4511: $e6 $e7
-    add sp, $0f                                   ; $4513: $e8 $0f
-    nop                                           ; $4515: $00
-    sbc c                                         ; $4516: $99
-    and l                                         ; $4517: $a5
-    ld a, [bc]                                    ; $4518: $0a
-    db $fd                                        ; $4519: $fd
-    cp $ff                                        ; $451a: $fe $ff
-    nop                                           ; $451c: $00
-    ld bc, $0302                                  ; $451d: $01 $02 $03
-    inc b                                         ; $4520: $04
-    dec b                                         ; $4521: $05
-    ld b, $99                                     ; $4522: $06 $99
-    push bc                                       ; $4524: $c5
-    ld a, [bc]                                    ; $4525: $0a
-    rlca                                          ; $4526: $07
-    ld [$0a09], sp                                ; $4527: $08 $09 $0a
-    dec bc                                        ; $452a: $0b
-    inc c                                         ; $452b: $0c
-    dec c                                         ; $452c: $0d
-    ld c, $0f                                     ; $452d: $0e $0f
-    stop                                          ; $452f: $10 $00
-
-Call_002_4531:
+GS02_QueueSelectionUnhighlightCommandStream::
     ld c, a                                       ; $4531: $4f
     ld b, $00                                     ; $4532: $06 $00
-    ld hl, $4541                                  ; $4534: $21 $41 $45
+    ld hl, GameSelectUnhighlightCommandOffsetTable; $4534: $21 $41 $45
     add hl, bc                                    ; $4537: $09
     ld c, [hl]                                    ; $4538: $4e
     add hl, bc                                    ; $4539: $09
@@ -835,152 +631,69 @@ Call_002_4531:
     jp QueueCommandStreamAndProcessIfLCDOff       ; $453e: $c3 $38 $07
 
 
-    inc b                                         ; $4541: $04
-    ld e, $38                                     ; $4542: $1e $38
-    ld d, d                                       ; $4544: $52
-    sbc b                                         ; $4545: $98
-    add l                                         ; $4546: $85
-    ld a, [bc]                                    ; $4547: $0a
-    sub a                                         ; $4548: $97
-    ld [hl], e                                    ; $4549: $73
-    ld [hl], h                                    ; $454a: $74
-    ld [hl], l                                    ; $454b: $75
-    halt                                          ; $454c: $76
-    ld [hl], a                                    ; $454d: $77
-    ld a, b                                       ; $454e: $78
-    ld a, c                                       ; $454f: $79
-    ld a, d                                       ; $4550: $7a
-    and b                                         ; $4551: $a0
-    sbc b                                         ; $4552: $98
-    and l                                         ; $4553: $a5
-    ld a, [bc]                                    ; $4554: $0a
-    and c                                         ; $4555: $a1
-    ld a, e                                       ; $4556: $7b
-    ld a, h                                       ; $4557: $7c
-    ld a, l                                       ; $4558: $7d
-    ld a, [hl]                                    ; $4559: $7e
-    ld a, a                                       ; $455a: $7f
-    add b                                         ; $455b: $80
-    add c                                         ; $455c: $81
-    add d                                         ; $455d: $82
-    xor d                                         ; $455e: $aa
-    nop                                           ; $455f: $00
-    sbc c                                         ; $4560: $99
-    dec b                                         ; $4561: $05
-    ld a, [bc]                                    ; $4562: $0a
-    add e                                         ; $4563: $83
-    add h                                         ; $4564: $84
-    add l                                         ; $4565: $85
-    add [hl]                                      ; $4566: $86
-    add a                                         ; $4567: $87
-    adc b                                         ; $4568: $88
-    adc c                                         ; $4569: $89
-    adc d                                         ; $456a: $8a
-    adc e                                         ; $456b: $8b
-    adc h                                         ; $456c: $8c
-    sbc c                                         ; $456d: $99
-    dec h                                         ; $456e: $25
-    ld a, [bc]                                    ; $456f: $0a
-    adc l                                         ; $4570: $8d
-    adc [hl]                                      ; $4571: $8e
-    adc a                                         ; $4572: $8f
-    sub b                                         ; $4573: $90
-    sub c                                         ; $4574: $91
-    sub d                                         ; $4575: $92
-    sub e                                         ; $4576: $93
-    sub h                                         ; $4577: $94
-    sub l                                         ; $4578: $95
-    sub [hl]                                      ; $4579: $96
-    nop                                           ; $457a: $00
-    sbc c                                         ; $457b: $99
-    add l                                         ; $457c: $85
-    ld a, [bc]                                    ; $457d: $0a
-    ld a, h                                       ; $457e: $7c
-    sbc b                                         ; $457f: $98
-    sbc c                                         ; $4580: $99
-    sbc d                                         ; $4581: $9a
-    sbc e                                         ; $4582: $9b
-    sbc h                                         ; $4583: $9c
-    sbc l                                         ; $4584: $9d
-    sbc [hl]                                      ; $4585: $9e
-    sbc a                                         ; $4586: $9f
-    ld a, l                                       ; $4587: $7d
-    sbc c                                         ; $4588: $99
-    and l                                         ; $4589: $a5
-    ld a, [bc]                                    ; $458a: $0a
-    ld a, [hl]                                    ; $458b: $7e
-    and d                                         ; $458c: $a2
-    and e                                         ; $458d: $a3
-    and h                                         ; $458e: $a4
-    and l                                         ; $458f: $a5
-    and [hl]                                      ; $4590: $a6
-    and a                                         ; $4591: $a7
-    xor b                                         ; $4592: $a8
-    xor c                                         ; $4593: $a9
-    ld a, a                                       ; $4594: $7f
-    nop                                           ; $4595: $00
-    sbc c                                         ; $4596: $99
-    and l                                         ; $4597: $a5
-    ld a, [bc]                                    ; $4598: $0a
-    jp hl                                         ; $4599: $e9
+GameSelectUnhighlightCommandOffsetTable::
+    db $04, $1e, $38, $52
 
+HowToPlayUnhighlightCommandScript::
+    db $98, $85, $0a, $97, $73, $74, $75, $76, $77, $78, $79, $7a, $a0
+    db $98, $a5, $0a, $a1, $7b, $7c, $7d, $7e, $7f, $80, $81, $82, $aa
+    db $00
 
-    ld [$eceb], a                                 ; $459a: $ea $eb $ec
-    db $ed                                        ; $459d: $ed
-    xor $ef                                       ; $459e: $ee $ef
-    ldh a, [$fff1]                                ; $45a0: $f0 $f1
-    ldh a, [c]                                    ; $45a2: $f2
-    sbc c                                         ; $45a3: $99
-    push bc                                       ; $45a4: $c5
-    ld a, [bc]                                    ; $45a5: $0a
-    di                                            ; $45a6: $f3
-    db $f4                                        ; $45a7: $f4
-    push af                                       ; $45a8: $f5
-    or $f7                                        ; $45a9: $f6 $f7
-    ld hl, sp-$07                                 ; $45ab: $f8 $f9
-    ld a, [$fcfb]                                 ; $45ad: $fa $fb $fc
-    nop                                           ; $45b0: $00
+EasyPicrossUnhighlightCommandScript::
+    db $99, $05, $0a, $83, $84, $85, $86, $87, $88, $89, $8a, $8b, $8c
+    db $99, $25, $0a, $8d, $8e, $8f, $90, $91, $92, $93, $94, $95, $96
+    db $00
 
-Call_002_45b1:
+PicrossUnhighlightCommandScript::
+    db $99, $85, $0a, $7c, $98, $99, $9a, $9b, $9c, $9d, $9e, $9f, $7d
+    db $99, $a5, $0a, $7e, $a2, $a3, $a4, $a5, $a6, $a7, $a8, $a9, $7f
+    db $00
+
+UnusedUnhighlightCommandScript::
+    db $99, $a5, $0a, $e9, $ea, $eb, $ec, $ed, $ee, $ef, $f0, $f1, $f2
+    db $99, $c5, $0a, $f3, $f4, $f5, $f6, $f7, $f8, $f9, $fa, $fb, $fc
+    db $00
+
+GS02_HandleGameSelectVerticalInput::
     ld a, [rInputButtonsPressedOrRepeated]        ; $45b1: $fa $22 $c3
     and $c0                                       ; $45b4: $e6 $c0
     ret z                                         ; $45b6: $c8
 
     push af                                       ; $45b7: $f5
     ld a, [rPuzzleAndMenuCursorRow]               ; $45b8: $fa $37 $d6
-    call Call_002_4531                            ; $45bb: $cd $31 $45
+    call GS02_QueueSelectionUnhighlightCommandStream; $45bb: $cd $31 $45
     rst RST_08                                    ; $45be: $cf
     ld c, $0a                                     ; $45bf: $0e $0a
     ld a, $02                                     ; $45c1: $3e $02
     call CallSoundEffectDispatcher                ; $45c3: $cd $b6 $03
     pop af                                        ; $45c6: $f1
     and $40                                       ; $45c7: $e6 $40
-    jr z, jr_002_45dc                             ; $45c9: $28 $11
+    jr z, .HandleGameSelectMoveDown               ; $45c9: $28 $11
 
     ld a, [rPuzzleAndMenuCursorRow]               ; $45cb: $fa $37 $d6
     dec a                                         ; $45ce: $3d
     cp $ff                                        ; $45cf: $fe $ff
-    jr nz, jr_002_45d6                            ; $45d1: $20 $03
+    jr nz, .StoreCursorRowAndQueueSelectionUpdate_UpPath; $45d1: $20 $03
 
-    ld a, [$d63b]                                 ; $45d3: $fa $3b $d6
+    ld a, [rMenuCursorRowMaxIndex]                ; $45d3: $fa $3b $d6
 
-jr_002_45d6:
+.StoreCursorRowAndQueueSelectionUpdate_UpPath:
     ld [rPuzzleAndMenuCursorRow], a               ; $45d6: $ea $37 $d6
-    jp Jump_002_44b1                              ; $45d9: $c3 $b1 $44
+    jp GS02_QueueSelectionHighlightCommandStream  ; $45d9: $c3 $b1 $44
 
 
-jr_002_45dc:
+.HandleGameSelectMoveDown:
     ld a, [rPuzzleAndMenuCursorRow]               ; $45dc: $fa $37 $d6
-    ld hl, $d63b                                  ; $45df: $21 $3b $d6
+    ld hl, rMenuCursorRowMaxIndex                 ; $45df: $21 $3b $d6
     cp [hl]                                       ; $45e2: $be
-    jr nz, jr_002_45e7                            ; $45e3: $20 $02
+    jr nz, .StoreCursorRowAndQueueSelectionUpdate_DownPath; $45e3: $20 $02
 
     ld a, $ff                                     ; $45e5: $3e $ff
 
-jr_002_45e7:
+.StoreCursorRowAndQueueSelectionUpdate_DownPath:
     inc a                                         ; $45e7: $3c
     ld [rPuzzleAndMenuCursorRow], a               ; $45e8: $ea $37 $d6
-    jp Jump_002_44b1                              ; $45eb: $c3 $b1 $44
+    jp GS02_QueueSelectionHighlightCommandStream  ; $45eb: $c3 $b1 $44
 
 
 InitializeMainLoopAndEnter::
@@ -1856,7 +1569,7 @@ GS01_HandleDataSelectVerticalInput::
     jp GS01_BuildSelectedSaveSlotTemplateCommandStream; $4c52: $c3 $8e $49
 
 
-GameState_07_TODO_PhaseDispatcher::
+GameState_07_TimeTrialRankingScreen_PhaseDispatcher::
     ld a, [rStatePhase_Current]                   ; $4c55: $fa $35 $d6
     rst RST_18                                    ; $4c58: $df
 

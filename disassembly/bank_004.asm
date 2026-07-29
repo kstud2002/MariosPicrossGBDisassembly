@@ -563,7 +563,7 @@ SGBTransferPayload_PCT_TRN_TitleScreenBorder_TileMap_Main::
 SGBTransferPayload_PCT_TRN_TitleScreenBorder_TileMap_ExtraRow::
     db $cd, $14, $cd, $14, $cd, $14, $cd, $14, $cd, $14, $cd, $14, $cd, $14, $cd, $14, $cd, $14, $cd, $14, $cd, $14, $cd, $14, $cd, $14, $cd, $14, $cd, $14, $cd, $14, $cd, $14, $cd, $14, $cd, $14, $cd, $14, $cd, $14, $cd, $14, $cd, $14, $cd, $14, $cd, $14, $cd, $14, $cd, $14, $cd, $14, $cd, $14, $cd, $14, $cd, $14, $cd, $14
 
-SGBTransferPayload_PCT_TRN_TitleScreenBorder_Unused::
+SGBTransferPayload_PCT_TRN_TitleScreenBorder_Unused_1::
     db $cd, $14, $cd, $14, $cd, $14, $cd, $14, $cd, $14, $cd, $14, $cd, $14, $cd, $14
     db $cd, $14, $cd, $14, $cd, $14, $cd, $14, $cd, $14, $cd, $14, $cd, $14, $cd, $14
     db $cd, $14, $cd, $14, $cd, $14, $cd, $14, $cd, $14, $cd, $14, $cd, $14, $cd, $14
@@ -595,7 +595,7 @@ SGBTransferPayload_PCT_TRN_TitleScreenBorder_BGPaletteData::
     db $00, $00, $00, $00, $00, $00
     db $00, $00, $00, $00, $00, $00
 
-SGBTransferPayload_PCT_TRN_TitleScreenBorder_Unused::
+SGBTransferPayload_PCT_TRN_TitleScreenBorder_Unused_2::
     db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00

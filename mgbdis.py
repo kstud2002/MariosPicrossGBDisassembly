@@ -245,6 +245,7 @@ class Bank:
             'data': self.process_data_in_range,
             'padding': self.process_padding_in_range,
             'text': self.process_text_in_range,
+            'text16': self.process_text16_in_range,
             'image': self.process_image_in_range
         })
 
@@ -394,6 +395,10 @@ class Bank:
 
     def format_data(self, data):
         return self.format_instruction(self.style['db'], data)
+
+    def format_word_data(self, data):
+        dw = 'DW' if self.style['db'].isupper() else 'dw'
+        return self.format_instruction(dw, data)
 
     def format_padding(self, len, data):
         return f"{self.style['indentation']}{self.style['ds']} {hex(len)}, {hex_byte(data)}"
@@ -813,6 +818,108 @@ class Bank:
 
         if len(values):
             self.append_output(self.format_data(values))
+
+    def process_text16_in_range(self, rom, start_address, end_address, arguments = None):
+        if not self.first_pass and debug:
+            print('Outputting 16-bit text in range: {} - {}'.format(hex_word(start_address), hex_word(end_address)))
+
+        custom_map = False
+        map_index = self.get_character_map_index(arguments)
+        if map_index != -1 and map_index < len(rom.character_maps):
+            custom_map = True
+            if self.current_map_index != map_index:
+                self.current_map_index = map_index
+                self.append_output('SETCHARMAP ' + rom.character_maps[map_index].name)
+        if map_index == -1 and self.current_map_index != None:
+            self.current_map_index = None
+            self.append_output('SETCHARMAP main')
+
+        width = 8
+        if arguments is not None:
+            for argument in arguments.split(':'):
+                key_value = argument.split('=', 1)
+                if len(key_value) != 2:
+                    continue
+                key, value = key_value
+                if key == 'w' or key == 'width':
+                    width = int(value, 16)
+
+        words = []
+        text = ''
+
+        def flush_text_buffer():
+            nonlocal text
+            if len(text):
+                self.append_output(self.format_data(['"{}"'.format(text)]))
+                text = ''
+
+        def flush_word_buffer():
+            nonlocal words
+            if len(words):
+                self.append_output(self.format_word_data(words))
+                words = []
+
+        address = start_address
+        while address + 1 < end_address:
+            mem_address = rom_address_to_mem_address(address)
+            labels = self.get_labels_for_non_code_address(mem_address)
+            if len(labels):
+                flush_text_buffer()
+                flush_word_buffer()
+                self.append_labels_to_output(labels)
+
+            token = rom.data[address] + (rom.data[address + 1] << 8)
+            consumed_tokens = 1
+            matched_text = None
+
+            if custom_map:
+                character_map = rom.character_maps[self.current_map_index]
+                for length in range(character_map.max_length, 1, -1):
+                    max_address = address + (length * 2)
+                    if max_address > end_address:
+                        continue
+
+                    token_tuple = []
+                    tuple_address = address
+                    for _ in range(length):
+                        token_tuple.append(rom.data[tuple_address] + (rom.data[tuple_address + 1] << 8))
+                        tuple_address += 2
+                    token_tuple = tuple(token_tuple)
+
+                    if token_tuple in character_map.character_map:
+                        matched_text = character_map.character_map[token_tuple]
+                        consumed_tokens = length
+                        break
+
+                if matched_text is None and token in character_map.character_map:
+                    matched_text = character_map.character_map[token]
+
+            if matched_text is not None:
+                flush_word_buffer()
+                text += matched_text
+            else:
+                flush_text_buffer()
+                words.append(hex_word(token))
+                if len(words) == width:
+                    flush_word_buffer()
+
+            address += consumed_tokens * 2
+
+        trailing_address = address
+        if trailing_address < end_address:
+            mem_address = rom_address_to_mem_address(trailing_address)
+            labels = self.get_labels_for_non_code_address(mem_address)
+            if len(labels):
+                flush_text_buffer()
+                flush_word_buffer()
+                self.append_labels_to_output(labels)
+            flush_text_buffer()
+            flush_word_buffer()
+            self.append_output(self.format_data([hex_byte(rom.data[trailing_address])]))
+
+        flush_text_buffer()
+        flush_word_buffer()
+
     def process_image_in_range(self, rom, start_address, end_address, arguments = None):
         if not self.first_pass and debug:
             print('Outputting image in range: {} - {}'.format(hex_word(start_address), hex_word(end_address)))
@@ -873,6 +980,9 @@ class Symbols:
 
                 elif block_type in ['.asc', '.text']:
                     block_type = 'text'
+
+                elif block_type in ['.text16']:
+                    block_type = 'text16'
 
                 elif block_type in ['.padding']:
                     block_type = 'padding'

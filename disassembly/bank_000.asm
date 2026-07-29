@@ -6442,7 +6442,7 @@ CopyOAMSpriteById::
 GameState_06_HowToPlay_PhaseDispatcher::
     ld a, [rInputButtonsPressed]                  ; $2111: $fa $1e $c3
     ld [$d834], a                                 ; $2114: $ea $34 $d8
-    ld a, [$d837]                                 ; $2117: $fa $37 $d8
+    ld a, [rGS06_HowToPlaySkipRequestedFlag]      ; $2117: $fa $37 $d8
     and a                                         ; $211a: $a7
     jr nz, jr_000_212b                            ; $211b: $20 $0e
 
@@ -8116,7 +8116,7 @@ GS06_WaitForAdvanceOrSkip_PollLoop::
     bit 3, a                                      ; $2fdb: $cb $5f
     jr z, .WaitLoopBody                           ; $2fdd: $28 $0b
 
-    ld [$d837], a                                 ; $2fdf: $ea $37 $d8
+    ld [rGS06_HowToPlaySkipRequestedFlag], a      ; $2fdf: $ea $37 $d8
     ld c, $04                                     ; $2fe2: $0e $04
     ld a, $02                                     ; $2fe4: $3e $02
     call CallSoundEffectDispatcher                ; $2fe6: $cd $b6 $03
