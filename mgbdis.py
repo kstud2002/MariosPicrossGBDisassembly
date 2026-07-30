@@ -813,7 +813,6 @@ class Bank:
 
         if len(values):
             self.append_output(self.format_data(values))
-
     def process_image_in_range(self, rom, start_address, end_address, arguments = None):
         if not self.first_pass and debug:
             print('Outputting image in range: {} - {}'.format(hex_word(start_address), hex_word(end_address)))
