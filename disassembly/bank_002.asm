@@ -1221,7 +1221,7 @@ GS01_BuildSelectedSaveSlotTemplateCommandStream::
     ld c, [hl]                                    ; $4996: $4e
     add hl, bc                                    ; $4997: $09
     ld a, $02                                     ; $4998: $3e $02
-    ld de, rGS01_SaveSlotTemplateCommandStreamStart; $499a: $11 $00 $c1
+    ld de, rSharedSingleTileCommandStreamDestHigh ; $499a: $11 $00 $c1
     ld bc, $0023                                  ; $499d: $01 $23 $00
     call BankedTileCopy                           ; $49a0: $cd $e4 $04
     pop af                                        ; $49a3: $f1
@@ -1288,7 +1288,7 @@ GS01_BuildSelectedSaveSlotTemplateCommandStream::
     ld [hl], a                                    ; $49f8: $77
     pop af                                        ; $49f9: $f1
     ld a, $6b                                     ; $49fa: $3e $6b
-    ld hl, rGS01_SaveSlotTemplateRow1EasyPicrossIconPairLeft; $49fc: $21 $03 $c1
+    ld hl, rSharedSingleTileCommandStreamTileId   ; $49fc: $21 $03 $c1
     ld [hl+], a                                   ; $49ff: $22
     inc a                                         ; $4a00: $3c
     ld [hl], a                                    ; $4a01: $77
@@ -1339,7 +1339,7 @@ GS01_BuildSelectedSaveSlotTemplateCommandStream::
 
 GS01_CommitSelectedSaveSlotTemplateCommandStream::
     ld a, $00                                     ; $4a4f: $3e $00
-    ld bc, rGS01_SaveSlotTemplateCommandStreamStart; $4a51: $01 $00 $c1
+    ld bc, rSharedSingleTileCommandStreamDestHigh ; $4a51: $01 $00 $c1
     jp QueueCommandStreamAndProcessIfLCDOff       ; $4a54: $c3 $38 $07
 
 
@@ -1379,7 +1379,7 @@ GS01_BuildSaveSlotTemplateCommandStream::
     ld c, [hl]                                    ; $4add: $4e
     add hl, bc                                    ; $4ade: $09
     ld a, $02                                     ; $4adf: $3e $02
-    ld de, rGS01_SaveSlotTemplateCommandStreamStart; $4ae1: $11 $00 $c1
+    ld de, rSharedSingleTileCommandStreamDestHigh ; $4ae1: $11 $00 $c1
     ld bc, $0023                                  ; $4ae4: $01 $23 $00
     call BankedTileCopy                           ; $4ae7: $cd $e4 $04
     pop af                                        ; $4aea: $f1
@@ -1446,7 +1446,7 @@ GS01_BuildSaveSlotTemplateCommandStream::
     ld [hl], a                                    ; $4b3f: $77
     pop af                                        ; $4b40: $f1
     ld a, $4b                                     ; $4b41: $3e $4b
-    ld hl, rGS01_SaveSlotTemplateRow1EasyPicrossIconPairLeft; $4b43: $21 $03 $c1
+    ld hl, rSharedSingleTileCommandStreamTileId   ; $4b43: $21 $03 $c1
     ld [hl+], a                                   ; $4b46: $22
     inc a                                         ; $4b47: $3c
     ld [hl], a                                    ; $4b48: $77
@@ -1497,7 +1497,7 @@ GS01_BuildSaveSlotTemplateCommandStream::
 
 GS01_CommitSaveSlotTemplateCommandStream::
     ld a, $00                                     ; $4b96: $3e $00
-    ld bc, rGS01_SaveSlotTemplateCommandStreamStart; $4b98: $01 $00 $c1
+    ld bc, rSharedSingleTileCommandStreamDestHigh ; $4b98: $01 $00 $c1
     jp QueueCommandStreamAndProcessIfLCDOff       ; $4b9b: $c3 $38 $07
 
 

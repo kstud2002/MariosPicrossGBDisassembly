@@ -5,895 +5,64 @@
 
 SECTION "ROM Bank $001", ROMX[$4000], BANK[$1]
 
-    xor l                                         ; $4000: $ad
-    nop                                           ; $4001: $00
-    db $d3                                        ; $4002: $d3
-    nop                                           ; $4003: $00
-    jp nc, $cb00                                  ; $4004: $d2 $00 $cb
+SETCHARMAP messages
 
-    nop                                           ; $4007: $00
-    sub $00                                       ; $4008: $d6 $00
-    push bc                                       ; $400a: $c5
-    nop                                           ; $400b: $00
-    ret c                                         ; $400c: $d8
+GS05_EasyPicrossCompletionMessage::
+    db "Congratulations!!", $fe, $ff
 
-    nop                                           ; $400d: $00
-    reti                                          ; $400e: $d9
+    db "You have solved", $fe, $ff
 
+    db "all the puzzles", $fe, $ff
 
-    nop                                           ; $400f: $00
-    ret nc                                        ; $4010: $d0
+    db "in “EASY PICROSS”!", $ff, $ff
 
-    nop                                           ; $4011: $00
-    push bc                                       ; $4012: $c5
-    nop                                           ; $4013: $00
-    ret c                                         ; $4014: $d8
+GS04_KinokoCourseCompletionMessage_Unused::
+    db "Congratulations!!", $fe, $ff
 
-    nop                                           ; $4015: $00
-    call $d300                                    ; $4016: $cd $00 $d3
-    nop                                           ; $4019: $00
-    jp nc, $d700                                  ; $401a: $d2 $00 $d7
+    db "Let's move on", $fe, $ff
 
-    nop                                           ; $401d: $00
-    rst $20                                       ; $401e: $e7
-    nop                                           ; $401f: $00
-    rst $20                                       ; $4020: $e7
-    nop                                           ; $4021: $00
-    cp $ff                                        ; $4022: $fe $ff
-    jp $d300                                      ; $4024: $c3 $00 $d3
+    db "and challenge", $fe, $ff
 
+    db "the “STAR COURSE”!", $ff, $ff
 
-    nop                                           ; $4027: $00
-    reti                                          ; $4028: $d9
+GS04_KinokoCourseCompletionMessage::
+    db "Congratulations!!", $fe, $ff
 
+    db "Let's move on", $fe, $ff
 
-    nop                                           ; $4029: $00
-    rst RST_18                                    ; $402a: $df
-    nop                                           ; $402b: $00
-    call z, $c500                                 ; $402c: $cc $00 $c5
-    nop                                           ; $402f: $00
-    jp c, $c900                                   ; $4030: $da $00 $c9
+    db "and challenge", $fe, $ff
 
-    nop                                           ; $4033: $00
-    rst RST_18                                    ; $4034: $df
-    nop                                           ; $4035: $00
-    rst $10                                       ; $4036: $d7
-    nop                                           ; $4037: $00
-    db $d3                                        ; $4038: $d3
-    nop                                           ; $4039: $00
-    ret nc                                        ; $403a: $d0
+    db "the “STAR COURSE”!", $ff, $ff
 
-    nop                                           ; $403b: $00
-    jp c, $c900                                   ; $403c: $da $00 $c9
+GS04_PICROSSCompletionMessage_Part1::
+    db "Congratulations!!", $fe, $ff
 
-    nop                                           ; $403f: $00
-    ret z                                         ; $4040: $c8
+    db "You have solved", $fe, $ff
 
-    nop                                           ; $4041: $00
-    cp $ff                                        ; $4042: $fe $ff
-    push bc                                       ; $4044: $c5
-    nop                                           ; $4045: $00
-    ret nc                                        ; $4046: $d0
+    db "every puzzle", $fe, $ff
 
-    nop                                           ; $4047: $00
-    ret nc                                        ; $4048: $d0
+    db "in “PICROSS”!", $ff, $ff
 
-    nop                                           ; $4049: $00
-    rst RST_18                                    ; $404a: $df
-    nop                                           ; $404b: $00
-    ret c                                         ; $404c: $d8
+GS04_PICROSSCompletionMessage_Part2::
+    db "Now you may select", $fe, $ff
 
-    nop                                           ; $404d: $00
-    call z, $c900                                 ; $404e: $cc $00 $c9
-    nop                                           ; $4051: $00
-    rst RST_18                                    ; $4052: $df
-    nop                                           ; $4053: $00
-    call nc, $d900                                ; $4054: $d4 $00 $d9
-    nop                                           ; $4057: $00
-    sbc $00                                       ; $4058: $de $00
-    sbc $00                                       ; $405a: $de $00
-    ret nc                                        ; $405c: $d0
+    db "the TIME TRIAL MODE.", $ff, $ff
 
-    nop                                           ; $405d: $00
-    ret                                           ; $405e: $c9
+GS04_PICROSSCompletionMessage_Part3::
+    db "There is no time limit, no", $fe, $ff
 
+    db "hints and your mistakes", $fe, $ff
 
-    nop                                           ; $405f: $00
-    rst $10                                       ; $4060: $d7
-    nop                                           ; $4061: $00
-    cp $ff                                        ; $4062: $fe $ff
-    call $d200                                    ; $4064: $cd $00 $d2
-    nop                                           ; $4067: $00
-    rst RST_18                                    ; $4068: $df
-    nop                                           ; $4069: $00
-    push hl                                       ; $406a: $e5
-    nop                                           ; $406b: $00
-    xor a                                         ; $406c: $af
-    nop                                           ; $406d: $00
-    xor e                                         ; $406e: $ab
-    nop                                           ; $406f: $00
-    cp l                                          ; $4070: $bd
-    nop                                           ; $4071: $00
-    jp $df00                                      ; $4072: $c3 $00 $df
+    db "will not be revealed", $fe, $ff
 
+    db "to you during the ", $fe, $ff
 
-    nop                                           ; $4075: $00
-    cp d                                          ; $4076: $ba
-    nop                                           ; $4077: $00
-    or e                                          ; $4078: $b3
-    nop                                           ; $4079: $00
-    xor l                                         ; $407a: $ad
-    nop                                           ; $407b: $00
-    cp h                                          ; $407c: $bc
-    nop                                           ; $407d: $00
-    cp c                                          ; $407e: $b9
-    nop                                           ; $407f: $00
-    cp l                                          ; $4080: $bd
-    nop                                           ; $4081: $00
-    cp l                                          ; $4082: $bd
-    nop                                           ; $4083: $00
-    and $00                                       ; $4084: $e6 $00
-    rst $20                                       ; $4086: $e7
-    nop                                           ; $4087: $00
-    rst $38                                       ; $4088: $ff
-    rst $38                                       ; $4089: $ff
-    xor l                                         ; $408a: $ad
-    nop                                           ; $408b: $00
-    db $d3                                        ; $408c: $d3
-    nop                                           ; $408d: $00
-    jp nc, $cb00                                  ; $408e: $d2 $00 $cb
+    db "TIME TRIAL MODE play.", $ff, $ff
 
-    nop                                           ; $4091: $00
-    sub $00                                       ; $4092: $d6 $00
-    push bc                                       ; $4094: $c5
-    nop                                           ; $4095: $00
-    ret c                                         ; $4096: $d8
+GS04_PICROSSCompletionMessage_Part4::
+    db "This is the ultimate", $fe, $ff
 
-    nop                                           ; $4097: $00
-    reti                                          ; $4098: $d9
-
-
-    nop                                           ; $4099: $00
-    ret nc                                        ; $409a: $d0
-
-    nop                                           ; $409b: $00
-    push bc                                       ; $409c: $c5
-    nop                                           ; $409d: $00
-    ret c                                         ; $409e: $d8
-
-    nop                                           ; $409f: $00
-    call $d300                                    ; $40a0: $cd $00 $d3
-    nop                                           ; $40a3: $00
-    jp nc, $d700                                  ; $40a4: $d2 $00 $d7
-
-    nop                                           ; $40a7: $00
-    rst $20                                       ; $40a8: $e7
-    nop                                           ; $40a9: $00
-    rst $20                                       ; $40aa: $e7
-    nop                                           ; $40ab: $00
-    cp $ff                                        ; $40ac: $fe $ff
-    or [hl]                                       ; $40ae: $b6
-    nop                                           ; $40af: $00
-    ret                                           ; $40b0: $c9
-
-
-    nop                                           ; $40b1: $00
-    ret c                                         ; $40b2: $d8
-
-    nop                                           ; $40b3: $00
-    pop af                                        ; $40b4: $f1
-    nop                                           ; $40b5: $00
-    rst $10                                       ; $40b6: $d7
-    nop                                           ; $40b7: $00
-    rst RST_18                                    ; $40b8: $df
-    nop                                           ; $40b9: $00
-    pop de                                        ; $40ba: $d1
-    nop                                           ; $40bb: $00
-    db $d3                                        ; $40bc: $d3
-    nop                                           ; $40bd: $00
-    jp c, $c900                                   ; $40be: $da $00 $c9
-
-    nop                                           ; $40c1: $00
-    rst RST_18                                    ; $40c2: $df
-    nop                                           ; $40c3: $00
-    db $d3                                        ; $40c4: $d3
-    nop                                           ; $40c5: $00
-    jp nc, $fe00                                  ; $40c6: $d2 $00 $fe
-
-    rst $38                                       ; $40c9: $ff
-    push bc                                       ; $40ca: $c5
-    nop                                           ; $40cb: $00
-    jp nc, $c800                                  ; $40cc: $d2 $00 $c8
-
-    nop                                           ; $40cf: $00
-    rst RST_18                                    ; $40d0: $df
-    nop                                           ; $40d1: $00
-    rst RST_00                                    ; $40d2: $c7
-    nop                                           ; $40d3: $00
-    call z, $c500                                 ; $40d4: $cc $00 $c5
-    nop                                           ; $40d7: $00
-    ret nc                                        ; $40d8: $d0
-
-    nop                                           ; $40d9: $00
-    ret nc                                        ; $40da: $d0
-
-    nop                                           ; $40db: $00
-    ret                                           ; $40dc: $c9
-
-
-    nop                                           ; $40dd: $00
-    jp nc, $cb00                                  ; $40de: $d2 $00 $cb
-
-    nop                                           ; $40e1: $00
-    ret                                           ; $40e2: $c9
-
-
-    nop                                           ; $40e3: $00
-    cp $ff                                        ; $40e4: $fe $ff
-    ret c                                         ; $40e6: $d8
-
-    nop                                           ; $40e7: $00
-    call z, $c900                                 ; $40e8: $cc $00 $c9
-    nop                                           ; $40eb: $00
-    rst RST_18                                    ; $40ec: $df
-    nop                                           ; $40ed: $00
-    push hl                                       ; $40ee: $e5
-    nop                                           ; $40ef: $00
-    cp l                                          ; $40f0: $bd
-    nop                                           ; $40f1: $00
-    cp [hl]                                       ; $40f2: $be
-    nop                                           ; $40f3: $00
-    xor e                                         ; $40f4: $ab
-    nop                                           ; $40f5: $00
-    cp h                                          ; $40f6: $bc
-    nop                                           ; $40f7: $00
-    rst RST_18                                    ; $40f8: $df
-    nop                                           ; $40f9: $00
-    xor l                                         ; $40fa: $ad
-    nop                                           ; $40fb: $00
-    cp c                                          ; $40fc: $b9
-    nop                                           ; $40fd: $00
-    cp a                                          ; $40fe: $bf
-    nop                                           ; $40ff: $00
-    cp h                                          ; $4100: $bc
-    nop                                           ; $4101: $00
-    cp l                                          ; $4102: $bd
-    nop                                           ; $4103: $00
-    xor a                                         ; $4104: $af
-    nop                                           ; $4105: $00
-    and $00                                       ; $4106: $e6 $00
-    rst $20                                       ; $4108: $e7
-    nop                                           ; $4109: $00
-    rst $38                                       ; $410a: $ff
-    rst $38                                       ; $410b: $ff
-    xor l                                         ; $410c: $ad
-    nop                                           ; $410d: $00
-    db $d3                                        ; $410e: $d3
-    nop                                           ; $410f: $00
-    jp nc, $cb00                                  ; $4110: $d2 $00 $cb
-
-    nop                                           ; $4113: $00
-    sub $00                                       ; $4114: $d6 $00
-    push bc                                       ; $4116: $c5
-    nop                                           ; $4117: $00
-    ret c                                         ; $4118: $d8
-
-    nop                                           ; $4119: $00
-    reti                                          ; $411a: $d9
-
-
-    nop                                           ; $411b: $00
-    ret nc                                        ; $411c: $d0
-
-    nop                                           ; $411d: $00
-    push bc                                       ; $411e: $c5
-    nop                                           ; $411f: $00
-    ret c                                         ; $4120: $d8
-
-    nop                                           ; $4121: $00
-    call $d300                                    ; $4122: $cd $00 $d3
-    nop                                           ; $4125: $00
-    jp nc, $d700                                  ; $4126: $d2 $00 $d7
-
-    nop                                           ; $4129: $00
-    rst $20                                       ; $412a: $e7
-    nop                                           ; $412b: $00
-    rst $20                                       ; $412c: $e7
-    nop                                           ; $412d: $00
-    cp $ff                                        ; $412e: $fe $ff
-    or [hl]                                       ; $4130: $b6
-    nop                                           ; $4131: $00
-    ret                                           ; $4132: $c9
-
-
-    nop                                           ; $4133: $00
-    ret c                                         ; $4134: $d8
-
-    nop                                           ; $4135: $00
-    pop af                                        ; $4136: $f1
-    nop                                           ; $4137: $00
-    rst $10                                       ; $4138: $d7
-    nop                                           ; $4139: $00
-    rst RST_18                                    ; $413a: $df
-    nop                                           ; $413b: $00
-    pop de                                        ; $413c: $d1
-    nop                                           ; $413d: $00
-    db $d3                                        ; $413e: $d3
-    nop                                           ; $413f: $00
-    jp c, $c900                                   ; $4140: $da $00 $c9
-
-    nop                                           ; $4143: $00
-    rst RST_18                                    ; $4144: $df
-    nop                                           ; $4145: $00
-    db $d3                                        ; $4146: $d3
-    nop                                           ; $4147: $00
-    jp nc, $fe00                                  ; $4148: $d2 $00 $fe
-
-    rst $38                                       ; $414b: $ff
-    push bc                                       ; $414c: $c5
-    nop                                           ; $414d: $00
-    jp nc, $c800                                  ; $414e: $d2 $00 $c8
-
-    nop                                           ; $4151: $00
-    rst RST_18                                    ; $4152: $df
-    nop                                           ; $4153: $00
-    rst RST_00                                    ; $4154: $c7
-    nop                                           ; $4155: $00
-    call z, $c500                                 ; $4156: $cc $00 $c5
-    nop                                           ; $4159: $00
-    ret nc                                        ; $415a: $d0
-
-    nop                                           ; $415b: $00
-    ret nc                                        ; $415c: $d0
-
-    nop                                           ; $415d: $00
-    ret                                           ; $415e: $c9
-
-
-    nop                                           ; $415f: $00
-    jp nc, $cb00                                  ; $4160: $d2 $00 $cb
-
-    nop                                           ; $4163: $00
-    ret                                           ; $4164: $c9
-
-
-    nop                                           ; $4165: $00
-    cp $ff                                        ; $4166: $fe $ff
-    ret c                                         ; $4168: $d8
-
-    nop                                           ; $4169: $00
-    call z, $c900                                 ; $416a: $cc $00 $c9
-    nop                                           ; $416d: $00
-    rst RST_18                                    ; $416e: $df
-    nop                                           ; $416f: $00
-    push hl                                       ; $4170: $e5
-    nop                                           ; $4171: $00
-    cp l                                          ; $4172: $bd
-    nop                                           ; $4173: $00
-    cp [hl]                                       ; $4174: $be
-    nop                                           ; $4175: $00
-    xor e                                         ; $4176: $ab
-    nop                                           ; $4177: $00
-    cp h                                          ; $4178: $bc
-    nop                                           ; $4179: $00
-    rst RST_18                                    ; $417a: $df
-    nop                                           ; $417b: $00
-    xor l                                         ; $417c: $ad
-    nop                                           ; $417d: $00
-    cp c                                          ; $417e: $b9
-    nop                                           ; $417f: $00
-    cp a                                          ; $4180: $bf
-    nop                                           ; $4181: $00
-    cp h                                          ; $4182: $bc
-    nop                                           ; $4183: $00
-    cp l                                          ; $4184: $bd
-    nop                                           ; $4185: $00
-    xor a                                         ; $4186: $af
-    nop                                           ; $4187: $00
-    and $00                                       ; $4188: $e6 $00
-    rst $20                                       ; $418a: $e7
-    nop                                           ; $418b: $00
-    rst $38                                       ; $418c: $ff
-    rst $38                                       ; $418d: $ff
-    xor l                                         ; $418e: $ad
-    nop                                           ; $418f: $00
-    db $d3                                        ; $4190: $d3
-    nop                                           ; $4191: $00
-    jp nc, $cb00                                  ; $4192: $d2 $00 $cb
-
-    nop                                           ; $4195: $00
-    sub $00                                       ; $4196: $d6 $00
-    push bc                                       ; $4198: $c5
-    nop                                           ; $4199: $00
-    ret c                                         ; $419a: $d8
-
-    nop                                           ; $419b: $00
-    reti                                          ; $419c: $d9
-
-
-    nop                                           ; $419d: $00
-    ret nc                                        ; $419e: $d0
-
-    nop                                           ; $419f: $00
-    push bc                                       ; $41a0: $c5
-    nop                                           ; $41a1: $00
-    ret c                                         ; $41a2: $d8
-
-    nop                                           ; $41a3: $00
-    call $d300                                    ; $41a4: $cd $00 $d3
-    nop                                           ; $41a7: $00
-    jp nc, $d700                                  ; $41a8: $d2 $00 $d7
-
-    nop                                           ; $41ab: $00
-    rst $20                                       ; $41ac: $e7
-    nop                                           ; $41ad: $00
-    rst $20                                       ; $41ae: $e7
-    nop                                           ; $41af: $00
-    cp $ff                                        ; $41b0: $fe $ff
-    jp $d300                                      ; $41b2: $c3 $00 $d3
-
-
-    nop                                           ; $41b5: $00
-    reti                                          ; $41b6: $d9
-
-
-    nop                                           ; $41b7: $00
-    rst RST_18                                    ; $41b8: $df
-    nop                                           ; $41b9: $00
-    call z, $c500                                 ; $41ba: $cc $00 $c5
-    nop                                           ; $41bd: $00
-    jp c, $c900                                   ; $41be: $da $00 $c9
-
-    nop                                           ; $41c1: $00
-    rst RST_18                                    ; $41c2: $df
-    nop                                           ; $41c3: $00
-    rst $10                                       ; $41c4: $d7
-    nop                                           ; $41c5: $00
-    db $d3                                        ; $41c6: $d3
-    nop                                           ; $41c7: $00
-    ret nc                                        ; $41c8: $d0
-
-    nop                                           ; $41c9: $00
-    jp c, $c900                                   ; $41ca: $da $00 $c9
-
-    nop                                           ; $41cd: $00
-    ret z                                         ; $41ce: $c8
-
-    nop                                           ; $41cf: $00
-    cp $ff                                        ; $41d0: $fe $ff
-    ret                                           ; $41d2: $c9
-
-
-    nop                                           ; $41d3: $00
-    jp c, $c900                                   ; $41d4: $da $00 $c9
-
-    nop                                           ; $41d7: $00
-    sub $00                                       ; $41d8: $d6 $00
-    db $dd                                        ; $41da: $dd
-    nop                                           ; $41db: $00
-    rst RST_18                                    ; $41dc: $df
-    nop                                           ; $41dd: $00
-    call nc, $d900                                ; $41de: $d4 $00 $d9
-    nop                                           ; $41e1: $00
-    sbc $00                                       ; $41e2: $de $00
-    sbc $00                                       ; $41e4: $de $00
-    ret nc                                        ; $41e6: $d0
-
-    nop                                           ; $41e7: $00
-    ret                                           ; $41e8: $c9
-
-
-    nop                                           ; $41e9: $00
-    cp $ff                                        ; $41ea: $fe $ff
-    call $d200                                    ; $41ec: $cd $00 $d2
-    nop                                           ; $41ef: $00
-    rst RST_18                                    ; $41f0: $df
-    nop                                           ; $41f1: $00
-    push hl                                       ; $41f2: $e5
-    nop                                           ; $41f3: $00
-    cp d                                          ; $41f4: $ba
-    nop                                           ; $41f5: $00
-    or e                                          ; $41f6: $b3
-    nop                                           ; $41f7: $00
-    xor l                                         ; $41f8: $ad
-    nop                                           ; $41f9: $00
-    cp h                                          ; $41fa: $bc
-    nop                                           ; $41fb: $00
-    cp c                                          ; $41fc: $b9
-    nop                                           ; $41fd: $00
-    cp l                                          ; $41fe: $bd
-    nop                                           ; $41ff: $00
-    cp l                                          ; $4200: $bd
-    nop                                           ; $4201: $00
-    and $00                                       ; $4202: $e6 $00
-    rst $20                                       ; $4204: $e7
-    nop                                           ; $4205: $00
-    rst $38                                       ; $4206: $ff
-    rst $38                                       ; $4207: $ff
-    cp b                                          ; $4208: $b8
-    nop                                           ; $4209: $00
-    db $d3                                        ; $420a: $d3
-    nop                                           ; $420b: $00
-    db $db                                        ; $420c: $db
-    nop                                           ; $420d: $00
-    rst RST_18                                    ; $420e: $df
-    nop                                           ; $420f: $00
-    db $dd                                        ; $4210: $dd
-    nop                                           ; $4211: $00
-    db $d3                                        ; $4212: $d3
-    nop                                           ; $4213: $00
-    reti                                          ; $4214: $d9
-
-
-    nop                                           ; $4215: $00
-    rst RST_18                                    ; $4216: $df
-    nop                                           ; $4217: $00
-    pop de                                        ; $4218: $d1
-    nop                                           ; $4219: $00
-    push bc                                       ; $421a: $c5
-    nop                                           ; $421b: $00
-    db $dd                                        ; $421c: $dd
-    nop                                           ; $421d: $00
-    rst RST_18                                    ; $421e: $df
-    nop                                           ; $421f: $00
-    rst $10                                       ; $4220: $d7
-    nop                                           ; $4221: $00
-    ret                                           ; $4222: $c9
-
-
-    nop                                           ; $4223: $00
-    ret nc                                        ; $4224: $d0
-
-    nop                                           ; $4225: $00
-    ret                                           ; $4226: $c9
-
-
-    nop                                           ; $4227: $00
-    rst RST_00                                    ; $4228: $c7
-    nop                                           ; $4229: $00
-    ret c                                         ; $422a: $d8
-
-    nop                                           ; $422b: $00
-    cp $ff                                        ; $422c: $fe $ff
-    ret c                                         ; $422e: $d8
-
-    nop                                           ; $422f: $00
-    call z, $c900                                 ; $4230: $cc $00 $c9
-    nop                                           ; $4233: $00
-    rst RST_18                                    ; $4234: $df
-    nop                                           ; $4235: $00
-    cp [hl]                                       ; $4236: $be
-    nop                                           ; $4237: $00
-    or e                                          ; $4238: $b3
-    nop                                           ; $4239: $00
-    or a                                          ; $423a: $b7
-    nop                                           ; $423b: $00
-    xor a                                         ; $423c: $af
-    nop                                           ; $423d: $00
-    rst RST_18                                    ; $423e: $df
-    nop                                           ; $423f: $00
-    cp [hl]                                       ; $4240: $be
-    nop                                           ; $4241: $00
-    cp h                                          ; $4242: $bc
-    nop                                           ; $4243: $00
-    or e                                          ; $4244: $b3
-    nop                                           ; $4245: $00
-    xor e                                         ; $4246: $ab
-    nop                                           ; $4247: $00
-    or [hl]                                       ; $4248: $b6
-    nop                                           ; $4249: $00
-    rst RST_18                                    ; $424a: $df
-    nop                                           ; $424b: $00
-    or a                                          ; $424c: $b7
-    nop                                           ; $424d: $00
-    cp c                                          ; $424e: $b9
-    nop                                           ; $424f: $00
-    xor [hl]                                      ; $4250: $ae
-    nop                                           ; $4251: $00
-    xor a                                         ; $4252: $af
-    nop                                           ; $4253: $00
-    db $ec                                        ; $4254: $ec
-    nop                                           ; $4255: $00
-    rst $38                                       ; $4256: $ff
-    rst $38                                       ; $4257: $ff
-    cp [hl]                                       ; $4258: $be
-    nop                                           ; $4259: $00
-    call z, $c900                                 ; $425a: $cc $00 $c9
-    nop                                           ; $425d: $00
-    sub $00                                       ; $425e: $d6 $00
-    ret                                           ; $4260: $c9
-
-
-    nop                                           ; $4261: $00
-    rst RST_18                                    ; $4262: $df
-    nop                                           ; $4263: $00
-    call $d700                                    ; $4264: $cd $00 $d7
-    nop                                           ; $4267: $00
-    rst RST_18                                    ; $4268: $df
-    nop                                           ; $4269: $00
-    jp nc, $d300                                  ; $426a: $d2 $00 $d3
-
-    nop                                           ; $426d: $00
-    rst RST_18                                    ; $426e: $df
-    nop                                           ; $426f: $00
-    ret c                                         ; $4270: $d8
-
-    nop                                           ; $4271: $00
-    call $d100                                    ; $4272: $cd $00 $d1
-    nop                                           ; $4275: $00
-    ret                                           ; $4276: $c9
-
-
-    nop                                           ; $4277: $00
-    rst RST_18                                    ; $4278: $df
-    nop                                           ; $4279: $00
-    ret nc                                        ; $427a: $d0
-
-    nop                                           ; $427b: $00
-    call $d100                                    ; $427c: $cd $00 $d1
-    nop                                           ; $427f: $00
-    call rPuzzleGridWidth                         ; $4280: $cd $00 $d8
-    nop                                           ; $4283: $00
-    db $eb                                        ; $4284: $eb
-    nop                                           ; $4285: $00
-    rst RST_18                                    ; $4286: $df
-    nop                                           ; $4287: $00
-    jp nc, $d300                                  ; $4288: $d2 $00 $d3
-
-    nop                                           ; $428b: $00
-    cp $ff                                        ; $428c: $fe $ff
-    call z, $cd00                                 ; $428e: $cc $00 $cd
-    nop                                           ; $4291: $00
-    jp nc, rPuzzleGridWidth                       ; $4292: $d2 $00 $d8
-
-    nop                                           ; $4295: $00
-    rst $10                                       ; $4296: $d7
-    nop                                           ; $4297: $00
-    rst RST_18                                    ; $4298: $df
-    nop                                           ; $4299: $00
-    push bc                                       ; $429a: $c5
-    nop                                           ; $429b: $00
-    jp nc, $c800                                  ; $429c: $d2 $00 $c8
-
-    nop                                           ; $429f: $00
-    rst RST_18                                    ; $42a0: $df
-    nop                                           ; $42a1: $00
-    db $dd                                        ; $42a2: $dd
-    nop                                           ; $42a3: $00
-    db $d3                                        ; $42a4: $d3
-    nop                                           ; $42a5: $00
-    reti                                          ; $42a6: $d9
-
-
-    nop                                           ; $42a7: $00
-    sub $00                                       ; $42a8: $d6 $00
-    rst RST_18                                    ; $42aa: $df
-    nop                                           ; $42ab: $00
-    pop de                                        ; $42ac: $d1
-    nop                                           ; $42ad: $00
-    call $d700                                    ; $42ae: $cd $00 $d7
-    nop                                           ; $42b1: $00
-    ret c                                         ; $42b2: $d8
-
-    nop                                           ; $42b3: $00
-    push bc                                       ; $42b4: $c5
-    nop                                           ; $42b5: $00
-    rst RST_08                                    ; $42b6: $cf
-    nop                                           ; $42b7: $00
-    ret                                           ; $42b8: $c9
-
-
-    nop                                           ; $42b9: $00
-    rst $10                                       ; $42ba: $d7
-    nop                                           ; $42bb: $00
-    cp $ff                                        ; $42bc: $fe $ff
-    db $db                                        ; $42be: $db
-    nop                                           ; $42bf: $00
-    call $d000                                    ; $42c0: $cd $00 $d0
-    nop                                           ; $42c3: $00
-    ret nc                                        ; $42c4: $d0
-
-    nop                                           ; $42c5: $00
-    rst RST_18                                    ; $42c6: $df
-    nop                                           ; $42c7: $00
-    jp nc, $d300                                  ; $42c8: $d2 $00 $d3
-
-    nop                                           ; $42cb: $00
-    ret c                                         ; $42cc: $d8
-
-    nop                                           ; $42cd: $00
-    rst RST_18                                    ; $42ce: $df
-    nop                                           ; $42cf: $00
-    add $00                                       ; $42d0: $c6 $00
-    ret                                           ; $42d2: $c9
-
-
-    nop                                           ; $42d3: $00
-    rst RST_18                                    ; $42d4: $df
-    nop                                           ; $42d5: $00
-    sub $00                                       ; $42d6: $d6 $00
-    ret                                           ; $42d8: $c9
-
-
-    nop                                           ; $42d9: $00
-    jp c, $c900                                   ; $42da: $da $00 $c9
-
-    nop                                           ; $42dd: $00
-    push bc                                       ; $42de: $c5
-    nop                                           ; $42df: $00
-    ret nc                                        ; $42e0: $d0
-
-    nop                                           ; $42e1: $00
-    ret                                           ; $42e2: $c9
-
-
-    nop                                           ; $42e3: $00
-    ret z                                         ; $42e4: $c8
-
-    nop                                           ; $42e5: $00
-    cp $ff                                        ; $42e6: $fe $ff
-    ret c                                         ; $42e8: $d8
-
-    nop                                           ; $42e9: $00
-    db $d3                                        ; $42ea: $d3
-    nop                                           ; $42eb: $00
-    rst RST_18                                    ; $42ec: $df
-    nop                                           ; $42ed: $00
-    db $dd                                        ; $42ee: $dd
-    nop                                           ; $42ef: $00
-    db $d3                                        ; $42f0: $d3
-    nop                                           ; $42f1: $00
-    reti                                          ; $42f2: $d9
-
-
-    nop                                           ; $42f3: $00
-    rst RST_18                                    ; $42f4: $df
-    nop                                           ; $42f5: $00
-    ret z                                         ; $42f6: $c8
-
-    nop                                           ; $42f7: $00
-    reti                                          ; $42f8: $d9
-
-
-    nop                                           ; $42f9: $00
-    sub $00                                       ; $42fa: $d6 $00
-    call $d200                                    ; $42fc: $cd $00 $d2
-    nop                                           ; $42ff: $00
-    rlc b                                         ; $4300: $cb $00
-    rst RST_18                                    ; $4302: $df
-    nop                                           ; $4303: $00
-    ret c                                         ; $4304: $d8
-
-    nop                                           ; $4305: $00
-    call z, $c900                                 ; $4306: $cc $00 $c9
-    nop                                           ; $4309: $00
-    rst RST_18                                    ; $430a: $df
-    nop                                           ; $430b: $00
-    cp $ff                                        ; $430c: $fe $ff
-    cp [hl]                                       ; $430e: $be
-    nop                                           ; $430f: $00
-    or e                                          ; $4310: $b3
-    nop                                           ; $4311: $00
-    or a                                          ; $4312: $b7
-    nop                                           ; $4313: $00
-    xor a                                         ; $4314: $af
-    nop                                           ; $4315: $00
-    rst RST_18                                    ; $4316: $df
-    nop                                           ; $4317: $00
-    cp [hl]                                       ; $4318: $be
-    nop                                           ; $4319: $00
-    cp h                                          ; $431a: $bc
-    nop                                           ; $431b: $00
-    or e                                          ; $431c: $b3
-    nop                                           ; $431d: $00
-    xor e                                         ; $431e: $ab
-    nop                                           ; $431f: $00
-    or [hl]                                       ; $4320: $b6
-    nop                                           ; $4321: $00
-    rst RST_18                                    ; $4322: $df
-    nop                                           ; $4323: $00
-    or a                                          ; $4324: $b7
-    nop                                           ; $4325: $00
-    cp c                                          ; $4326: $b9
-    nop                                           ; $4327: $00
-    xor [hl]                                      ; $4328: $ae
-    nop                                           ; $4329: $00
-    xor a                                         ; $432a: $af
-    nop                                           ; $432b: $00
-    rst RST_18                                    ; $432c: $df
-    nop                                           ; $432d: $00
-    call nc, $d000                                ; $432e: $d4 $00 $d0
-    nop                                           ; $4331: $00
-    push bc                                       ; $4332: $c5
-    nop                                           ; $4333: $00
-    db $dd                                        ; $4334: $dd
-    nop                                           ; $4335: $00
-    db $ec                                        ; $4336: $ec
-    nop                                           ; $4337: $00
-    rst $38                                       ; $4338: $ff
-    rst $38                                       ; $4339: $ff
-    cp [hl]                                       ; $433a: $be
-    nop                                           ; $433b: $00
-    call z, $cd00                                 ; $433c: $cc $00 $cd
-    nop                                           ; $433f: $00
-    rst $10                                       ; $4340: $d7
-    nop                                           ; $4341: $00
-    rst RST_18                                    ; $4342: $df
-    nop                                           ; $4343: $00
-    call $d700                                    ; $4344: $cd $00 $d7
-    nop                                           ; $4347: $00
-    rst RST_18                                    ; $4348: $df
-    nop                                           ; $4349: $00
-    ret c                                         ; $434a: $d8
-
-    nop                                           ; $434b: $00
-    call z, $c900                                 ; $434c: $cc $00 $c9
-    nop                                           ; $434f: $00
-    rst RST_18                                    ; $4350: $df
-    nop                                           ; $4351: $00
-    reti                                          ; $4352: $d9
-
-
-    nop                                           ; $4353: $00
-    ret nc                                        ; $4354: $d0
-
-    nop                                           ; $4355: $00
-    ret c                                         ; $4356: $d8
-
-    nop                                           ; $4357: $00
-    call $d100                                    ; $4358: $cd $00 $d1
-    nop                                           ; $435b: $00
-    push bc                                       ; $435c: $c5
-    nop                                           ; $435d: $00
-    ret c                                         ; $435e: $d8
-
-    nop                                           ; $435f: $00
-    ret                                           ; $4360: $c9
-
-
-    nop                                           ; $4361: $00
-    cp $ff                                        ; $4362: $fe $ff
-    cp d                                          ; $4364: $ba
-    nop                                           ; $4365: $00
-    or e                                          ; $4366: $b3
-    nop                                           ; $4367: $00
-    xor l                                         ; $4368: $ad
-    nop                                           ; $4369: $00
-    cp h                                          ; $436a: $bc
-    nop                                           ; $436b: $00
-    cp c                                          ; $436c: $b9
-    nop                                           ; $436d: $00
-    cp l                                          ; $436e: $bd
-    nop                                           ; $436f: $00
-    cp l                                          ; $4370: $bd
-    nop                                           ; $4371: $00
-    rst RST_18                                    ; $4372: $df
-    nop                                           ; $4373: $00
-    rst RST_00                                    ; $4374: $c7
-    nop                                           ; $4375: $00
-    call z, $c500                                 ; $4376: $cc $00 $c5
-    nop                                           ; $4379: $00
-    ret nc                                        ; $437a: $d0
-
-    nop                                           ; $437b: $00
-    ret nc                                        ; $437c: $d0
-
-    nop                                           ; $437d: $00
-    ret                                           ; $437e: $c9
-
-
-    nop                                           ; $437f: $00
-    jp nc, $cb00                                  ; $4380: $d2 $00 $cb
-
-    nop                                           ; $4383: $00
-    ret                                           ; $4384: $c9
-
-
-    nop                                           ; $4385: $00
-    rst $20                                       ; $4386: $e7
-    nop                                           ; $4387: $00
-    rst $38                                       ; $4388: $ff
-    rst $38                                       ; $4389: $ff
+    db "PICROSS challenge!", $ff, $ff
 
 GameState_04_PicrossCoursePuzzleSelectScreen_PhaseDispatcher::
     ld a, [rStatePhase_Current]                   ; $438a: $fa $35 $d6
@@ -993,7 +162,7 @@ GS04_StatePhase_04_TODO::
     call Call_001_49a2                            ; $4455: $cd $a2 $49
     call Call_001_4a80                            ; $4458: $cd $80 $4a
     call Call_001_4c3b                            ; $445b: $cd $3b $4c
-    ld a, [$d84c]                                 ; $445e: $fa $4c $d8
+    ld a, [rSelectedPuzzleStatusData]             ; $445e: $fa $4c $d8
     bit 7, a                                      ; $4461: $cb $7f
     jr z, jr_001_4470                             ; $4463: $28 $0b
 
@@ -1110,7 +279,7 @@ jr_001_448d:
     ld [rMessageScriptStreamPointerLow], a        ; $4555: $ea $2d $d8
     ld a, $41                                     ; $4558: $3e $41
     ld [rMessageScriptStreamPointerHigh], a       ; $455a: $ea $2e $d8
-    call Call_001_51dd                            ; $455d: $cd $dd $51
+    call RunMessageScriptUntilEnd                 ; $455d: $cd $dd $51
     call Call_001_5252                            ; $4560: $cd $52 $52
     xor a                                         ; $4563: $af
     ld [rPuzzleCursorColumn], a                   ; $4564: $ea $36 $d6
@@ -1208,28 +377,28 @@ Jump_001_45bb:
     ld [rMessageScriptStreamPointerLow], a        ; $4644: $ea $2d $d8
     ld a, $41                                     ; $4647: $3e $41
     ld [rMessageScriptStreamPointerHigh], a       ; $4649: $ea $2e $d8
-    call Call_001_51dd                            ; $464c: $cd $dd $51
+    call RunMessageScriptUntilEnd                 ; $464c: $cd $dd $51
     call Call_001_5252                            ; $464f: $cd $52 $52
     call Call_001_51e4                            ; $4652: $cd $e4 $51
     ld a, $08                                     ; $4655: $3e $08
     ld [rMessageScriptStreamPointerLow], a        ; $4657: $ea $2d $d8
     ld a, $42                                     ; $465a: $3e $42
     ld [rMessageScriptStreamPointerHigh], a       ; $465c: $ea $2e $d8
-    call Call_001_51dd                            ; $465f: $cd $dd $51
+    call RunMessageScriptUntilEnd                 ; $465f: $cd $dd $51
     call Call_001_5252                            ; $4662: $cd $52 $52
     call Call_001_51e4                            ; $4665: $cd $e4 $51
     ld a, $58                                     ; $4668: $3e $58
     ld [rMessageScriptStreamPointerLow], a        ; $466a: $ea $2d $d8
     ld a, $42                                     ; $466d: $3e $42
     ld [rMessageScriptStreamPointerHigh], a       ; $466f: $ea $2e $d8
-    call Call_001_51dd                            ; $4672: $cd $dd $51
+    call RunMessageScriptUntilEnd                 ; $4672: $cd $dd $51
     call Call_001_5252                            ; $4675: $cd $52 $52
     call Call_001_51e4                            ; $4678: $cd $e4 $51
     ld a, $3a                                     ; $467b: $3e $3a
     ld [rMessageScriptStreamPointerLow], a        ; $467d: $ea $2d $d8
     ld a, $43                                     ; $4680: $3e $43
     ld [rMessageScriptStreamPointerHigh], a       ; $4682: $ea $2e $d8
-    call Call_001_51dd                            ; $4685: $cd $dd $51
+    call RunMessageScriptUntilEnd                 ; $4685: $cd $dd $51
     call Call_001_5252                            ; $4688: $cd $52 $52
     ld bc, $003c                                  ; $468b: $01 $3c $00
     call DelayFramesByBC                          ; $468e: $cd $fa $05
@@ -1301,7 +470,7 @@ Call_001_46e4:
     ld b, $00                                     ; $470b: $06 $00
     add hl, bc                                    ; $470d: $09
     ld a, [hl]                                    ; $470e: $7e
-    ld hl, $d84c                                  ; $470f: $21 $4c $d8
+    ld hl, rSelectedPuzzleStatusData              ; $470f: $21 $4c $d8
     xor [hl]                                      ; $4712: $ae
     bit 7, a                                      ; $4713: $cb $7f
     jr z, jr_001_474f                             ; $4715: $28 $38
@@ -2245,17 +1414,17 @@ Call_001_4c78:
     ld bc, $98c4                                  ; $4c96: $01 $c4 $98
     add hl, bc                                    ; $4c99: $09
     ld a, h                                       ; $4c9a: $7c
-    ld [rGS01_SaveSlotTemplateCommandStreamStart], a; $4c9b: $ea $00 $c1
+    ld [rSharedSingleTileCommandStreamDestHigh], a; $4c9b: $ea $00 $c1
     ld a, l                                       ; $4c9e: $7d
-    ld [$c101], a                                 ; $4c9f: $ea $01 $c1
+    ld [rSharedSingleTileCommandStreamDestLow], a ; $4c9f: $ea $01 $c1
     ld a, $01                                     ; $4ca2: $3e $01
-    ld [$c102], a                                 ; $4ca4: $ea $02 $c1
+    ld [rSharedSingleTileCommandStreamTileCount], a; $4ca4: $ea $02 $c1
     ld a, $55                                     ; $4ca7: $3e $55
-    ld [rGS01_SaveSlotTemplateRow1EasyPicrossIconPairLeft], a; $4ca9: $ea $03 $c1
+    ld [rSharedSingleTileCommandStreamTileId], a  ; $4ca9: $ea $03 $c1
     ld a, $00                                     ; $4cac: $3e $00
-    ld [$c104], a                                 ; $4cae: $ea $04 $c1
+    ld [rSharedSingleTileCommandStreamTerminator], a; $4cae: $ea $04 $c1
     ld a, $00                                     ; $4cb1: $3e $00
-    ld bc, rGS01_SaveSlotTemplateCommandStreamStart; $4cb3: $01 $00 $c1
+    ld bc, rSharedSingleTileCommandStreamDestHigh ; $4cb3: $01 $00 $c1
     call QueueCommandStreamAndProcessIfLCDOff     ; $4cb6: $cd $38 $07
     pop hl                                        ; $4cb9: $e1
     pop bc                                        ; $4cba: $c1
@@ -2371,7 +1540,7 @@ Call_001_4cef:
     ld c, a                                       ; $4d5b: $4f
     ld b, $00                                     ; $4d5c: $06 $00
     add hl, bc                                    ; $4d5e: $09
-    call Call_001_5154                            ; $4d5f: $cd $54 $51
+    call EncodePuzzleTimerToPackedClearTimeBC     ; $4d5f: $cd $54 $51
     ld [hl], c                                    ; $4d62: $71
     inc hl                                        ; $4d63: $23
     ld a, [hl]                                    ; $4d64: $7e
@@ -2418,7 +1587,7 @@ jr_001_4d76:
     add hl, bc                                    ; $4da3: $09
     inc hl                                        ; $4da4: $23
     push hl                                       ; $4da5: $e5
-    call Call_001_5154                            ; $4da6: $cd $54 $51
+    call EncodePuzzleTimerToPackedClearTimeBC     ; $4da6: $cd $54 $51
     ld a, [$d842]                                 ; $4da9: $fa $42 $d8
     and a                                         ; $4dac: $a7
     jr nz, jr_001_4dc7                            ; $4dad: $20 $18
@@ -2548,7 +1717,7 @@ jr_001_4e24:
     ld c, [hl]                                    ; $4e59: $4e
     inc hl                                        ; $4e5a: $23
     ld b, [hl]                                    ; $4e5b: $46
-    call Call_001_5182                            ; $4e5c: $cd $82 $51
+    call DecodePackedPuzzleClearTimeToBCDDigits   ; $4e5c: $cd $82 $51
     push bc                                       ; $4e5f: $c5
     ld a, b                                       ; $4e60: $78
     and $f0                                       ; $4e61: $e6 $f0
@@ -2614,7 +1783,7 @@ jr_001_4e24:
     swap a                                        ; $4ecb: $cb $37
     ld b, a                                       ; $4ecd: $47
     ld c, [hl]                                    ; $4ece: $4e
-    call Call_001_5182                            ; $4ecf: $cd $82 $51
+    call DecodePackedPuzzleClearTimeToBCDDigits   ; $4ecf: $cd $82 $51
     push bc                                       ; $4ed2: $c5
     ld a, b                                       ; $4ed3: $78
     and $f0                                       ; $4ed4: $e6 $f0
@@ -2679,7 +1848,7 @@ Jump_001_4f0d:
 
 
 Call_001_4f54:
-    ld a, [$d84c]                                 ; $4f54: $fa $4c $d8
+    ld a, [rSelectedPuzzleStatusData]             ; $4f54: $fa $4c $d8
     push af                                       ; $4f57: $f5
     and $7f                                       ; $4f58: $e6 $7f
     call SplitAToDecimalDigitsAndPushHundredsTens ; $4f5a: $cd $72 $19
@@ -2700,11 +1869,11 @@ jr_001_4f72:
     bit 7, a                                      ; $4f74: $cb $7f
     jp z, Jump_001_5004                           ; $4f76: $ca $04 $50
 
-    ld hl, $d849                                  ; $4f79: $21 $49 $d8
+    ld hl, rSelectedPuzzleTimeDataRecordByte0     ; $4f79: $21 $49 $d8
     ld c, [hl]                                    ; $4f7c: $4e
     inc hl                                        ; $4f7d: $23
     ld b, [hl]                                    ; $4f7e: $46
-    call Call_001_5182                            ; $4f7f: $cd $82 $51
+    call DecodePackedPuzzleClearTimeToBCDDigits   ; $4f7f: $cd $82 $51
     push bc                                       ; $4f82: $c5
     ld a, b                                       ; $4f83: $78
     and $f0                                       ; $4f84: $e6 $f0
@@ -2735,13 +1904,13 @@ jr_001_4f72:
     call CopyOAMSpriteById                        ; $4fb5: $cd $ce $20
     ld a, [hl]                                    ; $4fb8: $7e
     call Call_001_50b4                            ; $4fb9: $cd $b4 $50
-    ld hl, $d84a                                  ; $4fbc: $21 $4a $d8
+    ld hl, rSelectedPuzzleTimeDataRecordByte1     ; $4fbc: $21 $4a $d8
     ld a, [hl+]                                   ; $4fbf: $2a
     and $f0                                       ; $4fc0: $e6 $f0
     swap a                                        ; $4fc2: $cb $37
     ld b, a                                       ; $4fc4: $47
     ld c, [hl]                                    ; $4fc5: $4e
-    call Call_001_5182                            ; $4fc6: $cd $82 $51
+    call DecodePackedPuzzleClearTimeToBCDDigits   ; $4fc6: $cd $82 $51
     push bc                                       ; $4fc9: $c5
     ld a, b                                       ; $4fca: $78
     and $f0                                       ; $4fcb: $e6 $f0
@@ -2833,7 +2002,7 @@ Call_001_504b:
     ld b, $00                                     ; $5072: $06 $00
     add hl, bc                                    ; $5074: $09
     ld a, [hl]                                    ; $5075: $7e
-    ld [$d84c], a                                 ; $5076: $ea $4c $d8
+    ld [rSelectedPuzzleStatusData], a             ; $5076: $ea $4c $d8
     ld a, [rSelectedSaveSlotIndex]                ; $5079: $fa $65 $a0
     ld c, a                                       ; $507c: $4f
     ld b, $00                                     ; $507d: $06 $00
@@ -2864,11 +2033,11 @@ Call_001_504b:
     ld b, $00                                     ; $50a4: $06 $00
     add hl, bc                                    ; $50a6: $09
     ld a, [hl+]                                   ; $50a7: $2a
-    ld [$d849], a                                 ; $50a8: $ea $49 $d8
+    ld [rSelectedPuzzleTimeDataRecordByte0], a    ; $50a8: $ea $49 $d8
     ld a, [hl+]                                   ; $50ab: $2a
-    ld [$d84a], a                                 ; $50ac: $ea $4a $d8
+    ld [rSelectedPuzzleTimeDataRecordByte1], a    ; $50ac: $ea $4a $d8
     ld a, [hl]                                    ; $50af: $7e
-    ld [$d84b], a                                 ; $50b0: $ea $4b $d8
+    ld [rSelectedPuzzleTimeDataRecordByte2], a    ; $50b0: $ea $4b $d8
     ret                                           ; $50b3: $c9
 
 
@@ -2988,7 +2157,7 @@ jr_001_5149:
     ret                                           ; $5153: $c9
 
 
-Call_001_5154:
+EncodePuzzleTimerToPackedClearTimeBC::
     push hl                                       ; $5154: $e5
     ld a, [rPuzzleTimerSecondTens]                ; $5155: $fa $0c $d8
     ld c, a                                       ; $5158: $4f
@@ -3019,21 +2188,21 @@ Call_001_5154:
     ret                                           ; $5181: $c9
 
 
-Call_001_5182:
+DecodePackedPuzzleClearTimeToBCDDigits::
     push hl                                       ; $5182: $e5
     ld a, c                                       ; $5183: $79
     and $3f                                       ; $5184: $e6 $3f
     ld e, $00                                     ; $5186: $1e $00
 
-jr_001_5188:
+.SubtractLowerFieldTensLoop:
     cp $0a                                        ; $5188: $fe $0a
-    jr c, jr_001_5191                             ; $518a: $38 $05
+    jr c, .PackLowerFieldTensAndOnes              ; $518a: $38 $05
 
     sub $0a                                       ; $518c: $d6 $0a
     inc e                                         ; $518e: $1c
-    jr jr_001_5188                                ; $518f: $18 $f7
+    jr .SubtractLowerFieldTensLoop                ; $518f: $18 $f7
 
-jr_001_5191:
+.PackLowerFieldTensAndOnes:
     swap e                                        ; $5191: $cb $33
     or e                                          ; $5193: $b3
     ld e, a                                       ; $5194: $5f
@@ -3045,15 +2214,15 @@ jr_001_5191:
     and $1f                                       ; $519e: $e6 $1f
     ld d, $00                                     ; $51a0: $16 $00
 
-jr_001_51a2:
+.SubtractUpperFieldTensLoop:
     cp $0a                                        ; $51a2: $fe $0a
-    jr c, jr_001_51ab                             ; $51a4: $38 $05
+    jr c, .PackUpperFieldTensAndOnes              ; $51a4: $38 $05
 
     sub $0a                                       ; $51a6: $d6 $0a
     inc d                                         ; $51a8: $14
-    jr jr_001_51a2                                ; $51a9: $18 $f7
+    jr .SubtractUpperFieldTensLoop                ; $51a9: $18 $f7
 
-jr_001_51ab:
+.PackUpperFieldTensAndOnes:
     swap d                                        ; $51ab: $cb $32
     or d                                          ; $51ad: $b2
     ld d, a                                       ; $51ae: $57
@@ -3102,11 +2271,10 @@ jr_001_51ab:
     ld h, d                                       ; $51db: $62
     xor h                                         ; $51dc: $ac
 
-Call_001_51dd:
-jr_001_51dd:
+RunMessageScriptUntilEnd::
     rst RST_08                                    ; $51dd: $cf
-    call Call_000_2c1f                            ; $51de: $cd $1f $2c
-    jr nz, jr_001_51dd                            ; $51e1: $20 $fa
+    call AdvanceMessageScriptStreamHelper_NoBankSwitch; $51de: $cd $1f $2c
+    jr nz, RunMessageScriptUntilEnd               ; $51e1: $20 $fa
 
     ret                                           ; $51e3: $c9
 
@@ -3197,7 +2365,7 @@ GS05_PhasePointer_04::
 GS05_PhasePointer_05::
     db $bf, $55
 
-GS05_StatePhase_00_TODO::
+GS05_StatePhase_00_EasyPicrossPuzzleSelectScreenInit::
     ld a, $43                                     ; $527d: $3e $43
     ld [rLCDCShadow], a                           ; $527f: $ea $2e $c3
     xor a                                         ; $5282: $af
@@ -3228,8 +2396,8 @@ GS05_StatePhase_00_TODO::
     ld de, $9800                                  ; $52c7: $11 $00 $98
     ld bc, $0400                                  ; $52ca: $01 $00 $04
     call BankedTileCopy                           ; $52cd: $cd $e4 $04
-    call Call_001_5732                            ; $52d0: $cd $32 $57
-    call Call_001_57c0                            ; $52d3: $cd $c0 $57
+    call GS05_LoadEasyPicrossPuzzleSelectCursorForSelectedSaveSlot; $52d0: $cd $32 $57
+    call GS05_DrawCompletedPuzzleMarkersForSelectedSaveSlot; $52d3: $cd $c0 $57
     call ClearShadowOAMBuffer                     ; $52d6: $cd $b6 $05
     ld b, $03                                     ; $52d9: $06 $03
     ld hl, $4e80                                  ; $52db: $21 $80 $4e
@@ -3238,8 +2406,8 @@ GS05_StatePhase_00_TODO::
     ld hl, $4ee9                                  ; $52e3: $21 $e9 $4e
     call SwitchBankToBAndJumpToHL                 ; $52e6: $cd $de $05
     xor a                                         ; $52e9: $af
-    call Call_001_5760                            ; $52ea: $cd $60 $57
-    call Call_001_595e                            ; $52ed: $cd $5e $59
+    call GS05_DrawEasyPicrossPuzzleSelectCursorSpriteByFrame; $52ea: $cd $60 $57
+    call GS05_DrawSelectedEasyPicrossPuzzleInfoPanel; $52ed: $cd $5e $59
     ld c, $00                                     ; $52f0: $0e $00
     ld a, $01                                     ; $52f2: $3e $01
     call CallSoundEffectDispatcher                ; $52f4: $cd $b6 $03
@@ -3289,36 +2457,36 @@ GS05_StatePhase_04_TODO::
     ld de, $9800                                  ; $5360: $11 $00 $98
     ld bc, $0400                                  ; $5363: $01 $00 $04
     call BankedTileCopy                           ; $5366: $cd $e4 $04
-    call Call_001_5732                            ; $5369: $cd $32 $57
-    call Call_001_57e8                            ; $536c: $cd $e8 $57
-    ld a, [$d84c]                                 ; $536f: $fa $4c $d8
+    call GS05_LoadEasyPicrossPuzzleSelectCursorForSelectedSaveSlot; $5369: $cd $32 $57
+    call GS05_DrawCompletedPuzzleMarkersForSelectedSaveSlotExceptCurrentSelection; $536c: $cd $e8 $57
+    ld a, [rSelectedPuzzleStatusData]             ; $536f: $fa $4c $d8
     bit 7, a                                      ; $5372: $cb $7f
-    jr z, jr_001_5381                             ; $5374: $28 $0b
+    jr z, .ContinueAfterSelectedPuzzleCompletedMarkerCheck; $5374: $28 $0b
 
     ld a, [rPuzzleCursorColumn]                   ; $5376: $fa $36 $d6
     ld c, a                                       ; $5379: $4f
     ld a, [rPuzzleAndMenuCursorRow]               ; $537a: $fa $37 $d6
     ld b, a                                       ; $537d: $47
-    call Call_001_581c                            ; $537e: $cd $1c $58
+    call GS05_DrawCompletedPuzzleMarkerAtGridPosition; $537e: $cd $1c $58
 
-jr_001_5381:
+.ContinueAfterSelectedPuzzleCompletedMarkerCheck:
     call ClearShadowOAMBuffer                     ; $5381: $cd $b6 $05
-    call Call_001_5ab9                            ; $5384: $cd $b9 $5a
+    call GS05_DrawSelectedEasyPicrossPuzzleInfoPanelFromSelectedPuzzleCache; $5384: $cd $b9 $5a
     ld b, $03                                     ; $5387: $06 $03
     ld hl, $4e80                                  ; $5389: $21 $80 $4e
     call SwitchBankToBAndJumpToHL                 ; $538c: $cd $de $05
     ld a, [rPuzzleFlowVariant_Unsure]             ; $538f: $fa $05 $d8
     and a                                         ; $5392: $a7
     push af                                       ; $5393: $f5
-    jr nz, jr_001_539e                            ; $5394: $20 $08
+    jr nz, .BeginPostReturnFadeInAndResultFlow    ; $5394: $20 $08
 
     ld b, $03                                     ; $5396: $06 $03
     ld hl, $4ee9                                  ; $5398: $21 $e9 $4e
     call SwitchBankToBAndJumpToHL                 ; $539b: $cd $de $05
 
-jr_001_539e:
+.BeginPostReturnFadeInAndResultFlow:
     xor a                                         ; $539e: $af
-    call Call_001_5760                            ; $539f: $cd $60 $57
+    call GS05_DrawEasyPicrossPuzzleSelectCursorSpriteByFrame; $539f: $cd $60 $57
     ld c, $00                                     ; $53a2: $0e $00
     ld a, $01                                     ; $53a4: $3e $01
     call CallSoundEffectDispatcher                ; $53a6: $cd $b6 $03
@@ -3333,9 +2501,9 @@ jr_001_539e:
     ld de, $0074                                  ; $53bd: $11 $74 $00
     call PlayScreenTransitionFadeIn               ; $53c0: $cd $0d $04
     pop af                                        ; $53c3: $f1
-    jp z, Jump_001_54ed                           ; $53c4: $ca $ed $54
+    jp z, GS05_ReturnToIdlePhaseAndRefreshSaveChecksums; $53c4: $ca $ed $54
 
-    call Call_001_54f5                            ; $53c7: $cd $f5 $54
+    call GS05_HandlePostReturnClearStatusChangeAnimationAndPrompt; $53c7: $cd $f5 $54
     ld a, [rSelectedSaveSlotIndex]                ; $53ca: $fa $65 $a0
     ld c, a                                       ; $53cd: $4f
     ld b, $00                                     ; $53ce: $06 $00
@@ -3343,13 +2511,13 @@ jr_001_539e:
     add hl, bc                                    ; $53d3: $09
     ld a, [hl]                                    ; $53d4: $7e
     and a                                         ; $53d5: $a7
-    jp nz, Jump_001_54ed                          ; $53d6: $c2 $ed $54
+    jp nz, GS05_ReturnToIdlePhaseAndRefreshSaveChecksums; $53d6: $c2 $ed $54
 
     ld hl, rSaveSlot1EasyPicrossClearedPuzzleCount; $53d9: $21 $7e $a0
     add hl, bc                                    ; $53dc: $09
     ld a, [hl]                                    ; $53dd: $7e
     cp $40                                        ; $53de: $fe $40
-    jp nz, Jump_001_54ed                          ; $53e0: $c2 $ed $54
+    jp nz, GS05_ReturnToIdlePhaseAndRefreshSaveChecksums; $53e0: $c2 $ed $54
 
     ld hl, $a07b                                  ; $53e3: $21 $7b $a0
     add hl, bc                                    ; $53e6: $09
@@ -3425,7 +2593,7 @@ jr_001_539e:
     ld [rMessageScriptStreamPointerLow], a        ; $5493: $ea $2d $d8
     ld a, $40                                     ; $5496: $3e $40
     ld [rMessageScriptStreamPointerHigh], a       ; $5498: $ea $2e $d8
-    call Call_001_51dd                            ; $549b: $cd $dd $51
+    call RunMessageScriptUntilEnd                 ; $549b: $cd $dd $51
     call Call_001_5252                            ; $549e: $cd $52 $52
     ld bc, $003c                                  ; $54a1: $01 $3c $00
     call DelayFramesByBC                          ; $54a4: $cd $fa $05
@@ -3451,7 +2619,7 @@ jr_001_539e:
     xor a                                         ; $54d7: $af
     ld [rLCDCInterruptDispatchIndex], a           ; $54d8: $ea $38 $c3
     ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $54db: $ea $50 $c3
-    call Call_001_5749                            ; $54de: $cd $49 $57
+    call GS05_SaveEasyPicrossPuzzleSelectCursorForSelectedSaveSlot; $54de: $cd $49 $57
     xor a                                         ; $54e1: $af
     ld [rStatePhase_Current], a                   ; $54e2: $ea $35 $d6
     ld a, $02                                     ; $54e5: $3e $02
@@ -3459,18 +2627,18 @@ jr_001_539e:
     jp RefreshSaveValidationChecksumsAndMirrors   ; $54ea: $c3 $1f $1b
 
 
-Jump_001_54ed:
+GS05_ReturnToIdlePhaseAndRefreshSaveChecksums::
     ld a, $01                                     ; $54ed: $3e $01
     ld [rStatePhase_Current], a                   ; $54ef: $ea $35 $d6
     jp RefreshSaveValidationChecksumsAndMirrors   ; $54f2: $c3 $1f $1b
 
 
-Call_001_54f5:
+GS05_HandlePostReturnClearStatusChangeAnimationAndPrompt::
     ld a, [rSelectedSaveSlotIndex]                ; $54f5: $fa $65 $a0
     sla a                                         ; $54f8: $cb $27
     ld c, a                                       ; $54fa: $4f
     ld b, $00                                     ; $54fb: $06 $00
-    ld hl, GS05_TODO_Data3                        ; $54fd: $21 $a4 $5c
+    ld hl, GS05_EasyPicrossPuzzleStatusGridPointerTableBySaveSlot; $54fd: $21 $a4 $5c
     add hl, bc                                    ; $5500: $09
     ld a, [hl+]                                   ; $5501: $2a
     ld h, [hl]                                    ; $5502: $66
@@ -3486,50 +2654,50 @@ Call_001_54f5:
     ld b, $00                                     ; $5513: $06 $00
     add hl, bc                                    ; $5515: $09
     ld a, [hl]                                    ; $5516: $7e
-    ld hl, $d84c                                  ; $5517: $21 $4c $d8
+    ld hl, rSelectedPuzzleStatusData              ; $5517: $21 $4c $d8
     xor [hl]                                      ; $551a: $ae
     bit 7, a                                      ; $551b: $cb $7f
-    jr z, jr_001_5557                             ; $551d: $28 $38
+    jr z, .BeginPostResultPromptDelay             ; $551d: $28 $38
 
     ld c, $08                                     ; $551f: $0e $08
     ld a, $02                                     ; $5521: $3e $02
     call CallSoundEffectDispatcher                ; $5523: $cd $b6 $03
     ld c, $08                                     ; $5526: $0e $08
 
-jr_001_5528:
+.AnimateCursorFrame1BeforeCompletedMarker:
     push bc                                       ; $5528: $c5
     call ClearShadowOAMBuffer                     ; $5529: $cd $b6 $05
     ld a, $01                                     ; $552c: $3e $01
-    call Call_001_5760                            ; $552e: $cd $60 $57
-    call Call_001_595e                            ; $5531: $cd $5e $59
+    call GS05_DrawEasyPicrossPuzzleSelectCursorSpriteByFrame; $552e: $cd $60 $57
+    call GS05_DrawSelectedEasyPicrossPuzzleInfoPanel; $5531: $cd $5e $59
     rst RST_08                                    ; $5534: $cf
     pop bc                                        ; $5535: $c1
     dec c                                         ; $5536: $0d
-    jr nz, jr_001_5528                            ; $5537: $20 $ef
+    jr nz, .AnimateCursorFrame1BeforeCompletedMarker; $5537: $20 $ef
 
     ld a, [rPuzzleCursorColumn]                   ; $5539: $fa $36 $d6
     ld c, a                                       ; $553c: $4f
     ld a, [rPuzzleAndMenuCursorRow]               ; $553d: $fa $37 $d6
     ld b, a                                       ; $5540: $47
-    call Call_001_581c                            ; $5541: $cd $1c $58
+    call GS05_DrawCompletedPuzzleMarkerAtGridPosition; $5541: $cd $1c $58
     ld c, $08                                     ; $5544: $0e $08
 
-jr_001_5546:
+.AnimateCursorFrame2AfterCompletedMarker:
     push bc                                       ; $5546: $c5
     call ClearShadowOAMBuffer                     ; $5547: $cd $b6 $05
     ld a, $02                                     ; $554a: $3e $02
-    call Call_001_5760                            ; $554c: $cd $60 $57
-    call Call_001_595e                            ; $554f: $cd $5e $59
+    call GS05_DrawEasyPicrossPuzzleSelectCursorSpriteByFrame; $554c: $cd $60 $57
+    call GS05_DrawSelectedEasyPicrossPuzzleInfoPanel; $554f: $cd $5e $59
     rst RST_08                                    ; $5552: $cf
     pop bc                                        ; $5553: $c1
     dec c                                         ; $5554: $0d
-    jr nz, jr_001_5546                            ; $5555: $20 $ef
+    jr nz, .AnimateCursorFrame2AfterCompletedMarker; $5555: $20 $ef
 
-jr_001_5557:
+.BeginPostResultPromptDelay:
     rst RST_08                                    ; $5557: $cf
     ld bc, $005a                                  ; $5558: $01 $5a $00
 
-jr_001_555b:
+.PostResultPromptLoop:
     push bc                                       ; $555b: $c5
     call ClearShadowOAMBuffer                     ; $555c: $cd $b6 $05
     ld b, $03                                     ; $555f: $06 $03
@@ -3537,39 +2705,39 @@ jr_001_555b:
     call SwitchBankToBAndJumpToHL                 ; $5564: $cd $de $05
     ld a, [rVBlankFrameCounter]                   ; $5567: $fa $3a $c3
     bit 2, a                                      ; $556a: $cb $57
-    jr nz, jr_001_5572                            ; $556c: $20 $04
+    jr nz, .DrawPostResultPromptFrame             ; $556c: $20 $04
 
     xor a                                         ; $556e: $af
-    call Call_001_5760                            ; $556f: $cd $60 $57
+    call GS05_DrawEasyPicrossPuzzleSelectCursorSpriteByFrame; $556f: $cd $60 $57
 
-jr_001_5572:
-    call Call_001_595e                            ; $5572: $cd $5e $59
+.DrawPostResultPromptFrame:
+    call GS05_DrawSelectedEasyPicrossPuzzleInfoPanel; $5572: $cd $5e $59
     rst RST_08                                    ; $5575: $cf
     pop bc                                        ; $5576: $c1
     ld a, [rInputButtonsPressed]                  ; $5577: $fa $1e $c3
     and a                                         ; $557a: $a7
-    jr nz, jr_001_5582                            ; $557b: $20 $05
+    jr nz, .AdvanceSelectionAfterPostResultPrompt ; $557b: $20 $05
 
     dec bc                                        ; $557d: $0b
     ld a, c                                       ; $557e: $79
     or b                                          ; $557f: $b0
-    jr nz, jr_001_555b                            ; $5580: $20 $d9
+    jr nz, .PostResultPromptLoop                  ; $5580: $20 $d9
 
-jr_001_5582:
-    jp Jump_001_5c51                              ; $5582: $c3 $51 $5c
+.AdvanceSelectionAfterPostResultPrompt:
+    jp GS05_AdvanceSelectionToNextUnclearedPuzzleIfPossible; $5582: $c3 $51 $5c
 
 
-GS05_StatePhase_01_TODO::
+GS05_StatePhase_01_EasyPicrossPuzzleSelectScreenIdle::
     ld b, $03                                     ; $5585: $06 $03
     ld hl, $4ee9                                  ; $5587: $21 $e9 $4e
     call SwitchBankToBAndJumpToHL                 ; $558a: $cd $de $05
     xor a                                         ; $558d: $af
-    call Call_001_5760                            ; $558e: $cd $60 $57
-    call Call_001_595e                            ; $5591: $cd $5e $59
-    call Call_001_577b                            ; $5594: $cd $7b $57
+    call GS05_DrawEasyPicrossPuzzleSelectCursorSpriteByFrame; $558e: $cd $60 $57
+    call GS05_DrawSelectedEasyPicrossPuzzleInfoPanel; $5591: $cd $5e $59
+    call GS05_HandleEasyPicrossPuzzleSelectDirectionalInput; $5594: $cd $7b $57
     ld a, [rInputButtonsPressed]                  ; $5597: $fa $1e $c3
     and $09                                       ; $559a: $e6 $09
-    jr z, jr_001_55aa                             ; $559c: $28 $0c
+    jr z, .CheckCancelInputB                      ; $559c: $28 $0c
 
     ld c, $03                                     ; $559e: $0e $03
     ld a, $02                                     ; $55a0: $3e $02
@@ -3579,10 +2747,10 @@ GS05_StatePhase_01_TODO::
     ret                                           ; $55a9: $c9
 
 
-jr_001_55aa:
+.CheckCancelInputB:
     ld a, [rInputButtonsPressed]                  ; $55aa: $fa $1e $c3
     and $02                                       ; $55ad: $e6 $02
-    jr z, jr_001_55be                             ; $55af: $28 $0d
+    jr z, .ReturnFromIdlePhaseNoSelectionInput    ; $55af: $28 $0d
 
     ld c, $04                                     ; $55b1: $0e $04
     ld a, $02                                     ; $55b3: $3e $02
@@ -3592,11 +2760,11 @@ jr_001_55aa:
     ret                                           ; $55bd: $c9
 
 
-jr_001_55be:
+.ReturnFromIdlePhaseNoSelectionInput:
     ret                                           ; $55be: $c9
 
 
-GS05_StatePhase_05_TODO::
+GS05_StatePhase_05_ReturnFromPuzzleTransitionAndCommitResult::
     ld bc, $003c                                  ; $55bf: $01 $3c $00
     call DelayFramesByBC                          ; $55c2: $cd $fa $05
     ld a, $05                                     ; $55c5: $3e $05
@@ -3614,7 +2782,7 @@ GS05_StatePhase_05_TODO::
     ld de, $0083                                  ; $55e2: $11 $83 $00
     call PlayScreenTransitionFadeOut              ; $55e5: $cd $4e $04
     call DisableLCDAtVBlank                       ; $55e8: $cd $83 $04
-    call Call_001_5749                            ; $55eb: $cd $49 $57
+    call GS05_SaveEasyPicrossPuzzleSelectCursorForSelectedSaveSlot; $55eb: $cd $49 $57
     xor a                                         ; $55ee: $af
     ld [rPuzzleTimerSecondOnes], a                ; $55ef: $ea $0b $d8
     ld [rPuzzleTimerSecondTens], a                ; $55f2: $ea $0c $d8
@@ -3625,17 +2793,17 @@ GS05_StatePhase_05_TODO::
     ld [rHintPopupSelection], a                   ; $55fe: $ea $33 $d8
     ld a, $01                                     ; $5601: $3e $01
     ld [rPuzzleFlowVariant_Unsure], a             ; $5603: $ea $05 $d8
-    call Call_001_5732                            ; $5606: $cd $32 $57
-    call Call_001_5bb0                            ; $5609: $cd $b0 $5b
-    call Call_001_5860                            ; $560c: $cd $60 $58
-    call Call_001_588a                            ; $560f: $cd $8a $58
+    call GS05_LoadEasyPicrossPuzzleSelectCursorForSelectedSaveSlot; $5606: $cd $32 $57
+    call GS05_LoadSelectedEasyPicrossPuzzleStatusAndTimeDataRecord; $5609: $cd $b0 $5b
+    call GS05_IncrementSelectedEasyPicrossPuzzleClearCountIfAllowed; $560c: $cd $60 $58
+    call GS05_UpdateSelectedEasyPicrossPuzzleClearStatusAndTimes; $560f: $cd $8a $58
     call RefreshSaveValidationChecksumsAndMirrors ; $5612: $cd $1f $1b
     ld a, $04                                     ; $5615: $3e $04
     ld [rStatePhase_Current], a                   ; $5617: $ea $35 $d6
     ret                                           ; $561a: $c9
 
 
-GS05_StatePhase_02_TODO::
+GS05_StatePhase_02_ConfirmSelectionTransitionToPuzzle::
     ld bc, $003c                                  ; $561b: $01 $3c $00
     call DelayFramesByBC                          ; $561e: $cd $fa $05
     ld a, $05                                     ; $5621: $3e $05
@@ -3653,9 +2821,9 @@ GS05_StatePhase_02_TODO::
     ld de, $0083                                  ; $563e: $11 $83 $00
     call PlayScreenTransitionFadeOut              ; $5641: $cd $4e $04
     call DisableLCDAtVBlank                       ; $5644: $cd $83 $04
-    call Call_001_5749                            ; $5647: $cd $49 $57
-    call Call_001_5bb0                            ; $564a: $cd $b0 $5b
-    call Call_001_5860                            ; $564d: $cd $60 $58
+    call GS05_SaveEasyPicrossPuzzleSelectCursorForSelectedSaveSlot; $5647: $cd $49 $57
+    call GS05_LoadSelectedEasyPicrossPuzzleStatusAndTimeDataRecord; $564a: $cd $b0 $5b
+    call GS05_IncrementSelectedEasyPicrossPuzzleClearCountIfAllowed; $564d: $cd $60 $58
     ld a, [rPuzzleAndMenuCursorRow]               ; $5650: $fa $37 $d6
     swap a                                        ; $5653: $cb $37
     ld c, a                                       ; $5655: $4f
@@ -3664,7 +2832,7 @@ GS05_StatePhase_02_TODO::
     or c                                          ; $565b: $b1
     ld c, a                                       ; $565c: $4f
     ld b, $00                                     ; $565d: $06 $00
-    ld hl, GS05_TODO_Data1                        ; $565f: $21 $77 $56
+    ld hl, GS05_EasyPicrossPuzzleDataIndexTableByGridPosition; $565f: $21 $77 $56
     add hl, bc                                    ; $5662: $09
     ld a, [hl+]                                   ; $5663: $2a
     ld [rPuzzleDataIndexLow], a                   ; $5664: $ea $07 $d8
@@ -3677,7 +2845,7 @@ GS05_StatePhase_02_TODO::
     jp RefreshSaveValidationChecksumsAndMirrors   ; $5674: $c3 $1f $1b
 
 
-GS05_TODO_Data1::
+GS05_EasyPicrossPuzzleDataIndexTableByGridPosition::
     db $01, $00, $02, $00, $03, $00, $04, $00
     db $05, $00, $06, $00, $07, $00, $08, $00
     db $09, $00, $0a, $00, $0b, $00, $0c, $00
@@ -3695,7 +2863,7 @@ GS05_TODO_Data1::
     db $39, $00, $3a, $00, $3b, $00, $3c, $00
     db $3d, $00, $3e, $00, $3f, $00, $40, $00
 
-GS05_StatePhase_03_TODO::
+GS05_StatePhase_03_CancelSelectionTransitionToGameSelect::
     ld bc, $003c                                  ; $56f7: $01 $3c $00
     call DelayFramesByBC                          ; $56fa: $cd $fa $05
     ld a, $05                                     ; $56fd: $3e $05
@@ -3713,7 +2881,7 @@ GS05_StatePhase_03_TODO::
     ld de, $0083                                  ; $571a: $11 $83 $00
     call PlayScreenTransitionFadeOut              ; $571d: $cd $4e $04
     call DisableLCDAtVBlank                       ; $5720: $cd $83 $04
-    call Call_001_5749                            ; $5723: $cd $49 $57
+    call GS05_SaveEasyPicrossPuzzleSelectCursorForSelectedSaveSlot; $5723: $cd $49 $57
     xor a                                         ; $5726: $af
     ld [rStatePhase_Current], a                   ; $5727: $ea $35 $d6
     ld a, $02                                     ; $572a: $3e $02
@@ -3721,37 +2889,37 @@ GS05_StatePhase_03_TODO::
     jp RefreshSaveValidationChecksumsAndMirrors   ; $572f: $c3 $1f $1b
 
 
-Call_001_5732:
+GS05_LoadEasyPicrossPuzzleSelectCursorForSelectedSaveSlot::
     ld a, [rSelectedSaveSlotIndex]                ; $5732: $fa $65 $a0
     ld c, a                                       ; $5735: $4f
     ld b, $00                                     ; $5736: $06 $00
-    ld hl, $a081                                  ; $5738: $21 $81 $a0
+    ld hl, rSaveSlot1EasyPicrossPuzzleSelectCursorColumn; $5738: $21 $81 $a0
     add hl, bc                                    ; $573b: $09
     ld a, [hl]                                    ; $573c: $7e
     ld [rPuzzleCursorColumn], a                   ; $573d: $ea $36 $d6
-    ld hl, $a084                                  ; $5740: $21 $84 $a0
+    ld hl, rSaveSlot1EasyPicrossPuzzleSelectCursorRow; $5740: $21 $84 $a0
     add hl, bc                                    ; $5743: $09
     ld a, [hl]                                    ; $5744: $7e
     ld [rPuzzleAndMenuCursorRow], a               ; $5745: $ea $37 $d6
     ret                                           ; $5748: $c9
 
 
-Call_001_5749:
+GS05_SaveEasyPicrossPuzzleSelectCursorForSelectedSaveSlot::
     ld a, [rSelectedSaveSlotIndex]                ; $5749: $fa $65 $a0
     ld c, a                                       ; $574c: $4f
     ld b, $00                                     ; $574d: $06 $00
-    ld hl, $a081                                  ; $574f: $21 $81 $a0
+    ld hl, rSaveSlot1EasyPicrossPuzzleSelectCursorColumn; $574f: $21 $81 $a0
     add hl, bc                                    ; $5752: $09
     ld a, [rPuzzleCursorColumn]                   ; $5753: $fa $36 $d6
     ld [hl], a                                    ; $5756: $77
-    ld hl, $a084                                  ; $5757: $21 $84 $a0
+    ld hl, rSaveSlot1EasyPicrossPuzzleSelectCursorRow; $5757: $21 $84 $a0
     add hl, bc                                    ; $575a: $09
     ld a, [rPuzzleAndMenuCursorRow]               ; $575b: $fa $37 $d6
     ld [hl], a                                    ; $575e: $77
     ret                                           ; $575f: $c9
 
 
-Call_001_5760:
+GS05_DrawEasyPicrossPuzzleSelectCursorSpriteByFrame::
     push af                                       ; $5760: $f5
     ld a, [rPuzzleCursorColumn]                   ; $5761: $fa $36 $d6
     swap a                                        ; $5764: $cb $37
@@ -3768,7 +2936,7 @@ Call_001_5760:
     jp CopyOAMSpriteById                          ; $5778: $c3 $ce $20
 
 
-Call_001_577b:
+GS05_HandleEasyPicrossPuzzleSelectDirectionalInput::
     ld a, [rInputButtonsPressedOrRepeated]        ; $577b: $fa $22 $c3
     and $f0                                       ; $577e: $e6 $f0
     ret z                                         ; $5780: $c8
@@ -3778,50 +2946,50 @@ Call_001_577b:
     call CallSoundEffectDispatcher                ; $5785: $cd $b6 $03
     ld hl, rInputButtonsPressedOrRepeated         ; $5788: $21 $22 $c3
     bit 5, [hl]                                   ; $578b: $cb $6e
-    jr z, jr_001_5798                             ; $578d: $28 $09
+    jr z, .CheckRight                             ; $578d: $28 $09
 
     ld a, [rPuzzleCursorColumn]                   ; $578f: $fa $36 $d6
     dec a                                         ; $5792: $3d
     and $07                                       ; $5793: $e6 $07
     ld [rPuzzleCursorColumn], a                   ; $5795: $ea $36 $d6
 
-jr_001_5798:
+.CheckRight:
     bit 4, [hl]                                   ; $5798: $cb $66
-    jr z, jr_001_57a5                             ; $579a: $28 $09
+    jr z, .CheckUp                                ; $579a: $28 $09
 
     ld a, [rPuzzleCursorColumn]                   ; $579c: $fa $36 $d6
     inc a                                         ; $579f: $3c
     and $07                                       ; $57a0: $e6 $07
     ld [rPuzzleCursorColumn], a                   ; $57a2: $ea $36 $d6
 
-jr_001_57a5:
+.CheckUp:
     bit 6, [hl]                                   ; $57a5: $cb $76
-    jr z, jr_001_57b2                             ; $57a7: $28 $09
+    jr z, .CheckDown                              ; $57a7: $28 $09
 
     ld a, [rPuzzleAndMenuCursorRow]               ; $57a9: $fa $37 $d6
     dec a                                         ; $57ac: $3d
     and $07                                       ; $57ad: $e6 $07
     ld [rPuzzleAndMenuCursorRow], a               ; $57af: $ea $37 $d6
 
-jr_001_57b2:
+.CheckDown:
     bit 7, [hl]                                   ; $57b2: $cb $7e
-    jr z, jr_001_57bf                             ; $57b4: $28 $09
+    jr z, .Return                                 ; $57b4: $28 $09
 
     ld a, [rPuzzleAndMenuCursorRow]               ; $57b6: $fa $37 $d6
     inc a                                         ; $57b9: $3c
     and $07                                       ; $57ba: $e6 $07
     ld [rPuzzleAndMenuCursorRow], a               ; $57bc: $ea $37 $d6
 
-jr_001_57bf:
+.Return:
     ret                                           ; $57bf: $c9
 
 
-Call_001_57c0:
+GS05_DrawCompletedPuzzleMarkersForSelectedSaveSlot::
     ld a, [rSelectedSaveSlotIndex]                ; $57c0: $fa $65 $a0
     sla a                                         ; $57c3: $cb $27
     ld c, a                                       ; $57c5: $4f
     ld b, $00                                     ; $57c6: $06 $00
-    ld hl, GS05_TODO_Data3                        ; $57c8: $21 $a4 $5c
+    ld hl, GS05_EasyPicrossPuzzleStatusGridPointerTableBySaveSlot; $57c8: $21 $a4 $5c
     add hl, bc                                    ; $57cb: $09
     ld a, [hl+]                                   ; $57cc: $2a
     ld h, [hl]                                    ; $57cd: $66
@@ -3836,7 +3004,7 @@ jr_001_57d3:
     bit 7, a                                      ; $57d4: $cb $7f
     jr z, jr_001_57db                             ; $57d6: $28 $03
 
-    call Call_001_581c                            ; $57d8: $cd $1c $58
+    call GS05_DrawCompletedPuzzleMarkerAtGridPosition; $57d8: $cd $1c $58
 
 jr_001_57db:
     inc c                                         ; $57db: $0c
@@ -3852,52 +3020,52 @@ jr_001_57db:
     ret                                           ; $57e7: $c9
 
 
-Call_001_57e8:
+GS05_DrawCompletedPuzzleMarkersForSelectedSaveSlotExceptCurrentSelection::
     ld a, [rSelectedSaveSlotIndex]                ; $57e8: $fa $65 $a0
     sla a                                         ; $57eb: $cb $27
     ld c, a                                       ; $57ed: $4f
     ld b, $00                                     ; $57ee: $06 $00
-    ld hl, GS05_TODO_Data3                        ; $57f0: $21 $a4 $5c
+    ld hl, GS05_EasyPicrossPuzzleStatusGridPointerTableBySaveSlot; $57f0: $21 $a4 $5c
     add hl, bc                                    ; $57f3: $09
     ld a, [hl+]                                   ; $57f4: $2a
     ld h, [hl]                                    ; $57f5: $66
     ld l, a                                       ; $57f6: $6f
     ld b, $00                                     ; $57f7: $06 $00
 
-jr_001_57f9:
+.BeginNextStatusGridRowScan:
     ld c, $00                                     ; $57f9: $0e $00
 
-jr_001_57fb:
+.ScanStatusGridCellForCompletedMarker:
     ld a, [hl+]                                   ; $57fb: $2a
     bit 7, a                                      ; $57fc: $cb $7f
-    jr z, jr_001_580f                             ; $57fe: $28 $0f
+    jr z, .AdvanceToNextStatusGridColumn          ; $57fe: $28 $0f
 
     ld a, [rPuzzleCursorColumn]                   ; $5800: $fa $36 $d6
     cp c                                          ; $5803: $b9
-    jr nz, jr_001_580c                            ; $5804: $20 $06
+    jr nz, .DrawCompletedMarkerForNonSelectedCell ; $5804: $20 $06
 
     ld a, [rPuzzleAndMenuCursorRow]               ; $5806: $fa $37 $d6
     cp b                                          ; $5809: $b8
-    jr z, jr_001_580f                             ; $580a: $28 $03
+    jr z, .AdvanceToNextStatusGridColumn          ; $580a: $28 $03
 
-jr_001_580c:
-    call Call_001_581c                            ; $580c: $cd $1c $58
+.DrawCompletedMarkerForNonSelectedCell:
+    call GS05_DrawCompletedPuzzleMarkerAtGridPosition; $580c: $cd $1c $58
 
-jr_001_580f:
+.AdvanceToNextStatusGridColumn:
     inc c                                         ; $580f: $0c
     ld a, c                                       ; $5810: $79
     cp $08                                        ; $5811: $fe $08
-    jr nz, jr_001_57fb                            ; $5813: $20 $e6
+    jr nz, .ScanStatusGridCellForCompletedMarker  ; $5813: $20 $e6
 
     inc b                                         ; $5815: $04
     ld a, b                                       ; $5816: $78
     cp $08                                        ; $5817: $fe $08
-    jr nz, jr_001_57f9                            ; $5819: $20 $de
+    jr nz, .BeginNextStatusGridRowScan            ; $5819: $20 $de
 
     ret                                           ; $581b: $c9
 
 
-Call_001_581c:
+GS05_DrawCompletedPuzzleMarkerAtGridPosition::
     push bc                                       ; $581c: $c5
     push hl                                       ; $581d: $e5
     ld l, b                                       ; $581e: $68
@@ -3918,29 +3086,29 @@ Call_001_581c:
     ld bc, $98c4                                  ; $583a: $01 $c4 $98
     add hl, bc                                    ; $583d: $09
     ld a, h                                       ; $583e: $7c
-    ld [rGS01_SaveSlotTemplateCommandStreamStart], a; $583f: $ea $00 $c1
+    ld [rSharedSingleTileCommandStreamDestHigh], a; $583f: $ea $00 $c1
     ld a, l                                       ; $5842: $7d
-    ld [$c101], a                                 ; $5843: $ea $01 $c1
+    ld [rSharedSingleTileCommandStreamDestLow], a ; $5843: $ea $01 $c1
     ld a, $01                                     ; $5846: $3e $01
-    ld [$c102], a                                 ; $5848: $ea $02 $c1
+    ld [rSharedSingleTileCommandStreamTileCount], a; $5848: $ea $02 $c1
     ld a, $55                                     ; $584b: $3e $55
-    ld [rGS01_SaveSlotTemplateRow1EasyPicrossIconPairLeft], a; $584d: $ea $03 $c1
+    ld [rSharedSingleTileCommandStreamTileId], a  ; $584d: $ea $03 $c1
     ld a, $00                                     ; $5850: $3e $00
-    ld [$c104], a                                 ; $5852: $ea $04 $c1
+    ld [rSharedSingleTileCommandStreamTerminator], a; $5852: $ea $04 $c1
     ld a, $00                                     ; $5855: $3e $00
-    ld bc, rGS01_SaveSlotTemplateCommandStreamStart; $5857: $01 $00 $c1
+    ld bc, rSharedSingleTileCommandStreamDestHigh ; $5857: $01 $00 $c1
     call QueueCommandStreamAndProcessIfLCDOff     ; $585a: $cd $38 $07
     pop hl                                        ; $585d: $e1
     pop bc                                        ; $585e: $c1
     ret                                           ; $585f: $c9
 
 
-Call_001_5860:
+GS05_IncrementSelectedEasyPicrossPuzzleClearCountIfAllowed::
     ld a, [rSelectedSaveSlotIndex]                ; $5860: $fa $65 $a0
     sla a                                         ; $5863: $cb $27
     ld c, a                                       ; $5865: $4f
     ld b, $00                                     ; $5866: $06 $00
-    ld hl, GS05_TODO_Data3                        ; $5868: $21 $a4 $5c
+    ld hl, GS05_EasyPicrossPuzzleStatusGridPointerTableBySaveSlot; $5868: $21 $a4 $5c
     add hl, bc                                    ; $586b: $09
     ld a, [hl+]                                   ; $586c: $2a
     ld h, [hl]                                    ; $586d: $66
@@ -3966,14 +3134,14 @@ Call_001_5860:
     ret                                           ; $5889: $c9
 
 
-Call_001_588a:
+GS05_UpdateSelectedEasyPicrossPuzzleClearStatusAndTimes::
     xor a                                         ; $588a: $af
     ld [$d842], a                                 ; $588b: $ea $42 $d8
     ld a, [rSelectedSaveSlotIndex]                ; $588e: $fa $65 $a0
     sla a                                         ; $5891: $cb $27
     ld c, a                                       ; $5893: $4f
     ld b, $00                                     ; $5894: $06 $00
-    ld hl, GS05_TODO_Data3                        ; $5896: $21 $a4 $5c
+    ld hl, GS05_EasyPicrossPuzzleStatusGridPointerTableBySaveSlot; $5896: $21 $a4 $5c
     add hl, bc                                    ; $5899: $09
     ld a, [hl+]                                   ; $589a: $2a
     ld h, [hl]                                    ; $589b: $66
@@ -3990,7 +3158,7 @@ Call_001_588a:
     add hl, bc                                    ; $58ae: $09
     bit 7, [hl]                                   ; $58af: $cb $7e
     push af                                       ; $58b1: $f5
-    jr nz, jr_001_58ff                            ; $58b2: $20 $4b
+    jr nz, .UpdateBestClearTime                   ; $58b2: $20 $4b
 
     push hl                                       ; $58b4: $e5
     ld a, [rSelectedSaveSlotIndex]                ; $58b5: $fa $65 $a0
@@ -4005,7 +3173,7 @@ Call_001_588a:
     sla a                                         ; $58c6: $cb $27
     ld c, a                                       ; $58c8: $4f
     ld b, $00                                     ; $58c9: $06 $00
-    ld hl, GS05_TODO_Data2                        ; $58cb: $21 $9e $5c
+    ld hl, GS05_EasyPicrossPuzzleTimeDataPointerTableBySaveSlot; $58cb: $21 $9e $5c
     add hl, bc                                    ; $58ce: $09
     ld a, [hl+]                                   ; $58cf: $2a
     ld h, [hl]                                    ; $58d0: $66
@@ -4023,7 +3191,7 @@ Call_001_588a:
     ld c, a                                       ; $58e4: $4f
     ld b, $00                                     ; $58e5: $06 $00
     add hl, bc                                    ; $58e7: $09
-    call Call_001_5154                            ; $58e8: $cd $54 $51
+    call EncodePuzzleTimerToPackedClearTimeBC     ; $58e8: $cd $54 $51
     ld [hl], c                                    ; $58eb: $71
     inc hl                                        ; $58ec: $23
     ld a, [hl]                                    ; $58ed: $7e
@@ -4034,16 +3202,16 @@ Call_001_588a:
     ld [$d842], a                                 ; $58f4: $ea $42 $d8
     ld a, [rHintPopupSelection]                   ; $58f7: $fa $33 $d8
     and a                                         ; $58fa: $a7
-    jr nz, jr_001_58ff                            ; $58fb: $20 $02
+    jr nz, .UpdateBestClearTime                   ; $58fb: $20 $02
 
     set 3, [hl]                                   ; $58fd: $cb $de
 
-jr_001_58ff:
+.UpdateBestClearTime:
     ld a, [rSelectedSaveSlotIndex]                ; $58ff: $fa $65 $a0
     sla a                                         ; $5902: $cb $27
     ld c, a                                       ; $5904: $4f
     ld b, $00                                     ; $5905: $06 $00
-    ld hl, GS05_TODO_Data2                        ; $5907: $21 $9e $5c
+    ld hl, GS05_EasyPicrossPuzzleTimeDataPointerTableBySaveSlot; $5907: $21 $9e $5c
     add hl, bc                                    ; $590a: $09
     ld a, [hl+]                                   ; $590b: $2a
     ld h, [hl]                                    ; $590c: $66
@@ -4063,33 +3231,33 @@ jr_001_58ff:
     add hl, bc                                    ; $5923: $09
     inc hl                                        ; $5924: $23
     push hl                                       ; $5925: $e5
-    call Call_001_5154                            ; $5926: $cd $54 $51
+    call EncodePuzzleTimerToPackedClearTimeBC     ; $5926: $cd $54 $51
     ld a, [$d842]                                 ; $5929: $fa $42 $d8
     and a                                         ; $592c: $a7
-    jr nz, jr_001_5947                            ; $592d: $20 $18
+    jr nz, .StoreNewBestClearTime                 ; $592d: $20 $18
 
     ld a, [hl+]                                   ; $592f: $2a
     and $70                                       ; $5930: $e6 $70
     swap a                                        ; $5932: $cb $37
     cp b                                          ; $5934: $b8
-    jr z, jr_001_593b                             ; $5935: $28 $04
+    jr z, .CompareBestClearTimeLowByteAndHintUsedOnTie; $5935: $28 $04
 
-    jr nc, jr_001_595b                            ; $5937: $30 $22
+    jr nc, .SkipBestClearTimeUpdate               ; $5937: $30 $22
 
-    jr jr_001_5947                                ; $5939: $18 $0c
+    jr .StoreNewBestClearTime                     ; $5939: $18 $0c
 
-jr_001_593b:
+.CompareBestClearTimeLowByteAndHintUsedOnTie:
     ld a, [hl]                                    ; $593b: $7e
     cp c                                          ; $593c: $b9
-    jr c, jr_001_5947                             ; $593d: $38 $08
+    jr c, .StoreNewBestClearTime                  ; $593d: $38 $08
 
-    jr nz, jr_001_595b                            ; $593f: $20 $1a
+    jr nz, .SkipBestClearTimeUpdate               ; $593f: $20 $1a
 
     ld a, [rHintPopupSelection]                   ; $5941: $fa $33 $d8
     and a                                         ; $5944: $a7
-    jr z, jr_001_595b                             ; $5945: $28 $14
+    jr z, .SkipBestClearTimeUpdate                ; $5945: $28 $14
 
-jr_001_5947:
+.StoreNewBestClearTime:
     pop hl                                        ; $5947: $e1
     ld a, [hl]                                    ; $5948: $7e
     and $0f                                       ; $5949: $e6 $0f
@@ -4099,26 +3267,26 @@ jr_001_5947:
     ld [hl], c                                    ; $594f: $71
     ld a, [rHintPopupSelection]                   ; $5950: $fa $33 $d8
     and a                                         ; $5953: $a7
-    jr nz, jr_001_595c                            ; $5954: $20 $06
+    jr nz, .ReturnFromClearStatusAndTimeUpdate    ; $5954: $20 $06
 
     dec hl                                        ; $5956: $2b
     set 7, [hl]                                   ; $5957: $cb $fe
-    jr jr_001_595c                                ; $5959: $18 $01
+    jr .ReturnFromClearStatusAndTimeUpdate        ; $5959: $18 $01
 
-jr_001_595b:
+.SkipBestClearTimeUpdate:
     pop hl                                        ; $595b: $e1
 
-jr_001_595c:
+.ReturnFromClearStatusAndTimeUpdate:
     pop af                                        ; $595c: $f1
     ret                                           ; $595d: $c9
 
 
-Call_001_595e:
+GS05_DrawSelectedEasyPicrossPuzzleInfoPanel::
     ld a, [rSelectedSaveSlotIndex]                ; $595e: $fa $65 $a0
     sla a                                         ; $5961: $cb $27
     ld c, a                                       ; $5963: $4f
     ld b, $00                                     ; $5964: $06 $00
-    ld hl, GS05_TODO_Data3                        ; $5966: $21 $a4 $5c
+    ld hl, GS05_EasyPicrossPuzzleStatusGridPointerTableBySaveSlot; $5966: $21 $a4 $5c
     add hl, bc                                    ; $5969: $09
     ld a, [hl+]                                   ; $596a: $2a
     ld h, [hl]                                    ; $596b: $66
@@ -4142,23 +3310,23 @@ Call_001_595e:
     call CopyOAMSpriteById                        ; $598b: $cd $ce $20
     pop af                                        ; $598e: $f1
     cp $0a                                        ; $598f: $fe $0a
-    jr z, jr_001_599b                             ; $5991: $28 $08
+    jr z, .AfterTimesClearedDigits                ; $5991: $28 $08
 
     add $51                                       ; $5993: $c6 $51
     ld bc, $4018                                  ; $5995: $01 $18 $40
     call CopyOAMSpriteById                        ; $5998: $cd $ce $20
 
-jr_001_599b:
+.AfterTimesClearedDigits:
     pop af                                        ; $599b: $f1
     pop af                                        ; $599c: $f1
     bit 7, a                                      ; $599d: $cb $7f
-    jp z, Jump_001_5a72                           ; $599f: $ca $72 $5a
+    jp z, GS05_DrawSelectedEasyPicrossPuzzleInfoPanel_DrawUnclearedPlaceholders; $599f: $ca $72 $5a
 
     ld a, [rSelectedSaveSlotIndex]                ; $59a2: $fa $65 $a0
     sla a                                         ; $59a5: $cb $27
     ld c, a                                       ; $59a7: $4f
     ld b, $00                                     ; $59a8: $06 $00
-    ld hl, GS05_TODO_Data2                        ; $59aa: $21 $9e $5c
+    ld hl, GS05_EasyPicrossPuzzleTimeDataPointerTableBySaveSlot; $59aa: $21 $9e $5c
     add hl, bc                                    ; $59ad: $09
     ld a, [hl+]                                   ; $59ae: $2a
     ld h, [hl]                                    ; $59af: $66
@@ -4179,7 +3347,7 @@ jr_001_599b:
     ld c, [hl]                                    ; $59c7: $4e
     inc hl                                        ; $59c8: $23
     ld b, [hl]                                    ; $59c9: $46
-    call Call_001_5182                            ; $59ca: $cd $82 $51
+    call DecodePackedPuzzleClearTimeToBCDDigits   ; $59ca: $cd $82 $51
     push bc                                       ; $59cd: $c5
     ld a, b                                       ; $59ce: $78
     and $f0                                       ; $59cf: $e6 $f0
@@ -4209,12 +3377,12 @@ jr_001_599b:
     ld bc, $2818                                  ; $59fd: $01 $18 $28
     call CopyOAMSpriteById                        ; $5a00: $cd $ce $20
     ld a, [hl]                                    ; $5a03: $7e
-    call Call_001_5c07                            ; $5a04: $cd $07 $5c
+    call GS05_UpdateFirstClearTimeHintUsedIconTile; $5a04: $cd $07 $5c
     ld a, [rSelectedSaveSlotIndex]                ; $5a07: $fa $65 $a0
     sla a                                         ; $5a0a: $cb $27
     ld c, a                                       ; $5a0c: $4f
     ld b, $00                                     ; $5a0d: $06 $00
-    ld hl, GS05_TODO_Data2                        ; $5a0f: $21 $9e $5c
+    ld hl, GS05_EasyPicrossPuzzleTimeDataPointerTableBySaveSlot; $5a0f: $21 $9e $5c
     add hl, bc                                    ; $5a12: $09
     ld a, [hl+]                                   ; $5a13: $2a
     ld h, [hl]                                    ; $5a14: $66
@@ -4238,7 +3406,7 @@ jr_001_599b:
     swap a                                        ; $5a30: $cb $37
     ld b, a                                       ; $5a32: $47
     ld c, [hl]                                    ; $5a33: $4e
-    call Call_001_5182                            ; $5a34: $cd $82 $51
+    call DecodePackedPuzzleClearTimeToBCDDigits   ; $5a34: $cd $82 $51
     push bc                                       ; $5a37: $c5
     ld a, b                                       ; $5a38: $78
     and $f0                                       ; $5a39: $e6 $f0
@@ -4269,10 +3437,10 @@ jr_001_599b:
     call CopyOAMSpriteById                        ; $5a6a: $cd $ce $20
     dec hl                                        ; $5a6d: $2b
     ld a, [hl]                                    ; $5a6e: $7e
-    jp Jump_001_5c2c                              ; $5a6f: $c3 $2c $5c
+    jp GS05_UpdateBestClearTimeHintUsedIconTile   ; $5a6f: $c3 $2c $5c
 
 
-Jump_001_5a72:
+GS05_DrawSelectedEasyPicrossPuzzleInfoPanel_DrawUnclearedPlaceholders::
     ld a, $80                                     ; $5a72: $3e $80
     ld bc, $0818                                  ; $5a74: $01 $18 $08
     call CopyOAMSpriteById                        ; $5a77: $cd $ce $20
@@ -4298,12 +3466,12 @@ Jump_001_5a72:
     ld bc, $8818                                  ; $5aac: $01 $18 $88
     call CopyOAMSpriteById                        ; $5aaf: $cd $ce $20
     xor a                                         ; $5ab2: $af
-    call Call_001_5c07                            ; $5ab3: $cd $07 $5c
-    jp Jump_001_5c2c                              ; $5ab6: $c3 $2c $5c
+    call GS05_UpdateFirstClearTimeHintUsedIconTile; $5ab3: $cd $07 $5c
+    jp GS05_UpdateBestClearTimeHintUsedIconTile   ; $5ab6: $c3 $2c $5c
 
 
-Call_001_5ab9:
-    ld a, [$d84c]                                 ; $5ab9: $fa $4c $d8
+GS05_DrawSelectedEasyPicrossPuzzleInfoPanelFromSelectedPuzzleCache::
+    ld a, [rSelectedPuzzleStatusData]             ; $5ab9: $fa $4c $d8
     push af                                       ; $5abc: $f5
     and $7f                                       ; $5abd: $e6 $7f
     call SplitAToDecimalDigitsAndPushHundredsTens ; $5abf: $cd $72 $19
@@ -4312,23 +3480,23 @@ Call_001_5ab9:
     call CopyOAMSpriteById                        ; $5ac7: $cd $ce $20
     pop af                                        ; $5aca: $f1
     cp $0a                                        ; $5acb: $fe $0a
-    jr z, jr_001_5ad7                             ; $5acd: $28 $08
+    jr z, .AfterTimesClearedDigits                ; $5acd: $28 $08
 
     add $51                                       ; $5acf: $c6 $51
     ld bc, $4018                                  ; $5ad1: $01 $18 $40
     call CopyOAMSpriteById                        ; $5ad4: $cd $ce $20
 
-jr_001_5ad7:
+.AfterTimesClearedDigits:
     pop af                                        ; $5ad7: $f1
     pop af                                        ; $5ad8: $f1
     bit 7, a                                      ; $5ad9: $cb $7f
-    jp z, Jump_001_5b69                           ; $5adb: $ca $69 $5b
+    jp z, GS05_DrawSelectedEasyPicrossPuzzleInfoPanelFromSelectedPuzzleCache_DrawUnclearedPlaceholders; $5adb: $ca $69 $5b
 
-    ld hl, $d849                                  ; $5ade: $21 $49 $d8
+    ld hl, rSelectedPuzzleTimeDataRecordByte0     ; $5ade: $21 $49 $d8
     ld c, [hl]                                    ; $5ae1: $4e
     inc hl                                        ; $5ae2: $23
     ld b, [hl]                                    ; $5ae3: $46
-    call Call_001_5182                            ; $5ae4: $cd $82 $51
+    call DecodePackedPuzzleClearTimeToBCDDigits   ; $5ae4: $cd $82 $51
     push bc                                       ; $5ae7: $c5
     ld a, b                                       ; $5ae8: $78
     and $f0                                       ; $5ae9: $e6 $f0
@@ -4358,14 +3526,14 @@ jr_001_5ad7:
     ld bc, $2818                                  ; $5b17: $01 $18 $28
     call CopyOAMSpriteById                        ; $5b1a: $cd $ce $20
     ld a, [hl]                                    ; $5b1d: $7e
-    call Call_001_5c07                            ; $5b1e: $cd $07 $5c
-    ld hl, $d84a                                  ; $5b21: $21 $4a $d8
+    call GS05_UpdateFirstClearTimeHintUsedIconTile; $5b1e: $cd $07 $5c
+    ld hl, rSelectedPuzzleTimeDataRecordByte1     ; $5b21: $21 $4a $d8
     ld a, [hl+]                                   ; $5b24: $2a
     and $f0                                       ; $5b25: $e6 $f0
     swap a                                        ; $5b27: $cb $37
     ld b, a                                       ; $5b29: $47
     ld c, [hl]                                    ; $5b2a: $4e
-    call Call_001_5182                            ; $5b2b: $cd $82 $51
+    call DecodePackedPuzzleClearTimeToBCDDigits   ; $5b2b: $cd $82 $51
     push bc                                       ; $5b2e: $c5
     ld a, b                                       ; $5b2f: $78
     and $f0                                       ; $5b30: $e6 $f0
@@ -4396,10 +3564,10 @@ jr_001_5ad7:
     call CopyOAMSpriteById                        ; $5b61: $cd $ce $20
     dec hl                                        ; $5b64: $2b
     ld a, [hl]                                    ; $5b65: $7e
-    jp Jump_001_5c2c                              ; $5b66: $c3 $2c $5c
+    jp GS05_UpdateBestClearTimeHintUsedIconTile   ; $5b66: $c3 $2c $5c
 
 
-Jump_001_5b69:
+GS05_DrawSelectedEasyPicrossPuzzleInfoPanelFromSelectedPuzzleCache_DrawUnclearedPlaceholders::
     ld a, $80                                     ; $5b69: $3e $80
     ld bc, $0818                                  ; $5b6b: $01 $18 $08
     call CopyOAMSpriteById                        ; $5b6e: $cd $ce $20
@@ -4425,16 +3593,16 @@ Jump_001_5b69:
     ld bc, $8818                                  ; $5ba3: $01 $18 $88
     call CopyOAMSpriteById                        ; $5ba6: $cd $ce $20
     xor a                                         ; $5ba9: $af
-    call Call_001_5c07                            ; $5baa: $cd $07 $5c
-    jp Jump_001_5c2c                              ; $5bad: $c3 $2c $5c
+    call GS05_UpdateFirstClearTimeHintUsedIconTile; $5baa: $cd $07 $5c
+    jp GS05_UpdateBestClearTimeHintUsedIconTile   ; $5bad: $c3 $2c $5c
 
 
-Call_001_5bb0:
+GS05_LoadSelectedEasyPicrossPuzzleStatusAndTimeDataRecord::
     ld a, [rSelectedSaveSlotIndex]                ; $5bb0: $fa $65 $a0
     sla a                                         ; $5bb3: $cb $27
     ld c, a                                       ; $5bb5: $4f
     ld b, $00                                     ; $5bb6: $06 $00
-    ld hl, GS05_TODO_Data3                        ; $5bb8: $21 $a4 $5c
+    ld hl, GS05_EasyPicrossPuzzleStatusGridPointerTableBySaveSlot; $5bb8: $21 $a4 $5c
     add hl, bc                                    ; $5bbb: $09
     ld a, [hl+]                                   ; $5bbc: $2a
     ld h, [hl]                                    ; $5bbd: $66
@@ -4450,12 +3618,12 @@ Call_001_5bb0:
     ld b, $00                                     ; $5bce: $06 $00
     add hl, bc                                    ; $5bd0: $09
     ld a, [hl]                                    ; $5bd1: $7e
-    ld [$d84c], a                                 ; $5bd2: $ea $4c $d8
+    ld [rSelectedPuzzleStatusData], a             ; $5bd2: $ea $4c $d8
     ld a, [rSelectedSaveSlotIndex]                ; $5bd5: $fa $65 $a0
     sla a                                         ; $5bd8: $cb $27
     ld c, a                                       ; $5bda: $4f
     ld b, $00                                     ; $5bdb: $06 $00
-    ld hl, GS05_TODO_Data2                        ; $5bdd: $21 $9e $5c
+    ld hl, GS05_EasyPicrossPuzzleTimeDataPointerTableBySaveSlot; $5bdd: $21 $9e $5c
     add hl, bc                                    ; $5be0: $09
     ld a, [hl+]                                   ; $5be1: $2a
     ld h, [hl]                                    ; $5be2: $66
@@ -4474,87 +3642,89 @@ Call_001_5bb0:
     ld b, $00                                     ; $5bf7: $06 $00
     add hl, bc                                    ; $5bf9: $09
     ld a, [hl+]                                   ; $5bfa: $2a
-    ld [$d849], a                                 ; $5bfb: $ea $49 $d8
+    ld [rSelectedPuzzleTimeDataRecordByte0], a    ; $5bfb: $ea $49 $d8
     ld a, [hl+]                                   ; $5bfe: $2a
-    ld [$d84a], a                                 ; $5bff: $ea $4a $d8
+    ld [rSelectedPuzzleTimeDataRecordByte1], a    ; $5bff: $ea $4a $d8
     ld a, [hl]                                    ; $5c02: $7e
-    ld [$d84b], a                                 ; $5c03: $ea $4b $d8
+    ld [rSelectedPuzzleTimeDataRecordByte2], a    ; $5c03: $ea $4b $d8
     ret                                           ; $5c06: $c9
 
 
-Call_001_5c07:
+GS05_UpdateFirstClearTimeHintUsedIconTile::
     push af                                       ; $5c07: $f5
     push hl                                       ; $5c08: $e5
     bit 3, a                                      ; $5c09: $cb $5f
-    jr z, jr_001_5c17                             ; $5c0b: $28 $0a
+    jr z, .DrawFirstClearTimeHintUsedBlankTile    ; $5c0b: $28 $0a
 
     ld a, $01                                     ; $5c0d: $3e $01
-    ld bc, $5c22                                  ; $5c0f: $01 $22 $5c
+    ld bc, GS05_FirstClearTimeHintUsedIconCommandStream; $5c0f: $01 $22 $5c
     call QueueCommandStreamAndProcessIfLCDOff     ; $5c12: $cd $38 $07
-    jr jr_001_5c1f                                ; $5c15: $18 $08
+    jr .ReturnFromFirstClearTimeHintUsedTileUpdate; $5c15: $18 $08
 
-jr_001_5c17:
+.DrawFirstClearTimeHintUsedBlankTile:
     ld a, $01                                     ; $5c17: $3e $01
-    ld bc, $5c27                                  ; $5c19: $01 $27 $5c
+    ld bc, GS05_FirstClearTimeHintUsedBlankCommandStream; $5c19: $01 $27 $5c
     call QueueCommandStreamAndProcessIfLCDOff     ; $5c1c: $cd $38 $07
 
-jr_001_5c1f:
+.ReturnFromFirstClearTimeHintUsedTileUpdate:
     pop hl                                        ; $5c1f: $e1
     pop af                                        ; $5c20: $f1
     ret                                           ; $5c21: $c9
 
 
-    sbc b                                         ; $5c22: $98
-    ld h, [hl]                                    ; $5c23: $66
-    ld bc, $002f                                  ; $5c24: $01 $2f $00
-    sbc b                                         ; $5c27: $98
-    ld h, [hl]                                    ; $5c28: $66
-    ld bc, $002b                                  ; $5c29: $01 $2b $00
+GS05_FirstClearTimeHintUsedIconCommandStream::
+    db $98, $66, $01, $2f
+    db $00
 
-Jump_001_5c2c:
+GS05_FirstClearTimeHintUsedBlankCommandStream::
+    db $98, $66, $01, $2b
+    db $00
+
+GS05_UpdateBestClearTimeHintUsedIconTile::
     push af                                       ; $5c2c: $f5
     push hl                                       ; $5c2d: $e5
     bit 7, a                                      ; $5c2e: $cb $7f
-    jr z, jr_001_5c3c                             ; $5c30: $28 $0a
+    jr z, .DrawBestClearTimeHintUsedBlankTile     ; $5c30: $28 $0a
 
     ld a, $01                                     ; $5c32: $3e $01
-    ld bc, $5c47                                  ; $5c34: $01 $47 $5c
+    ld bc, GS05_BestClearTimeHintUsedIconCommandStream; $5c34: $01 $47 $5c
     call QueueCommandStreamAndProcessIfLCDOff     ; $5c37: $cd $38 $07
-    jr jr_001_5c44                                ; $5c3a: $18 $08
+    jr .ReturnFromBestClearTimeHintUsedTileUpdate ; $5c3a: $18 $08
 
-jr_001_5c3c:
+.DrawBestClearTimeHintUsedBlankTile:
     ld a, $01                                     ; $5c3c: $3e $01
-    ld bc, $5c4c                                  ; $5c3e: $01 $4c $5c
+    ld bc, GS05_BestClearTimeHintUsedBlankCommandStream; $5c3e: $01 $4c $5c
     call QueueCommandStreamAndProcessIfLCDOff     ; $5c41: $cd $38 $07
 
-jr_001_5c44:
+.ReturnFromBestClearTimeHintUsedTileUpdate:
     pop hl                                        ; $5c44: $e1
     pop af                                        ; $5c45: $f1
     ret                                           ; $5c46: $c9
 
 
-    sbc b                                         ; $5c47: $98
-    ld [hl], d                                    ; $5c48: $72
-    ld bc, $002f                                  ; $5c49: $01 $2f $00
-    sbc b                                         ; $5c4c: $98
-    ld [hl], d                                    ; $5c4d: $72
-    ld bc, $002b                                  ; $5c4e: $01 $2b $00
+GS05_BestClearTimeHintUsedIconCommandStream::
+    db $98, $72, $01, $2f
+    db $00
 
-Jump_001_5c51:
+GS05_BestClearTimeHintUsedBlankCommandStream::
+    db $98, $72, $01, $2b
+    db $00
+
+GS05_AdvanceSelectionToNextUnclearedPuzzleIfPossible::
     ld a, [rPuzzleAndMenuCursorRow]               ; $5c51: $fa $37 $d6
     cp $07                                        ; $5c54: $fe $07
-    jr nz, jr_001_5c5e                            ; $5c56: $20 $06
+    jr nz, .CheckNextPuzzleClearStatus            ; $5c56: $20 $06
 
     ld a, [rPuzzleCursorColumn]                   ; $5c58: $fa $36 $d6
     cp $07                                        ; $5c5b: $fe $07
     ret z                                         ; $5c5d: $c8
 
-jr_001_5c5e:
+.CheckNextPuzzleClearStatus:
     ld a, [rSelectedSaveSlotIndex]                ; $5c5e: $fa $65 $a0
     sla a                                         ; $5c61: $cb $27
     ld c, a                                       ; $5c63: $4f
     ld b, $00                                     ; $5c64: $06 $00
-    ld hl, GS05_TODO_Data3                        ; $5c66: $21 $a4 $5c
+    ld hl, GS05_EasyPicrossPuzzleStatusGridPointerTableBySaveSlot; $5c66: $21 $a4 $5c
     add hl, bc                                    ; $5c69: $09
     ld a, [hl+]                                   ; $5c6a: $2a
     ld h, [hl]                                    ; $5c6b: $66
@@ -4576,14 +3746,14 @@ jr_001_5c5e:
     ld a, [rPuzzleCursorColumn]                   ; $5c83: $fa $36 $d6
     inc a                                         ; $5c86: $3c
     cp $08                                        ; $5c87: $fe $08
-    jr nz, jr_001_5c93                            ; $5c89: $20 $08
+    jr nz, .StoreAdvancedSelectionAndPlayMoveSfx  ; $5c89: $20 $08
 
     ld a, [rPuzzleAndMenuCursorRow]               ; $5c8b: $fa $37 $d6
     inc a                                         ; $5c8e: $3c
     ld [rPuzzleAndMenuCursorRow], a               ; $5c8f: $ea $37 $d6
     xor a                                         ; $5c92: $af
 
-jr_001_5c93:
+.StoreAdvancedSelectionAndPlayMoveSfx:
     ld [rPuzzleCursorColumn], a                   ; $5c93: $ea $36 $d6
     ld c, $0a                                     ; $5c96: $0e $0a
     ld a, $02                                     ; $5c98: $3e $02
@@ -4591,17 +3761,15 @@ jr_001_5c93:
     ret                                           ; $5c9d: $c9
 
 
-GS05_TODO_Data2::
+GS05_EasyPicrossPuzzleTimeDataPointerTableBySaveSlot::
     db $87, $a0
     db $47, $a1
     db $07, $a2
 
-GS05_TODO_Data3::
+GS05_EasyPicrossPuzzleStatusGridPointerTableBySaveSlot::
     db $c7, $a2
     db $07, $a3
     db $47, $a3
-
-SETCHARMAP messages
 
 LetsTryThisOneText::
     db "Let's try this one.", $ff, $ff
@@ -4988,8 +4156,8 @@ jr_001_6008:
     and a                                         ; $600b: $a7
     jr z, jr_001_6059                             ; $600c: $28 $4b
 
-    call Call_001_5732                            ; $600e: $cd $32 $57
-    call Call_001_588a                            ; $6011: $cd $8a $58
+    call GS05_LoadEasyPicrossPuzzleSelectCursorForSelectedSaveSlot; $600e: $cd $32 $57
+    call GS05_UpdateSelectedEasyPicrossPuzzleClearStatusAndTimes; $6011: $cd $8a $58
     call RefreshSaveValidationChecksumsAndMirrors ; $6014: $cd $1f $1b
     ld c, $00                                     ; $6017: $0e $00
     ld a, $01                                     ; $6019: $3e $01
@@ -5070,8 +4238,8 @@ jr_001_60a9:
     and a                                         ; $60ac: $a7
     jp z, Jump_001_613a                           ; $60ad: $ca $3a $61
 
-    call Call_001_5732                            ; $60b0: $cd $32 $57
-    call Call_001_588a                            ; $60b3: $cd $8a $58
+    call GS05_LoadEasyPicrossPuzzleSelectCursorForSelectedSaveSlot; $60b0: $cd $32 $57
+    call GS05_UpdateSelectedEasyPicrossPuzzleClearStatusAndTimes; $60b3: $cd $8a $58
     call RefreshSaveValidationChecksumsAndMirrors ; $60b6: $cd $1f $1b
     ld c, $00                                     ; $60b9: $0e $00
     ld a, $01                                     ; $60bb: $3e $01
@@ -5109,13 +4277,13 @@ jr_001_60e0:
     ld a, [rSelectedSaveSlotIndex]                ; $6105: $fa $65 $a0
     ld c, a                                       ; $6108: $4f
     ld b, $00                                     ; $6109: $06 $00
-    ld hl, $a081                                  ; $610b: $21 $81 $a0
+    ld hl, rSaveSlot1EasyPicrossPuzzleSelectCursorColumn; $610b: $21 $81 $a0
     add hl, bc                                    ; $610e: $09
     ld a, [hl]                                    ; $610f: $7e
     sla a                                         ; $6110: $cb $27
     ld c, a                                       ; $6112: $4f
     ld b, $00                                     ; $6113: $06 $00
-    ld hl, $616b                                  ; $6115: $21 $6b $61
+    ld hl, LetterTextPointerTable                 ; $6115: $21 $6b $61
     add hl, bc                                    ; $6118: $09
     ld a, [hl+]                                   ; $6119: $2a
     ld [rMessageScriptStreamPointerLow], a        ; $611a: $ea $2d $d8
@@ -5159,21 +4327,15 @@ Jump_001_613a:
     ret                                           ; $616a: $c9
 
 
-    ld l, $5d                                     ; $616b: $2e $5d
-    jr c, @+$5f                                   ; $616d: $38 $5d
-
-    ld b, d                                       ; $616f: $42
-    ld e, l                                       ; $6170: $5d
-    ld c, h                                       ; $6171: $4c
-    ld e, l                                       ; $6172: $5d
-    ld d, [hl]                                    ; $6173: $56
-    ld e, l                                       ; $6174: $5d
-    ld h, b                                       ; $6175: $60
-    ld e, l                                       ; $6176: $5d
-    ld l, d                                       ; $6177: $6a
-    ld e, l                                       ; $6178: $5d
-    ld [hl], h                                    ; $6179: $74
-    ld e, l                                       ; $617a: $5d
+LetterTextPointerTable::
+    db $2e, $5d
+    db $38, $5d
+    db $42, $5d
+    db $4c, $5d
+    db $56, $5d
+    db $60, $5d
+    db $6a, $5d
+    db $74, $5d
 
 GS08_StatePhase_04_TODO::
     ld a, [rInputButtonsPressed]                  ; $617b: $fa $1e $c3
@@ -6278,7 +5440,7 @@ LoadGameBoardTileData::
     jr nz, Load10x10GameBoardTileData             ; $69be: $20 $36
 
     ld a, $07                                     ; $69c0: $3e $07
-    ld hl, $4000                                  ; $69c2: $21 $00 $40
+    ld hl, GS05_EasyPicrossCompletionMessage      ; $69c2: $21 $00 $40
     ld de, $8000                                  ; $69c5: $11 $00 $80
     ld bc, $1800                                  ; $69c8: $01 $00 $18
     call BankedTileCopy                           ; $69cb: $cd $e4 $04
@@ -6303,7 +5465,7 @@ Load10x10GameBoardTileData::
     jr nz, Load15x15GameBoardTileData             ; $69f8: $20 $28
 
     ld a, $08                                     ; $69fa: $3e $08
-    ld hl, $4000                                  ; $69fc: $21 $00 $40
+    ld hl, GS05_EasyPicrossCompletionMessage      ; $69fc: $21 $00 $40
     ld de, $8000                                  ; $69ff: $11 $00 $80
     ld bc, $1800                                  ; $6a02: $01 $00 $18
     call BankedTileCopy                           ; $6a05: $cd $e4 $04
@@ -6320,7 +5482,7 @@ Load10x10GameBoardTileData::
 
 Load15x15GameBoardTileData::
     ld a, $06                                     ; $6a22: $3e $06
-    ld hl, $4000                                  ; $6a24: $21 $00 $40
+    ld hl, GS05_EasyPicrossCompletionMessage      ; $6a24: $21 $00 $40
     ld de, $8000                                  ; $6a27: $11 $00 $80
     ld bc, $1800                                  ; $6a2a: $01 $00 $18
     call BankedTileCopy                           ; $6a2d: $cd $e4 $04

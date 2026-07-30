@@ -7911,7 +7911,7 @@ PrepareMessageBGTileCopySetup::
     ret                                           ; $2c1e: $c9
 
 
-Call_000_2c1f:
+AdvanceMessageScriptStreamHelper_NoBankSwitch::
     ld a, [rMessageScriptStreamPointerLow]        ; $2c1f: $fa $2d $d8
     ld l, a                                       ; $2c22: $6f
     ld a, [rMessageScriptStreamPointerHigh]       ; $2c23: $fa $2e $d8
@@ -7931,28 +7931,28 @@ Call_000_2c1f:
     push hl                                       ; $2c37: $e5
     ld a, e                                       ; $2c38: $7b
     cp $fe                                        ; $2c39: $fe $fe
-    jr nz, jr_000_2c42                            ; $2c3b: $20 $05
+    jr nz, .AdvanceMessageScriptStreamEntry       ; $2c3b: $20 $05
 
     ld a, d                                       ; $2c3d: $7a
     cp $ff                                        ; $2c3e: $fe $ff
-    jr z, jr_000_2c4e                             ; $2c40: $28 $0c
+    jr z, .ResetMessageScriptStreamEntry          ; $2c40: $28 $0c
 
-jr_000_2c42:
-    call Call_000_2c6a                            ; $2c42: $cd $6a $2c
+.AdvanceMessageScriptStreamEntry:
+    call PrepareMessageBGTileCopySetup_NoBankSwitch; $2c42: $cd $6a $2c
     ld hl, rMessageScriptStreamEntryLow           ; $2c45: $21 $2b $d8
     add $01                                       ; $2c48: $c6 $01
     add [hl]                                      ; $2c4a: $86
     ld [hl], a                                    ; $2c4b: $77
-    jr jr_000_2c5c                                ; $2c4c: $18 $0e
+    jr .StoreMessageScriptStreamPointer           ; $2c4c: $18 $0e
 
-jr_000_2c4e:
+.ResetMessageScriptStreamEntry:
     ld a, [rMessageScriptStreamResetEntryLow]     ; $2c4e: $fa $43 $d8
     ld [rMessageScriptStreamEntryLow], a          ; $2c51: $ea $2b $d8
     ld a, [rMessageScriptStreamEntryHigh]         ; $2c54: $fa $2c $d8
     add $0a                                       ; $2c57: $c6 $0a
     ld [rMessageScriptStreamEntryHigh], a         ; $2c59: $ea $2c $d8
 
-jr_000_2c5c:
+.StoreMessageScriptStreamPointer:
     pop hl                                        ; $2c5c: $e1
     ld a, l                                       ; $2c5d: $7d
     ld [rMessageScriptStreamPointerLow], a        ; $2c5e: $ea $2d $d8
@@ -7964,7 +7964,7 @@ jr_000_2c5c:
     ret                                           ; $2c69: $c9
 
 
-Call_000_2c6a:
+PrepareMessageBGTileCopySetup_NoBankSwitch::
     push de                                       ; $2c6a: $d5
     sla e                                         ; $2c6b: $cb $23
     rl d                                          ; $2c6d: $cb $12
@@ -7994,26 +7994,26 @@ Call_000_2c6a:
     add b                                         ; $2c94: $80
     ld hl, rMessageScriptStreamLimitLow           ; $2c95: $21 $45 $d8
     cp [hl]                                       ; $2c98: $be
-    jr c, jr_000_2c9d                             ; $2c99: $38 $02
+    jr c, .PrepareMessageBGTileCopyParams_NoBankSwitch; $2c99: $38 $02
 
     pop af                                        ; $2c9b: $f1
     ret                                           ; $2c9c: $c9
 
 
-jr_000_2c9d:
+.PrepareMessageBGTileCopyParams_NoBankSwitch:
     ld [rBGTileCopyDestX], a                      ; $2c9d: $ea $53 $c3
     ld a, c                                       ; $2ca0: $79
     ld [rBGTileCopySourceY], a                    ; $2ca1: $ea $52 $c3
     add $08                                       ; $2ca4: $c6 $08
     ld hl, rMessageScriptStreamLimitHigh          ; $2ca6: $21 $46 $d8
     cp [hl]                                       ; $2ca9: $be
-    jr c, jr_000_2cae                             ; $2caa: $38 $02
+    jr c, .ApplyMessageBGTileCopyParams_NoBankSwitch; $2caa: $38 $02
 
     pop af                                        ; $2cac: $f1
     ret                                           ; $2cad: $c9
 
 
-jr_000_2cae:
+.ApplyMessageBGTileCopyParams_NoBankSwitch:
     ld [rBGTileCopyDestY], a                      ; $2cae: $ea $54 $c3
     call Call_000_0b0d                            ; $2cb1: $cd $0d $0b
     pop af                                        ; $2cb4: $f1

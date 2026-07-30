@@ -323,17 +323,18 @@ TickBottomPromptBlinkSprite4C_A_OK_4D_B_CANCEL::
     jp ReturnFromBankedJumpRestoreBank            ; $4ee6: $c3 $ea $05
 
 
+TickBottomPromptBlinkSprite4E_A_START_4F_B_EXIT::
     ld a, [rStatePhaseTimer]                      ; $4ee9: $fa $3c $d6
     inc a                                         ; $4eec: $3c
     cp $46                                        ; $4eed: $fe $46
-    jr c, jr_003_4efa                             ; $4eef: $38 $09
+    jr c, .StoreBlinkTimerAndCheckDrawWindowSprite4E_4F; $4eef: $38 $09
 
     ld a, [rSharedAnimationFrameState]            ; $4ef1: $fa $3d $d6
     xor $01                                       ; $4ef4: $ee $01
     ld [rSharedAnimationFrameState], a            ; $4ef6: $ea $3d $d6
     xor a                                         ; $4ef9: $af
 
-jr_003_4efa:
+.StoreBlinkTimerAndCheckDrawWindowSprite4E_4F:
     ld [rStatePhaseTimer], a                      ; $4efa: $ea $3c $d6
     cp $30                                        ; $4efd: $fe $30
     jp nc, ReturnFromBankedJumpRestoreBank        ; $4eff: $d2 $ea $05
@@ -1028,7 +1029,7 @@ jr_003_53d4:
 
 Call_003_541f:
 jr_003_541f:
-    call Call_000_2c1f                            ; $541f: $cd $1f $2c
+    call AdvanceMessageScriptStreamHelper_NoBankSwitch; $541f: $cd $1f $2c
     jr nz, jr_003_541f                            ; $5422: $20 $fb
 
     ret                                           ; $5424: $c9
@@ -1251,1283 +1252,1043 @@ GS00_MarioBlinkFrameDelayAndSpriteIdTable::
     cp $d7                                        ; $552b: $fe $d7
     nop                                           ; $552d: $00
 
-PuzzleDataBank2PointerTable_Puzzle000::
+Bank2_PuzzleDataPointerTable_Puzzle000::
     db $b0, $52
 
-PuzzleDataBank2PointerTable_Puzzle001::
+Bank2_PuzzleDataPointerTable_Puzzle001::
     db $d0, $52
 
-PuzzleDataBank2PointerTable_Puzzle002::
+Bank2_PuzzleDataPointerTable_Puzzle002::
     db $f0, $52
 
-PuzzleDataBank2PointerTable_Puzzle003::
+Bank2_PuzzleDataPointerTable_Puzzle003::
     db $10, $53
 
-PuzzleDataBank2PointerTable_Puzzle004::
+Bank2_PuzzleDataPointerTable_Puzzle004::
     db $30, $53
 
-PuzzleDataBank2PointerTable_Puzzle005::
+Bank2_PuzzleDataPointerTable_Puzzle005::
     db $50, $53
 
-PuzzleDataBank2PointerTable_Puzzle006::
+Bank2_PuzzleDataPointerTable_Puzzle006::
     db $70, $53
 
-PuzzleDataBank2PointerTable_Puzzle007::
+Bank2_PuzzleDataPointerTable_Puzzle007::
     db $90, $53
 
-PuzzleDataBank2PointerTable_Puzzle008::
+Bank2_PuzzleDataPointerTable_Puzzle008::
     db $b0, $53
 
-PuzzleDataBank2PointerTable_Puzzle009::
+Bank2_PuzzleDataPointerTable_Puzzle009::
     db $d0, $53
 
-PuzzleDataBank2PointerTable_Puzzle00A::
+Bank2_PuzzleDataPointerTable_Puzzle00A::
     db $f0, $53
 
-PuzzleDataBank2PointerTable_Puzzle00B::
+Bank2_PuzzleDataPointerTable_Puzzle00B::
     db $10, $54
 
-PuzzleDataBank2PointerTable_Puzzle00C::
+Bank2_PuzzleDataPointerTable_Puzzle00C::
     db $30, $54
 
-PuzzleDataBank2PointerTable_Puzzle00D::
+Bank2_PuzzleDataPointerTable_Puzzle00D::
     db $50, $54
 
-PuzzleDataBank2PointerTable_Puzzle00E::
+Bank2_PuzzleDataPointerTable_Puzzle00E::
     db $70, $54
 
-PuzzleDataBank2PointerTable_Puzzle00F::
+Bank2_PuzzleDataPointerTable_Puzzle00F::
     db $90, $54
 
-PuzzleDataBank2PointerTable_Puzzle010::
+Bank2_PuzzleDataPointerTable_Puzzle010::
     db $b0, $54
 
-PuzzleDataBank2PointerTable_Puzzle011::
+Bank2_PuzzleDataPointerTable_Puzzle011::
     db $d0, $54
 
-PuzzleDataBank2PointerTable_Puzzle012::
+Bank2_PuzzleDataPointerTable_Puzzle012::
     db $f0, $54
 
-PuzzleDataBank2PointerTable_Puzzle013::
+Bank2_PuzzleDataPointerTable_Puzzle013::
     db $10, $55
 
-PuzzleDataBank2PointerTable_Puzzle014::
+Bank2_PuzzleDataPointerTable_Puzzle014::
     db $30, $55
 
-PuzzleDataBank2PointerTable_Puzzle015::
+Bank2_PuzzleDataPointerTable_Puzzle015::
     db $50, $55
 
-PuzzleDataBank2PointerTable_Puzzle016::
+Bank2_PuzzleDataPointerTable_Puzzle016::
     db $70, $55
 
-PuzzleDataBank2PointerTable_Puzzle017::
+Bank2_PuzzleDataPointerTable_Puzzle017::
     db $90, $55
 
-PuzzleDataBank2PointerTable_Puzzle018::
+Bank2_PuzzleDataPointerTable_Puzzle018::
     db $b0, $55
 
-PuzzleDataBank2PointerTable_Puzzle019::
+Bank2_PuzzleDataPointerTable_Puzzle019::
     db $d0, $55
 
-PuzzleDataBank2PointerTable_Puzzle01A::
+Bank2_PuzzleDataPointerTable_Puzzle01A::
     db $f0, $55
 
-PuzzleDataBank2PointerTable_Puzzle01B::
+Bank2_PuzzleDataPointerTable_Puzzle01B::
     db $10, $56
 
-PuzzleDataBank2PointerTable_Puzzle01C::
+Bank2_PuzzleDataPointerTable_Puzzle01C::
     db $30, $56
 
-PuzzleDataBank2PointerTable_Puzzle01D::
+Bank2_PuzzleDataPointerTable_Puzzle01D::
     db $50, $56
 
-PuzzleDataBank2PointerTable_Puzzle01E::
+Bank2_PuzzleDataPointerTable_Puzzle01E::
     db $70, $56
 
-PuzzleDataBank2PointerTable_Puzzle01F::
+Bank2_PuzzleDataPointerTable_Puzzle01F::
     db $90, $56
 
-PuzzleDataBank2PointerTable_Puzzle020::
+Bank2_PuzzleDataPointerTable_Puzzle020::
     db $b0, $56
 
-PuzzleDataBank2PointerTable_Puzzle021::
+Bank2_PuzzleDataPointerTable_Puzzle021::
     db $d0, $56
 
-PuzzleDataBank2PointerTable_Puzzle022::
+Bank2_PuzzleDataPointerTable_Puzzle022::
     db $f0, $56
 
-PuzzleDataBank2PointerTable_Puzzle023::
+Bank2_PuzzleDataPointerTable_Puzzle023::
     db $10, $57
 
-PuzzleDataBank2PointerTable_Puzzle024::
+Bank2_PuzzleDataPointerTable_Puzzle024::
     db $30, $57
 
-PuzzleDataBank2PointerTable_Puzzle025::
+Bank2_PuzzleDataPointerTable_Puzzle025::
     db $50, $57
 
-PuzzleDataBank2PointerTable_Puzzle026::
+Bank2_PuzzleDataPointerTable_Puzzle026::
     db $70, $57
 
-PuzzleDataBank2PointerTable_Puzzle027::
+Bank2_PuzzleDataPointerTable_Puzzle027::
     db $90, $57
 
-PuzzleDataBank2PointerTable_Puzzle028::
+Bank2_PuzzleDataPointerTable_Puzzle028::
     db $b0, $57
 
-PuzzleDataBank2PointerTable_Puzzle029::
+Bank2_PuzzleDataPointerTable_Puzzle029::
     db $d0, $57
 
-PuzzleDataBank2PointerTable_Puzzle02A::
+Bank2_PuzzleDataPointerTable_Puzzle02A::
     db $f0, $57
 
-PuzzleDataBank2PointerTable_Puzzle02B::
+Bank2_PuzzleDataPointerTable_Puzzle02B::
     db $10, $58
 
-PuzzleDataBank2PointerTable_Puzzle02C::
+Bank2_PuzzleDataPointerTable_Puzzle02C::
     db $30, $58
 
-PuzzleDataBank2PointerTable_Puzzle02D::
+Bank2_PuzzleDataPointerTable_Puzzle02D::
     db $50, $58
 
-PuzzleDataBank2PointerTable_Puzzle02E::
+Bank2_PuzzleDataPointerTable_Puzzle02E::
     db $70, $58
 
-PuzzleDataBank2PointerTable_Puzzle02F::
+Bank2_PuzzleDataPointerTable_Puzzle02F::
     db $90, $58
 
-PuzzleDataBank2PointerTable_Puzzle030::
+Bank2_PuzzleDataPointerTable_Puzzle030::
     db $b0, $58
 
-PuzzleDataBank2PointerTable_Puzzle031::
+Bank2_PuzzleDataPointerTable_Puzzle031::
     db $d0, $58
 
-PuzzleDataBank2PointerTable_Puzzle032::
+Bank2_PuzzleDataPointerTable_Puzzle032::
     db $f0, $58
 
-PuzzleDataBank2PointerTable_Puzzle033::
+Bank2_PuzzleDataPointerTable_Puzzle033::
     db $10, $59
 
-PuzzleDataBank2PointerTable_Puzzle034::
+Bank2_PuzzleDataPointerTable_Puzzle034::
     db $30, $59
 
-PuzzleDataBank2PointerTable_Puzzle035::
+Bank2_PuzzleDataPointerTable_Puzzle035::
     db $50, $59
 
-PuzzleDataBank2PointerTable_Puzzle036::
+Bank2_PuzzleDataPointerTable_Puzzle036::
     db $70, $59
 
-PuzzleDataBank2PointerTable_Puzzle037::
+Bank2_PuzzleDataPointerTable_Puzzle037::
     db $90, $59
 
-PuzzleDataBank2PointerTable_Puzzle038::
+Bank2_PuzzleDataPointerTable_Puzzle038::
     db $b0, $59
 
-PuzzleDataBank2PointerTable_Puzzle039::
+Bank2_PuzzleDataPointerTable_Puzzle039::
     db $d0, $59
 
-PuzzleDataBank2PointerTable_Puzzle03A::
+Bank2_PuzzleDataPointerTable_Puzzle03A::
     db $f0, $59
 
-PuzzleDataBank2PointerTable_Puzzle03B::
+Bank2_PuzzleDataPointerTable_Puzzle03B::
     db $10, $5a
 
-PuzzleDataBank2PointerTable_Puzzle03C::
+Bank2_PuzzleDataPointerTable_Puzzle03C::
     db $30, $5a
 
-PuzzleDataBank2PointerTable_Puzzle03D::
+Bank2_PuzzleDataPointerTable_Puzzle03D::
     db $50, $5a
 
-PuzzleDataBank2PointerTable_Puzzle03E::
+Bank2_PuzzleDataPointerTable_Puzzle03E::
     db $70, $5a
 
-PuzzleDataBank2PointerTable_Puzzle03F::
+Bank2_PuzzleDataPointerTable_Puzzle03F::
     db $90, $5a
 
-PuzzleDataBank2PointerTable_Puzzle040::
+Bank2_PuzzleDataPointerTable_Puzzle040::
     db $b0, $5a
 
-PuzzleDataBank2PointerTable_Puzzle041::
+Bank2_PuzzleDataPointerTable_Puzzle041::
     db $d0, $5a
 
-PuzzleDataBank2PointerTable_Puzzle042::
+Bank2_PuzzleDataPointerTable_Puzzle042::
     db $f0, $5a
 
-PuzzleDataBank2PointerTable_Puzzle043::
+Bank2_PuzzleDataPointerTable_Puzzle043::
     db $10, $5b
 
-PuzzleDataBank2PointerTable_Puzzle044::
+Bank2_PuzzleDataPointerTable_Puzzle044::
     db $30, $5b
 
-PuzzleDataBank2PointerTable_Puzzle045::
+Bank2_PuzzleDataPointerTable_Puzzle045::
     db $50, $5b
 
-PuzzleDataBank2PointerTable_Puzzle046::
+Bank2_PuzzleDataPointerTable_Puzzle046::
     db $70, $5b
 
-PuzzleDataBank2PointerTable_Puzzle047::
+Bank2_PuzzleDataPointerTable_Puzzle047::
     db $90, $5b
 
-PuzzleDataBank2PointerTable_Puzzle048::
+Bank2_PuzzleDataPointerTable_Puzzle048::
     db $b0, $5b
 
-PuzzleDataBank2PointerTable_Puzzle049::
+Bank2_PuzzleDataPointerTable_Puzzle049::
     db $d0, $5b
 
-PuzzleDataBank2PointerTable_Puzzle04A::
+Bank2_PuzzleDataPointerTable_Puzzle04A::
     db $f0, $5b
 
-PuzzleDataBank2PointerTable_Puzzle04B::
+Bank2_PuzzleDataPointerTable_Puzzle04B::
     db $10, $5c
 
-PuzzleDataBank2PointerTable_Puzzle04C::
+Bank2_PuzzleDataPointerTable_Puzzle04C::
     db $30, $5c
 
-PuzzleDataBank2PointerTable_Puzzle04D::
+Bank2_PuzzleDataPointerTable_Puzzle04D::
     db $50, $5c
 
-PuzzleDataBank2PointerTable_Puzzle04E::
+Bank2_PuzzleDataPointerTable_Puzzle04E::
     db $70, $5c
 
-PuzzleDataBank2PointerTable_Puzzle04F::
+Bank2_PuzzleDataPointerTable_Puzzle04F::
     db $90, $5c
 
-PuzzleDataBank2PointerTable_Puzzle050::
+Bank2_PuzzleDataPointerTable_Puzzle050::
     db $b0, $5c
 
-PuzzleDataBank2PointerTable_Puzzle051::
+Bank2_PuzzleDataPointerTable_Puzzle051::
     db $d0, $5c
 
-PuzzleDataBank2PointerTable_Puzzle052::
+Bank2_PuzzleDataPointerTable_Puzzle052::
     db $f0, $5c
 
-PuzzleDataBank2PointerTable_Puzzle053::
+Bank2_PuzzleDataPointerTable_Puzzle053::
     db $10, $5d
 
-PuzzleDataBank2PointerTable_Puzzle054::
+Bank2_PuzzleDataPointerTable_Puzzle054::
     db $30, $5d
 
-PuzzleDataBank2PointerTable_Puzzle055::
+Bank2_PuzzleDataPointerTable_Puzzle055::
     db $50, $5d
 
-PuzzleDataBank2PointerTable_Puzzle056::
+Bank2_PuzzleDataPointerTable_Puzzle056::
     db $70, $5d
 
-PuzzleDataBank2PointerTable_Puzzle057::
+Bank2_PuzzleDataPointerTable_Puzzle057::
     db $90, $5d
 
-PuzzleDataBank2PointerTable_Puzzle058::
+Bank2_PuzzleDataPointerTable_Puzzle058::
     db $b0, $5d
 
-PuzzleDataBank2PointerTable_Puzzle059::
+Bank2_PuzzleDataPointerTable_Puzzle059::
     db $d0, $5d
 
-PuzzleDataBank2PointerTable_Puzzle05A::
+Bank2_PuzzleDataPointerTable_Puzzle05A::
     db $f0, $5d
 
-PuzzleDataBank2PointerTable_Puzzle05B::
+Bank2_PuzzleDataPointerTable_Puzzle05B::
     db $10, $5e
 
-PuzzleDataBank2PointerTable_Puzzle05C::
+Bank2_PuzzleDataPointerTable_Puzzle05C::
     db $30, $5e
 
-PuzzleDataBank2PointerTable_Puzzle05D::
+Bank2_PuzzleDataPointerTable_Puzzle05D::
     db $50, $5e
 
-PuzzleDataBank2PointerTable_Puzzle05E::
+Bank2_PuzzleDataPointerTable_Puzzle05E::
     db $70, $5e
 
-PuzzleDataBank2PointerTable_Puzzle05F::
+Bank2_PuzzleDataPointerTable_Puzzle05F::
     db $90, $5e
 
-PuzzleDataBank2PointerTable_Puzzle060::
+Bank2_PuzzleDataPointerTable_Puzzle060::
     db $b0, $5e
 
-PuzzleDataBank2PointerTable_Puzzle061::
+Bank2_PuzzleDataPointerTable_Puzzle061::
     db $d0, $5e
 
-PuzzleDataBank2PointerTable_Puzzle062::
+Bank2_PuzzleDataPointerTable_Puzzle062::
     db $f0, $5e
 
-PuzzleDataBank2PointerTable_Puzzle063::
+Bank2_PuzzleDataPointerTable_Puzzle063::
     db $10, $5f
 
-PuzzleDataBank2PointerTable_Puzzle064::
+Bank2_PuzzleDataPointerTable_Puzzle064::
     db $30, $5f
 
-PuzzleDataBank2PointerTable_Puzzle065::
+Bank2_PuzzleDataPointerTable_Puzzle065::
     db $50, $5f
 
-PuzzleDataBank2PointerTable_Puzzle066::
+Bank2_PuzzleDataPointerTable_Puzzle066::
     db $70, $5f
 
-PuzzleDataBank2PointerTable_Puzzle067::
+Bank2_PuzzleDataPointerTable_Puzzle067::
     db $90, $5f
 
-PuzzleDataBank2PointerTable_Puzzle068::
+Bank2_PuzzleDataPointerTable_Puzzle068::
     db $b0, $5f
 
-PuzzleDataBank2PointerTable_Puzzle069::
+Bank2_PuzzleDataPointerTable_Puzzle069::
     db $d0, $5f
 
-PuzzleDataBank2PointerTable_Puzzle06A::
+Bank2_PuzzleDataPointerTable_Puzzle06A::
     db $f0, $5f
 
-PuzzleDataBank2PointerTable_Puzzle06B::
+Bank2_PuzzleDataPointerTable_Puzzle06B::
     db $10, $60
 
-PuzzleDataBank2PointerTable_Puzzle06C::
+Bank2_PuzzleDataPointerTable_Puzzle06C::
     db $30, $60
 
-PuzzleDataBank2PointerTable_Puzzle06D::
+Bank2_PuzzleDataPointerTable_Puzzle06D::
     db $50, $60
 
-PuzzleDataBank2PointerTable_Puzzle06E::
+Bank2_PuzzleDataPointerTable_Puzzle06E::
     db $70, $60
 
-PuzzleDataBank2PointerTable_Puzzle06F::
+Bank2_PuzzleDataPointerTable_Puzzle06F::
     db $90, $60
 
-PuzzleDataBank2PointerTable_Puzzle070::
+Bank2_PuzzleDataPointerTable_Puzzle070::
     db $b0, $60
 
-PuzzleDataBank2PointerTable_Puzzle071::
+Bank2_PuzzleDataPointerTable_Puzzle071::
     db $d0, $60
 
-PuzzleDataBank2PointerTable_Puzzle072::
+Bank2_PuzzleDataPointerTable_Puzzle072::
     db $f0, $60
 
-PuzzleDataBank2PointerTable_Puzzle073::
+Bank2_PuzzleDataPointerTable_Puzzle073::
     db $10, $61
 
-PuzzleDataBank2PointerTable_Puzzle074::
+Bank2_PuzzleDataPointerTable_Puzzle074::
     db $30, $61
 
-PuzzleDataBank2PointerTable_Puzzle075::
+Bank2_PuzzleDataPointerTable_Puzzle075::
     db $50, $61
 
-PuzzleDataBank2PointerTable_Puzzle076::
+Bank2_PuzzleDataPointerTable_Puzzle076::
     db $70, $61
 
-PuzzleDataBank2PointerTable_Puzzle077::
+Bank2_PuzzleDataPointerTable_Puzzle077::
     db $90, $61
 
-PuzzleDataBank2PointerTable_Puzzle078::
+Bank2_PuzzleDataPointerTable_Puzzle078::
     db $b0, $61
 
-PuzzleDataBank2PointerTable_Puzzle079::
+Bank2_PuzzleDataPointerTable_Puzzle079::
     db $d0, $61
 
-PuzzleDataBank2PointerTable_Puzzle07A::
+Bank2_PuzzleDataPointerTable_Puzzle07A::
     db $f0, $61
 
-PuzzleDataBank2PointerTable_Puzzle07B::
+Bank2_PuzzleDataPointerTable_Puzzle07B::
     db $10, $62
 
-PuzzleDataBank2PointerTable_Puzzle07C::
+Bank2_PuzzleDataPointerTable_Puzzle07C::
     db $30, $62
 
-PuzzleDataBank2PointerTable_Puzzle07D::
+Bank2_PuzzleDataPointerTable_Puzzle07D::
     db $50, $62
 
-PuzzleDataBank2PointerTable_Puzzle07E::
+Bank2_PuzzleDataPointerTable_Puzzle07E::
     db $70, $62
 
-PuzzleDataBank2PointerTable_Puzzle07F::
+Bank2_PuzzleDataPointerTable_Puzzle07F::
     db $90, $62
 
-PuzzleDataBank2PointerTable_Puzzle080::
+Bank2_PuzzleDataPointerTable_Puzzle080::
     db $b0, $62
 
-PuzzleDataBank2PointerTable_Puzzle081::
+Bank2_PuzzleDataPointerTable_Puzzle081::
     db $d0, $62
 
-PuzzleDataBank2PointerTable_Puzzle082::
+Bank2_PuzzleDataPointerTable_Puzzle082::
     db $f0, $62
 
-PuzzleDataBank2PointerTable_Puzzle083::
+Bank2_PuzzleDataPointerTable_Puzzle083::
     db $10, $63
 
-PuzzleDataBank2PointerTable_Puzzle084::
+Bank2_PuzzleDataPointerTable_Puzzle084::
     db $30, $63
 
-PuzzleDataBank2PointerTable_Puzzle085::
+Bank2_PuzzleDataPointerTable_Puzzle085::
     db $50, $63
 
-PuzzleDataBank2PointerTable_Puzzle086::
+Bank2_PuzzleDataPointerTable_Puzzle086::
     db $70, $63
 
-PuzzleDataBank2PointerTable_Puzzle087::
+Bank2_PuzzleDataPointerTable_Puzzle087::
     db $90, $63
 
-PuzzleDataBank2PointerTable_Puzzle088::
+Bank2_PuzzleDataPointerTable_Puzzle088::
     db $b0, $63
 
-PuzzleDataBank2PointerTable_Puzzle089::
+Bank2_PuzzleDataPointerTable_Puzzle089::
     db $d0, $63
 
-PuzzleDataBank2PointerTable_Puzzle08A::
+Bank2_PuzzleDataPointerTable_Puzzle08A::
     db $f0, $63
 
-PuzzleDataBank2PointerTable_Puzzle08B::
+Bank2_PuzzleDataPointerTable_Puzzle08B::
     db $10, $64
 
-PuzzleDataBank2PointerTable_Puzzle08C::
+Bank2_PuzzleDataPointerTable_Puzzle08C::
     db $30, $64
 
-PuzzleDataBank2PointerTable_Puzzle08D::
+Bank2_PuzzleDataPointerTable_Puzzle08D::
     db $50, $64
 
-PuzzleDataBank2PointerTable_Puzzle08E::
+Bank2_PuzzleDataPointerTable_Puzzle08E::
     db $70, $64
 
-PuzzleDataBank2PointerTable_Puzzle08F::
+Bank2_PuzzleDataPointerTable_Puzzle08F::
     db $90, $64
 
-PuzzleDataBank2PointerTable_Puzzle090::
+Bank2_PuzzleDataPointerTable_Puzzle090::
     db $b0, $64
 
-PuzzleDataBank2PointerTable_Puzzle091::
+Bank2_PuzzleDataPointerTable_Puzzle091::
     db $d0, $64
 
-PuzzleDataBank2PointerTable_Puzzle092::
+Bank2_PuzzleDataPointerTable_Puzzle092::
     db $f0, $64
 
-PuzzleDataBank2PointerTable_Puzzle093::
+Bank2_PuzzleDataPointerTable_Puzzle093::
     db $10, $65
 
-PuzzleDataBank2PointerTable_Puzzle094::
+Bank2_PuzzleDataPointerTable_Puzzle094::
     db $30, $65
 
-PuzzleDataBank2PointerTable_Puzzle095::
+Bank2_PuzzleDataPointerTable_Puzzle095::
     db $50, $65
 
-PuzzleDataBank2PointerTable_Puzzle096::
+Bank2_PuzzleDataPointerTable_Puzzle096::
     db $70, $65
 
-PuzzleDataBank2PointerTable_Puzzle097::
+Bank2_PuzzleDataPointerTable_Puzzle097::
     db $90, $65
 
-PuzzleDataBank2PointerTable_Puzzle098::
+Bank2_PuzzleDataPointerTable_Puzzle098::
     db $b0, $65
 
-PuzzleDataBank2PointerTable_Puzzle099::
+Bank2_PuzzleDataPointerTable_Puzzle099::
     db $d0, $65
 
-PuzzleDataBank2PointerTable_Puzzle09A::
+Bank2_PuzzleDataPointerTable_Puzzle09A::
     db $f0, $65
 
-PuzzleDataBank2PointerTable_Puzzle09B::
+Bank2_PuzzleDataPointerTable_Puzzle09B::
     db $10, $66
 
-PuzzleDataBank2PointerTable_Puzzle09C::
+Bank2_PuzzleDataPointerTable_Puzzle09C::
     db $30, $66
 
-PuzzleDataBank2PointerTable_Puzzle09D::
+Bank2_PuzzleDataPointerTable_Puzzle09D::
     db $50, $66
 
-PuzzleDataBank2PointerTable_Puzzle09E::
+Bank2_PuzzleDataPointerTable_Puzzle09E::
     db $70, $66
 
-PuzzleDataBank2PointerTable_Puzzle09F::
+Bank2_PuzzleDataPointerTable_Puzzle09F::
     db $90, $66
 
-PuzzleDataBank2PointerTable_Puzzle0A0::
+Bank2_PuzzleDataPointerTable_Puzzle0A0::
     db $b0, $66
 
-PuzzleDataBank2PointerTable_Puzzle0A1::
+Bank2_PuzzleDataPointerTable_Puzzle0A1::
     db $d0, $66
 
-PuzzleDataBank2PointerTable_Puzzle0A2::
+Bank2_PuzzleDataPointerTable_Puzzle0A2::
     db $f0, $66
 
-PuzzleDataBank2PointerTable_Puzzle0A3::
+Bank2_PuzzleDataPointerTable_Puzzle0A3::
     db $10, $67
 
-PuzzleDataBank2PointerTable_Puzzle0A4::
+Bank2_PuzzleDataPointerTable_Puzzle0A4::
     db $30, $67
 
-PuzzleDataBank2PointerTable_Puzzle0A5::
+Bank2_PuzzleDataPointerTable_Puzzle0A5::
     db $50, $67
 
-PuzzleDataBank2PointerTable_Puzzle0A6::
+Bank2_PuzzleDataPointerTable_Puzzle0A6::
     db $70, $67
 
-PuzzleDataBank2PointerTable_Puzzle0A7::
+Bank2_PuzzleDataPointerTable_Puzzle0A7::
     db $90, $67
 
-PuzzleDataBank2PointerTable_Puzzle0A8::
+Bank2_PuzzleDataPointerTable_Puzzle0A8::
     db $b0, $67
 
-PuzzleDataBank2PointerTable_Puzzle0A9::
+Bank2_PuzzleDataPointerTable_Puzzle0A9::
     db $d0, $67
 
-PuzzleDataBank2PointerTable_Puzzle0AA::
+Bank2_PuzzleDataPointerTable_Puzzle0AA::
     db $f0, $67
 
-PuzzleDataBank2PointerTable_Puzzle0AB::
+Bank2_PuzzleDataPointerTable_Puzzle0AB::
     db $10, $68
 
-PuzzleDataBank2PointerTable_Puzzle0AC::
+Bank2_PuzzleDataPointerTable_Puzzle0AC::
     db $30, $68
 
-PuzzleDataBank2PointerTable_Puzzle0AD::
+Bank2_PuzzleDataPointerTable_Puzzle0AD::
     db $50, $68
 
-PuzzleDataBank2PointerTable_Puzzle0AE::
+Bank2_PuzzleDataPointerTable_Puzzle0AE::
     db $70, $68
 
-PuzzleDataBank2PointerTable_Puzzle0AF::
+Bank2_PuzzleDataPointerTable_Puzzle0AF::
     db $90, $68
 
-PuzzleDataBank2PointerTable_Puzzle0B0::
+Bank2_PuzzleDataPointerTable_Puzzle0B0::
     db $b0, $68
 
-PuzzleDataBank2PointerTable_Puzzle0B1::
+Bank2_PuzzleDataPointerTable_Puzzle0B1::
     db $d0, $68
 
-PuzzleDataBank2PointerTable_Puzzle0B2::
+Bank2_PuzzleDataPointerTable_Puzzle0B2::
     db $f0, $68
 
-PuzzleDataBank2PointerTable_Puzzle0B3::
+Bank2_PuzzleDataPointerTable_Puzzle0B3::
     db $10, $69
 
-PuzzleDataBank2PointerTable_Puzzle0B4::
+Bank2_PuzzleDataPointerTable_Puzzle0B4::
     db $30, $69
 
-PuzzleDataBank2PointerTable_Puzzle0B5::
+Bank2_PuzzleDataPointerTable_Puzzle0B5::
     db $50, $69
 
-PuzzleDataBank2PointerTable_Puzzle0B6::
+Bank2_PuzzleDataPointerTable_Puzzle0B6::
     db $70, $69
 
-PuzzleDataBank2PointerTable_Puzzle0B7::
+Bank2_PuzzleDataPointerTable_Puzzle0B7::
     db $90, $69
 
-PuzzleDataBank2PointerTable_Puzzle0B8::
+Bank2_PuzzleDataPointerTable_Puzzle0B8::
     db $b0, $69
 
-PuzzleDataBank2PointerTable_Puzzle0B9::
+Bank2_PuzzleDataPointerTable_Puzzle0B9::
     db $d0, $69
 
-PuzzleDataBank2PointerTable_Puzzle0BA::
+Bank2_PuzzleDataPointerTable_Puzzle0BA::
     db $f0, $69
 
-PuzzleDataBank2PointerTable_Puzzle0BB::
+Bank2_PuzzleDataPointerTable_Puzzle0BB::
     db $10, $6a
 
-PuzzleDataBank2PointerTable_Puzzle0BC::
+Bank2_PuzzleDataPointerTable_Puzzle0BC::
     db $30, $6a
 
-PuzzleDataBank2PointerTable_Puzzle0BD::
+Bank2_PuzzleDataPointerTable_Puzzle0BD::
     db $50, $6a
 
-PuzzleDataBank2PointerTable_Puzzle0BE::
+Bank2_PuzzleDataPointerTable_Puzzle0BE::
     db $70, $6a
 
-PuzzleDataBank2PointerTable_Puzzle0BF::
+Bank2_PuzzleDataPointerTable_Puzzle0BF::
     db $90, $6a
 
-PuzzleDataBank2PointerTable_Puzzle0C0::
+Bank2_PuzzleDataPointerTable_Puzzle0C0::
     db $b0, $6a
 
-PuzzleDataBank2PointerTable_Puzzle0C1::
+Bank2_PuzzleDataPointerTable_Puzzle0C1::
     db $d0, $6a
 
-PuzzleDataBank2PointerTable_Puzzle0C2::
+Bank2_PuzzleDataPointerTable_Puzzle0C2::
     db $f0, $6a
 
-PuzzleDataBank2PointerTable_Puzzle0C3::
+Bank2_PuzzleDataPointerTable_Puzzle0C3::
     db $10, $6b
 
-PuzzleDataBank2PointerTable_Puzzle0C4::
+Bank2_PuzzleDataPointerTable_Puzzle0C4::
     db $30, $6b
 
-PuzzleDataBank2PointerTable_Puzzle0C5::
+Bank2_PuzzleDataPointerTable_Puzzle0C5::
     db $50, $6b
 
-PuzzleDataBank2PointerTable_Puzzle0C6::
+Bank2_PuzzleDataPointerTable_Puzzle0C6::
     db $70, $6b
 
-PuzzleDataBank2PointerTable_Puzzle0C7::
+Bank2_PuzzleDataPointerTable_Puzzle0C7::
     db $90, $6b
 
-PuzzleDataBank2PointerTable_Puzzle0C8::
+Bank2_PuzzleDataPointerTable_Puzzle0C8::
     db $b0, $6b
 
-PuzzleDataBank2PointerTable_Puzzle0C9::
+Bank2_PuzzleDataPointerTable_Puzzle0C9::
     db $d0, $6b
 
-PuzzleDataBank2PointerTable_Puzzle0CA::
+Bank2_PuzzleDataPointerTable_Puzzle0CA::
     db $f0, $6b
 
-PuzzleDataBank2PointerTable_Puzzle0CB::
+Bank2_PuzzleDataPointerTable_Puzzle0CB::
     db $10, $6c
 
-PuzzleDataBank2PointerTable_Puzzle0CC::
+Bank2_PuzzleDataPointerTable_Puzzle0CC::
     db $30, $6c
 
-PuzzleDataBank2PointerTable_Puzzle0CD::
+Bank2_PuzzleDataPointerTable_Puzzle0CD::
     db $50, $6c
 
-PuzzleDataBank2PointerTable_Puzzle0CE::
+Bank2_PuzzleDataPointerTable_Puzzle0CE::
     db $70, $6c
 
-PuzzleDataBank2PointerTable_Puzzle0CF::
+Bank2_PuzzleDataPointerTable_Puzzle0CF::
     db $90, $6c
 
-PuzzleDataBank2PointerTable_Puzzle0D0::
+Bank2_PuzzleDataPointerTable_Puzzle0D0::
     db $b0, $6c
 
-PuzzleDataBank2PointerTable_Puzzle0D1::
+Bank2_PuzzleDataPointerTable_Puzzle0D1::
     db $d0, $6c
 
-PuzzleDataBank2PointerTable_Puzzle0D2::
+Bank2_PuzzleDataPointerTable_Puzzle0D2::
     db $f0, $6c
 
-PuzzleDataBank2PointerTable_Puzzle0D3::
+Bank2_PuzzleDataPointerTable_Puzzle0D3::
     db $10, $6d
 
-PuzzleDataBank2PointerTable_Puzzle0D4::
+Bank2_PuzzleDataPointerTable_Puzzle0D4::
     db $30, $6d
 
-PuzzleDataBank2PointerTable_Puzzle0D5::
+Bank2_PuzzleDataPointerTable_Puzzle0D5::
     db $50, $6d
 
-PuzzleDataBank2PointerTable_Puzzle0D6::
+Bank2_PuzzleDataPointerTable_Puzzle0D6::
     db $70, $6d
 
-PuzzleDataBank2PointerTable_Puzzle0D7::
+Bank2_PuzzleDataPointerTable_Puzzle0D7::
     db $90, $6d
 
-PuzzleDataBank2PointerTable_Puzzle0D8::
+Bank2_PuzzleDataPointerTable_Puzzle0D8::
     db $b0, $6d
 
-PuzzleDataBank2PointerTable_Puzzle0D9::
+Bank2_PuzzleDataPointerTable_Puzzle0D9::
     db $d0, $6d
 
-PuzzleDataBank2PointerTable_Puzzle0DA::
+Bank2_PuzzleDataPointerTable_Puzzle0DA::
     db $f0, $6d
 
-PuzzleDataBank2PointerTable_Puzzle0DB::
+Bank2_PuzzleDataPointerTable_Puzzle0DB::
     db $10, $6e
 
-PuzzleDataBank2PointerTable_Puzzle0DC::
+Bank2_PuzzleDataPointerTable_Puzzle0DC::
     db $30, $6e
 
-PuzzleDataBank2PointerTable_Puzzle0DD::
+Bank2_PuzzleDataPointerTable_Puzzle0DD::
     db $50, $6e
 
-PuzzleDataBank2PointerTable_Puzzle0DE::
+Bank2_PuzzleDataPointerTable_Puzzle0DE::
     db $70, $6e
 
-PuzzleDataBank2PointerTable_Puzzle0DF::
+Bank2_PuzzleDataPointerTable_Puzzle0DF::
     db $90, $6e
 
-PuzzleDataBank2PointerTable_Puzzle0E0::
+Bank2_PuzzleDataPointerTable_Puzzle0E0::
     db $b0, $6e
 
-PuzzleDataBank2PointerTable_Puzzle0E1::
+Bank2_PuzzleDataPointerTable_Puzzle0E1::
     db $d0, $6e
 
-PuzzleDataBank2PointerTable_Puzzle0E2::
+Bank2_PuzzleDataPointerTable_Puzzle0E2::
     db $f0, $6e
 
-PuzzleDataBank2PointerTable_Puzzle0E3::
+Bank2_PuzzleDataPointerTable_Puzzle0E3::
     db $10, $6f
 
-PuzzleDataBank2PointerTable_Puzzle0E4::
+Bank2_PuzzleDataPointerTable_Puzzle0E4::
     db $30, $6f
 
-PuzzleDataBank2PointerTable_Puzzle0E5::
+Bank2_PuzzleDataPointerTable_Puzzle0E5::
     db $50, $6f
 
-PuzzleDataBank2PointerTable_Puzzle0E6::
+Bank2_PuzzleDataPointerTable_Puzzle0E6::
     db $70, $6f
 
-PuzzleDataBank2PointerTable_Puzzle0E7::
+Bank2_PuzzleDataPointerTable_Puzzle0E7::
     db $90, $6f
 
-PuzzleDataBank2PointerTable_Puzzle0E8::
+Bank2_PuzzleDataPointerTable_Puzzle0E8::
     db $b0, $6f
 
-PuzzleDataBank2PointerTable_Puzzle0E9::
+Bank2_PuzzleDataPointerTable_Puzzle0E9::
     db $d0, $6f
 
-PuzzleDataBank2PointerTable_Puzzle0EA::
+Bank2_PuzzleDataPointerTable_Puzzle0EA::
     db $f0, $6f
 
-PuzzleDataBank2PointerTable_Puzzle0EB::
+Bank2_PuzzleDataPointerTable_Puzzle0EB::
     db $10, $70
 
-PuzzleDataBank2PointerTable_Puzzle0EC::
+Bank2_PuzzleDataPointerTable_Puzzle0EC::
     db $30, $70
 
-PuzzleDataBank2PointerTable_Puzzle0ED::
+Bank2_PuzzleDataPointerTable_Puzzle0ED::
     db $50, $70
 
-PuzzleDataBank2PointerTable_Puzzle0EE::
+Bank2_PuzzleDataPointerTable_Puzzle0EE::
     db $70, $70
 
-PuzzleDataBank2PointerTable_Puzzle0EF::
+Bank2_PuzzleDataPointerTable_Puzzle0EF::
     db $90, $70
 
-PuzzleDataBank2PointerTable_Puzzle0F0::
+Bank2_PuzzleDataPointerTable_Puzzle0F0::
     db $b0, $70
 
-PuzzleDataBank2PointerTable_Puzzle0F1::
+Bank2_PuzzleDataPointerTable_Puzzle0F1::
     db $d0, $70
 
-PuzzleDataBank2PointerTable_Puzzle0F2::
+Bank2_PuzzleDataPointerTable_Puzzle0F2::
     db $f0, $70
 
-PuzzleDataBank2PointerTable_Puzzle0F3::
+Bank2_PuzzleDataPointerTable_Puzzle0F3::
     db $10, $71
 
-PuzzleDataBank2PointerTable_Puzzle0F4::
+Bank2_PuzzleDataPointerTable_Puzzle0F4::
     db $30, $71
 
-PuzzleDataBank2PointerTable_Puzzle0F5::
+Bank2_PuzzleDataPointerTable_Puzzle0F5::
     db $50, $71
 
-PuzzleDataBank2PointerTable_Puzzle0F6::
+Bank2_PuzzleDataPointerTable_Puzzle0F6::
     db $70, $71
 
-PuzzleDataBank2PointerTable_Puzzle0F7::
+Bank2_PuzzleDataPointerTable_Puzzle0F7::
     db $90, $71
 
-PuzzleDataBank2PointerTable_Puzzle0F8::
+Bank2_PuzzleDataPointerTable_Puzzle0F8::
     db $b0, $71
 
-PuzzleDataBank2PointerTable_Puzzle0F9::
+Bank2_PuzzleDataPointerTable_Puzzle0F9::
     db $d0, $71
 
-PuzzleDataBank2PointerTable_Puzzle0FA::
+Bank2_PuzzleDataPointerTable_Puzzle0FA::
     db $f0, $71
 
-PuzzleDataBank2PointerTable_Puzzle0FB::
+Bank2_PuzzleDataPointerTable_Puzzle0FB::
     db $10, $72
 
-PuzzleDataBank2PointerTable_Puzzle0FC::
+Bank2_PuzzleDataPointerTable_Puzzle0FC::
     db $30, $72
 
-PuzzleDataBank2PointerTable_Puzzle0FD::
+Bank2_PuzzleDataPointerTable_Puzzle0FD::
     db $50, $72
 
-PuzzleDataBank2PointerTable_Puzzle0FE::
+Bank2_PuzzleDataPointerTable_Puzzle0FE::
     db $70, $72
 
-PuzzleDataBank2PointerTable_Puzzle0FF::
+Bank2_PuzzleDataPointerTable_Puzzle0FF::
     db $90, $72
 
-PuzzleDataBank2PointerTable_Puzzle100::
+Bank2_PuzzleDataPointerTable_Puzzle100::
     db $b0, $72
 
-    ld h, d                                       ; $5730: $62
-    ld l, h                                       ; $5731: $6c
-    ld h, d                                       ; $5732: $62
-    ld l, h                                       ; $5733: $6c
-    ld h, d                                       ; $5734: $62
-    ld l, h                                       ; $5735: $6c
-    ld h, d                                       ; $5736: $62
-    ld l, h                                       ; $5737: $6c
-    ld h, d                                       ; $5738: $62
-    ld l, h                                       ; $5739: $6c
-    ld h, d                                       ; $573a: $62
-    ld l, h                                       ; $573b: $6c
-    ld h, d                                       ; $573c: $62
-    ld l, h                                       ; $573d: $6c
-    ld h, d                                       ; $573e: $62
-    ld l, h                                       ; $573f: $6c
-    ld h, d                                       ; $5740: $62
-    ld l, h                                       ; $5741: $6c
-    ld [hl-], a                                   ; $5742: $32
-    ld e, c                                       ; $5743: $59
-    ccf                                           ; $5744: $3f
-    ld e, c                                       ; $5745: $59
-    ld d, d                                       ; $5746: $52
-    ld e, c                                       ; $5747: $59
-    ld h, c                                       ; $5748: $61
-    ld e, c                                       ; $5749: $59
-    ld [hl], b                                    ; $574a: $70
-    ld e, c                                       ; $574b: $59
-    add c                                         ; $574c: $81
-    ld e, c                                       ; $574d: $59
-    and d                                         ; $574e: $a2
-    ld e, c                                       ; $574f: $59
-    cp a                                          ; $5750: $bf
-    ld e, c                                       ; $5751: $59
-    adc $59                                       ; $5752: $ce $59
-    db $e3                                        ; $5754: $e3
-    ld e, c                                       ; $5755: $59
-    ldh a, [$ff59]                                ; $5756: $f0 $59
-    dec b                                         ; $5758: $05
-    ld e, d                                       ; $5759: $5a
-    db $10                                        ; $575a: $10
-    ld e, d                                       ; $575b: $5a
-    ld hl, $305a                                  ; $575c: $21 $5a $30
-    ld e, d                                       ; $575f: $5a
-    ld b, l                                       ; $5760: $45
-    ld e, d                                       ; $5761: $5a
-    ld e, d                                       ; $5762: $5a
-    ld e, d                                       ; $5763: $5a
-    ld a, l                                       ; $5764: $7d
-    ld e, d                                       ; $5765: $5a
-    adc d                                         ; $5766: $8a
-    ld e, d                                       ; $5767: $5a
-    sub l                                         ; $5768: $95
-    ld e, d                                       ; $5769: $5a
-    and h                                         ; $576a: $a4
-    ld e, d                                       ; $576b: $5a
-    or e                                          ; $576c: $b3
-    ld e, d                                       ; $576d: $5a
-    jp nz, $d55a                                  ; $576e: $c2 $5a $d5
+PuzzleNamePointerTable::
+    db $62, $6c
+    db $62, $6c
+    db $62, $6c
+    db $62, $6c
+    db $62, $6c
+    db $62, $6c
+    db $62, $6c
+    db $62, $6c
+    db $62, $6c
+    db $32, $59
+    db $3f, $59
+    db $52, $59
+    db $61, $59
+    db $70, $59
+    db $81, $59
+    db $a2, $59
+    db $bf, $59
+    db $ce, $59
+    db $e3, $59
+    db $f0, $59
+    db $05, $5a
+    db $10, $5a
+    db $21, $5a
+    db $30, $5a
+    db $45, $5a
+    db $5a, $5a
+    db $7d, $5a
+    db $8a, $5a
+    db $95, $5a
+    db $a4, $5a
+    db $b3, $5a
+    db $c2, $5a
+    db $d5, $5a
+    db $e6, $5a
+    db $f1, $5a
+    db $06, $5b
+    db $13, $5b
+    db $20, $5b
+    db $31, $5b
+    db $42, $5b
+    db $4f, $5b
+    db $60, $5b
+    db $79, $5b
+    db $86, $5b
+    db $a1, $5b
+    db $b0, $5b
+    db $c7, $5b
+    db $da, $5b
+    db $e9, $5b
+    db $f8, $5b
+    db $0d, $5c
+    db $22, $5c
+    db $2b, $5c
+    db $44, $5c
+    db $5d, $5c
+    db $76, $5c
+    db $87, $5c
+    db $96, $5c
+    db $a5, $5c
+    db $bc, $5c
+    db $cf, $5c
+    db $e2, $5c
+    db $01, $5d
+    db $16, $5d
+    db $27, $5d
+    db $3c, $5d
+    db $51, $5d
+    db $5e, $5d
+    db $75, $5d
+    db $84, $5d
+    db $91, $5d
+    db $a2, $5d
+    db $ad, $5d
+    db $be, $5d
+    db $cd, $5d
+    db $da, $5d
+    db $e5, $5d
+    db $fc, $5d
+    db $07, $5e
+    db $18, $5e
+    db $25, $5e
+    db $3c, $5e
+    db $4d, $5e
+    db $62, $5e
+    db $6d, $5e
+    db $8a, $5e
+    db $9b, $5e
+    db $ac, $5e
+    db $cd, $5e
+    db $e6, $5e
+    db $f3, $5e
+    db $08, $5f
+    db $15, $5f
+    db $28, $5f
+    db $35, $5f
+    db $4e, $5f
+    db $5d, $5f
+    db $8e, $5f
+    db $a1, $5f
+    db $b8, $5f
+    db $cd, $5f
+    db $e4, $5f
+    db $f1, $5f
+    db $fc, $5f
+    db $13, $60
+    db $32, $60
+    db $4b, $60
+    db $58, $60
+    db $69, $60
+    db $8c, $60
+    db $a9, $60
+    db $b6, $60
+    db $d1, $60
+    db $de, $60
+    db $ef, $60
+    db $fe, $60
+    db $0d, $61
+    db $20, $61
+    db $31, $61
+    db $40, $61
+    db $59, $61
+    db $68, $61
+    db $8b, $61
+    db $ae, $61
+    db $bb, $61
+    db $d4, $61
+    db $e7, $61
+    db $10, $62
+    db $27, $62
+    db $3c, $62
+    db $59, $62
+    db $68, $62
+    db $85, $62
+    db $a6, $62
+    db $b5, $62
+    db $c2, $62
+    db $d7, $62
+    db $f0, $62
+    db $03, $63
+    db $16, $63
+    db $29, $63
+    db $40, $63
+    db $5b, $63
+    db $76, $63
+    db $85, $63
+    db $96, $63
+    db $ad, $63
+    db $bc, $63
+    db $cd, $63
+    db $da, $63
+    db $ef, $63
+    db $0c, $64
+    db $2f, $64
+    db $3e, $64
+    db $5d, $64
+    db $72, $64
+    db $8b, $64
+    db $b2, $64
+    db $cb, $64
+    db $d6, $64
+    db $e5, $64
+    db $f6, $64
+    db $0d, $65
+    db $1a, $65
+    db $27, $65
+    db $32, $65
+    db $51, $65
+    db $66, $65
+    db $7b, $65
+    db $88, $65
+    db $99, $65
+    db $a6, $65
+    db $b3, $65
+    db $c8, $65
+    db $dd, $65
+    db $02, $66
+    db $0d, $66
+    db $2e, $66
+    db $3d, $66
+    db $50, $66
+    db $5b, $66
+    db $7c, $66
+    db $89, $66
+    db $9e, $66
+    db $af, $66
+    db $c0, $66
+    db $d1, $66
+    db $e4, $66
+    db $fb, $66
+    db $12, $67
+    db $23, $67
+    db $30, $67
+    db $3d, $67
+    db $54, $67
+    db $63, $67
+    db $6e, $67
+    db $95, $67
+    db $b0, $67
+    db $cb, $67
+    db $e2, $67
+    db $f3, $67
+    db $04, $68
+    db $11, $68
+    db $22, $68
+    db $2f, $68
+    db $42, $68
+    db $65, $68
+    db $7c, $68
+    db $8f, $68
+    db $9e, $68
+    db $b1, $68
+    db $be, $68
+    db $cf, $68
+    db $dc, $68
+    db $fd, $68
+    db $08, $69
+    db $13, $69
+    db $34, $69
+    db $43, $69
+    db $52, $69
+    db $5d, $69
+    db $70, $69
+    db $85, $69
+    db $9a, $69
+    db $a5, $69
+    db $c0, $69
+    db $dd, $69
+    db $ee, $69
+    db $0d, $6a
+    db $1e, $6a
+    db $3b, $6a
+    db $4a, $6a
+    db $63, $6a
+    db $82, $6a
+    db $91, $6a
+    db $a8, $6a
+    db $bd, $6a
+    db $d2, $6a
+    db $e5, $6a
+    db $f4, $6a
+    db $01, $6b
+    db $10, $6b
+    db $31, $6b
+    db $40, $6b
+    db $57, $6b
+    db $6c, $6b
+    db $7b, $6b
+    db $8e, $6b
+    db $a1, $6b
+    db $ba, $6b
+    db $cb, $6b
+    db $d8, $6b
+    db $f1, $6b
+    db $0c, $6c
+    db $21, $6c
+    db $3a, $6c
+    db $4f, $6c
 
-    ld e, d                                       ; $5771: $5a
-    and $5a                                       ; $5772: $e6 $5a
-    pop af                                        ; $5774: $f1
-    ld e, d                                       ; $5775: $5a
-    ld b, $5b                                     ; $5776: $06 $5b
-    inc de                                        ; $5778: $13
-    ld e, e                                       ; $5779: $5b
-    jr nz, jr_003_57d7                            ; $577a: $20 $5b
+SETCHARMAP messages
 
-    ld sp, $425b                                  ; $577c: $31 $5b $42
-    ld e, e                                       ; $577f: $5b
-    ld c, a                                       ; $5780: $4f
-    ld e, e                                       ; $5781: $5b
-    ld h, b                                       ; $5782: $60
-    ld e, e                                       ; $5783: $5b
-    ld a, c                                       ; $5784: $79
-    ld e, e                                       ; $5785: $5b
-    add [hl]                                      ; $5786: $86
-    ld e, e                                       ; $5787: $5b
-    and c                                         ; $5788: $a1
-    ld e, e                                       ; $5789: $5b
-    or b                                          ; $578a: $b0
-    ld e, e                                       ; $578b: $5b
-    rst RST_00                                    ; $578c: $c7
-    ld e, e                                       ; $578d: $5b
-    jp c, $e95b                                   ; $578e: $da $5b $e9
+PuzzleName_009_EP_Note::
+    db $4d, $60, "note", $ff, $ff, $00
 
-    ld e, e                                       ; $5791: $5b
-    ld hl, sp+$5b                                 ; $5792: $f8 $5b
-    dec c                                         ; $5794: $0d
-    ld e, h                                       ; $5795: $5c
-    ld [hl+], a                                   ; $5796: $22
-    ld e, h                                       ; $5797: $5c
-    dec hl                                        ; $5798: $2b
-    ld e, h                                       ; $5799: $5c
-    ld b, h                                       ; $579a: $44
-    ld e, h                                       ; $579b: $5c
-    ld e, l                                       ; $579c: $5d
-    ld e, h                                       ; $579d: $5c
-    halt                                          ; $579e: $76
-    ld e, h                                       ; $579f: $5c
-    add a                                         ; $57a0: $87
-    ld e, h                                       ; $57a1: $5c
-    sub [hl]                                      ; $57a2: $96
-    ld e, h                                       ; $57a3: $5c
-    and l                                         ; $57a4: $a5
-    ld e, h                                       ; $57a5: $5c
-    cp h                                          ; $57a6: $bc
-    ld e, h                                       ; $57a7: $5c
-    rst RST_08                                    ; $57a8: $cf
-    ld e, h                                       ; $57a9: $5c
-    ldh [c], a                                    ; $57aa: $e2
-    ld e, h                                       ; $57ab: $5c
-    ld bc, $165d                                  ; $57ac: $01 $5d $16
-    ld e, l                                       ; $57af: $5d
-    daa                                           ; $57b0: $27
-    ld e, l                                       ; $57b1: $5d
-    inc a                                         ; $57b2: $3c
-    ld e, l                                       ; $57b3: $5d
-    ld d, c                                       ; $57b4: $51
-    ld e, l                                       ; $57b5: $5d
-    ld e, [hl]                                    ; $57b6: $5e
-    ld e, l                                       ; $57b7: $5d
-    ld [hl], l                                    ; $57b8: $75
-    ld e, l                                       ; $57b9: $5d
-    add h                                         ; $57ba: $84
-    ld e, l                                       ; $57bb: $5d
-    sub c                                         ; $57bc: $91
-    ld e, l                                       ; $57bd: $5d
-    and d                                         ; $57be: $a2
-    ld e, l                                       ; $57bf: $5d
-    xor l                                         ; $57c0: $ad
-    ld e, l                                       ; $57c1: $5d
-    cp [hl]                                       ; $57c2: $be
-    ld e, l                                       ; $57c3: $5d
-    call $da5d                                    ; $57c4: $cd $5d $da
-    ld e, l                                       ; $57c7: $5d
-    push hl                                       ; $57c8: $e5
-    ld e, l                                       ; $57c9: $5d
-    db $fc                                        ; $57ca: $fc
-    ld e, l                                       ; $57cb: $5d
-    rlca                                          ; $57cc: $07
-    ld e, [hl]                                    ; $57cd: $5e
-    jr jr_003_582e                                ; $57ce: $18 $5e
+    db $45, $60, "diamond", $ff, $ff, $00
 
-    dec h                                         ; $57d0: $25
-    ld e, [hl]                                    ; $57d1: $5e
-    inc a                                         ; $57d2: $3c
-    ld e, [hl]                                    ; $57d3: $5e
-    ld c, l                                       ; $57d4: $4d
-    ld e, [hl]                                    ; $57d5: $5e
-    ld h, d                                       ; $57d6: $62
-
-jr_003_57d7:
-    ld e, [hl]                                    ; $57d7: $5e
-    ld l, l                                       ; $57d8: $6d
-    ld e, [hl]                                    ; $57d9: $5e
-    adc d                                         ; $57da: $8a
-    ld e, [hl]                                    ; $57db: $5e
-    sbc e                                         ; $57dc: $9b
-    ld e, [hl]                                    ; $57dd: $5e
-    xor h                                         ; $57de: $ac
-    ld e, [hl]                                    ; $57df: $5e
-    call $e65e                                    ; $57e0: $cd $5e $e6
-    ld e, [hl]                                    ; $57e3: $5e
-    di                                            ; $57e4: $f3
-    ld e, [hl]                                    ; $57e5: $5e
-    ld [$155f], sp                                ; $57e6: $08 $5f $15
-    ld e, a                                       ; $57e9: $5f
-    jr z, jr_003_584b                             ; $57ea: $28 $5f
-
-    dec [hl]                                      ; $57ec: $35
-    ld e, a                                       ; $57ed: $5f
-    ld c, [hl]                                    ; $57ee: $4e
-    ld e, a                                       ; $57ef: $5f
-    ld e, l                                       ; $57f0: $5d
-    ld e, a                                       ; $57f1: $5f
-    adc [hl]                                      ; $57f2: $8e
-    ld e, a                                       ; $57f3: $5f
-    and c                                         ; $57f4: $a1
-    ld e, a                                       ; $57f5: $5f
-    cp b                                          ; $57f6: $b8
-    ld e, a                                       ; $57f7: $5f
-    call $e45f                                    ; $57f8: $cd $5f $e4
-    ld e, a                                       ; $57fb: $5f
-    pop af                                        ; $57fc: $f1
-    ld e, a                                       ; $57fd: $5f
-    db $fc                                        ; $57fe: $fc
-    ld e, a                                       ; $57ff: $5f
-    inc de                                        ; $5800: $13
-    ld h, b                                       ; $5801: $60
-    ld [hl-], a                                   ; $5802: $32
-    ld h, b                                       ; $5803: $60
-    ld c, e                                       ; $5804: $4b
-    ld h, b                                       ; $5805: $60
-    ld e, b                                       ; $5806: $58
-    ld h, b                                       ; $5807: $60
-    ld l, c                                       ; $5808: $69
-    ld h, b                                       ; $5809: $60
-    adc h                                         ; $580a: $8c
-    ld h, b                                       ; $580b: $60
-    xor c                                         ; $580c: $a9
-    ld h, b                                       ; $580d: $60
-    or [hl]                                       ; $580e: $b6
-    ld h, b                                       ; $580f: $60
-    pop de                                        ; $5810: $d1
-    ld h, b                                       ; $5811: $60
-    sbc $60                                       ; $5812: $de $60
-    rst $28                                       ; $5814: $ef
-    ld h, b                                       ; $5815: $60
-    cp $60                                        ; $5816: $fe $60
-    dec c                                         ; $5818: $0d
-    ld h, c                                       ; $5819: $61
-    jr nz, jr_003_587d                            ; $581a: $20 $61
-
-    ld sp, $4061                                  ; $581c: $31 $61 $40
-    ld h, c                                       ; $581f: $61
-    ld e, c                                       ; $5820: $59
-    ld h, c                                       ; $5821: $61
-    ld l, b                                       ; $5822: $68
-    ld h, c                                       ; $5823: $61
-    adc e                                         ; $5824: $8b
-    ld h, c                                       ; $5825: $61
-    xor [hl]                                      ; $5826: $ae
-    ld h, c                                       ; $5827: $61
-    cp e                                          ; $5828: $bb
-    ld h, c                                       ; $5829: $61
-    call nc, $e761                                ; $582a: $d4 $61 $e7
-    ld h, c                                       ; $582d: $61
-
-jr_003_582e:
-    db $10                                        ; $582e: $10
-    ld h, d                                       ; $582f: $62
-    daa                                           ; $5830: $27
-    ld h, d                                       ; $5831: $62
-    inc a                                         ; $5832: $3c
-    ld h, d                                       ; $5833: $62
-    ld e, c                                       ; $5834: $59
-    ld h, d                                       ; $5835: $62
-    ld l, b                                       ; $5836: $68
-    ld h, d                                       ; $5837: $62
-    add l                                         ; $5838: $85
-    ld h, d                                       ; $5839: $62
-    and [hl]                                      ; $583a: $a6
-    ld h, d                                       ; $583b: $62
-    or l                                          ; $583c: $b5
-    ld h, d                                       ; $583d: $62
-    jp nz, $d762                                  ; $583e: $c2 $62 $d7
-
-    ld h, d                                       ; $5841: $62
-    ldh a, [$ff62]                                ; $5842: $f0 $62
-    inc bc                                        ; $5844: $03
-    ld h, e                                       ; $5845: $63
-    ld d, $63                                     ; $5846: $16 $63
-    add hl, hl                                    ; $5848: $29
-    ld h, e                                       ; $5849: $63
-    ld b, b                                       ; $584a: $40
-
-jr_003_584b:
-    ld h, e                                       ; $584b: $63
-    ld e, e                                       ; $584c: $5b
-    ld h, e                                       ; $584d: $63
-    halt                                          ; $584e: $76
-    ld h, e                                       ; $584f: $63
-    add l                                         ; $5850: $85
-    ld h, e                                       ; $5851: $63
-    sub [hl]                                      ; $5852: $96
-    ld h, e                                       ; $5853: $63
-    xor l                                         ; $5854: $ad
-    ld h, e                                       ; $5855: $63
-    cp h                                          ; $5856: $bc
-    ld h, e                                       ; $5857: $63
-    call $da63                                    ; $5858: $cd $63 $da
-    ld h, e                                       ; $585b: $63
-    rst $28                                       ; $585c: $ef
-    ld h, e                                       ; $585d: $63
-    inc c                                         ; $585e: $0c
-    ld h, h                                       ; $585f: $64
-    cpl                                           ; $5860: $2f
-    ld h, h                                       ; $5861: $64
-    ld a, $64                                     ; $5862: $3e $64
-    ld e, l                                       ; $5864: $5d
-    ld h, h                                       ; $5865: $64
-    ld [hl], d                                    ; $5866: $72
-    ld h, h                                       ; $5867: $64
-    adc e                                         ; $5868: $8b
-    ld h, h                                       ; $5869: $64
-    or d                                          ; $586a: $b2
-    ld h, h                                       ; $586b: $64
-    bit 4, h                                      ; $586c: $cb $64
-    sub $64                                       ; $586e: $d6 $64
-    push hl                                       ; $5870: $e5
-    ld h, h                                       ; $5871: $64
-    or $64                                        ; $5872: $f6 $64
-    dec c                                         ; $5874: $0d
-    ld h, l                                       ; $5875: $65
-    ld a, [de]                                    ; $5876: $1a
-    ld h, l                                       ; $5877: $65
-    daa                                           ; $5878: $27
-    ld h, l                                       ; $5879: $65
-    ld [hl-], a                                   ; $587a: $32
-    ld h, l                                       ; $587b: $65
-    ld d, c                                       ; $587c: $51
-
-jr_003_587d:
-    ld h, l                                       ; $587d: $65
-    ld h, [hl]                                    ; $587e: $66
-    ld h, l                                       ; $587f: $65
-    ld a, e                                       ; $5880: $7b
-    ld h, l                                       ; $5881: $65
-    adc b                                         ; $5882: $88
-    ld h, l                                       ; $5883: $65
-    sbc c                                         ; $5884: $99
-    ld h, l                                       ; $5885: $65
-    and [hl]                                      ; $5886: $a6
-    ld h, l                                       ; $5887: $65
-    or e                                          ; $5888: $b3
-    ld h, l                                       ; $5889: $65
-    ret z                                         ; $588a: $c8
-
-    ld h, l                                       ; $588b: $65
-    db $dd                                        ; $588c: $dd
-    ld h, l                                       ; $588d: $65
-    ld [bc], a                                    ; $588e: $02
-    ld h, [hl]                                    ; $588f: $66
-    dec c                                         ; $5890: $0d
-    ld h, [hl]                                    ; $5891: $66
-    ld l, $66                                     ; $5892: $2e $66
-    dec a                                         ; $5894: $3d
-    ld h, [hl]                                    ; $5895: $66
-    ld d, b                                       ; $5896: $50
-    ld h, [hl]                                    ; $5897: $66
-    ld e, e                                       ; $5898: $5b
-    ld h, [hl]                                    ; $5899: $66
-    ld a, h                                       ; $589a: $7c
-    ld h, [hl]                                    ; $589b: $66
-    adc c                                         ; $589c: $89
-    ld h, [hl]                                    ; $589d: $66
-    sbc [hl]                                      ; $589e: $9e
-    ld h, [hl]                                    ; $589f: $66
-    xor a                                         ; $58a0: $af
-    ld h, [hl]                                    ; $58a1: $66
-    ret nz                                        ; $58a2: $c0
-
-    ld h, [hl]                                    ; $58a3: $66
-    pop de                                        ; $58a4: $d1
-    ld h, [hl]                                    ; $58a5: $66
-    db $e4                                        ; $58a6: $e4
-    ld h, [hl]                                    ; $58a7: $66
-    ei                                            ; $58a8: $fb
-    ld h, [hl]                                    ; $58a9: $66
-    ld [de], a                                    ; $58aa: $12
-    ld h, a                                       ; $58ab: $67
-    inc hl                                        ; $58ac: $23
-    ld h, a                                       ; $58ad: $67
-    jr nc, jr_003_5917                            ; $58ae: $30 $67
-
-    dec a                                         ; $58b0: $3d
-    ld h, a                                       ; $58b1: $67
-    ld d, h                                       ; $58b2: $54
-    ld h, a                                       ; $58b3: $67
-    ld h, e                                       ; $58b4: $63
-    ld h, a                                       ; $58b5: $67
-    ld l, [hl]                                    ; $58b6: $6e
-    ld h, a                                       ; $58b7: $67
-    sub l                                         ; $58b8: $95
-    ld h, a                                       ; $58b9: $67
-    or b                                          ; $58ba: $b0
-    ld h, a                                       ; $58bb: $67
-    bit 4, a                                      ; $58bc: $cb $67
-    ldh [c], a                                    ; $58be: $e2
-    ld h, a                                       ; $58bf: $67
-    di                                            ; $58c0: $f3
-    ld h, a                                       ; $58c1: $67
-    inc b                                         ; $58c2: $04
-    ld l, b                                       ; $58c3: $68
-    ld de, $2268                                  ; $58c4: $11 $68 $22
-    ld l, b                                       ; $58c7: $68
-    cpl                                           ; $58c8: $2f
-    ld l, b                                       ; $58c9: $68
-    ld b, d                                       ; $58ca: $42
-    ld l, b                                       ; $58cb: $68
-    ld h, l                                       ; $58cc: $65
-    ld l, b                                       ; $58cd: $68
-    ld a, h                                       ; $58ce: $7c
-    ld l, b                                       ; $58cf: $68
-    adc a                                         ; $58d0: $8f
-    ld l, b                                       ; $58d1: $68
-    sbc [hl]                                      ; $58d2: $9e
-    ld l, b                                       ; $58d3: $68
-    or c                                          ; $58d4: $b1
-    ld l, b                                       ; $58d5: $68
-    cp [hl]                                       ; $58d6: $be
-    ld l, b                                       ; $58d7: $68
-    rst RST_08                                    ; $58d8: $cf
-    ld l, b                                       ; $58d9: $68
-    call c, $fd68                                 ; $58da: $dc $68 $fd
-    ld l, b                                       ; $58dd: $68
-    ld [$1369], sp                                ; $58de: $08 $69 $13
-    ld l, c                                       ; $58e1: $69
-    inc [hl]                                      ; $58e2: $34
-    ld l, c                                       ; $58e3: $69
-    ld b, e                                       ; $58e4: $43
-    ld l, c                                       ; $58e5: $69
-    ld d, d                                       ; $58e6: $52
-    ld l, c                                       ; $58e7: $69
-    ld e, l                                       ; $58e8: $5d
-    ld l, c                                       ; $58e9: $69
-    ld [hl], b                                    ; $58ea: $70
-    ld l, c                                       ; $58eb: $69
-    add l                                         ; $58ec: $85
-    ld l, c                                       ; $58ed: $69
-    sbc d                                         ; $58ee: $9a
-    ld l, c                                       ; $58ef: $69
-    and l                                         ; $58f0: $a5
-    ld l, c                                       ; $58f1: $69
-    ret nz                                        ; $58f2: $c0
-
-    ld l, c                                       ; $58f3: $69
-    db $dd                                        ; $58f4: $dd
-    ld l, c                                       ; $58f5: $69
-    xor $69                                       ; $58f6: $ee $69
-    dec c                                         ; $58f8: $0d
-    ld l, d                                       ; $58f9: $6a
-    ld e, $6a                                     ; $58fa: $1e $6a
-    dec sp                                        ; $58fc: $3b
-    ld l, d                                       ; $58fd: $6a
-    ld c, d                                       ; $58fe: $4a
-    ld l, d                                       ; $58ff: $6a
-    ld h, e                                       ; $5900: $63
-    ld l, d                                       ; $5901: $6a
-    add d                                         ; $5902: $82
-    ld l, d                                       ; $5903: $6a
-    sub c                                         ; $5904: $91
-    ld l, d                                       ; $5905: $6a
-    xor b                                         ; $5906: $a8
-    ld l, d                                       ; $5907: $6a
-    cp l                                          ; $5908: $bd
-    ld l, d                                       ; $5909: $6a
-    jp nc, $e56a                                  ; $590a: $d2 $6a $e5
-
-    ld l, d                                       ; $590d: $6a
-    db $f4                                        ; $590e: $f4
-    ld l, d                                       ; $590f: $6a
-    ld bc, $106b                                  ; $5910: $01 $6b $10
-    ld l, e                                       ; $5913: $6b
-    ld sp, $406b                                  ; $5914: $31 $6b $40
-
-jr_003_5917:
-    ld l, e                                       ; $5917: $6b
-    ld d, a                                       ; $5918: $57
-    ld l, e                                       ; $5919: $6b
-    ld l, h                                       ; $591a: $6c
-    ld l, e                                       ; $591b: $6b
-    ld a, e                                       ; $591c: $7b
-    ld l, e                                       ; $591d: $6b
-    adc [hl]                                      ; $591e: $8e
-    ld l, e                                       ; $591f: $6b
-    and c                                         ; $5920: $a1
-    ld l, e                                       ; $5921: $6b
-    cp d                                          ; $5922: $ba
-    ld l, e                                       ; $5923: $6b
-    bit 5, e                                      ; $5924: $cb $6b
-    ret c                                         ; $5926: $d8
-
-    ld l, e                                       ; $5927: $6b
-    pop af                                        ; $5928: $f1
-    ld l, e                                       ; $5929: $6b
-    inc c                                         ; $592a: $0c
-    ld l, h                                       ; $592b: $6c
-    ld hl, $3a6c                                  ; $592c: $21 $6c $3a
-    ld l, h                                       ; $592f: $6c
-    ld c, a                                       ; $5930: $4f
-    ld l, h                                       ; $5931: $6c
-    ld c, l                                       ; $5932: $4d
-    ld h, b                                       ; $5933: $60
-    jp nc, $d300                                  ; $5934: $d2 $00 $d3
-
-    nop                                           ; $5937: $00
-    ret c                                         ; $5938: $d8
-
-    nop                                           ; $5939: $00
-    ret                                           ; $593a: $c9
-
-
-    nop                                           ; $593b: $00
-    rst $38                                       ; $593c: $ff
-    rst $38                                       ; $593d: $ff
-    nop                                           ; $593e: $00
-    ld b, l                                       ; $593f: $45
-    ld h, b                                       ; $5940: $60
-    ret z                                         ; $5941: $c8
-
-    nop                                           ; $5942: $00
-    call $c500                                    ; $5943: $cd $00 $c5
-    nop                                           ; $5946: $00
-    pop de                                        ; $5947: $d1
-    nop                                           ; $5948: $00
-    db $d3                                        ; $5949: $d3
-    nop                                           ; $594a: $00
-    jp nc, $c800                                  ; $594b: $d2 $00 $c8
-
-    nop                                           ; $594e: $00
-    rst $38                                       ; $594f: $ff
-    rst $38                                       ; $5950: $ff
-    nop                                           ; $5951: $00
     ld c, d                                       ; $5952: $4a
     ld h, b                                       ; $5953: $60
     rst $10                                       ; $5954: $d7
@@ -8666,7 +8427,7 @@ OAMSpriteData_Event4d_ButtonPrompt_B_CANCEL::
     db $10, $40, $0b, $00
     db $ff
 
-OAMSpriteData_Event4e::
+OAMSpriteData_Event4e_ButtonPrompt_A_START::
     db $10, $14, $2a, $00
     db $10, $0c, $00, $00
     db $10, $1c, $12, $00
@@ -8676,7 +8437,7 @@ OAMSpriteData_Event4e::
     db $10, $3c, $13, $00
     db $ff
 
-OAMSpriteData_Event4f::
+OAMSpriteData_Event4f_ButtonPrompt_B_EXIT::
     db $10, $10, $01, $00
     db $10, $18, $2a, $00
     db $10, $20, $04, $00
@@ -8698,43 +8459,43 @@ OAMSpriteData_Event50::
     db $10, $4c, $0d, $00
     db $ff
 
-OAMSpriteData_Event51::
+OAMSpriteData_Event51_PromptFont_0::
     db $10, $08, $20, $00
     db $ff
 
-OAMSpriteData_Event52::
+OAMSpriteData_Event52_PromptFont_1::
     db $10, $08, $21, $00
     db $ff
 
-OAMSpriteData_Event53::
+OAMSpriteData_Event53_PromptFont_2::
     db $10, $08, $22, $00
     db $ff
 
-OAMSpriteData_Event54::
+OAMSpriteData_Event54_PromptFont_3::
     db $10, $08, $23, $00
     db $ff
 
-OAMSpriteData_Event55::
+OAMSpriteData_Event55_PromptFont_4::
     db $10, $08, $24, $00
     db $ff
 
-OAMSpriteData_Event56::
+OAMSpriteData_Event56_PromptFont_5::
     db $10, $08, $25, $00
     db $ff
 
-OAMSpriteData_Event57::
+OAMSpriteData_Event57_PromptFont_6::
     db $10, $08, $26, $00
     db $ff
 
-OAMSpriteData_Event58::
+OAMSpriteData_Event58_PromptFont_7::
     db $10, $08, $27, $00
     db $ff
 
-OAMSpriteData_Event59::
+OAMSpriteData_Event59_PromptFont_8::
     db $10, $08, $28, $00
     db $ff
 
-OAMSpriteData_Event5a::
+OAMSpriteData_Event5a_PromptFont_9::
     db $10, $08, $29, $00
     db $ff
 
@@ -8783,21 +8544,21 @@ OAMSpriteData_Event5f::
     db $20, $10, $3b, $10
     db $ff
 
-OAMSpriteData_Event60::
+OAMSpriteData_Event60_PuzzleSelectCursorPencil_Idle::
     db $10, $08, $30, $10
     db $10, $10, $31, $10
     db $18, $08, $40, $10
     db $18, $10, $41, $10
     db $ff
 
-OAMSpriteData_Event61::
+OAMSpriteData_Event61_PuzzleSelectCursorPencil_ClearAnimation_Frame1::
     db $10, $06, $32, $10
     db $10, $0e, $33, $10
     db $18, $06, $42, $10
     db $18, $0e, $43, $10
     db $ff
 
-OAMSpriteData_Event62::
+OAMSpriteData_Event62_PuzzleSelectCursorPencil_ClearAnimation_Frame2::
     db $0e, $0a, $32, $10
     db $0e, $12, $33, $10
     db $16, $0a, $42, $10
@@ -8920,7 +8681,7 @@ OAMSpriteData_Event7f::
     db $10, $08, $1b, $00
     db $ff
 
-OAMSpriteData_Event80::
+OAMSpriteData_Event80_PromptFont_Dash::
     db $10, $08, $1c, $00
     db $ff
 
