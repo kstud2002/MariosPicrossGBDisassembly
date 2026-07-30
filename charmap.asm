@@ -45,245 +45,342 @@ CHARMAP "➔", $2A
 CHARMAP "?", $2B
 
 NEWCHARMAP messages
-CHARMAP "あ⁣", $00
-CHARMAP "い", $01
-CHARMAP "う", $02
-CHARMAP "え", $03
-CHARMAP "お", $04
-CHARMAP "か", $05
-CHARMAP "き", $06
-CHARMAP "く", $07
-CHARMAP "け", $08
-CHARMAP "こ", $09
-CHARMAP "さ", $0A
-CHARMAP "し", $0B
-CHARMAP "す", $0C
-CHARMAP "せ", $0D
-CHARMAP "そ", $0E
-CHARMAP "た", $0F
-CHARMAP "ち", $10
-CHARMAP "つ", $11
-CHARMAP "て", $12
-CHARMAP "と", $13
-CHARMAP "な", $14
-CHARMAP "に", $15
-CHARMAP "ぬ", $16
-CHARMAP "ね", $17
-CHARMAP "の", $18
-CHARMAP "は", $19
-CHARMAP "ひ", $1A
-CHARMAP "ふ", $1B
-CHARMAP "へ", $1C
-CHARMAP "ほ", $1D
-CHARMAP "ま", $1E
-CHARMAP "み", $1F
-CHARMAP "む", $20
-CHARMAP "め", $21
-CHARMAP "も", $22
-CHARMAP "や", $23
-CHARMAP "ゆ", $24
-CHARMAP "よ", $25
-CHARMAP "ら", $26
-CHARMAP "り", $27
-CHARMAP "る", $28
-CHARMAP "れ", $29
-CHARMAP "ろ", $2A
-CHARMAP "わ", $2B
-CHARMAP "を", $2C
-CHARMAP "ん", $2D
-CHARMAP "っ", $2E
-CHARMAP "ゃ", $2F
-CHARMAP "ゅ", $30
-CHARMAP "ょ", $31
-CHARMAP "が", $32
-CHARMAP "ぎ", $33
-CHARMAP "ぐ", $34
-CHARMAP "げ", $35
-CHARMAP "ご", $36
-CHARMAP "ざ", $37
-CHARMAP "じ", $38
-CHARMAP "ず", $39
-CHARMAP "ぜ", $3A
-CHARMAP "ぞ", $3B
-CHARMAP "だ", $3C
-CHARMAP "ぢ", $3D
-CHARMAP "づ", $3E
-CHARMAP "で", $3F
-CHARMAP "ど", $40
-CHARMAP "ば", $41
-CHARMAP "び", $42
-CHARMAP "ぶ", $43
-CHARMAP "べ", $44
-CHARMAP "ぼ", $45
-CHARMAP "ぱ", $46
-CHARMAP "ぴ", $47
-CHARMAP "ぷ", $48
-CHARMAP "ぺ", $49
-CHARMAP "ぽ", $4A
-CHARMAP "ぁ", $4B
-CHARMAP "ぃ", $4C
-CHARMAP "ぅ", $4D
-CHARMAP "ぇ", $4E
-CHARMAP "ぉ", $4F
-CHARMAP "ア", $50
-CHARMAP "イ", $51
-CHARMAP "ウ", $52
-CHARMAP "エ", $53
-CHARMAP "オ", $54
-CHARMAP "カ", $55
-CHARMAP "キ", $56
-CHARMAP "ク", $57
-CHARMAP "ケ", $58
-CHARMAP "コ", $59
-CHARMAP "サ", $5A
-CHARMAP "シ", $5B
-CHARMAP "ス", $5C
-CHARMAP "セ", $5D
-CHARMAP "ソ", $5E
-CHARMAP "タ", $5F
-CHARMAP "チ", $60
-CHARMAP "ツ", $61
-CHARMAP "テ", $62
-CHARMAP "ト", $63
-CHARMAP "ナ", $64
-CHARMAP "ニ", $65
-CHARMAP "ヌ", $66
-CHARMAP "ネ", $67
-CHARMAP "ノ", $68
-CHARMAP "ハ", $69
-CHARMAP "ヒ", $6A
-CHARMAP "フ", $6B
-CHARMAP "ヘ", $6C
-CHARMAP "ホ", $6D
-CHARMAP "マ", $6E
-CHARMAP "ミ", $6F
-CHARMAP "ム", $70
-CHARMAP "メ", $71
-CHARMAP "モ", $72
-CHARMAP "ヤ", $73
-CHARMAP "ユ", $74
-CHARMAP "ヨ", $75
-CHARMAP "ラ", $76
-CHARMAP "リ", $77
-CHARMAP "ル", $78
-CHARMAP "レ", $79
-CHARMAP "ロ", $7A
-CHARMAP "ワ", $7B
-CHARMAP "ヲ", $7C
-CHARMAP "ン", $7D
-CHARMAP "ッ", $7E
-CHARMAP "ャ", $7F
-CHARMAP "ュ", $80
-CHARMAP "ョ", $81
-CHARMAP "ガ", $82
-CHARMAP "ギ", $83
-CHARMAP "グ", $84
-CHARMAP "ゲ", $85
-CHARMAP "ゴ", $86
-CHARMAP "ザ", $87
-CHARMAP "ジ", $88
-CHARMAP "ズ", $89
-CHARMAP "ゼ", $8A
-CHARMAP "ゾ", $8B
-CHARMAP "ダ", $8C
-CHARMAP "ヂ", $8D
-CHARMAP "ヅ", $8E
-CHARMAP "デ", $8F
-CHARMAP "ド", $90
-CHARMAP "バ", $91
-CHARMAP "ビ", $92
-CHARMAP "ブ", $93
-CHARMAP "ベ", $94
-CHARMAP "ボ", $95
-CHARMAP "パ", $96
-CHARMAP "ピ", $97
-CHARMAP "プ", $98
-CHARMAP "ペ", $99
-CHARMAP "ポ", $9A
-CHARMAP "ァ", $9B
-CHARMAP "ィ", $9C
-CHARMAP "ゥ", $9D
-CHARMAP "ェ", $9E
-CHARMAP "ォ", $9F
-CHARMAP "0", $A0
-CHARMAP "1", $A1
-CHARMAP "2", $A2
-CHARMAP "3", $A3
-CHARMAP "4", $A4
-CHARMAP "5", $A5
-CHARMAP "6", $A6
-CHARMAP "7", $A7
-CHARMAP "8", $A8
-CHARMAP "9", $A9
-CHARMAP "—", $AA
-CHARMAP "A", $AB
-CHARMAP "B", $AC
-CHARMAP "C", $AD
-CHARMAP "D", $AE
-CHARMAP "E", $AF
-CHARMAP "F", $B0
-CHARMAP "G", $B1
-CHARMAP "H", $B2
-CHARMAP "I", $B3
-CHARMAP "J", $B4
-CHARMAP "K", $B5
-CHARMAP "L", $B6
-CHARMAP "M", $B7
-CHARMAP "N", $B8
-CHARMAP "O", $B9
-CHARMAP "P", $BA
-CHARMAP "Q", $BB
-CHARMAP "R", $BC
-CHARMAP "S", $BD
-CHARMAP "T", $BE
-CHARMAP "U", $BF
-CHARMAP "V", $C0
-CHARMAP "W", $C1
-CHARMAP "X", $C2
-CHARMAP "Y", $C3
-CHARMAP "Z", $C4
-CHARMAP "a", $C5
-CHARMAP "b", $C6
-CHARMAP "c", $C7
-CHARMAP "d", $C8
-CHARMAP "e", $C9
-CHARMAP "f", $CA
-CHARMAP "g", $CB
-CHARMAP "h", $CC
-CHARMAP "i", $CD
-CHARMAP "j", $CE
-CHARMAP "k", $CF
-CHARMAP "l", $D0
-CHARMAP "m", $D1
-CHARMAP "n", $D2
-CHARMAP "o", $D3
-CHARMAP "p", $D4
-CHARMAP "q", $D5
-CHARMAP "r", $D6
-CHARMAP "s", $D7
-CHARMAP "t", $D8
-CHARMAP "u", $D9
-CHARMAP "v", $DA
-CHARMAP "w", $DB
-CHARMAP "x", $DC
-CHARMAP "y", $DD
-CHARMAP "z", $DE
-CHARMAP " ", $DF
-CHARMAP "､", $E0
-CHARMAP "｡", $E1
-CHARMAP "｢", $E2
-CHARMAP "｣", $E3
-CHARMAP "⨯", $E4
-CHARMAP "“", $E5
-CHARMAP "”", $E6
-CHARMAP "!", $E7
-CHARMAP "?", $E8
-CHARMAP ":", $E9
-CHARMAP ";", $EA
-CHARMAP ",", $EB
-CHARMAP ".", $EC
-CHARMAP "·", $ED
-CHARMAP "(", $EE
-CHARMAP ")", $EF
-CHARMAP "-", $F0
-CHARMAP "'", $F1
+CHARMAP "あ⁣", $00, $00
+CHARMAP "い", $01, $00
+CHARMAP "う", $02, $00
+CHARMAP "え", $03, $00
+CHARMAP "お", $04, $00
+CHARMAP "か", $05, $00
+CHARMAP "き", $06, $00
+CHARMAP "く", $07, $00
+CHARMAP "け", $08, $00
+CHARMAP "こ", $09, $00
+CHARMAP "さ", $0A, $00
+CHARMAP "し", $0B, $00
+CHARMAP "す", $0C, $00
+CHARMAP "せ", $0D, $00
+CHARMAP "そ", $0E, $00
+CHARMAP "た", $0F, $00
+CHARMAP "ち", $10, $00
+CHARMAP "つ", $11, $00
+CHARMAP "て", $12, $00
+CHARMAP "と", $13, $00
+CHARMAP "な", $14, $00
+CHARMAP "に", $15, $00
+CHARMAP "ぬ", $16, $00
+CHARMAP "ね", $17, $00
+CHARMAP "の", $18, $00
+CHARMAP "は", $19, $00
+CHARMAP "ひ", $1A, $00
+CHARMAP "ふ", $1B, $00
+CHARMAP "へ", $1C, $00
+CHARMAP "ほ", $1D, $00
+CHARMAP "ま", $1E, $00
+CHARMAP "み", $1F, $00
+CHARMAP "む", $20, $00
+CHARMAP "め", $21, $00
+CHARMAP "も", $22, $00
+CHARMAP "や", $23, $00
+CHARMAP "ゆ", $24, $00
+CHARMAP "よ", $25, $00
+CHARMAP "ら", $26, $00
+CHARMAP "り", $27, $00
+CHARMAP "る", $28, $00
+CHARMAP "れ", $29, $00
+CHARMAP "ろ", $2A, $00
+CHARMAP "わ", $2B, $00
+CHARMAP "を", $2C, $00
+CHARMAP "ん", $2D, $00
+CHARMAP "っ", $2E, $00
+CHARMAP "ゃ", $2F, $00
+CHARMAP "ゅ", $30, $00
+CHARMAP "ょ", $31, $00
+CHARMAP "が", $32, $00
+CHARMAP "ぎ", $33, $00
+CHARMAP "ぐ", $34, $00
+CHARMAP "げ", $35, $00
+CHARMAP "ご", $36, $00
+CHARMAP "ざ", $37, $00
+CHARMAP "じ", $38, $00
+CHARMAP "ず", $39, $00
+CHARMAP "ぜ", $3A, $00
+CHARMAP "ぞ", $3B, $00
+CHARMAP "だ", $3C, $00
+CHARMAP "ぢ", $3D, $00
+CHARMAP "づ", $3E, $00
+CHARMAP "で", $3F, $00
+CHARMAP "ど", $40, $00
+CHARMAP "ば", $41, $00
+CHARMAP "び", $42, $00
+CHARMAP "ぶ", $43, $00
+CHARMAP "べ", $44, $00
+CHARMAP "ぼ", $45, $00
+CHARMAP "ぱ", $46, $00
+CHARMAP "ぴ", $47, $00
+CHARMAP "ぷ", $48, $00
+CHARMAP "ぺ", $49, $00
+CHARMAP "ぽ", $4A, $00
+CHARMAP "ぁ", $4B, $00
+CHARMAP "ぃ", $4C, $00
+CHARMAP "ぅ", $4D, $00
+CHARMAP "ぇ", $4E, $00
+CHARMAP "ぉ", $4F, $00
+CHARMAP "ア", $50, $00
+CHARMAP "イ", $51, $00
+CHARMAP "ウ", $52, $00
+CHARMAP "エ", $53, $00
+CHARMAP "オ", $54, $00
+CHARMAP "カ", $55, $00
+CHARMAP "キ", $56, $00
+CHARMAP "ク", $57, $00
+CHARMAP "ケ", $58, $00
+CHARMAP "コ", $59, $00
+CHARMAP "サ", $5A, $00
+CHARMAP "シ", $5B, $00
+CHARMAP "ス", $5C, $00
+CHARMAP "セ", $5D, $00
+CHARMAP "ソ", $5E, $00
+CHARMAP "タ", $5F, $00
+CHARMAP "チ", $60, $00
+CHARMAP "ツ", $61, $00
+CHARMAP "テ", $62, $00
+CHARMAP "ト", $63, $00
+CHARMAP "ナ", $64, $00
+CHARMAP "ニ", $65, $00
+CHARMAP "ヌ", $66, $00
+CHARMAP "ネ", $67, $00
+CHARMAP "ノ", $68, $00
+CHARMAP "ハ", $69, $00
+CHARMAP "ヒ", $6A, $00
+CHARMAP "フ", $6B, $00
+CHARMAP "ヘ", $6C, $00
+CHARMAP "ホ", $6D, $00
+CHARMAP "マ", $6E, $00
+CHARMAP "ミ", $6F, $00
+CHARMAP "ム", $70, $00
+CHARMAP "メ", $71, $00
+CHARMAP "モ", $72, $00
+CHARMAP "ヤ", $73, $00
+CHARMAP "ユ", $74, $00
+CHARMAP "ヨ", $75, $00
+CHARMAP "ラ", $76, $00
+CHARMAP "リ", $77, $00
+CHARMAP "ル", $78, $00
+CHARMAP "レ", $79, $00
+CHARMAP "ロ", $7A, $00
+CHARMAP "ワ", $7B, $00
+CHARMAP "ヲ", $7C, $00
+CHARMAP "ン", $7D, $00
+CHARMAP "ッ", $7E, $00
+CHARMAP "ャ", $7F, $00
+CHARMAP "ュ", $80, $00
+CHARMAP "ョ", $81, $00
+CHARMAP "ガ", $82, $00
+CHARMAP "ギ", $83, $00
+CHARMAP "グ", $84, $00
+CHARMAP "ゲ", $85, $00
+CHARMAP "ゴ", $86, $00
+CHARMAP "ザ", $87, $00
+CHARMAP "ジ", $88, $00
+CHARMAP "ズ", $89, $00
+CHARMAP "ゼ", $8A, $00
+CHARMAP "ゾ", $8B, $00
+CHARMAP "ダ", $8C, $00
+CHARMAP "ヂ", $8D, $00
+CHARMAP "ヅ", $8E, $00
+CHARMAP "デ", $8F, $00
+CHARMAP "ド", $90, $00
+CHARMAP "バ", $91, $00
+CHARMAP "ビ", $92, $00
+CHARMAP "ブ", $93, $00
+CHARMAP "ベ", $94, $00
+CHARMAP "ボ", $95, $00
+CHARMAP "パ", $96, $00
+CHARMAP "ピ", $97, $00
+CHARMAP "プ", $98, $00
+CHARMAP "ペ", $99, $00
+CHARMAP "ポ", $9A, $00
+CHARMAP "ァ", $9B, $00
+CHARMAP "ィ", $9C, $00
+CHARMAP "ゥ", $9D, $00
+CHARMAP "ェ", $9E, $00
+CHARMAP "ォ", $9F, $00
+CHARMAP "0", $A0, $00
+CHARMAP "1", $A1, $00
+CHARMAP "2", $A2, $00
+CHARMAP "3", $A3, $00
+CHARMAP "4", $A4, $00
+CHARMAP "5", $A5, $00
+CHARMAP "6", $A6, $00
+CHARMAP "7", $A7, $00
+CHARMAP "8", $A8, $00
+CHARMAP "9", $A9, $00
+CHARMAP "—", $AA, $00
+CHARMAP "A", $AB, $00
+CHARMAP "B", $AC, $00
+CHARMAP "C", $AD, $00
+CHARMAP "D", $AE, $00
+CHARMAP "E", $AF, $00
+CHARMAP "F", $B0, $00
+CHARMAP "G", $B1, $00
+CHARMAP "H", $B2, $00
+CHARMAP "I", $B3, $00
+CHARMAP "J", $B4, $00
+CHARMAP "K", $B5, $00
+CHARMAP "L", $B6, $00
+CHARMAP "M", $B7, $00
+CHARMAP "N", $B8, $00
+CHARMAP "O", $B9, $00
+CHARMAP "P", $BA, $00
+CHARMAP "Q", $BB, $00
+CHARMAP "R", $BC, $00
+CHARMAP "S", $BD, $00
+CHARMAP "T", $BE, $00
+CHARMAP "U", $BF, $00
+CHARMAP "V", $C0, $00
+CHARMAP "W", $C1, $00
+CHARMAP "X", $C2, $00
+CHARMAP "Y", $C3, $00
+CHARMAP "Z", $C4, $00
+CHARMAP "a", $C5, $00
+CHARMAP "b", $C6, $00
+CHARMAP "c", $C7, $00
+CHARMAP "d", $C8, $00
+CHARMAP "e", $C9, $00
+CHARMAP "f", $CA, $00
+CHARMAP "g", $CB, $00
+CHARMAP "h", $CC, $00
+CHARMAP "i", $CD, $00
+CHARMAP "j", $CE, $00
+CHARMAP "k", $CF, $00
+CHARMAP "l", $D0, $00
+CHARMAP "m", $D1, $00
+CHARMAP "n", $D2, $00
+CHARMAP "o", $D3, $00
+CHARMAP "p", $D4, $00
+CHARMAP "q", $D5, $00
+CHARMAP "r", $D6, $00
+CHARMAP "s", $D7, $00
+CHARMAP "t", $D8, $00
+CHARMAP "u", $D9, $00
+CHARMAP "v", $DA, $00
+CHARMAP "w", $DB, $00
+CHARMAP "x", $DC, $00
+CHARMAP "y", $DD, $00
+CHARMAP "z", $DE, $00
+CHARMAP " ", $DF, $00
+CHARMAP "､", $E0, $00
+CHARMAP "｡", $E1, $00
+CHARMAP "｢", $E2, $00
+CHARMAP "｣", $E3, $00
+CHARMAP "⨯", $E4, $00
+CHARMAP "“", $E5, $00
+CHARMAP "”", $E6, $00
+CHARMAP "!", $E7, $00
+CHARMAP "?", $E8, $00
+CHARMAP ":", $E9, $00
+CHARMAP ";", $EA, $00
+CHARMAP ",", $EB, $00
+CHARMAP ".", $EC, $00
+CHARMAP "·", $ED, $00
+CHARMAP "(", $EE, $00
+CHARMAP ")", $EF, $00
+CHARMAP "-", $F0, $00
+CHARMAP "'", $F1, $00
+
+NEWCHARMAP ascii
+CHARMAP " ", $20
+CHARMAP "!", $21
+CHARMAP "\"", $22
+CHARMAP "#", $23
+CHARMAP "$", $24
+CHARMAP "%", $25
+CHARMAP "&", $26
+CHARMAP "'", $27
+CHARMAP "(", $28
+CHARMAP ")", $29
+CHARMAP "*", $2A
+CHARMAP "+", $2B
+CHARMAP ",", $2C
+CHARMAP "-", $2D
+CHARMAP ".", $2E
+CHARMAP "/", $2F
+CHARMAP "0", $30
+CHARMAP "1", $31
+CHARMAP "2", $32
+CHARMAP "3", $33
+CHARMAP "4", $34
+CHARMAP "5", $35
+CHARMAP "6", $36
+CHARMAP "7", $37
+CHARMAP "8", $38
+CHARMAP "9", $39
+CHARMAP ":", $3A
+CHARMAP ";", $3B
+CHARMAP "<", $3C
+CHARMAP "=", $3D
+CHARMAP ">", $3E
+CHARMAP "?", $3F
+CHARMAP "@", $40
+CHARMAP "A", $41
+CHARMAP "B", $42
+CHARMAP "C", $43
+CHARMAP "D", $44
+CHARMAP "E", $45
+CHARMAP "F", $46
+CHARMAP "G", $47
+CHARMAP "H", $48
+CHARMAP "I", $49
+CHARMAP "J", $4A
+CHARMAP "K", $4B
+CHARMAP "L", $4C
+CHARMAP "M", $4D
+CHARMAP "N", $4E
+CHARMAP "O", $4F
+CHARMAP "P", $50
+CHARMAP "Q", $51
+CHARMAP "R", $52
+CHARMAP "S", $53
+CHARMAP "T", $54
+CHARMAP "U", $55
+CHARMAP "V", $56
+CHARMAP "W", $57
+CHARMAP "X", $58
+CHARMAP "Y", $59
+CHARMAP "Z", $5A
+CHARMAP "[", $5B
+CHARMAP "\\", $5C
+CHARMAP "]", $5D
+CHARMAP "^", $5E
+CHARMAP "_", $5F
+CHARMAP "`", $60
+CHARMAP "a", $61
+CHARMAP "b", $62
+CHARMAP "c", $63
+CHARMAP "d", $64
+CHARMAP "e", $65
+CHARMAP "f", $66
+CHARMAP "g", $67
+CHARMAP "h", $68
+CHARMAP "i", $69
+CHARMAP "j", $6A
+CHARMAP "k", $6B
+CHARMAP "l", $6C
+CHARMAP "m", $6D
+CHARMAP "n", $6E
+CHARMAP "o", $6F
+CHARMAP "p", $70
+CHARMAP "q", $71
+CHARMAP "r", $72
+CHARMAP "s", $73
+CHARMAP "t", $74
+CHARMAP "u", $75
+CHARMAP "v", $76
+CHARMAP "w", $77
+CHARMAP "x", $78
+CHARMAP "y", $79
+CHARMAP "z", $7A
+CHARMAP "\{", $7B
+CHARMAP "|", $7C
+CHARMAP "}", $7D
+CHARMAP "~", $7E

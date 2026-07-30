@@ -227,7 +227,7 @@
 00:035d JoypadTransitionInterruptHandlerStub
 
 00:035e HiddenProgrammerCredits
-00:035e .text:10
+00:035e .text:10:cm=ascii
 
 00:036e SaveValidationMagicBytes
 00:036e .data:0005
@@ -425,11 +425,11 @@
 00:1b96 ResetSaveDataAndLoadDefaults
 00:1b9c .ClearSaveDataLoop
 00:1be2 SaveDataDefaultBlockA
-00:1be2 .text:0007
-00:1be9 .text:0007
-00:1bf0 .text:0007
-00:1bf7 .text:0007
-00:1bfe .text:0007
+00:1be2 .text:0007:cm=ascii
+00:1be9 .text:0007:cm=ascii
+00:1bf0 .text:0007:cm=ascii
+00:1bf7 .text:0007:cm=ascii
+00:1bfe .text:0007:cm=ascii
 00:1c05 SaveDataDefaultBlockB
 00:1c05 .data:000f:5
 
@@ -822,40 +822,40 @@
 01:5ca4 .data:0006:2
 
 01:5caa LetsTryThisOneText
-01:5caa .text16:0028:cm=messages
+01:5caa .text:0028:cm=messages
 
 01:5cd2 VeryGoodText
-01:5cd2 .text16:0016:cm=messages
+01:5cd2 .text:0016:cm=messages
 
 01:5ce8 LetsTryAgainText
-01:5ce8 .text16:0022:cm=messages
+01:5ce8 .text:0022:cm=messages
 
 01:5d0a ItsTheLetterText
-01:5d0a .text16:0024:cm=messages
+01:5d0a .text:0024:cm=messages
 
 01:5d2e LText
-01:5d2e .text16:000a:cm=messages
+01:5d2e .text:000a:cm=messages
 
 01:5d38 EText
-01:5d38 .text16:000a:cm=messages
+01:5d38 .text:000a:cm=messages
 
 01:5d42 TText
-01:5d42 .text16:000a:cm=messages
+01:5d42 .text:000a:cm=messages
 
 01:5d4c SText
-01:5d4c .text16:000a:cm=messages
+01:5d4c .text:000a:cm=messages
 
 01:5d56 WText
-01:5d56 .text16:000a:cm=messages
+01:5d56 .text:000a:cm=messages
 
 01:5d60 OText
-01:5d60 .text16:000a:cm=messages
+01:5d60 .text:000a:cm=messages
 
 01:5d6a RText
-01:5d6a .text16:000a:cm=messages
+01:5d6a .text:000a:cm=messages
 
 01:5d74 KText
-01:5d74 .text16:000a:cm=messages
+01:5d74 .text:000a:cm=messages
 
 ; GameState 08 Phase pointer table entries (accessed via RST_18 dispatcher):
 ; Offset calculation: Phase_value * 2, added to return address $5d82 yields pointer location
@@ -2084,7 +2084,7 @@
 03:5156 .SendPatchedDefaultBorderPacket
 03:515e GS00_SP02_ContinueAfterBorderTransfer
 03:51a9 GS00_SP02_NonSGBFadeOut
-03:51b6 .PostFadeOutFlowRouter
+03:51b6 PostFadeOutFlowRouter
 03:51d1 .NoSaveDataInitPath
 03:51ee .AdvanceToContinueSavedGameScreen
 03:51f3 GS00_StatePhase_03_ContinueSavedGameScreenInit
@@ -3229,128 +3229,128 @@
 05:6930 .data:0040:6
 
 05:6a30 HowToPlayText_State01
-05:6a30 .text16:0016:cm=messages
-05:6a46 .text16:0034:cm=messages
-05:6a7a .text16:001e:cm=messages
-05:6a98 .text16:0016:cm=messages
+05:6a30 .text:0016:cm=messages
+05:6a46 .text:0034:cm=messages
+05:6a7a .text:001e:cm=messages
+05:6a98 .text:0016:cm=messages
 
 05:6aae HowToPlayText_State02
-05:6aae .text16:0030:cm=messages
-05:6ade .text16:0026:cm=messages
+05:6aae .text:0030:cm=messages
+05:6ade .text:0026:cm=messages
 
 05:6b04 HowToPlayText_State04
-05:6b04 .text16:000a:cm=messages
-05:6b0e .text16:001c:cm=messages
+05:6b04 .text:000a:cm=messages
+05:6b0e .text:001c:cm=messages
 
 05:6b2a HowToPlayText_State06
-05:6b2a .text16:0010:cm=messages
-05:6b3a .text16:0010:cm=messages
+05:6b2a .text:0010:cm=messages
+05:6b3a .text:0010:cm=messages
 
 05:6b4a HowToPlayText_State07
-05:6b4a .text16:0032:cm=messages
-05:6b7c .text16:002e:cm=messages
-05:6baa .text16:0012:cm=messages
+05:6b4a .text:0032:cm=messages
+05:6b7c .text:002e:cm=messages
+05:6baa .text:0012:cm=messages
 
 05:6bbc HowToPlayText_State08
-05:6bbc .text16:0030:cm=messages
-05:6bec .text16:0016:cm=messages
+05:6bbc .text:0030:cm=messages
+05:6bec .text:0016:cm=messages
 
 05:6c02 HowToPlayText_State0b
-05:6c02 .text16:0018:cm=messages
-05:6c1a .text16:002e:cm=messages
-05:6c48 .text16:002e:cm=messages
+05:6c02 .text:0018:cm=messages
+05:6c1a .text:002e:cm=messages
+05:6c48 .text:002e:cm=messages
 
 05:6c76 HowToPlayText_State0c
-05:6c76 .text16:002c:cm=messages
-05:6ca2 .text16:002e:cm=messages
+05:6c76 .text:002c:cm=messages
+05:6ca2 .text:002e:cm=messages
 
 05:6cd0 HowToPlayText_State0d
-05:6cd0 .text16:002c:cm=messages
-05:6cfc .text16:0010:cm=messages
+05:6cd0 .text:002c:cm=messages
+05:6cfc .text:0010:cm=messages
 
 05:6d0c HowToPlayText_State0f
-05:6d0c .text16:001c:cm=messages
-05:6d28 .text16:002e:cm=messages
-05:6d56 .text16:002e:cm=messages
-05:6d84 .text16:0016:cm=messages
+05:6d0c .text:001c:cm=messages
+05:6d28 .text:002e:cm=messages
+05:6d56 .text:002e:cm=messages
+05:6d84 .text:0016:cm=messages
 
 05:6d9a HowToPlayText_State10
-05:6d9a .text16:0022:cm=messages
+05:6d9a .text:0022:cm=messages
 
 05:6dbc HowToPlayText_State12
-05:6dbc .text16:0010:cm=messages
-05:6dcc .text16:0032:cm=messages
-05:6dfe .text16:0026:cm=messages
+05:6dbc .text:0010:cm=messages
+05:6dcc .text:0032:cm=messages
+05:6dfe .text:0026:cm=messages
 
 05:6e24 HowToPlayText_State14
-05:6e24 .text16:0030:cm=messages
-05:6e54 .text16:0018:cm=messages
+05:6e24 .text:0030:cm=messages
+05:6e54 .text:0018:cm=messages
 
 05:6e6c HowToPlayText_State16
-05:6e6c .text16:0014:cm=messages
-05:6e80 .text16:0026:cm=messages
-05:6ea6 .text16:002c:cm=messages
-05:6ed2 .text16:0032:cm=messages
+05:6e6c .text:0014:cm=messages
+05:6e80 .text:0026:cm=messages
+05:6ea6 .text:002c:cm=messages
+05:6ed2 .text:0032:cm=messages
 
 05:6f04 HowToPlayText_State17
-05:6f04 .text16:0032:cm=messages
+05:6f04 .text:0032:cm=messages
 
 05:6f36 HowToPlayText_State19
-05:6f36 .text16:0008:cm=messages
-05:6f3e .text16:0036:cm=messages
-05:6f74 .text16:0030:cm=messages
-05:6fa4 .text16:0030:cm=messages
-05:6fd4 .text16:002a:cm=messages
+05:6f36 .text:0008:cm=messages
+05:6f3e .text:0036:cm=messages
+05:6f74 .text:0030:cm=messages
+05:6fa4 .text:0030:cm=messages
+05:6fd4 .text:002a:cm=messages
 
 05:6ffe HowToPlayText_State1b
-05:6ffe .text16:0030:cm=messages
-05:702e .text16:002a:cm=messages
-05:7058 .text16:0012:cm=messages
+05:6ffe .text:0030:cm=messages
+05:702e .text:002a:cm=messages
+05:7058 .text:0012:cm=messages
 
 05:706a HowToPlayText_State1d
-05:706a .text16:0020:cm=messages
-05:708a .text16:0012:cm=messages
+05:706a .text:0020:cm=messages
+05:708a .text:0012:cm=messages
 
 05:709c HowToPlayText_State1e
-05:709c .text16:002a:cm=messages
-05:70c6 .text16:0032:cm=messages
-05:70f8 .text16:0022:cm=messages
+05:709c .text:002a:cm=messages
+05:70c6 .text:0032:cm=messages
+05:70f8 .text:0022:cm=messages
 
 05:711a HowToPlayText_State20
-05:711a .text16:002e:cm=messages
+05:711a .text:002e:cm=messages
 
 05:7148 HowToPlayText_State21
-05:7148 .text16:0030:cm=messages
-05:7178 .text16:002c:cm=messages
-05:71a4 .text16:0026:cm=messages
+05:7148 .text:0030:cm=messages
+05:7178 .text:002c:cm=messages
+05:71a4 .text:0026:cm=messages
 
 05:71ca HowToPlayText_State23
-05:71ca .text16:0034:cm=messages
-05:71fe .text16:0028:cm=messages
-05:7226 .text16:0034:cm=messages
-05:725a .text16:002e:cm=messages
+05:71ca .text:0034:cm=messages
+05:71fe .text:0028:cm=messages
+05:7226 .text:0034:cm=messages
+05:725a .text:002e:cm=messages
 
 05:7288 HowToPlayText_State25
-05:7288 .text16:002a:cm=messages
-05:72b2 .text16:0030:cm=messages
-05:72e2 .text16:002c:cm=messages
-05:730e .text16:0016:cm=messages
+05:7288 .text:002a:cm=messages
+05:72b2 .text:0030:cm=messages
+05:72e2 .text:002c:cm=messages
+05:730e .text:0016:cm=messages
 
 05:7324 HowToPlayText_State26
-05:7324 .text16:002a:cm=messages
-05:734e .text16:002a:cm=messages
+05:7324 .text:002a:cm=messages
+05:734e .text:002a:cm=messages
 
 05:7378 HowToPlayText_State27
-05:7378 .text16:0030:cm=messages
-05:73a8 .text16:0022:cm=messages
+05:7378 .text:0030:cm=messages
+05:73a8 .text:0022:cm=messages
 
 05:73ca HowToPlayText_State28
-05:73ca .text16:002a:cm=messages
-05:73f4 .text16:0032:cm=messages
-05:7426 .text16:000e:cm=messages
+05:73ca .text:002a:cm=messages
+05:73f4 .text:0032:cm=messages
+05:7426 .text:000e:cm=messages
 
 05:7434 HowToPlayText_State29
-05:7434 .text16:0018:cm=messages
+05:7434 .text:0018:cm=messages
 
 05:744c .padding:bb4
 
@@ -3477,6 +3477,9 @@
 07:4000 .image:1800:pe1
 07:4500 Picross5x5CursorTileData
 ;07:4500 .image:0200:pe1
+
+07:6214 .data:3
+07:6224 .data:3
 
 07:6300 Picross5x5GameOverMessageTileData
 07:6300 .image:0900:pe1
@@ -3675,6 +3678,10 @@
 
 0e:4566 .data:3
 0e:45c8 .data:3
+0e:404c .data:3
+0e:45ec .data:3
+0e:4e48 .data:3
+0e:54ec .data:3
 
 ; =============================================================================
 ; BANK 00F
@@ -3686,9 +3693,9 @@
 0f:4006 .padding:a
 
 0f:4010 HiddenMusicComposerCredits
-0f:4010 .text:6
-0f:4016 .text:22
-0f:4038 .text:18
+0f:4010 .text:6:cm=ascii
+0f:4016 .text:22:cm=ascii
+0f:4038 .text:18:cm=ascii
 
 0f:4050 .padding:30
 
@@ -3736,10 +3743,15 @@
 0f:5208 .data:3
 0f:5344 .data:3
 0f:53dc .data:3
+0f:5519 .data:3
+0f:5542 .data:3
 0f:564d .data:3
 0f:56d0 .data:3
 0f:56d7 .data:3
 0f:56f7 .data:3
+0f:580d .data:3
+0f:5823 .data:3
+0f:5b03 .data:3
 0f:5b0e .data:3
 0f:6180 .data:3
 0f:61db .data:3
@@ -3750,11 +3762,13 @@
 0f:63e4 .data:3
 0f:64ab .data:3
 0f:64e0 .data:3
+0f:668a .data:3
+0f:6955 .data:3
 0f:69a4 .data:3
 0f:69ca .data:3
 0f:6a99 .data:3
 0f:6cf8 .data:3
-0f:5b03 .data:3
-0f:668a .data:3
-0f:5519 .data:3
-0f:5542 .data:3
+0f:70f4 .data:3
+0f:7104 .data:3
+0f:7114 .data:3
+0f:7125 .data:3

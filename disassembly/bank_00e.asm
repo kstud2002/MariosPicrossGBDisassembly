@@ -84,7 +84,9 @@ jr_00e_402e:
     inc b                                         ; $4049: $04
     inc b                                         ; $404a: $04
     inc b                                         ; $404b: $04
-    ld [.LoopCallbackReturn], sp                  ; $404c: $08 $08 $30
+
+    db $08, $08, $30
+
     jr nc, jr_00e_4051                            ; $404f: $30 $00
 
 jr_00e_4051:
@@ -1545,7 +1547,9 @@ jr_00e_45c2:
     and h                                         ; $45e9: $a4
     ld b, h                                       ; $45ea: $44
     ld b, h                                       ; $45eb: $44
-    ld [.LoopCallbackReturn], sp                  ; $45ec: $08 $08 $30
+
+    db $08, $08, $30
+
     jr nc, jr_00e_45f1                            ; $45ef: $30 $00
 
 jr_00e_45f1:
@@ -3681,7 +3685,9 @@ jr_00e_4dac:
     ld b, h                                       ; $4e45: $44
     inc b                                         ; $4e46: $04
     inc b                                         ; $4e47: $04
-    ld [.LoopCallbackReturn], sp                  ; $4e48: $08 $08 $30
+
+    db $08, $08, $30
+
     jr nc, jr_00e_4e4d                            ; $4e4b: $30 $00
 
 jr_00e_4e4d:
@@ -5334,7 +5340,9 @@ jr_00e_540c:
     ld b, h                                       ; $54e9: $44
     inc b                                         ; $54ea: $04
     inc b                                         ; $54eb: $04
-    ld [.LoopCallbackReturn], sp                  ; $54ec: $08 $08 $30
+
+    db $08, $08, $30
+
     jr nc, jr_00e_5531                            ; $54ef: $30 $40
 
     ld b, b                                       ; $54f1: $40

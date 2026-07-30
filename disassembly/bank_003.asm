@@ -718,7 +718,7 @@ GS00_SP02_ContinueAfterBorderTransfer::
     call PlayScreenTransitionFadeOut              ; $519e: $cd $4e $04
     ld bc, $0028                                  ; $51a1: $01 $28 $00
     call BusyWaitDelayByBC                        ; $51a4: $cd $03 $06
-    jr .PostFadeOutFlowRouter                     ; $51a7: $18 $0d
+    jr PostFadeOutFlowRouter                      ; $51a7: $18 $0d
 
 GS00_SP02_NonSGBFadeOut::
     ld b, $03                                     ; $51a9: $06 $03
@@ -727,7 +727,7 @@ GS00_SP02_NonSGBFadeOut::
     ld de, $00c3                                  ; $51b0: $11 $c3 $00
     call PlayScreenTransitionFadeOut              ; $51b3: $cd $4e $04
 
-.PostFadeOutFlowRouter:
+PostFadeOutFlowRouter::
     call DisableLCDAtVBlank                       ; $51b6: $cd $83 $04
     ld a, [rContinueSavedGameFlowMode_Unsure]     ; $51b9: $fa $a2 $ac
     and a                                         ; $51bc: $a7

@@ -433,6 +433,8 @@ JoypadTransitionInterruptHandlerStub::
     reti                                          ; $035d: $d9
 
 
+SETCHARMAP ascii
+
 HiddenProgrammerCredits::
     db "NoriakiTeramotoE"
 

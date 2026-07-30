@@ -2558,7 +2558,9 @@ Picross5x5GameBoardTileData::
     nop                                           ; $6211: $00
     ld [hl], b                                    ; $6212: $70
     ld [hl], b                                    ; $6213: $70
-    ld [.LoopCallbackReturn], sp                  ; $6214: $08 $08 $30
+
+    db $08, $08, $30
+
     jr nc, jr_007_6259                            ; $6217: $30 $40
 
     ld b, b                                       ; $6219: $40
@@ -2572,7 +2574,9 @@ Picross5x5GameBoardTileData::
     nop                                           ; $6221: $00
     ld [hl], b                                    ; $6222: $70
     ld [hl], b                                    ; $6223: $70
-    ld [.LoopCallbackReturn], sp                  ; $6224: $08 $08 $30
+
+    db $08, $08, $30
+
     jr nc, jr_007_6231                            ; $6227: $30 $08
 
     ld [$7070], sp                                ; $6229: $08 $70 $70

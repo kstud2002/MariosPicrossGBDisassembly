@@ -744,243 +744,171 @@ SGBTransferPayload_PCT_TRN_DefaultBorder_BGPaletteData_White::
 SETCHARMAP messages
 
 HowToPlayText_State01::
-    db "Hi, Kids!!"
-    dw $fffe
+    db "Hi, Kids!!", $fe, $ff
 
-    db "It's time for us to solve"
-    dw $fffe
+    db "It's time for us to solve", $fe, $ff
 
-    db "the mystery of"
-    dw $fffe
+    db "the mystery of", $fe, $ff
 
-    db "“Picross”!"
-    dw $ffff
+    db "“Picross”!", $ff, $ff
 
 HowToPlayText_State02::
-    db "The mystery lies in the"
-    dw $fffe
+    db "The mystery lies in the", $fe, $ff
 
-    db "numbers on the top"
-    dw $ffff
+    db "numbers on the top", $ff, $ff
 
 HowToPlayText_State04::
-    db " and"
-    dw $fffe
+    db " and", $fe, $ff
 
-    db "the left side"
-    dw $ffff
+    db "the left side", $ff, $ff
 
 HowToPlayText_State06::
-    db " of the"
-    dw $fffe
+    db " of the", $fe, $ff
 
-    db "window,"
-    dw $ffff
+    db "window,", $ff, $ff
 
 HowToPlayText_State07::
-    db "which together will help"
-    dw $fffe
+    db "which together will help", $fe, $ff
 
-    db "you to draw the secret"
-    dw $fffe
+    db "you to draw the secret", $fe, $ff
 
-    db "picture."
-    dw $ffff
+    db "picture.", $ff, $ff
 
 HowToPlayText_State08::
-    db "If you solve the puzzle"
-    dw $fffe
+    db "If you solve the puzzle", $fe, $ff
 
-    db "correctly,"
-    dw $ffff
+    db "correctly,", $ff, $ff
 
 HowToPlayText_State0b::
-    db " the entire"
-    dw $fffe
+    db " the entire", $fe, $ff
 
-    db "picture will be shown."
-    dw $fffe
+    db "picture will be shown.", $fe, $ff
 
-    db "(It's the letter “N”.)"
-    dw $ffff
+    db "(It's the letter “N”.)", $ff, $ff
 
 HowToPlayText_State0c::
-    db "Here are the rules to"
-    dw $fffe
+    db "Here are the rules to", $fe, $ff
 
-    db "solving the mystery···"
-    dw $ffff
+    db "solving the mystery···", $ff, $ff
 
 HowToPlayText_State0d::
-    db "The numbers above the"
-    dw $fffe
+    db "The numbers above the", $fe, $ff
 
-    db "columns"
-    dw $ffff
+    db "columns", $ff, $ff
 
 HowToPlayText_State0f::
-    db " tell you how"
-    dw $fffe
+    db " tell you how", $fe, $ff
 
-    db "many boxes you need to"
-    dw $fffe
+    db "many boxes you need to", $fe, $ff
 
-    db "chisel in the downward"
-    dw $fffe
+    db "chisel in the downward", $fe, $ff
 
-    db "direction."
-    dw $ffff
+    db "direction.", $ff, $ff
 
 HowToPlayText_State10::
-    db "This one is a 5,"
-    dw $ffff
+    db "This one is a 5,", $ff, $ff
 
 HowToPlayText_State12::
-    db " so you"
-    dw $fffe
+    db " so you", $fe, $ff
 
-    db "will need to chisel in 5"
-    dw $fffe
+    db "will need to chisel in 5", $fe, $ff
 
-    db "consecutive boxes."
-    dw $ffff
+    db "consecutive boxes.", $ff, $ff
 
 HowToPlayText_State14::
-    db "The numbers on the left"
-    dw $fffe
+    db "The numbers on the left", $fe, $ff
 
-    db "of the rows"
-    dw $ffff
+    db "of the rows", $ff, $ff
 
 HowToPlayText_State16::
-    db " tell you"
-    dw $fffe
+    db " tell you", $fe, $ff
 
-    db "how many boxes you"
-    dw $fffe
+    db "how many boxes you", $fe, $ff
 
-    db "need to chisel in the"
-    dw $fffe
+    db "need to chisel in the", $fe, $ff
 
-    db "left-to-right direction."
-    dw $ffff
+    db "left-to-right direction.", $ff, $ff
 
 HowToPlayText_State17::
-    db "This one is a 3 and a 1,"
-    dw $ffff
+    db "This one is a 3 and a 1,", $ff, $ff
 
 HowToPlayText_State19::
-    db " so"
-    dw $fffe
+    db " so", $fe, $ff
 
-    db "you will need to chisel in"
-    dw $fffe
+    db "you will need to chisel in", $fe, $ff
 
-    db "3 consecutive boxes and"
-    dw $fffe
+    db "3 consecutive boxes and", $fe, $ff
 
-    db "1 single box, separated"
-    dw $fffe
+    db "1 single box, separated", $fe, $ff
 
-    db "by at least 1 space."
-    dw $ffff
+    db "by at least 1 space.", $ff, $ff
 
 HowToPlayText_State1b::
-    db "If you do not solve the"
-    dw $fffe
+    db "If you do not solve the", $fe, $ff
 
-    db "secret picture in 30"
-    dw $fffe
+    db "secret picture in 30", $fe, $ff
 
-    db "minutes,"
-    dw $ffff
+    db "minutes,", $ff, $ff
 
 HowToPlayText_State1d::
-    db " then your game"
-    dw $fffe
+    db " then your game", $fe, $ff
 
-    db "is over."
-    dw $ffff
+    db "is over.", $ff, $ff
 
 HowToPlayText_State1e::
-    db "If you make mistake,"
-    dw $fffe
+    db "If you make mistake,", $fe, $ff
 
-    db "then your remaining time"
-    dw $fffe
+    db "then your remaining time", $fe, $ff
 
-    db "will be reduced."
-    dw $ffff
+    db "will be reduced.", $ff, $ff
 
 HowToPlayText_State20::
-    dw $fffe
-    db "But try not to panic!"
-    dw $ffff
+    db $fe, $ff, "But try not to panic!", $ff, $ff
 
 HowToPlayText_State21::
-    db "You can mark boxes that"
-    dw $fffe
+    db "You can mark boxes that", $fe, $ff
 
-    db "you think should stay"
-    dw $fffe
+    db "you think should stay", $fe, $ff
 
-    db "clear with an “⨯”."
-    dw $ffff
+    db "clear with an “⨯”.", $ff, $ff
 
 HowToPlayText_State23::
-    db "To get hints as you play,"
-    dw $fffe
+    db "To get hints as you play,", $fe, $ff
 
-    db "choose “Yes” on the"
-    dw $fffe
+    db "choose “Yes” on the", $fe, $ff
 
-    db "“With Hint” option at the"
-    dw $fffe
+    db "“With Hint” option at the", $fe, $ff
 
-    db "beginning of the game."
-    dw $ffff
+    db "beginning of the game.", $ff, $ff
 
 HowToPlayText_State25::
-    db "When you start a new"
-    dw $fffe
+    db "When you start a new", $fe, $ff
 
-    db "secret picture, the top"
-    dw $fffe
+    db "secret picture, the top", $fe, $ff
 
-    db "and left cursors will"
-    dw $fffe
+    db "and left cursors will", $fe, $ff
 
-    db "be moving."
-    dw $ffff
+    db "be moving.", $ff, $ff
 
 HowToPlayText_State26::
-    db "Push the A Button to"
-    dw $fffe
+    db "Push the A Button to", $fe, $ff
 
-    db "stop the top cursor."
-    dw $ffff
+    db "stop the top cursor.", $ff, $ff
 
 HowToPlayText_State27::
-    dw $fffe
-    db "Press it again to stop"
-    dw $fffe
+    db $fe, $ff, "Press it again to stop", $fe, $ff
 
-    db "the left cursor."
-    dw $ffff
+    db "the left cursor.", $ff, $ff
 
 HowToPlayText_State28::
-    db "Then the answers for"
-    dw $fffe
+    db "Then the answers for", $fe, $ff
 
-    db "that combination will be"
-    dw $fffe
+    db "that combination will be", $fe, $ff
 
-    db "shown."
-    dw $ffff
+    db "shown.", $ff, $ff
 
 HowToPlayText_State29::
-    db "GOOD LUCK!!"
-    dw $ffff
+    db "GOOD LUCK!!", $ff, $ff
 
     ; padding
     ds $bb4, $00

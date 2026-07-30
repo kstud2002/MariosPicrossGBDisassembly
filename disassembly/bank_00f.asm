@@ -16,6 +16,8 @@ Jumpvector_SoundEngineUpdateRoutine_Unsure::
     ; padding
     ds $a, $ff
 
+SETCHARMAP ascii
+
 HiddenMusicComposerCredits::
     db "DSEQ", $00, $01
 
@@ -5049,7 +5051,9 @@ jr_00f_56e9:
     ld a, [$7a84]                                 ; $5806: $fa $84 $7a
     ld a, [hl+]                                   ; $5809: $2a
     ld a, [$0a44]                                 ; $580a: $fa $44 $0a
-    ld a, [.WaitForVBlank]                        ; $580d: $fa $84 $0a
+
+    db $fa, $84, $0a
+
     ld [$44fa], a                                 ; $5810: $ea $fa $44
     cp d                                          ; $5813: $ba
     ld a, [$ba84]                                 ; $5814: $fa $84 $ba
@@ -5061,7 +5065,9 @@ jr_00f_56e9:
     dec b                                         ; $581e: $05
     ld a, [hl+]                                   ; $581f: $2a
     ld a, [$0a44]                                 ; $5820: $fa $44 $0a
-    ld a, [.WaitForVBlank]                        ; $5823: $fa $84 $0a
+
+    db $fa, $84, $0a
+
     ld [$44fa], a                                 ; $5826: $ea $fa $44
     cp d                                          ; $5829: $ba
     ld a, [$9d84]                                 ; $582a: $fa $84 $9d
@@ -8871,7 +8877,9 @@ Call_00f_60ee:
     ld [hl], a                                    ; $6952: $77
     sbc d                                         ; $6953: $9a
     ld a, l                                       ; $6954: $7d
-    call .RestoreInterruptsAndWaitForVBlank       ; $6955: $cd $cf $0a
+
+    db $cd, $cf, $0a
+
     ld e, l                                       ; $6958: $5d
     call $57cd                                    ; $6959: $cd $cd $57
     ld [hl], a                                    ; $695c: $77
@@ -10491,7 +10499,9 @@ jr_00f_70d6:
     rst $28                                       ; $70ef: $ef
     ld a, [$e465]                                 ; $70f0: $fa $65 $e4
     rst $30                                       ; $70f3: $f7
-    ld [.CopyOAMSpriteLoop], sp                   ; $70f4: $08 $f0 $20
+
+    db $08, $f0, $20
+
     ld [bc], a                                    ; $70f7: $02
     nop                                           ; $70f8: $00
     ei                                            ; $70f9: $fb
@@ -10502,7 +10512,9 @@ jr_00f_70d6:
     rst $28                                       ; $70ff: $ef
     ld a, [$e465]                                 ; $7100: $fa $65 $e4
     rst $30                                       ; $7103: $f7
-    ld [.CopyOAMSpriteLoop], sp                   ; $7104: $08 $f0 $20
+
+    db $08, $f0, $20
+
     ld [bc], a                                    ; $7107: $02
     nop                                           ; $7108: $00
     ei                                            ; $7109: $fb
@@ -10513,7 +10525,9 @@ jr_00f_70d6:
     rst $28                                       ; $710f: $ef
     ld a, [$e465]                                 ; $7110: $fa $65 $e4
     rst $30                                       ; $7113: $f7
-    ld [.CopyOAMSpriteLoop], sp                   ; $7114: $08 $f0 $20
+
+    db $08, $f0, $20
+
     ld [bc], a                                    ; $7117: $02
     nop                                           ; $7118: $00
     ei                                            ; $7119: $fb
@@ -10525,7 +10539,9 @@ jr_00f_70d6:
     rst $28                                       ; $7120: $ef
     ld a, [$e465]                                 ; $7121: $fa $65 $e4
     rst $30                                       ; $7124: $f7
-    ld [.CopyOAMSpriteLoop], sp                   ; $7125: $08 $f0 $20
+
+    db $08, $f0, $20
+
     ld [bc], a                                    ; $7128: $02
     nop                                           ; $7129: $00
     ei                                            ; $712a: $fb

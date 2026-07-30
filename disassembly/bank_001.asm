@@ -4604,53 +4604,40 @@ GS05_TODO_Data3::
 SETCHARMAP messages
 
 LetsTryThisOneText::
-    db "Let's try this one."
-    dw $ffff
+    db "Let's try this one.", $ff, $ff
 
 VeryGoodText::
-    db "Very good."
-    dw $ffff
+    db "Very good.", $ff, $ff
 
 LetsTryAgainText::
-    db "Let's try again."
-    dw $ffff
+    db "Let's try again.", $ff, $ff
 
 ItsTheLetterText::
-    dw $fffe
-    db "It's the letter "
-    dw $ffff
+    db $fe, $ff, "It's the letter ", $ff, $ff
 
 LText::
-    db "“L”."
-    dw $ffff
+    db "“L”.", $ff, $ff
 
 EText::
-    db "“E”."
-    dw $ffff
+    db "“E”.", $ff, $ff
 
 TText::
-    db "“T”."
-    dw $ffff
+    db "“T”.", $ff, $ff
 
 SText::
-    db "“S”."
-    dw $ffff
+    db "“S”.", $ff, $ff
 
 WText::
-    db "“W”."
-    dw $ffff
+    db "“W”.", $ff, $ff
 
 OText::
-    db "“O”."
-    dw $ffff
+    db "“O”.", $ff, $ff
 
 RText::
-    db "“R”."
-    dw $ffff
+    db "“R”.", $ff, $ff
 
 KText::
-    db "“K”."
-    dw $ffff
+    db "“K”.", $ff, $ff
 
 GameState_08_TODO_PhaseDispatcher::
     ld a, [rStatePhase_Current]                   ; $5d7e: $fa $35 $d6
