@@ -86,7 +86,7 @@ GS04_PhasePointer_04::
 GS04_PhasePointer_05::
     db $b7, $47
 
-GS04_StatePhase_00_TODO::
+GS04_StatePhase_00_PicrossCoursePuzzleSelectScreenInit::
     ld a, $43                                     ; $439a: $3e $43
     ld [rLCDCShadow], a                           ; $439c: $ea $2e $c3
     xor a                                         ; $439f: $af
@@ -112,9 +112,9 @@ GS04_StatePhase_00_TODO::
     ld de, $8800                                  ; $43d6: $11 $00 $88
     ld bc, $1000                                  ; $43d9: $01 $00 $10
     call BankedTileCopy                           ; $43dc: $cd $e4 $04
-    call Call_001_49a2                            ; $43df: $cd $a2 $49
-    call Call_001_4a80                            ; $43e2: $cd $80 $4a
-    call Call_001_4c0a                            ; $43e5: $cd $0a $4c
+    call GS04_LoadPicrossCoursePuzzleSelectCursorForSelectedSaveSlotAndCourse; $43df: $cd $a2 $49
+    call GS04_LoadPicrossCourseSelectGraphicsBySelectedCourse; $43e2: $cd $80 $4a
+    call GS04_DrawCompletedPuzzleMarkersForSelectedSaveSlotAndCourse; $43e5: $cd $0a $4c
     call ClearShadowOAMBuffer                     ; $43e8: $cd $b6 $05
     ld b, $03                                     ; $43eb: $06 $03
     ld hl, $4e80                                  ; $43ed: $21 $80 $4e
@@ -123,17 +123,17 @@ GS04_StatePhase_00_TODO::
     ld hl, $4ee9                                  ; $43f5: $21 $e9 $4e
     call SwitchBankToBAndJumpToHL                 ; $43f8: $cd $de $05
     xor a                                         ; $43fb: $af
-    call Call_001_49ee                            ; $43fc: $cd $ee $49
-    call Call_001_4dde                            ; $43ff: $cd $de $4d
-    call Call_001_4a4e                            ; $4402: $cd $4e $4a
+    call GS04_DrawPicrossCoursePuzzleSelectCursorSpriteByFrame; $43fc: $cd $ee $49
+    call GS04_DrawSelectedPicrossCoursePuzzleInfoPanel; $43ff: $cd $de $4d
+    call GS04_PlayCursorPreviewSfxBySelectedCourse; $4402: $cd $4e $4a
     call EnableLCDFromShadow                      ; $4405: $cd $a2 $04
-    call Call_001_4b5a                            ; $4408: $cd $5a $4b
+    call GS04_PlayPicrossCourseSelectFadeInBySelectedCourse; $4408: $cd $5a $4b
     ld hl, rStatePhase_Current                    ; $440b: $21 $35 $d6
     inc [hl]                                      ; $440e: $34
     ret                                           ; $440f: $c9
 
 
-GS04_StatePhase_04_TODO::
+GS04_StatePhase_04_ReturnFromPuzzleTransitionAndHandleUnlockFlow::
     ld a, $43                                     ; $4410: $3e $43
     ld [rLCDCShadow], a                           ; $4412: $ea $2e $c3
     xor a                                         ; $4415: $af
@@ -159,44 +159,44 @@ GS04_StatePhase_04_TODO::
     ld de, $8800                                  ; $444c: $11 $00 $88
     ld bc, $1000                                  ; $444f: $01 $00 $10
     call BankedTileCopy                           ; $4452: $cd $e4 $04
-    call Call_001_49a2                            ; $4455: $cd $a2 $49
-    call Call_001_4a80                            ; $4458: $cd $80 $4a
-    call Call_001_4c3b                            ; $445b: $cd $3b $4c
+    call GS04_LoadPicrossCoursePuzzleSelectCursorForSelectedSaveSlotAndCourse; $4455: $cd $a2 $49
+    call GS04_LoadPicrossCourseSelectGraphicsBySelectedCourse; $4458: $cd $80 $4a
+    call GS04_DrawCompletedPuzzleMarkersForSelectedSaveSlotAndCourseExceptCurrentSelection; $445b: $cd $3b $4c
     ld a, [rSelectedPuzzleStatusData]             ; $445e: $fa $4c $d8
     bit 7, a                                      ; $4461: $cb $7f
-    jr z, jr_001_4470                             ; $4463: $28 $0b
+    jr z, .ContinueAfterSelectedPuzzleCompletedMarkerCheck; $4463: $28 $0b
 
     ld a, [rPuzzleCursorColumn]                   ; $4465: $fa $36 $d6
     ld c, a                                       ; $4468: $4f
     ld a, [rPuzzleAndMenuCursorRow]               ; $4469: $fa $37 $d6
     ld b, a                                       ; $446c: $47
-    call Call_001_4c78                            ; $446d: $cd $78 $4c
+    call GS04_DrawCompletedPuzzleMarkerAtGridPosition; $446d: $cd $78 $4c
 
-jr_001_4470:
+.ContinueAfterSelectedPuzzleCompletedMarkerCheck:
     call ClearShadowOAMBuffer                     ; $4470: $cd $b6 $05
-    call Call_001_4f54                            ; $4473: $cd $54 $4f
+    call GS04_DrawSelectedPicrossCoursePuzzleInfoPanelFromSelectedPuzzleCache; $4473: $cd $54 $4f
     ld b, $03                                     ; $4476: $06 $03
     ld hl, $4e80                                  ; $4478: $21 $80 $4e
     call SwitchBankToBAndJumpToHL                 ; $447b: $cd $de $05
     ld a, [rPuzzleFlowVariant_Unsure]             ; $447e: $fa $05 $d8
     and a                                         ; $4481: $a7
     push af                                       ; $4482: $f5
-    jr nz, jr_001_448d                            ; $4483: $20 $08
+    jr nz, .BeginPostReturnFadeInAndResultFlow    ; $4483: $20 $08
 
     ld b, $03                                     ; $4485: $06 $03
     ld hl, $4ee9                                  ; $4487: $21 $e9 $4e
     call SwitchBankToBAndJumpToHL                 ; $448a: $cd $de $05
 
-jr_001_448d:
+.BeginPostReturnFadeInAndResultFlow:
     xor a                                         ; $448d: $af
-    call Call_001_49ee                            ; $448e: $cd $ee $49
-    call Call_001_4a4e                            ; $4491: $cd $4e $4a
+    call GS04_DrawPicrossCoursePuzzleSelectCursorSpriteByFrame; $448e: $cd $ee $49
+    call GS04_PlayCursorPreviewSfxBySelectedCourse; $4491: $cd $4e $4a
     call EnableLCDFromShadow                      ; $4494: $cd $a2 $04
-    call Call_001_4b5a                            ; $4497: $cd $5a $4b
+    call GS04_PlayPicrossCourseSelectFadeInBySelectedCourse; $4497: $cd $5a $4b
     pop af                                        ; $449a: $f1
-    jp z, Jump_001_46dc                           ; $449b: $ca $dc $46
+    jp z, GS04_ReturnToIdlePhaseAndRefreshSaveChecksums; $449b: $ca $dc $46
 
-    call Call_001_46e4                            ; $449e: $cd $e4 $46
+    call GS04_HandlePostReturnClearStatusChangeAnimationAndPrompt; $449e: $cd $e4 $46
     ld a, [rSelectedSaveSlotIndex]                ; $44a1: $fa $65 $a0
     ld c, a                                       ; $44a4: $4f
     ld b, $00                                     ; $44a5: $06 $00
@@ -204,20 +204,20 @@ jr_001_448d:
     add hl, bc                                    ; $44aa: $09
     ld a, [hl]                                    ; $44ab: $7e
     cp $03                                        ; $44ac: $fe $03
-    jp z, Jump_001_46dc                           ; $44ae: $ca $dc $46
+    jp z, GS04_ReturnToIdlePhaseAndRefreshSaveChecksums; $44ae: $ca $dc $46
 
     ld hl, rSaveSlot1PicrossKinokoStarClearedPuzzleCount; $44b1: $21 $8a $a3
     add hl, bc                                    ; $44b4: $09
     ld a, [hl]                                    ; $44b5: $7e
     cp $40                                        ; $44b6: $fe $40
-    jp nz, Jump_001_46dc                          ; $44b8: $c2 $dc $46
+    jp nz, GS04_ReturnToIdlePhaseAndRefreshSaveChecksums; $44b8: $c2 $dc $46
 
     ld hl, rSaveSlot1UnlockProgressState          ; $44bb: $21 $87 $a3
     add hl, bc                                    ; $44be: $09
     inc [hl]                                      ; $44bf: $34
     ld a, [hl]                                    ; $44c0: $7e
     cp $03                                        ; $44c1: $fe $03
-    jp z, Jump_001_45bb                           ; $44c3: $ca $bb $45
+    jp z, GS04_RunTimeTrialUnlockMessageFlowAndReturnToCourseSelect; $44c3: $ca $bb $45
 
     ld hl, rSaveSlot1PicrossKinokoStarClearedPuzzleCount; $44c6: $21 $8a $a3
     add hl, bc                                    ; $44c9: $09
@@ -236,10 +236,10 @@ jr_001_448d:
     ld a, $01                                     ; $44e6: $3e $01
     call CallSoundEffectDispatcher                ; $44e8: $cd $b6 $03
     call ClearShadowOAMBuffer                     ; $44eb: $cd $b6 $05
-    call Call_001_4b84                            ; $44ee: $cd $84 $4b
+    call GS04_PlayPicrossCourseSelectFadeOutBySelectedCourse; $44ee: $cd $84 $4b
     call DisableLCDAtVBlank                       ; $44f1: $cd $83 $04
     ld b, $01                                     ; $44f4: $06 $01
-    ld hl, $4ae4                                  ; $44f6: $21 $e4 $4a
+    ld hl, GS04_LoadPicrossCourseSelectGraphicsBySelectedCourse_Banked; $44f6: $21 $e4 $4a
     call SwitchBankToBAndJumpToHL                 ; $44f9: $cd $de $05
     ld a, $7e                                     ; $44fc: $3e $7e
     ld [rTilemapToTileDataAddressLookupTableLow], a; $44fe: $ea $63 $cd
@@ -263,7 +263,7 @@ jr_001_448d:
     ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $452b: $ea $50 $c3
     call EnableLCDFromShadow                      ; $452e: $cd $a2 $04
     ld b, $01                                     ; $4531: $06 $01
-    ld hl, $4bae                                  ; $4533: $21 $ae $4b
+    ld hl, GS04_PlayPicrossCourseSelectFadeInBySelectedCourse_Banked; $4533: $21 $ae $4b
     call SwitchBankToBAndJumpToHL                 ; $4536: $cd $de $05
     ld a, $10                                     ; $4539: $3e $10
     ld [rMessageScriptStreamResetEntryLow], a     ; $453b: $ea $43 $d8
@@ -296,7 +296,7 @@ jr_001_448d:
     ld a, $01                                     ; $4581: $3e $01
     call CallSoundEffectDispatcher                ; $4583: $cd $b6 $03
     ld b, $01                                     ; $4586: $06 $01
-    ld hl, $4bdc                                  ; $4588: $21 $dc $4b
+    ld hl, GS04_PlayPicrossCourseSelectFadeOutBySelectedCourse_Banked; $4588: $21 $dc $4b
     call SwitchBankToBAndJumpToHL                 ; $458b: $cd $de $05
     call DisableLCDAtVBlank                       ; $458e: $cd $83 $04
     ld hl, rLCDCInterruptControlFlags_Unsure      ; $4591: $21 $37 $c3
@@ -312,7 +312,7 @@ jr_001_448d:
     ld hl, rSaveSlot1CourseSelectCursorRow        ; $45a8: $21 $8d $a3
     add hl, bc                                    ; $45ab: $09
     inc [hl]                                      ; $45ac: $34
-    call Call_001_49c8                            ; $45ad: $cd $c8 $49
+    call GS04_SavePicrossCoursePuzzleSelectCursorForSelectedSaveSlotAndCourse; $45ad: $cd $c8 $49
     xor a                                         ; $45b0: $af
     ld [rStatePhase_Current], a                   ; $45b1: $ea $35 $d6
     ld hl, rGameState_Current                     ; $45b4: $21 $34 $d6
@@ -320,7 +320,7 @@ jr_001_448d:
     jp RefreshSaveValidationChecksumsAndMirrors   ; $45b8: $c3 $1f $1b
 
 
-Jump_001_45bb:
+GS04_RunTimeTrialUnlockMessageFlowAndReturnToCourseSelect::
     call RefreshSaveValidationChecksumsAndMirrors ; $45bb: $cd $1f $1b
     ld bc, $003c                                  ; $45be: $01 $3c $00
     call DelayFramesByBC                          ; $45c1: $cd $fa $05
@@ -334,10 +334,10 @@ Jump_001_45bb:
     ld a, $01                                     ; $45d5: $3e $01
     call CallSoundEffectDispatcher                ; $45d7: $cd $b6 $03
     call ClearShadowOAMBuffer                     ; $45da: $cd $b6 $05
-    call Call_001_4b84                            ; $45dd: $cd $84 $4b
+    call GS04_PlayPicrossCourseSelectFadeOutBySelectedCourse; $45dd: $cd $84 $4b
     call DisableLCDAtVBlank                       ; $45e0: $cd $83 $04
     ld b, $01                                     ; $45e3: $06 $01
-    ld hl, $4ae4                                  ; $45e5: $21 $e4 $4a
+    ld hl, GS04_LoadPicrossCourseSelectGraphicsBySelectedCourse_Banked; $45e5: $21 $e4 $4a
     call SwitchBankToBAndJumpToHL                 ; $45e8: $cd $de $05
     ld a, $7e                                     ; $45eb: $3e $7e
     ld [rTilemapToTileDataAddressLookupTableLow], a; $45ed: $ea $63 $cd
@@ -361,7 +361,7 @@ Jump_001_45bb:
     ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $461a: $ea $50 $c3
     call EnableLCDFromShadow                      ; $461d: $cd $a2 $04
     ld b, $01                                     ; $4620: $06 $01
-    ld hl, $4bae                                  ; $4622: $21 $ae $4b
+    ld hl, GS04_PlayPicrossCourseSelectFadeInBySelectedCourse_Banked; $4622: $21 $ae $4b
     call SwitchBankToBAndJumpToHL                 ; $4625: $cd $de $05
     ld a, $10                                     ; $4628: $3e $10
     ld [rMessageScriptStreamResetEntryLow], a     ; $462a: $ea $43 $d8
@@ -379,21 +379,21 @@ Jump_001_45bb:
     ld [rMessageScriptStreamPointerHigh], a       ; $4649: $ea $2e $d8
     call RunMessageScriptUntilEnd                 ; $464c: $cd $dd $51
     call WaitForAConfirmOnBottomPrompt            ; $464f: $cd $52 $52
-    call Call_001_51e4                            ; $4652: $cd $e4 $51
+    call GS04_ClearMessagePromptRows              ; $4652: $cd $e4 $51
     ld a, $08                                     ; $4655: $3e $08
     ld [rMessageScriptStreamPointerLow], a        ; $4657: $ea $2d $d8
     ld a, $42                                     ; $465a: $3e $42
     ld [rMessageScriptStreamPointerHigh], a       ; $465c: $ea $2e $d8
     call RunMessageScriptUntilEnd                 ; $465f: $cd $dd $51
     call WaitForAConfirmOnBottomPrompt            ; $4662: $cd $52 $52
-    call Call_001_51e4                            ; $4665: $cd $e4 $51
+    call GS04_ClearMessagePromptRows              ; $4665: $cd $e4 $51
     ld a, $58                                     ; $4668: $3e $58
     ld [rMessageScriptStreamPointerLow], a        ; $466a: $ea $2d $d8
     ld a, $42                                     ; $466d: $3e $42
     ld [rMessageScriptStreamPointerHigh], a       ; $466f: $ea $2e $d8
     call RunMessageScriptUntilEnd                 ; $4672: $cd $dd $51
     call WaitForAConfirmOnBottomPrompt            ; $4675: $cd $52 $52
-    call Call_001_51e4                            ; $4678: $cd $e4 $51
+    call GS04_ClearMessagePromptRows              ; $4678: $cd $e4 $51
     ld a, $3a                                     ; $467b: $3e $3a
     ld [rMessageScriptStreamPointerLow], a        ; $467d: $ea $2d $d8
     ld a, $43                                     ; $4680: $3e $43
@@ -412,7 +412,7 @@ Jump_001_45bb:
     ld a, $01                                     ; $46a2: $3e $01
     call CallSoundEffectDispatcher                ; $46a4: $cd $b6 $03
     ld b, $01                                     ; $46a7: $06 $01
-    ld hl, $4bdc                                  ; $46a9: $21 $dc $4b
+    ld hl, GS04_PlayPicrossCourseSelectFadeOutBySelectedCourse_Banked; $46a9: $21 $dc $4b
     call SwitchBankToBAndJumpToHL                 ; $46ac: $cd $de $05
     call DisableLCDAtVBlank                       ; $46af: $cd $83 $04
     ld hl, rLCDCInterruptControlFlags_Unsure      ; $46b2: $21 $37 $c3
@@ -428,7 +428,7 @@ Jump_001_45bb:
     ld hl, rSaveSlot1CourseSelectCursorRow        ; $46c9: $21 $8d $a3
     add hl, bc                                    ; $46cc: $09
     inc [hl]                                      ; $46cd: $34
-    call Call_001_49c8                            ; $46ce: $cd $c8 $49
+    call GS04_SavePicrossCoursePuzzleSelectCursorForSelectedSaveSlotAndCourse; $46ce: $cd $c8 $49
     xor a                                         ; $46d1: $af
     ld [rStatePhase_Current], a                   ; $46d2: $ea $35 $d6
     ld hl, rGameState_Current                     ; $46d5: $21 $34 $d6
@@ -436,20 +436,20 @@ Jump_001_45bb:
     jp RefreshSaveValidationChecksumsAndMirrors   ; $46d9: $c3 $1f $1b
 
 
-Jump_001_46dc:
+GS04_ReturnToIdlePhaseAndRefreshSaveChecksums::
     ld a, $01                                     ; $46dc: $3e $01
     ld [rStatePhase_Current], a                   ; $46de: $ea $35 $d6
     jp RefreshSaveValidationChecksumsAndMirrors   ; $46e1: $c3 $1f $1b
 
 
-Call_001_46e4:
+GS04_HandlePostReturnClearStatusChangeAnimationAndPrompt::
     ld a, [rSelectedSaveSlotIndex]                ; $46e4: $fa $65 $a0
     ld c, a                                       ; $46e7: $4f
     ld b, $00                                     ; $46e8: $06 $00
     ld hl, rSaveSlot1CourseSelectCursorRow        ; $46ea: $21 $8d $a3
     add hl, bc                                    ; $46ed: $09
     ld a, [hl]                                    ; $46ee: $7e
-    ld hl, $51c8                                  ; $46ef: $21 $c8 $51
+    ld hl, GS04_PicrossCourseStatusDataPointerTableOffsetBySaveSlot; $46ef: $21 $c8 $51
     add hl, bc                                    ; $46f2: $09
     ld c, [hl]                                    ; $46f3: $4e
     add hl, bc                                    ; $46f4: $09
@@ -473,47 +473,47 @@ Call_001_46e4:
     ld hl, rSelectedPuzzleStatusData              ; $470f: $21 $4c $d8
     xor [hl]                                      ; $4712: $ae
     bit 7, a                                      ; $4713: $cb $7f
-    jr z, jr_001_474f                             ; $4715: $28 $38
+    jr z, .BeginPostResultPromptDelay             ; $4715: $28 $38
 
     ld c, $08                                     ; $4717: $0e $08
     ld a, $02                                     ; $4719: $3e $02
     call CallSoundEffectDispatcher                ; $471b: $cd $b6 $03
     ld c, $08                                     ; $471e: $0e $08
 
-jr_001_4720:
+.AnimateCursorFrame1BeforeCompletedMarker:
     push bc                                       ; $4720: $c5
     call ClearShadowOAMBuffer                     ; $4721: $cd $b6 $05
     ld a, $01                                     ; $4724: $3e $01
-    call Call_001_49ee                            ; $4726: $cd $ee $49
-    call Call_001_4dde                            ; $4729: $cd $de $4d
+    call GS04_DrawPicrossCoursePuzzleSelectCursorSpriteByFrame; $4726: $cd $ee $49
+    call GS04_DrawSelectedPicrossCoursePuzzleInfoPanel; $4729: $cd $de $4d
     rst RST_08                                    ; $472c: $cf
     pop bc                                        ; $472d: $c1
     dec c                                         ; $472e: $0d
-    jr nz, jr_001_4720                            ; $472f: $20 $ef
+    jr nz, .AnimateCursorFrame1BeforeCompletedMarker; $472f: $20 $ef
 
     ld a, [rPuzzleCursorColumn]                   ; $4731: $fa $36 $d6
     ld c, a                                       ; $4734: $4f
     ld a, [rPuzzleAndMenuCursorRow]               ; $4735: $fa $37 $d6
     ld b, a                                       ; $4738: $47
-    call Call_001_4c78                            ; $4739: $cd $78 $4c
+    call GS04_DrawCompletedPuzzleMarkerAtGridPosition; $4739: $cd $78 $4c
     ld c, $08                                     ; $473c: $0e $08
 
-jr_001_473e:
+.AnimateCursorFrame2AfterCompletedMarker:
     push bc                                       ; $473e: $c5
     call ClearShadowOAMBuffer                     ; $473f: $cd $b6 $05
     ld a, $02                                     ; $4742: $3e $02
-    call Call_001_49ee                            ; $4744: $cd $ee $49
-    call Call_001_4dde                            ; $4747: $cd $de $4d
+    call GS04_DrawPicrossCoursePuzzleSelectCursorSpriteByFrame; $4744: $cd $ee $49
+    call GS04_DrawSelectedPicrossCoursePuzzleInfoPanel; $4747: $cd $de $4d
     rst RST_08                                    ; $474a: $cf
     pop bc                                        ; $474b: $c1
     dec c                                         ; $474c: $0d
-    jr nz, jr_001_473e                            ; $474d: $20 $ef
+    jr nz, .AnimateCursorFrame2AfterCompletedMarker; $474d: $20 $ef
 
-jr_001_474f:
+.BeginPostResultPromptDelay:
     rst RST_08                                    ; $474f: $cf
     ld bc, $005a                                  ; $4750: $01 $5a $00
 
-jr_001_4753:
+.PostResultPromptLoop:
     push bc                                       ; $4753: $c5
     call ClearShadowOAMBuffer                     ; $4754: $cd $b6 $05
     ld b, $03                                     ; $4757: $06 $03
@@ -521,39 +521,39 @@ jr_001_4753:
     call SwitchBankToBAndJumpToHL                 ; $475c: $cd $de $05
     ld a, [rVBlankFrameCounter]                   ; $475f: $fa $3a $c3
     bit 2, a                                      ; $4762: $cb $57
-    jr nz, jr_001_476a                            ; $4764: $20 $04
+    jr nz, .DrawPostResultPromptFrame             ; $4764: $20 $04
 
     xor a                                         ; $4766: $af
-    call Call_001_49ee                            ; $4767: $cd $ee $49
+    call GS04_DrawPicrossCoursePuzzleSelectCursorSpriteByFrame; $4767: $cd $ee $49
 
-jr_001_476a:
-    call Call_001_4dde                            ; $476a: $cd $de $4d
+.DrawPostResultPromptFrame:
+    call GS04_DrawSelectedPicrossCoursePuzzleInfoPanel; $476a: $cd $de $4d
     rst RST_08                                    ; $476d: $cf
     pop bc                                        ; $476e: $c1
     ld a, [rInputButtonsPressed]                  ; $476f: $fa $1e $c3
     and a                                         ; $4772: $a7
-    jr nz, jr_001_477a                            ; $4773: $20 $05
+    jr nz, .AdvanceSelectionAfterPostResultPrompt ; $4773: $20 $05
 
     dec bc                                        ; $4775: $0b
     ld a, c                                       ; $4776: $79
     or b                                          ; $4777: $b0
-    jr nz, jr_001_4753                            ; $4778: $20 $d9
+    jr nz, .PostResultPromptLoop                  ; $4778: $20 $d9
 
-jr_001_477a:
-    jp Jump_001_50fe                              ; $477a: $c3 $fe $50
+.AdvanceSelectionAfterPostResultPrompt:
+    jp GS04_AdvanceSelectionToNextUnclearedPuzzleIfPossible; $477a: $c3 $fe $50
 
 
-GS04_StatePhase_01_TODO::
+GS04_StatePhase_01_PicrossCoursePuzzleSelectScreenIdle::
     ld b, $03                                     ; $477d: $06 $03
     ld hl, $4ee9                                  ; $477f: $21 $e9 $4e
     call SwitchBankToBAndJumpToHL                 ; $4782: $cd $de $05
     xor a                                         ; $4785: $af
-    call Call_001_49ee                            ; $4786: $cd $ee $49
-    call Call_001_4dde                            ; $4789: $cd $de $4d
-    call Call_001_4a09                            ; $478c: $cd $09 $4a
+    call GS04_DrawPicrossCoursePuzzleSelectCursorSpriteByFrame; $4786: $cd $ee $49
+    call GS04_DrawSelectedPicrossCoursePuzzleInfoPanel; $4789: $cd $de $4d
+    call GS04_HandlePicrossCoursePuzzleSelectDirectionalInput; $478c: $cd $09 $4a
     ld a, [rInputButtonsPressed]                  ; $478f: $fa $1e $c3
     and $09                                       ; $4792: $e6 $09
-    jr z, jr_001_47a2                             ; $4794: $28 $0c
+    jr z, .CheckCancelInputB                      ; $4794: $28 $0c
 
     ld c, $03                                     ; $4796: $0e $03
     ld a, $02                                     ; $4798: $3e $02
@@ -563,10 +563,10 @@ GS04_StatePhase_01_TODO::
     ret                                           ; $47a1: $c9
 
 
-jr_001_47a2:
+.CheckCancelInputB:
     ld a, [rInputButtonsPressed]                  ; $47a2: $fa $1e $c3
     and $02                                       ; $47a5: $e6 $02
-    jr z, jr_001_47b6                             ; $47a7: $28 $0d
+    jr z, .ReturnFromIdlePhaseNoSelectionInput    ; $47a7: $28 $0d
 
     ld c, $04                                     ; $47a9: $0e $04
     ld a, $02                                     ; $47ab: $3e $02
@@ -576,11 +576,11 @@ jr_001_47a2:
     ret                                           ; $47b5: $c9
 
 
-jr_001_47b6:
+.ReturnFromIdlePhaseNoSelectionInput:
     ret                                           ; $47b6: $c9
 
 
-GS04_StatePhase_05_TODO::
+GS04_StatePhase_05_ReturnFromPuzzleTransitionAndCommitResult::
     ld bc, $003c                                  ; $47b7: $01 $3c $00
     call DelayFramesByBC                          ; $47ba: $cd $fa $05
     ld a, $05                                     ; $47bd: $3e $05
@@ -592,9 +592,9 @@ GS04_StatePhase_05_TODO::
     ld c, $00                                     ; $47cc: $0e $00
     ld a, $01                                     ; $47ce: $3e $01
     call CallSoundEffectDispatcher                ; $47d0: $cd $b6 $03
-    call Call_001_4b84                            ; $47d3: $cd $84 $4b
+    call GS04_PlayPicrossCourseSelectFadeOutBySelectedCourse; $47d3: $cd $84 $4b
     call DisableLCDAtVBlank                       ; $47d6: $cd $83 $04
-    call Call_001_49c8                            ; $47d9: $cd $c8 $49
+    call GS04_SavePicrossCoursePuzzleSelectCursorForSelectedSaveSlotAndCourse; $47d9: $cd $c8 $49
     xor a                                         ; $47dc: $af
     ld [rPuzzleTimerSecondOnes], a                ; $47dd: $ea $0b $d8
     ld [rPuzzleTimerSecondTens], a                ; $47e0: $ea $0c $d8
@@ -605,17 +605,17 @@ GS04_StatePhase_05_TODO::
     ld [rHintPopupSelection], a                   ; $47ec: $ea $33 $d8
     ld a, $01                                     ; $47ef: $3e $01
     ld [rPuzzleFlowVariant_Unsure], a             ; $47f1: $ea $05 $d8
-    call Call_001_49a2                            ; $47f4: $cd $a2 $49
-    call Call_001_504b                            ; $47f7: $cd $4b $50
-    call Call_001_4cbc                            ; $47fa: $cd $bc $4c
-    call Call_001_4cef                            ; $47fd: $cd $ef $4c
+    call GS04_LoadPicrossCoursePuzzleSelectCursorForSelectedSaveSlotAndCourse; $47f4: $cd $a2 $49
+    call GS04_LoadSelectedPicrossCoursePuzzleStatusAndTimeDataRecord; $47f7: $cd $4b $50
+    call GS04_IncrementSelectedPicrossCoursePuzzleClearCountIfAllowed; $47fa: $cd $bc $4c
+    call GS04_UpdateSelectedPicrossCoursePuzzleClearStatusAndTimes; $47fd: $cd $ef $4c
     call RefreshSaveValidationChecksumsAndMirrors ; $4800: $cd $1f $1b
     ld a, $04                                     ; $4803: $3e $04
     ld [rStatePhase_Current], a                   ; $4805: $ea $35 $d6
     ret                                           ; $4808: $c9
 
 
-GS04_StatePhase_02_TODO::
+GS04_StatePhase_02_ConfirmSelectionTransitionToPuzzle::
     ld bc, $003c                                  ; $4809: $01 $3c $00
     call DelayFramesByBC                          ; $480c: $cd $fa $05
     ld a, $05                                     ; $480f: $3e $05
@@ -627,11 +627,11 @@ GS04_StatePhase_02_TODO::
     ld c, $00                                     ; $481e: $0e $00
     ld a, $01                                     ; $4820: $3e $01
     call CallSoundEffectDispatcher                ; $4822: $cd $b6 $03
-    call Call_001_4b84                            ; $4825: $cd $84 $4b
+    call GS04_PlayPicrossCourseSelectFadeOutBySelectedCourse; $4825: $cd $84 $4b
     call DisableLCDAtVBlank                       ; $4828: $cd $83 $04
-    call Call_001_49c8                            ; $482b: $cd $c8 $49
-    call Call_001_504b                            ; $482e: $cd $4b $50
-    call Call_001_4cbc                            ; $4831: $cd $bc $4c
+    call GS04_SavePicrossCoursePuzzleSelectCursorForSelectedSaveSlotAndCourse; $482b: $cd $c8 $49
+    call GS04_LoadSelectedPicrossCoursePuzzleStatusAndTimeDataRecord; $482e: $cd $4b $50
+    call GS04_IncrementSelectedPicrossCoursePuzzleClearCountIfAllowed; $4831: $cd $bc $4c
     ld a, [rSelectedSaveSlotIndex]                ; $4834: $fa $65 $a0
     ld c, a                                       ; $4837: $4f
     ld b, $00                                     ; $4838: $06 $00
@@ -640,7 +640,7 @@ GS04_StatePhase_02_TODO::
     ld a, [hl]                                    ; $483e: $7e
     sla a                                         ; $483f: $cb $27
     ld c, a                                       ; $4841: $4f
-    ld hl, $486e                                  ; $4842: $21 $6e $48
+    ld hl, GS04_PuzzleDataIndexTableOffsetTableByCourse; $4842: $21 $6e $48
     add hl, bc                                    ; $4845: $09
     ld c, [hl]                                    ; $4846: $4e
     inc hl                                        ; $4847: $23
@@ -666,269 +666,47 @@ GS04_StatePhase_02_TODO::
     jp RefreshSaveValidationChecksumsAndMirrors   ; $486b: $c3 $1f $1b
 
 
-    inc bc                                        ; $486e: $03
-    nop                                           ; $486f: $00
-    add c                                         ; $4870: $81
-    nop                                           ; $4871: $00
-    ld b, c                                       ; $4872: $41
-    nop                                           ; $4873: $00
-    ld b, d                                       ; $4874: $42
-    nop                                           ; $4875: $00
-    ld b, e                                       ; $4876: $43
-    nop                                           ; $4877: $00
-    ld b, h                                       ; $4878: $44
-    nop                                           ; $4879: $00
-    ld b, l                                       ; $487a: $45
-    nop                                           ; $487b: $00
-    ld b, [hl]                                    ; $487c: $46
-    nop                                           ; $487d: $00
-    ld b, a                                       ; $487e: $47
-    nop                                           ; $487f: $00
-    ld c, b                                       ; $4880: $48
-    nop                                           ; $4881: $00
-    ld c, c                                       ; $4882: $49
-    nop                                           ; $4883: $00
-    ld c, d                                       ; $4884: $4a
-    nop                                           ; $4885: $00
-    ld c, e                                       ; $4886: $4b
-    nop                                           ; $4887: $00
-    ld c, h                                       ; $4888: $4c
-    nop                                           ; $4889: $00
-    ld c, l                                       ; $488a: $4d
-    nop                                           ; $488b: $00
-    ld c, [hl]                                    ; $488c: $4e
-    nop                                           ; $488d: $00
-    ld c, a                                       ; $488e: $4f
-    nop                                           ; $488f: $00
-    ld d, b                                       ; $4890: $50
-    nop                                           ; $4891: $00
-    ld d, c                                       ; $4892: $51
-    nop                                           ; $4893: $00
-    ld d, d                                       ; $4894: $52
-    nop                                           ; $4895: $00
-    ld d, e                                       ; $4896: $53
-    nop                                           ; $4897: $00
-    ld d, h                                       ; $4898: $54
-    nop                                           ; $4899: $00
-    ld d, l                                       ; $489a: $55
-    nop                                           ; $489b: $00
-    ld d, [hl]                                    ; $489c: $56
-    nop                                           ; $489d: $00
-    ld d, a                                       ; $489e: $57
-    nop                                           ; $489f: $00
-    ld e, b                                       ; $48a0: $58
-    nop                                           ; $48a1: $00
-    ld e, c                                       ; $48a2: $59
-    nop                                           ; $48a3: $00
-    ld e, d                                       ; $48a4: $5a
-    nop                                           ; $48a5: $00
-    ld e, e                                       ; $48a6: $5b
-    nop                                           ; $48a7: $00
-    ld e, h                                       ; $48a8: $5c
-    nop                                           ; $48a9: $00
-    ld e, l                                       ; $48aa: $5d
-    nop                                           ; $48ab: $00
-    ld e, [hl]                                    ; $48ac: $5e
-    nop                                           ; $48ad: $00
-    ld e, a                                       ; $48ae: $5f
-    nop                                           ; $48af: $00
-    ld h, b                                       ; $48b0: $60
-    nop                                           ; $48b1: $00
-    ld h, c                                       ; $48b2: $61
-    nop                                           ; $48b3: $00
-    ld h, d                                       ; $48b4: $62
-    nop                                           ; $48b5: $00
-    ld h, e                                       ; $48b6: $63
-    nop                                           ; $48b7: $00
-    ld h, h                                       ; $48b8: $64
-    nop                                           ; $48b9: $00
-    ld h, l                                       ; $48ba: $65
-    nop                                           ; $48bb: $00
-    ld h, [hl]                                    ; $48bc: $66
-    nop                                           ; $48bd: $00
-    ld h, a                                       ; $48be: $67
-    nop                                           ; $48bf: $00
-    ld l, b                                       ; $48c0: $68
-    nop                                           ; $48c1: $00
-    ld l, c                                       ; $48c2: $69
-    nop                                           ; $48c3: $00
-    ld l, d                                       ; $48c4: $6a
-    nop                                           ; $48c5: $00
-    ld l, e                                       ; $48c6: $6b
-    nop                                           ; $48c7: $00
-    ld l, h                                       ; $48c8: $6c
-    nop                                           ; $48c9: $00
-    ld l, l                                       ; $48ca: $6d
-    nop                                           ; $48cb: $00
-    ld l, [hl]                                    ; $48cc: $6e
-    nop                                           ; $48cd: $00
-    ld l, a                                       ; $48ce: $6f
-    nop                                           ; $48cf: $00
-    ld [hl], b                                    ; $48d0: $70
-    nop                                           ; $48d1: $00
-    ld [hl], c                                    ; $48d2: $71
-    nop                                           ; $48d3: $00
-    ld [hl], d                                    ; $48d4: $72
-    nop                                           ; $48d5: $00
-    ld [hl], e                                    ; $48d6: $73
-    nop                                           ; $48d7: $00
-    ld [hl], h                                    ; $48d8: $74
-    nop                                           ; $48d9: $00
-    ld [hl], l                                    ; $48da: $75
-    nop                                           ; $48db: $00
-    halt                                          ; $48dc: $76
-    nop                                           ; $48dd: $00
-    ld [hl], a                                    ; $48de: $77
-    nop                                           ; $48df: $00
-    ld a, b                                       ; $48e0: $78
-    nop                                           ; $48e1: $00
-    ld a, c                                       ; $48e2: $79
-    nop                                           ; $48e3: $00
-    ld a, d                                       ; $48e4: $7a
-    nop                                           ; $48e5: $00
-    ld a, e                                       ; $48e6: $7b
-    nop                                           ; $48e7: $00
-    ld a, h                                       ; $48e8: $7c
-    nop                                           ; $48e9: $00
-    ld a, l                                       ; $48ea: $7d
-    nop                                           ; $48eb: $00
-    ld a, [hl]                                    ; $48ec: $7e
-    nop                                           ; $48ed: $00
-    ld a, a                                       ; $48ee: $7f
-    nop                                           ; $48ef: $00
-    add b                                         ; $48f0: $80
-    nop                                           ; $48f1: $00
-    add c                                         ; $48f2: $81
-    nop                                           ; $48f3: $00
-    add d                                         ; $48f4: $82
-    nop                                           ; $48f5: $00
-    add e                                         ; $48f6: $83
-    nop                                           ; $48f7: $00
-    add h                                         ; $48f8: $84
-    nop                                           ; $48f9: $00
-    add l                                         ; $48fa: $85
-    nop                                           ; $48fb: $00
-    add [hl]                                      ; $48fc: $86
-    nop                                           ; $48fd: $00
-    add a                                         ; $48fe: $87
-    nop                                           ; $48ff: $00
-    adc b                                         ; $4900: $88
-    nop                                           ; $4901: $00
-    adc c                                         ; $4902: $89
-    nop                                           ; $4903: $00
-    adc d                                         ; $4904: $8a
-    nop                                           ; $4905: $00
-    adc e                                         ; $4906: $8b
-    nop                                           ; $4907: $00
-    adc h                                         ; $4908: $8c
-    nop                                           ; $4909: $00
-    adc l                                         ; $490a: $8d
-    nop                                           ; $490b: $00
-    adc [hl]                                      ; $490c: $8e
-    nop                                           ; $490d: $00
-    adc a                                         ; $490e: $8f
-    nop                                           ; $490f: $00
-    sub b                                         ; $4910: $90
-    nop                                           ; $4911: $00
-    sub c                                         ; $4912: $91
-    nop                                           ; $4913: $00
-    sub d                                         ; $4914: $92
-    nop                                           ; $4915: $00
-    sub e                                         ; $4916: $93
-    nop                                           ; $4917: $00
-    sub h                                         ; $4918: $94
-    nop                                           ; $4919: $00
-    sub l                                         ; $491a: $95
-    nop                                           ; $491b: $00
-    sub [hl]                                      ; $491c: $96
-    nop                                           ; $491d: $00
-    sub a                                         ; $491e: $97
-    nop                                           ; $491f: $00
-    sbc b                                         ; $4920: $98
-    nop                                           ; $4921: $00
-    sbc c                                         ; $4922: $99
-    nop                                           ; $4923: $00
-    sbc d                                         ; $4924: $9a
-    nop                                           ; $4925: $00
-    sbc e                                         ; $4926: $9b
-    nop                                           ; $4927: $00
-    sbc h                                         ; $4928: $9c
-    nop                                           ; $4929: $00
-    sbc l                                         ; $492a: $9d
-    nop                                           ; $492b: $00
-    sbc [hl]                                      ; $492c: $9e
-    nop                                           ; $492d: $00
-    sbc a                                         ; $492e: $9f
-    nop                                           ; $492f: $00
-    and b                                         ; $4930: $a0
-    nop                                           ; $4931: $00
-    and c                                         ; $4932: $a1
-    nop                                           ; $4933: $00
-    and d                                         ; $4934: $a2
-    nop                                           ; $4935: $00
-    and e                                         ; $4936: $a3
-    nop                                           ; $4937: $00
-    and h                                         ; $4938: $a4
-    nop                                           ; $4939: $00
-    and l                                         ; $493a: $a5
-    nop                                           ; $493b: $00
-    and [hl]                                      ; $493c: $a6
-    nop                                           ; $493d: $00
-    and a                                         ; $493e: $a7
-    nop                                           ; $493f: $00
-    xor b                                         ; $4940: $a8
-    nop                                           ; $4941: $00
-    xor c                                         ; $4942: $a9
-    nop                                           ; $4943: $00
-    xor d                                         ; $4944: $aa
-    nop                                           ; $4945: $00
-    xor e                                         ; $4946: $ab
-    nop                                           ; $4947: $00
-    xor h                                         ; $4948: $ac
-    nop                                           ; $4949: $00
-    xor l                                         ; $494a: $ad
-    nop                                           ; $494b: $00
-    xor [hl]                                      ; $494c: $ae
-    nop                                           ; $494d: $00
-    xor a                                         ; $494e: $af
-    nop                                           ; $494f: $00
-    or b                                          ; $4950: $b0
-    nop                                           ; $4951: $00
-    or c                                          ; $4952: $b1
-    nop                                           ; $4953: $00
-    or d                                          ; $4954: $b2
-    nop                                           ; $4955: $00
-    or e                                          ; $4956: $b3
-    nop                                           ; $4957: $00
-    or h                                          ; $4958: $b4
-    nop                                           ; $4959: $00
-    or l                                          ; $495a: $b5
-    nop                                           ; $495b: $00
-    or [hl]                                       ; $495c: $b6
-    nop                                           ; $495d: $00
-    or a                                          ; $495e: $b7
-    nop                                           ; $495f: $00
-    cp b                                          ; $4960: $b8
-    nop                                           ; $4961: $00
-    cp c                                          ; $4962: $b9
-    nop                                           ; $4963: $00
-    cp d                                          ; $4964: $ba
-    nop                                           ; $4965: $00
-    cp e                                          ; $4966: $bb
-    nop                                           ; $4967: $00
-    cp h                                          ; $4968: $bc
-    nop                                           ; $4969: $00
-    cp l                                          ; $496a: $bd
-    nop                                           ; $496b: $00
-    cp [hl]                                       ; $496c: $be
-    nop                                           ; $496d: $00
-    cp a                                          ; $496e: $bf
-    nop                                           ; $496f: $00
-    ret nz                                        ; $4970: $c0
+GS04_PuzzleDataIndexTableOffsetTableByCourse::
+    db $03, $00
+    db $81, $00
 
-    nop                                           ; $4971: $00
+GS04_PuzzleDataIndexTableByGridPosition_Kinoko::
+    db $41, $00, $42, $00, $43, $00, $44, $00
+    db $45, $00, $46, $00, $47, $00, $48, $00
+    db $49, $00, $4a, $00, $4b, $00, $4c, $00
+    db $4d, $00, $4e, $00, $4f, $00, $50, $00
+    db $51, $00, $52, $00, $53, $00, $54, $00
+    db $55, $00, $56, $00, $57, $00, $58, $00
+    db $59, $00, $5a, $00, $5b, $00, $5c, $00
+    db $5d, $00, $5e, $00, $5f, $00, $60, $00
+    db $61, $00, $62, $00, $63, $00, $64, $00
+    db $65, $00, $66, $00, $67, $00, $68, $00
+    db $69, $00, $6a, $00, $6b, $00, $6c, $00
+    db $6d, $00, $6e, $00, $6f, $00, $70, $00
+    db $71, $00, $72, $00, $73, $00, $74, $00
+    db $75, $00, $76, $00, $77, $00, $78, $00
+    db $79, $00, $7a, $00, $7b, $00, $7c, $00
+    db $7d, $00, $7e, $00, $7f, $00, $80, $00
 
-GS04_StatePhase_03_TODO::
+GS04_PuzzleDataIndexTableByGridPosition_Star::
+    db $81, $00, $82, $00, $83, $00, $84, $00
+    db $85, $00, $86, $00, $87, $00, $88, $00
+    db $89, $00, $8a, $00, $8b, $00, $8c, $00
+    db $8d, $00, $8e, $00, $8f, $00, $90, $00
+    db $91, $00, $92, $00, $93, $00, $94, $00
+    db $95, $00, $96, $00, $97, $00, $98, $00
+    db $99, $00, $9a, $00, $9b, $00, $9c, $00
+    db $9d, $00, $9e, $00, $9f, $00, $a0, $00
+    db $a1, $00, $a2, $00, $a3, $00, $a4, $00
+    db $a5, $00, $a6, $00, $a7, $00, $a8, $00
+    db $a9, $00, $aa, $00, $ab, $00, $ac, $00
+    db $ad, $00, $ae, $00, $af, $00, $b0, $00
+    db $b1, $00, $b2, $00, $b3, $00, $b4, $00
+    db $b5, $00, $b6, $00, $b7, $00, $b8, $00
+    db $b9, $00, $ba, $00, $bb, $00, $bc, $00
+    db $bd, $00, $be, $00, $bf, $00, $c0, $00
+
+GS04_StatePhase_03_CancelSelectionTransitionToCourseSelect::
     ld bc, $003c                                  ; $4972: $01 $3c $00
     call DelayFramesByBC                          ; $4975: $cd $fa $05
     ld a, $05                                     ; $4978: $3e $05
@@ -940,9 +718,9 @@ GS04_StatePhase_03_TODO::
     ld c, $00                                     ; $4987: $0e $00
     ld a, $01                                     ; $4989: $3e $01
     call CallSoundEffectDispatcher                ; $498b: $cd $b6 $03
-    call Call_001_4b84                            ; $498e: $cd $84 $4b
+    call GS04_PlayPicrossCourseSelectFadeOutBySelectedCourse; $498e: $cd $84 $4b
     call DisableLCDAtVBlank                       ; $4991: $cd $83 $04
-    call Call_001_49c8                            ; $4994: $cd $c8 $49
+    call GS04_SavePicrossCoursePuzzleSelectCursorForSelectedSaveSlotAndCourse; $4994: $cd $c8 $49
     xor a                                         ; $4997: $af
     ld [rStatePhase_Current], a                   ; $4998: $ea $35 $d6
     ld hl, rGameState_Current                     ; $499b: $21 $34 $d6
@@ -950,7 +728,7 @@ GS04_StatePhase_03_TODO::
     jp RefreshSaveValidationChecksumsAndMirrors   ; $499f: $c3 $1f $1b
 
 
-Call_001_49a2:
+GS04_LoadPicrossCoursePuzzleSelectCursorForSelectedSaveSlotAndCourse::
     ld a, [rSelectedSaveSlotIndex]                ; $49a2: $fa $65 $a0
     ld c, a                                       ; $49a5: $4f
     ld b, $00                                     ; $49a6: $06 $00
@@ -963,18 +741,18 @@ Call_001_49a2:
     add [hl]                                      ; $49b3: $86
     ld c, a                                       ; $49b4: $4f
     ld b, $00                                     ; $49b5: $06 $00
-    ld hl, $a390                                  ; $49b7: $21 $90 $a3
+    ld hl, rSaveSlot1PicrossKinokoCoursePuzzleSelectCursorColumn; $49b7: $21 $90 $a3
     add hl, bc                                    ; $49ba: $09
     ld a, [hl]                                    ; $49bb: $7e
     ld [rPuzzleCursorColumn], a                   ; $49bc: $ea $36 $d6
-    ld hl, $a399                                  ; $49bf: $21 $99 $a3
+    ld hl, rSaveSlot1PicrossKinokoCoursePuzzleSelectCursorRow; $49bf: $21 $99 $a3
     add hl, bc                                    ; $49c2: $09
     ld a, [hl]                                    ; $49c3: $7e
     ld [rPuzzleAndMenuCursorRow], a               ; $49c4: $ea $37 $d6
     ret                                           ; $49c7: $c9
 
 
-Call_001_49c8:
+GS04_SavePicrossCoursePuzzleSelectCursorForSelectedSaveSlotAndCourse::
     ld a, [rSelectedSaveSlotIndex]                ; $49c8: $fa $65 $a0
     ld c, a                                       ; $49cb: $4f
     ld b, $00                                     ; $49cc: $06 $00
@@ -987,18 +765,18 @@ Call_001_49c8:
     add [hl]                                      ; $49d9: $86
     ld c, a                                       ; $49da: $4f
     ld b, $00                                     ; $49db: $06 $00
-    ld hl, $a390                                  ; $49dd: $21 $90 $a3
+    ld hl, rSaveSlot1PicrossKinokoCoursePuzzleSelectCursorColumn; $49dd: $21 $90 $a3
     add hl, bc                                    ; $49e0: $09
     ld a, [rPuzzleCursorColumn]                   ; $49e1: $fa $36 $d6
     ld [hl], a                                    ; $49e4: $77
-    ld hl, $a399                                  ; $49e5: $21 $99 $a3
+    ld hl, rSaveSlot1PicrossKinokoCoursePuzzleSelectCursorRow; $49e5: $21 $99 $a3
     add hl, bc                                    ; $49e8: $09
     ld a, [rPuzzleAndMenuCursorRow]               ; $49e9: $fa $37 $d6
     ld [hl], a                                    ; $49ec: $77
     ret                                           ; $49ed: $c9
 
 
-Call_001_49ee:
+GS04_DrawPicrossCoursePuzzleSelectCursorSpriteByFrame::
     push af                                       ; $49ee: $f5
     ld a, [rPuzzleCursorColumn]                   ; $49ef: $fa $36 $d6
     swap a                                        ; $49f2: $cb $37
@@ -1015,7 +793,7 @@ Call_001_49ee:
     jp CopyOAMSpriteById                          ; $4a06: $c3 $ce $20
 
 
-Call_001_4a09:
+GS04_HandlePicrossCoursePuzzleSelectDirectionalInput::
     ld a, [rInputButtonsPressedOrRepeated]        ; $4a09: $fa $22 $c3
     and $f0                                       ; $4a0c: $e6 $f0
     ret z                                         ; $4a0e: $c8
@@ -1025,45 +803,45 @@ Call_001_4a09:
     call CallSoundEffectDispatcher                ; $4a13: $cd $b6 $03
     ld hl, rInputButtonsPressedOrRepeated         ; $4a16: $21 $22 $c3
     bit 5, [hl]                                   ; $4a19: $cb $6e
-    jr z, jr_001_4a26                             ; $4a1b: $28 $09
+    jr z, .CheckRight                             ; $4a1b: $28 $09
 
     ld a, [rPuzzleCursorColumn]                   ; $4a1d: $fa $36 $d6
     dec a                                         ; $4a20: $3d
     and $07                                       ; $4a21: $e6 $07
     ld [rPuzzleCursorColumn], a                   ; $4a23: $ea $36 $d6
 
-jr_001_4a26:
+.CheckRight:
     bit 4, [hl]                                   ; $4a26: $cb $66
-    jr z, jr_001_4a33                             ; $4a28: $28 $09
+    jr z, .CheckUp                                ; $4a28: $28 $09
 
     ld a, [rPuzzleCursorColumn]                   ; $4a2a: $fa $36 $d6
     inc a                                         ; $4a2d: $3c
     and $07                                       ; $4a2e: $e6 $07
     ld [rPuzzleCursorColumn], a                   ; $4a30: $ea $36 $d6
 
-jr_001_4a33:
+.CheckUp:
     bit 6, [hl]                                   ; $4a33: $cb $76
-    jr z, jr_001_4a40                             ; $4a35: $28 $09
+    jr z, .CheckDown                              ; $4a35: $28 $09
 
     ld a, [rPuzzleAndMenuCursorRow]               ; $4a37: $fa $37 $d6
     dec a                                         ; $4a3a: $3d
     and $07                                       ; $4a3b: $e6 $07
     ld [rPuzzleAndMenuCursorRow], a               ; $4a3d: $ea $37 $d6
 
-jr_001_4a40:
+.CheckDown:
     bit 7, [hl]                                   ; $4a40: $cb $7e
-    jr z, jr_001_4a4d                             ; $4a42: $28 $09
+    jr z, .Return                                 ; $4a42: $28 $09
 
     ld a, [rPuzzleAndMenuCursorRow]               ; $4a44: $fa $37 $d6
     inc a                                         ; $4a47: $3c
     and $07                                       ; $4a48: $e6 $07
     ld [rPuzzleAndMenuCursorRow], a               ; $4a4a: $ea $37 $d6
 
-jr_001_4a4d:
+.Return:
     ret                                           ; $4a4d: $c9
 
 
-Call_001_4a4e:
+GS04_PlayCursorPreviewSfxBySelectedCourse::
     ld a, [rSelectedSaveSlotIndex]                ; $4a4e: $fa $65 $a0
     ld c, a                                       ; $4a51: $4f
     ld b, $00                                     ; $4a52: $06 $00
@@ -1071,7 +849,7 @@ Call_001_4a4e:
     add hl, bc                                    ; $4a57: $09
     ld a, [hl]                                    ; $4a58: $7e
     and a                                         ; $4a59: $a7
-    jr nz, jr_001_4a6e                            ; $4a5a: $20 $12
+    jr nz, .PlayStarCoursePreviewSfxVariant       ; $4a5a: $20 $12
 
     ld c, $00                                     ; $4a5c: $0e $00
     ld a, $01                                     ; $4a5e: $3e $01
@@ -1083,7 +861,7 @@ Call_001_4a4e:
     ret                                           ; $4a6d: $c9
 
 
-jr_001_4a6e:
+.PlayStarCoursePreviewSfxVariant:
     ld c, $00                                     ; $4a6e: $0e $00
     ld a, $01                                     ; $4a70: $3e $01
     call CallSoundEffectDispatcher                ; $4a72: $cd $b6 $03
@@ -1094,7 +872,7 @@ jr_001_4a6e:
     ret                                           ; $4a7f: $c9
 
 
-Call_001_4a80:
+GS04_LoadPicrossCourseSelectGraphicsBySelectedCourse::
     ld a, [rSelectedSaveSlotIndex]                ; $4a80: $fa $65 $a0
     ld c, a                                       ; $4a83: $4f
     ld b, $00                                     ; $4a84: $06 $00
@@ -1102,7 +880,7 @@ Call_001_4a80:
     add hl, bc                                    ; $4a89: $09
     ld a, [hl]                                    ; $4a8a: $7e
     and a                                         ; $4a8b: $a7
-    jr nz, jr_001_4ab9                            ; $4a8c: $20 $2b
+    jr nz, .LoadStarCourseGraphicsVariant         ; $4a8c: $20 $2b
 
     ld a, $0a                                     ; $4a8e: $3e $0a
     ld hl, $7000                                  ; $4a90: $21 $00 $70
@@ -1122,7 +900,7 @@ Call_001_4a80:
     ret                                           ; $4ab8: $c9
 
 
-jr_001_4ab9:
+.LoadStarCourseGraphicsVariant:
     ld a, $0a                                     ; $4ab9: $3e $0a
     ld hl, $7600                                  ; $4abb: $21 $00 $76
     ld de, $9300                                  ; $4abe: $11 $00 $93
@@ -1141,6 +919,7 @@ jr_001_4ab9:
     ret                                           ; $4ae3: $c9
 
 
+GS04_LoadPicrossCourseSelectGraphicsBySelectedCourse_Banked::
     ld a, [rSelectedSaveSlotIndex]                ; $4ae4: $fa $65 $a0
     ld c, a                                       ; $4ae7: $4f
     ld b, $00                                     ; $4ae8: $06 $00
@@ -1148,7 +927,7 @@ jr_001_4ab9:
     add hl, bc                                    ; $4aed: $09
     ld a, [hl]                                    ; $4aee: $7e
     and a                                         ; $4aef: $a7
-    jr nz, jr_001_4b1f                            ; $4af0: $20 $2d
+    jr nz, .LoadStarCourseGraphicsAndTilemapVariant; $4af0: $20 $2d
 
     ld a, $0a                                     ; $4af2: $3e $0a
     ld hl, $7000                                  ; $4af4: $21 $00 $70
@@ -1168,7 +947,7 @@ jr_001_4ab9:
     jp ReturnFromBankedJumpRestoreBank            ; $4b1c: $c3 $ea $05
 
 
-jr_001_4b1f:
+.LoadStarCourseGraphicsAndTilemapVariant:
     ld a, $0a                                     ; $4b1f: $3e $0a
     ld hl, $7600                                  ; $4b21: $21 $00 $76
     ld de, $9300                                  ; $4b24: $11 $00 $93
@@ -1192,7 +971,7 @@ jr_001_4b1f:
     jp ReturnFromBankedJumpRestoreBank            ; $4b57: $c3 $ea $05
 
 
-Call_001_4b5a:
+GS04_PlayPicrossCourseSelectFadeInBySelectedCourse::
     ld a, [rSelectedSaveSlotIndex]                ; $4b5a: $fa $65 $a0
     ld c, a                                       ; $4b5d: $4f
     ld b, $00                                     ; $4b5e: $06 $00
@@ -1200,7 +979,7 @@ Call_001_4b5a:
     add hl, bc                                    ; $4b63: $09
     ld a, [hl]                                    ; $4b64: $7e
     and a                                         ; $4b65: $a7
-    jr nz, jr_001_4b76                            ; $4b66: $20 $0e
+    jr nz, .PlayStarCourseFadeInVariant           ; $4b66: $20 $0e
 
     ld b, $03                                     ; $4b68: $06 $03
     ld hl, $46f4                                  ; $4b6a: $21 $f4 $46
@@ -1210,7 +989,7 @@ Call_001_4b5a:
     ret                                           ; $4b75: $c9
 
 
-jr_001_4b76:
+.PlayStarCourseFadeInVariant:
     ld b, $03                                     ; $4b76: $06 $03
     ld hl, $4700                                  ; $4b78: $21 $00 $47
     ld c, $0a                                     ; $4b7b: $0e $0a
@@ -1219,7 +998,7 @@ jr_001_4b76:
     ret                                           ; $4b83: $c9
 
 
-Call_001_4b84:
+GS04_PlayPicrossCourseSelectFadeOutBySelectedCourse::
     ld a, [rSelectedSaveSlotIndex]                ; $4b84: $fa $65 $a0
     ld c, a                                       ; $4b87: $4f
     ld b, $00                                     ; $4b88: $06 $00
@@ -1227,7 +1006,7 @@ Call_001_4b84:
     add hl, bc                                    ; $4b8d: $09
     ld a, [hl]                                    ; $4b8e: $7e
     and a                                         ; $4b8f: $a7
-    jr nz, jr_001_4ba0                            ; $4b90: $20 $0e
+    jr nz, .PlayStarCourseFadeOutVariant          ; $4b90: $20 $0e
 
     ld b, $03                                     ; $4b92: $06 $03
     ld hl, $46ff                                  ; $4b94: $21 $ff $46
@@ -1237,7 +1016,7 @@ Call_001_4b84:
     ret                                           ; $4b9f: $c9
 
 
-jr_001_4ba0:
+.PlayStarCourseFadeOutVariant:
     ld b, $03                                     ; $4ba0: $06 $03
     ld hl, $470b                                  ; $4ba2: $21 $0b $47
     ld c, $0a                                     ; $4ba5: $0e $0a
@@ -1246,6 +1025,7 @@ jr_001_4ba0:
     ret                                           ; $4bad: $c9
 
 
+GS04_PlayPicrossCourseSelectFadeInBySelectedCourse_Banked::
     ld a, [rSelectedSaveSlotIndex]                ; $4bae: $fa $65 $a0
     ld c, a                                       ; $4bb1: $4f
     ld b, $00                                     ; $4bb2: $06 $00
@@ -1253,7 +1033,7 @@ jr_001_4ba0:
     add hl, bc                                    ; $4bb7: $09
     ld a, [hl]                                    ; $4bb8: $7e
     and a                                         ; $4bb9: $a7
-    jr nz, jr_001_4bcc                            ; $4bba: $20 $10
+    jr nz, .PlayStarCourseFadeInBankedVariant     ; $4bba: $20 $10
 
     ld b, $03                                     ; $4bbc: $06 $03
     ld hl, $46f4                                  ; $4bbe: $21 $f4 $46
@@ -1263,7 +1043,7 @@ jr_001_4ba0:
     jp ReturnFromBankedJumpRestoreBank            ; $4bc9: $c3 $ea $05
 
 
-jr_001_4bcc:
+.PlayStarCourseFadeInBankedVariant:
     ld b, $03                                     ; $4bcc: $06 $03
     ld hl, $4700                                  ; $4bce: $21 $00 $47
     ld c, $0d                                     ; $4bd1: $0e $0d
@@ -1272,6 +1052,7 @@ jr_001_4bcc:
     jp ReturnFromBankedJumpRestoreBank            ; $4bd9: $c3 $ea $05
 
 
+GS04_PlayPicrossCourseSelectFadeOutBySelectedCourse_Banked::
     ld a, [rSelectedSaveSlotIndex]                ; $4bdc: $fa $65 $a0
     ld c, a                                       ; $4bdf: $4f
     ld b, $00                                     ; $4be0: $06 $00
@@ -1279,7 +1060,7 @@ jr_001_4bcc:
     add hl, bc                                    ; $4be5: $09
     ld a, [hl]                                    ; $4be6: $7e
     and a                                         ; $4be7: $a7
-    jr nz, jr_001_4bfa                            ; $4be8: $20 $10
+    jr nz, .PlayStarCourseFadeOutBankedVariant    ; $4be8: $20 $10
 
     ld b, $03                                     ; $4bea: $06 $03
     ld hl, $46ff                                  ; $4bec: $21 $ff $46
@@ -1289,7 +1070,7 @@ jr_001_4bcc:
     jp ReturnFromBankedJumpRestoreBank            ; $4bf7: $c3 $ea $05
 
 
-jr_001_4bfa:
+.PlayStarCourseFadeOutBankedVariant:
     ld b, $03                                     ; $4bfa: $06 $03
     ld hl, $470b                                  ; $4bfc: $21 $0b $47
     ld c, $0d                                     ; $4bff: $0e $0d
@@ -1298,14 +1079,14 @@ jr_001_4bfa:
     jp ReturnFromBankedJumpRestoreBank            ; $4c07: $c3 $ea $05
 
 
-Call_001_4c0a:
+GS04_DrawCompletedPuzzleMarkersForSelectedSaveSlotAndCourse::
     ld a, [rSelectedSaveSlotIndex]                ; $4c0a: $fa $65 $a0
     ld c, a                                       ; $4c0d: $4f
     ld b, $00                                     ; $4c0e: $06 $00
     ld hl, rSaveSlot1CourseSelectCursorRow        ; $4c10: $21 $8d $a3
     add hl, bc                                    ; $4c13: $09
     ld a, [hl]                                    ; $4c14: $7e
-    ld hl, $51c8                                  ; $4c15: $21 $c8 $51
+    ld hl, GS04_PicrossCourseStatusDataPointerTableOffsetBySaveSlot; $4c15: $21 $c8 $51
     add hl, bc                                    ; $4c18: $09
     ld c, [hl]                                    ; $4c19: $4e
     add hl, bc                                    ; $4c1a: $09
@@ -1317,38 +1098,38 @@ Call_001_4c0a:
     ld l, a                                       ; $4c21: $6f
     ld b, $00                                     ; $4c22: $06 $00
 
-jr_001_4c24:
+.BeginNextStatusGridRowScan:
     ld c, $00                                     ; $4c24: $0e $00
 
-jr_001_4c26:
+.ScanStatusGridCellForCompletedMarker:
     ld a, [hl+]                                   ; $4c26: $2a
     bit 7, a                                      ; $4c27: $cb $7f
-    jr z, jr_001_4c2e                             ; $4c29: $28 $03
+    jr z, .AdvanceToNextStatusGridColumn          ; $4c29: $28 $03
 
-    call Call_001_4c78                            ; $4c2b: $cd $78 $4c
+    call GS04_DrawCompletedPuzzleMarkerAtGridPosition; $4c2b: $cd $78 $4c
 
-jr_001_4c2e:
+.AdvanceToNextStatusGridColumn:
     inc c                                         ; $4c2e: $0c
     ld a, c                                       ; $4c2f: $79
     cp $08                                        ; $4c30: $fe $08
-    jr nz, jr_001_4c26                            ; $4c32: $20 $f2
+    jr nz, .ScanStatusGridCellForCompletedMarker  ; $4c32: $20 $f2
 
     inc b                                         ; $4c34: $04
     ld a, b                                       ; $4c35: $78
     cp $08                                        ; $4c36: $fe $08
-    jr nz, jr_001_4c24                            ; $4c38: $20 $ea
+    jr nz, .BeginNextStatusGridRowScan            ; $4c38: $20 $ea
 
     ret                                           ; $4c3a: $c9
 
 
-Call_001_4c3b:
+GS04_DrawCompletedPuzzleMarkersForSelectedSaveSlotAndCourseExceptCurrentSelection::
     ld a, [rSelectedSaveSlotIndex]                ; $4c3b: $fa $65 $a0
     ld c, a                                       ; $4c3e: $4f
     ld b, $00                                     ; $4c3f: $06 $00
     ld hl, rSaveSlot1CourseSelectCursorRow        ; $4c41: $21 $8d $a3
     add hl, bc                                    ; $4c44: $09
     ld a, [hl]                                    ; $4c45: $7e
-    ld hl, $51c8                                  ; $4c46: $21 $c8 $51
+    ld hl, GS04_PicrossCourseStatusDataPointerTableOffsetBySaveSlot; $4c46: $21 $c8 $51
     add hl, bc                                    ; $4c49: $09
     ld c, [hl]                                    ; $4c4a: $4e
     add hl, bc                                    ; $4c4b: $09
@@ -1360,40 +1141,40 @@ Call_001_4c3b:
     ld l, a                                       ; $4c52: $6f
     ld b, $00                                     ; $4c53: $06 $00
 
-jr_001_4c55:
+.BeginNextStatusGridRowScan:
     ld c, $00                                     ; $4c55: $0e $00
 
-jr_001_4c57:
+.ScanStatusGridCellForCompletedMarker:
     ld a, [hl+]                                   ; $4c57: $2a
     bit 7, a                                      ; $4c58: $cb $7f
-    jr z, jr_001_4c6b                             ; $4c5a: $28 $0f
+    jr z, .AdvanceToNextStatusGridColumn          ; $4c5a: $28 $0f
 
     ld a, [rPuzzleCursorColumn]                   ; $4c5c: $fa $36 $d6
     cp c                                          ; $4c5f: $b9
-    jr nz, jr_001_4c68                            ; $4c60: $20 $06
+    jr nz, .DrawCompletedMarkerForNonSelectedCell ; $4c60: $20 $06
 
     ld a, [rPuzzleAndMenuCursorRow]               ; $4c62: $fa $37 $d6
     cp b                                          ; $4c65: $b8
-    jr z, jr_001_4c6b                             ; $4c66: $28 $03
+    jr z, .AdvanceToNextStatusGridColumn          ; $4c66: $28 $03
 
-jr_001_4c68:
-    call Call_001_4c78                            ; $4c68: $cd $78 $4c
+.DrawCompletedMarkerForNonSelectedCell:
+    call GS04_DrawCompletedPuzzleMarkerAtGridPosition; $4c68: $cd $78 $4c
 
-jr_001_4c6b:
+.AdvanceToNextStatusGridColumn:
     inc c                                         ; $4c6b: $0c
     ld a, c                                       ; $4c6c: $79
     cp $08                                        ; $4c6d: $fe $08
-    jr nz, jr_001_4c57                            ; $4c6f: $20 $e6
+    jr nz, .ScanStatusGridCellForCompletedMarker  ; $4c6f: $20 $e6
 
     inc b                                         ; $4c71: $04
     ld a, b                                       ; $4c72: $78
     cp $08                                        ; $4c73: $fe $08
-    jr nz, jr_001_4c55                            ; $4c75: $20 $de
+    jr nz, .BeginNextStatusGridRowScan            ; $4c75: $20 $de
 
     ret                                           ; $4c77: $c9
 
 
-Call_001_4c78:
+GS04_DrawCompletedPuzzleMarkerAtGridPosition::
     push bc                                       ; $4c78: $c5
     push hl                                       ; $4c79: $e5
     ld l, b                                       ; $4c7a: $68
@@ -1431,14 +1212,14 @@ Call_001_4c78:
     ret                                           ; $4cbb: $c9
 
 
-Call_001_4cbc:
+GS04_IncrementSelectedPicrossCoursePuzzleClearCountIfAllowed::
     ld a, [rSelectedSaveSlotIndex]                ; $4cbc: $fa $65 $a0
     ld c, a                                       ; $4cbf: $4f
     ld b, $00                                     ; $4cc0: $06 $00
     ld hl, rSaveSlot1CourseSelectCursorRow        ; $4cc2: $21 $8d $a3
     add hl, bc                                    ; $4cc5: $09
     ld a, [hl]                                    ; $4cc6: $7e
-    ld hl, $51c8                                  ; $4cc7: $21 $c8 $51
+    ld hl, GS04_PicrossCourseStatusDataPointerTableOffsetBySaveSlot; $4cc7: $21 $c8 $51
     add hl, bc                                    ; $4cca: $09
     ld c, [hl]                                    ; $4ccb: $4e
     add hl, bc                                    ; $4ccc: $09
@@ -1469,16 +1250,16 @@ Call_001_4cbc:
     ret                                           ; $4cee: $c9
 
 
-Call_001_4cef:
+GS04_UpdateSelectedPicrossCoursePuzzleClearStatusAndTimes::
     xor a                                         ; $4cef: $af
-    ld [$d842], a                                 ; $4cf0: $ea $42 $d8
+    ld [rSelectedPuzzleWasFirstClearInStatusAndTimeUpdateFlag], a; $4cf0: $ea $42 $d8
     ld a, [rSelectedSaveSlotIndex]                ; $4cf3: $fa $65 $a0
     ld c, a                                       ; $4cf6: $4f
     ld b, $00                                     ; $4cf7: $06 $00
     ld hl, rSaveSlot1CourseSelectCursorRow        ; $4cf9: $21 $8d $a3
     add hl, bc                                    ; $4cfc: $09
     ld a, [hl]                                    ; $4cfd: $7e
-    ld hl, $51c8                                  ; $4cfe: $21 $c8 $51
+    ld hl, GS04_PicrossCourseStatusDataPointerTableOffsetBySaveSlot; $4cfe: $21 $c8 $51
     add hl, bc                                    ; $4d01: $09
     ld c, [hl]                                    ; $4d02: $4e
     add hl, bc                                    ; $4d03: $09
@@ -1500,7 +1281,7 @@ Call_001_4cef:
     add hl, bc                                    ; $4d1c: $09
     bit 7, [hl]                                   ; $4d1d: $cb $7e
     push af                                       ; $4d1f: $f5
-    jr nz, jr_001_4d76                            ; $4d20: $20 $54
+    jr nz, .UpdateBestClearTime                   ; $4d20: $20 $54
 
     push hl                                       ; $4d22: $e5
     ld a, [rSelectedSaveSlotIndex]                ; $4d23: $fa $65 $a0
@@ -1517,7 +1298,7 @@ Call_001_4cef:
     ld hl, rSaveSlot1CourseSelectCursorRow        ; $4d37: $21 $8d $a3
     add hl, bc                                    ; $4d3a: $09
     ld a, [hl]                                    ; $4d3b: $7e
-    ld hl, $51b3                                  ; $4d3c: $21 $b3 $51
+    ld hl, GS04_PicrossCourseTimeDataPointerTableOffsetBySaveSlot; $4d3c: $21 $b3 $51
     add hl, bc                                    ; $4d3f: $09
     ld c, [hl]                                    ; $4d40: $4e
     add hl, bc                                    ; $4d41: $09
@@ -1548,21 +1329,21 @@ Call_001_4cef:
     or b                                          ; $4d67: $b0
     ld [hl], a                                    ; $4d68: $77
     ld a, $01                                     ; $4d69: $3e $01
-    ld [$d842], a                                 ; $4d6b: $ea $42 $d8
+    ld [rSelectedPuzzleWasFirstClearInStatusAndTimeUpdateFlag], a; $4d6b: $ea $42 $d8
     ld a, [rHintPopupSelection]                   ; $4d6e: $fa $33 $d8
     and a                                         ; $4d71: $a7
-    jr nz, jr_001_4d76                            ; $4d72: $20 $02
+    jr nz, .UpdateBestClearTime                   ; $4d72: $20 $02
 
     set 3, [hl]                                   ; $4d74: $cb $de
 
-jr_001_4d76:
+.UpdateBestClearTime:
     ld a, [rSelectedSaveSlotIndex]                ; $4d76: $fa $65 $a0
     ld c, a                                       ; $4d79: $4f
     ld b, $00                                     ; $4d7a: $06 $00
     ld hl, rSaveSlot1CourseSelectCursorRow        ; $4d7c: $21 $8d $a3
     add hl, bc                                    ; $4d7f: $09
     ld a, [hl]                                    ; $4d80: $7e
-    ld hl, $51b3                                  ; $4d81: $21 $b3 $51
+    ld hl, GS04_PicrossCourseTimeDataPointerTableOffsetBySaveSlot; $4d81: $21 $b3 $51
     add hl, bc                                    ; $4d84: $09
     ld c, [hl]                                    ; $4d85: $4e
     add hl, bc                                    ; $4d86: $09
@@ -1588,32 +1369,32 @@ jr_001_4d76:
     inc hl                                        ; $4da4: $23
     push hl                                       ; $4da5: $e5
     call EncodePuzzleTimerToPackedClearTimeBC     ; $4da6: $cd $54 $51
-    ld a, [$d842]                                 ; $4da9: $fa $42 $d8
+    ld a, [rSelectedPuzzleWasFirstClearInStatusAndTimeUpdateFlag]; $4da9: $fa $42 $d8
     and a                                         ; $4dac: $a7
-    jr nz, jr_001_4dc7                            ; $4dad: $20 $18
+    jr nz, .StoreNewBestClearTime                 ; $4dad: $20 $18
 
     ld a, [hl+]                                   ; $4daf: $2a
     and $70                                       ; $4db0: $e6 $70
     swap a                                        ; $4db2: $cb $37
     cp b                                          ; $4db4: $b8
-    jr z, jr_001_4dbb                             ; $4db5: $28 $04
+    jr z, .CompareBestClearTimeLowByteAndHintUsedOnTie; $4db5: $28 $04
 
-    jr nc, jr_001_4ddb                            ; $4db7: $30 $22
+    jr nc, .SkipBestClearTimeUpdate               ; $4db7: $30 $22
 
-    jr jr_001_4dc7                                ; $4db9: $18 $0c
+    jr .StoreNewBestClearTime                     ; $4db9: $18 $0c
 
-jr_001_4dbb:
+.CompareBestClearTimeLowByteAndHintUsedOnTie:
     ld a, [hl]                                    ; $4dbb: $7e
     cp c                                          ; $4dbc: $b9
-    jr c, jr_001_4dc7                             ; $4dbd: $38 $08
+    jr c, .StoreNewBestClearTime                  ; $4dbd: $38 $08
 
-    jr nz, jr_001_4ddb                            ; $4dbf: $20 $1a
+    jr nz, .SkipBestClearTimeUpdate               ; $4dbf: $20 $1a
 
     ld a, [rHintPopupSelection]                   ; $4dc1: $fa $33 $d8
     and a                                         ; $4dc4: $a7
-    jr z, jr_001_4ddb                             ; $4dc5: $28 $14
+    jr z, .SkipBestClearTimeUpdate                ; $4dc5: $28 $14
 
-jr_001_4dc7:
+.StoreNewBestClearTime:
     pop hl                                        ; $4dc7: $e1
     ld a, [hl]                                    ; $4dc8: $7e
     and $0f                                       ; $4dc9: $e6 $0f
@@ -1623,28 +1404,28 @@ jr_001_4dc7:
     ld [hl], c                                    ; $4dcf: $71
     ld a, [rHintPopupSelection]                   ; $4dd0: $fa $33 $d8
     and a                                         ; $4dd3: $a7
-    jr nz, jr_001_4ddc                            ; $4dd4: $20 $06
+    jr nz, .ReturnFromClearStatusAndTimeUpdate    ; $4dd4: $20 $06
 
     dec hl                                        ; $4dd6: $2b
     set 7, [hl]                                   ; $4dd7: $cb $fe
-    jr jr_001_4ddc                                ; $4dd9: $18 $01
+    jr .ReturnFromClearStatusAndTimeUpdate        ; $4dd9: $18 $01
 
-jr_001_4ddb:
+.SkipBestClearTimeUpdate:
     pop hl                                        ; $4ddb: $e1
 
-jr_001_4ddc:
+.ReturnFromClearStatusAndTimeUpdate:
     pop af                                        ; $4ddc: $f1
     ret                                           ; $4ddd: $c9
 
 
-Call_001_4dde:
+GS04_DrawSelectedPicrossCoursePuzzleInfoPanel::
     ld a, [rSelectedSaveSlotIndex]                ; $4dde: $fa $65 $a0
     ld c, a                                       ; $4de1: $4f
     ld b, $00                                     ; $4de2: $06 $00
     ld hl, rSaveSlot1CourseSelectCursorRow        ; $4de4: $21 $8d $a3
     add hl, bc                                    ; $4de7: $09
     ld a, [hl]                                    ; $4de8: $7e
-    ld hl, $51c8                                  ; $4de9: $21 $c8 $51
+    ld hl, GS04_PicrossCourseStatusDataPointerTableOffsetBySaveSlot; $4de9: $21 $c8 $51
     add hl, bc                                    ; $4dec: $09
     ld c, [hl]                                    ; $4ded: $4e
     add hl, bc                                    ; $4dee: $09
@@ -1673,17 +1454,17 @@ Call_001_4dde:
     call CopyOAMSpriteById                        ; $4e14: $cd $ce $20
     pop af                                        ; $4e17: $f1
     cp $0a                                        ; $4e18: $fe $0a
-    jr z, jr_001_4e24                             ; $4e1a: $28 $08
+    jr z, .AfterTimesClearedDigits                ; $4e1a: $28 $08
 
     add $51                                       ; $4e1c: $c6 $51
     ld bc, $4018                                  ; $4e1e: $01 $18 $40
     call CopyOAMSpriteById                        ; $4e21: $cd $ce $20
 
-jr_001_4e24:
+.AfterTimesClearedDigits:
     pop af                                        ; $4e24: $f1
     pop af                                        ; $4e25: $f1
     bit 7, a                                      ; $4e26: $cb $7f
-    jp z, Jump_001_4f0d                           ; $4e28: $ca $0d $4f
+    jp z, GS04_DrawSelectedPicrossCoursePuzzleInfoPanel_DrawUnclearedPlaceholders; $4e28: $ca $0d $4f
 
     ld a, [rSelectedSaveSlotIndex]                ; $4e2b: $fa $65 $a0
     ld c, a                                       ; $4e2e: $4f
@@ -1691,7 +1472,7 @@ jr_001_4e24:
     ld hl, rSaveSlot1CourseSelectCursorRow        ; $4e31: $21 $8d $a3
     add hl, bc                                    ; $4e34: $09
     ld a, [hl]                                    ; $4e35: $7e
-    ld hl, $51b3                                  ; $4e36: $21 $b3 $51
+    ld hl, GS04_PicrossCourseTimeDataPointerTableOffsetBySaveSlot; $4e36: $21 $b3 $51
     add hl, bc                                    ; $4e39: $09
     ld c, [hl]                                    ; $4e3a: $4e
     add hl, bc                                    ; $4e3b: $09
@@ -1747,14 +1528,14 @@ jr_001_4e24:
     ld bc, $2818                                  ; $4e8f: $01 $18 $28
     call CopyOAMSpriteById                        ; $4e92: $cd $ce $20
     ld a, [hl]                                    ; $4e95: $7e
-    call Call_001_50b4                            ; $4e96: $cd $b4 $50
+    call GS04_UpdateFirstClearTimeHintUsedIconTile; $4e96: $cd $b4 $50
     ld a, [rSelectedSaveSlotIndex]                ; $4e99: $fa $65 $a0
     ld c, a                                       ; $4e9c: $4f
     ld b, $00                                     ; $4e9d: $06 $00
     ld hl, rSaveSlot1CourseSelectCursorRow        ; $4e9f: $21 $8d $a3
     add hl, bc                                    ; $4ea2: $09
     ld a, [hl]                                    ; $4ea3: $7e
-    ld hl, $51b3                                  ; $4ea4: $21 $b3 $51
+    ld hl, GS04_PicrossCourseTimeDataPointerTableOffsetBySaveSlot; $4ea4: $21 $b3 $51
     add hl, bc                                    ; $4ea7: $09
     ld c, [hl]                                    ; $4ea8: $4e
     add hl, bc                                    ; $4ea9: $09
@@ -1814,10 +1595,10 @@ jr_001_4e24:
     call CopyOAMSpriteById                        ; $4f05: $cd $ce $20
     dec hl                                        ; $4f08: $2b
     ld a, [hl]                                    ; $4f09: $7e
-    jp Jump_001_50d9                              ; $4f0a: $c3 $d9 $50
+    jp GS04_UpdateBestClearTimeHintUsedIconTile   ; $4f0a: $c3 $d9 $50
 
 
-Jump_001_4f0d:
+GS04_DrawSelectedPicrossCoursePuzzleInfoPanel_DrawUnclearedPlaceholders::
     ld a, $80                                     ; $4f0d: $3e $80
     ld bc, $0818                                  ; $4f0f: $01 $18 $08
     call CopyOAMSpriteById                        ; $4f12: $cd $ce $20
@@ -1843,11 +1624,11 @@ Jump_001_4f0d:
     ld bc, $8818                                  ; $4f47: $01 $18 $88
     call CopyOAMSpriteById                        ; $4f4a: $cd $ce $20
     xor a                                         ; $4f4d: $af
-    call Call_001_50b4                            ; $4f4e: $cd $b4 $50
-    jp Jump_001_50d9                              ; $4f51: $c3 $d9 $50
+    call GS04_UpdateFirstClearTimeHintUsedIconTile; $4f4e: $cd $b4 $50
+    jp GS04_UpdateBestClearTimeHintUsedIconTile   ; $4f51: $c3 $d9 $50
 
 
-Call_001_4f54:
+GS04_DrawSelectedPicrossCoursePuzzleInfoPanelFromSelectedPuzzleCache::
     ld a, [rSelectedPuzzleStatusData]             ; $4f54: $fa $4c $d8
     push af                                       ; $4f57: $f5
     and $7f                                       ; $4f58: $e6 $7f
@@ -1857,17 +1638,17 @@ Call_001_4f54:
     call CopyOAMSpriteById                        ; $4f62: $cd $ce $20
     pop af                                        ; $4f65: $f1
     cp $0a                                        ; $4f66: $fe $0a
-    jr z, jr_001_4f72                             ; $4f68: $28 $08
+    jr z, .AfterTimesClearedDigits                ; $4f68: $28 $08
 
     add $51                                       ; $4f6a: $c6 $51
     ld bc, $4018                                  ; $4f6c: $01 $18 $40
     call CopyOAMSpriteById                        ; $4f6f: $cd $ce $20
 
-jr_001_4f72:
+.AfterTimesClearedDigits:
     pop af                                        ; $4f72: $f1
     pop af                                        ; $4f73: $f1
     bit 7, a                                      ; $4f74: $cb $7f
-    jp z, Jump_001_5004                           ; $4f76: $ca $04 $50
+    jp z, GS04_DrawSelectedPicrossCoursePuzzleInfoPanelFromSelectedPuzzleCache_DrawUnclearedPlaceholders; $4f76: $ca $04 $50
 
     ld hl, rSelectedPuzzleTimeDataRecordByte0     ; $4f79: $21 $49 $d8
     ld c, [hl]                                    ; $4f7c: $4e
@@ -1903,7 +1684,7 @@ jr_001_4f72:
     ld bc, $2818                                  ; $4fb2: $01 $18 $28
     call CopyOAMSpriteById                        ; $4fb5: $cd $ce $20
     ld a, [hl]                                    ; $4fb8: $7e
-    call Call_001_50b4                            ; $4fb9: $cd $b4 $50
+    call GS04_UpdateFirstClearTimeHintUsedIconTile; $4fb9: $cd $b4 $50
     ld hl, rSelectedPuzzleTimeDataRecordByte1     ; $4fbc: $21 $4a $d8
     ld a, [hl+]                                   ; $4fbf: $2a
     and $f0                                       ; $4fc0: $e6 $f0
@@ -1941,10 +1722,10 @@ jr_001_4f72:
     call CopyOAMSpriteById                        ; $4ffc: $cd $ce $20
     dec hl                                        ; $4fff: $2b
     ld a, [hl]                                    ; $5000: $7e
-    jp Jump_001_50d9                              ; $5001: $c3 $d9 $50
+    jp GS04_UpdateBestClearTimeHintUsedIconTile   ; $5001: $c3 $d9 $50
 
 
-Jump_001_5004:
+GS04_DrawSelectedPicrossCoursePuzzleInfoPanelFromSelectedPuzzleCache_DrawUnclearedPlaceholders::
     ld a, $80                                     ; $5004: $3e $80
     ld bc, $0818                                  ; $5006: $01 $18 $08
     call CopyOAMSpriteById                        ; $5009: $cd $ce $20
@@ -1970,18 +1751,18 @@ Jump_001_5004:
     ld bc, $8818                                  ; $503e: $01 $18 $88
     call CopyOAMSpriteById                        ; $5041: $cd $ce $20
     xor a                                         ; $5044: $af
-    call Call_001_50b4                            ; $5045: $cd $b4 $50
-    jp Jump_001_50d9                              ; $5048: $c3 $d9 $50
+    call GS04_UpdateFirstClearTimeHintUsedIconTile; $5045: $cd $b4 $50
+    jp GS04_UpdateBestClearTimeHintUsedIconTile   ; $5048: $c3 $d9 $50
 
 
-Call_001_504b:
+GS04_LoadSelectedPicrossCoursePuzzleStatusAndTimeDataRecord::
     ld a, [rSelectedSaveSlotIndex]                ; $504b: $fa $65 $a0
     ld c, a                                       ; $504e: $4f
     ld b, $00                                     ; $504f: $06 $00
     ld hl, rSaveSlot1CourseSelectCursorRow        ; $5051: $21 $8d $a3
     add hl, bc                                    ; $5054: $09
     ld a, [hl]                                    ; $5055: $7e
-    ld hl, $51c8                                  ; $5056: $21 $c8 $51
+    ld hl, GS04_PicrossCourseStatusDataPointerTableOffsetBySaveSlot; $5056: $21 $c8 $51
     add hl, bc                                    ; $5059: $09
     ld c, [hl]                                    ; $505a: $4e
     add hl, bc                                    ; $505b: $09
@@ -2009,7 +1790,7 @@ Call_001_504b:
     ld hl, rSaveSlot1CourseSelectCursorRow        ; $507f: $21 $8d $a3
     add hl, bc                                    ; $5082: $09
     ld a, [hl]                                    ; $5083: $7e
-    ld hl, $51b3                                  ; $5084: $21 $b3 $51
+    ld hl, GS04_PicrossCourseTimeDataPointerTableOffsetBySaveSlot; $5084: $21 $b3 $51
     add hl, bc                                    ; $5087: $09
     ld c, [hl]                                    ; $5088: $4e
     add hl, bc                                    ; $5089: $09
@@ -2041,81 +1822,83 @@ Call_001_504b:
     ret                                           ; $50b3: $c9
 
 
-Call_001_50b4:
+GS04_UpdateFirstClearTimeHintUsedIconTile::
     push af                                       ; $50b4: $f5
     push hl                                       ; $50b5: $e5
     bit 3, a                                      ; $50b6: $cb $5f
-    jr z, jr_001_50c4                             ; $50b8: $28 $0a
+    jr z, .DrawFirstClearTimeHintUsedBlankTile    ; $50b8: $28 $0a
 
     ld a, $01                                     ; $50ba: $3e $01
-    ld bc, $50cf                                  ; $50bc: $01 $cf $50
+    ld bc, GS04_FirstClearTimeHintUsedIconCommandStream; $50bc: $01 $cf $50
     call QueueCommandStreamAndProcessIfLCDOff     ; $50bf: $cd $38 $07
-    jr jr_001_50cc                                ; $50c2: $18 $08
+    jr .ReturnFromFirstClearTimeHintUsedTileUpdate; $50c2: $18 $08
 
-jr_001_50c4:
+.DrawFirstClearTimeHintUsedBlankTile:
     ld a, $01                                     ; $50c4: $3e $01
-    ld bc, $50d4                                  ; $50c6: $01 $d4 $50
+    ld bc, GS04_FirstClearTimeHintUsedBlankCommandStream; $50c6: $01 $d4 $50
     call QueueCommandStreamAndProcessIfLCDOff     ; $50c9: $cd $38 $07
 
-jr_001_50cc:
+.ReturnFromFirstClearTimeHintUsedTileUpdate:
     pop hl                                        ; $50cc: $e1
     pop af                                        ; $50cd: $f1
     ret                                           ; $50ce: $c9
 
 
-    sbc b                                         ; $50cf: $98
-    ld h, [hl]                                    ; $50d0: $66
-    ld bc, $002f                                  ; $50d1: $01 $2f $00
-    sbc b                                         ; $50d4: $98
-    ld h, [hl]                                    ; $50d5: $66
-    ld bc, $002b                                  ; $50d6: $01 $2b $00
+GS04_FirstClearTimeHintUsedIconCommandStream::
+    db $98, $66, $01, $2f
+    db $00
 
-Jump_001_50d9:
+GS04_FirstClearTimeHintUsedBlankCommandStream::
+    db $98, $66, $01, $2b
+    db $00
+
+GS04_UpdateBestClearTimeHintUsedIconTile::
     push af                                       ; $50d9: $f5
     push hl                                       ; $50da: $e5
     bit 7, a                                      ; $50db: $cb $7f
-    jr z, jr_001_50e9                             ; $50dd: $28 $0a
+    jr z, .DrawBestClearTimeHintUsedBlankTile     ; $50dd: $28 $0a
 
     ld a, $01                                     ; $50df: $3e $01
-    ld bc, $50f4                                  ; $50e1: $01 $f4 $50
+    ld bc, GS04_BestClearTimeHintUsedIconCommandStream; $50e1: $01 $f4 $50
     call QueueCommandStreamAndProcessIfLCDOff     ; $50e4: $cd $38 $07
-    jr jr_001_50f1                                ; $50e7: $18 $08
+    jr .ReturnFromBestClearTimeHintUsedTileUpdate ; $50e7: $18 $08
 
-jr_001_50e9:
+.DrawBestClearTimeHintUsedBlankTile:
     ld a, $01                                     ; $50e9: $3e $01
-    ld bc, $50f9                                  ; $50eb: $01 $f9 $50
+    ld bc, GS04_BestClearTimeHintUsedBlankCommandStream; $50eb: $01 $f9 $50
     call QueueCommandStreamAndProcessIfLCDOff     ; $50ee: $cd $38 $07
 
-jr_001_50f1:
+.ReturnFromBestClearTimeHintUsedTileUpdate:
     pop hl                                        ; $50f1: $e1
     pop af                                        ; $50f2: $f1
     ret                                           ; $50f3: $c9
 
 
-    sbc b                                         ; $50f4: $98
-    ld [hl], d                                    ; $50f5: $72
-    ld bc, $002f                                  ; $50f6: $01 $2f $00
-    sbc b                                         ; $50f9: $98
-    ld [hl], d                                    ; $50fa: $72
-    ld bc, $002b                                  ; $50fb: $01 $2b $00
+GS04_BestClearTimeHintUsedIconCommandStream::
+    db $98, $72, $01, $2f
+    db $00
 
-Jump_001_50fe:
+GS04_BestClearTimeHintUsedBlankCommandStream::
+    db $98, $72, $01, $2b
+    db $00
+
+GS04_AdvanceSelectionToNextUnclearedPuzzleIfPossible::
     ld a, [rPuzzleAndMenuCursorRow]               ; $50fe: $fa $37 $d6
     cp $07                                        ; $5101: $fe $07
-    jr nz, jr_001_510b                            ; $5103: $20 $06
+    jr nz, .CheckNextPuzzleClearStatus            ; $5103: $20 $06
 
     ld a, [rPuzzleCursorColumn]                   ; $5105: $fa $36 $d6
     cp $07                                        ; $5108: $fe $07
     ret z                                         ; $510a: $c8
 
-jr_001_510b:
+.CheckNextPuzzleClearStatus:
     ld a, [rSelectedSaveSlotIndex]                ; $510b: $fa $65 $a0
     ld c, a                                       ; $510e: $4f
     ld b, $00                                     ; $510f: $06 $00
     ld hl, rSaveSlot1CourseSelectCursorRow        ; $5111: $21 $8d $a3
     add hl, bc                                    ; $5114: $09
     ld a, [hl]                                    ; $5115: $7e
-    ld hl, $51c8                                  ; $5116: $21 $c8 $51
+    ld hl, GS04_PicrossCourseStatusDataPointerTableOffsetBySaveSlot; $5116: $21 $c8 $51
     add hl, bc                                    ; $5119: $09
     ld c, [hl]                                    ; $511a: $4e
     add hl, bc                                    ; $511b: $09
@@ -2142,14 +1925,14 @@ jr_001_510b:
     ld a, [rPuzzleCursorColumn]                   ; $5139: $fa $36 $d6
     inc a                                         ; $513c: $3c
     cp $08                                        ; $513d: $fe $08
-    jr nz, jr_001_5149                            ; $513f: $20 $08
+    jr nz, .StoreAdvancedSelectionAndPlayMoveSfx  ; $513f: $20 $08
 
     ld a, [rPuzzleAndMenuCursorRow]               ; $5141: $fa $37 $d6
     inc a                                         ; $5144: $3c
     ld [rPuzzleAndMenuCursorRow], a               ; $5145: $ea $37 $d6
     xor a                                         ; $5148: $af
 
-jr_001_5149:
+.StoreAdvancedSelectionAndPlayMoveSfx:
     ld [rPuzzleCursorColumn], a                   ; $5149: $ea $36 $d6
     ld c, $0a                                     ; $514c: $0e $0a
     ld a, $02                                     ; $514e: $3e $02
@@ -2232,44 +2015,33 @@ DecodePackedPuzzleClearTimeToBCDDigits::
     ret                                           ; $51b2: $c9
 
 
-    inc bc                                        ; $51b3: $03
-    ld [$a20d], sp                                ; $51b4: $08 $0d $a2
-    and e                                         ; $51b7: $a3
-    ld h, d                                       ; $51b8: $62
-    and h                                         ; $51b9: $a4
-    ld [hl+], a                                   ; $51ba: $22
-    and l                                         ; $51bb: $a5
-    ldh [c], a                                    ; $51bc: $e2
-    and l                                         ; $51bd: $a5
-    and d                                         ; $51be: $a2
-    and [hl]                                      ; $51bf: $a6
-    ld h, d                                       ; $51c0: $62
-    and a                                         ; $51c1: $a7
-    ld [hl+], a                                   ; $51c2: $22
-    xor b                                         ; $51c3: $a8
-    ldh [c], a                                    ; $51c4: $e2
-    xor b                                         ; $51c5: $a8
-    and d                                         ; $51c6: $a2
-    xor c                                         ; $51c7: $a9
-    inc bc                                        ; $51c8: $03
-    ld [$620d], sp                                ; $51c9: $08 $0d $62
-    xor d                                         ; $51cc: $aa
-    and d                                         ; $51cd: $a2
-    xor d                                         ; $51ce: $aa
-    ldh [c], a                                    ; $51cf: $e2
-    xor d                                         ; $51d0: $aa
-    ld [hl+], a                                   ; $51d1: $22
-    xor e                                         ; $51d2: $ab
-    ld h, d                                       ; $51d3: $62
-    xor e                                         ; $51d4: $ab
-    and d                                         ; $51d5: $a2
-    xor e                                         ; $51d6: $ab
-    ldh [c], a                                    ; $51d7: $e2
-    xor e                                         ; $51d8: $ab
-    ld [hl+], a                                   ; $51d9: $22
-    xor h                                         ; $51da: $ac
-    ld h, d                                       ; $51db: $62
-    xor h                                         ; $51dc: $ac
+GS04_PicrossCourseTimeDataPointerTableOffsetBySaveSlot::
+    db $03, $08, $0d
+
+GS04_PicrossCourseTimeDataPointerTableBySaveSlotAndCourse::
+    db $a2, $a3
+    db $62, $a4
+    db $22, $a5
+    db $e2, $a5
+    db $a2, $a6
+    db $62, $a7
+    db $22, $a8
+    db $e2, $a8
+    db $a2, $a9
+
+GS04_PicrossCourseStatusDataPointerTableOffsetBySaveSlot::
+    db $03, $08, $0d
+
+GS04_PicrossCourseStatusDataPointerTableBySaveSlotAndCourse::
+    db $62, $aa
+    db $a2, $aa
+    db $e2, $aa
+    db $22, $ab
+    db $62, $ab
+    db $a2, $ab
+    db $e2, $ab
+    db $22, $ac
+    db $62, $ac
 
 RunMessageScriptUntilEnd::
     rst RST_08                                    ; $51dd: $cf
@@ -2279,28 +2051,28 @@ RunMessageScriptUntilEnd::
     ret                                           ; $51e3: $c9
 
 
-Call_001_51e4:
+GS04_ClearMessagePromptRows::
     ld bc, $1020                                  ; $51e4: $01 $20 $10
     ld de, $7f07                                  ; $51e7: $11 $07 $7f
-    call Call_001_5230                            ; $51ea: $cd $30 $52
+    call GS04_CopyMessagePromptRowSpan            ; $51ea: $cd $30 $52
     ld bc, $1028                                  ; $51ed: $01 $28 $10
     ld de, $7f07                                  ; $51f0: $11 $07 $7f
-    call Call_001_5230                            ; $51f3: $cd $30 $52
+    call GS04_CopyMessagePromptRowSpan            ; $51f3: $cd $30 $52
     ld bc, $1030                                  ; $51f6: $01 $30 $10
     ld de, $7f07                                  ; $51f9: $11 $07 $7f
-    call Call_001_5230                            ; $51fc: $cd $30 $52
+    call GS04_CopyMessagePromptRowSpan            ; $51fc: $cd $30 $52
     ld bc, $1038                                  ; $51ff: $01 $38 $10
     ld de, $7f07                                  ; $5202: $11 $07 $7f
-    call Call_001_5230                            ; $5205: $cd $30 $52
+    call GS04_CopyMessagePromptRowSpan            ; $5205: $cd $30 $52
     ld bc, $1040                                  ; $5208: $01 $40 $10
     ld de, $7f07                                  ; $520b: $11 $07 $7f
-    call Call_001_5230                            ; $520e: $cd $30 $52
+    call GS04_CopyMessagePromptRowSpan            ; $520e: $cd $30 $52
     ld bc, $1048                                  ; $5211: $01 $48 $10
     ld de, $7f07                                  ; $5214: $11 $07 $7f
-    call Call_001_5230                            ; $5217: $cd $30 $52
+    call GS04_CopyMessagePromptRowSpan            ; $5217: $cd $30 $52
     ld bc, $1050                                  ; $521a: $01 $50 $10
     ld de, $7f07                                  ; $521d: $11 $07 $7f
-    call Call_001_5230                            ; $5220: $cd $30 $52
+    call GS04_CopyMessagePromptRowSpan            ; $5220: $cd $30 $52
     ld a, [rMessageScriptStreamResetEntryLow]     ; $5223: $fa $43 $d8
     ld [rMessageScriptStreamEntryLow], a          ; $5226: $ea $2b $d8
     ld a, [rMessageScriptStreamResetEntryHigh]    ; $5229: $fa $44 $d8
@@ -2308,7 +2080,7 @@ Call_001_51e4:
     ret                                           ; $522f: $c9
 
 
-Call_001_5230:
+GS04_CopyMessagePromptRowSpan::
     ld a, $00                                     ; $5230: $3e $00
     ld [rBGTileCopyBankAddressLow], a             ; $5232: $ea $55 $c3
     ld a, $61                                     ; $5235: $3e $61
@@ -2506,7 +2278,7 @@ GS05_StatePhase_04_TODO::
     ld a, [rSelectedSaveSlotIndex]                ; $53ca: $fa $65 $a0
     ld c, a                                       ; $53cd: $4f
     ld b, $00                                     ; $53ce: $06 $00
-    ld hl, $a07b                                  ; $53d0: $21 $7b $a0
+    ld hl, rSaveSlot1EasyPicrossPostClearUnlockFlowState_Unsure; $53d0: $21 $7b $a0
     add hl, bc                                    ; $53d3: $09
     ld a, [hl]                                    ; $53d4: $7e
     and a                                         ; $53d5: $a7
@@ -2518,7 +2290,7 @@ GS05_StatePhase_04_TODO::
     cp $40                                        ; $53de: $fe $40
     jp nz, GS05_ReturnToIdlePhaseAndRefreshSaveChecksums; $53e0: $c2 $ed $54
 
-    ld hl, $a07b                                  ; $53e3: $21 $7b $a0
+    ld hl, rSaveSlot1EasyPicrossPostClearUnlockFlowState_Unsure; $53e3: $21 $7b $a0
     add hl, bc                                    ; $53e6: $09
     inc [hl]                                      ; $53e7: $34
     ld a, [rSelectedSaveSlotIndex]                ; $53e8: $fa $65 $a0
@@ -2637,7 +2409,7 @@ GS05_HandlePostReturnClearStatusChangeAnimationAndPrompt::
     sla a                                         ; $54f8: $cb $27
     ld c, a                                       ; $54fa: $4f
     ld b, $00                                     ; $54fb: $06 $00
-    ld hl, GS05_EasyPicrossPuzzleStatusGridPointerTableBySaveSlot; $54fd: $21 $a4 $5c
+    ld hl, GS05_EasyPicrossStatusDataPointerTableBySaveSlot; $54fd: $21 $a4 $5c
     add hl, bc                                    ; $5500: $09
     ld a, [hl+]                                   ; $5501: $2a
     ld h, [hl]                                    ; $5502: $66
@@ -2988,33 +2760,33 @@ GS05_DrawCompletedPuzzleMarkersForSelectedSaveSlot::
     sla a                                         ; $57c3: $cb $27
     ld c, a                                       ; $57c5: $4f
     ld b, $00                                     ; $57c6: $06 $00
-    ld hl, GS05_EasyPicrossPuzzleStatusGridPointerTableBySaveSlot; $57c8: $21 $a4 $5c
+    ld hl, GS05_EasyPicrossStatusDataPointerTableBySaveSlot; $57c8: $21 $a4 $5c
     add hl, bc                                    ; $57cb: $09
     ld a, [hl+]                                   ; $57cc: $2a
     ld h, [hl]                                    ; $57cd: $66
     ld l, a                                       ; $57ce: $6f
     ld b, $00                                     ; $57cf: $06 $00
 
-jr_001_57d1:
+.BeginNextStatusGridRowScan:
     ld c, $00                                     ; $57d1: $0e $00
 
-jr_001_57d3:
+.ScanStatusGridCellForCompletedMarker:
     ld a, [hl+]                                   ; $57d3: $2a
     bit 7, a                                      ; $57d4: $cb $7f
-    jr z, jr_001_57db                             ; $57d6: $28 $03
+    jr z, .AdvanceToNextStatusGridColumn          ; $57d6: $28 $03
 
     call GS05_DrawCompletedPuzzleMarkerAtGridPosition; $57d8: $cd $1c $58
 
-jr_001_57db:
+.AdvanceToNextStatusGridColumn:
     inc c                                         ; $57db: $0c
     ld a, c                                       ; $57dc: $79
     cp $08                                        ; $57dd: $fe $08
-    jr nz, jr_001_57d3                            ; $57df: $20 $f2
+    jr nz, .ScanStatusGridCellForCompletedMarker  ; $57df: $20 $f2
 
     inc b                                         ; $57e1: $04
     ld a, b                                       ; $57e2: $78
     cp $08                                        ; $57e3: $fe $08
-    jr nz, jr_001_57d1                            ; $57e5: $20 $ea
+    jr nz, .BeginNextStatusGridRowScan            ; $57e5: $20 $ea
 
     ret                                           ; $57e7: $c9
 
@@ -3024,7 +2796,7 @@ GS05_DrawCompletedPuzzleMarkersForSelectedSaveSlotExceptCurrentSelection::
     sla a                                         ; $57eb: $cb $27
     ld c, a                                       ; $57ed: $4f
     ld b, $00                                     ; $57ee: $06 $00
-    ld hl, GS05_EasyPicrossPuzzleStatusGridPointerTableBySaveSlot; $57f0: $21 $a4 $5c
+    ld hl, GS05_EasyPicrossStatusDataPointerTableBySaveSlot; $57f0: $21 $a4 $5c
     add hl, bc                                    ; $57f3: $09
     ld a, [hl+]                                   ; $57f4: $2a
     ld h, [hl]                                    ; $57f5: $66
@@ -3107,7 +2879,7 @@ GS05_IncrementSelectedEasyPicrossPuzzleClearCountIfAllowed::
     sla a                                         ; $5863: $cb $27
     ld c, a                                       ; $5865: $4f
     ld b, $00                                     ; $5866: $06 $00
-    ld hl, GS05_EasyPicrossPuzzleStatusGridPointerTableBySaveSlot; $5868: $21 $a4 $5c
+    ld hl, GS05_EasyPicrossStatusDataPointerTableBySaveSlot; $5868: $21 $a4 $5c
     add hl, bc                                    ; $586b: $09
     ld a, [hl+]                                   ; $586c: $2a
     ld h, [hl]                                    ; $586d: $66
@@ -3135,12 +2907,12 @@ GS05_IncrementSelectedEasyPicrossPuzzleClearCountIfAllowed::
 
 GS05_UpdateSelectedEasyPicrossPuzzleClearStatusAndTimes::
     xor a                                         ; $588a: $af
-    ld [$d842], a                                 ; $588b: $ea $42 $d8
+    ld [rSelectedPuzzleWasFirstClearInStatusAndTimeUpdateFlag], a; $588b: $ea $42 $d8
     ld a, [rSelectedSaveSlotIndex]                ; $588e: $fa $65 $a0
     sla a                                         ; $5891: $cb $27
     ld c, a                                       ; $5893: $4f
     ld b, $00                                     ; $5894: $06 $00
-    ld hl, GS05_EasyPicrossPuzzleStatusGridPointerTableBySaveSlot; $5896: $21 $a4 $5c
+    ld hl, GS05_EasyPicrossStatusDataPointerTableBySaveSlot; $5896: $21 $a4 $5c
     add hl, bc                                    ; $5899: $09
     ld a, [hl+]                                   ; $589a: $2a
     ld h, [hl]                                    ; $589b: $66
@@ -3172,7 +2944,7 @@ GS05_UpdateSelectedEasyPicrossPuzzleClearStatusAndTimes::
     sla a                                         ; $58c6: $cb $27
     ld c, a                                       ; $58c8: $4f
     ld b, $00                                     ; $58c9: $06 $00
-    ld hl, GS05_EasyPicrossPuzzleTimeDataPointerTableBySaveSlot; $58cb: $21 $9e $5c
+    ld hl, GS05_EasyPicrossTimeDataPointerTableBySaveSlot; $58cb: $21 $9e $5c
     add hl, bc                                    ; $58ce: $09
     ld a, [hl+]                                   ; $58cf: $2a
     ld h, [hl]                                    ; $58d0: $66
@@ -3198,7 +2970,7 @@ GS05_UpdateSelectedEasyPicrossPuzzleClearStatusAndTimes::
     or b                                          ; $58f0: $b0
     ld [hl], a                                    ; $58f1: $77
     ld a, $01                                     ; $58f2: $3e $01
-    ld [$d842], a                                 ; $58f4: $ea $42 $d8
+    ld [rSelectedPuzzleWasFirstClearInStatusAndTimeUpdateFlag], a; $58f4: $ea $42 $d8
     ld a, [rHintPopupSelection]                   ; $58f7: $fa $33 $d8
     and a                                         ; $58fa: $a7
     jr nz, .UpdateBestClearTime                   ; $58fb: $20 $02
@@ -3210,7 +2982,7 @@ GS05_UpdateSelectedEasyPicrossPuzzleClearStatusAndTimes::
     sla a                                         ; $5902: $cb $27
     ld c, a                                       ; $5904: $4f
     ld b, $00                                     ; $5905: $06 $00
-    ld hl, GS05_EasyPicrossPuzzleTimeDataPointerTableBySaveSlot; $5907: $21 $9e $5c
+    ld hl, GS05_EasyPicrossTimeDataPointerTableBySaveSlot; $5907: $21 $9e $5c
     add hl, bc                                    ; $590a: $09
     ld a, [hl+]                                   ; $590b: $2a
     ld h, [hl]                                    ; $590c: $66
@@ -3231,7 +3003,7 @@ GS05_UpdateSelectedEasyPicrossPuzzleClearStatusAndTimes::
     inc hl                                        ; $5924: $23
     push hl                                       ; $5925: $e5
     call EncodePuzzleTimerToPackedClearTimeBC     ; $5926: $cd $54 $51
-    ld a, [$d842]                                 ; $5929: $fa $42 $d8
+    ld a, [rSelectedPuzzleWasFirstClearInStatusAndTimeUpdateFlag]; $5929: $fa $42 $d8
     and a                                         ; $592c: $a7
     jr nz, .StoreNewBestClearTime                 ; $592d: $20 $18
 
@@ -3285,7 +3057,7 @@ GS05_DrawSelectedEasyPicrossPuzzleInfoPanel::
     sla a                                         ; $5961: $cb $27
     ld c, a                                       ; $5963: $4f
     ld b, $00                                     ; $5964: $06 $00
-    ld hl, GS05_EasyPicrossPuzzleStatusGridPointerTableBySaveSlot; $5966: $21 $a4 $5c
+    ld hl, GS05_EasyPicrossStatusDataPointerTableBySaveSlot; $5966: $21 $a4 $5c
     add hl, bc                                    ; $5969: $09
     ld a, [hl+]                                   ; $596a: $2a
     ld h, [hl]                                    ; $596b: $66
@@ -3325,7 +3097,7 @@ GS05_DrawSelectedEasyPicrossPuzzleInfoPanel::
     sla a                                         ; $59a5: $cb $27
     ld c, a                                       ; $59a7: $4f
     ld b, $00                                     ; $59a8: $06 $00
-    ld hl, GS05_EasyPicrossPuzzleTimeDataPointerTableBySaveSlot; $59aa: $21 $9e $5c
+    ld hl, GS05_EasyPicrossTimeDataPointerTableBySaveSlot; $59aa: $21 $9e $5c
     add hl, bc                                    ; $59ad: $09
     ld a, [hl+]                                   ; $59ae: $2a
     ld h, [hl]                                    ; $59af: $66
@@ -3381,7 +3153,7 @@ GS05_DrawSelectedEasyPicrossPuzzleInfoPanel::
     sla a                                         ; $5a0a: $cb $27
     ld c, a                                       ; $5a0c: $4f
     ld b, $00                                     ; $5a0d: $06 $00
-    ld hl, GS05_EasyPicrossPuzzleTimeDataPointerTableBySaveSlot; $5a0f: $21 $9e $5c
+    ld hl, GS05_EasyPicrossTimeDataPointerTableBySaveSlot; $5a0f: $21 $9e $5c
     add hl, bc                                    ; $5a12: $09
     ld a, [hl+]                                   ; $5a13: $2a
     ld h, [hl]                                    ; $5a14: $66
@@ -3601,7 +3373,7 @@ GS05_LoadSelectedEasyPicrossPuzzleStatusAndTimeDataRecord::
     sla a                                         ; $5bb3: $cb $27
     ld c, a                                       ; $5bb5: $4f
     ld b, $00                                     ; $5bb6: $06 $00
-    ld hl, GS05_EasyPicrossPuzzleStatusGridPointerTableBySaveSlot; $5bb8: $21 $a4 $5c
+    ld hl, GS05_EasyPicrossStatusDataPointerTableBySaveSlot; $5bb8: $21 $a4 $5c
     add hl, bc                                    ; $5bbb: $09
     ld a, [hl+]                                   ; $5bbc: $2a
     ld h, [hl]                                    ; $5bbd: $66
@@ -3622,7 +3394,7 @@ GS05_LoadSelectedEasyPicrossPuzzleStatusAndTimeDataRecord::
     sla a                                         ; $5bd8: $cb $27
     ld c, a                                       ; $5bda: $4f
     ld b, $00                                     ; $5bdb: $06 $00
-    ld hl, GS05_EasyPicrossPuzzleTimeDataPointerTableBySaveSlot; $5bdd: $21 $9e $5c
+    ld hl, GS05_EasyPicrossTimeDataPointerTableBySaveSlot; $5bdd: $21 $9e $5c
     add hl, bc                                    ; $5be0: $09
     ld a, [hl+]                                   ; $5be1: $2a
     ld h, [hl]                                    ; $5be2: $66
@@ -3723,7 +3495,7 @@ GS05_AdvanceSelectionToNextUnclearedPuzzleIfPossible::
     sla a                                         ; $5c61: $cb $27
     ld c, a                                       ; $5c63: $4f
     ld b, $00                                     ; $5c64: $06 $00
-    ld hl, GS05_EasyPicrossPuzzleStatusGridPointerTableBySaveSlot; $5c66: $21 $a4 $5c
+    ld hl, GS05_EasyPicrossStatusDataPointerTableBySaveSlot; $5c66: $21 $a4 $5c
     add hl, bc                                    ; $5c69: $09
     ld a, [hl+]                                   ; $5c6a: $2a
     ld h, [hl]                                    ; $5c6b: $66
@@ -3760,12 +3532,12 @@ GS05_AdvanceSelectionToNextUnclearedPuzzleIfPossible::
     ret                                           ; $5c9d: $c9
 
 
-GS05_EasyPicrossPuzzleTimeDataPointerTableBySaveSlot::
+GS05_EasyPicrossTimeDataPointerTableBySaveSlot::
     db $87, $a0
     db $47, $a1
     db $07, $a2
 
-GS05_EasyPicrossPuzzleStatusGridPointerTableBySaveSlot::
+GS05_EasyPicrossStatusDataPointerTableBySaveSlot::
     db $c7, $a2
     db $07, $a3
     db $47, $a3
@@ -5830,8 +5602,8 @@ jr_001_6c76:
     and a                                         ; $6c79: $a7
     jr z, jr_001_6cde                             ; $6c7a: $28 $62
 
-    call Call_001_49a2                            ; $6c7c: $cd $a2 $49
-    call Call_001_4cef                            ; $6c7f: $cd $ef $4c
+    call GS04_LoadPicrossCoursePuzzleSelectCursorForSelectedSaveSlotAndCourse; $6c7c: $cd $a2 $49
+    call GS04_UpdateSelectedPicrossCoursePuzzleClearStatusAndTimes; $6c7f: $cd $ef $4c
     call RefreshSaveValidationChecksumsAndMirrors ; $6c82: $cd $1f $1b
     ld c, $00                                     ; $6c85: $0e $00
     ld a, $01                                     ; $6c87: $3e $01

@@ -13,6 +13,9 @@
 00:a078 rSaveSlot1GameSelectCursorRow
 00:a079 rSaveSlot2GameSelectCursorRow
 00:a07a rSaveSlot3GameSelectCursorRow
+00:a07b rSaveSlot1EasyPicrossPostClearUnlockFlowState_Unsure
+00:a07c rSaveSlot2EasyPicrossPostClearUnlockFlowState_Unsure
+00:a07d rSaveSlot3EasyPicrossPostClearUnlockFlowState_Unsure
 00:a07e rSaveSlot1EasyPicrossClearedPuzzleCount
 00:a07f rSaveSlot2EasyPicrossClearedPuzzleCount
 00:a080 rSaveSlot3EasyPicrossClearedPuzzleCount
@@ -37,6 +40,44 @@
 00:a38d rSaveSlot1CourseSelectCursorRow
 00:a38e rSaveSlot2CourseSelectCursorRow
 00:a38f rSaveSlot3CourseSelectCursorRow
+00:a390 rSaveSlot1PicrossKinokoCoursePuzzleSelectCursorColumn
+00:a391 rSaveSlot1PicrossStarCoursePuzzleSelectCursorColumn
+00:a392 rSaveSlot1PicrossTimeTrial_UnsurePuzzleSelectCursorColumn
+00:a393 rSaveSlot2PicrossKinokoCoursePuzzleSelectCursorColumn
+00:a394 rSaveSlot2PicrossStarCoursePuzzleSelectCursorColumn
+00:a395 rSaveSlot2PicrossTimeTrial_UnsurePuzzleSelectCursorColumn
+00:a396 rSaveSlot3PicrossKinokoCoursePuzzleSelectCursorColumn
+00:a397 rSaveSlot3PicrossStarCoursePuzzleSelectCursorColumn
+00:a398 rSaveSlot3PicrossTimeTrial_UnsurePuzzleSelectCursorColumn
+00:a399 rSaveSlot1PicrossKinokoCoursePuzzleSelectCursorRow
+00:a39a rSaveSlot1PicrossStarCoursePuzzleSelectCursorRow
+00:a39b rSaveSlot1PicrossTimeTrial_UnsurePuzzleSelectCursorRow
+00:a39c rSaveSlot2PicrossKinokoCoursePuzzleSelectCursorRow
+00:a39d rSaveSlot2PicrossStarCoursePuzzleSelectCursorRow
+00:a39e rSaveSlot2PicrossTimeTrial_UnsurePuzzleSelectCursorRow
+00:a39f rSaveSlot3PicrossKinokoCoursePuzzleSelectCursorRow
+00:a3a0 rSaveSlot3PicrossStarCoursePuzzleSelectCursorRow
+00:a3a1 rSaveSlot3PicrossTimeTrial_UnsurePuzzleSelectCursorRow
+; GS04 Picross course time-data tables (save slot x course row, 64 entries x 3 bytes)
+00:a3a2 rSaveSlot1PicrossKinokoCoursePuzzleTimeDataRecordTable
+00:a462 rSaveSlot1PicrossStarCoursePuzzleTimeDataRecordTable
+00:a522 rSaveSlot1PicrossTimeTrial_UnsurePuzzleTimeDataRecordTable
+00:a5e2 rSaveSlot2PicrossKinokoCoursePuzzleTimeDataRecordTable
+00:a6a2 rSaveSlot2PicrossStarCoursePuzzleTimeDataRecordTable
+00:a762 rSaveSlot2PicrossTimeTrial_UnsurePuzzleTimeDataRecordTable
+00:a822 rSaveSlot3PicrossKinokoCoursePuzzleTimeDataRecordTable
+00:a8e2 rSaveSlot3PicrossStarCoursePuzzleTimeDataRecordTable
+00:a9a2 rSaveSlot3PicrossTimeTrial_UnsurePuzzleTimeDataRecordTable
+; GS04 Picross course status-data tables (save slot x course row, 64 entries x 1 byte)
+00:aa62 rSaveSlot1PicrossKinokoCoursePuzzleStatusDataTable
+00:aaa2 rSaveSlot1PicrossStarCoursePuzzleStatusDataTable
+00:aae2 rSaveSlot1PicrossTimeTrial_UnsurePuzzleStatusDataTable
+00:ab22 rSaveSlot2PicrossKinokoCoursePuzzleStatusDataTable
+00:ab62 rSaveSlot2PicrossStarCoursePuzzleStatusDataTable
+00:aba2 rSaveSlot2PicrossTimeTrial_UnsurePuzzleStatusDataTable
+00:abe2 rSaveSlot3PicrossKinokoCoursePuzzleStatusDataTable
+00:ac22 rSaveSlot3PicrossStarCoursePuzzleStatusDataTable
+00:ac62 rSaveSlot3PicrossTimeTrial_UnsurePuzzleStatusDataTable
 00:aca2 rContinueSavedGameFlowMode_Unsure
 00:aced rHiddenProgrammerCreditsMirror
 00:acfd rSaveValidationMagicBytesMirror
@@ -192,6 +233,7 @@
 00:d835 rAdvanceOrSkipTimeoutEnabled
 00:d836 rAdvanceOrSkipTimeoutCounter
 00:d837 rGS06_HowToPlaySkipRequestedFlag
+00:d842 rSelectedPuzzleWasFirstClearInStatusAndTimeUpdateFlag
 00:d843 rMessageScriptStreamResetEntryLow
 00:d844 rMessageScriptStreamResetEntryHigh
 00:d845 rMessageScriptStreamLimitLow
@@ -845,12 +887,122 @@
 01:4398 GS04_PhasePointer_05
 01:4398 .data:2
 
-01:439a GS04_StatePhase_00_TODO
-01:477d GS04_StatePhase_01_TODO
-01:4809 GS04_StatePhase_02_TODO
-01:4972 GS04_StatePhase_03_TODO
-01:4410 GS04_StatePhase_04_TODO
-01:47b7 GS04_StatePhase_05_TODO
+01:439a GS04_StatePhase_00_PicrossCoursePuzzleSelectScreenInit
+01:46dc GS04_ReturnToIdlePhaseAndRefreshSaveChecksums
+01:46e4 GS04_HandlePostReturnClearStatusChangeAnimationAndPrompt
+01:477d GS04_StatePhase_01_PicrossCoursePuzzleSelectScreenIdle
+01:47a2 .CheckCancelInputB
+01:47b6 .ReturnFromIdlePhaseNoSelectionInput
+01:4809 GS04_StatePhase_02_ConfirmSelectionTransitionToPuzzle
+01:486e GS04_PuzzleDataIndexTableOffsetTableByCourse
+01:486e .data:0004:2
+01:4872 GS04_PuzzleDataIndexTableByGridPosition_Kinoko
+01:4872 .data:0080:8
+01:48f2 GS04_PuzzleDataIndexTableByGridPosition_Star
+01:48f2 .data:0080:8
+01:4972 GS04_StatePhase_03_CancelSelectionTransitionToCourseSelect
+01:4410 GS04_StatePhase_04_ReturnFromPuzzleTransitionAndHandleUnlockFlow
+01:4470 .ContinueAfterSelectedPuzzleCompletedMarkerCheck
+01:448d .BeginPostReturnFadeInAndResultFlow
+01:45bb GS04_RunTimeTrialUnlockMessageFlowAndReturnToCourseSelect
+01:4720 .AnimateCursorFrame1BeforeCompletedMarker
+01:473e .AnimateCursorFrame2AfterCompletedMarker
+01:474f .BeginPostResultPromptDelay
+01:4753 .PostResultPromptLoop
+01:476a .DrawPostResultPromptFrame
+01:477a .AdvanceSelectionAfterPostResultPrompt
+01:47b7 GS04_StatePhase_05_ReturnFromPuzzleTransitionAndCommitResult
+
+01:49a2 GS04_LoadPicrossCoursePuzzleSelectCursorForSelectedSaveSlotAndCourse
+
+01:49c8 GS04_SavePicrossCoursePuzzleSelectCursorForSelectedSaveSlotAndCourse
+
+01:49ee GS04_DrawPicrossCoursePuzzleSelectCursorSpriteByFrame
+
+01:4a09 GS04_HandlePicrossCoursePuzzleSelectDirectionalInput
+01:4a26 .CheckRight
+01:4a33 .CheckUp
+01:4a40 .CheckDown
+01:4a4d .Return
+
+01:4a4e GS04_PlayCursorPreviewSfxBySelectedCourse
+01:4a6e .PlayStarCoursePreviewSfxVariant
+
+01:4a80 GS04_LoadPicrossCourseSelectGraphicsBySelectedCourse
+01:4ab9 .LoadStarCourseGraphicsVariant
+
+01:4ae4 GS04_LoadPicrossCourseSelectGraphicsBySelectedCourse_Banked
+01:4b1f .LoadStarCourseGraphicsAndTilemapVariant
+
+01:4b5a GS04_PlayPicrossCourseSelectFadeInBySelectedCourse
+01:4b76 .PlayStarCourseFadeInVariant
+
+01:4b84 GS04_PlayPicrossCourseSelectFadeOutBySelectedCourse
+01:4ba0 .PlayStarCourseFadeOutVariant
+
+01:4bae GS04_PlayPicrossCourseSelectFadeInBySelectedCourse_Banked
+01:4bcc .PlayStarCourseFadeInBankedVariant
+
+01:4bdc GS04_PlayPicrossCourseSelectFadeOutBySelectedCourse_Banked
+01:4bfa .PlayStarCourseFadeOutBankedVariant
+
+01:4c0a GS04_DrawCompletedPuzzleMarkersForSelectedSaveSlotAndCourse
+01:4c24 .BeginNextStatusGridRowScan
+01:4c26 .ScanStatusGridCellForCompletedMarker
+01:4c2e .AdvanceToNextStatusGridColumn
+
+01:4c3b GS04_DrawCompletedPuzzleMarkersForSelectedSaveSlotAndCourseExceptCurrentSelection
+01:4c55 .BeginNextStatusGridRowScan
+01:4c57 .ScanStatusGridCellForCompletedMarker
+01:4c68 .DrawCompletedMarkerForNonSelectedCell
+01:4c6b .AdvanceToNextStatusGridColumn
+
+01:4c78 GS04_DrawCompletedPuzzleMarkerAtGridPosition
+
+01:4cbc GS04_IncrementSelectedPicrossCoursePuzzleClearCountIfAllowed
+
+01:4cef GS04_UpdateSelectedPicrossCoursePuzzleClearStatusAndTimes
+01:4d76 .UpdateBestClearTime
+01:4dbb .CompareBestClearTimeLowByteAndHintUsedOnTie
+01:4dc7 .StoreNewBestClearTime
+01:4ddb .SkipBestClearTimeUpdate
+01:4ddc .ReturnFromClearStatusAndTimeUpdate
+
+01:4dde GS04_DrawSelectedPicrossCoursePuzzleInfoPanel
+01:4e24 .AfterTimesClearedDigits
+
+01:4f0d GS04_DrawSelectedPicrossCoursePuzzleInfoPanel_DrawUnclearedPlaceholders
+
+01:4f54 GS04_DrawSelectedPicrossCoursePuzzleInfoPanelFromSelectedPuzzleCache
+01:4f72 .AfterTimesClearedDigits
+
+01:5004 GS04_DrawSelectedPicrossCoursePuzzleInfoPanelFromSelectedPuzzleCache_DrawUnclearedPlaceholders
+
+01:504b GS04_LoadSelectedPicrossCoursePuzzleStatusAndTimeDataRecord
+
+01:50b4 GS04_UpdateFirstClearTimeHintUsedIconTile
+01:50c4 .DrawFirstClearTimeHintUsedBlankTile
+01:50cc .ReturnFromFirstClearTimeHintUsedTileUpdate
+01:50cf GS04_FirstClearTimeHintUsedIconCommandStream
+01:50cf .data:0005:4
+01:50d4 GS04_FirstClearTimeHintUsedBlankCommandStream
+01:50d4 .data:0005:4
+
+01:50d9 GS04_UpdateBestClearTimeHintUsedIconTile
+01:50e9 .DrawBestClearTimeHintUsedBlankTile
+01:50f1 .ReturnFromBestClearTimeHintUsedTileUpdate
+01:50f4 GS04_BestClearTimeHintUsedIconCommandStream
+01:50f4 .data:0005:4
+01:50f9 GS04_BestClearTimeHintUsedBlankCommandStream
+01:50f9 .data:0005:4
+
+01:50fe GS04_AdvanceSelectionToNextUnclearedPuzzleIfPossible
+01:510b .CheckNextPuzzleClearStatus
+01:5149 .StoreAdvancedSelectionAndPlayMoveSfx
+
+01:51e4 GS04_ClearMessagePromptRows
+
+01:5230 GS04_CopyMessagePromptRowSpan
 
 01:5154 EncodePuzzleTimerToPackedClearTimeBC
 
@@ -859,6 +1011,16 @@
 01:5191 .PackLowerFieldTensAndOnes
 01:51a2 .SubtractUpperFieldTensLoop
 01:51ab .PackUpperFieldTensAndOnes
+
+01:51b3 GS04_PicrossCourseTimeDataPointerTableOffsetBySaveSlot
+01:51b3 .data:0003
+01:51b6 GS04_PicrossCourseTimeDataPointerTableBySaveSlotAndCourse
+01:51b6 .data:0012:2
+
+01:51c8 GS04_PicrossCourseStatusDataPointerTableOffsetBySaveSlot
+01:51c8 .data:0003
+01:51cb GS04_PicrossCourseStatusDataPointerTableBySaveSlotAndCourse
+01:51cb .data:0012:2
 
 01:51dd RunMessageScriptUntilEnd
 01:5252 WaitForAConfirmOnBottomPrompt
@@ -911,6 +1073,9 @@
 01:57bf .Return
 
 01:57c0 GS05_DrawCompletedPuzzleMarkersForSelectedSaveSlot
+01:57d1 .BeginNextStatusGridRowScan
+01:57d3 .ScanStatusGridCellForCompletedMarker
+01:57db .AdvanceToNextStatusGridColumn
 
 01:57e8 GS05_DrawCompletedPuzzleMarkersForSelectedSaveSlotExceptCurrentSelection
 01:57f9 .BeginNextStatusGridRowScan
@@ -971,10 +1136,10 @@
 01:5c5e .CheckNextPuzzleClearStatus
 01:5c93 .StoreAdvancedSelectionAndPlayMoveSfx
 
-01:5c9e GS05_EasyPicrossPuzzleTimeDataPointerTableBySaveSlot
+01:5c9e GS05_EasyPicrossTimeDataPointerTableBySaveSlot
 01:5c9e .data:0006:2
 
-01:5ca4 GS05_EasyPicrossPuzzleStatusGridPointerTableBySaveSlot
+01:5ca4 GS05_EasyPicrossStatusDataPointerTableBySaveSlot
 01:5ca4 .data:0006:2
 
 01:5caa LetsTryThisOneText

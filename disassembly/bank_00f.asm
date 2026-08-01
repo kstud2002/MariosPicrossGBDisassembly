@@ -5941,7 +5941,7 @@ jr_00f_58ba:
     push af                                       ; $5b98: $f5
     jr jr_00f_5bab                                ; $5b99: $18 $10
 
-    ld [$abe2], sp                                ; $5b9b: $08 $e2 $ab
+    ld [rSaveSlot3PicrossKinokoCoursePuzzleStatusDataTable], sp; $5b9b: $08 $e2 $ab
     push de                                       ; $5b9e: $d5
     dec h                                         ; $5b9f: $25
     ld a, [hl+]                                   ; $5ba0: $2a
