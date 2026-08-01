@@ -307,21 +307,21 @@ VBlankInterruptHandler::
     ldh a, [rLY]                                  ; $02c3: $f0 $44
     ld a, [rVBlankLCDCBit4ForceFlag]              ; $02c5: $fa $3c $c3
     and a                                         ; $02c8: $a7
-    jr nz, jr_000_02d2                            ; $02c9: $20 $07
+    jr nz, .ApplyLCDCShadowWithBit4Forced         ; $02c9: $20 $07
 
     ld a, [rLCDCShadow]                           ; $02cb: $fa $2e $c3
     ldh [rLCDC], a                                ; $02ce: $e0 $40
-    jr jr_000_02d9                                ; $02d0: $18 $07
+    jr .AfterLCDCUpdate                           ; $02d0: $18 $07
 
-jr_000_02d2:
+.ApplyLCDCShadowWithBit4Forced:
     ld a, [rLCDCShadow]                           ; $02d2: $fa $2e $c3
     set 4, a                                      ; $02d5: $cb $e7
     ldh [rLCDC], a                                ; $02d7: $e0 $40
 
-jr_000_02d9:
+.AfterLCDCUpdate:
     ld a, [rSGBPacketTransferBusyFlag]            ; $02d9: $fa $3e $c3
     and a                                         ; $02dc: $a7
-    jr nz, jr_000_0300                            ; $02dd: $20 $21
+    jr nz, .CheckAllFaceButtonsHeldCombo          ; $02dd: $20 $21
 
     ld hl, rBGPShadow                             ; $02df: $21 $2f $c3
     ld a, [hl+]                                   ; $02e2: $2a
@@ -342,34 +342,34 @@ jr_000_02d9:
     ldh [rLYC], a                                 ; $02f8: $e0 $45
     ld a, [hl+]                                   ; $02fa: $2a
     ldh [rSTAT], a                                ; $02fb: $e0 $41
-    call Call_000_06ce                            ; $02fd: $cd $ce $06
+    call PollJoypadAndUpdateInputState            ; $02fd: $cd $ce $06
 
-jr_000_0300:
+.CheckAllFaceButtonsHeldCombo:
     ld a, [rInputButtonsHeld]                     ; $0300: $fa $1a $c3
     cp $0f                                        ; $0303: $fe $0f
-    jr nz, jr_000_0313                            ; $0305: $20 $0c
+    jr nz, .MaybeRunSoundEngineUpdate             ; $0305: $20 $0c
 
     ld a, [rInputButtonsPressed]                  ; $0307: $fa $1e $c3
     and $0f                                       ; $030a: $e6 $0f
-    jr z, jr_000_0313                             ; $030c: $28 $05
+    jr z, .MaybeRunSoundEngineUpdate              ; $030c: $28 $05
 
     ld hl, $0214                                  ; $030e: $21 $14 $02
     push hl                                       ; $0311: $e5
     reti                                          ; $0312: $d9
 
 
-jr_000_0313:
+.MaybeRunSoundEngineUpdate:
     ld a, [rVBlankSoundEngineUpdateEnabled_Unsure]; $0313: $fa $50 $c3
     and a                                         ; $0316: $a7
-    jr nz, jr_000_0322                            ; $0317: $20 $09
+    jr nz, .FinalizeAndExit                       ; $0317: $20 $09
 
     ld a, [rSGBPacketTransferBusyFlag]            ; $0319: $fa $3e $c3
     and a                                         ; $031c: $a7
-    jr nz, jr_000_0322                            ; $031d: $20 $03
+    jr nz, .FinalizeAndExit                       ; $031d: $20 $03
 
     call CallSoundEngineUpdateRoutine_Unsure_PreserveRegisters; $031f: $cd $ee $03
 
-jr_000_0322:
+.FinalizeAndExit:
     ld a, [rVBlankFrameCounter]                   ; $0322: $fa $3a $c3
     inc a                                         ; $0325: $3c
     ld [rVBlankFrameCounter], a                   ; $0326: $ea $3a $c3
@@ -1135,7 +1135,7 @@ AdvanceSubtractiveRNGState::
     ret                                           ; $06cd: $c9
 
 
-Call_000_06ce:
+PollJoypadAndUpdateInputState::
     ld a, $20                                     ; $06ce: $3e $20
     ldh [rP1], a                                  ; $06d0: $e0 $00
     ldh a, [rP1]                                  ; $06d2: $f0 $00
@@ -1160,7 +1160,7 @@ Call_000_06ce:
     ld a, $30                                     ; $06f6: $3e $30
     ldh [rP1], a                                  ; $06f8: $e0 $00
     ld a, [rInputButtonsHeld]                     ; $06fa: $fa $1a $c3
-    ld hl, $c326                                  ; $06fd: $21 $26 $c3
+    ld hl, rInputButtonsHeldPrevious              ; $06fd: $21 $26 $c3
     xor [hl]                                      ; $0700: $ae
     ld hl, rInputButtonsHeld                      ; $0701: $21 $1a $c3
     and [hl]                                      ; $0704: $a6
@@ -1168,29 +1168,29 @@ Call_000_06ce:
     ld [rInputButtonsPressedOrRepeated], a        ; $0708: $ea $22 $c3
     ld a, [rInputButtonsHeld]                     ; $070b: $fa $1a $c3
     and a                                         ; $070e: $a7
-    jr z, jr_000_072b                             ; $070f: $28 $1a
+    jr z, .ResetInputRepeatCountdownToInitialDelay; $070f: $28 $1a
 
-    ld hl, $c326                                  ; $0711: $21 $26 $c3
+    ld hl, rInputButtonsHeldPrevious              ; $0711: $21 $26 $c3
     cp [hl]                                       ; $0714: $be
-    jr nz, jr_000_072b                            ; $0715: $20 $14
+    jr nz, .ResetInputRepeatCountdownToInitialDelay; $0715: $20 $14
 
-    ld hl, $c32a                                  ; $0717: $21 $2a $c3
+    ld hl, rInputRepeatCountdown                  ; $0717: $21 $2a $c3
     dec [hl]                                      ; $071a: $35
-    jr nz, jr_000_0731                            ; $071b: $20 $14
+    jr nz, .StoreCurrentHeldButtonsAsPreviousAndReturn; $071b: $20 $14
 
     ld a, [rInputButtonsHeld]                     ; $071d: $fa $1a $c3
     ld [rInputButtonsPressedOrRepeated], a        ; $0720: $ea $22 $c3
     ld a, [rInputRepeatSubsequentInterval]        ; $0723: $fa $19 $c3
-    ld [$c32a], a                                 ; $0726: $ea $2a $c3
-    jr jr_000_0731                                ; $0729: $18 $06
+    ld [rInputRepeatCountdown], a                 ; $0726: $ea $2a $c3
+    jr .StoreCurrentHeldButtonsAsPreviousAndReturn; $0729: $18 $06
 
-jr_000_072b:
+.ResetInputRepeatCountdownToInitialDelay:
     ld a, [rInputRepeatInitialDelay]              ; $072b: $fa $18 $c3
-    ld [$c32a], a                                 ; $072e: $ea $2a $c3
+    ld [rInputRepeatCountdown], a                 ; $072e: $ea $2a $c3
 
-jr_000_0731:
+.StoreCurrentHeldButtonsAsPreviousAndReturn:
     ld a, [rInputButtonsHeld]                     ; $0731: $fa $1a $c3
-    ld [$c326], a                                 ; $0734: $ea $26 $c3
+    ld [rInputButtonsHeldPrevious], a             ; $0734: $ea $26 $c3
     ret                                           ; $0737: $c9
 
 
@@ -5860,7 +5860,7 @@ RunEraseDataConfirmationPrompt::
     ld a, $0b                                     ; $1d2e: $3e $0b
     ld hl, $5000                                  ; $1d30: $21 $00 $50
     ld de, $8000                                  ; $1d33: $11 $00 $80
-    ld bc, $0300                                  ; $1d36: $01 $00 $03
+    ld bc, .CheckAllFaceButtonsHeldCombo          ; $1d36: $01 $00 $03
     call BankedTileCopy                           ; $1d39: $cd $e4 $04
     xor a                                         ; $1d3c: $af
     ld [rStatePhaseTimer], a                      ; $1d3d: $ea $3c $d6

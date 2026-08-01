@@ -120,6 +120,8 @@
 00:c31a rInputButtonsHeld
 00:c31e rInputButtonsPressed
 00:c322 rInputButtonsPressedOrRepeated
+00:c326 rInputButtonsHeldPrevious
+00:c32a rInputRepeatCountdown
 00:c32e rLCDCShadow
 00:c32f rBGPShadow
 00:c330 rOBP0Shadow
@@ -273,6 +275,11 @@
 00:01e9 .AfterSGBStartupTransferCheck
 
 00:02b9 VBlankInterruptHandler
+00:02d2 .ApplyLCDCShadowWithBit4Forced
+00:02d9 .AfterLCDCUpdate
+00:0300 .CheckAllFaceButtonsHeldCombo
+00:0313 .MaybeRunSoundEngineUpdate
+00:0322 .FinalizeAndExit
 
 00:0333 LCDCInterruptHandler
 00:034d LCDCInterruptHandlerReturnAndReti
@@ -360,6 +367,10 @@
 00:06b8 .StoreFirstSubtractivePassByte
 00:06c4 .SecondSubtractivePassLoop
 00:06c9 .StoreSecondSubtractivePassByte
+
+00:06ce PollJoypadAndUpdateInputState
+00:072b .ResetInputRepeatCountdownToInitialDelay
+00:0731 .StoreCurrentHeldButtonsAsPreviousAndReturn
 
 00:0671 SubtractiveRNGStateInitOffsetTable
 00:0671 .data:0036:2

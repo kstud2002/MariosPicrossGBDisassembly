@@ -100,7 +100,7 @@ GS04_StatePhase_00_PicrossCoursePuzzleSelectScreenInit::
     ld a, $0b                                     ; $43b5: $3e $0b
     ld hl, $5000                                  ; $43b7: $21 $00 $50
     ld de, $8000                                  ; $43ba: $11 $00 $80
-    ld bc, $0300                                  ; $43bd: $01 $00 $03
+    ld bc, .CheckAllFaceButtonsHeldCombo          ; $43bd: $01 $00 $03
     call BankedTileCopy                           ; $43c0: $cd $e4 $04
     ld a, $07                                     ; $43c3: $3e $07
     ld hl, $7b00                                  ; $43c5: $21 $00 $7b
@@ -147,7 +147,7 @@ GS04_StatePhase_04_ReturnFromPuzzleTransitionAndHandleUnlockFlow::
     ld a, $0b                                     ; $442b: $3e $0b
     ld hl, $5000                                  ; $442d: $21 $00 $50
     ld de, $8000                                  ; $4430: $11 $00 $80
-    ld bc, $0300                                  ; $4433: $01 $00 $03
+    ld bc, .CheckAllFaceButtonsHeldCombo          ; $4433: $01 $00 $03
     call BankedTileCopy                           ; $4436: $cd $e4 $04
     ld a, $07                                     ; $4439: $3e $07
     ld hl, $7b00                                  ; $443b: $21 $00 $7b
@@ -2150,7 +2150,7 @@ GS05_StatePhase_00_EasyPicrossPuzzleSelectScreenInit::
     ld a, $0b                                     ; $5298: $3e $0b
     ld hl, $5000                                  ; $529a: $21 $00 $50
     ld de, $8000                                  ; $529d: $11 $00 $80
-    ld bc, $0300                                  ; $52a0: $01 $00 $03
+    ld bc, .CheckAllFaceButtonsHeldCombo          ; $52a0: $01 $00 $03
     call BankedTileCopy                           ; $52a3: $cd $e4 $04
     ld a, $07                                     ; $52a6: $3e $07
     ld hl, $7b00                                  ; $52a8: $21 $00 $7b
@@ -2211,7 +2211,7 @@ GS05_StatePhase_04_TODO::
     ld a, $0b                                     ; $5331: $3e $0b
     ld hl, $5000                                  ; $5333: $21 $00 $50
     ld de, $8000                                  ; $5336: $11 $00 $80
-    ld bc, $0300                                  ; $5339: $01 $00 $03
+    ld bc, .CheckAllFaceButtonsHeldCombo          ; $5339: $01 $00 $03
     call BankedTileCopy                           ; $533c: $cd $e4 $04
     ld a, $07                                     ; $533f: $3e $07
     ld hl, $7b00                                  ; $5341: $21 $00 $7b
@@ -3855,7 +3855,7 @@ jr_001_5f68:
     ld a, $06                                     ; $5f8e: $3e $06
     ld hl, $7a00                                  ; $5f90: $21 $00 $7a
     ld de, $8500                                  ; $5f93: $11 $00 $85
-    ld bc, $0300                                  ; $5f96: $01 $00 $03
+    ld bc, .CheckAllFaceButtonsHeldCombo          ; $5f96: $01 $00 $03
     call BankedTileCopyVRAMSafe                   ; $5f99: $cd $38 $05
     call Call_001_7dcb                            ; $5f9c: $cd $cb $7d
     ld a, $06                                     ; $5f9f: $3e $06
@@ -4196,7 +4196,7 @@ GS08_StatePhase_05_TODO::
     ld a, $06                                     ; $6222: $3e $06
     ld hl, $7a00                                  ; $6224: $21 $00 $7a
     ld de, $8500                                  ; $6227: $11 $00 $85
-    ld bc, $0300                                  ; $622a: $01 $00 $03
+    ld bc, .CheckAllFaceButtonsHeldCombo          ; $622a: $01 $00 $03
     call BankedTileCopyVRAMSafe                   ; $622d: $cd $38 $05
     call Call_001_70a1                            ; $6230: $cd $a1 $70
     ld hl, rStatePhase_Current                    ; $6233: $21 $35 $d6
@@ -4386,7 +4386,7 @@ jr_001_6364:
     ld a, $06                                     ; $6380: $3e $06
     ld hl, $4500                                  ; $6382: $21 $00 $45
     ld de, $8500                                  ; $6385: $11 $00 $85
-    ld bc, $0300                                  ; $6388: $01 $00 $03
+    ld bc, .CheckAllFaceButtonsHeldCombo          ; $6388: $01 $00 $03
     call BankedTileCopyVRAMSafe                   ; $638b: $cd $38 $05
     ld a, [rPuzzleGridWidth]                      ; $638e: $fa $00 $d8
     cp $05                                        ; $6391: $fe $05
@@ -4436,7 +4436,7 @@ GS08_StatePhase_0a_TODO::
     ld a, $06                                     ; $63dc: $3e $06
     ld hl, $4500                                  ; $63de: $21 $00 $45
     ld de, $8500                                  ; $63e1: $11 $00 $85
-    ld bc, $0300                                  ; $63e4: $01 $00 $03
+    ld bc, .CheckAllFaceButtonsHeldCombo          ; $63e4: $01 $00 $03
     call BankedTileCopyVRAMSafe                   ; $63e7: $cd $38 $05
     call DrawClueNumbersFromRunLengthBuffers      ; $63ea: $cd $b9 $6f
     call RenderPuzzleTimerDigits                  ; $63ed: $cd $04 $7c
@@ -4624,7 +4624,7 @@ GS09_StatePhase_09_TODO::
     ld a, $06                                     ; $6555: $3e $06
     ld hl, $7a00                                  ; $6557: $21 $00 $7a
     ld de, $8500                                  ; $655a: $11 $00 $85
-    ld bc, $0300                                  ; $655d: $01 $00 $03
+    ld bc, .CheckAllFaceButtonsHeldCombo          ; $655d: $01 $00 $03
     call BankedTileCopyVRAMSafe                   ; $6560: $cd $38 $05
     call Call_001_7dcb                            ; $6563: $cd $cb $7d
     ld a, $04                                     ; $6566: $3e $04
@@ -4785,7 +4785,7 @@ GS09_StatePhase_03_TODO::
     ld a, $06                                     ; $669d: $3e $06
     ld hl, $7a00                                  ; $669f: $21 $00 $7a
     ld de, $8500                                  ; $66a2: $11 $00 $85
-    ld bc, $0300                                  ; $66a5: $01 $00 $03
+    ld bc, .CheckAllFaceButtonsHeldCombo          ; $66a5: $01 $00 $03
     call BankedTileCopyVRAMSafe                   ; $66a8: $cd $38 $05
     call Call_001_70a1                            ; $66ab: $cd $a1 $70
     ld hl, rStatePhase_Current                    ; $66ae: $21 $35 $d6
@@ -4985,7 +4985,7 @@ GS09_StatePhase_08_TODO::
     ld a, $06                                     ; $680f: $3e $06
     ld hl, $4500                                  ; $6811: $21 $00 $45
     ld de, $8500                                  ; $6814: $11 $00 $85
-    ld bc, $0300                                  ; $6817: $01 $00 $03
+    ld bc, .CheckAllFaceButtonsHeldCombo          ; $6817: $01 $00 $03
     call BankedTileCopyVRAMSafe                   ; $681a: $cd $38 $05
     call DrawClueNumbersFromRunLengthBuffers      ; $681d: $cd $b9 $6f
     call RenderPuzzleTimerDigits                  ; $6820: $cd $04 $7c
@@ -5197,7 +5197,7 @@ GS0A_StatePhase_0b_TODO::
     ld a, $06                                     ; $69a2: $3e $06
     ld hl, $7a00                                  ; $69a4: $21 $00 $7a
     ld de, $8500                                  ; $69a7: $11 $00 $85
-    ld bc, $0300                                  ; $69aa: $01 $00 $03
+    ld bc, .CheckAllFaceButtonsHeldCombo          ; $69aa: $01 $00 $03
     call BankedTileCopyVRAMSafe                   ; $69ad: $cd $38 $05
     call Call_001_7dcb                            ; $69b0: $cd $cb $7d
     ld a, $06                                     ; $69b3: $3e $06
@@ -5734,7 +5734,7 @@ GS0A_StatePhase_05_TODO::
     ld a, $06                                     ; $6d86: $3e $06
     ld hl, $7a00                                  ; $6d88: $21 $00 $7a
     ld de, $8500                                  ; $6d8b: $11 $00 $85
-    ld bc, $0300                                  ; $6d8e: $01 $00 $03
+    ld bc, .CheckAllFaceButtonsHeldCombo          ; $6d8e: $01 $00 $03
     call BankedTileCopyVRAMSafe                   ; $6d91: $cd $38 $05
     call Call_001_70a1                            ; $6d94: $cd $a1 $70
     ld hl, rStatePhase_Current                    ; $6d97: $21 $35 $d6
@@ -5946,7 +5946,7 @@ GS0A_StatePhase_0a_TODO::
     ld a, $06                                     ; $6f10: $3e $06
     ld hl, $4500                                  ; $6f12: $21 $00 $45
     ld de, $8500                                  ; $6f15: $11 $00 $85
-    ld bc, $0300                                  ; $6f18: $01 $00 $03
+    ld bc, .CheckAllFaceButtonsHeldCombo          ; $6f18: $01 $00 $03
     call BankedTileCopyVRAMSafe                   ; $6f1b: $cd $38 $05
     call DrawClueNumbersFromRunLengthBuffers      ; $6f1e: $cd $b9 $6f
     call RenderPuzzleTimerDigits                  ; $6f21: $cd $04 $7c

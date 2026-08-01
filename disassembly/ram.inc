@@ -112,6 +112,8 @@ DEF rInputRepeatSubsequentInterval EQU $c319
 DEF rInputButtonsHeld EQU $c31a
 DEF rInputButtonsPressed EQU $c31e
 DEF rInputButtonsPressedOrRepeated EQU $c322
+DEF rInputButtonsHeldPrevious EQU $c326
+DEF rInputRepeatCountdown EQU $c32a
 DEF rLCDCShadow EQU $c32e
 DEF rBGPShadow EQU $c32f
 DEF rOBP0Shadow EQU $c330
