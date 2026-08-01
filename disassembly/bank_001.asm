@@ -280,7 +280,7 @@ jr_001_448d:
     ld a, $41                                     ; $4558: $3e $41
     ld [rMessageScriptStreamPointerHigh], a       ; $455a: $ea $2e $d8
     call RunMessageScriptUntilEnd                 ; $455d: $cd $dd $51
-    call Call_001_5252                            ; $4560: $cd $52 $52
+    call WaitForAConfirmOnBottomPrompt            ; $4560: $cd $52 $52
     xor a                                         ; $4563: $af
     ld [rPuzzleCursorColumn], a                   ; $4564: $ea $36 $d6
     ld [rPuzzleAndMenuCursorRow], a               ; $4567: $ea $37 $d6
@@ -378,28 +378,28 @@ Jump_001_45bb:
     ld a, $41                                     ; $4647: $3e $41
     ld [rMessageScriptStreamPointerHigh], a       ; $4649: $ea $2e $d8
     call RunMessageScriptUntilEnd                 ; $464c: $cd $dd $51
-    call Call_001_5252                            ; $464f: $cd $52 $52
+    call WaitForAConfirmOnBottomPrompt            ; $464f: $cd $52 $52
     call Call_001_51e4                            ; $4652: $cd $e4 $51
     ld a, $08                                     ; $4655: $3e $08
     ld [rMessageScriptStreamPointerLow], a        ; $4657: $ea $2d $d8
     ld a, $42                                     ; $465a: $3e $42
     ld [rMessageScriptStreamPointerHigh], a       ; $465c: $ea $2e $d8
     call RunMessageScriptUntilEnd                 ; $465f: $cd $dd $51
-    call Call_001_5252                            ; $4662: $cd $52 $52
+    call WaitForAConfirmOnBottomPrompt            ; $4662: $cd $52 $52
     call Call_001_51e4                            ; $4665: $cd $e4 $51
     ld a, $58                                     ; $4668: $3e $58
     ld [rMessageScriptStreamPointerLow], a        ; $466a: $ea $2d $d8
     ld a, $42                                     ; $466d: $3e $42
     ld [rMessageScriptStreamPointerHigh], a       ; $466f: $ea $2e $d8
     call RunMessageScriptUntilEnd                 ; $4672: $cd $dd $51
-    call Call_001_5252                            ; $4675: $cd $52 $52
+    call WaitForAConfirmOnBottomPrompt            ; $4675: $cd $52 $52
     call Call_001_51e4                            ; $4678: $cd $e4 $51
     ld a, $3a                                     ; $467b: $3e $3a
     ld [rMessageScriptStreamPointerLow], a        ; $467d: $ea $2d $d8
     ld a, $43                                     ; $4680: $3e $43
     ld [rMessageScriptStreamPointerHigh], a       ; $4682: $ea $2e $d8
     call RunMessageScriptUntilEnd                 ; $4685: $cd $dd $51
-    call Call_001_5252                            ; $4688: $cd $52 $52
+    call WaitForAConfirmOnBottomPrompt            ; $4688: $cd $52 $52
     ld bc, $003c                                  ; $468b: $01 $3c $00
     call DelayFramesByBC                          ; $468e: $cd $fa $05
     ld a, $05                                     ; $4691: $3e $05
@@ -2326,8 +2326,7 @@ Call_001_5230:
     jp Jump_000_0b0d                              ; $524f: $c3 $0d $0b
 
 
-Call_001_5252:
-jr_001_5252:
+WaitForAConfirmOnBottomPrompt::
     ld b, $03                                     ; $5252: $06 $03
     ld hl, $4ea6                                  ; $5254: $21 $a6 $4e
     call SwitchBankToBAndJumpToHL                 ; $5257: $cd $de $05
@@ -2335,7 +2334,7 @@ jr_001_5252:
     rst RST_08                                    ; $525d: $cf
     ld a, [rInputButtonsPressed]                  ; $525e: $fa $1e $c3
     and $01                                       ; $5261: $e6 $01
-    jr z, jr_001_5252                             ; $5263: $28 $ed
+    jr z, WaitForAConfirmOnBottomPrompt           ; $5263: $28 $ed
 
     ld c, $03                                     ; $5265: $0e $03
     ld a, $02                                     ; $5267: $3e $02
@@ -2594,7 +2593,7 @@ GS05_StatePhase_04_TODO::
     ld a, $40                                     ; $5496: $3e $40
     ld [rMessageScriptStreamPointerHigh], a       ; $5498: $ea $2e $d8
     call RunMessageScriptUntilEnd                 ; $549b: $cd $dd $51
-    call Call_001_5252                            ; $549e: $cd $52 $52
+    call WaitForAConfirmOnBottomPrompt            ; $549e: $cd $52 $52
     ld bc, $003c                                  ; $54a1: $01 $3c $00
     call DelayFramesByBC                          ; $54a4: $cd $fa $05
     ld a, $05                                     ; $54a7: $3e $05
