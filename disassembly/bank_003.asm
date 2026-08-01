@@ -4070,7 +4070,7 @@ OAMSpriteData_Event09::
     db $10, $10, $6f, $00
     db $ff
 
-OAMSpriteData_Event0a::
+OAMSpriteData_Event0a_MarioSweat::
     db $10, $08, $74, $10
     db $ff
 
@@ -4682,7 +4682,7 @@ OAMSpriteData_Event3b_WithHintPopUp_No::
     db $20, $30, $6f, $10
     db $ff
 
-OAMSpriteData_Event3c::
+OAMSpriteData_Event3c_PauseMenuRightSide::
     db $18, $18, $50, $10
     db $18, $20, $51, $10
     db $18, $28, $52, $10
@@ -4742,7 +4742,7 @@ OAMSpriteData_Event3d::
     db $28, $38, $7c, $10
     db $ff
 
-OAMSpriteData_Event3e::
+OAMSpriteData_Event3e_BGMMenuRightSide::
     db $10, $18, $5c, $10
     db $10, $20, $5c, $10
     db $10, $28, $5d, $10
@@ -4769,7 +4769,7 @@ OAMSpriteData_Event3e::
     db $38, $20, $63, $10
     db $ff
 
-OAMSpriteData_Event3f::
+OAMSpriteData_Event3f_PauseMenuConfirmPromptRightSide::
     db $10, $18, $5c, $10
     db $10, $20, $5c, $10
     db $10, $28, $5c, $10
@@ -4788,7 +4788,7 @@ OAMSpriteData_Event3f::
     db $20, $28, $66, $10
     db $ff
 
-OAMSpriteData_Event40::
+OAMSpriteData_Event40_PauseMenuLeftSide_SaveSelected::
     db $18, $10, $6a, $10
     db $20, $10, $6c, $10
     db $28, $10, $6c, $10
@@ -4801,7 +4801,7 @@ OAMSpriteData_Event40::
     db $30, $10, $7c, $10
     db $ff
 
-OAMSpriteData_Event41::
+OAMSpriteData_Event41_PauseMenuLeftSide_GiveUpSelected::
     db $28, $10, $6c, $10
     db $10, $08, $5b, $10
     db $10, $10, $5c, $10
@@ -4814,7 +4814,7 @@ OAMSpriteData_Event41::
     db $18, $10, $6c, $10
     db $ff
 
-OAMSpriteData_Event42::
+OAMSpriteData_Event42_PauseMenuLeftSide_BGMSelected::
     db $10, $08, $5b, $10
     db $10, $10, $5c, $10
     db $18, $08, $6b, $10
@@ -4827,7 +4827,7 @@ OAMSpriteData_Event42::
     db $30, $10, $7c, $10
     db $ff
 
-OAMSpriteData_Event43::
+OAMSpriteData_Event43_PauseMenuConfirmPromptLeftSide_YesSelected::
     db $10, $08, $5b, $10
     db $18, $08, $6b, $10
     db $20, $08, $6b, $10
@@ -4838,7 +4838,7 @@ OAMSpriteData_Event43::
     db $18, $10, $6a, $10
     db $ff
 
-OAMSpriteData_Event44::
+OAMSpriteData_Event44_PauseMenuConfirmPromptLeftSide_NoSelected::
     db $10, $08, $5b, $10
     db $18, $08, $6b, $10
     db $20, $08, $6b, $10
@@ -4849,7 +4849,7 @@ OAMSpriteData_Event44::
     db $20, $10, $6a, $10
     db $ff
 
-OAMSpriteData_Event45::
+OAMSpriteData_Event45_BGMMenuLeftSide_1Selected::
     db $10, $08, $5b, $10
     db $18, $08, $6b, $10
     db $20, $08, $6b, $10
@@ -4868,7 +4868,7 @@ OAMSpriteData_Event45::
     db $40, $10, $6c, $10
     db $ff
 
-OAMSpriteData_Event46::
+OAMSpriteData_Event46_BGMMenuLeftSide_2Selected::
     db $10, $08, $5b, $10
     db $18, $08, $6b, $10
     db $20, $08, $6b, $10
@@ -4887,7 +4887,7 @@ OAMSpriteData_Event46::
     db $18, $10, $6c, $10
     db $ff
 
-OAMSpriteData_Event47::
+OAMSpriteData_Event47_BGMMenuLeftSide_3Selected::
     db $10, $08, $5b, $10
     db $18, $08, $6b, $10
     db $20, $08, $6b, $10
@@ -4906,7 +4906,7 @@ OAMSpriteData_Event47::
     db $20, $10, $6c, $10
     db $ff
 
-OAMSpriteData_Event48::
+OAMSpriteData_Event48_BGMMenuLeftSide_4Selected::
     db $10, $08, $5b, $10
     db $18, $08, $6b, $10
     db $20, $08, $6b, $10
@@ -4925,7 +4925,7 @@ OAMSpriteData_Event48::
     db $28, $10, $6c, $10
     db $ff
 
-OAMSpriteData_Event49::
+OAMSpriteData_Event49_BGMMenuLeftSide_5Selected::
     db $10, $08, $5b, $10
     db $18, $08, $6b, $10
     db $20, $08, $6b, $10
@@ -4944,7 +4944,7 @@ OAMSpriteData_Event49::
     db $30, $10, $6c, $10
     db $ff
 
-OAMSpriteData_Event4a::
+OAMSpriteData_Event4a_BGMMenuLeftSide_OffSelected::
     db $10, $08, $5b, $10
     db $18, $08, $6b, $10
     db $20, $08, $6b, $10

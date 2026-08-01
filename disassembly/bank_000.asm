@@ -215,8 +215,8 @@ GameInitEntryPoint::
     ld [rSubtractiveRNGModulus], a                ; $01f4: $ea $69 $cd
     call InitializeSubtractiveRNGState            ; $01f7: $cd $31 $06
     call HandleStartupSaveDataIntegrityCheck      ; $01fa: $cd $da $1a
-    ld hl, SaveDataDefaultPerSaveSlotModeCursorRows; $01fd: $21 $05 $1c
-    ld de, rSaveSlot1ModeCursorRows               ; $0200: $11 $69 $a0
+    ld hl, SaveDataDefaultPerSaveSlotModeBGMSelectionIndices; $01fd: $21 $05 $1c
+    ld de, rSaveSlot1EasyPicrossBGMSelectionIndex ; $0200: $11 $69 $a0
     ld bc, $000f                                  ; $0203: $01 $0f $00
     call CopyMemoryBlock                          ; $0206: $cd $db $04
     call RefreshSaveValidationChecksumsAndMirrors ; $0209: $cd $1f $1b
@@ -1356,7 +1356,7 @@ ExecuteQueuedCommandStream::
 
 
 LoadPuzzleDataBuffer::
-    ld hl, $d640                                  ; $07f1: $21 $40 $d6
+    ld hl, rPuzzleCellStateBufferStart            ; $07f1: $21 $40 $d6
     ld bc, $0100                                  ; $07f4: $01 $00 $01
     call ZeroMemoryBlock                          ; $07f7: $cd $d3 $04
     ld a, [rPuzzleDataIndexLow]                   ; $07fa: $fa $07 $d8
@@ -1384,7 +1384,7 @@ LoadPuzzleDataBuffer::
     ld [rActiveROMBank], a                        ; $0826: $ea $12 $c3
     ld [rROMB], a                                 ; $0829: $ea $00 $20
     ld b, $1e                                     ; $082c: $06 $1e
-    ld hl, $d640                                  ; $082e: $21 $40 $d6
+    ld hl, rPuzzleCellStateBufferStart            ; $082e: $21 $40 $d6
 
 .DecodePuzzleDataBitsLoop:
     ld a, [de]                                    ; $0831: $1a
@@ -5412,7 +5412,7 @@ GS06_UpdateOAMSequenceEventAndCopySprite::
     ret                                           ; $1a44: $c9
 
 
-Call_000_1a45:
+DrawPuzzleNameFromPointerTable::
     ld a, [rActiveROMBank]                        ; $1a45: $fa $12 $c3
     push af                                       ; $1a48: $f5
     ld a, $03                                     ; $1a49: $3e $03
@@ -5430,42 +5430,42 @@ Call_000_1a45:
     ld h, [hl]                                    ; $1a62: $66
     ld l, a                                       ; $1a63: $6f
 
-jr_000_1a64:
+.LoadNextPuzzleNameLine:
     ld a, [hl+]                                   ; $1a64: $2a
     and a                                         ; $1a65: $a7
-    jr z, jr_000_1a80                             ; $1a66: $28 $18
+    jr z, .RestoreBankAndReturn                   ; $1a66: $28 $18
 
     ld b, a                                       ; $1a68: $47
     ld a, [hl+]                                   ; $1a69: $2a
     ld c, a                                       ; $1a6a: $4f
 
-jr_000_1a6b:
+.DrawPuzzleNameGlyphRun:
     ld a, [hl+]                                   ; $1a6b: $2a
     ld e, a                                       ; $1a6c: $5f
     ld a, [hl+]                                   ; $1a6d: $2a
     ld d, a                                       ; $1a6e: $57
     and e                                         ; $1a6f: $a3
     cp $ff                                        ; $1a70: $fe $ff
-    jr z, jr_000_1a64                             ; $1a72: $28 $f0
+    jr z, .LoadNextPuzzleNameLine                 ; $1a72: $28 $f0
 
     push bc                                       ; $1a74: $c5
     push hl                                       ; $1a75: $e5
-    call Call_000_1a88                            ; $1a76: $cd $88 $1a
+    call QueueMessageGlyphBGTileCopyById          ; $1a76: $cd $88 $1a
     pop hl                                        ; $1a79: $e1
     pop bc                                        ; $1a7a: $c1
     add b                                         ; $1a7b: $80
     inc a                                         ; $1a7c: $3c
     ld b, a                                       ; $1a7d: $47
-    jr jr_000_1a6b                                ; $1a7e: $18 $eb
+    jr .DrawPuzzleNameGlyphRun                    ; $1a7e: $18 $eb
 
-jr_000_1a80:
+.RestoreBankAndReturn:
     pop af                                        ; $1a80: $f1
     ld [rActiveROMBank], a                        ; $1a81: $ea $12 $c3
     ld [rROMB], a                                 ; $1a84: $ea $00 $20
     ret                                           ; $1a87: $c9
 
 
-Call_000_1a88:
+QueueMessageGlyphBGTileCopyById::
     ld a, [rActiveROMBank]                        ; $1a88: $fa $12 $c3
     push af                                       ; $1a8b: $f5
     ld a, $00                                     ; $1a8c: $3e $00
@@ -5494,7 +5494,7 @@ Call_000_1a88:
     add hl, de                                    ; $1ab9: $19
     ld a, [hl]                                    ; $1aba: $7e
     and a                                         ; $1abb: $a7
-    jr z, jr_000_1ad0                             ; $1abc: $28 $12
+    jr z, .RestoreBankAndReturnGlyphWidth         ; $1abc: $28 $12
 
     push af                                       ; $1abe: $f5
     add b                                         ; $1abf: $80
@@ -5506,7 +5506,7 @@ Call_000_1a88:
     call PrepareBGTileCopy                        ; $1acc: $cd $b3 $08
     pop af                                        ; $1acf: $f1
 
-jr_000_1ad0:
+.RestoreBankAndReturnGlyphWidth:
     ld e, a                                       ; $1ad0: $5f
     pop af                                        ; $1ad1: $f1
     ld [rActiveROMBank], a                        ; $1ad2: $ea $12 $c3
@@ -5668,8 +5668,8 @@ ResetSaveDataAndLoadDefaults::
     ld de, rSaveDataTimeTrialRankingEntries       ; $1bc6: $11 $42 $a0
     ld bc, $0023                                  ; $1bc9: $01 $23 $00
     call CopyMemoryBlock                          ; $1bcc: $cd $db $04
-    ld hl, SaveDataDefaultPerSaveSlotModeCursorRows; $1bcf: $21 $05 $1c
-    ld de, rSaveSlot1ModeCursorRows               ; $1bd2: $11 $69 $a0
+    ld hl, SaveDataDefaultPerSaveSlotModeBGMSelectionIndices; $1bcf: $21 $05 $1c
+    ld de, rSaveSlot1EasyPicrossBGMSelectionIndex ; $1bd2: $11 $69 $a0
     ld bc, $000f                                  ; $1bd5: $01 $0f $00
     call CopyMemoryBlock                          ; $1bd8: $cd $db $04
     ld bc, $003c                                  ; $1bdb: $01 $3c $00
@@ -5688,17 +5688,17 @@ SaveDataDefaultTimeTrialRankingEntries::
 
     db $05, $00, $00, $00, "PIC"
 
-SaveDataDefaultPerSaveSlotModeCursorRows::
+SaveDataDefaultPerSaveSlotModeBGMSelectionIndices::
     db $00, $01, $02, $03, $04
     db $00, $01, $02, $03, $04
     db $00, $01, $02, $03, $04
 
-Call_000_1c14:
+SaveCurrentPuzzleProgressToSaveData::
     ld b, $3c                                     ; $1c14: $06 $3c
-    ld de, $acad                                  ; $1c16: $11 $ad $ac
-    ld hl, $d640                                  ; $1c19: $21 $40 $d6
+    ld de, rSavedPuzzleCellStatePackedBuffer      ; $1c16: $11 $ad $ac
+    ld hl, rPuzzleCellStateBufferStart            ; $1c19: $21 $40 $d6
 
-jr_000_1c1c:
+.PackAndStorePuzzleCellStateByteLoop:
     xor a                                         ; $1c1c: $af
     srl [hl]                                      ; $1c1d: $cb $3e
     srl [hl]                                      ; $1c1f: $cb $3e
@@ -5727,7 +5727,7 @@ jr_000_1c1c:
     ld [de], a                                    ; $1c49: $12
     inc de                                        ; $1c4a: $13
     dec b                                         ; $1c4b: $05
-    jr nz, jr_000_1c1c                            ; $1c4c: $20 $ce
+    jr nz, .PackAndStorePuzzleCellStateByteLoop   ; $1c4c: $20 $ce
 
     ld a, [rPuzzleGridWidth]                      ; $1c4e: $fa $00 $d8
     ld [de], a                                    ; $1c51: $12
@@ -5735,111 +5735,111 @@ jr_000_1c1c:
     ld a, [rPuzzleGridHeight]                     ; $1c53: $fa $01 $d8
     ld [de], a                                    ; $1c56: $12
     ld a, [rHintPopupSelection]                   ; $1c57: $fa $33 $d8
-    ld [$aca3], a                                 ; $1c5a: $ea $a3 $ac
+    ld [rSavedPuzzleHintPopupSelection], a        ; $1c5a: $ea $a3 $ac
     ld a, [rPuzzleTimerAdjustmentStep]            ; $1c5d: $fa $11 $d8
-    ld [$aca4], a                                 ; $1c60: $ea $a4 $ac
+    ld [rSavedPuzzleTimerAdjustmentStep], a       ; $1c60: $ea $a4 $ac
     ld a, [rPuzzleTimerMinuteOnes]                ; $1c63: $fa $09 $d8
-    ld [$aca5], a                                 ; $1c66: $ea $a5 $ac
+    ld [rSavedPuzzleTimerMinuteOnes], a           ; $1c66: $ea $a5 $ac
     ld a, [rPuzzleTimerMinuteTens]                ; $1c69: $fa $0a $d8
-    ld [$aca6], a                                 ; $1c6c: $ea $a6 $ac
+    ld [rSavedPuzzleTimerMinuteTens], a           ; $1c6c: $ea $a6 $ac
     ld a, [rPuzzleTimerSecondOnes]                ; $1c6f: $fa $0b $d8
-    ld [$aca7], a                                 ; $1c72: $ea $a7 $ac
+    ld [rSavedPuzzleTimerSecondOnes], a           ; $1c72: $ea $a7 $ac
     ld a, [rPuzzleTimerSecondTens]                ; $1c75: $fa $0c $d8
-    ld [$aca8], a                                 ; $1c78: $ea $a8 $ac
+    ld [rSavedPuzzleTimerSecondTens], a           ; $1c78: $ea $a8 $ac
     ld a, [rPuzzleDataIndexLow]                   ; $1c7b: $fa $07 $d8
-    ld [$aca9], a                                 ; $1c7e: $ea $a9 $ac
+    ld [rSavedPuzzleDataIndexLow], a              ; $1c7e: $ea $a9 $ac
     ld a, [rPuzzleDataIndexHigh]                  ; $1c81: $fa $08 $d8
-    ld [$acaa], a                                 ; $1c84: $ea $aa $ac
+    ld [rSavedPuzzleDataIndexHigh], a             ; $1c84: $ea $aa $ac
     ld a, [rPuzzleCursorColumn]                   ; $1c87: $fa $36 $d6
-    ld [$acab], a                                 ; $1c8a: $ea $ab $ac
+    ld [rSavedPuzzleCursorColumn], a              ; $1c8a: $ea $ab $ac
     ld a, [rPuzzleAndMenuCursorRow]               ; $1c8d: $fa $37 $d6
-    ld [$acac], a                                 ; $1c90: $ea $ac $ac
+    ld [rSavedPuzzleCursorRow], a                 ; $1c90: $ea $ac $ac
     jp RefreshSaveValidationChecksumsAndMirrors   ; $1c93: $c3 $1f $1b
 
 
-Call_000_1c96:
-    ld a, [$aca3]                                 ; $1c96: $fa $a3 $ac
+RestoreCurrentPuzzleProgressFromSaveData::
+    ld a, [rSavedPuzzleHintPopupSelection]        ; $1c96: $fa $a3 $ac
     ld [rHintPopupSelection], a                   ; $1c99: $ea $33 $d8
-    ld a, [$aca4]                                 ; $1c9c: $fa $a4 $ac
+    ld a, [rSavedPuzzleTimerAdjustmentStep]       ; $1c9c: $fa $a4 $ac
     ld [rPuzzleTimerAdjustmentStep], a            ; $1c9f: $ea $11 $d8
-    ld a, [$aca5]                                 ; $1ca2: $fa $a5 $ac
+    ld a, [rSavedPuzzleTimerMinuteOnes]           ; $1ca2: $fa $a5 $ac
     ld [rPuzzleTimerMinuteOnes], a                ; $1ca5: $ea $09 $d8
-    ld a, [$aca6]                                 ; $1ca8: $fa $a6 $ac
+    ld a, [rSavedPuzzleTimerMinuteTens]           ; $1ca8: $fa $a6 $ac
     ld [rPuzzleTimerMinuteTens], a                ; $1cab: $ea $0a $d8
-    ld a, [$aca7]                                 ; $1cae: $fa $a7 $ac
+    ld a, [rSavedPuzzleTimerSecondOnes]           ; $1cae: $fa $a7 $ac
     ld [rPuzzleTimerSecondOnes], a                ; $1cb1: $ea $0b $d8
-    ld a, [$aca8]                                 ; $1cb4: $fa $a8 $ac
+    ld a, [rSavedPuzzleTimerSecondTens]           ; $1cb4: $fa $a8 $ac
     ld [rPuzzleTimerSecondTens], a                ; $1cb7: $ea $0c $d8
-    ld a, [$aca9]                                 ; $1cba: $fa $a9 $ac
+    ld a, [rSavedPuzzleDataIndexLow]              ; $1cba: $fa $a9 $ac
     ld [rPuzzleDataIndexLow], a                   ; $1cbd: $ea $07 $d8
-    ld a, [$acaa]                                 ; $1cc0: $fa $aa $ac
+    ld a, [rSavedPuzzleDataIndexHigh]             ; $1cc0: $fa $aa $ac
     ld [rPuzzleDataIndexHigh], a                  ; $1cc3: $ea $08 $d8
-    ld a, [$acab]                                 ; $1cc6: $fa $ab $ac
+    ld a, [rSavedPuzzleCursorColumn]              ; $1cc6: $fa $ab $ac
     ld [rPuzzleCursorColumn], a                   ; $1cc9: $ea $36 $d6
-    ld a, [$acac]                                 ; $1ccc: $fa $ac $ac
+    ld a, [rSavedPuzzleCursorRow]                 ; $1ccc: $fa $ac $ac
     ld [rPuzzleAndMenuCursorRow], a               ; $1ccf: $ea $37 $d6
     call LoadPuzzleDataBuffer                     ; $1cd2: $cd $f1 $07
     ld b, $3c                                     ; $1cd5: $06 $3c
-    ld de, $acad                                  ; $1cd7: $11 $ad $ac
-    ld hl, $d640                                  ; $1cda: $21 $40 $d6
+    ld de, rSavedPuzzleCellStatePackedBuffer      ; $1cd7: $11 $ad $ac
+    ld hl, rPuzzleCellStateBufferStart            ; $1cda: $21 $40 $d6
 
-jr_000_1cdd:
+.ApplyPackedCell0StateBit1IfSet:
     ld a, [de]                                    ; $1cdd: $1a
     sla a                                         ; $1cde: $cb $27
-    jr nc, jr_000_1ce4                            ; $1ce0: $30 $02
+    jr nc, .ApplyPackedCell0StateBit2IfSet        ; $1ce0: $30 $02
 
     set 1, [hl]                                   ; $1ce2: $cb $ce
 
-jr_000_1ce4:
+.ApplyPackedCell0StateBit2IfSet:
     sla a                                         ; $1ce4: $cb $27
-    jr nc, jr_000_1cea                            ; $1ce6: $30 $02
+    jr nc, .AdvanceToPackedCell1AndApplyStateBit1IfSet; $1ce6: $30 $02
 
     set 2, [hl]                                   ; $1ce8: $cb $d6
 
-jr_000_1cea:
+.AdvanceToPackedCell1AndApplyStateBit1IfSet:
     inc hl                                        ; $1cea: $23
     sla a                                         ; $1ceb: $cb $27
-    jr nc, jr_000_1cf1                            ; $1ced: $30 $02
+    jr nc, .ApplyPackedCell1StateBit2IfSet        ; $1ced: $30 $02
 
     set 1, [hl]                                   ; $1cef: $cb $ce
 
-jr_000_1cf1:
+.ApplyPackedCell1StateBit2IfSet:
     sla a                                         ; $1cf1: $cb $27
-    jr nc, jr_000_1cf7                            ; $1cf3: $30 $02
+    jr nc, .AdvanceToPackedCell2AndApplyStateBit1IfSet; $1cf3: $30 $02
 
     set 2, [hl]                                   ; $1cf5: $cb $d6
 
-jr_000_1cf7:
+.AdvanceToPackedCell2AndApplyStateBit1IfSet:
     inc hl                                        ; $1cf7: $23
     sla a                                         ; $1cf8: $cb $27
-    jr nc, jr_000_1cfe                            ; $1cfa: $30 $02
+    jr nc, .ApplyPackedCell2StateBit2IfSet        ; $1cfa: $30 $02
 
     set 1, [hl]                                   ; $1cfc: $cb $ce
 
-jr_000_1cfe:
+.ApplyPackedCell2StateBit2IfSet:
     sla a                                         ; $1cfe: $cb $27
-    jr nc, jr_000_1d04                            ; $1d00: $30 $02
+    jr nc, .AdvanceToPackedCell3AndApplyStateBit1IfSet; $1d00: $30 $02
 
     set 2, [hl]                                   ; $1d02: $cb $d6
 
-jr_000_1d04:
+.AdvanceToPackedCell3AndApplyStateBit1IfSet:
     inc hl                                        ; $1d04: $23
     sla a                                         ; $1d05: $cb $27
-    jr nc, jr_000_1d0b                            ; $1d07: $30 $02
+    jr nc, .ApplyPackedCell3StateBit2IfSet        ; $1d07: $30 $02
 
     set 1, [hl]                                   ; $1d09: $cb $ce
 
-jr_000_1d0b:
+.ApplyPackedCell3StateBit2IfSet:
     sla a                                         ; $1d0b: $cb $27
-    jr nc, jr_000_1d11                            ; $1d0d: $30 $02
+    jr nc, .AdvancePackedSourceAndContinueUnpackLoop; $1d0d: $30 $02
 
     set 2, [hl]                                   ; $1d0f: $cb $d6
 
-jr_000_1d11:
+.AdvancePackedSourceAndContinueUnpackLoop:
     inc hl                                        ; $1d11: $23
     inc de                                        ; $1d12: $13
     dec b                                         ; $1d13: $05
-    jr nz, jr_000_1cdd                            ; $1d14: $20 $c7
+    jr nz, .ApplyPackedCell0StateBit1IfSet        ; $1d14: $20 $c7
 
     ld a, [rPuzzleGridWidth]                      ; $1d16: $fa $00 $d8
     ld [de], a                                    ; $1d19: $12

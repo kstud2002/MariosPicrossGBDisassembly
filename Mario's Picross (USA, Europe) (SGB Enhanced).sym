@@ -12,9 +12,22 @@
 00:a05d rSaveDataTimeTrialRankingEntriesShiftSourceEnd
 00:a064 rSaveDataTimeTrialRankingEntriesShiftDestEnd
 00:a065 rSelectedSaveSlotIndex
-00:a069 rSaveSlot1ModeCursorRows
-00:a06e rSaveSlot2ModeCursorRows
-00:a073 rSaveSlot3ModeCursorRows
+; Per-save-slot BGM index entries: GS08 Easy Picross, GS0A Kinoko/Star, GS09 Time Trial, unknown
+00:a069 rSaveSlot1EasyPicrossBGMSelectionIndex
+00:a06a rSaveSlot1PicrossKinokoBGMSelectionIndex
+00:a06b rSaveSlot1PicrossStarBGMSelectionIndex
+00:a06c rSaveSlot1TimeTrialBGMSelectionIndex
+00:a06d rSaveSlot1ModeBGMSelectionIndexEntry4_Unknown
+00:a06e rSaveSlot2EasyPicrossBGMSelectionIndex
+00:a06f rSaveSlot2PicrossKinokoBGMSelectionIndex
+00:a070 rSaveSlot2PicrossStarBGMSelectionIndex
+00:a071 rSaveSlot2TimeTrialBGMSelectionIndex
+00:a072 rSaveSlot2ModeBGMSelectionIndexEntry4_Unknown
+00:a073 rSaveSlot3EasyPicrossBGMSelectionIndex
+00:a074 rSaveSlot3PicrossKinokoBGMSelectionIndex
+00:a075 rSaveSlot3PicrossStarBGMSelectionIndex
+00:a076 rSaveSlot3TimeTrialBGMSelectionIndex
+00:a077 rSaveSlot3ModeBGMSelectionIndexEntry4_Unknown
 00:a078 rSaveSlot1GameSelectCursorRow
 00:a079 rSaveSlot2GameSelectCursorRow
 00:a07a rSaveSlot3GameSelectCursorRow
@@ -84,6 +97,19 @@
 00:ac22 rSaveSlot3PicrossStarCoursePuzzleStatusDataTable
 00:ac62 rSaveSlot3PicrossTimeTrial_UnsurePuzzleStatusDataTable
 00:aca2 rContinueSavedGameFlowMode_Unsure
+00:aca3 rSavedPuzzleHintPopupSelection
+00:aca4 rSavedPuzzleTimerAdjustmentStep
+00:aca5 rSavedPuzzleTimerMinuteOnes
+00:aca6 rSavedPuzzleTimerMinuteTens
+00:aca7 rSavedPuzzleTimerSecondOnes
+00:aca8 rSavedPuzzleTimerSecondTens
+00:aca9 rSavedPuzzleDataIndexLow
+00:acaa rSavedPuzzleDataIndexHigh
+00:acab rSavedPuzzleCursorColumn
+00:acac rSavedPuzzleCursorRow
+00:acad rSavedPuzzleCellStatePackedBuffer
+00:ace9 rSavedPuzzleGridWidth
+00:acea rSavedPuzzleGridHeight
 00:aced rHiddenProgrammerCreditsMirror
 00:acfd rSaveValidationMagicBytesMirror
 00:ad02 rSaveDataPrimaryChecksumSum
@@ -192,6 +218,7 @@
 00:d63d rSharedAnimationFrameState
 00:d63e rSharedUIAnimationColumnAccumulator
 00:d63f rHintCursorAnimationRowAccumulator
+00:d640 rPuzzleCellStateBufferStart
 00:d73f rPuzzleCellStateBufferEnd
 00:d740 rClueRunLengthHorizontalBufferStart
 00:d799 rClueRunLengthHorizontalBufferBuildBase
@@ -237,6 +264,10 @@
 00:d831 rGS06_ScriptedInputSequenceTableLow
 00:d832 rGS06_ScriptedInputSequenceTableHigh
 00:d833 rHintPopupSelection
+00:d83a rGS08_PauseMenuMainSelection
+00:d83b rGS08_PauseMenuSavePromptSelection
+00:d83c rGS08_PauseMenuBGMSubmenuSelection
+00:d83d rGS08_PauseMenuGiveUpPromptSelection
 00:d835 rAdvanceOrSkipTimeoutEnabled
 00:d836 rAdvanceOrSkipTimeoutCounter
 00:d837 rGS06_HowToPlaySkipRequestedFlag
@@ -496,6 +527,14 @@
 00:19fc .ApplySequenceEvent
 00:1a23 .TickSequenceEventDelayAndEmit
 
+00:1a45 DrawPuzzleNameFromPointerTable
+00:1a64 .LoadNextPuzzleNameLine
+00:1a6b .DrawPuzzleNameGlyphRun
+00:1a80 .RestoreBankAndReturn
+
+00:1a88 QueueMessageGlyphBGTileCopyById
+00:1ad0 .RestoreBankAndReturnGlyphWidth
+
 00:1ada HandleStartupSaveDataIntegrityCheck
 00:1ae6 .ValidateAndRecoverSaveData
 00:1b06 .ValidatePrimarySaveDataBlock
@@ -520,8 +559,22 @@
 00:1bf0 .text:0007:cm=ascii
 00:1bf7 .text:0007:cm=ascii
 00:1bfe .text:0007:cm=ascii
-00:1c05 SaveDataDefaultPerSaveSlotModeCursorRows
+00:1c05 SaveDataDefaultPerSaveSlotModeBGMSelectionIndices
 00:1c05 .data:000f:5
+
+00:1c14 SaveCurrentPuzzleProgressToSaveData
+00:1c1c .PackAndStorePuzzleCellStateByteLoop
+
+00:1c96 RestoreCurrentPuzzleProgressFromSaveData
+00:1cdd .ApplyPackedCell0StateBit1IfSet
+00:1ce4 .ApplyPackedCell0StateBit2IfSet
+00:1cea .AdvanceToPackedCell1AndApplyStateBit1IfSet
+00:1cf1 .ApplyPackedCell1StateBit2IfSet
+00:1cf7 .AdvanceToPackedCell2AndApplyStateBit1IfSet
+00:1cfe .ApplyPackedCell2StateBit2IfSet
+00:1d04 .AdvanceToPackedCell3AndApplyStateBit1IfSet
+00:1d0b .ApplyPackedCell3StateBit2IfSet
+00:1d11 .AdvancePackedSourceAndContinueUnpackLoop
 
 00:1d22 RunEraseDataConfirmationPrompt
 00:1d59 .WaitForConfirmOrCancelInput
@@ -1247,20 +1300,63 @@
 01:5d98 GS08_PhasePointer_0b
 01:5d98 .data:2
 
-01:5d9a GS08_StatePhase_00_TODO
-01:5fa5 GS08_StatePhase_01_TODO
-01:5fa8 GS08_StatePhase_02_TODO
-01:5fcb GS08_StatePhase_03_TODO
-01:617b GS08_StatePhase_04_TODO
-01:61fc GS08_StatePhase_05_TODO
-01:6238 GS08_StatePhase_06_TODO
-01:626d GS08_StatePhase_06_TODO_Data
+01:5d9a GS08_StatePhase_00_EasyPicrossPuzzleInit
+01:5e40 .SelectFadeInParamsForNon5x5Grid
+01:5e53 .ApplyFadeInParamsFor15x15Grid
+01:5e60 .MaybeRun5x5OpeningMessageScript
+01:5e8e .AdvanceToNextPhase
+
+01:5e93 GS08_StatePhase_0b_ContinueSavedPuzzleInitAndOpenPauseMenu
+01:5f1a .SelectFadeInParamsForNon5x5Grid
+01:5f2d .ApplyFadeInParamsFor15x15Grid
+01:5f3a .MaybeRun5x5OpeningMessageScript
+01:5f68 .InitializePauseMenuStateAndEnterPauseMenuIdle
+
+01:5fa5 GS08_StatePhase_01_HintPopupSelection
+
+01:5fa8 GS08_StatePhase_02_HintCursorSweepAndApplySelection
+
+01:5fab GS08_RunMessageScriptUntilEndWithFrameUpdates
+
+01:5fbb GS08_RunMessageScriptUntilEndWithTextAnimation
+
+01:5fcb GS08_StatePhase_03_PuzzleGameplayLoop
+01:6008 .HandlePostClearFlowOrCheckTimeout
+01:602e .WaitForPostClearInputAndAdvance
+01:6059 .HandleTimerCompletionGameOverFlow
+
+01:607a GS08_StatePhase_03_PuzzleGameplayLoop_5x5
+01:60a9 .Handle5x5PostClearFlowOrCheckTimeout
+01:60e0 .WaitFor5x5PostClearInputAndAdvance
+
+01:613a Handle5x5TimerCompletionGameOverFlow
+
+01:617b GS08_StatePhase_04_ConfirmExitAndReturnToEasyPicrossSelect
+01:61ba .SelectFadeOutParamsForNon5x5Grid
+01:61cd .ApplyFadeOutParamsFor15x15Grid
+01:61da .FinalizeExitTransitionToGS05
+
+01:61fc GS08_StatePhase_05_PauseMenuInitAndMaskClues
+
+01:6238 GS08_StatePhase_06_PauseMenuIdle
+01:625d .HandlePauseMenuCloseInput
+
+01:626d GS08_PauseMenuSelectionNextPhaseTable
 01:626d .data:3
-01:6270 GS08_StatePhase_07_TODO
-01:6328 GS08_StatePhase_08_TODO
-01:6343 GS08_StatePhase_09_TODO
-01:63c3 GS08_StatePhase_0a_TODO
-01:5e93 GS08_StatePhase_0b_TODO
+
+01:6270 GS08_StatePhase_07_PauseMenuSavePrompt
+01:6291 .HandlePauseMenuSavePromptConfirmAndBeginExitFlow
+01:62d2 .SelectFadeOutParamsForNon5x5Grid
+01:62e5 .ApplyFadeOutParamsFor15x15Grid
+01:62f2 .FinalizeSavePromptTransitionToGS00
+
+01:6328 GS08_StatePhase_08_PauseMenuBGMSubmenu
+
+01:6343 GS08_StatePhase_09_PauseMenuGiveUpPrompt
+01:6364 .HandlePauseMenuGiveUpConfirmAndStartGameOverFlow
+01:63a5 .FinalizePauseMenuGiveUpFlowAndAdvanceToPhase04
+
+01:63c3 GS08_StatePhase_0a_ClosePauseMenuAndResumeGameplay
 
 01:616b LetterTextPointerTable
 01:616b .data:0010:2
@@ -1351,19 +1447,47 @@
 01:6887 .data:2
 
 01:6889 GS0A_StatePhase_00_TODO
-01:6a92 GS0A_StatePhase_01_TODO
-01:6b44 GS0A_StatePhase_02_TODO
+
+01:6907 GS0A_StatePhase_0b_TODO
+
+01:6a92 GS0A_StatePhase_01_HintPopupSelection
+01:6ab7 .HandleHintPopupConfirmOrCancelInput
+01:6ae7 .PlayHintPopupConfirmSfx
+01:6aee .ApplyHintPopupSelectionAndAdvancePhase
+01:6afa .AdvanceWithHintEnabledPath
+01:6b05 .RefreshClueDisplayAfterHintPopupSelection
+01:6b22 .LoadClueTileDataForNon5x5
+01:6b35 .Load15x15ClueTileData
+
+01:6b44 GS0A_StatePhase_02_HintCursorSweepAndApplySelection
+01:6b5d .AdvanceHintCursorColumnUntilClueFound
+01:6b68 .StoreHintCursorColumnAndCheckClue
+01:6b7f .ProcessHintCursorRowSweep
+01:6b98 .AdvanceHintCursorRowUntilClueFound
+01:6ba3 .StoreHintCursorRowAndCheckClue
+01:6bba .DrawHintCursorAndCheckSweepCompletion
+01:6bd7 .HandleHintSweepAdvanceGate
+01:6bf3 .AdvanceHintCursorColumnThresholdFromInitial
+01:6c18 .AdvanceHintCursorRowThresholdFromInitial
+
 01:6c41 GS0A_StatePhase_03_TODO
+
 01:6cff GS0A_StatePhase_04_TODO
+
 01:6d57 GS0A_StatePhase_05_TODO
+
 01:6d9c GS0A_StatePhase_06_TODO
+
 01:6dd1 GS0A_StatePhase_06_TODO_Data
 01:6dd1 .data:3
+
 01:6dd4 GS0A_StatePhase_07_TODO
+
 01:6e6e GS0A_StatePhase_08_TODO
+
 01:6e89 GS0A_StatePhase_09_TODO
+
 01:6eef GS0A_StatePhase_0a_TODO
-01:6907 GS0A_StatePhase_0b_TODO
 
 01:69b9 LoadGameBoardTileData
 01:69f6 Load10x10GameBoardTileData
@@ -1408,6 +1532,21 @@
 01:7061 ClueDigitTileSourceTableWhiteBG
 01:7081 .data:0020:2
 01:7081 ClueDigitTileSourceTableGrayBG
+
+01:70a1 MaskClueDigitSlotsFromRunLengthBuffers
+01:70a8 MaskHorizontalClueDigitSlotsFromRunLengthBuffer
+01:70b2 .HorizontalMask_RowLoop
+01:70b5 .HorizontalMask_ColumnLoop
+01:70bc .HorizontalMask_NextColumn
+
+01:70d5 MaskVerticalClueDigitSlotsFromRunLengthBuffer
+01:70df .VerticalMask_ColumnLoop
+01:70e3 .VerticalMask_RowLoop
+01:70ea .VerticalMask_NextRow
+
+01:7103 PrepareBGTileCopyForMaskedClueSlot
+01:7128 .UseGrayBGMaskedClueTileSource
+01:7132 .ApplyMaskedClueTileCopy
 
 01:713e DrawPuzzleCursorSpritesAndTickStepSequence
 01:7185 DrawPuzzleCursorSprites
@@ -1457,9 +1596,14 @@
 01:7516 TickPendingCellActionEffect
 
 01:7549 PrepareCellEffectFrameCopy
-01:75cf PrepareBGTileCopyFromCellEffectParams
+
 01:7599 CellEffectFrameSourceBaseAddressTable
 01:7599 .data:0036:2
+
+01:75cf PrepareBGTileCopyFromCellEffectParams
+
+01:75f6 FinalizePuzzleClearAndSetPostClearFlowFlag
+01:760f .WaitForMessageAndEffectsToSettle
 
 01:7635 RedrawPuzzleBoard
 01:763e .Load10x10BoardTileData
@@ -1469,6 +1613,39 @@
 01:7672 .ProcessBoardCells
 01:7688 .AdvanceToNextRow
 01:76a5 .AdvanceToNextColumn
+
+01:76a9 RedrawPostClearSolvedCellsByGridSize
+
+01:76b9 RedrawPostClearSolvedCells5x5
+01:76c3 .Begin5x5SolvedCellRedrawRow
+01:76c7 .Scan5x5SolvedCellRedrawColumn
+01:76d1 .Advance5x5SolvedCellRedrawColumnOrRow
+
+01:76e8 RedrawPostClearSolvedCells10x10
+01:76f2 .Begin10x10SolvedCellRedrawRow
+01:76f6 .Scan10x10SolvedCellRedrawColumn
+01:7700 .Advance10x10SolvedCellRedrawColumnOrRow
+
+01:7717 RedrawPostClearSolvedCells15x15
+01:7721 .Begin15x15SolvedCellRedrawRow
+01:7725 .Scan15x15SolvedCellRedrawColumn
+01:772f .Advance15x15SolvedCellRedrawColumnOrRow
+
+01:7741 Load5x5PostClearBoardBaseTiles
+01:7746 .Copy5x5PostClearBoardBaseTileRows
+01:7779 .Advance5x5PostClearBoardBaseTileRow
+
+01:77a6 Load10x10PostClearBoardBaseTiles
+01:77ab .Copy10x10PostClearBoardBaseTileRows
+01:77de .Advance10x10PostClearBoardBaseTileRow
+
+01:780a Load15x15PostClearBoardBaseTiles
+01:780f .Copy15x15PostClearBoardBaseTileRows
+01:7842 .Advance15x15PostClearBoardBaseTileRow
+
+01:786e RedrawBoardCellEffectFramesFromStateBuffer
+01:7873 .RedrawBoardCellEffectFramesRowLoop
+01:7875 .RedrawBoardCellEffectFramesColumnLoop
 
 01:78a2 ApplyHintSelectionToRowAndColumn
 01:78b4 .ApplyHintSelectionToColumnLoop
@@ -1480,26 +1657,59 @@
 01:790b .MarkHintSelectionRowCellAsX
 01:790f .AdvanceHintSelectionRowLoop
 
-01:7967 TickMessageStepSequenceAndEmitSprite
-
-01:7a98 UpdatePuzzleTimerDisplayState
-01:7aea UpdatePuzzleTimerCountdown
-01:7beb ResetPuzzleTimerState
-01:7c04 RenderPuzzleTimerDigits
-01:7c29 RenderPuzzleTimerDigitTile
-01:7c88 TickPuzzleTimerInputAdjustment
-01:7cc8 TickPuzzleTimerCompletionState
-01:7ce3 LoadGameOverMessageTileData
-01:7cf3 Load5x5GameOverMessageTileData
-01:7d19 Load10x10GameOverMessageTileData
-01:7d4d Load15x15GameOverMessageTileData
-
 01:7918 TickMarioBlinkAnimation
 01:7924 .FindNextBlinkFrameEntry
 01:7931 .LoadBlinkFrameEntry
 01:793e .TickBlinkFrameDelay
 01:794e MarioBlinkFrameDelayAndSpriteIdTable
 01:794e .data:0019:2
+
+01:7967 TickMessageStepSequenceAndEmitSprite
+
+01:7a98 UpdatePuzzleTimerDisplayState
+
+01:7aea UpdatePuzzleTimerCountdown
+
+01:7beb ResetPuzzleTimerState
+
+01:7c04 RenderPuzzleTimerDigits
+
+01:7c29 RenderPuzzleTimerDigitTile
+
+01:7c88 TickPuzzleTimerInputAdjustment
+
+01:7cc8 TickPuzzleTimerCompletionState
+
+01:7ce3 LoadGameOverMessageTileData
+
+01:7cf3 Load5x5GameOverMessageTileData
+
+01:7d19 Load10x10GameOverMessageTileData
+
+01:7d4d Load15x15GameOverMessageTileData
+
+01:7dcb RecomputePuzzleCellBitSetCounters
+01:7dd3 .CountBit0SetCellsLoop
+01:7dd9 .AdvanceCountBit0SetCellsLoop
+01:7de5 .AdjustCountersForBit1SetCellsLoop
+01:7df0 .AdvanceAdjustCountersForBit1SetCellsLoop
+
+01:7e2d PuzzleModeSecondarySfxIdTable
+01:7e2d .data:0006
+
+01:7e33 TickLowTimerMarioSweatIndicator
+01:7e4b .TickBelowThreeMinutesWarningWindow
+01:7e52 .CheckBelowThreeMinutesWarningSpriteWindow
+01:7e57 .TickBelowTwoMinutesWarningWindow
+01:7e5e .CheckBelowTwoMinutesWarningSpriteWindow
+01:7e63 .TickBelowOneMinuteWarningWindow
+01:7e6a .CheckBelowOneMinuteWarningSpriteWindow
+01:7e6f .DrawMarioSweatWarningSprite
+
+01:7e77 ApplyLowTimerMarioFaceTilesOnce
+01:7e95 .Load10x10LowTimerMarioFaceTiles
+01:7ed3 .Load15x15LowTimerMarioFaceTiles
+01:7f0b .ReturnFromLowTimerMarioFaceTiles
 
 01:7f0c .padding:f4
 
@@ -1655,6 +1865,29 @@
 02:462f StatePointer_0a
 02:462f .data:0003
 
+02:4632 GS08_PauseMenuMainSelectionInputHandler_Banked
+02:4665 .HandlePauseMenuSelectionMoveDown
+02:466b .StorePauseMenuSelectionAndRestoreAF
+02:466f .ReturnFromPauseMenuMainSelectionInputHandler
+
+02:4672 GS08_PauseMenuSavePromptSelectionInputHandler_Banked
+02:46a5 .HandlePauseMenuSavePromptSelectionMoveDown
+02:46ab .StorePauseMenuSavePromptSelectionAndRestoreAF
+02:46af .ReturnFromPauseMenuSavePromptSelectionInputHandler
+
+02:46b2 GS08_PauseMenuBGMSubmenuSelectionInputHandler_Banked
+02:46e5 .HandlePauseMenuBGMSubmenuSelectionMoveDown
+02:46eb .StorePauseMenuBGMSubmenuSelectionAndPlayPreviewSfx
+02:4706 .ReturnFromPauseMenuBGMSubmenuSelectionInputHandler
+
+02:4709 GS08_PauseMenuBGMSubmenuPreviewSfxIdTable
+02:4709 .data:0006
+
+02:470f GS08_PauseMenuGiveUpPromptSelectionInputHandler_Banked
+02:4742 .HandlePauseMenuGiveUpPromptSelectionMoveDown
+02:4748 .StorePauseMenuGiveUpPromptSelectionAndRestoreAF
+02:474c .ReturnFromPauseMenuGiveUpPromptSelectionInputHandler
+
 03:4f87 GameState_00_TitleScreen_PhaseDispatcher
 02:474f GameState_01_DataSelectScreen_PhaseDispatcher
 02:4300 GameState_02_GameSelectScreen_PhaseDispatcher
@@ -1663,7 +1896,7 @@
 01:526d GameState_05_EasyPicrossPuzzleSelectScreen_PhaseDispatcher
 00:2111 GameState_06_HowToPlay_PhaseDispatcher
 02:4c55 GameState_07_TimeTrialRankingScreen_PhaseDispatcher
-01:5d7e GameState_08_TODO_PhaseDispatcher
+01:5d7e GameState_08_EasyPicrossPuzzle_PhaseDispatcher
 01:63fc GameState_09_TODO_PhaseDispatcher
 01:686d GameState_0A_TODO_PhaseDispatcher
 
@@ -4380,7 +4613,7 @@
 03:6db7 .data:0009:4
 03:6dc0 OAMSpriteData_Event09
 03:6dc0 .data:0009:4
-03:6dc9 OAMSpriteData_Event0a
+03:6dc9 OAMSpriteData_Event0a_MarioSweat
 03:6dc9 .data:0005:4
 03:6dce OAMSpriteData_Event0b
 03:6dce .data:0011:4
@@ -4480,35 +4713,35 @@
 03:7471 .data:0061:4
 03:74d2 OAMSpriteData_Event3b_WithHintPopUp_No
 03:74d2 .data:0061:4
-03:7533 OAMSpriteData_Event3c
+03:7533 OAMSpriteData_Event3c_PauseMenuRightSide
 03:7533 .data:0079:4
 03:75ac OAMSpriteData_Event3d
 03:75ac .data:0061:4
-03:760d OAMSpriteData_Event3e
+03:760d OAMSpriteData_Event3e_BGMMenuRightSide
 03:760d .data:0061:4
-03:766e OAMSpriteData_Event3f
+03:766e OAMSpriteData_Event3f_PauseMenuConfirmPromptRightSide
 03:766e .data:0041:4
-03:76af OAMSpriteData_Event40
+03:76af OAMSpriteData_Event40_PauseMenuLeftSide_SaveSelected
 03:76af .data:0029:4
-03:76d8 OAMSpriteData_Event41
+03:76d8 OAMSpriteData_Event41_PauseMenuLeftSide_GiveUpSelected
 03:76d8 .data:0029:4
-03:7701 OAMSpriteData_Event42
+03:7701 OAMSpriteData_Event42_PauseMenuLeftSide_BGMSelected
 03:7701 .data:0029:4
-03:772a OAMSpriteData_Event43
+03:772a OAMSpriteData_Event43_PauseMenuConfirmPromptLeftSide_YesSelected
 03:772a .data:0021:4
-03:774b OAMSpriteData_Event44
+03:774b OAMSpriteData_Event44_PauseMenuConfirmPromptLeftSide_NoSelected
 03:774b .data:0021:4
-03:776c OAMSpriteData_Event45
+03:776c OAMSpriteData_Event45_BGMMenuLeftSide_1Selected
 03:776c .data:0041:4
-03:77ad OAMSpriteData_Event46
+03:77ad OAMSpriteData_Event46_BGMMenuLeftSide_2Selected
 03:77ad .data:0041:4
-03:77ee OAMSpriteData_Event47
+03:77ee OAMSpriteData_Event47_BGMMenuLeftSide_3Selected
 03:77ee .data:0041:4
-03:782f OAMSpriteData_Event48
+03:782f OAMSpriteData_Event48_BGMMenuLeftSide_4Selected
 03:782f .data:0041:4
-03:7870 OAMSpriteData_Event49
+03:7870 OAMSpriteData_Event49_BGMMenuLeftSide_5Selected
 03:7870 .data:0041:4
-03:78b1 OAMSpriteData_Event4a
+03:78b1 OAMSpriteData_Event4a_BGMMenuLeftSide_OffSelected
 03:78b1 .data:0041:4
 03:78f2 OAMSpriteData_Event4b_SaveDataErasePrompt
 03:78f2 .data:0019:4
@@ -4860,7 +5093,12 @@
 06:5a00 .image:0100:pe1
 
 06:5b00 Picross10x10And15x15GameOverMessageTileData
-06:5b00 .image:1000:pe1
+06:5b00 .image:0200:pe1
+
+06:5d00 Picross15x15PuzzleClearRedrawFrameTileData
+06:5d00 .image:0800:pe1
+
+06:6500 .padding:0600
 
 06:6b00 CellEffectTileDataSet01
 06:6b00 .image:0030:pe1
@@ -4915,17 +5153,18 @@
 06:6fb0 CellEffectTileDataSet1a
 06:6fb0 .image:0030:pe1
 
-06:70b0 Picross15x15MarioAnimationRow1
-06:70b0 .image:0020:pe1
+06:6fe0 .padding:0020
 
-06:7100 Picross15x15MarioAnimationRow2
-06:7100 .image:0020:pe1
-
-06:7160 Picross15x15MarioAnimationRow3
-06:7160 .image:0020:pe1
-
-06:71c0 Picross15x15MarioAnimationRow4
-06:71c0 .image:0020:pe1
+06:7000 Picross15x15MarioLowTimeTileData
+06:7000 .image:0200:pe1,w64
+06:70b0 Picross15x15MarioLowTimeEyebrows
+;06:70b0 .image:0020:pe1
+06:7100 Picross15x15MarioLowTimeEyes
+;06:7100 .image:0020:pe1
+06:7160 Picross15x15MarioLowTimeNose
+;06:7160 .image:0020:pe1
+06:71c0 Picross15x15MarioLowTimeMouth
+;06:71c0 .image:0020:pe1
 
 06:7200 Picross15x15MarioClearTileData
 06:7200 .image:0200:pe1,w64
@@ -4953,14 +5192,41 @@
 07:4500 Picross5x5CursorTileData
 ;07:4500 .image:0200:pe1
 
-07:6214 .data:3
-07:6224 .data:3
+07:5800 .data:01e0
+
+07:59e0 Unused_FontTileData
+07:59e0 .image:0610:pe1
+
+07:5ff0 .data:0010
+
+07:6000 Unused_CellEffectTileData
+07:6000 .image:0030:pe1
+
+07:6030 .data:0010
+
+07:6040 Unused_PuzzleTimerDigitsTileData
+07:6040 .image:00a0:pe1
+
+07:60e0 .padding:0020
+
+07:6100 Unused_ClueDigitsWhiteBGTileData
+07:6100 .image:0100:pe1
+
+07:6200 Unused_ClueDigitsGreyBGTileData
+07:6200 .image:0100:pe1
 
 07:6300 Picross5x5GameOverMessageTileData
-07:6300 .image:0900:pe1
+07:6300 .image:1000:pe1
+07:6340 Picross5x5PuzzleClearRedrawFrameTileData
 
 07:6c00 GS06_RedrawSourceData_Bank07
 07:6c00 .data:0110:22
+
+07:6d10 .data:02e0
+
+07:6ff0 .padding:0010
+
+07:7000 .padding:0b00
 
 07:7b00 SmallMarioTileData
 07:7b00 .image:0200:pe1
@@ -4976,23 +5242,27 @@
 08:4500 Picross10x10CursorTileData
 ;08:4500 .image:0200:pe1
 
-08:58b0 Picross10x10MarioAnimationRow1
-08:58b0 .image:0020:pe1
-
-08:5900 Picross10x10MarioAnimationRow2
-08:5900 .image:0020:pe1
-
-08:5960 Picross10x10MarioAnimationRow3
-08:5960 .image:0020:pe1
-
-08:59c0 Picross10x10MarioAnimationRow4
-08:59c0 .image:0020:pe1
+08:5800 Picross10x10MarioLowTimeTileData
+08:5800 .image:0200:pe1,w64
+08:58b0 Picross10x10MarioLowTimeEyebrows
+;08:58b0 .image:0020:pe1
+08:5900 Picross10x10MarioLowTimeEyes
+;08:5900 .image:0020:pe1
+08:5960 Picross10x10MarioLowTimeNose
+;08:5960 .image:0020:pe1
+08:59c0 Picross10x10MarioLowTimeMouth
+;08:59c0 .image:0020:pe1
 
 08:5a00 Picross10x10MarioClearTileData
 08:5a00 .image:0200:pe1
 
 08:5c00 Picross10x10MarioGameOverTileData
 08:5c00 .image:0200:pe1
+
+08:5e00 .padding:0200
+
+08:6000 Picross10x10PuzzleClearRedrawFrameTileData
+08:6000 .image:0800:pe1
 
 08:6800 TitleScreenTileData
 08:6800 .image:1000

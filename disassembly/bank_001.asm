@@ -3578,7 +3578,7 @@ RText::
 KText::
     db "“K”.", $ff, $ff
 
-GameState_08_TODO_PhaseDispatcher::
+GameState_08_EasyPicrossPuzzle_PhaseDispatcher::
     ld a, [rStatePhase_Current]                   ; $5d7e: $fa $35 $d6
     rst RST_18                                    ; $5d81: $df
 
@@ -3618,7 +3618,7 @@ GS08_PhasePointer_0a::
 GS08_PhasePointer_0b::
     db $93, $5e
 
-GS08_StatePhase_00_TODO::
+GS08_StatePhase_00_EasyPicrossPuzzleInit::
     ld a, $43                                     ; $5d9a: $3e $43
     ld [rLCDCShadow], a                           ; $5d9c: $ea $2e $c3
     xor a                                         ; $5d9f: $af
@@ -3656,7 +3656,7 @@ GS08_StatePhase_00_TODO::
     call BuildClueRunLengthBuffers                ; $5df4: $cd $30 $6f
     call ClearShadowOAMBuffer                     ; $5df7: $cd $b6 $05
     call ResetPuzzleTimerState                    ; $5dfa: $cd $eb $7b
-    call Call_001_786e                            ; $5dfd: $cd $6e $78
+    call RedrawBoardCellEffectFramesFromStateBuffer; $5dfd: $cd $6e $78
     ld a, [rSelectedSaveSlotIndex]                ; $5e00: $fa $65 $a0
     ld c, a                                       ; $5e03: $4f
     sla a                                         ; $5e04: $cb $27
@@ -3664,11 +3664,11 @@ GS08_StatePhase_00_TODO::
     add c                                         ; $5e08: $81
     ld c, a                                       ; $5e09: $4f
     ld b, $00                                     ; $5e0a: $06 $00
-    ld hl, rSaveSlot1ModeCursorRows               ; $5e0c: $21 $69 $a0
+    ld hl, rSaveSlot1EasyPicrossBGMSelectionIndex ; $5e0c: $21 $69 $a0
     add hl, bc                                    ; $5e0f: $09
     ld c, [hl]                                    ; $5e10: $4e
     ld b, $00                                     ; $5e11: $06 $00
-    ld hl, $7e2d                                  ; $5e13: $21 $2d $7e
+    ld hl, PuzzleModeSecondarySfxIdTable          ; $5e13: $21 $2d $7e
     add hl, bc                                    ; $5e16: $09
     ld c, $00                                     ; $5e17: $0e $00
     ld a, $01                                     ; $5e19: $3e $01
@@ -3680,37 +3680,37 @@ GS08_StatePhase_00_TODO::
     call EnableLCDFromShadow                      ; $5e27: $cd $a2 $04
     ld a, [rPuzzleGridWidth]                      ; $5e2a: $fa $00 $d8
     cp $05                                        ; $5e2d: $fe $05
-    jr nz, jr_001_5e40                            ; $5e2f: $20 $0f
+    jr nz, .SelectFadeInParamsForNon5x5Grid       ; $5e2f: $20 $0f
 
     ld b, $03                                     ; $5e31: $06 $03
     ld hl, $46a0                                  ; $5e33: $21 $a0 $46
     ld c, $01                                     ; $5e36: $0e $01
     ld de, $0014                                  ; $5e38: $11 $14 $00
     call PlayScreenTransitionFadeIn               ; $5e3b: $cd $0d $04
-    jr jr_001_5e60                                ; $5e3e: $18 $20
+    jr .MaybeRun5x5OpeningMessageScript           ; $5e3e: $18 $20
 
-jr_001_5e40:
+.SelectFadeInParamsForNon5x5Grid:
     cp $0a                                        ; $5e40: $fe $0a
-    jr nz, jr_001_5e53                            ; $5e42: $20 $0f
+    jr nz, .ApplyFadeInParamsFor15x15Grid         ; $5e42: $20 $0f
 
     ld b, $03                                     ; $5e44: $06 $03
     ld hl, $46ac                                  ; $5e46: $21 $ac $46
     ld c, $02                                     ; $5e49: $0e $02
     ld de, $0024                                  ; $5e4b: $11 $24 $00
     call PlayScreenTransitionFadeIn               ; $5e4e: $cd $0d $04
-    jr jr_001_5e60                                ; $5e51: $18 $0d
+    jr .MaybeRun5x5OpeningMessageScript           ; $5e51: $18 $0d
 
-jr_001_5e53:
+.ApplyFadeInParamsFor15x15Grid:
     ld b, $03                                     ; $5e53: $06 $03
     ld hl, $4694                                  ; $5e55: $21 $94 $46
     ld c, $00                                     ; $5e58: $0e $00
     ld de, $0004                                  ; $5e5a: $11 $04 $00
     call PlayScreenTransitionFadeIn               ; $5e5d: $cd $0d $04
 
-jr_001_5e60:
+.MaybeRun5x5OpeningMessageScript:
     ld a, [rPuzzleGridWidth]                      ; $5e60: $fa $00 $d8
     cp $05                                        ; $5e63: $fe $05
-    jr nz, jr_001_5e8e                            ; $5e65: $20 $27
+    jr nz, .AdvanceToNextPhase                    ; $5e65: $20 $27
 
     ld a, $0d                                     ; $5e67: $3e $0d
     ld [rMessageScriptStreamResetEntryLow], a     ; $5e69: $ea $43 $d8
@@ -3726,15 +3726,15 @@ jr_001_5e60:
     ld [rMessageScriptStreamPointerLow], a        ; $5e83: $ea $2d $d8
     ld a, $5c                                     ; $5e86: $3e $5c
     ld [rMessageScriptStreamPointerHigh], a       ; $5e88: $ea $2e $d8
-    call Call_001_5fab                            ; $5e8b: $cd $ab $5f
+    call GS08_RunMessageScriptUntilEndWithFrameUpdates; $5e8b: $cd $ab $5f
 
-jr_001_5e8e:
+.AdvanceToNextPhase:
     ld hl, rStatePhase_Current                    ; $5e8e: $21 $35 $d6
     inc [hl]                                      ; $5e91: $34
     ret                                           ; $5e92: $c9
 
 
-GS08_StatePhase_0b_TODO::
+GS08_StatePhase_0b_ContinueSavedPuzzleInitAndOpenPauseMenu::
     ld a, $43                                     ; $5e93: $3e $43
     ld [rLCDCShadow], a                           ; $5e95: $ea $2e $c3
     xor a                                         ; $5e98: $af
@@ -3745,7 +3745,7 @@ GS08_StatePhase_0b_TODO::
     ld [rSCYShadow], a                            ; $5ea5: $ea $33 $c3
     call FillBGMap0WithTile01                     ; $5ea8: $cd $a0 $05
     call FillBGMap1WithTile01                     ; $5eab: $cd $ab $05
-    call Call_000_1c96                            ; $5eae: $cd $96 $1c
+    call RestoreCurrentPuzzleProgressFromSaveData ; $5eae: $cd $96 $1c
     call LoadGameBoardTileData                    ; $5eb1: $cd $b9 $69
     ld a, $2f                                     ; $5eb4: $3e $2f
     ld [rLYCShadow], a                            ; $5eb6: $ea $36 $c3
@@ -3760,7 +3760,7 @@ GS08_StatePhase_0b_TODO::
     call BuildClueRunLengthBuffers                ; $5ece: $cd $30 $6f
     call ClearShadowOAMBuffer                     ; $5ed1: $cd $b6 $05
     call RenderPuzzleTimerDigits                  ; $5ed4: $cd $04 $7c
-    call Call_001_786e                            ; $5ed7: $cd $6e $78
+    call RedrawBoardCellEffectFramesFromStateBuffer; $5ed7: $cd $6e $78
     ld a, [rSelectedSaveSlotIndex]                ; $5eda: $fa $65 $a0
     ld c, a                                       ; $5edd: $4f
     sla a                                         ; $5ede: $cb $27
@@ -3768,11 +3768,11 @@ GS08_StatePhase_0b_TODO::
     add c                                         ; $5ee2: $81
     ld c, a                                       ; $5ee3: $4f
     ld b, $00                                     ; $5ee4: $06 $00
-    ld hl, rSaveSlot1ModeCursorRows               ; $5ee6: $21 $69 $a0
+    ld hl, rSaveSlot1EasyPicrossBGMSelectionIndex ; $5ee6: $21 $69 $a0
     add hl, bc                                    ; $5ee9: $09
     ld c, [hl]                                    ; $5eea: $4e
     ld b, $00                                     ; $5eeb: $06 $00
-    ld hl, $7e2d                                  ; $5eed: $21 $2d $7e
+    ld hl, PuzzleModeSecondarySfxIdTable          ; $5eed: $21 $2d $7e
     add hl, bc                                    ; $5ef0: $09
     ld c, $00                                     ; $5ef1: $0e $00
     ld a, $01                                     ; $5ef3: $3e $01
@@ -3784,37 +3784,37 @@ GS08_StatePhase_0b_TODO::
     call EnableLCDFromShadow                      ; $5f01: $cd $a2 $04
     ld a, [rPuzzleGridWidth]                      ; $5f04: $fa $00 $d8
     cp $05                                        ; $5f07: $fe $05
-    jr nz, jr_001_5f1a                            ; $5f09: $20 $0f
+    jr nz, .SelectFadeInParamsForNon5x5Grid       ; $5f09: $20 $0f
 
     ld b, $03                                     ; $5f0b: $06 $03
     ld hl, $46a0                                  ; $5f0d: $21 $a0 $46
     ld c, $01                                     ; $5f10: $0e $01
     ld de, $0014                                  ; $5f12: $11 $14 $00
     call PlayScreenTransitionFadeIn               ; $5f15: $cd $0d $04
-    jr jr_001_5f3a                                ; $5f18: $18 $20
+    jr .MaybeRun5x5OpeningMessageScript           ; $5f18: $18 $20
 
-jr_001_5f1a:
+.SelectFadeInParamsForNon5x5Grid:
     cp $0a                                        ; $5f1a: $fe $0a
-    jr nz, jr_001_5f2d                            ; $5f1c: $20 $0f
+    jr nz, .ApplyFadeInParamsFor15x15Grid         ; $5f1c: $20 $0f
 
     ld b, $03                                     ; $5f1e: $06 $03
     ld hl, $46ac                                  ; $5f20: $21 $ac $46
     ld c, $02                                     ; $5f23: $0e $02
     ld de, $0024                                  ; $5f25: $11 $24 $00
     call PlayScreenTransitionFadeIn               ; $5f28: $cd $0d $04
-    jr jr_001_5f3a                                ; $5f2b: $18 $0d
+    jr .MaybeRun5x5OpeningMessageScript           ; $5f2b: $18 $0d
 
-jr_001_5f2d:
+.ApplyFadeInParamsFor15x15Grid:
     ld b, $03                                     ; $5f2d: $06 $03
     ld hl, $4694                                  ; $5f2f: $21 $94 $46
     ld c, $00                                     ; $5f32: $0e $00
     ld de, $0004                                  ; $5f34: $11 $04 $00
     call PlayScreenTransitionFadeIn               ; $5f37: $cd $0d $04
 
-jr_001_5f3a:
+.MaybeRun5x5OpeningMessageScript:
     ld a, [rPuzzleGridWidth]                      ; $5f3a: $fa $00 $d8
     cp $05                                        ; $5f3d: $fe $05
-    jr nz, jr_001_5f68                            ; $5f3f: $20 $27
+    jr nz, .InitializePauseMenuStateAndEnterPauseMenuIdle; $5f3f: $20 $27
 
     ld a, $0d                                     ; $5f41: $3e $0d
     ld [rMessageScriptStreamResetEntryLow], a     ; $5f43: $ea $43 $d8
@@ -3830,15 +3830,15 @@ jr_001_5f3a:
     ld [rMessageScriptStreamPointerLow], a        ; $5f5d: $ea $2d $d8
     ld a, $5c                                     ; $5f60: $3e $5c
     ld [rMessageScriptStreamPointerHigh], a       ; $5f62: $ea $2e $d8
-    call Call_001_5fab                            ; $5f65: $cd $ab $5f
+    call GS08_RunMessageScriptUntilEndWithFrameUpdates; $5f65: $cd $ab $5f
 
-jr_001_5f68:
+.InitializePauseMenuStateAndEnterPauseMenuIdle:
     call ClearShadowOAMBuffer                     ; $5f68: $cd $b6 $05
     rst RST_08                                    ; $5f6b: $cf
     xor a                                         ; $5f6c: $af
-    ld [$d83a], a                                 ; $5f6d: $ea $3a $d8
+    ld [rGS08_PauseMenuMainSelection], a          ; $5f6d: $ea $3a $d8
     ld a, $01                                     ; $5f70: $3e $01
-    ld [$d83b], a                                 ; $5f72: $ea $3b $d8
+    ld [rGS08_PauseMenuSavePromptSelection], a    ; $5f72: $ea $3b $d8
     ld a, [rSelectedSaveSlotIndex]                ; $5f75: $fa $65 $a0
     ld c, a                                       ; $5f78: $4f
     sla a                                         ; $5f79: $cb $27
@@ -3846,45 +3846,43 @@ jr_001_5f68:
     add c                                         ; $5f7d: $81
     ld c, a                                       ; $5f7e: $4f
     ld b, $00                                     ; $5f7f: $06 $00
-    ld hl, rSaveSlot1ModeCursorRows               ; $5f81: $21 $69 $a0
+    ld hl, rSaveSlot1EasyPicrossBGMSelectionIndex ; $5f81: $21 $69 $a0
     add hl, bc                                    ; $5f84: $09
     ld a, [hl]                                    ; $5f85: $7e
-    ld [$d83c], a                                 ; $5f86: $ea $3c $d8
+    ld [rGS08_PauseMenuBGMSubmenuSelection], a    ; $5f86: $ea $3c $d8
     ld a, $01                                     ; $5f89: $3e $01
-    ld [$d83d], a                                 ; $5f8b: $ea $3d $d8
+    ld [rGS08_PauseMenuGiveUpPromptSelection], a  ; $5f8b: $ea $3d $d8
     ld a, $06                                     ; $5f8e: $3e $06
     ld hl, $7a00                                  ; $5f90: $21 $00 $7a
     ld de, $8500                                  ; $5f93: $11 $00 $85
     ld bc, $0300                                  ; $5f96: $01 $00 $03
     call BankedTileCopyVRAMSafe                   ; $5f99: $cd $38 $05
-    call Call_001_7dcb                            ; $5f9c: $cd $cb $7d
+    call RecomputePuzzleCellBitSetCounters        ; $5f9c: $cd $cb $7d
     ld a, $06                                     ; $5f9f: $3e $06
     ld [rStatePhase_Current], a                   ; $5fa1: $ea $35 $d6
     ret                                           ; $5fa4: $c9
 
 
-GS08_StatePhase_01_TODO::
-    jp GS0A_StatePhase_01_TODO                    ; $5fa5: $c3 $92 $6a
+GS08_StatePhase_01_HintPopupSelection::
+    jp GS0A_StatePhase_01_HintPopupSelection      ; $5fa5: $c3 $92 $6a
 
 
-GS08_StatePhase_02_TODO::
-    jp GS0A_StatePhase_02_TODO                    ; $5fa8: $c3 $44 $6b
+GS08_StatePhase_02_HintCursorSweepAndApplySelection::
+    jp GS0A_StatePhase_02_HintCursorSweepAndApplySelection; $5fa8: $c3 $44 $6b
 
 
-Call_001_5fab:
-jr_001_5fab:
+GS08_RunMessageScriptUntilEndWithFrameUpdates::
     call ClearShadowOAMBufferFromCursor           ; $5fab: $cd $c5 $05
     rst RST_08                                    ; $5fae: $cf
     call TickMarioBlinkAnimation                  ; $5faf: $cd $18 $79
     call AnimateMarioMouthDuringText              ; $5fb2: $cd $93 $30
     call AdvanceMessageScriptStreamHelper         ; $5fb5: $cd $88 $2b
-    jr nz, jr_001_5fab                            ; $5fb8: $20 $f1
+    jr nz, GS08_RunMessageScriptUntilEndWithFrameUpdates; $5fb8: $20 $f1
 
     ret                                           ; $5fba: $c9
 
 
-Call_001_5fbb:
-jr_001_5fbb:
+GS08_RunMessageScriptUntilEndWithTextAnimation::
     call AdvanceMessageScriptStreamHelper         ; $5fbb: $cd $88 $2b
     ret z                                         ; $5fbe: $c8
 
@@ -3892,27 +3890,27 @@ jr_001_5fbb:
     call AnimateMarioMouthDuringText              ; $5fc2: $cd $93 $30
     call ClearShadowOAMBufferFromCursor           ; $5fc5: $cd $c5 $05
     rst RST_08                                    ; $5fc8: $cf
-    jr jr_001_5fbb                                ; $5fc9: $18 $f0
+    jr GS08_RunMessageScriptUntilEndWithTextAnimation; $5fc9: $18 $f0
 
-GS08_StatePhase_03_TODO::
+GS08_StatePhase_03_PuzzleGameplayLoop::
     ld a, [rPuzzleGridWidth]                      ; $5fcb: $fa $00 $d8
     cp $05                                        ; $5fce: $fe $05
-    jp z, Jump_001_607a                           ; $5fd0: $ca $7a $60
+    jp z, GS08_StatePhase_03_PuzzleGameplayLoop_5x5; $5fd0: $ca $7a $60
 
     call UpdatePuzzleCursorFromDirectionalInput   ; $5fd3: $cd $ca $71
     call DrawPuzzleCursorSpritesAndTickStepSequence; $5fd6: $cd $3e $71
     call TickMarioBlinkAnimation                  ; $5fd9: $cd $18 $79
-    call Call_001_7e33                            ; $5fdc: $cd $33 $7e
-    call Call_001_7e77                            ; $5fdf: $cd $77 $7e
+    call TickLowTimerMarioSweatIndicator          ; $5fdc: $cd $33 $7e
+    call ApplyLowTimerMarioFaceTilesOnce          ; $5fdf: $cd $77 $7e
     call UpdatePuzzleTimerCountdown               ; $5fe2: $cd $ea $7a
     call UpdatePuzzleTimerDisplayState            ; $5fe5: $cd $98 $7a
     call ProcessPuzzleCellActionInput             ; $5fe8: $cd $22 $72
     call TickPendingCellActionEffect              ; $5feb: $cd $16 $75
-    call Call_001_75f6                            ; $5fee: $cd $f6 $75
+    call FinalizePuzzleClearAndSetPostClearFlowFlag; $5fee: $cd $f6 $75
     call TickPuzzleTimerCompletionState           ; $5ff1: $cd $c8 $7c
     ld a, [rInputButtonsPressed]                  ; $5ff4: $fa $1e $c3
     and $08                                       ; $5ff7: $e6 $08
-    jr z, jr_001_6008                             ; $5ff9: $28 $0d
+    jr z, .HandlePostClearFlowOrCheckTimeout      ; $5ff9: $28 $0d
 
     ld c, $10                                     ; $5ffb: $0e $10
     ld a, $02                                     ; $5ffd: $3e $02
@@ -3922,10 +3920,10 @@ GS08_StatePhase_03_TODO::
     ret                                           ; $6007: $c9
 
 
-jr_001_6008:
+.HandlePostClearFlowOrCheckTimeout:
     ld a, [rPuzzlePostClearFlowFlag]              ; $6008: $fa $05 $d8
     and a                                         ; $600b: $a7
-    jr z, jr_001_6059                             ; $600c: $28 $4b
+    jr z, .HandleTimerCompletionGameOverFlow      ; $600c: $28 $4b
 
     call GS05_LoadEasyPicrossPuzzleSelectCursorForSelectedSaveSlot; $600e: $cd $32 $57
     call GS05_UpdateSelectedEasyPicrossPuzzleClearStatusAndTimes; $6011: $cd $8a $58
@@ -3940,17 +3938,17 @@ jr_001_6008:
     call ClearShadowOAMBuffer                     ; $6028: $cd $b6 $05
     call RedrawPuzzleBoard                        ; $602b: $cd $35 $76
 
-jr_001_602e:
+.WaitForPostClearInputAndAdvance:
     rst RST_08                                    ; $602e: $cf
     ld a, [rInputButtonsPressed]                  ; $602f: $fa $1e $c3
     and $09                                       ; $6032: $e6 $09
-    jr z, jr_001_602e                             ; $6034: $28 $f8
+    jr z, .WaitForPostClearInputAndAdvance        ; $6034: $28 $f8
 
     ld c, $03                                     ; $6036: $0e $03
     ld a, $02                                     ; $6038: $3e $02
     call CallSoundEffectDispatcher                ; $603a: $cd $b6 $03
-    call Call_001_76a9                            ; $603d: $cd $a9 $76
-    call Call_000_1a45                            ; $6040: $cd $45 $1a
+    call RedrawPostClearSolvedCellsByGridSize     ; $603d: $cd $a9 $76
+    call DrawPuzzleNameFromPointerTable           ; $6040: $cd $45 $1a
     ld c, $00                                     ; $6043: $0e $00
     ld a, $01                                     ; $6045: $3e $01
     call CallSoundEffectDispatcher                ; $6047: $cd $b6 $03
@@ -3963,7 +3961,7 @@ jr_001_602e:
     ret                                           ; $6058: $c9
 
 
-jr_001_6059:
+.HandleTimerCompletionGameOverFlow:
     ld a, [rPuzzleTimerCompletionState]           ; $6059: $fa $06 $d8
     and a                                         ; $605c: $a7
     ret z                                         ; $605d: $c8
@@ -3982,7 +3980,7 @@ jr_001_6059:
     ret                                           ; $6079: $c9
 
 
-Jump_001_607a:
+GS08_StatePhase_03_PuzzleGameplayLoop_5x5::
     call UpdatePuzzleCursorFromDirectionalInput   ; $607a: $cd $ca $71
     call DrawPuzzleCursorSpritesAndTickStepSequence; $607d: $cd $3e $71
     call TickMarioBlinkAnimation                  ; $6080: $cd $18 $79
@@ -3990,11 +3988,11 @@ Jump_001_607a:
     call UpdatePuzzleTimerDisplayState            ; $6086: $cd $98 $7a
     call ProcessPuzzleCellActionInput             ; $6089: $cd $22 $72
     call TickPendingCellActionEffect              ; $608c: $cd $16 $75
-    call Call_001_75f6                            ; $608f: $cd $f6 $75
+    call FinalizePuzzleClearAndSetPostClearFlowFlag; $608f: $cd $f6 $75
     call TickPuzzleTimerCompletionState           ; $6092: $cd $c8 $7c
     ld a, [rInputButtonsPressed]                  ; $6095: $fa $1e $c3
     and $08                                       ; $6098: $e6 $08
-    jr z, jr_001_60a9                             ; $609a: $28 $0d
+    jr z, .Handle5x5PostClearFlowOrCheckTimeout   ; $609a: $28 $0d
 
     ld c, $10                                     ; $609c: $0e $10
     ld a, $02                                     ; $609e: $3e $02
@@ -4004,10 +4002,10 @@ Jump_001_607a:
     ret                                           ; $60a8: $c9
 
 
-jr_001_60a9:
+.Handle5x5PostClearFlowOrCheckTimeout:
     ld a, [rPuzzlePostClearFlowFlag]              ; $60a9: $fa $05 $d8
     and a                                         ; $60ac: $a7
-    jp z, Jump_001_613a                           ; $60ad: $ca $3a $61
+    jp z, Handle5x5TimerCompletionGameOverFlow    ; $60ad: $ca $3a $61
 
     call GS05_LoadEasyPicrossPuzzleSelectCursorForSelectedSaveSlot; $60b0: $cd $32 $57
     call GS05_UpdateSelectedEasyPicrossPuzzleClearStatusAndTimes; $60b3: $cd $8a $58
@@ -4026,25 +4024,25 @@ jr_001_60a9:
     ld [rMessageScriptStreamPointerLow], a        ; $60d5: $ea $2d $d8
     ld a, $5c                                     ; $60d8: $3e $5c
     ld [rMessageScriptStreamPointerHigh], a       ; $60da: $ea $2e $d8
-    call Call_001_5fbb                            ; $60dd: $cd $bb $5f
+    call GS08_RunMessageScriptUntilEndWithTextAnimation; $60dd: $cd $bb $5f
 
-jr_001_60e0:
+.WaitFor5x5PostClearInputAndAdvance:
     call TickMarioBlinkAnimation                  ; $60e0: $cd $18 $79
     call ClearShadowOAMBufferFromCursor           ; $60e3: $cd $c5 $05
     rst RST_08                                    ; $60e6: $cf
     ld a, [rInputButtonsPressed]                  ; $60e7: $fa $1e $c3
     and $09                                       ; $60ea: $e6 $09
-    jr z, jr_001_60e0                             ; $60ec: $28 $f2
+    jr z, .WaitFor5x5PostClearInputAndAdvance     ; $60ec: $28 $f2
 
     ld c, $03                                     ; $60ee: $0e $03
     ld a, $02                                     ; $60f0: $3e $02
     call CallSoundEffectDispatcher                ; $60f2: $cd $b6 $03
-    call Call_001_76a9                            ; $60f5: $cd $a9 $76
+    call RedrawPostClearSolvedCellsByGridSize     ; $60f5: $cd $a9 $76
     ld a, $0a                                     ; $60f8: $3e $0a
     ld [rMessageScriptStreamPointerLow], a        ; $60fa: $ea $2d $d8
     ld a, $5d                                     ; $60fd: $3e $5d
     ld [rMessageScriptStreamPointerHigh], a       ; $60ff: $ea $2e $d8
-    call Call_001_5fbb                            ; $6102: $cd $bb $5f
+    call GS08_RunMessageScriptUntilEndWithTextAnimation; $6102: $cd $bb $5f
     ld a, [rSelectedSaveSlotIndex]                ; $6105: $fa $65 $a0
     ld c, a                                       ; $6108: $4f
     ld b, $00                                     ; $6109: $06 $00
@@ -4060,7 +4058,7 @@ jr_001_60e0:
     ld [rMessageScriptStreamPointerLow], a        ; $611a: $ea $2d $d8
     ld a, [hl]                                    ; $611d: $7e
     ld [rMessageScriptStreamPointerHigh], a       ; $611e: $ea $2e $d8
-    call Call_001_5fbb                            ; $6121: $cd $bb $5f
+    call GS08_RunMessageScriptUntilEndWithTextAnimation; $6121: $cd $bb $5f
     ld c, $00                                     ; $6124: $0e $00
     ld a, $01                                     ; $6126: $3e $01
     call CallSoundEffectDispatcher                ; $6128: $cd $b6 $03
@@ -4073,7 +4071,7 @@ jr_001_60e0:
     ret                                           ; $6139: $c9
 
 
-Jump_001_613a:
+Handle5x5TimerCompletionGameOverFlow::
     ld a, [rPuzzleTimerCompletionState]           ; $613a: $fa $06 $d8
     and a                                         ; $613d: $a7
     ret z                                         ; $613e: $c8
@@ -4092,7 +4090,7 @@ Jump_001_613a:
     ld [rMessageScriptStreamPointerLow], a        ; $615b: $ea $2d $d8
     ld a, $5c                                     ; $615e: $3e $5c
     ld [rMessageScriptStreamPointerHigh], a       ; $6160: $ea $2e $d8
-    call Call_001_5fbb                            ; $6163: $cd $bb $5f
+    call GS08_RunMessageScriptUntilEndWithTextAnimation; $6163: $cd $bb $5f
     ld hl, rStatePhase_Current                    ; $6166: $21 $35 $d6
     inc [hl]                                      ; $6169: $34
     ret                                           ; $616a: $c9
@@ -4108,7 +4106,7 @@ LetterTextPointerTable::
     db $6a, $5d
     db $74, $5d
 
-GS08_StatePhase_04_TODO::
+GS08_StatePhase_04_ConfirmExitAndReturnToEasyPicrossSelect::
     ld a, [rInputButtonsPressed]                  ; $617b: $fa $1e $c3
     and $09                                       ; $617e: $e6 $09
     ret z                                         ; $6180: $c8
@@ -4129,34 +4127,34 @@ GS08_StatePhase_04_TODO::
     call CallSoundEffectDispatcher                ; $61a1: $cd $b6 $03
     ld a, [rPuzzleGridWidth]                      ; $61a4: $fa $00 $d8
     cp $05                                        ; $61a7: $fe $05
-    jr nz, jr_001_61ba                            ; $61a9: $20 $0f
+    jr nz, .SelectFadeOutParamsForNon5x5Grid      ; $61a9: $20 $0f
 
     ld b, $03                                     ; $61ab: $06 $03
     ld hl, $46ab                                  ; $61ad: $21 $ab $46
     ld c, $01                                     ; $61b0: $0e $01
     ld de, $0023                                  ; $61b2: $11 $23 $00
     call PlayScreenTransitionFadeOut              ; $61b5: $cd $4e $04
-    jr jr_001_61da                                ; $61b8: $18 $20
+    jr .FinalizeExitTransitionToGS05              ; $61b8: $18 $20
 
-jr_001_61ba:
+.SelectFadeOutParamsForNon5x5Grid:
     cp $0a                                        ; $61ba: $fe $0a
-    jr nz, jr_001_61cd                            ; $61bc: $20 $0f
+    jr nz, .ApplyFadeOutParamsFor15x15Grid        ; $61bc: $20 $0f
 
     ld b, $03                                     ; $61be: $06 $03
     ld hl, $46b7                                  ; $61c0: $21 $b7 $46
     ld c, $02                                     ; $61c3: $0e $02
     ld de, $0033                                  ; $61c5: $11 $33 $00
     call PlayScreenTransitionFadeOut              ; $61c8: $cd $4e $04
-    jr jr_001_61da                                ; $61cb: $18 $0d
+    jr .FinalizeExitTransitionToGS05              ; $61cb: $18 $0d
 
-jr_001_61cd:
+.ApplyFadeOutParamsFor15x15Grid:
     ld b, $03                                     ; $61cd: $06 $03
     ld hl, $469f                                  ; $61cf: $21 $9f $46
     ld c, $00                                     ; $61d2: $0e $00
     ld de, $0013                                  ; $61d4: $11 $13 $00
     call PlayScreenTransitionFadeOut              ; $61d7: $cd $4e $04
 
-jr_001_61da:
+.FinalizeExitTransitionToGS05:
     call DisableLCDAtVBlank                       ; $61da: $cd $83 $04
     ld hl, rLCDCInterruptControlFlags_Unsure      ; $61dd: $21 $37 $c3
     res 6, [hl]                                   ; $61e0: $cb $b6
@@ -4173,13 +4171,13 @@ jr_001_61da:
     ret                                           ; $61fb: $c9
 
 
-GS08_StatePhase_05_TODO::
+GS08_StatePhase_05_PauseMenuInitAndMaskClues::
     call ClearShadowOAMBuffer                     ; $61fc: $cd $b6 $05
     rst RST_08                                    ; $61ff: $cf
     xor a                                         ; $6200: $af
-    ld [$d83a], a                                 ; $6201: $ea $3a $d8
+    ld [rGS08_PauseMenuMainSelection], a          ; $6201: $ea $3a $d8
     ld a, $01                                     ; $6204: $3e $01
-    ld [$d83b], a                                 ; $6206: $ea $3b $d8
+    ld [rGS08_PauseMenuSavePromptSelection], a    ; $6206: $ea $3b $d8
     ld a, [rSelectedSaveSlotIndex]                ; $6209: $fa $65 $a0
     ld c, a                                       ; $620c: $4f
     sla a                                         ; $620d: $cb $27
@@ -4187,45 +4185,45 @@ GS08_StatePhase_05_TODO::
     add c                                         ; $6211: $81
     ld c, a                                       ; $6212: $4f
     ld b, $00                                     ; $6213: $06 $00
-    ld hl, rSaveSlot1ModeCursorRows               ; $6215: $21 $69 $a0
+    ld hl, rSaveSlot1EasyPicrossBGMSelectionIndex ; $6215: $21 $69 $a0
     add hl, bc                                    ; $6218: $09
     ld a, [hl]                                    ; $6219: $7e
-    ld [$d83c], a                                 ; $621a: $ea $3c $d8
+    ld [rGS08_PauseMenuBGMSubmenuSelection], a    ; $621a: $ea $3c $d8
     ld a, $01                                     ; $621d: $3e $01
-    ld [$d83d], a                                 ; $621f: $ea $3d $d8
+    ld [rGS08_PauseMenuGiveUpPromptSelection], a  ; $621f: $ea $3d $d8
     ld a, $06                                     ; $6222: $3e $06
     ld hl, $7a00                                  ; $6224: $21 $00 $7a
     ld de, $8500                                  ; $6227: $11 $00 $85
     ld bc, $0300                                  ; $622a: $01 $00 $03
     call BankedTileCopyVRAMSafe                   ; $622d: $cd $38 $05
-    call Call_001_70a1                            ; $6230: $cd $a1 $70
+    call MaskClueDigitSlotsFromRunLengthBuffers   ; $6230: $cd $a1 $70
     ld hl, rStatePhase_Current                    ; $6233: $21 $35 $d6
     inc [hl]                                      ; $6236: $34
     ret                                           ; $6237: $c9
 
 
-GS08_StatePhase_06_TODO::
+GS08_StatePhase_06_PauseMenuIdle::
     ld b, $02                                     ; $6238: $06 $02
     ld hl, $4632                                  ; $623a: $21 $32 $46
     call SwitchBankToBAndJumpToHL                 ; $623d: $cd $de $05
     ld a, [rInputButtonsPressed]                  ; $6240: $fa $1e $c3
     bit 0, a                                      ; $6243: $cb $47
-    jr z, jr_001_625d                             ; $6245: $28 $16
+    jr z, .HandlePauseMenuCloseInput              ; $6245: $28 $16
 
     ld c, $03                                     ; $6247: $0e $03
     ld a, $02                                     ; $6249: $3e $02
     call CallSoundEffectDispatcher                ; $624b: $cd $b6 $03
-    ld a, [$d83a]                                 ; $624e: $fa $3a $d8
+    ld a, [rGS08_PauseMenuMainSelection]          ; $624e: $fa $3a $d8
     ld c, a                                       ; $6251: $4f
     ld b, $00                                     ; $6252: $06 $00
-    ld hl, GS08_StatePhase_06_TODO_Data           ; $6254: $21 $6d $62
+    ld hl, GS08_PauseMenuSelectionNextPhaseTable  ; $6254: $21 $6d $62
     add hl, bc                                    ; $6257: $09
     ld a, [hl]                                    ; $6258: $7e
     ld [rStatePhase_Current], a                   ; $6259: $ea $35 $d6
     ret                                           ; $625c: $c9
 
 
-jr_001_625d:
+.HandlePauseMenuCloseInput:
     bit 3, a                                      ; $625d: $cb $5f
     ret z                                         ; $625f: $c8
 
@@ -4237,10 +4235,10 @@ jr_001_625d:
     ret                                           ; $626c: $c9
 
 
-GS08_StatePhase_06_TODO_Data::
+GS08_PauseMenuSelectionNextPhaseTable::
     db $07, $09, $08
 
-GS08_StatePhase_07_TODO::
+GS08_StatePhase_07_PauseMenuSavePrompt::
     ld b, $02                                     ; $6270: $06 $02
     ld hl, $4672                                  ; $6272: $21 $72 $46
     call SwitchBankToBAndJumpToHL                 ; $6275: $cd $de $05
@@ -4251,17 +4249,17 @@ GS08_StatePhase_07_TODO::
     ld c, $04                                     ; $627e: $0e $04
     ld a, $02                                     ; $6280: $3e $02
     call CallSoundEffectDispatcher                ; $6282: $cd $b6 $03
-    ld a, [$d83b]                                 ; $6285: $fa $3b $d8
+    ld a, [rGS08_PauseMenuSavePromptSelection]    ; $6285: $fa $3b $d8
     and a                                         ; $6288: $a7
-    jr z, jr_001_6291                             ; $6289: $28 $06
+    jr z, .HandlePauseMenuSavePromptConfirmAndBeginExitFlow; $6289: $28 $06
 
     ld a, $06                                     ; $628b: $3e $06
     ld [rStatePhase_Current], a                   ; $628d: $ea $35 $d6
     ret                                           ; $6290: $c9
 
 
-jr_001_6291:
-    call Call_000_1c14                            ; $6291: $cd $14 $1c
+.HandlePauseMenuSavePromptConfirmAndBeginExitFlow:
+    call SaveCurrentPuzzleProgressToSaveData      ; $6291: $cd $14 $1c
     ld a, $01                                     ; $6294: $3e $01
     ld [rContinueSavedGameFlowMode_Unsure], a     ; $6296: $ea $a2 $ac
     ld c, $03                                     ; $6299: $0e $03
@@ -4280,34 +4278,34 @@ jr_001_6291:
     call CallSoundEffectDispatcher                ; $62b9: $cd $b6 $03
     ld a, [rPuzzleGridWidth]                      ; $62bc: $fa $00 $d8
     cp $05                                        ; $62bf: $fe $05
-    jr nz, jr_001_62d2                            ; $62c1: $20 $0f
+    jr nz, .SelectFadeOutParamsForNon5x5Grid      ; $62c1: $20 $0f
 
     ld b, $03                                     ; $62c3: $06 $03
     ld hl, $46ab                                  ; $62c5: $21 $ab $46
     ld c, $01                                     ; $62c8: $0e $01
     ld de, $0023                                  ; $62ca: $11 $23 $00
     call PlayScreenTransitionFadeOut              ; $62cd: $cd $4e $04
-    jr jr_001_62f2                                ; $62d0: $18 $20
+    jr .FinalizeSavePromptTransitionToGS00        ; $62d0: $18 $20
 
-jr_001_62d2:
+.SelectFadeOutParamsForNon5x5Grid:
     cp $0a                                        ; $62d2: $fe $0a
-    jr nz, jr_001_62e5                            ; $62d4: $20 $0f
+    jr nz, .ApplyFadeOutParamsFor15x15Grid        ; $62d4: $20 $0f
 
     ld b, $03                                     ; $62d6: $06 $03
     ld hl, $46b7                                  ; $62d8: $21 $b7 $46
     ld c, $02                                     ; $62db: $0e $02
     ld de, $0033                                  ; $62dd: $11 $33 $00
     call PlayScreenTransitionFadeOut              ; $62e0: $cd $4e $04
-    jr jr_001_62f2                                ; $62e3: $18 $0d
+    jr .FinalizeSavePromptTransitionToGS00        ; $62e3: $18 $0d
 
-jr_001_62e5:
+.ApplyFadeOutParamsFor15x15Grid:
     ld b, $03                                     ; $62e5: $06 $03
     ld hl, $469f                                  ; $62e7: $21 $9f $46
     ld c, $00                                     ; $62ea: $0e $00
     ld de, $0013                                  ; $62ec: $11 $13 $00
     call PlayScreenTransitionFadeOut              ; $62ef: $cd $4e $04
 
-jr_001_62f2:
+.FinalizeSavePromptTransitionToGS00:
     call DisableLCDAtVBlank                       ; $62f2: $cd $83 $04
     ld hl, rLCDCInterruptControlFlags_Unsure      ; $62f5: $21 $37 $c3
     res 6, [hl]                                   ; $62f8: $cb $b6
@@ -4323,10 +4321,10 @@ jr_001_62f2:
     add c                                         ; $630e: $81
     ld c, a                                       ; $630f: $4f
     ld b, $00                                     ; $6310: $06 $00
-    ld hl, rSaveSlot1ModeCursorRows               ; $6312: $21 $69 $a0
+    ld hl, rSaveSlot1EasyPicrossBGMSelectionIndex ; $6312: $21 $69 $a0
     add hl, bc                                    ; $6315: $09
     ld a, [hl]                                    ; $6316: $7e
-    ld a, [$d83c]                                 ; $6317: $fa $3c $d8
+    ld a, [rGS08_PauseMenuBGMSubmenuSelection]    ; $6317: $fa $3c $d8
     ld [hl], a                                    ; $631a: $77
     ld a, $04                                     ; $631b: $3e $04
     ld [rStatePhase_Current], a                   ; $631d: $ea $35 $d6
@@ -4335,7 +4333,7 @@ jr_001_62f2:
     jp RefreshSaveValidationChecksumsAndMirrors   ; $6325: $c3 $1f $1b
 
 
-GS08_StatePhase_08_TODO::
+GS08_StatePhase_08_PauseMenuBGMSubmenu::
     ld b, $02                                     ; $6328: $06 $02
     ld hl, $46b2                                  ; $632a: $21 $b2 $46
     call SwitchBankToBAndJumpToHL                 ; $632d: $cd $de $05
@@ -4351,7 +4349,7 @@ GS08_StatePhase_08_TODO::
     ret                                           ; $6342: $c9
 
 
-GS08_StatePhase_09_TODO::
+GS08_StatePhase_09_PauseMenuGiveUpPrompt::
     ld b, $02                                     ; $6343: $06 $02
     ld hl, $470f                                  ; $6345: $21 $0f $47
     call SwitchBankToBAndJumpToHL                 ; $6348: $cd $de $05
@@ -4362,16 +4360,16 @@ GS08_StatePhase_09_TODO::
     ld c, $04                                     ; $6351: $0e $04
     ld a, $02                                     ; $6353: $3e $02
     call CallSoundEffectDispatcher                ; $6355: $cd $b6 $03
-    ld a, [$d83d]                                 ; $6358: $fa $3d $d8
+    ld a, [rGS08_PauseMenuGiveUpPromptSelection]  ; $6358: $fa $3d $d8
     and a                                         ; $635b: $a7
-    jr z, jr_001_6364                             ; $635c: $28 $06
+    jr z, .HandlePauseMenuGiveUpConfirmAndStartGameOverFlow; $635c: $28 $06
 
     ld a, $06                                     ; $635e: $3e $06
     ld [rStatePhase_Current], a                   ; $6360: $ea $35 $d6
     ret                                           ; $6363: $c9
 
 
-jr_001_6364:
+.HandlePauseMenuGiveUpConfirmAndStartGameOverFlow:
     ld a, $01                                     ; $6364: $3e $01
     ld [rPuzzleTimerCompletionState], a           ; $6366: $ea $06 $d8
     ld c, $00                                     ; $6369: $0e $00
@@ -4390,26 +4388,26 @@ jr_001_6364:
     call BankedTileCopyVRAMSafe                   ; $638b: $cd $38 $05
     ld a, [rPuzzleGridWidth]                      ; $638e: $fa $00 $d8
     cp $05                                        ; $6391: $fe $05
-    jr nz, jr_001_63a5                            ; $6393: $20 $10
+    jr nz, .FinalizePauseMenuGiveUpFlowAndAdvanceToPhase04; $6393: $20 $10
 
     call GS06_CopyRedrawSourceToProgressionBuffer ; $6395: $cd $2e $30
     ld a, $e8                                     ; $6398: $3e $e8
     ld [rMessageScriptStreamPointerLow], a        ; $639a: $ea $2d $d8
     ld a, $5c                                     ; $639d: $3e $5c
     ld [rMessageScriptStreamPointerHigh], a       ; $639f: $ea $2e $d8
-    call Call_001_5fbb                            ; $63a2: $cd $bb $5f
+    call GS08_RunMessageScriptUntilEndWithTextAnimation; $63a2: $cd $bb $5f
 
-jr_001_63a5:
+.FinalizePauseMenuGiveUpFlowAndAdvanceToPhase04:
     ld c, a                                       ; $63a5: $4f
     sla a                                         ; $63a6: $cb $27
     sla a                                         ; $63a8: $cb $27
     add c                                         ; $63aa: $81
     ld c, a                                       ; $63ab: $4f
     ld b, $00                                     ; $63ac: $06 $00
-    ld hl, rSaveSlot1ModeCursorRows               ; $63ae: $21 $69 $a0
+    ld hl, rSaveSlot1EasyPicrossBGMSelectionIndex ; $63ae: $21 $69 $a0
     add hl, bc                                    ; $63b1: $09
     ld a, [hl]                                    ; $63b2: $7e
-    ld a, [$d83c]                                 ; $63b3: $fa $3c $d8
+    ld a, [rGS08_PauseMenuBGMSubmenuSelection]    ; $63b3: $fa $3c $d8
     ld [hl], a                                    ; $63b6: $77
     ld a, $04                                     ; $63b7: $3e $04
     ld [rStatePhase_Current], a                   ; $63b9: $ea $35 $d6
@@ -4418,7 +4416,7 @@ jr_001_63a5:
     jp RefreshSaveValidationChecksumsAndMirrors   ; $63c0: $c3 $1f $1b
 
 
-GS08_StatePhase_0a_TODO::
+GS08_StatePhase_0a_ClosePauseMenuAndResumeGameplay::
     call ClearShadowOAMBuffer                     ; $63c3: $cd $b6 $05
     rst RST_08                                    ; $63c6: $cf
     ld a, [rSelectedSaveSlotIndex]                ; $63c7: $fa $65 $a0
@@ -4428,10 +4426,10 @@ GS08_StatePhase_0a_TODO::
     add c                                         ; $63cf: $81
     ld c, a                                       ; $63d0: $4f
     ld b, $00                                     ; $63d1: $06 $00
-    ld hl, rSaveSlot1ModeCursorRows               ; $63d3: $21 $69 $a0
+    ld hl, rSaveSlot1EasyPicrossBGMSelectionIndex ; $63d3: $21 $69 $a0
     add hl, bc                                    ; $63d6: $09
     ld a, [hl]                                    ; $63d7: $7e
-    ld a, [$d83c]                                 ; $63d8: $fa $3c $d8
+    ld a, [rGS08_PauseMenuBGMSubmenuSelection]    ; $63d8: $fa $3c $d8
     ld [hl], a                                    ; $63db: $77
     ld a, $06                                     ; $63dc: $3e $06
     ld hl, $4500                                  ; $63de: $21 $00 $45
@@ -4512,11 +4510,11 @@ GS09_StatePhase_00_TODO::
     ld [rVBlankLCDCBit4ForceFlag], a              ; $645a: $ea $3c $c3
     ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $645d: $ea $50 $c3
     call BuildClueRunLengthBuffers                ; $6460: $cd $30 $6f
-    call Call_001_7dcb                            ; $6463: $cd $cb $7d
+    call RecomputePuzzleCellBitSetCounters        ; $6463: $cd $cb $7d
     call ClearShadowOAMBuffer                     ; $6466: $cd $b6 $05
     call DrawPuzzleCursorSpritesAndTickStepSequence; $6469: $cd $3e $71
     call ResetPuzzleTimerState                    ; $646c: $cd $eb $7b
-    call Call_001_786e                            ; $646f: $cd $6e $78
+    call RedrawBoardCellEffectFramesFromStateBuffer; $646f: $cd $6e $78
     ld a, [rSelectedSaveSlotIndex]                ; $6472: $fa $65 $a0
     ld c, a                                       ; $6475: $4f
     sla a                                         ; $6476: $cb $27
@@ -4524,11 +4522,11 @@ GS09_StatePhase_00_TODO::
     add c                                         ; $647a: $81
     ld c, a                                       ; $647b: $4f
     ld b, $00                                     ; $647c: $06 $00
-    ld hl, $a06c                                  ; $647e: $21 $6c $a0
+    ld hl, rSaveSlot1TimeTrialBGMSelectionIndex   ; $647e: $21 $6c $a0
     add hl, bc                                    ; $6481: $09
     ld c, [hl]                                    ; $6482: $4e
     ld b, $00                                     ; $6483: $06 $00
-    ld hl, $7e2d                                  ; $6485: $21 $2d $7e
+    ld hl, PuzzleModeSecondarySfxIdTable          ; $6485: $21 $2d $7e
     add hl, bc                                    ; $6488: $09
     ld c, $00                                     ; $6489: $0e $00
     ld a, $01                                     ; $648b: $3e $01
@@ -4560,7 +4558,7 @@ GS09_StatePhase_09_TODO::
     ld [rSCYShadow], a                            ; $64c3: $ea $33 $c3
     call FillBGMap0WithTile01                     ; $64c6: $cd $a0 $05
     call FillBGMap1WithTile01                     ; $64c9: $cd $ab $05
-    call Call_000_1c96                            ; $64cc: $cd $96 $1c
+    call RestoreCurrentPuzzleProgressFromSaveData ; $64cc: $cd $96 $1c
     call LoadGameBoardTileData                    ; $64cf: $cd $b9 $69
     ld a, $2f                                     ; $64d2: $3e $2f
     ld [rLYCShadow], a                            ; $64d4: $ea $36 $c3
@@ -4575,7 +4573,7 @@ GS09_StatePhase_09_TODO::
     call BuildClueRunLengthBuffers                ; $64ec: $cd $30 $6f
     call ClearShadowOAMBuffer                     ; $64ef: $cd $b6 $05
     call RenderPuzzleTimerDigits                  ; $64f2: $cd $04 $7c
-    call Call_001_786e                            ; $64f5: $cd $6e $78
+    call RedrawBoardCellEffectFramesFromStateBuffer; $64f5: $cd $6e $78
     ld a, [rSelectedSaveSlotIndex]                ; $64f8: $fa $65 $a0
     ld c, a                                       ; $64fb: $4f
     sla a                                         ; $64fc: $cb $27
@@ -4583,11 +4581,11 @@ GS09_StatePhase_09_TODO::
     add c                                         ; $6500: $81
     ld c, a                                       ; $6501: $4f
     ld b, $00                                     ; $6502: $06 $00
-    ld hl, $a06c                                  ; $6504: $21 $6c $a0
+    ld hl, rSaveSlot1TimeTrialBGMSelectionIndex   ; $6504: $21 $6c $a0
     add hl, bc                                    ; $6507: $09
     ld c, [hl]                                    ; $6508: $4e
     ld b, $00                                     ; $6509: $06 $00
-    ld hl, $7e2d                                  ; $650b: $21 $2d $7e
+    ld hl, PuzzleModeSecondarySfxIdTable          ; $650b: $21 $2d $7e
     add hl, bc                                    ; $650e: $09
     ld c, $00                                     ; $650f: $0e $00
     ld a, $01                                     ; $6511: $3e $01
@@ -4605,9 +4603,9 @@ GS09_StatePhase_09_TODO::
     call ClearShadowOAMBuffer                     ; $652f: $cd $b6 $05
     rst RST_08                                    ; $6532: $cf
     xor a                                         ; $6533: $af
-    ld [$d83a], a                                 ; $6534: $ea $3a $d8
+    ld [rGS08_PauseMenuMainSelection], a          ; $6534: $ea $3a $d8
     ld a, $01                                     ; $6537: $3e $01
-    ld [$d83b], a                                 ; $6539: $ea $3b $d8
+    ld [rGS08_PauseMenuSavePromptSelection], a    ; $6539: $ea $3b $d8
     ld a, [rSelectedSaveSlotIndex]                ; $653c: $fa $65 $a0
     ld c, a                                       ; $653f: $4f
     sla a                                         ; $6540: $cb $27
@@ -4615,18 +4613,18 @@ GS09_StatePhase_09_TODO::
     add c                                         ; $6544: $81
     ld c, a                                       ; $6545: $4f
     ld b, $00                                     ; $6546: $06 $00
-    ld hl, $a06c                                  ; $6548: $21 $6c $a0
+    ld hl, rSaveSlot1TimeTrialBGMSelectionIndex   ; $6548: $21 $6c $a0
     add hl, bc                                    ; $654b: $09
     ld a, [hl]                                    ; $654c: $7e
-    ld [$d83c], a                                 ; $654d: $ea $3c $d8
+    ld [rGS08_PauseMenuBGMSubmenuSelection], a    ; $654d: $ea $3c $d8
     ld a, $01                                     ; $6550: $3e $01
-    ld [$d83d], a                                 ; $6552: $ea $3d $d8
+    ld [rGS08_PauseMenuGiveUpPromptSelection], a  ; $6552: $ea $3d $d8
     ld a, $06                                     ; $6555: $3e $06
     ld hl, $7a00                                  ; $6557: $21 $00 $7a
     ld de, $8500                                  ; $655a: $11 $00 $85
     ld bc, $0300                                  ; $655d: $01 $00 $03
     call BankedTileCopyVRAMSafe                   ; $6560: $cd $38 $05
-    call Call_001_7dcb                            ; $6563: $cd $cb $7d
+    call RecomputePuzzleCellBitSetCounters        ; $6563: $cd $cb $7d
     ld a, $04                                     ; $6566: $3e $04
     ld [rStatePhase_Current], a                   ; $6568: $ea $35 $d6
     ret                                           ; $656b: $c9
@@ -4639,7 +4637,7 @@ GS09_StatePhase_01_TODO::
     call TickMarioBlinkAnimation                  ; $6575: $cd $18 $79
     call Call_001_682f                            ; $6578: $cd $2f $68
     call TickPendingCellActionEffect              ; $657b: $cd $16 $75
-    call Call_001_75f6                            ; $657e: $cd $f6 $75
+    call FinalizePuzzleClearAndSetPostClearFlowFlag; $657e: $cd $f6 $75
     call TickPuzzleTimerCompletionState           ; $6581: $cd $c8 $7c
     ld a, [rInputButtonsPressed]                  ; $6584: $fa $1e $c3
     and $08                                       ; $6587: $e6 $08
@@ -4689,8 +4687,8 @@ jr_001_65d3:
     ld c, $03                                     ; $65db: $0e $03
     ld a, $02                                     ; $65dd: $3e $02
     call CallSoundEffectDispatcher                ; $65df: $cd $b6 $03
-    call Call_001_76a9                            ; $65e2: $cd $a9 $76
-    call Call_000_1a45                            ; $65e5: $cd $45 $1a
+    call RedrawPostClearSolvedCellsByGridSize     ; $65e2: $cd $a9 $76
+    call DrawPuzzleNameFromPointerTable           ; $65e5: $cd $45 $1a
     ld c, $00                                     ; $65e8: $0e $00
     ld a, $01                                     ; $65ea: $3e $01
     call CallSoundEffectDispatcher                ; $65ec: $cd $b6 $03
@@ -4766,9 +4764,9 @@ GS09_StatePhase_03_TODO::
     call ClearShadowOAMBuffer                     ; $6677: $cd $b6 $05
     rst RST_08                                    ; $667a: $cf
     xor a                                         ; $667b: $af
-    ld [$d83a], a                                 ; $667c: $ea $3a $d8
+    ld [rGS08_PauseMenuMainSelection], a          ; $667c: $ea $3a $d8
     ld a, $01                                     ; $667f: $3e $01
-    ld [$d83b], a                                 ; $6681: $ea $3b $d8
+    ld [rGS08_PauseMenuSavePromptSelection], a    ; $6681: $ea $3b $d8
     ld a, [rSelectedSaveSlotIndex]                ; $6684: $fa $65 $a0
     ld c, a                                       ; $6687: $4f
     sla a                                         ; $6688: $cb $27
@@ -4776,18 +4774,18 @@ GS09_StatePhase_03_TODO::
     add c                                         ; $668c: $81
     ld c, a                                       ; $668d: $4f
     ld b, $00                                     ; $668e: $06 $00
-    ld hl, $a06c                                  ; $6690: $21 $6c $a0
+    ld hl, rSaveSlot1TimeTrialBGMSelectionIndex   ; $6690: $21 $6c $a0
     add hl, bc                                    ; $6693: $09
     ld a, [hl]                                    ; $6694: $7e
-    ld [$d83c], a                                 ; $6695: $ea $3c $d8
+    ld [rGS08_PauseMenuBGMSubmenuSelection], a    ; $6695: $ea $3c $d8
     ld a, $01                                     ; $6698: $3e $01
-    ld [$d83d], a                                 ; $669a: $ea $3d $d8
+    ld [rGS08_PauseMenuGiveUpPromptSelection], a  ; $669a: $ea $3d $d8
     ld a, $06                                     ; $669d: $3e $06
     ld hl, $7a00                                  ; $669f: $21 $00 $7a
     ld de, $8500                                  ; $66a2: $11 $00 $85
     ld bc, $0300                                  ; $66a5: $01 $00 $03
     call BankedTileCopyVRAMSafe                   ; $66a8: $cd $38 $05
-    call Call_001_70a1                            ; $66ab: $cd $a1 $70
+    call MaskClueDigitSlotsFromRunLengthBuffers   ; $66ab: $cd $a1 $70
     ld hl, rStatePhase_Current                    ; $66ae: $21 $35 $d6
     inc [hl]                                      ; $66b1: $34
     ret                                           ; $66b2: $c9
@@ -4804,7 +4802,7 @@ GS09_StatePhase_04_TODO::
     ld c, $03                                     ; $66c2: $0e $03
     ld a, $02                                     ; $66c4: $3e $02
     call CallSoundEffectDispatcher                ; $66c6: $cd $b6 $03
-    ld a, [$d83a]                                 ; $66c9: $fa $3a $d8
+    ld a, [rGS08_PauseMenuMainSelection]          ; $66c9: $fa $3a $d8
     ld c, a                                       ; $66cc: $4f
     ld b, $00                                     ; $66cd: $06 $00
     ld hl, GS09_StatePhase_04_TODO_Data           ; $66cf: $21 $e8 $66
@@ -4840,7 +4838,7 @@ GS09_StatePhase_05_TODO::
     ld c, $04                                     ; $66f9: $0e $04
     ld a, $02                                     ; $66fb: $3e $02
     call CallSoundEffectDispatcher                ; $66fd: $cd $b6 $03
-    ld a, [$d83b]                                 ; $6700: $fa $3b $d8
+    ld a, [rGS08_PauseMenuSavePromptSelection]    ; $6700: $fa $3b $d8
     and a                                         ; $6703: $a7
     jr z, jr_001_670c                             ; $6704: $28 $06
 
@@ -4850,7 +4848,7 @@ GS09_StatePhase_05_TODO::
 
 
 jr_001_670c:
-    call Call_000_1c14                            ; $670c: $cd $14 $1c
+    call SaveCurrentPuzzleProgressToSaveData      ; $670c: $cd $14 $1c
     ld a, $03                                     ; $670f: $3e $03
     ld [rContinueSavedGameFlowMode_Unsure], a     ; $6711: $ea $a2 $ac
     ld c, $03                                     ; $6714: $0e $03
@@ -4888,10 +4886,10 @@ jr_001_670c:
     add c                                         ; $6763: $81
     ld c, a                                       ; $6764: $4f
     ld b, $00                                     ; $6765: $06 $00
-    ld hl, $a06c                                  ; $6767: $21 $6c $a0
+    ld hl, rSaveSlot1TimeTrialBGMSelectionIndex   ; $6767: $21 $6c $a0
     add hl, bc                                    ; $676a: $09
     ld a, [hl]                                    ; $676b: $7e
-    ld a, [$d83c]                                 ; $676c: $fa $3c $d8
+    ld a, [rGS08_PauseMenuBGMSubmenuSelection]    ; $676c: $fa $3c $d8
     ld [hl], a                                    ; $676f: $77
     ld a, $04                                     ; $6770: $3e $04
     ld [rStatePhase_Current], a                   ; $6772: $ea $35 $d6
@@ -4927,7 +4925,7 @@ GS09_StatePhase_07_TODO::
     ld c, $04                                     ; $67a6: $0e $04
     ld a, $02                                     ; $67a8: $3e $02
     call CallSoundEffectDispatcher                ; $67aa: $cd $b6 $03
-    ld a, [$d83d]                                 ; $67ad: $fa $3d $d8
+    ld a, [rGS08_PauseMenuGiveUpPromptSelection]  ; $67ad: $fa $3d $d8
     and a                                         ; $67b0: $a7
     jr z, jr_001_67b9                             ; $67b1: $28 $06
 
@@ -4955,10 +4953,10 @@ jr_001_67b9:
     add c                                         ; $67dd: $81
     ld c, a                                       ; $67de: $4f
     ld b, $00                                     ; $67df: $06 $00
-    ld hl, $a06c                                  ; $67e1: $21 $6c $a0
+    ld hl, rSaveSlot1TimeTrialBGMSelectionIndex   ; $67e1: $21 $6c $a0
     add hl, bc                                    ; $67e4: $09
     ld a, [hl]                                    ; $67e5: $7e
-    ld a, [$d83c]                                 ; $67e6: $fa $3c $d8
+    ld a, [rGS08_PauseMenuBGMSubmenuSelection]    ; $67e6: $fa $3c $d8
     ld [hl], a                                    ; $67e9: $77
     ld a, $02                                     ; $67ea: $3e $02
     ld [rStatePhase_Current], a                   ; $67ec: $ea $35 $d6
@@ -4977,10 +4975,10 @@ GS09_StatePhase_08_TODO::
     add c                                         ; $6802: $81
     ld c, a                                       ; $6803: $4f
     ld b, $00                                     ; $6804: $06 $00
-    ld hl, $a06c                                  ; $6806: $21 $6c $a0
+    ld hl, rSaveSlot1TimeTrialBGMSelectionIndex   ; $6806: $21 $6c $a0
     add hl, bc                                    ; $6809: $09
     ld a, [hl]                                    ; $680a: $7e
-    ld a, [$d83c]                                 ; $680b: $fa $3c $d8
+    ld a, [rGS08_PauseMenuBGMSubmenuSelection]    ; $680b: $fa $3c $d8
     ld [hl], a                                    ; $680e: $77
     ld a, $06                                     ; $680f: $3e $06
     ld hl, $4500                                  ; $6811: $21 $00 $45
@@ -5019,7 +5017,7 @@ jr_001_6841:
     add [hl]                                      ; $684f: $86
     ld c, a                                       ; $6850: $4f
     ld b, $00                                     ; $6851: $06 $00
-    ld hl, $d640                                  ; $6853: $21 $40 $d6
+    ld hl, rPuzzleCellStateBufferStart            ; $6853: $21 $40 $d6
     add hl, bc                                    ; $6856: $09
     push hl                                       ; $6857: $e5
     ld a, [rSelectedSaveSlotIndex]                ; $6858: $fa $65 $a0
@@ -5116,7 +5114,7 @@ GS0A_StatePhase_00_TODO::
     call BuildClueRunLengthBuffers                ; $68e3: $cd $30 $6f
     call ClearShadowOAMBuffer                     ; $68e6: $cd $b6 $05
     call ResetPuzzleTimerState                    ; $68e9: $cd $eb $7b
-    call Call_001_786e                            ; $68ec: $cd $6e $78
+    call RedrawBoardCellEffectFramesFromStateBuffer; $68ec: $cd $6e $78
     call Call_001_7dfe                            ; $68ef: $cd $fe $7d
     call EnableLCDFromShadow                      ; $68f2: $cd $a2 $04
     ld b, $03                                     ; $68f5: $06 $03
@@ -5140,7 +5138,7 @@ GS0A_StatePhase_0b_TODO::
     ld [rSCYShadow], a                            ; $6919: $ea $33 $c3
     call FillBGMap0WithTile01                     ; $691c: $cd $a0 $05
     call FillBGMap1WithTile01                     ; $691f: $cd $ab $05
-    call Call_000_1c96                            ; $6922: $cd $96 $1c
+    call RestoreCurrentPuzzleProgressFromSaveData ; $6922: $cd $96 $1c
     call LoadGameBoardTileData                    ; $6925: $cd $b9 $69
     ld a, $06                                     ; $6928: $3e $06
     ld hl, $7800                                  ; $692a: $21 $00 $78
@@ -5162,7 +5160,7 @@ GS0A_StatePhase_0b_TODO::
     xor a                                         ; $6956: $af
     ld [rPuzzleTimerActive], a                    ; $6957: $ea $0d $d8
     call RenderPuzzleTimerDigits                  ; $695a: $cd $04 $7c
-    call Call_001_786e                            ; $695d: $cd $6e $78
+    call RedrawBoardCellEffectFramesFromStateBuffer; $695d: $cd $6e $78
     call Call_001_7dfe                            ; $6960: $cd $fe $7d
     call EnableLCDFromShadow                      ; $6963: $cd $a2 $04
     ld b, $03                                     ; $6966: $06 $03
@@ -5173,9 +5171,9 @@ GS0A_StatePhase_0b_TODO::
     call ClearShadowOAMBuffer                     ; $6973: $cd $b6 $05
     rst RST_08                                    ; $6976: $cf
     xor a                                         ; $6977: $af
-    ld [$d83a], a                                 ; $6978: $ea $3a $d8
+    ld [rGS08_PauseMenuMainSelection], a          ; $6978: $ea $3a $d8
     ld a, $01                                     ; $697b: $3e $01
-    ld [$d83b], a                                 ; $697d: $ea $3b $d8
+    ld [rGS08_PauseMenuSavePromptSelection], a    ; $697d: $ea $3b $d8
     ld a, [rSelectedSaveSlotIndex]                ; $6980: $fa $65 $a0
     ld c, a                                       ; $6983: $4f
     ld b, $00                                     ; $6984: $06 $00
@@ -5188,18 +5186,18 @@ GS0A_StatePhase_0b_TODO::
     add c                                         ; $6992: $81
     add [hl]                                      ; $6993: $86
     ld c, a                                       ; $6994: $4f
-    ld hl, $a06a                                  ; $6995: $21 $6a $a0
+    ld hl, rSaveSlot1PicrossKinokoBGMSelectionIndex; $6995: $21 $6a $a0
     add hl, bc                                    ; $6998: $09
     ld a, [hl]                                    ; $6999: $7e
-    ld [$d83c], a                                 ; $699a: $ea $3c $d8
+    ld [rGS08_PauseMenuBGMSubmenuSelection], a    ; $699a: $ea $3c $d8
     ld a, $01                                     ; $699d: $3e $01
-    ld [$d83d], a                                 ; $699f: $ea $3d $d8
+    ld [rGS08_PauseMenuGiveUpPromptSelection], a  ; $699f: $ea $3d $d8
     ld a, $06                                     ; $69a2: $3e $06
     ld hl, $7a00                                  ; $69a4: $21 $00 $7a
     ld de, $8500                                  ; $69a7: $11 $00 $85
     ld bc, $0300                                  ; $69aa: $01 $00 $03
     call BankedTileCopyVRAMSafe                   ; $69ad: $cd $38 $05
-    call Call_001_7dcb                            ; $69b0: $cd $cb $7d
+    call RecomputePuzzleCellBitSetCounters        ; $69b0: $cd $cb $7d
     ld a, $06                                     ; $69b3: $3e $06
     ld [rStatePhase_Current], a                   ; $69b5: $ea $35 $d6
     ret                                           ; $69b8: $c9
@@ -5298,7 +5296,7 @@ jr_001_6a48:
     ret                                           ; $6a91: $c9
 
 
-GS0A_StatePhase_01_TODO::
+GS0A_StatePhase_01_HintPopupSelection::
     call TickMarioBlinkAnimation                  ; $6a92: $cd $18 $79
     ld a, [rHintPopupSelection]                   ; $6a95: $fa $33 $d8
     add $3a                                       ; $6a98: $c6 $3a
@@ -5306,7 +5304,7 @@ GS0A_StatePhase_01_TODO::
     call CopyOAMSpriteById                        ; $6a9d: $cd $ce $20
     ld a, [rInputButtonsPressed]                  ; $6aa0: $fa $1e $c3
     and $f0                                       ; $6aa3: $e6 $f0
-    jr z, jr_001_6ab7                             ; $6aa5: $28 $10
+    jr z, .HandleHintPopupConfirmOrCancelInput    ; $6aa5: $28 $10
 
     ld c, $0a                                     ; $6aa7: $0e $0a
     ld a, $02                                     ; $6aa9: $3e $02
@@ -5317,10 +5315,10 @@ GS0A_StatePhase_01_TODO::
     ret                                           ; $6ab6: $c9
 
 
-jr_001_6ab7:
+.HandleHintPopupConfirmOrCancelInput:
     ld a, [rInputButtonsPressed]                  ; $6ab7: $fa $1e $c3
     and $09                                       ; $6aba: $e6 $09
-    jr nz, jr_001_6ae7                            ; $6abc: $20 $29
+    jr nz, .PlayHintPopupConfirmSfx               ; $6abc: $20 $29
 
     ld a, [rInputButtonsPressed]                  ; $6abe: $fa $1e $c3
     and $02                                       ; $6ac1: $e6 $02
@@ -5339,36 +5337,36 @@ jr_001_6ab7:
     call CopyOAMSpriteById                        ; $6adc: $cd $ce $20
     ld bc, $001e                                  ; $6adf: $01 $1e $00
     call DelayFramesByBC                          ; $6ae2: $cd $fa $05
-    jr jr_001_6aee                                ; $6ae5: $18 $07
+    jr .ApplyHintPopupSelectionAndAdvancePhase    ; $6ae5: $18 $07
 
-jr_001_6ae7:
+.PlayHintPopupConfirmSfx:
     ld c, $03                                     ; $6ae7: $0e $03
     ld a, $02                                     ; $6ae9: $3e $02
     call CallSoundEffectDispatcher                ; $6aeb: $cd $b6 $03
 
-jr_001_6aee:
+.ApplyHintPopupSelectionAndAdvancePhase:
     ld a, [rHintPopupSelection]                   ; $6aee: $fa $33 $d8
     and a                                         ; $6af1: $a7
-    jr nz, jr_001_6afa                            ; $6af2: $20 $06
+    jr nz, .AdvanceWithHintEnabledPath            ; $6af2: $20 $06
 
     ld hl, rStatePhase_Current                    ; $6af4: $21 $35 $d6
     inc [hl]                                      ; $6af7: $34
-    jr jr_001_6b05                                ; $6af8: $18 $0b
+    jr .RefreshClueDisplayAfterHintPopupSelection ; $6af8: $18 $0b
 
-jr_001_6afa:
-    call Call_001_7dcb                            ; $6afa: $cd $cb $7d
+.AdvanceWithHintEnabledPath:
+    call RecomputePuzzleCellBitSetCounters        ; $6afa: $cd $cb $7d
     ld hl, rStatePhase_Current                    ; $6afd: $21 $35 $d6
     inc [hl]                                      ; $6b00: $34
     ld hl, rStatePhase_Current                    ; $6b01: $21 $35 $d6
     inc [hl]                                      ; $6b04: $34
 
-jr_001_6b05:
+.RefreshClueDisplayAfterHintPopupSelection:
     call ClearShadowOAMBuffer                     ; $6b05: $cd $b6 $05
     rst RST_08                                    ; $6b08: $cf
     call DrawClueNumbersFromRunLengthBuffers      ; $6b09: $cd $b9 $6f
     ld a, [rPuzzleGridWidth]                      ; $6b0c: $fa $00 $d8
     cp $05                                        ; $6b0f: $fe $05
-    jr nz, jr_001_6b22                            ; $6b11: $20 $0f
+    jr nz, .LoadClueTileDataForNon5x5             ; $6b11: $20 $0f
 
     ld a, $07                                     ; $6b13: $3e $07
     ld hl, $4500                                  ; $6b15: $21 $00 $45
@@ -5378,9 +5376,9 @@ jr_001_6b05:
     ret                                           ; $6b21: $c9
 
 
-jr_001_6b22:
+.LoadClueTileDataForNon5x5:
     cp $0a                                        ; $6b22: $fe $0a
-    jr nz, jr_001_6b35                            ; $6b24: $20 $0f
+    jr nz, .Load15x15ClueTileData                 ; $6b24: $20 $0f
 
     ld a, $08                                     ; $6b26: $3e $08
     ld hl, $4500                                  ; $6b28: $21 $00 $45
@@ -5390,7 +5388,7 @@ jr_001_6b22:
     ret                                           ; $6b34: $c9
 
 
-jr_001_6b35:
+.Load15x15ClueTileData:
     ld a, $06                                     ; $6b35: $3e $06
     ld hl, $4500                                  ; $6b37: $21 $00 $45
     ld de, $8500                                  ; $6b3a: $11 $00 $85
@@ -5399,34 +5397,34 @@ jr_001_6b35:
     ret                                           ; $6b43: $c9
 
 
-GS0A_StatePhase_02_TODO::
+GS0A_StatePhase_02_HintCursorSweepAndApplySelection::
     ld a, [rHintCursorAnimationColumnThreshold]   ; $6b44: $fa $12 $d8
     cp $3f                                        ; $6b47: $fe $3f
-    jr z, jr_001_6b7f                             ; $6b49: $28 $34
+    jr z, .ProcessHintCursorRowSweep              ; $6b49: $28 $34
 
     ld c, a                                       ; $6b4b: $4f
     ld a, [rVBlankFrameCounter]                   ; $6b4c: $fa $3a $c3
     and c                                         ; $6b4f: $a1
-    jr nz, jr_001_6b7f                            ; $6b50: $20 $2d
+    jr nz, .ProcessHintCursorRowSweep             ; $6b50: $20 $2d
 
     ld a, c                                       ; $6b52: $79
     cp $01                                        ; $6b53: $fe $01
-    jr z, jr_001_6b5d                             ; $6b55: $28 $06
+    jr z, .AdvanceHintCursorColumnUntilClueFound  ; $6b55: $28 $06
 
     scf                                           ; $6b57: $37
     ld hl, rHintCursorAnimationColumnThreshold    ; $6b58: $21 $12 $d8
     rl [hl]                                       ; $6b5b: $cb $16
 
-jr_001_6b5d:
+.AdvanceHintCursorColumnUntilClueFound:
     ld a, [rPuzzleCursorColumn]                   ; $6b5d: $fa $36 $d6
     inc a                                         ; $6b60: $3c
     ld hl, rPuzzleGridWidth                       ; $6b61: $21 $00 $d8
     cp [hl]                                       ; $6b64: $be
-    jr nz, jr_001_6b68                            ; $6b65: $20 $01
+    jr nz, .StoreHintCursorColumnAndCheckClue     ; $6b65: $20 $01
 
     xor a                                         ; $6b67: $af
 
-jr_001_6b68:
+.StoreHintCursorColumnAndCheckClue:
     ld [rPuzzleCursorColumn], a                   ; $6b68: $ea $36 $d6
     ld c, a                                       ; $6b6b: $4f
     sla a                                         ; $6b6c: $cb $27
@@ -5438,38 +5436,38 @@ jr_001_6b68:
     add hl, bc                                    ; $6b77: $09
     ld a, [hl]                                    ; $6b78: $7e
     and a                                         ; $6b79: $a7
-    jr z, jr_001_6b5d                             ; $6b7a: $28 $e1
+    jr z, .AdvanceHintCursorColumnUntilClueFound  ; $6b7a: $28 $e1
 
     call TickCountdownAndEmitSfx                  ; $6b7c: $cd $2c $6c
 
-jr_001_6b7f:
+.ProcessHintCursorRowSweep:
     ld a, [rHintCursorAnimationRowThreshold]      ; $6b7f: $fa $13 $d8
     cp $3f                                        ; $6b82: $fe $3f
-    jr z, jr_001_6bba                             ; $6b84: $28 $34
+    jr z, .DrawHintCursorAndCheckSweepCompletion  ; $6b84: $28 $34
 
     ld c, a                                       ; $6b86: $4f
     ld a, [rVBlankFrameCounter]                   ; $6b87: $fa $3a $c3
     and c                                         ; $6b8a: $a1
-    jr nz, jr_001_6bba                            ; $6b8b: $20 $2d
+    jr nz, .DrawHintCursorAndCheckSweepCompletion ; $6b8b: $20 $2d
 
     ld a, c                                       ; $6b8d: $79
     cp $01                                        ; $6b8e: $fe $01
-    jr z, jr_001_6b98                             ; $6b90: $28 $06
+    jr z, .AdvanceHintCursorRowUntilClueFound     ; $6b90: $28 $06
 
     scf                                           ; $6b92: $37
     ld hl, rHintCursorAnimationRowThreshold       ; $6b93: $21 $13 $d8
     rl [hl]                                       ; $6b96: $cb $16
 
-jr_001_6b98:
+.AdvanceHintCursorRowUntilClueFound:
     ld a, [rPuzzleAndMenuCursorRow]               ; $6b98: $fa $37 $d6
     inc a                                         ; $6b9b: $3c
     ld hl, rPuzzleGridHeight                      ; $6b9c: $21 $01 $d8
     cp [hl]                                       ; $6b9f: $be
-    jr nz, jr_001_6ba3                            ; $6ba0: $20 $01
+    jr nz, .StoreHintCursorRowAndCheckClue        ; $6ba0: $20 $01
 
     xor a                                         ; $6ba2: $af
 
-jr_001_6ba3:
+.StoreHintCursorRowAndCheckClue:
     ld [rPuzzleAndMenuCursorRow], a               ; $6ba3: $ea $37 $d6
     ld c, a                                       ; $6ba6: $4f
     sla a                                         ; $6ba7: $cb $27
@@ -5481,11 +5479,11 @@ jr_001_6ba3:
     add hl, bc                                    ; $6bb2: $09
     ld a, [hl]                                    ; $6bb3: $7e
     and a                                         ; $6bb4: $a7
-    jr z, jr_001_6b98                             ; $6bb5: $28 $e1
+    jr z, .AdvanceHintCursorRowUntilClueFound     ; $6bb5: $28 $e1
 
     call TickCountdownAndEmitSfx                  ; $6bb7: $cd $2c $6c
 
-jr_001_6bba:
+.DrawHintCursorAndCheckSweepCompletion:
     call DrawPuzzleCursorSprites                  ; $6bba: $cd $85 $71
     call TickMarioBlinkAnimation                  ; $6bbd: $cd $18 $79
     ld a, [rHintCursorAnimationColumnThreshold]   ; $6bc0: $fa $12 $d8
@@ -5493,16 +5491,16 @@ jr_001_6bba:
     ld a, [rHintCursorAnimationRowThreshold]      ; $6bc4: $fa $13 $d8
     and c                                         ; $6bc7: $a1
     cp $3f                                        ; $6bc8: $fe $3f
-    jr nz, jr_001_6bd7                            ; $6bca: $20 $0b
+    jr nz, .HandleHintSweepAdvanceGate            ; $6bca: $20 $0b
 
     call ApplyHintSelectionToRowAndColumn         ; $6bcc: $cd $a2 $78
-    call Call_001_7dcb                            ; $6bcf: $cd $cb $7d
+    call RecomputePuzzleCellBitSetCounters        ; $6bcf: $cd $cb $7d
     ld hl, rStatePhase_Current                    ; $6bd2: $21 $35 $d6
     inc [hl]                                      ; $6bd5: $34
     ret                                           ; $6bd6: $c9
 
 
-jr_001_6bd7:
+.HandleHintSweepAdvanceGate:
     ld a, [rHintCursorAnimationRowThreshold]      ; $6bd7: $fa $13 $d8
     cp $01                                        ; $6bda: $fe $01
     ret nz                                        ; $6bdc: $c0
@@ -5510,7 +5508,7 @@ jr_001_6bd7:
     ld hl, $d815                                  ; $6bdd: $21 $15 $d8
     ld a, [hl-]                                   ; $6be0: $3a
     or [hl]                                       ; $6be1: $b6
-    jr z, jr_001_6bf3                             ; $6be2: $28 $0f
+    jr z, .AdvanceHintCursorColumnThresholdFromInitial; $6be2: $28 $0f
 
     ld a, [hl]                                    ; $6be4: $7e
     sub $01                                       ; $6be5: $d6 $01
@@ -5523,10 +5521,10 @@ jr_001_6bd7:
     and $09                                       ; $6bf0: $e6 $09
     ret z                                         ; $6bf2: $c8
 
-jr_001_6bf3:
+.AdvanceHintCursorColumnThresholdFromInitial:
     ld a, [rHintCursorAnimationColumnThreshold]   ; $6bf3: $fa $12 $d8
     cp $01                                        ; $6bf6: $fe $01
-    jr nz, jr_001_6c18                            ; $6bf8: $20 $1e
+    jr nz, .AdvanceHintCursorRowThresholdFromInitial; $6bf8: $20 $1e
 
     scf                                           ; $6bfa: $37
     rl a                                          ; $6bfb: $cb $17
@@ -5545,7 +5543,7 @@ jr_001_6bf3:
     ret                                           ; $6c17: $c9
 
 
-jr_001_6c18:
+.AdvanceHintCursorRowThresholdFromInitial:
     ld a, [rHintCursorAnimationRowThreshold]      ; $6c18: $fa $13 $d8
     cp $01                                        ; $6c1b: $fe $01
     ret nz                                        ; $6c1d: $c0
@@ -5577,13 +5575,13 @@ GS0A_StatePhase_03_TODO::
     call UpdatePuzzleCursorFromDirectionalInput   ; $6c41: $cd $ca $71
     call DrawPuzzleCursorSpritesAndTickStepSequence; $6c44: $cd $3e $71
     call TickMarioBlinkAnimation                  ; $6c47: $cd $18 $79
-    call Call_001_7e33                            ; $6c4a: $cd $33 $7e
-    call Call_001_7e77                            ; $6c4d: $cd $77 $7e
+    call TickLowTimerMarioSweatIndicator          ; $6c4a: $cd $33 $7e
+    call ApplyLowTimerMarioFaceTilesOnce          ; $6c4d: $cd $77 $7e
     call UpdatePuzzleTimerCountdown               ; $6c50: $cd $ea $7a
     call UpdatePuzzleTimerDisplayState            ; $6c53: $cd $98 $7a
     call ProcessPuzzleCellActionInput             ; $6c56: $cd $22 $72
     call TickPendingCellActionEffect              ; $6c59: $cd $16 $75
-    call Call_001_75f6                            ; $6c5c: $cd $f6 $75
+    call FinalizePuzzleClearAndSetPostClearFlowFlag; $6c5c: $cd $f6 $75
     call TickPuzzleTimerCompletionState           ; $6c5f: $cd $c8 $7c
     ld a, [rInputButtonsPressed]                  ; $6c62: $fa $1e $c3
     and $08                                       ; $6c65: $e6 $08
@@ -5624,7 +5622,7 @@ jr_001_6c9c:
     ld c, $03                                     ; $6ca4: $0e $03
     ld a, $02                                     ; $6ca6: $3e $02
     call CallSoundEffectDispatcher                ; $6ca8: $cd $b6 $03
-    call Call_001_76a9                            ; $6cab: $cd $a9 $76
+    call RedrawPostClearSolvedCellsByGridSize     ; $6cab: $cd $a9 $76
     ld c, $00                                     ; $6cae: $0e $00
     ld a, $01                                     ; $6cb0: $3e $01
     call CallSoundEffectDispatcher                ; $6cb2: $cd $b6 $03
@@ -5632,7 +5630,7 @@ jr_001_6c9c:
     ld c, $00                                     ; $6cb8: $0e $00
     ld a, $01                                     ; $6cba: $3e $01
     call CallSoundEffectDispatcher                ; $6cbc: $cd $b6 $03
-    call Call_000_1a45                            ; $6cbf: $cd $45 $1a
+    call DrawPuzzleNameFromPointerTable           ; $6cbf: $cd $45 $1a
     ld bc, $0004                                  ; $6cc2: $01 $04 $00
     call DelayFramesByBC                          ; $6cc5: $cd $fa $05
     ld c, $00                                     ; $6cc8: $0e $00
@@ -5710,9 +5708,9 @@ GS0A_StatePhase_05_TODO::
     call ClearShadowOAMBuffer                     ; $6d57: $cd $b6 $05
     rst RST_08                                    ; $6d5a: $cf
     xor a                                         ; $6d5b: $af
-    ld [$d83a], a                                 ; $6d5c: $ea $3a $d8
+    ld [rGS08_PauseMenuMainSelection], a          ; $6d5c: $ea $3a $d8
     ld a, $01                                     ; $6d5f: $3e $01
-    ld [$d83b], a                                 ; $6d61: $ea $3b $d8
+    ld [rGS08_PauseMenuSavePromptSelection], a    ; $6d61: $ea $3b $d8
     ld a, [rSelectedSaveSlotIndex]                ; $6d64: $fa $65 $a0
     ld c, a                                       ; $6d67: $4f
     ld b, $00                                     ; $6d68: $06 $00
@@ -5725,18 +5723,18 @@ GS0A_StatePhase_05_TODO::
     add c                                         ; $6d76: $81
     add [hl]                                      ; $6d77: $86
     ld c, a                                       ; $6d78: $4f
-    ld hl, $a06a                                  ; $6d79: $21 $6a $a0
+    ld hl, rSaveSlot1PicrossKinokoBGMSelectionIndex; $6d79: $21 $6a $a0
     add hl, bc                                    ; $6d7c: $09
     ld a, [hl]                                    ; $6d7d: $7e
-    ld [$d83c], a                                 ; $6d7e: $ea $3c $d8
+    ld [rGS08_PauseMenuBGMSubmenuSelection], a    ; $6d7e: $ea $3c $d8
     ld a, $01                                     ; $6d81: $3e $01
-    ld [$d83d], a                                 ; $6d83: $ea $3d $d8
+    ld [rGS08_PauseMenuGiveUpPromptSelection], a  ; $6d83: $ea $3d $d8
     ld a, $06                                     ; $6d86: $3e $06
     ld hl, $7a00                                  ; $6d88: $21 $00 $7a
     ld de, $8500                                  ; $6d8b: $11 $00 $85
     ld bc, $0300                                  ; $6d8e: $01 $00 $03
     call BankedTileCopyVRAMSafe                   ; $6d91: $cd $38 $05
-    call Call_001_70a1                            ; $6d94: $cd $a1 $70
+    call MaskClueDigitSlotsFromRunLengthBuffers   ; $6d94: $cd $a1 $70
     ld hl, rStatePhase_Current                    ; $6d97: $21 $35 $d6
     inc [hl]                                      ; $6d9a: $34
     ret                                           ; $6d9b: $c9
@@ -5753,7 +5751,7 @@ GS0A_StatePhase_06_TODO::
     ld c, $03                                     ; $6dab: $0e $03
     ld a, $02                                     ; $6dad: $3e $02
     call CallSoundEffectDispatcher                ; $6daf: $cd $b6 $03
-    ld a, [$d83a]                                 ; $6db2: $fa $3a $d8
+    ld a, [rGS08_PauseMenuMainSelection]          ; $6db2: $fa $3a $d8
     ld c, a                                       ; $6db5: $4f
     ld b, $00                                     ; $6db6: $06 $00
     ld hl, GS0A_StatePhase_06_TODO_Data           ; $6db8: $21 $d1 $6d
@@ -5789,7 +5787,7 @@ GS0A_StatePhase_07_TODO::
     ld c, $04                                     ; $6de2: $0e $04
     ld a, $02                                     ; $6de4: $3e $02
     call CallSoundEffectDispatcher                ; $6de6: $cd $b6 $03
-    ld a, [$d83b]                                 ; $6de9: $fa $3b $d8
+    ld a, [rGS08_PauseMenuSavePromptSelection]    ; $6de9: $fa $3b $d8
     and a                                         ; $6dec: $a7
     jr z, jr_001_6df5                             ; $6ded: $28 $06
 
@@ -5799,7 +5797,7 @@ GS0A_StatePhase_07_TODO::
 
 
 jr_001_6df5:
-    call Call_000_1c14                            ; $6df5: $cd $14 $1c
+    call SaveCurrentPuzzleProgressToSaveData      ; $6df5: $cd $14 $1c
     ld a, $02                                     ; $6df8: $3e $02
     ld [rContinueSavedGameFlowMode_Unsure], a     ; $6dfa: $ea $a2 $ac
     ld c, $03                                     ; $6dfd: $0e $03
@@ -5842,9 +5840,9 @@ jr_001_6df5:
     add c                                         ; $6e56: $81
     add [hl]                                      ; $6e57: $86
     ld c, a                                       ; $6e58: $4f
-    ld hl, $a06a                                  ; $6e59: $21 $6a $a0
+    ld hl, rSaveSlot1PicrossKinokoBGMSelectionIndex; $6e59: $21 $6a $a0
     add hl, bc                                    ; $6e5c: $09
-    ld a, [$d83c]                                 ; $6e5d: $fa $3c $d8
+    ld a, [rGS08_PauseMenuBGMSubmenuSelection]    ; $6e5d: $fa $3c $d8
     ld [hl], a                                    ; $6e60: $77
     ld a, $04                                     ; $6e61: $3e $04
     ld [rStatePhase_Current], a                   ; $6e63: $ea $35 $d6
@@ -5880,7 +5878,7 @@ GS0A_StatePhase_09_TODO::
     ld c, $04                                     ; $6e97: $0e $04
     ld a, $02                                     ; $6e99: $3e $02
     call CallSoundEffectDispatcher                ; $6e9b: $cd $b6 $03
-    ld a, [$d83d]                                 ; $6e9e: $fa $3d $d8
+    ld a, [rGS08_PauseMenuGiveUpPromptSelection]  ; $6e9e: $fa $3d $d8
     and a                                         ; $6ea1: $a7
     jr z, jr_001_6eaa                             ; $6ea2: $28 $06
 
@@ -5913,9 +5911,9 @@ jr_001_6eaa:
     add c                                         ; $6ed8: $81
     add [hl]                                      ; $6ed9: $86
     ld c, a                                       ; $6eda: $4f
-    ld hl, $a06a                                  ; $6edb: $21 $6a $a0
+    ld hl, rSaveSlot1PicrossKinokoBGMSelectionIndex; $6edb: $21 $6a $a0
     add hl, bc                                    ; $6ede: $09
-    ld a, [$d83c]                                 ; $6edf: $fa $3c $d8
+    ld a, [rGS08_PauseMenuBGMSubmenuSelection]    ; $6edf: $fa $3c $d8
     ld [hl], a                                    ; $6ee2: $77
     ld a, $04                                     ; $6ee3: $3e $04
     ld [rStatePhase_Current], a                   ; $6ee5: $ea $35 $d6
@@ -5939,9 +5937,9 @@ GS0A_StatePhase_0a_TODO::
     add c                                         ; $6f05: $81
     add [hl]                                      ; $6f06: $86
     ld c, a                                       ; $6f07: $4f
-    ld hl, $a06a                                  ; $6f08: $21 $6a $a0
+    ld hl, rSaveSlot1PicrossKinokoBGMSelectionIndex; $6f08: $21 $6a $a0
     add hl, bc                                    ; $6f0b: $09
-    ld a, [$d83c]                                 ; $6f0c: $fa $3c $d8
+    ld a, [rGS08_PauseMenuBGMSubmenuSelection]    ; $6f0c: $fa $3c $d8
     ld [hl], a                                    ; $6f0f: $77
     ld a, $06                                     ; $6f10: $3e $06
     ld hl, $4500                                  ; $6f12: $21 $00 $45
@@ -6269,38 +6267,38 @@ ClueDigitTileSourceTableGrayBG::
     db $d0, $5a
     db $e0, $5a
 
-Call_001_70a1:
-    call Call_001_70a8                            ; $70a1: $cd $a8 $70
-    call Call_001_70d5                            ; $70a4: $cd $d5 $70
+MaskClueDigitSlotsFromRunLengthBuffers::
+    call MaskHorizontalClueDigitSlotsFromRunLengthBuffer; $70a1: $cd $a8 $70
+    call MaskVerticalClueDigitSlotsFromRunLengthBuffer; $70a4: $cd $d5 $70
     ret                                           ; $70a7: $c9
 
 
-Call_001_70a8:
+MaskHorizontalClueDigitSlotsFromRunLengthBuffer::
     ld hl, rClueRunLengthHorizontalBufferStart    ; $70a8: $21 $40 $d7
     ld e, $00                                     ; $70ab: $1e $00
     ld b, $32                                     ; $70ad: $06 $32
     ld a, [rPuzzleGridHeight]                     ; $70af: $fa $01 $d8
 
-jr_001_70b2:
+.HorizontalMask_RowLoop:
     push af                                       ; $70b2: $f5
     ld c, $09                                     ; $70b3: $0e $09
 
-jr_001_70b5:
+.HorizontalMask_ColumnLoop:
     ld a, [hl+]                                   ; $70b5: $2a
     and a                                         ; $70b6: $a7
-    jr z, jr_001_70bc                             ; $70b7: $28 $03
+    jr z, .HorizontalMask_NextColumn              ; $70b7: $28 $03
 
-    call Call_001_7103                            ; $70b9: $cd $03 $71
+    call PrepareBGTileCopyForMaskedClueSlot       ; $70b9: $cd $03 $71
 
-jr_001_70bc:
+.HorizontalMask_NextColumn:
     ld a, c                                       ; $70bc: $79
     add $07                                       ; $70bd: $c6 $07
     ld c, a                                       ; $70bf: $4f
     cp $2c                                        ; $70c0: $fe $2c
-    jr nz, jr_001_70b5                            ; $70c2: $20 $f1
+    jr nz, .HorizontalMask_ColumnLoop             ; $70c2: $20 $f1
 
     ld a, [hl+]                                   ; $70c4: $2a
-    call Call_001_7103                            ; $70c5: $cd $03 $71
+    call PrepareBGTileCopyForMaskedClueSlot       ; $70c5: $cd $03 $71
     ld a, e                                       ; $70c8: $7b
     xor $ff                                       ; $70c9: $ee $ff
     ld e, a                                       ; $70cb: $5f
@@ -6309,38 +6307,38 @@ jr_001_70bc:
     ld b, a                                       ; $70cf: $47
     pop af                                        ; $70d0: $f1
     dec a                                         ; $70d1: $3d
-    jr nz, jr_001_70b2                            ; $70d2: $20 $de
+    jr nz, .HorizontalMask_RowLoop                ; $70d2: $20 $de
 
     ret                                           ; $70d4: $c9
 
 
-Call_001_70d5:
+MaskVerticalClueDigitSlotsFromRunLengthBuffer::
     ld hl, rClueRunLengthVerticalBufferStart      ; $70d5: $21 $a0 $d7
     ld e, $00                                     ; $70d8: $1e $00
     ld c, $3a                                     ; $70da: $0e $3a
     ld a, [rPuzzleGridWidth]                      ; $70dc: $fa $00 $d8
 
-jr_001_70df:
+.VerticalMask_ColumnLoop:
     push af                                       ; $70df: $f5
     ld b, $08                                     ; $70e0: $06 $08
     ld a, [hl+]                                   ; $70e2: $2a
 
-jr_001_70e3:
+.VerticalMask_RowLoop:
     ld a, [hl+]                                   ; $70e3: $2a
     and a                                         ; $70e4: $a7
-    jr z, jr_001_70ea                             ; $70e5: $28 $03
+    jr z, .VerticalMask_NextRow                   ; $70e5: $28 $03
 
-    call Call_001_7103                            ; $70e7: $cd $03 $71
+    call PrepareBGTileCopyForMaskedClueSlot       ; $70e7: $cd $03 $71
 
-jr_001_70ea:
+.VerticalMask_NextRow:
     ld a, b                                       ; $70ea: $78
     add $07                                       ; $70eb: $c6 $07
     ld b, a                                       ; $70ed: $47
     cp $24                                        ; $70ee: $fe $24
-    jr nz, jr_001_70e3                            ; $70f0: $20 $f1
+    jr nz, .VerticalMask_RowLoop                  ; $70f0: $20 $f1
 
     ld a, [hl+]                                   ; $70f2: $2a
-    call Call_001_7103                            ; $70f3: $cd $03 $71
+    call PrepareBGTileCopyForMaskedClueSlot       ; $70f3: $cd $03 $71
     ld a, e                                       ; $70f6: $7b
     xor $ff                                       ; $70f7: $ee $ff
     ld e, a                                       ; $70f9: $5f
@@ -6349,12 +6347,12 @@ jr_001_70ea:
     ld c, a                                       ; $70fd: $4f
     pop af                                        ; $70fe: $f1
     dec a                                         ; $70ff: $3d
-    jr nz, jr_001_70df                            ; $7100: $20 $dd
+    jr nz, .VerticalMask_ColumnLoop               ; $7100: $20 $dd
 
     ret                                           ; $7102: $c9
 
 
-Call_001_7103:
+PrepareBGTileCopyForMaskedClueSlot::
     push bc                                       ; $7103: $c5
     push de                                       ; $7104: $d5
     push hl                                       ; $7105: $e5
@@ -6368,21 +6366,21 @@ Call_001_7103:
     ld [rBGTileCopyDestY], a                      ; $7115: $ea $54 $c3
     ld a, e                                       ; $7118: $7b
     and a                                         ; $7119: $a7
-    jr nz, jr_001_7128                            ; $711a: $20 $0c
+    jr nz, .UseGrayBGMaskedClueTileSource         ; $711a: $20 $0c
 
     ld a, $e0                                     ; $711c: $3e $e0
     ld [rBGTileCopyBankAddressLow], a             ; $711e: $ea $55 $c3
     ld a, $58                                     ; $7121: $3e $58
     ld [rBGTileCopyBankAddressHigh], a            ; $7123: $ea $56 $c3
-    jr jr_001_7132                                ; $7126: $18 $0a
+    jr .ApplyMaskedClueTileCopy                   ; $7126: $18 $0a
 
-jr_001_7128:
+.UseGrayBGMaskedClueTileSource:
     ld a, $f0                                     ; $7128: $3e $f0
     ld [rBGTileCopyBankAddressLow], a             ; $712a: $ea $55 $c3
     ld a, $58                                     ; $712d: $3e $58
     ld [rBGTileCopyBankAddressHigh], a            ; $712f: $ea $56 $c3
 
-jr_001_7132:
+.ApplyMaskedClueTileCopy:
     ld a, $06                                     ; $7132: $3e $06
     ld [rBGTileCopyBank], a                       ; $7134: $ea $57 $c3
     call PrepareBGTileCopy                        ; $7137: $cd $b3 $08
@@ -6565,7 +6563,7 @@ ProcessPuzzleCellActionInput::
     add [hl]                                      ; $7242: $86
     ld c, a                                       ; $7243: $4f
     ld b, $00                                     ; $7244: $06 $00
-    ld hl, $d640                                  ; $7246: $21 $40 $d6
+    ld hl, rPuzzleCellStateBufferStart            ; $7246: $21 $40 $d6
     add hl, bc                                    ; $7249: $09
     push hl                                       ; $724a: $e5
     ld a, [rSelectedSaveSlotIndex]                ; $724b: $fa $65 $a0
@@ -7148,7 +7146,7 @@ PrepareBGTileCopyFromCellEffectParams::
     ret                                           ; $75f5: $c9
 
 
-Call_001_75f6:
+FinalizePuzzleClearAndSetPostClearFlowFlag::
     ld a, [$d803]                                 ; $75f6: $fa $03 $d8
     ld hl, $d802                                  ; $75f9: $21 $02 $d8
     or [hl]                                       ; $75fc: $b6
@@ -7162,7 +7160,7 @@ Call_001_75f6:
     ld a, $01                                     ; $760a: $3e $01
     call CallSoundEffectDispatcher                ; $760c: $cd $b6 $03
 
-jr_001_760f:
+.WaitForMessageAndEffectsToSettle:
     call ClearShadowOAMBufferFromCursor           ; $760f: $cd $c5 $05
     rst RST_08                                    ; $7612: $cf
     xor a                                         ; $7613: $af
@@ -7174,7 +7172,7 @@ jr_001_760f:
     call TickPendingCellActionEffect              ; $7623: $cd $16 $75
     ld a, [rMessageStepSequenceState]             ; $7626: $fa $21 $d8
     and a                                         ; $7629: $a7
-    jr nz, jr_001_760f                            ; $762a: $20 $e3
+    jr nz, .WaitForMessageAndEffectsToSettle      ; $762a: $20 $e3
 
     call ClearShadowOAMBuffer                     ; $762c: $cd $b6 $05
     ld a, $ff                                     ; $762f: $3e $ff
@@ -7208,7 +7206,7 @@ RedrawPuzzleBoard::
     call BankedTileCopyVRAMSafe                   ; $765d: $cd $38 $05
 
 .RedrawBoardCells:
-    ld hl, $d640                                  ; $7660: $21 $40 $d6
+    ld hl, rPuzzleCellStateBufferStart            ; $7660: $21 $40 $d6
     ld c, $33                                     ; $7663: $0e $33
     ld e, $05                                     ; $7665: $1e $05
     ld a, [rPuzzleGridHeight]                     ; $7667: $fa $01 $d8
@@ -7266,41 +7264,41 @@ RedrawPuzzleBoard::
     ret                                           ; $76a8: $c9
 
 
-Call_001_76a9:
+RedrawPostClearSolvedCellsByGridSize::
     ld a, [rPuzzleGridWidth]                      ; $76a9: $fa $00 $d8
     cp $05                                        ; $76ac: $fe $05
-    jp z, Jump_001_76b9                           ; $76ae: $ca $b9 $76
+    jp z, RedrawPostClearSolvedCells5x5           ; $76ae: $ca $b9 $76
 
     cp $0a                                        ; $76b1: $fe $0a
-    jp z, Jump_001_76e8                           ; $76b3: $ca $e8 $76
+    jp z, RedrawPostClearSolvedCells10x10         ; $76b3: $ca $e8 $76
 
-    jp Jump_001_7717                              ; $76b6: $c3 $17 $77
+    jp RedrawPostClearSolvedCells15x15            ; $76b6: $c3 $17 $77
 
 
-Jump_001_76b9:
-    call Call_001_7741                            ; $76b9: $cd $41 $77
-    ld hl, $d640                                  ; $76bc: $21 $40 $d6
+RedrawPostClearSolvedCells5x5::
+    call Load5x5PostClearBoardBaseTiles           ; $76b9: $cd $41 $77
+    ld hl, rPuzzleCellStateBufferStart            ; $76bc: $21 $40 $d6
     ld c, $3c                                     ; $76bf: $0e $3c
     ld e, $01                                     ; $76c1: $1e $01
 
-jr_001_76c3:
+.Begin5x5SolvedCellRedrawRow:
     ld b, $44                                     ; $76c3: $06 $44
     ld d, $01                                     ; $76c5: $16 $01
 
-jr_001_76c7:
+.Scan5x5SolvedCellRedrawColumn:
     ld a, [hl+]                                   ; $76c7: $2a
     and $01                                       ; $76c8: $e6 $01
-    jr z, jr_001_76d1                             ; $76ca: $28 $05
+    jr z, .Advance5x5SolvedCellRedrawColumnOrRow  ; $76ca: $28 $05
 
     swap a                                        ; $76cc: $cb $37
     call PrepareBGTileCopyFromCellEffectParams    ; $76ce: $cd $cf $75
 
-jr_001_76d1:
+.Advance5x5SolvedCellRedrawColumnOrRow:
     ld a, b                                       ; $76d1: $78
     add $02                                       ; $76d2: $c6 $02
     ld b, a                                       ; $76d4: $47
     cp $4e                                        ; $76d5: $fe $4e
-    jr nz, jr_001_76c7                            ; $76d7: $20 $ee
+    jr nz, .Scan5x5SolvedCellRedrawColumn         ; $76d7: $20 $ee
 
     push bc                                       ; $76d9: $c5
     ld bc, $000b                                  ; $76da: $01 $0b $00
@@ -7310,35 +7308,35 @@ jr_001_76d1:
     add $02                                       ; $76e0: $c6 $02
     ld c, a                                       ; $76e2: $4f
     cp $46                                        ; $76e3: $fe $46
-    jr nz, jr_001_76c3                            ; $76e5: $20 $dc
+    jr nz, .Begin5x5SolvedCellRedrawRow           ; $76e5: $20 $dc
 
     ret                                           ; $76e7: $c9
 
 
-Jump_001_76e8:
-    call Call_001_77a6                            ; $76e8: $cd $a6 $77
-    ld hl, $d640                                  ; $76eb: $21 $40 $d6
+RedrawPostClearSolvedCells10x10::
+    call Load10x10PostClearBoardBaseTiles         ; $76e8: $cd $a6 $77
+    ld hl, rPuzzleCellStateBufferStart            ; $76eb: $21 $40 $d6
     ld c, $43                                     ; $76ee: $0e $43
     ld e, $01                                     ; $76f0: $1e $01
 
-jr_001_76f2:
+.Begin10x10SolvedCellRedrawRow:
     ld b, $4e                                     ; $76f2: $06 $4e
     ld d, $01                                     ; $76f4: $16 $01
 
-jr_001_76f6:
+.Scan10x10SolvedCellRedrawColumn:
     ld a, [hl+]                                   ; $76f6: $2a
     and $01                                       ; $76f7: $e6 $01
-    jr z, jr_001_7700                             ; $76f9: $28 $05
+    jr z, .Advance10x10SolvedCellRedrawColumnOrRow; $76f9: $28 $05
 
     swap a                                        ; $76fb: $cb $37
     call PrepareBGTileCopyFromCellEffectParams    ; $76fd: $cd $cf $75
 
-jr_001_7700:
+.Advance10x10SolvedCellRedrawColumnOrRow:
     ld a, b                                       ; $7700: $78
     add $02                                       ; $7701: $c6 $02
     ld b, a                                       ; $7703: $47
     cp $62                                        ; $7704: $fe $62
-    jr nz, jr_001_76f6                            ; $7706: $20 $ee
+    jr nz, .Scan10x10SolvedCellRedrawColumn       ; $7706: $20 $ee
 
     push bc                                       ; $7708: $c5
     ld bc, $0006                                  ; $7709: $01 $06 $00
@@ -7348,51 +7346,51 @@ jr_001_7700:
     add $02                                       ; $770f: $c6 $02
     ld c, a                                       ; $7711: $4f
     cp $57                                        ; $7712: $fe $57
-    jr nz, jr_001_76f2                            ; $7714: $20 $dc
+    jr nz, .Begin10x10SolvedCellRedrawRow         ; $7714: $20 $dc
 
     ret                                           ; $7716: $c9
 
 
-Jump_001_7717:
-    call Call_001_780a                            ; $7717: $cd $0a $78
-    ld hl, $d640                                  ; $771a: $21 $40 $d6
+RedrawPostClearSolvedCells15x15::
+    call Load15x15PostClearBoardBaseTiles         ; $7717: $cd $0a $78
+    ld hl, rPuzzleCellStateBufferStart            ; $771a: $21 $40 $d6
     ld c, $4d                                     ; $771d: $0e $4d
     ld e, $01                                     ; $771f: $1e $01
 
-jr_001_7721:
+.Begin15x15SolvedCellRedrawRow:
     ld b, $59                                     ; $7721: $06 $59
     ld d, $01                                     ; $7723: $16 $01
 
-jr_001_7725:
+.Scan15x15SolvedCellRedrawColumn:
     ld a, [hl+]                                   ; $7725: $2a
     and $01                                       ; $7726: $e6 $01
-    jr z, jr_001_772f                             ; $7728: $28 $05
+    jr z, .Advance15x15SolvedCellRedrawColumnOrRow; $7728: $28 $05
 
     swap a                                        ; $772a: $cb $37
     call PrepareBGTileCopyFromCellEffectParams    ; $772c: $cd $cf $75
 
-jr_001_772f:
+.Advance15x15SolvedCellRedrawColumnOrRow:
     ld a, b                                       ; $772f: $78
     add $02                                       ; $7730: $c6 $02
     ld b, a                                       ; $7732: $47
     cp $77                                        ; $7733: $fe $77
-    jr nz, jr_001_7725                            ; $7735: $20 $ee
+    jr nz, .Scan15x15SolvedCellRedrawColumn       ; $7735: $20 $ee
 
     inc hl                                        ; $7737: $23
     ld a, c                                       ; $7738: $79
     add $02                                       ; $7739: $c6 $02
     ld c, a                                       ; $773b: $4f
     cp $6b                                        ; $773c: $fe $6b
-    jr nz, jr_001_7721                            ; $773e: $20 $e1
+    jr nz, .Begin15x15SolvedCellRedrawRow         ; $773e: $20 $e1
 
     ret                                           ; $7740: $c9
 
 
-Call_001_7741:
+Load5x5PostClearBoardBaseTiles::
     ld hl, $6340                                  ; $7741: $21 $40 $63
     ld c, $33                                     ; $7744: $0e $33
 
-jr_001_7746:
+.Copy5x5PostClearBoardBaseTileRows:
     push bc                                       ; $7746: $c5
     push hl                                       ; $7747: $e5
     ld a, l                                       ; $7748: $7d
@@ -7415,17 +7413,17 @@ jr_001_7746:
     ld de, $0108                                  ; $776d: $11 $08 $01
     add hl, de                                    ; $7770: $19
     bit 3, l                                      ; $7771: $cb $5d
-    jr nz, jr_001_7779                            ; $7773: $20 $04
+    jr nz, .Advance5x5PostClearBoardBaseTileRow   ; $7773: $20 $04
 
     ld de, $00f0                                  ; $7775: $11 $f0 $00
     add hl, de                                    ; $7778: $19
 
-jr_001_7779:
+.Advance5x5PostClearBoardBaseTileRow:
     ld a, c                                       ; $7779: $79
     add $0c                                       ; $777a: $c6 $0c
     ld c, a                                       ; $777c: $4f
     cp $4b                                        ; $777d: $fe $4b
-    jr nz, jr_001_7746                            ; $777f: $20 $c5
+    jr nz, .Copy5x5PostClearBoardBaseTileRows     ; $777f: $20 $c5
 
     ld a, l                                       ; $7781: $7d
     ld [rBGTileCopyBankAddressLow], a             ; $7782: $ea $55 $c3
@@ -7448,11 +7446,11 @@ jr_001_7779:
     ret                                           ; $77a5: $c9
 
 
-Call_001_77a6:
+Load10x10PostClearBoardBaseTiles::
     ld hl, $6000                                  ; $77a6: $21 $00 $60
     ld c, $33                                     ; $77a9: $0e $33
 
-jr_001_77ab:
+.Copy10x10PostClearBoardBaseTileRows:
     push bc                                       ; $77ab: $c5
     push hl                                       ; $77ac: $e5
     ld a, l                                       ; $77ad: $7d
@@ -7475,17 +7473,17 @@ jr_001_77ab:
     ld de, $0108                                  ; $77d2: $11 $08 $01
     add hl, de                                    ; $77d5: $19
     bit 3, l                                      ; $77d6: $cb $5d
-    jr nz, jr_001_77de                            ; $77d8: $20 $04
+    jr nz, .Advance10x10PostClearBoardBaseTileRow ; $77d8: $20 $04
 
     ld de, $00f0                                  ; $77da: $11 $f0 $00
     add hl, de                                    ; $77dd: $19
 
-jr_001_77de:
+.Advance10x10PostClearBoardBaseTileRow:
     ld a, c                                       ; $77de: $79
     add $0c                                       ; $77df: $c6 $0c
     ld c, a                                       ; $77e1: $4f
     cp $63                                        ; $77e2: $fe $63
-    jr nz, jr_001_77ab                            ; $77e4: $20 $c5
+    jr nz, .Copy10x10PostClearBoardBaseTileRows   ; $77e4: $20 $c5
 
     ld a, l                                       ; $77e6: $7d
     ld [rBGTileCopyBankAddressLow], a             ; $77e7: $ea $55 $c3
@@ -7505,11 +7503,11 @@ jr_001_77de:
     ret                                           ; $7809: $c9
 
 
-Call_001_780a:
+Load15x15PostClearBoardBaseTiles::
     ld hl, $5d00                                  ; $780a: $21 $00 $5d
     ld c, $33                                     ; $780d: $0e $33
 
-jr_001_780f:
+.Copy15x15PostClearBoardBaseTileRows:
     push bc                                       ; $780f: $c5
     push hl                                       ; $7810: $e5
     ld a, l                                       ; $7811: $7d
@@ -7532,17 +7530,17 @@ jr_001_780f:
     ld de, $0108                                  ; $7836: $11 $08 $01
     add hl, de                                    ; $7839: $19
     bit 3, l                                      ; $783a: $cb $5d
-    jr nz, jr_001_7842                            ; $783c: $20 $04
+    jr nz, .Advance15x15PostClearBoardBaseTileRow ; $783c: $20 $04
 
     ld de, $00f0                                  ; $783e: $11 $f0 $00
     add hl, de                                    ; $7841: $19
 
-jr_001_7842:
+.Advance15x15PostClearBoardBaseTileRow:
     ld a, c                                       ; $7842: $79
     add $0c                                       ; $7843: $c6 $0c
     ld c, a                                       ; $7845: $4f
     cp $87                                        ; $7846: $fe $87
-    jr nz, jr_001_780f                            ; $7848: $20 $c5
+    jr nz, .Copy15x15PostClearBoardBaseTileRows   ; $7848: $20 $c5
 
     ld a, l                                       ; $784a: $7d
     ld [rBGTileCopyBankAddressLow], a             ; $784b: $ea $55 $c3
@@ -7562,14 +7560,14 @@ jr_001_7842:
     ret                                           ; $786d: $c9
 
 
-Call_001_786e:
-    ld hl, $d640                                  ; $786e: $21 $40 $d6
+RedrawBoardCellEffectFramesFromStateBuffer::
+    ld hl, rPuzzleCellStateBufferStart            ; $786e: $21 $40 $d6
     ld c, $00                                     ; $7871: $0e $00
 
-jr_001_7873:
+.RedrawBoardCellEffectFramesRowLoop:
     ld b, $00                                     ; $7873: $06 $00
 
-jr_001_7875:
+.RedrawBoardCellEffectFramesColumnLoop:
     ld a, b                                       ; $7875: $78
     ld [rCellEffectTargetColumn], a               ; $7876: $ea $24 $d8
     ld a, c                                       ; $7879: $79
@@ -7581,7 +7579,7 @@ jr_001_7875:
     inc b                                         ; $7885: $04
     ld a, [rPuzzleGridWidth]                      ; $7886: $fa $00 $d8
     cp b                                          ; $7889: $b8
-    jr nz, jr_001_7875                            ; $788a: $20 $e9
+    jr nz, .RedrawBoardCellEffectFramesColumnLoop ; $788a: $20 $e9
 
     ld a, [rPuzzleGridWidth]                      ; $788c: $fa $00 $d8
     sub $11                                       ; $788f: $d6 $11
@@ -7594,7 +7592,7 @@ jr_001_7875:
     inc c                                         ; $7899: $0c
     ld a, [rPuzzleGridHeight]                     ; $789a: $fa $01 $d8
     cp c                                          ; $789d: $b9
-    jr nz, jr_001_7873                            ; $789e: $20 $d3
+    jr nz, .RedrawBoardCellEffectFramesRowLoop    ; $789e: $20 $d3
 
     xor a                                         ; $78a0: $af
     ret                                           ; $78a1: $c9
@@ -7607,7 +7605,7 @@ ApplyHintSelectionToRowAndColumn::
     ld b, a                                       ; $78a9: $47
     ld e, c                                       ; $78aa: $59
     ld d, $00                                     ; $78ab: $16 $00
-    ld hl, $d640                                  ; $78ad: $21 $40 $d6
+    ld hl, rPuzzleCellStateBufferStart            ; $78ad: $21 $40 $d6
     add hl, de                                    ; $78b0: $19
     push bc                                       ; $78b1: $c5
     ld b, $00                                     ; $78b2: $06 $00
@@ -7650,7 +7648,7 @@ ApplyHintSelectionToRowAndColumn::
     ld e, b                                       ; $78e2: $58
     swap e                                        ; $78e3: $cb $33
     ld d, $00                                     ; $78e5: $16 $00
-    ld hl, $d640                                  ; $78e7: $21 $40 $d6
+    ld hl, rPuzzleCellStateBufferStart            ; $78e7: $21 $40 $d6
     add hl, de                                    ; $78ea: $19
     ld c, $00                                     ; $78eb: $0e $00
 
@@ -8482,44 +8480,44 @@ jr_001_7dc4:
     ret                                           ; $7dca: $c9
 
 
-Call_001_7dcb:
-    ld hl, $d640                                  ; $7dcb: $21 $40 $d6
+RecomputePuzzleCellBitSetCounters::
+    ld hl, rPuzzleCellStateBufferStart            ; $7dcb: $21 $40 $d6
     ld bc, $0100                                  ; $7dce: $01 $00 $01
     ld e, $00                                     ; $7dd1: $1e $00
 
-jr_001_7dd3:
+.CountBit0SetCellsLoop:
     ld a, [hl+]                                   ; $7dd3: $2a
     bit 0, a                                      ; $7dd4: $cb $47
-    jr z, jr_001_7dd9                             ; $7dd6: $28 $01
+    jr z, .AdvanceCountBit0SetCellsLoop           ; $7dd6: $28 $01
 
     inc e                                         ; $7dd8: $1c
 
-jr_001_7dd9:
+.AdvanceCountBit0SetCellsLoop:
     dec bc                                        ; $7dd9: $0b
     ld a, c                                       ; $7dda: $79
     or b                                          ; $7ddb: $b0
-    jr nz, jr_001_7dd3                            ; $7ddc: $20 $f5
+    jr nz, .CountBit0SetCellsLoop                 ; $7ddc: $20 $f5
 
-    ld hl, $d640                                  ; $7dde: $21 $40 $d6
+    ld hl, rPuzzleCellStateBufferStart            ; $7dde: $21 $40 $d6
     ld bc, $0100                                  ; $7de1: $01 $00 $01
     ld d, e                                       ; $7de4: $53
 
-jr_001_7de5:
+.AdjustCountersForBit1SetCellsLoop:
     ld a, [hl+]                                   ; $7de5: $2a
     bit 1, a                                      ; $7de6: $cb $4f
-    jr z, jr_001_7df0                             ; $7de8: $28 $06
+    jr z, .AdvanceAdjustCountersForBit1SetCellsLoop; $7de8: $28 $06
 
     dec e                                         ; $7dea: $1d
     bit 0, a                                      ; $7deb: $cb $47
-    jr z, jr_001_7df0                             ; $7ded: $28 $01
+    jr z, .AdvanceAdjustCountersForBit1SetCellsLoop; $7ded: $28 $01
 
     dec d                                         ; $7def: $15
 
-jr_001_7df0:
+.AdvanceAdjustCountersForBit1SetCellsLoop:
     dec bc                                        ; $7df0: $0b
     ld a, c                                       ; $7df1: $79
     or b                                          ; $7df2: $b0
-    jr nz, jr_001_7de5                            ; $7df3: $20 $f0
+    jr nz, .AdjustCountersForBit1SetCellsLoop     ; $7df3: $20 $f0
 
     ld a, e                                       ; $7df5: $7b
     ld [$d803], a                                 ; $7df6: $ea $03 $d8
@@ -8541,10 +8539,10 @@ Call_001_7dfe:
     add c                                         ; $7e10: $81
     add [hl]                                      ; $7e11: $86
     ld c, a                                       ; $7e12: $4f
-    ld hl, $a06a                                  ; $7e13: $21 $6a $a0
+    ld hl, rSaveSlot1PicrossKinokoBGMSelectionIndex; $7e13: $21 $6a $a0
     add hl, bc                                    ; $7e16: $09
     ld c, [hl]                                    ; $7e17: $4e
-    ld hl, $7e2d                                  ; $7e18: $21 $2d $7e
+    ld hl, PuzzleModeSecondarySfxIdTable          ; $7e18: $21 $2d $7e
     add hl, bc                                    ; $7e1b: $09
     ld c, $00                                     ; $7e1c: $0e $00
     ld a, $01                                     ; $7e1e: $3e $01
@@ -8556,12 +8554,10 @@ Call_001_7dfe:
     ret                                           ; $7e2c: $c9
 
 
-    dec b                                         ; $7e2d: $05
-    ld bc, $030b                                  ; $7e2e: $01 $0b $03
-    ld [bc], a                                    ; $7e31: $02
-    nop                                           ; $7e32: $00
+PuzzleModeSecondarySfxIdTable::
+    db $05, $01, $0b, $03, $02, $00
 
-Call_001_7e33:
+TickLowTimerMarioSweatIndicator::
     ld hl, $d81c                                  ; $7e33: $21 $1c $d8
     inc [hl]                                      ; $7e36: $34
     ld a, [rPuzzleTimerMinuteTens]                ; $7e37: $fa $0a $d8
@@ -8570,69 +8566,69 @@ Call_001_7e33:
 
     ld a, [rPuzzleTimerMinuteOnes]                ; $7e3c: $fa $09 $d8
     cp $02                                        ; $7e3f: $fe $02
-    jr z, jr_001_7e4b                             ; $7e41: $28 $08
+    jr z, .TickBelowThreeMinutesWarningWindow     ; $7e41: $28 $08
 
     cp $01                                        ; $7e43: $fe $01
-    jr z, jr_001_7e57                             ; $7e45: $28 $10
+    jr z, .TickBelowTwoMinutesWarningWindow       ; $7e45: $28 $10
 
     and a                                         ; $7e47: $a7
-    jr z, jr_001_7e63                             ; $7e48: $28 $19
+    jr z, .TickBelowOneMinuteWarningWindow        ; $7e48: $28 $19
 
     ret                                           ; $7e4a: $c9
 
 
-jr_001_7e4b:
+.TickBelowThreeMinutesWarningWindow:
     ld a, [hl]                                    ; $7e4b: $7e
     cp $3c                                        ; $7e4c: $fe $3c
-    jr c, jr_001_7e52                             ; $7e4e: $38 $02
+    jr c, .CheckBelowThreeMinutesWarningSpriteWindow; $7e4e: $38 $02
 
     xor a                                         ; $7e50: $af
     ld [hl], a                                    ; $7e51: $77
 
-jr_001_7e52:
+.CheckBelowThreeMinutesWarningSpriteWindow:
     cp $08                                        ; $7e52: $fe $08
-    jr c, jr_001_7e6f                             ; $7e54: $38 $19
+    jr c, .DrawMarioSweatWarningSprite            ; $7e54: $38 $19
 
     ret                                           ; $7e56: $c9
 
 
-jr_001_7e57:
+.TickBelowTwoMinutesWarningWindow:
     ld a, [hl]                                    ; $7e57: $7e
     cp $1e                                        ; $7e58: $fe $1e
-    jr c, jr_001_7e5e                             ; $7e5a: $38 $02
+    jr c, .CheckBelowTwoMinutesWarningSpriteWindow; $7e5a: $38 $02
 
     xor a                                         ; $7e5c: $af
     ld [hl], a                                    ; $7e5d: $77
 
-jr_001_7e5e:
+.CheckBelowTwoMinutesWarningSpriteWindow:
     cp $08                                        ; $7e5e: $fe $08
-    jr c, jr_001_7e6f                             ; $7e60: $38 $0d
+    jr c, .DrawMarioSweatWarningSprite            ; $7e60: $38 $0d
 
     ret                                           ; $7e62: $c9
 
 
-jr_001_7e63:
+.TickBelowOneMinuteWarningWindow:
     ld a, [hl]                                    ; $7e63: $7e
     cp $0f                                        ; $7e64: $fe $0f
-    jr c, jr_001_7e6a                             ; $7e66: $38 $02
+    jr c, .CheckBelowOneMinuteWarningSpriteWindow ; $7e66: $38 $02
 
     xor a                                         ; $7e68: $af
     ld [hl], a                                    ; $7e69: $77
 
-jr_001_7e6a:
+.CheckBelowOneMinuteWarningSpriteWindow:
     cp $08                                        ; $7e6a: $fe $08
-    jr c, jr_001_7e6f                             ; $7e6c: $38 $01
+    jr c, .DrawMarioSweatWarningSprite            ; $7e6c: $38 $01
 
     ret                                           ; $7e6e: $c9
 
 
-jr_001_7e6f:
+.DrawMarioSweatWarningSprite:
     ld bc, $2e0c                                  ; $7e6f: $01 $0c $2e
     ld a, $0a                                     ; $7e72: $3e $0a
     jp CopyOAMSpriteById                          ; $7e74: $c3 $ce $20
 
 
-Call_001_7e77:
+ApplyLowTimerMarioFaceTilesOnce::
     ld a, [$d81d]                                 ; $7e77: $fa $1d $d8
     and a                                         ; $7e7a: $a7
     ret nz                                        ; $7e7b: $c0
@@ -8649,13 +8645,13 @@ Call_001_7e77:
     ld [$d81d], a                                 ; $7e89: $ea $1d $d8
     ld a, [rPuzzleGridWidth]                      ; $7e8c: $fa $00 $d8
     cp $05                                        ; $7e8f: $fe $05
-    jr nz, jr_001_7e95                            ; $7e91: $20 $02
+    jr nz, .Load10x10LowTimerMarioFaceTiles       ; $7e91: $20 $02
 
-    jr jr_001_7f0b                                ; $7e93: $18 $76
+    jr .ReturnFromLowTimerMarioFaceTiles          ; $7e93: $18 $76
 
-jr_001_7e95:
+.Load10x10LowTimerMarioFaceTiles:
     cp $0a                                        ; $7e95: $fe $0a
-    jr nz, jr_001_7ed3                            ; $7e97: $20 $3a
+    jr nz, .Load15x15LowTimerMarioFaceTiles       ; $7e97: $20 $3a
 
     ld a, $08                                     ; $7e99: $3e $08
     ld hl, $58b0                                  ; $7e9b: $21 $b0 $58
@@ -8677,9 +8673,9 @@ jr_001_7e95:
     ld de, $89c0                                  ; $7ec8: $11 $c0 $89
     ld bc, $0020                                  ; $7ecb: $01 $20 $00
     call BankedTileCopyVRAMSafe                   ; $7ece: $cd $38 $05
-    jr jr_001_7f0b                                ; $7ed1: $18 $38
+    jr .ReturnFromLowTimerMarioFaceTiles          ; $7ed1: $18 $38
 
-jr_001_7ed3:
+.Load15x15LowTimerMarioFaceTiles:
     ld a, $06                                     ; $7ed3: $3e $06
     ld hl, $70b0                                  ; $7ed5: $21 $b0 $70
     ld de, $88b0                                  ; $7ed8: $11 $b0 $88
@@ -8701,7 +8697,7 @@ jr_001_7ed3:
     ld bc, $0020                                  ; $7f05: $01 $20 $00
     call BankedTileCopyVRAMSafe                   ; $7f08: $cd $38 $05
 
-jr_001_7f0b:
+.ReturnFromLowTimerMarioFaceTiles:
     ret                                           ; $7f0b: $c9
 
 

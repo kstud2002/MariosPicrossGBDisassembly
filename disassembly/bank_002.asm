@@ -749,7 +749,8 @@ StatePointer_09::
 StatePointer_0a::
     db $6d, $68, $01
 
-    ld a, [$d83a]                                 ; $4632: $fa $3a $d8
+GS08_PauseMenuMainSelectionInputHandler_Banked::
+    ld a, [rGS08_PauseMenuMainSelection]          ; $4632: $fa $3a $d8
     add $40                                       ; $4635: $c6 $40
     ld bc, $4038                                  ; $4637: $01 $38 $40
     call CopyOAMSpriteById                        ; $463a: $cd $ce $20
@@ -758,7 +759,7 @@ StatePointer_0a::
     call CopyOAMSpriteById                        ; $4642: $cd $ce $20
     ld a, [rInputButtonsPressedOrRepeated]        ; $4645: $fa $22 $c3
     and $c0                                       ; $4648: $e6 $c0
-    jr z, jr_002_466f                             ; $464a: $28 $23
+    jr z, .ReturnFromPauseMenuMainSelectionInputHandler; $464a: $28 $23
 
     push af                                       ; $464c: $f5
     ld c, $0a                                     ; $464d: $0e $0a
@@ -766,32 +767,33 @@ StatePointer_0a::
     call CallSoundEffectDispatcher                ; $4651: $cd $b6 $03
     pop af                                        ; $4654: $f1
     and $40                                       ; $4655: $e6 $40
-    ld a, [$d83a]                                 ; $4657: $fa $3a $d8
-    jr z, jr_002_4665                             ; $465a: $28 $09
+    ld a, [rGS08_PauseMenuMainSelection]          ; $4657: $fa $3a $d8
+    jr z, .HandlePauseMenuSelectionMoveDown       ; $465a: $28 $09
 
     dec a                                         ; $465c: $3d
     cp $ff                                        ; $465d: $fe $ff
-    jr nz, jr_002_466b                            ; $465f: $20 $0a
+    jr nz, .StorePauseMenuSelectionAndRestoreAF   ; $465f: $20 $0a
 
     ld a, $02                                     ; $4661: $3e $02
-    jr jr_002_466b                                ; $4663: $18 $06
+    jr .StorePauseMenuSelectionAndRestoreAF       ; $4663: $18 $06
 
-jr_002_4665:
+.HandlePauseMenuSelectionMoveDown:
     inc a                                         ; $4665: $3c
     cp $03                                        ; $4666: $fe $03
-    jr nz, jr_002_466b                            ; $4668: $20 $01
+    jr nz, .StorePauseMenuSelectionAndRestoreAF   ; $4668: $20 $01
 
     xor a                                         ; $466a: $af
 
-jr_002_466b:
-    ld [$d83a], a                                 ; $466b: $ea $3a $d8
+.StorePauseMenuSelectionAndRestoreAF:
+    ld [rGS08_PauseMenuMainSelection], a          ; $466b: $ea $3a $d8
     pop af                                        ; $466e: $f1
 
-jr_002_466f:
+.ReturnFromPauseMenuMainSelectionInputHandler:
     jp ReturnFromBankedJumpRestoreBank            ; $466f: $c3 $ea $05
 
 
-    ld a, [$d83b]                                 ; $4672: $fa $3b $d8
+GS08_PauseMenuSavePromptSelectionInputHandler_Banked::
+    ld a, [rGS08_PauseMenuSavePromptSelection]    ; $4672: $fa $3b $d8
     add $43                                       ; $4675: $c6 $43
     ld bc, $4038                                  ; $4677: $01 $38 $40
     call CopyOAMSpriteById                        ; $467a: $cd $ce $20
@@ -800,7 +802,7 @@ jr_002_466f:
     call CopyOAMSpriteById                        ; $4682: $cd $ce $20
     ld a, [rInputButtonsPressedOrRepeated]        ; $4685: $fa $22 $c3
     and $c0                                       ; $4688: $e6 $c0
-    jr z, jr_002_46af                             ; $468a: $28 $23
+    jr z, .ReturnFromPauseMenuSavePromptSelectionInputHandler; $468a: $28 $23
 
     push af                                       ; $468c: $f5
     ld c, $0a                                     ; $468d: $0e $0a
@@ -808,32 +810,33 @@ jr_002_466f:
     call CallSoundEffectDispatcher                ; $4691: $cd $b6 $03
     pop af                                        ; $4694: $f1
     and $40                                       ; $4695: $e6 $40
-    ld a, [$d83b]                                 ; $4697: $fa $3b $d8
-    jr z, jr_002_46a5                             ; $469a: $28 $09
+    ld a, [rGS08_PauseMenuSavePromptSelection]    ; $4697: $fa $3b $d8
+    jr z, .HandlePauseMenuSavePromptSelectionMoveDown; $469a: $28 $09
 
     dec a                                         ; $469c: $3d
     cp $ff                                        ; $469d: $fe $ff
-    jr nz, jr_002_46ab                            ; $469f: $20 $0a
+    jr nz, .StorePauseMenuSavePromptSelectionAndRestoreAF; $469f: $20 $0a
 
     ld a, $01                                     ; $46a1: $3e $01
-    jr jr_002_46ab                                ; $46a3: $18 $06
+    jr .StorePauseMenuSavePromptSelectionAndRestoreAF; $46a3: $18 $06
 
-jr_002_46a5:
+.HandlePauseMenuSavePromptSelectionMoveDown:
     inc a                                         ; $46a5: $3c
     cp $02                                        ; $46a6: $fe $02
-    jr nz, jr_002_46ab                            ; $46a8: $20 $01
+    jr nz, .StorePauseMenuSavePromptSelectionAndRestoreAF; $46a8: $20 $01
 
     xor a                                         ; $46aa: $af
 
-jr_002_46ab:
-    ld [$d83b], a                                 ; $46ab: $ea $3b $d8
+.StorePauseMenuSavePromptSelectionAndRestoreAF:
+    ld [rGS08_PauseMenuSavePromptSelection], a    ; $46ab: $ea $3b $d8
     pop af                                        ; $46ae: $f1
 
-jr_002_46af:
+.ReturnFromPauseMenuSavePromptSelectionInputHandler:
     jp ReturnFromBankedJumpRestoreBank            ; $46af: $c3 $ea $05
 
 
-    ld a, [$d83c]                                 ; $46b2: $fa $3c $d8
+GS08_PauseMenuBGMSubmenuSelectionInputHandler_Banked::
+    ld a, [rGS08_PauseMenuBGMSubmenuSelection]    ; $46b2: $fa $3c $d8
     add $45                                       ; $46b5: $c6 $45
     ld bc, $4038                                  ; $46b7: $01 $38 $40
     call CopyOAMSpriteById                        ; $46ba: $cd $ce $20
@@ -842,7 +845,7 @@ jr_002_46af:
     call CopyOAMSpriteById                        ; $46c2: $cd $ce $20
     ld a, [rInputButtonsPressedOrRepeated]        ; $46c5: $fa $22 $c3
     and $c0                                       ; $46c8: $e6 $c0
-    jr z, jr_002_4706                             ; $46ca: $28 $3a
+    jr z, .ReturnFromPauseMenuBGMSubmenuSelectionInputHandler; $46ca: $28 $3a
 
     push af                                       ; $46cc: $f5
     ld c, $0a                                     ; $46cd: $0e $0a
@@ -850,28 +853,28 @@ jr_002_46af:
     call CallSoundEffectDispatcher                ; $46d1: $cd $b6 $03
     pop af                                        ; $46d4: $f1
     and $40                                       ; $46d5: $e6 $40
-    ld a, [$d83c]                                 ; $46d7: $fa $3c $d8
-    jr z, jr_002_46e5                             ; $46da: $28 $09
+    ld a, [rGS08_PauseMenuBGMSubmenuSelection]    ; $46d7: $fa $3c $d8
+    jr z, .HandlePauseMenuBGMSubmenuSelectionMoveDown; $46da: $28 $09
 
     dec a                                         ; $46dc: $3d
     cp $ff                                        ; $46dd: $fe $ff
-    jr nz, jr_002_46eb                            ; $46df: $20 $0a
+    jr nz, .StorePauseMenuBGMSubmenuSelectionAndPlayPreviewSfx; $46df: $20 $0a
 
     ld a, $05                                     ; $46e1: $3e $05
-    jr jr_002_46eb                                ; $46e3: $18 $06
+    jr .StorePauseMenuBGMSubmenuSelectionAndPlayPreviewSfx; $46e3: $18 $06
 
-jr_002_46e5:
+.HandlePauseMenuBGMSubmenuSelectionMoveDown:
     inc a                                         ; $46e5: $3c
     cp $06                                        ; $46e6: $fe $06
-    jr nz, jr_002_46eb                            ; $46e8: $20 $01
+    jr nz, .StorePauseMenuBGMSubmenuSelectionAndPlayPreviewSfx; $46e8: $20 $01
 
     xor a                                         ; $46ea: $af
 
-jr_002_46eb:
-    ld [$d83c], a                                 ; $46eb: $ea $3c $d8
+.StorePauseMenuBGMSubmenuSelectionAndPlayPreviewSfx:
+    ld [rGS08_PauseMenuBGMSubmenuSelection], a    ; $46eb: $ea $3c $d8
     ld c, a                                       ; $46ee: $4f
     ld b, $00                                     ; $46ef: $06 $00
-    ld hl, $4709                                  ; $46f1: $21 $09 $47
+    ld hl, GS08_PauseMenuBGMSubmenuPreviewSfxIdTable; $46f1: $21 $09 $47
     add hl, bc                                    ; $46f4: $09
     ld c, $00                                     ; $46f5: $0e $00
     ld a, $01                                     ; $46f7: $3e $01
@@ -882,15 +885,15 @@ jr_002_46eb:
     call CallSoundEffectDispatcher                ; $4702: $cd $b6 $03
     pop af                                        ; $4705: $f1
 
-jr_002_4706:
+.ReturnFromPauseMenuBGMSubmenuSelectionInputHandler:
     jp ReturnFromBankedJumpRestoreBank            ; $4706: $c3 $ea $05
 
 
-    dec b                                         ; $4709: $05
-    ld bc, $030b                                  ; $470a: $01 $0b $03
-    ld [bc], a                                    ; $470d: $02
-    nop                                           ; $470e: $00
-    ld a, [$d83d]                                 ; $470f: $fa $3d $d8
+GS08_PauseMenuBGMSubmenuPreviewSfxIdTable::
+    db $05, $01, $0b, $03, $02, $00
+
+GS08_PauseMenuGiveUpPromptSelectionInputHandler_Banked::
+    ld a, [rGS08_PauseMenuGiveUpPromptSelection]  ; $470f: $fa $3d $d8
     add $43                                       ; $4712: $c6 $43
     ld bc, $4038                                  ; $4714: $01 $38 $40
     call CopyOAMSpriteById                        ; $4717: $cd $ce $20
@@ -899,7 +902,7 @@ jr_002_4706:
     call CopyOAMSpriteById                        ; $471f: $cd $ce $20
     ld a, [rInputButtonsPressedOrRepeated]        ; $4722: $fa $22 $c3
     and $c0                                       ; $4725: $e6 $c0
-    jr z, jr_002_474c                             ; $4727: $28 $23
+    jr z, .ReturnFromPauseMenuGiveUpPromptSelectionInputHandler; $4727: $28 $23
 
     push af                                       ; $4729: $f5
     ld c, $0a                                     ; $472a: $0e $0a
@@ -907,28 +910,28 @@ jr_002_4706:
     call CallSoundEffectDispatcher                ; $472e: $cd $b6 $03
     pop af                                        ; $4731: $f1
     and $40                                       ; $4732: $e6 $40
-    ld a, [$d83d]                                 ; $4734: $fa $3d $d8
-    jr z, jr_002_4742                             ; $4737: $28 $09
+    ld a, [rGS08_PauseMenuGiveUpPromptSelection]  ; $4734: $fa $3d $d8
+    jr z, .HandlePauseMenuGiveUpPromptSelectionMoveDown; $4737: $28 $09
 
     dec a                                         ; $4739: $3d
     cp $ff                                        ; $473a: $fe $ff
-    jr nz, jr_002_4748                            ; $473c: $20 $0a
+    jr nz, .StorePauseMenuGiveUpPromptSelectionAndRestoreAF; $473c: $20 $0a
 
     ld a, $01                                     ; $473e: $3e $01
-    jr jr_002_4748                                ; $4740: $18 $06
+    jr .StorePauseMenuGiveUpPromptSelectionAndRestoreAF; $4740: $18 $06
 
-jr_002_4742:
+.HandlePauseMenuGiveUpPromptSelectionMoveDown:
     inc a                                         ; $4742: $3c
     cp $02                                        ; $4743: $fe $02
-    jr nz, jr_002_4748                            ; $4745: $20 $01
+    jr nz, .StorePauseMenuGiveUpPromptSelectionAndRestoreAF; $4745: $20 $01
 
     xor a                                         ; $4747: $af
 
-jr_002_4748:
-    ld [$d83d], a                                 ; $4748: $ea $3d $d8
+.StorePauseMenuGiveUpPromptSelectionAndRestoreAF:
+    ld [rGS08_PauseMenuGiveUpPromptSelection], a  ; $4748: $ea $3d $d8
     pop af                                        ; $474b: $f1
 
-jr_002_474c:
+.ReturnFromPauseMenuGiveUpPromptSelectionInputHandler:
     jp ReturnFromBankedJumpRestoreBank            ; $474c: $c3 $ea $05
 
 
