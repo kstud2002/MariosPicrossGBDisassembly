@@ -5860,7 +5860,7 @@ RunEraseDataConfirmationPrompt::
     ld a, $0b                                     ; $1d2e: $3e $0b
     ld hl, $5000                                  ; $1d30: $21 $00 $50
     ld de, $8000                                  ; $1d33: $11 $00 $80
-    ld bc, .CheckAllFaceButtonsHeldCombo          ; $1d36: $01 $00 $03
+    ld bc, $0300                                  ; $1d36: $01 $00 $03
     call BankedTileCopy                           ; $1d39: $cd $e4 $04
     xor a                                         ; $1d3c: $af
     ld [rStatePhaseTimer], a                      ; $1d3d: $ea $3c $d6

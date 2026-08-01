@@ -35,7 +35,7 @@ GS03_StatePhase_00_CourseSelectScreenInit::
     ld a, $0b                                     ; $4027: $3e $0b
     ld hl, $5000                                  ; $4029: $21 $00 $50
     ld de, $8000                                  ; $402c: $11 $00 $80
-    ld bc, .CheckAllFaceButtonsHeldCombo          ; $402f: $01 $00 $03
+    ld bc, $0300                                  ; $402f: $01 $00 $03
     call BankedTileCopy                           ; $4032: $cd $e4 $04
     ld a, $09                                     ; $4035: $3e $09
     ld hl, GameState_03_CourseSelectScreen_PhaseDispatcher; $4037: $21 $00 $40
@@ -404,7 +404,7 @@ GS02_StatePhase_00_GameSelectScreenInit::
     ld a, $0b                                     ; $4327: $3e $0b
     ld hl, $5000                                  ; $4329: $21 $00 $50
     ld de, $8000                                  ; $432c: $11 $00 $80
-    ld bc, .CheckAllFaceButtonsHeldCombo          ; $432f: $01 $00 $03
+    ld bc, $0300                                  ; $432f: $01 $00 $03
     call BankedTileCopy                           ; $4332: $cd $e4 $04
     ld a, $0a                                     ; $4335: $3e $0a
     ld hl, GameState_02_GameSelectScreen_PhaseDispatcher; $4337: $21 $00 $43
@@ -959,7 +959,7 @@ GS01_StatePhase_00_DataSelectScreenInit::
     ld a, $0b                                     ; $4774: $3e $0b
     ld hl, $5000                                  ; $4776: $21 $00 $50
     ld de, $8000                                  ; $4779: $11 $00 $80
-    ld bc, .CheckAllFaceButtonsHeldCombo          ; $477c: $01 $00 $03
+    ld bc, $0300                                  ; $477c: $01 $00 $03
     call BankedTileCopy                           ; $477f: $cd $e4 $04
     ld a, $09                                     ; $4782: $3e $09
     ld hl, $5800                                  ; $4784: $21 $00 $58
@@ -1720,7 +1720,7 @@ Call_002_4d63:
     ld a, $0b                                     ; $4d63: $3e $0b
     ld hl, $5000                                  ; $4d65: $21 $00 $50
     ld de, $8000                                  ; $4d68: $11 $00 $80
-    ld bc, .CheckAllFaceButtonsHeldCombo          ; $4d6b: $01 $00 $03
+    ld bc, $0300                                  ; $4d6b: $01 $00 $03
     call BankedTileCopy                           ; $4d6e: $cd $e4 $04
     ld a, $09                                     ; $4d71: $3e $09
     ld hl, $6800                                  ; $4d73: $21 $00 $68

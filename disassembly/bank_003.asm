@@ -786,7 +786,7 @@ GS00_StatePhase_03_ContinueSavedGameScreenInit::
     ld a, $0b                                     ; $520e: $3e $0b
     ld hl, $5000                                  ; $5210: $21 $00 $50
     ld de, $8000                                  ; $5213: $11 $00 $80
-    ld bc, .CheckAllFaceButtonsHeldCombo          ; $5216: $01 $00 $03
+    ld bc, $0300                                  ; $5216: $01 $00 $03
     call BankedTileCopy                           ; $5219: $cd $e4 $04
     ld a, $0a                                     ; $521c: $3e $0a
     ld hl, $6000                                  ; $521e: $21 $00 $60
@@ -966,7 +966,7 @@ GS00_StatePhase_04_ContinueSavedGameScreenIdle::
     ld a, $0b                                     ; $5387: $3e $0b
     ld hl, $5000                                  ; $5389: $21 $00 $50
     ld de, $8000                                  ; $538c: $11 $00 $80
-    ld bc, .CheckAllFaceButtonsHeldCombo          ; $538f: $01 $00 $03
+    ld bc, $0300                                  ; $538f: $01 $00 $03
     call BankedTileCopy                           ; $5392: $cd $e4 $04
     ld a, $09                                     ; $5395: $3e $09
     ld hl, $7800                                  ; $5397: $21 $00 $78
@@ -3612,7 +3612,7 @@ Puzzle_TT3E_bi_plane_Name::
     db $53, $78, "bi-plane", $ff, $ff, $00
 
 Puzzle_TT3F_sheriff_Name::
-    db $55, $78, "sheriff", $ff, $ff, "あ⁣"
+    db $55, $78, "sheriff", $ff, $ff, $00
 
 Puzzle_HT00_EP00_07_Name::
     db $00

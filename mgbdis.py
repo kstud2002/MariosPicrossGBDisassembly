@@ -313,7 +313,14 @@ class Bank:
             # check if this is really a rst vector
             return None
 
-        return self.get_label(value)
+        label = self.get_label(value)
+        # Local labels are only valid within their parent scope in RGBDS.
+        # Avoid substituting them for generic operands (e.g. d16 constants),
+        # or they may leak into unrelated banks/functions and fail to link.
+        if label is not None and label.startswith('.'):
+            return None
+
+        return label
 
     def get_label_for_jump_target(self, instruction_name, address):
         if self.bank_number == 0:
@@ -776,7 +783,7 @@ class Bank:
                 character_map = rom.character_maps[self.current_map_index]
                 #check for multi length character mapping
                 for length in range(character_map.max_length, 1,-1):                    
-                    if address + length-1 > end_address: 
+                    if address + length-1 >= end_address: 
                         continue                  
                     to_check = tuple(list(rom.data[address: address+length]))                                        
                     if to_check in character_map.character_map:
@@ -1220,8 +1227,8 @@ class ROM:
         num_tiles = len(data) // bytes_per_tile
         tiles_per_row = width // 8
 
-        # if we have fewer tiles than the number of tiles per row, or if an odd number of tiles
-        if (num_tiles < tiles_per_row) or (num_tiles & 1):
+        # if we have fewer tiles than the number of tiles per row, or if tiles_per_row is not an exact divisor of num_tiles:
+        if (num_tiles < tiles_per_row) or (num_tiles % tiles_per_row != 0):
             # then just make a single row of tiles
             tiles_per_row = num_tiles
             width = num_tiles * 8
