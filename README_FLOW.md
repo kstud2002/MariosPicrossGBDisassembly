@@ -22,9 +22,9 @@ flowchart TD
     GS05[GS05 Easy Picross Puzzle Select]
     GS06[GS06 How To Play]
     GS07[GS07 Time Trial Ranking]
-    GS08[GS08 TODO]
-    GS09[GS09 TODO]
-    GS0A[GS0A TODO]
+	GS08[GS08 Easy Picross Puzzle]
+	GS09[GS09 Time Trial Puzzle]
+	GS0A[GS0A Picross Puzzle]
 
     GS00 -->|has save data path| GS01
     GS00 -->|no save data init path| GS02
@@ -53,6 +53,15 @@ flowchart TD
 
     GS07 -->|start puzzle| GS09
     GS07 -->|exit| GS03
+
+	GS08 -->|save and exit| GS00
+	GS08 -->|return after puzzle end| GS05
+
+	GS09 -->|save and exit| GS00
+	GS09 -->|return after puzzle end| GS07
+
+	GS0A -->|save and exit| GS00
+	GS0A -->|return after puzzle end| GS04
 ```
 
 ### Phase Flows
@@ -262,6 +271,46 @@ flowchart TD
 		GS07P05 --> GS07P01
 ```
 
+#### GS08 Phase Flow
+
+```mermaid
+flowchart TD
+	GS08P00[Phase 00 EasyPicrossPuzzleInit]
+	GS08P0B[Phase 0B ContinueSavedPuzzleInitAndOpenPauseMenu]
+	GS08P01[Phase 01 HintPopupSelection]
+	GS08P02[Phase 02 HintCursorSweepAndApplySelection]
+	GS08P03[Phase 03 PuzzleGameplayLoop]
+	GS08P04[Phase 04 ConfirmExitAndReturnToEasyPicrossSelect]
+	GS08P05[Phase 05 PauseMenuInitAndMaskClues]
+	GS08P06[Phase 06 PauseMenuIdle]
+	GS08P07[Phase 07 PauseMenuSavePrompt]
+	GS08P08[Phase 08 PauseMenuBGMSubmenu]
+	GS08P09[Phase 09 PauseMenuGiveUpPrompt]
+	GS08P0A[Phase 0A ClosePauseMenuAndResumeGameplay]
+	GS00E[Exit to GS00]
+	GS05E[Exit to GS05]
+
+	GS08P00 --> GS08P03
+	GS08P0B --> GS08P06
+	GS08P03 -->|hint flow trigger| GS08P01
+	GS08P01 --> GS08P02
+	GS08P02 --> GS08P03
+	GS08P03 -->|START| GS08P05
+	GS08P03 -->|post-clear or game-over confirm| GS08P04
+	GS08P05 --> GS08P06
+	GS08P06 -->|A on SAVE| GS08P07
+	GS08P06 -->|A on GIVE UP| GS08P09
+	GS08P06 -->|A on BGM| GS08P08
+	GS08P06 -->|B/START close| GS08P0A
+	GS08P07 -->|cancel save| GS08P06
+	GS08P07 -->|confirm save and exit| GS00E
+	GS08P08 -->|confirm| GS08P06
+	GS08P09 -->|cancel give up| GS08P06
+	GS08P09 -->|confirm give up| GS08P04
+	GS08P0A --> GS08P03
+	GS08P04 --> GS05E
+```
+
 ## 3) Graphics & Sprite Rendering System
 
 ## 4) Sound Engine (Bank ???)
@@ -276,10 +325,10 @@ The save-related region is centered in the `00:a000`-`00:ba07` address space and
 | 00:a001-00:a002 | 2 | rPuzzleOrderTableCursor, rPuzzleOrderTableStart | Puzzle-order table metadata. |
 | 00:a003-00:a03e | 0x3c | TODO | Unmapped bytes in primary save block (TODO). |
 | 00:a03f | 1 | rSaveDataTimeTrialRankingEntriesInsertAddressBias | Bias/base byte used by GS07 name-entry commit math when targeting ranking entries. |
-| 00:a042-00:a064 | 0x23 | rSaveDataTimeTrialRankingEntries | Time Trial ranking table in save data (5 entries x 7 bytes: MMSS + 3-char name). |
+| 00:a042-00:a064 | 0x23 | rSaveDataTimeTrialRankingEntries, rSaveDataTimeTrialRankingEntriesShiftSourceEnd, rSaveDataTimeTrialRankingEntriesShiftDestEnd | Time Trial ranking table in save data (5 entries x 7 bytes: MMSS + 3-char name), plus helper endpoints used by ranking-entry shifting. |
 | 00:a065 | 1 | rSelectedSaveSlotIndex | Active save-slot index used by GS01/GS04/GS05 logic. |
 | 00:a066-00:a068 | 3 | TODO | Unmapped bytes in primary save block (TODO). |
-| 00:a069-00:a077 | 0x0f | rSaveSlot1ModeCursorRows, rSaveSlot2ModeCursorRows, rSaveSlot3ModeCursorRows | Per-slot mode cursor-row cache blocks (5 bytes per save slot). |
+| 00:a069-00:a077 | 0x0f | rSaveSlotXEasyPicrossBGMSelectionIndex, rSaveSlotXPicrossKinokoBGMSelectionIndex, rSaveSlotXPicrossStarBGMSelectionIndex, rSaveSlotXTimeTrialBGMSelectionIndex, rSaveSlotXModeBGMSelectionIndexEntry4_Unknown | Per-slot BGM selection index entries (5 bytes per save slot: Easy Picross, Picross Kinoko, Picross Star, Time Trial, unknown entry4). |
 | 00:a078-00:a07a | 3 | rSaveSlotXGameSelectCursorRow | Per-slot game-select cursor row. |
 | 00:a07b-00:a07d | 3 | rSaveSlotXEasyPicrossPostClearUnlockFlowState_Unsure | Per-slot Easy Picross post-clear unlock-flow state bytes (observed in GS05). |
 | 00:a07e-00:a080 | 3 | rSaveSlotXEasyPicrossClearedPuzzleCount | Per-slot Easy Picross cleared-count values. |
@@ -288,11 +337,12 @@ The save-related region is centered in the `00:a000`-`00:ba07` address space and
 | 00:a387-00:a389 | 3 | rSaveSlotXUnlockProgressState | Per-slot unlock progression state (`$01/$02/$03` observed). |
 | 00:a38a-00:a38c | 3 | rSaveSlotXPicrossKinokoStarClearedPuzzleCount | Per-slot shared cleared-count used for GS04 unlock checks. |
 | 00:a38d-00:a38f | 3 | rSaveSlotXCourseSelectCursorRow | Per-slot GS04 course-select row. |
-| 00:a390-00:a3a1 | 0x12 | rSaveSlotXPicross{Course}PuzzleSelectCursorColumn/Row | Per-slot + per-course GS04 cursor caches (Kinoko, Star, TimeTrial_Unsure). |
+| 00:a390-00:a3a1 | 0x12 | rSaveSlotXPicross{Kinoko,Star,TimeTrial_Unsure}CoursePuzzleSelectCursorColumn/Row | Per-slot + per-course GS04 cursor caches (Kinoko, Star, TimeTrial_Unsure). |
 | 00:a3a2-00:aa61 | 0x6c0 | rSaveSlotXPicross{Course}PuzzleTimeDataRecordTable | GS04 time tables (3 slots x 3 course rows x 64 entries x 3 bytes). |
 | 00:aa62-00:aca1 | 0x240 | rSaveSlotXPicross{Course}PuzzleStatusDataTable | GS04 status tables (3 slots x 3 course rows x 64 entries x 1 byte). |
 | 00:aca2 | 1 | rContinueSavedGameFlowMode_Unsure | Continue/load flow mode byte (behavior still uncertain). |
-| 00:aca3-00:acec | 0x4a | TODO | Unmapped bytes in primary save block (TODO). |
+| 00:aca3-00:acea | 0x48 | rSavedPuzzleHintPopupSelection, rSavedPuzzleTimerAdjustmentStep, rSavedPuzzleTimerMinuteOnes, rSavedPuzzleTimerMinuteTens, rSavedPuzzleTimerSecondOnes, rSavedPuzzleTimerSecondTens, rSavedPuzzleDataIndexLow, rSavedPuzzleDataIndexHigh, rSavedPuzzleCursorColumn, rSavedPuzzleCursorRow, rSavedPuzzleCellStatePackedBuffer, rSavedPuzzleGridWidth, rSavedPuzzleGridHeight | Saved puzzle snapshot fields used by continue/restore flow (timer, puzzle id, cursor, packed cell-state buffer, grid dimensions). |
+| 00:aceb-00:acec | 2 | TODO | Unmapped bytes in primary save block (TODO). |
 | 00:aced | 1 | rHiddenProgrammerCreditsMirror | Mirror byte tied to signature validation data. |
 | 00:acee-00:acfc | 0x0f | TODO | Unmapped bytes in primary save block (TODO). |
 | 00:acfd | 1 | rSaveValidationMagicBytesMirror | Mirror of save-validation magic data. |
