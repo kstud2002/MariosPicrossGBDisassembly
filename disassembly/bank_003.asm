@@ -346,17 +346,18 @@ TickBottomPromptBlinkSprite4E_A_START_4F_B_EXIT::
     jp ReturnFromBankedJumpRestoreBank            ; $4f0d: $c3 $ea $05
 
 
+TickBottomPromptBlinkSprite4F_B_Exit_50_A_TRYAGAIN::
     ld a, [rStatePhaseTimer]                      ; $4f10: $fa $3c $d6
     inc a                                         ; $4f13: $3c
     cp $46                                        ; $4f14: $fe $46
-    jr c, jr_003_4f21                             ; $4f16: $38 $09
+    jr c, .StoreBlinkTimerAndCheckDrawWindowSprite4F_50; $4f16: $38 $09
 
     ld a, [rSharedAnimationFrameState]            ; $4f18: $fa $3d $d6
     xor $01                                       ; $4f1b: $ee $01
     ld [rSharedAnimationFrameState], a            ; $4f1d: $ea $3d $d6
     xor a                                         ; $4f20: $af
 
-jr_003_4f21:
+.StoreBlinkTimerAndCheckDrawWindowSprite4F_50:
     ld [rStatePhaseTimer], a                      ; $4f21: $ea $3c $d6
     cp $30                                        ; $4f24: $fe $30
     jp nc, ReturnFromBankedJumpRestoreBank        ; $4f26: $d2 $ea $05
@@ -5008,7 +5009,7 @@ OAMSpriteData_Event4f_ButtonPrompt_B_EXIT::
     db $10, $38, $13, $00
     db $ff
 
-OAMSpriteData_Event50::
+OAMSpriteData_Event50_ButtonPrompt_A_TRYAGAIN::
     db $10, $04, $2a, $00
     db $10, $fc, $00, $00
     db $10, $0c, $13, $00
@@ -5127,131 +5128,131 @@ OAMSpriteData_Event62_PuzzleSelectCursorPencil_ClearAnimation_Frame2::
     db $16, $12, $43, $10
     db $ff
 
-OAMSpriteData_Event63::
+OAMSpriteData_Event63_PromptFont_Space::
     db $10, $08, $1f, $00
     db $ff
 
-OAMSpriteData_Event64::
+OAMSpriteData_Event64_PromptFont_A::
     db $10, $08, $00, $00
     db $ff
 
-OAMSpriteData_Event65::
+OAMSpriteData_Event65_PromptFont_B::
     db $10, $08, $01, $00
     db $ff
 
-OAMSpriteData_Event66::
+OAMSpriteData_Event66_PromptFont_C::
     db $10, $08, $02, $00
     db $ff
 
-OAMSpriteData_Event67::
+OAMSpriteData_Event67_PromptFont_D::
     db $10, $08, $03, $00
     db $ff
 
-OAMSpriteData_Event68::
+OAMSpriteData_Event68_PromptFont_E::
     db $10, $08, $04, $00
     db $ff
 
-OAMSpriteData_Event69::
+OAMSpriteData_Event69_PromptFont_F::
     db $10, $08, $05, $00
     db $ff
 
-OAMSpriteData_Event6a::
+OAMSpriteData_Event6a_PromptFont_G::
     db $10, $08, $06, $00
     db $ff
 
-OAMSpriteData_Event6b::
+OAMSpriteData_Event6b_PromptFont_H::
     db $10, $08, $07, $00
     db $ff
 
-OAMSpriteData_Event6c::
+OAMSpriteData_Event6c_PromptFont_I::
     db $10, $08, $08, $00
     db $ff
 
-OAMSpriteData_Event6d::
+OAMSpriteData_Event6d_PromptFont_J::
     db $10, $08, $09, $00
     db $ff
 
-OAMSpriteData_Event6e::
+OAMSpriteData_Event6e_PromptFont_K::
     db $10, $08, $0a, $00
     db $ff
 
-OAMSpriteData_Event6f::
+OAMSpriteData_Event6f_PromptFont_L::
     db $10, $08, $0b, $00
     db $ff
 
-OAMSpriteData_Event70::
+OAMSpriteData_Event70_PromptFont_M::
     db $10, $08, $0c, $00
     db $ff
 
-OAMSpriteData_Event71::
+OAMSpriteData_Event71_PromptFont_N::
     db $10, $08, $0d, $00
     db $ff
 
-OAMSpriteData_Event72::
+OAMSpriteData_Event72_PromptFont_O::
     db $10, $08, $0e, $00
     db $ff
 
-OAMSpriteData_Event73::
+OAMSpriteData_Event73_PromptFont_P::
     db $10, $08, $0f, $00
     db $ff
 
-OAMSpriteData_Event74::
+OAMSpriteData_Event74_PromptFont_Q::
     db $10, $08, $10, $00
     db $ff
 
-OAMSpriteData_Event75::
+OAMSpriteData_Event75_PromptFont_R::
     db $10, $08, $11, $00
     db $ff
 
-OAMSpriteData_Event76::
+OAMSpriteData_Event76_PromptFont_S::
     db $10, $08, $12, $00
     db $ff
 
-OAMSpriteData_Event77::
+OAMSpriteData_Event77_PromptFont_T::
     db $10, $08, $13, $00
     db $ff
 
-OAMSpriteData_Event78::
+OAMSpriteData_Event78_PromptFont_U::
     db $10, $08, $14, $00
     db $ff
 
-OAMSpriteData_Event79::
+OAMSpriteData_Event79_PromptFont_V::
     db $10, $08, $15, $00
     db $ff
 
-OAMSpriteData_Event7a::
+OAMSpriteData_Event7a_PromptFont_W::
     db $10, $08, $16, $00
     db $ff
 
-OAMSpriteData_Event7b::
+OAMSpriteData_Event7b_PromptFont_X::
     db $10, $08, $17, $00
     db $ff
 
-OAMSpriteData_Event7c::
+OAMSpriteData_Event7c_PromptFont_Y::
     db $10, $08, $18, $00
     db $ff
 
-OAMSpriteData_Event7d::
+OAMSpriteData_Event7d_PromptFont_Z::
     db $10, $08, $19, $00
     db $ff
 
-OAMSpriteData_Event7e::
+OAMSpriteData_Event7e_PromptFont_Apostrophe::
     db $10, $08, $1a, $00
     db $ff
 
-OAMSpriteData_Event7f::
+OAMSpriteData_Event7f_PromptFont_DoubleQuote::
     db $10, $08, $1b, $00
     db $ff
 
-OAMSpriteData_Event80_PromptFont_Dash::
+OAMSpriteData_Event80_PromptFont_Hyphen::
     db $10, $08, $1c, $00
     db $ff
 
-OAMSpriteData_Event81::
+OAMSpriteData_Event81_PromptFont_Period::
     db $10, $08, $1d, $00
     db $ff
 
-OAMSpriteData_Event82::
+OAMSpriteData_Event82_PromptFont_Comma::
     db $10, $08, $1e, $00
     db $ff
 

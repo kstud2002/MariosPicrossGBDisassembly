@@ -734,7 +734,7 @@ EasyPicrossContinueSavedGameScreenTileMap::
     db $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff
     db $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff
 
-_TileMap_uncertain::
+TimeTrialRankingScreenTileMap::
     db $2d, $2d, $2d, $2d, $00, $01, $02, $03, $04, $05, $06, $07, $08, $09, $00, $01, $2d, $2d, $2d, $2d, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff
     db $1a, $1a, $1a, $1a, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $10, $11, $1a, $1a, $1a, $1a, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff
     db $25, $25, $25, $25, $25, $25, $88, $89, $8a, $8b, $8c, $8d, $8e, $8f, $25, $25, $25, $25, $25, $25, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff

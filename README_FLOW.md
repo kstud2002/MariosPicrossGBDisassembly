@@ -238,6 +238,30 @@ flowchart TD
 	GS06P29 -->|cancel path| GS06P2A[2A CancelAndReturnToMenu]
 ```
 
+#### GS07 Phase Flow
+
+```mermaid
+flowchart TD
+		GS07P00[Phase 00 TimeTrialRankingScreenInit]
+		GS07P01[Phase 01 TimeTrialRankingScreenIdle]
+		GS07P02[Phase 02 TransitionToPuzzleStart]
+		GS07P03[Phase 03 TransitionBackToMenu]
+		GS07P04[Phase 04 PostClearRankingTransition]
+		GS07P05[Phase 05 NewRecordNameEntry]
+		GS03E[Exit to GS03]
+		GS09E[Exit to GS09]
+
+		GS07P00 --> GS07P01
+		GS07P01 -->|start puzzle| GS07P02
+		GS07P01 -->|cancel| GS07P03
+		GS07P02 --> GS09E
+		GS07P03 --> GS03E
+		GS09E -->|post-clear return path| GS07P04
+		GS07P04 -->|no new record| GS07P01
+		GS07P04 -->|new record| GS07P05
+		GS07P05 --> GS07P01
+```
+
 ## 3) Graphics & Sprite Rendering System
 
 ## 4) Sound Engine (Bank ???)
@@ -250,12 +274,12 @@ The save-related region is centered in the `00:a000`-`00:ba07` address space and
 |---|---:|---|---|
 | 00:a000 | 1 | rSaveDataPrimaryBlockStart | Start of primary save-data block. |
 | 00:a001-00:a002 | 2 | rPuzzleOrderTableCursor, rPuzzleOrderTableStart | Puzzle-order table metadata. |
-| 00:a003-00:a041 | 0x3f | TODO | Unmapped bytes in primary save block (TODO). |
-| 00:a042, 00:a069 | 2 | rSaveDataDefaultBlockADest, rSaveDataDefaultBlockBDest | Destinations used by save default/rewrite flows. |
-| 00:a043-00:a064 | 0x22 | TODO | Unmapped bytes in primary save block (TODO). |
+| 00:a003-00:a03e | 0x3c | TODO | Unmapped bytes in primary save block (TODO). |
+| 00:a03f | 1 | rSaveDataTimeTrialRankingEntriesInsertAddressBias | Bias/base byte used by GS07 name-entry commit math when targeting ranking entries. |
+| 00:a042-00:a064 | 0x23 | rSaveDataTimeTrialRankingEntries | Time Trial ranking table in save data (5 entries x 7 bytes: MMSS + 3-char name). |
 | 00:a065 | 1 | rSelectedSaveSlotIndex | Active save-slot index used by GS01/GS04/GS05 logic. |
 | 00:a066-00:a068 | 3 | TODO | Unmapped bytes in primary save block (TODO). |
-| 00:a06a-00:a077 | 0x0e | TODO | Unmapped bytes in primary save block (TODO). |
+| 00:a069-00:a077 | 0x0f | rSaveSlot1ModeCursorRows, rSaveSlot2ModeCursorRows, rSaveSlot3ModeCursorRows | Per-slot mode cursor-row cache blocks (5 bytes per save slot). |
 | 00:a078-00:a07a | 3 | rSaveSlotXGameSelectCursorRow | Per-slot game-select cursor row. |
 | 00:a07b-00:a07d | 3 | rSaveSlotXEasyPicrossPostClearUnlockFlowState_Unsure | Per-slot Easy Picross post-clear unlock-flow state bytes (observed in GS05). |
 | 00:a07e-00:a080 | 3 | rSaveSlotXEasyPicrossClearedPuzzleCount | Per-slot Easy Picross cleared-count values. |

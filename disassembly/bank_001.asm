@@ -178,7 +178,7 @@ GS04_StatePhase_04_ReturnFromPuzzleTransitionAndHandleUnlockFlow::
     ld b, $03                                     ; $4476: $06 $03
     ld hl, $4e80                                  ; $4478: $21 $80 $4e
     call SwitchBankToBAndJumpToHL                 ; $447b: $cd $de $05
-    ld a, [rPuzzleFlowVariant_Unsure]             ; $447e: $fa $05 $d8
+    ld a, [rPuzzlePostClearFlowFlag]              ; $447e: $fa $05 $d8
     and a                                         ; $4481: $a7
     push af                                       ; $4482: $f5
     jr nz, .BeginPostReturnFadeInAndResultFlow    ; $4483: $20 $08
@@ -604,7 +604,7 @@ GS04_StatePhase_05_ReturnFromPuzzleTransitionAndCommitResult::
     xor a                                         ; $47eb: $af
     ld [rHintPopupSelection], a                   ; $47ec: $ea $33 $d8
     ld a, $01                                     ; $47ef: $3e $01
-    ld [rPuzzleFlowVariant_Unsure], a             ; $47f1: $ea $05 $d8
+    ld [rPuzzlePostClearFlowFlag], a              ; $47f1: $ea $05 $d8
     call GS04_LoadPicrossCoursePuzzleSelectCursorForSelectedSaveSlotAndCourse; $47f4: $cd $a2 $49
     call GS04_LoadSelectedPicrossCoursePuzzleStatusAndTimeDataRecord; $47f7: $cd $4b $50
     call GS04_IncrementSelectedPicrossCoursePuzzleClearCountIfAllowed; $47fa: $cd $bc $4c
@@ -2246,7 +2246,7 @@ GS05_StatePhase_04_TODO::
     ld b, $03                                     ; $5387: $06 $03
     ld hl, $4e80                                  ; $5389: $21 $80 $4e
     call SwitchBankToBAndJumpToHL                 ; $538c: $cd $de $05
-    ld a, [rPuzzleFlowVariant_Unsure]             ; $538f: $fa $05 $d8
+    ld a, [rPuzzlePostClearFlowFlag]              ; $538f: $fa $05 $d8
     and a                                         ; $5392: $a7
     push af                                       ; $5393: $f5
     jr nz, .BeginPostReturnFadeInAndResultFlow    ; $5394: $20 $08
@@ -2563,7 +2563,7 @@ GS05_StatePhase_05_ReturnFromPuzzleTransitionAndCommitResult::
     xor a                                         ; $55fd: $af
     ld [rHintPopupSelection], a                   ; $55fe: $ea $33 $d8
     ld a, $01                                     ; $5601: $3e $01
-    ld [rPuzzleFlowVariant_Unsure], a             ; $5603: $ea $05 $d8
+    ld [rPuzzlePostClearFlowFlag], a              ; $5603: $ea $05 $d8
     call GS05_LoadEasyPicrossPuzzleSelectCursorForSelectedSaveSlot; $5606: $cd $32 $57
     call GS05_LoadSelectedEasyPicrossPuzzleStatusAndTimeDataRecord; $5609: $cd $b0 $5b
     call GS05_IncrementSelectedEasyPicrossPuzzleClearCountIfAllowed; $560c: $cd $60 $58
@@ -3664,7 +3664,7 @@ GS08_StatePhase_00_TODO::
     add c                                         ; $5e08: $81
     ld c, a                                       ; $5e09: $4f
     ld b, $00                                     ; $5e0a: $06 $00
-    ld hl, rSaveDataDefaultBlockBDest             ; $5e0c: $21 $69 $a0
+    ld hl, rSaveSlot1ModeCursorRows               ; $5e0c: $21 $69 $a0
     add hl, bc                                    ; $5e0f: $09
     ld c, [hl]                                    ; $5e10: $4e
     ld b, $00                                     ; $5e11: $06 $00
@@ -3768,7 +3768,7 @@ GS08_StatePhase_0b_TODO::
     add c                                         ; $5ee2: $81
     ld c, a                                       ; $5ee3: $4f
     ld b, $00                                     ; $5ee4: $06 $00
-    ld hl, rSaveDataDefaultBlockBDest             ; $5ee6: $21 $69 $a0
+    ld hl, rSaveSlot1ModeCursorRows               ; $5ee6: $21 $69 $a0
     add hl, bc                                    ; $5ee9: $09
     ld c, [hl]                                    ; $5eea: $4e
     ld b, $00                                     ; $5eeb: $06 $00
@@ -3846,7 +3846,7 @@ jr_001_5f68:
     add c                                         ; $5f7d: $81
     ld c, a                                       ; $5f7e: $4f
     ld b, $00                                     ; $5f7f: $06 $00
-    ld hl, rSaveDataDefaultBlockBDest             ; $5f81: $21 $69 $a0
+    ld hl, rSaveSlot1ModeCursorRows               ; $5f81: $21 $69 $a0
     add hl, bc                                    ; $5f84: $09
     ld a, [hl]                                    ; $5f85: $7e
     ld [$d83c], a                                 ; $5f86: $ea $3c $d8
@@ -3923,7 +3923,7 @@ GS08_StatePhase_03_TODO::
 
 
 jr_001_6008:
-    ld a, [rPuzzleFlowVariant_Unsure]             ; $6008: $fa $05 $d8
+    ld a, [rPuzzlePostClearFlowFlag]              ; $6008: $fa $05 $d8
     and a                                         ; $600b: $a7
     jr z, jr_001_6059                             ; $600c: $28 $4b
 
@@ -4005,7 +4005,7 @@ Jump_001_607a:
 
 
 jr_001_60a9:
-    ld a, [rPuzzleFlowVariant_Unsure]             ; $60a9: $fa $05 $d8
+    ld a, [rPuzzlePostClearFlowFlag]              ; $60a9: $fa $05 $d8
     and a                                         ; $60ac: $a7
     jp z, Jump_001_613a                           ; $60ad: $ca $3a $61
 
@@ -4187,7 +4187,7 @@ GS08_StatePhase_05_TODO::
     add c                                         ; $6211: $81
     ld c, a                                       ; $6212: $4f
     ld b, $00                                     ; $6213: $06 $00
-    ld hl, rSaveDataDefaultBlockBDest             ; $6215: $21 $69 $a0
+    ld hl, rSaveSlot1ModeCursorRows               ; $6215: $21 $69 $a0
     add hl, bc                                    ; $6218: $09
     ld a, [hl]                                    ; $6219: $7e
     ld [$d83c], a                                 ; $621a: $ea $3c $d8
@@ -4323,7 +4323,7 @@ jr_001_62f2:
     add c                                         ; $630e: $81
     ld c, a                                       ; $630f: $4f
     ld b, $00                                     ; $6310: $06 $00
-    ld hl, rSaveDataDefaultBlockBDest             ; $6312: $21 $69 $a0
+    ld hl, rSaveSlot1ModeCursorRows               ; $6312: $21 $69 $a0
     add hl, bc                                    ; $6315: $09
     ld a, [hl]                                    ; $6316: $7e
     ld a, [$d83c]                                 ; $6317: $fa $3c $d8
@@ -4406,7 +4406,7 @@ jr_001_63a5:
     add c                                         ; $63aa: $81
     ld c, a                                       ; $63ab: $4f
     ld b, $00                                     ; $63ac: $06 $00
-    ld hl, rSaveDataDefaultBlockBDest             ; $63ae: $21 $69 $a0
+    ld hl, rSaveSlot1ModeCursorRows               ; $63ae: $21 $69 $a0
     add hl, bc                                    ; $63b1: $09
     ld a, [hl]                                    ; $63b2: $7e
     ld a, [$d83c]                                 ; $63b3: $fa $3c $d8
@@ -4428,7 +4428,7 @@ GS08_StatePhase_0a_TODO::
     add c                                         ; $63cf: $81
     ld c, a                                       ; $63d0: $4f
     ld b, $00                                     ; $63d1: $06 $00
-    ld hl, rSaveDataDefaultBlockBDest             ; $63d3: $21 $69 $a0
+    ld hl, rSaveSlot1ModeCursorRows               ; $63d3: $21 $69 $a0
     add hl, bc                                    ; $63d6: $09
     ld a, [hl]                                    ; $63d7: $7e
     ld a, [$d83c]                                 ; $63d8: $fa $3c $d8
@@ -4654,7 +4654,7 @@ GS09_StatePhase_01_TODO::
 
 
 jr_001_6598:
-    ld a, [rPuzzleFlowVariant_Unsure]             ; $6598: $fa $05 $d8
+    ld a, [rPuzzlePostClearFlowFlag]              ; $6598: $fa $05 $d8
     and a                                         ; $659b: $a7
     jr z, jr_001_65fe                             ; $659c: $28 $60
 
@@ -5269,7 +5269,7 @@ Load15x15GameBoardTileData::
 
 jr_001_6a48:
     xor a                                         ; $6a48: $af
-    ld [rPuzzleFlowVariant_Unsure], a             ; $6a49: $ea $05 $d8
+    ld [rPuzzlePostClearFlowFlag], a              ; $6a49: $ea $05 $d8
     ld [rPuzzleTimerCompletionState], a           ; $6a4c: $ea $06 $d8
     ld [rMarioBlinkAnimationSequenceCursor], a    ; $6a4f: $ea $18 $d8
     ld [rMarioBlinkAnimationDelay], a             ; $6a52: $ea $17 $d8
@@ -5598,7 +5598,7 @@ GS0A_StatePhase_03_TODO::
 
 
 jr_001_6c76:
-    ld a, [rPuzzleFlowVariant_Unsure]             ; $6c76: $fa $05 $d8
+    ld a, [rPuzzlePostClearFlowFlag]              ; $6c76: $fa $05 $d8
     and a                                         ; $6c79: $a7
     jr z, jr_001_6cde                             ; $6c7a: $28 $62
 
@@ -7178,7 +7178,7 @@ jr_001_760f:
 
     call ClearShadowOAMBuffer                     ; $762c: $cd $b6 $05
     ld a, $ff                                     ; $762f: $3e $ff
-    ld [rPuzzleFlowVariant_Unsure], a             ; $7631: $ea $05 $d8
+    ld [rPuzzlePostClearFlowFlag], a              ; $7631: $ea $05 $d8
     ret                                           ; $7634: $c9
 
 

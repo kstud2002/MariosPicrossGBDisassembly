@@ -1591,7 +1591,7 @@ GS07_PhasePointer_04::
 GS07_PhasePointer_05::
     db $ff, $4d
 
-GS07_StatePhase_00_TODO::
+GS07_StatePhase_00_TimeTrialRankingScreenInit::
     ld a, $43                                     ; $4c65: $3e $43
     ld [rLCDCShadow], a                           ; $4c67: $ea $2e $c3
     xor a                                         ; $4c6a: $af
@@ -1602,17 +1602,17 @@ GS07_StatePhase_00_TODO::
     ld [rSCYShadow], a                            ; $4c77: $ea $33 $c3
     call FillBGMap0WithTile01                     ; $4c7a: $cd $a0 $05
     call FillBGMap1WithTile01                     ; $4c7d: $cd $ab $05
-    call Call_002_4d63                            ; $4c80: $cd $63 $4d
-    call Call_002_5132                            ; $4c83: $cd $32 $51
-    call Call_002_51a0                            ; $4c86: $cd $a0 $51
+    call GS07_LoadTimeTrialRankingScreenGfxAndTilemap; $4c80: $cd $63 $4d
+    call GS07_DrawTimeTrialRankingEntriesFromSaveData; $4c83: $cd $32 $51
+    call GS07_DrawCurrentClearTimePlaceholderDashes; $4c86: $cd $a0 $51
     xor a                                         ; $4c89: $af
-    ld [$d838], a                                 ; $4c8a: $ea $38 $d8
-    ld [$d839], a                                 ; $4c8d: $ea $39 $d8
+    ld [rGS07_NewRecordRankingPositionOrZero], a  ; $4c8a: $ea $38 $d8
+    ld [rGS07_BottomPromptVariantFlag], a         ; $4c8d: $ea $39 $d8
     call ClearShadowOAMBuffer                     ; $4c90: $cd $b6 $05
     ld b, $03                                     ; $4c93: $06 $03
     ld hl, $4e80                                  ; $4c95: $21 $80 $4e
     call SwitchBankToBAndJumpToHL                 ; $4c98: $cd $de $05
-    call Call_002_5298                            ; $4c9b: $cd $98 $52
+    call GS07_DispatchBottomPromptBlinkVariant    ; $4c9b: $cd $98 $52
     ld c, $00                                     ; $4c9e: $0e $00
     ld a, $01                                     ; $4ca0: $3e $01
     call CallSoundEffectDispatcher                ; $4ca2: $cd $b6 $03
@@ -1631,7 +1631,7 @@ GS07_StatePhase_00_TODO::
     ret                                           ; $4cc3: $c9
 
 
-GS07_StatePhase_04_TODO::
+GS07_StatePhase_04_PostClearRankingTransition::
     ld a, $43                                     ; $4cc4: $3e $43
     ld [rLCDCShadow], a                           ; $4cc6: $ea $2e $c3
     xor a                                         ; $4cc9: $af
@@ -1642,47 +1642,47 @@ GS07_StatePhase_04_TODO::
     ld [rSCYShadow], a                            ; $4cd6: $ea $33 $c3
     call FillBGMap0WithTile01                     ; $4cd9: $cd $a0 $05
     call FillBGMap1WithTile01                     ; $4cdc: $cd $ab $05
-    call Call_002_4d63                            ; $4cdf: $cd $63 $4d
+    call GS07_LoadTimeTrialRankingScreenGfxAndTilemap; $4cdf: $cd $63 $4d
     xor a                                         ; $4ce2: $af
-    ld [$d838], a                                 ; $4ce3: $ea $38 $d8
+    ld [rGS07_NewRecordRankingPositionOrZero], a  ; $4ce3: $ea $38 $d8
     ld a, $01                                     ; $4ce6: $3e $01
-    ld [$d839], a                                 ; $4ce8: $ea $39 $d8
-    ld a, [rPuzzleFlowVariant_Unsure]             ; $4ceb: $fa $05 $d8
+    ld [rGS07_BottomPromptVariantFlag], a         ; $4ce8: $ea $39 $d8
+    ld a, [rPuzzlePostClearFlowFlag]              ; $4ceb: $fa $05 $d8
     and a                                         ; $4cee: $a7
-    jr z, jr_002_4cf4                             ; $4cef: $28 $03
+    jr z, .DrawRankingAndCurrentTimeRow           ; $4cef: $28 $03
 
-    call Call_002_50b3                            ; $4cf1: $cd $b3 $50
+    call GS07_TryInsertCurrentClearTimeIntoRanking; $4cf1: $cd $b3 $50
 
-jr_002_4cf4:
-    call Call_002_5132                            ; $4cf4: $cd $32 $51
-    ld a, [rPuzzleFlowVariant_Unsure]             ; $4cf7: $fa $05 $d8
+.DrawRankingAndCurrentTimeRow:
+    call GS07_DrawTimeTrialRankingEntriesFromSaveData; $4cf4: $cd $32 $51
+    ld a, [rPuzzlePostClearFlowFlag]              ; $4cf7: $fa $05 $d8
     and a                                         ; $4cfa: $a7
-    jr z, jr_002_4d02                             ; $4cfb: $28 $05
+    jr z, .DrawCurrentTimePlaceholderDashes       ; $4cfb: $28 $05
 
-    call Call_002_5174                            ; $4cfd: $cd $74 $51
-    jr jr_002_4d05                                ; $4d00: $18 $03
+    call GS07_DrawCurrentClearTimeFromTimer       ; $4cfd: $cd $74 $51
+    jr .PrepareOAMAndBottomPromptLayout           ; $4d00: $18 $03
 
-jr_002_4d02:
-    call Call_002_51a0                            ; $4d02: $cd $a0 $51
+.DrawCurrentTimePlaceholderDashes:
+    call GS07_DrawCurrentClearTimePlaceholderDashes; $4d02: $cd $a0 $51
 
-jr_002_4d05:
+.PrepareOAMAndBottomPromptLayout:
     call ClearShadowOAMBuffer                     ; $4d05: $cd $b6 $05
     ld b, $03                                     ; $4d08: $06 $03
     ld hl, $4e80                                  ; $4d0a: $21 $80 $4e
     call SwitchBankToBAndJumpToHL                 ; $4d0d: $cd $de $05
-    ld a, [$d838]                                 ; $4d10: $fa $38 $d8
+    ld a, [rGS07_NewRecordRankingPositionOrZero]  ; $4d10: $fa $38 $d8
     and a                                         ; $4d13: $a7
-    jr nz, jr_002_4d1b                            ; $4d14: $20 $05
+    jr nz, .LoadNewRecordNameEntryPromptLayout    ; $4d14: $20 $05
 
-    call Call_002_5298                            ; $4d16: $cd $98 $52
-    jr jr_002_4d23                                ; $4d19: $18 $08
+    call GS07_DispatchBottomPromptBlinkVariant    ; $4d16: $cd $98 $52
+    jr .PlayTransitionAndRouteToNextPhase         ; $4d19: $18 $08
 
-jr_002_4d1b:
+.LoadNewRecordNameEntryPromptLayout:
     ld b, $03                                     ; $4d1b: $06 $03
     ld hl, $4ec2                                  ; $4d1d: $21 $c2 $4e
     call SwitchBankToBAndJumpToHL                 ; $4d20: $cd $de $05
 
-jr_002_4d23:
+.PlayTransitionAndRouteToNextPhase:
     ld c, $00                                     ; $4d23: $0e $00
     ld a, $01                                     ; $4d25: $3e $01
     call CallSoundEffectDispatcher                ; $4d27: $cd $b6 $03
@@ -1696,27 +1696,27 @@ jr_002_4d23:
     ld c, $0e                                     ; $4d3c: $0e $0e
     ld de, $00a4                                  ; $4d3e: $11 $a4 $00
     call PlayScreenTransitionFadeIn               ; $4d41: $cd $0d $04
-    ld a, [$d838]                                 ; $4d44: $fa $38 $d8
+    ld a, [rGS07_NewRecordRankingPositionOrZero]  ; $4d44: $fa $38 $d8
     and a                                         ; $4d47: $a7
-    jr z, jr_002_4d5d                             ; $4d48: $28 $13
+    jr z, .RouteToRankingScreenIdlePhase          ; $4d48: $28 $13
 
     xor a                                         ; $4d4a: $af
-    ld [$d83e], a                                 ; $4d4b: $ea $3e $d8
-    ld [$d83f], a                                 ; $4d4e: $ea $3f $d8
-    ld [$d840], a                                 ; $4d51: $ea $40 $d8
-    ld [$d841], a                                 ; $4d54: $ea $41 $d8
+    ld [rGS07_NameEntryCursorColumnOrConfirmIndex], a; $4d4b: $ea $3e $d8
+    ld [rGS07_NameEntryCharacterIndexSlot0], a    ; $4d4e: $ea $3f $d8
+    ld [rGS07_NameEntryCharacterIndexSlot1], a    ; $4d51: $ea $40 $d8
+    ld [rGS07_NameEntryCharacterIndexSlot2], a    ; $4d54: $ea $41 $d8
     ld a, $05                                     ; $4d57: $3e $05
     ld [rStatePhase_Current], a                   ; $4d59: $ea $35 $d6
     ret                                           ; $4d5c: $c9
 
 
-jr_002_4d5d:
+.RouteToRankingScreenIdlePhase:
     ld a, $01                                     ; $4d5d: $3e $01
     ld [rStatePhase_Current], a                   ; $4d5f: $ea $35 $d6
     ret                                           ; $4d62: $c9
 
 
-Call_002_4d63:
+GS07_LoadTimeTrialRankingScreenGfxAndTilemap::
     ld a, $0b                                     ; $4d63: $3e $0b
     ld hl, $5000                                  ; $4d65: $21 $00 $50
     ld de, $8000                                  ; $4d68: $11 $00 $80
@@ -1735,12 +1735,12 @@ Call_002_4d63:
     ret                                           ; $4d8d: $c9
 
 
-GS07_StatePhase_01_TODO::
-    call Call_002_5298                            ; $4d8e: $cd $98 $52
-    call Call_002_4ddc                            ; $4d91: $cd $dc $4d
+GS07_StatePhase_01_TimeTrialRankingScreenIdle::
+    call GS07_DispatchBottomPromptBlinkVariant    ; $4d8e: $cd $98 $52
+    call GS07_TickNewRecordIndicatorBlinkSprites  ; $4d91: $cd $dc $4d
     ld a, [rInputButtonsPressed]                  ; $4d94: $fa $1e $c3
     and $09                                       ; $4d97: $e6 $09
-    jr z, jr_002_4db8                             ; $4d99: $28 $1d
+    jr z, .HandleTimeTrialRankingScreenCancelInput; $4d99: $28 $1d
 
     ld c, $03                                     ; $4d9b: $0e $03
     ld a, $02                                     ; $4d9d: $3e $02
@@ -1748,16 +1748,16 @@ GS07_StatePhase_01_TODO::
     call ClearShadowOAMBufferFromCursor           ; $4da2: $cd $c5 $05
     rst RST_08                                    ; $4da5: $cf
     xor a                                         ; $4da6: $af
-    ld [rHintCursorAnimationColumnAccumulator], a ; $4da7: $ea $3e $d6
-    call Call_002_4ddc                            ; $4daa: $cd $dc $4d
+    ld [rSharedUIAnimationColumnAccumulator], a   ; $4da7: $ea $3e $d6
+    call GS07_TickNewRecordIndicatorBlinkSprites  ; $4daa: $cd $dc $4d
     call ClearShadowOAMBufferFromCursor           ; $4dad: $cd $c5 $05
-    call Call_002_4ddc                            ; $4db0: $cd $dc $4d
+    call GS07_TickNewRecordIndicatorBlinkSprites  ; $4db0: $cd $dc $4d
     ld hl, rStatePhase_Current                    ; $4db3: $21 $35 $d6
     inc [hl]                                      ; $4db6: $34
     ret                                           ; $4db7: $c9
 
 
-jr_002_4db8:
+.HandleTimeTrialRankingScreenCancelInput:
     ld a, [rInputButtonsPressed]                  ; $4db8: $fa $1e $c3
     and $02                                       ; $4dbb: $e6 $02
     ret z                                         ; $4dbd: $c8
@@ -1768,100 +1768,100 @@ jr_002_4db8:
     call ClearShadowOAMBufferFromCursor           ; $4dc5: $cd $c5 $05
     rst RST_08                                    ; $4dc8: $cf
     xor a                                         ; $4dc9: $af
-    ld [rHintCursorAnimationColumnAccumulator], a ; $4dca: $ea $3e $d6
-    call Call_002_4ddc                            ; $4dcd: $cd $dc $4d
+    ld [rSharedUIAnimationColumnAccumulator], a   ; $4dca: $ea $3e $d6
+    call GS07_TickNewRecordIndicatorBlinkSprites  ; $4dcd: $cd $dc $4d
     call ClearShadowOAMBufferFromCursor           ; $4dd0: $cd $c5 $05
-    call Call_002_4ddc                            ; $4dd3: $cd $dc $4d
+    call GS07_TickNewRecordIndicatorBlinkSprites  ; $4dd3: $cd $dc $4d
     ld a, $03                                     ; $4dd6: $3e $03
     ld [rStatePhase_Current], a                   ; $4dd8: $ea $35 $d6
     ret                                           ; $4ddb: $c9
 
 
-Call_002_4ddc:
-    ld a, [$d838]                                 ; $4ddc: $fa $38 $d8
+GS07_TickNewRecordIndicatorBlinkSprites::
+    ld a, [rGS07_NewRecordRankingPositionOrZero]  ; $4ddc: $fa $38 $d8
     and a                                         ; $4ddf: $a7
     ret z                                         ; $4de0: $c8
 
-    ld a, [rHintCursorAnimationColumnAccumulator] ; $4de1: $fa $3e $d6
+    ld a, [rSharedUIAnimationColumnAccumulator]   ; $4de1: $fa $3e $d6
     inc a                                         ; $4de4: $3c
     cp $28                                        ; $4de5: $fe $28
-    jr c, jr_002_4dea                             ; $4de7: $38 $01
+    jr c, .StoreNewRecordIndicatorBlinkTimer      ; $4de7: $38 $01
 
     xor a                                         ; $4de9: $af
 
-jr_002_4dea:
-    ld [rHintCursorAnimationColumnAccumulator], a ; $4dea: $ea $3e $d6
+.StoreNewRecordIndicatorBlinkTimer:
+    ld [rSharedUIAnimationColumnAccumulator], a   ; $4dea: $ea $3e $d6
     cp $16                                        ; $4ded: $fe $16
     ret nc                                        ; $4def: $d0
 
     xor a                                         ; $4df0: $af
-    call Call_002_4f40                            ; $4df1: $cd $40 $4f
+    call GS07_DrawNameEntryCharacterSlotSprite    ; $4df1: $cd $40 $4f
     ld a, $01                                     ; $4df4: $3e $01
-    call Call_002_4f40                            ; $4df6: $cd $40 $4f
+    call GS07_DrawNameEntryCharacterSlotSprite    ; $4df6: $cd $40 $4f
     ld a, $02                                     ; $4df9: $3e $02
-    call Call_002_4f40                            ; $4dfb: $cd $40 $4f
+    call GS07_DrawNameEntryCharacterSlotSprite    ; $4dfb: $cd $40 $4f
     ret                                           ; $4dfe: $c9
 
 
-GS07_StatePhase_05_TODO::
+GS07_StatePhase_05_TimeTrialRankingScreenNewRecordNameEntry::
     ld b, $03                                     ; $4dff: $06 $03
     ld hl, $4ec2                                  ; $4e01: $21 $c2 $4e
     call SwitchBankToBAndJumpToHL                 ; $4e04: $cd $de $05
-    call Call_002_4ee1                            ; $4e07: $cd $e1 $4e
+    call GS07_HandleNameEntryInput                ; $4e07: $cd $e1 $4e
     ld hl, rVBlankFrameCounter                    ; $4e0a: $21 $3a $c3
-    ld a, [$d83e]                                 ; $4e0d: $fa $3e $d8
+    ld a, [rGS07_NameEntryCursorColumnOrConfirmIndex]; $4e0d: $fa $3e $d8
     and a                                         ; $4e10: $a7
-    jr nz, jr_002_4e17                            ; $4e11: $20 $04
+    jr nz, .DrawSlot0SpriteIfVisible              ; $4e11: $20 $04
 
     bit 3, [hl]                                   ; $4e13: $cb $5e
-    jr z, jr_002_4e1d                             ; $4e15: $28 $06
+    jr z, .MaybeDrawSlot1Sprite                   ; $4e15: $28 $06
 
-jr_002_4e17:
+.DrawSlot0SpriteIfVisible:
     push af                                       ; $4e17: $f5
     xor a                                         ; $4e18: $af
-    call Call_002_4f40                            ; $4e19: $cd $40 $4f
+    call GS07_DrawNameEntryCharacterSlotSprite    ; $4e19: $cd $40 $4f
     pop af                                        ; $4e1c: $f1
 
-jr_002_4e1d:
+.MaybeDrawSlot1Sprite:
     cp $01                                        ; $4e1d: $fe $01
-    jr nz, jr_002_4e25                            ; $4e1f: $20 $04
+    jr nz, .DrawSlot1SpriteIfVisible              ; $4e1f: $20 $04
 
     bit 3, [hl]                                   ; $4e21: $cb $5e
-    jr z, jr_002_4e2c                             ; $4e23: $28 $07
+    jr z, .MaybeDrawSlot2Sprite                   ; $4e23: $28 $07
 
-jr_002_4e25:
+.DrawSlot1SpriteIfVisible:
     push af                                       ; $4e25: $f5
     ld a, $01                                     ; $4e26: $3e $01
-    call Call_002_4f40                            ; $4e28: $cd $40 $4f
+    call GS07_DrawNameEntryCharacterSlotSprite    ; $4e28: $cd $40 $4f
     pop af                                        ; $4e2b: $f1
 
-jr_002_4e2c:
+.MaybeDrawSlot2Sprite:
     cp $02                                        ; $4e2c: $fe $02
-    jr nz, jr_002_4e34                            ; $4e2e: $20 $04
+    jr nz, .DrawSlot2SpriteIfVisible              ; $4e2e: $20 $04
 
     bit 3, [hl]                                   ; $4e30: $cb $5e
-    jr z, jr_002_4e3b                             ; $4e32: $28 $07
+    jr z, .HandleNameEntryConfirmOrReturn         ; $4e32: $28 $07
 
-jr_002_4e34:
+.DrawSlot2SpriteIfVisible:
     push af                                       ; $4e34: $f5
     ld a, $02                                     ; $4e35: $3e $02
-    call Call_002_4f40                            ; $4e37: $cd $40 $4f
+    call GS07_DrawNameEntryCharacterSlotSprite    ; $4e37: $cd $40 $4f
     pop af                                        ; $4e3a: $f1
 
-jr_002_4e3b:
+.HandleNameEntryConfirmOrReturn:
     ld a, [rInputButtonsPressed]                  ; $4e3b: $fa $1e $c3
     bit 3, a                                      ; $4e3e: $cb $5f
-    jr nz, jr_002_4e4b                            ; $4e40: $20 $09
+    jr nz, .CommitEnteredNameToSaveData           ; $4e40: $20 $09
 
     bit 0, a                                      ; $4e42: $cb $47
     ret z                                         ; $4e44: $c8
 
-    ld a, [$d83e]                                 ; $4e45: $fa $3e $d8
+    ld a, [rGS07_NameEntryCursorColumnOrConfirmIndex]; $4e45: $fa $3e $d8
     cp $03                                        ; $4e48: $fe $03
     ret nz                                        ; $4e4a: $c0
 
-jr_002_4e4b:
-    ld a, [$d838]                                 ; $4e4b: $fa $38 $d8
+.CommitEnteredNameToSaveData:
+    ld a, [rGS07_NewRecordRankingPositionOrZero]  ; $4e4b: $fa $38 $d8
     ld c, a                                       ; $4e4e: $4f
     sla a                                         ; $4e4f: $cb $27
     sla a                                         ; $4e51: $cb $27
@@ -1869,30 +1869,30 @@ jr_002_4e4b:
     sub c                                         ; $4e55: $91
     ld c, a                                       ; $4e56: $4f
     ld b, $00                                     ; $4e57: $06 $00
-    ld hl, $a03f                                  ; $4e59: $21 $3f $a0
+    ld hl, rSaveDataTimeTrialRankingEntriesInsertAddressBias; $4e59: $21 $3f $a0
     add hl, bc                                    ; $4e5c: $09
     ld e, l                                       ; $4e5d: $5d
     ld d, h                                       ; $4e5e: $54
-    ld a, [$d83f]                                 ; $4e5f: $fa $3f $d8
+    ld a, [rGS07_NameEntryCharacterIndexSlot0]    ; $4e5f: $fa $3f $d8
     sla a                                         ; $4e62: $cb $27
     ld c, a                                       ; $4e64: $4f
-    ld hl, $4e8d                                  ; $4e65: $21 $8d $4e
+    ld hl, GS07_NameEntryCharacterCodeTilePairTable; $4e65: $21 $8d $4e
     add hl, bc                                    ; $4e68: $09
     ld a, [hl]                                    ; $4e69: $7e
     ld [de], a                                    ; $4e6a: $12
     inc de                                        ; $4e6b: $13
-    ld a, [$d840]                                 ; $4e6c: $fa $40 $d8
+    ld a, [rGS07_NameEntryCharacterIndexSlot1]    ; $4e6c: $fa $40 $d8
     sla a                                         ; $4e6f: $cb $27
     ld c, a                                       ; $4e71: $4f
-    ld hl, $4e8d                                  ; $4e72: $21 $8d $4e
+    ld hl, GS07_NameEntryCharacterCodeTilePairTable; $4e72: $21 $8d $4e
     add hl, bc                                    ; $4e75: $09
     ld a, [hl]                                    ; $4e76: $7e
     ld [de], a                                    ; $4e77: $12
     inc de                                        ; $4e78: $13
-    ld a, [$d841]                                 ; $4e79: $fa $41 $d8
+    ld a, [rGS07_NameEntryCharacterIndexSlot2]    ; $4e79: $fa $41 $d8
     sla a                                         ; $4e7c: $cb $27
     ld c, a                                       ; $4e7e: $4f
-    ld hl, $4e8d                                  ; $4e7f: $21 $8d $4e
+    ld hl, GS07_NameEntryCharacterCodeTilePairTable; $4e7f: $21 $8d $4e
     add hl, bc                                    ; $4e82: $09
     ld a, [hl]                                    ; $4e83: $7e
     ld [de], a                                    ; $4e84: $12
@@ -1901,170 +1901,131 @@ jr_002_4e4b:
     jp RefreshSaveValidationChecksumsAndMirrors   ; $4e8a: $c3 $1f $1b
 
 
-    ld b, c                                       ; $4e8d: $41
-    ld h, h                                       ; $4e8e: $64
-    ld b, d                                       ; $4e8f: $42
-    ld h, l                                       ; $4e90: $65
-    ld b, e                                       ; $4e91: $43
-    ld h, [hl]                                    ; $4e92: $66
-    ld b, h                                       ; $4e93: $44
-    ld h, a                                       ; $4e94: $67
-    ld b, l                                       ; $4e95: $45
-    ld l, b                                       ; $4e96: $68
-    ld b, [hl]                                    ; $4e97: $46
-    ld l, c                                       ; $4e98: $69
-    ld b, a                                       ; $4e99: $47
-    ld l, d                                       ; $4e9a: $6a
-    ld c, b                                       ; $4e9b: $48
-    ld l, e                                       ; $4e9c: $6b
-    ld c, c                                       ; $4e9d: $49
-    ld l, h                                       ; $4e9e: $6c
-    ld c, d                                       ; $4e9f: $4a
-    ld l, l                                       ; $4ea0: $6d
-    ld c, e                                       ; $4ea1: $4b
-    ld l, [hl]                                    ; $4ea2: $6e
-    ld c, h                                       ; $4ea3: $4c
-    ld l, a                                       ; $4ea4: $6f
-    ld c, l                                       ; $4ea5: $4d
-    ld [hl], b                                    ; $4ea6: $70
-    ld c, [hl]                                    ; $4ea7: $4e
-    ld [hl], c                                    ; $4ea8: $71
-    ld c, a                                       ; $4ea9: $4f
-    ld [hl], d                                    ; $4eaa: $72
-    ld d, b                                       ; $4eab: $50
-    ld [hl], e                                    ; $4eac: $73
-    ld d, c                                       ; $4ead: $51
-    ld [hl], h                                    ; $4eae: $74
-    ld d, d                                       ; $4eaf: $52
-    ld [hl], l                                    ; $4eb0: $75
-    ld d, e                                       ; $4eb1: $53
-    halt                                          ; $4eb2: $76
-    ld d, h                                       ; $4eb3: $54
-    ld [hl], a                                    ; $4eb4: $77
-    ld d, l                                       ; $4eb5: $55
-    ld a, b                                       ; $4eb6: $78
-    ld d, [hl]                                    ; $4eb7: $56
-    ld a, c                                       ; $4eb8: $79
-    ld d, a                                       ; $4eb9: $57
-    ld a, d                                       ; $4eba: $7a
-    ld e, b                                       ; $4ebb: $58
-    ld a, e                                       ; $4ebc: $7b
-    ld e, c                                       ; $4ebd: $59
-    ld a, h                                       ; $4ebe: $7c
-    ld e, d                                       ; $4ebf: $5a
-    ld a, l                                       ; $4ec0: $7d
-    jr nc, @+$53                                  ; $4ec1: $30 $51
+GS07_NameEntryCharacterCodeTilePairTable::
+    db $41, $64
+    db $42, $65
+    db $43, $66
+    db $44, $67
+    db $45, $68
+    db $46, $69
+    db $47, $6a
+    db $48, $6b
+    db $49, $6c
+    db $4a, $6d
+    db $4b, $6e
+    db $4c, $6f
+    db $4d, $70
+    db $4e, $71
+    db $4f, $72
+    db $50, $73
+    db $51, $74
+    db $52, $75
+    db $53, $76
+    db $54, $77
+    db $55, $78
+    db $56, $79
+    db $57, $7a
+    db $58, $7b
+    db $59, $7c
+    db $5a, $7d
+    db $30, $51
+    db $31, $52
+    db $32, $53
+    db $33, $54
+    db $34, $55
+    db $35, $56
+    db $36, $57
+    db $37, $58
+    db $38, $59
+    db $39, $5a
+    db $20, $63
+    db $27, $7e
+    db $22, $7f
+    db $2d, $80
+    db $2e, $81
+    db $2c, $82
 
-    ld sp, $3252                                  ; $4ec3: $31 $52 $32
-    ld d, e                                       ; $4ec6: $53
-    inc sp                                        ; $4ec7: $33
-    ld d, h                                       ; $4ec8: $54
-    inc [hl]                                      ; $4ec9: $34
-    ld d, l                                       ; $4eca: $55
-    dec [hl]                                      ; $4ecb: $35
-    ld d, [hl]                                    ; $4ecc: $56
-    ld [hl], $57                                  ; $4ecd: $36 $57
-    scf                                           ; $4ecf: $37
-    ld e, b                                       ; $4ed0: $58
-    jr c, jr_002_4f2c                             ; $4ed1: $38 $59
-
-    add hl, sp                                    ; $4ed3: $39
-    ld e, d                                       ; $4ed4: $5a
-    jr nz, jr_002_4f3a                            ; $4ed5: $20 $63
-
-    daa                                           ; $4ed7: $27
-    ld a, [hl]                                    ; $4ed8: $7e
-    ld [hl+], a                                   ; $4ed9: $22
-    ld a, a                                       ; $4eda: $7f
-    dec l                                         ; $4edb: $2d
-    add b                                         ; $4edc: $80
-    ld l, $81                                     ; $4edd: $2e $81
-    inc l                                         ; $4edf: $2c
-    add d                                         ; $4ee0: $82
-
-Call_002_4ee1:
+GS07_HandleNameEntryInput::
     ld a, [rInputButtonsPressedOrRepeated]        ; $4ee1: $fa $22 $c3
     and $c0                                       ; $4ee4: $e6 $c0
-    jr z, jr_002_4f13                             ; $4ee6: $28 $2b
+    jr z, .HandleNameEntryAdvanceWithA            ; $4ee6: $28 $2b
 
     ld c, $0a                                     ; $4ee8: $0e $0a
     ld a, $02                                     ; $4eea: $3e $02
     call CallSoundEffectDispatcher                ; $4eec: $cd $b6 $03
-    ld a, [$d83e]                                 ; $4eef: $fa $3e $d8
+    ld a, [rGS07_NameEntryCursorColumnOrConfirmIndex]; $4eef: $fa $3e $d8
     ld c, a                                       ; $4ef2: $4f
     ld b, $00                                     ; $4ef3: $06 $00
-    ld hl, $d83f                                  ; $4ef5: $21 $3f $d8
+    ld hl, rGS07_NameEntryCharacterIndexSlot0     ; $4ef5: $21 $3f $d8
     add hl, bc                                    ; $4ef8: $09
     ld a, [rInputButtonsPressedOrRepeated]        ; $4ef9: $fa $22 $c3
     bit 6, a                                      ; $4efc: $cb $77
-    jr z, jr_002_4f0a                             ; $4efe: $28 $0a
+    jr z, .HandleNameEntryCharacterIncrement      ; $4efe: $28 $0a
 
     ld a, [hl]                                    ; $4f00: $7e
     dec a                                         ; $4f01: $3d
     cp $ff                                        ; $4f02: $fe $ff
-    jr nz, jr_002_4f08                            ; $4f04: $20 $02
+    jr nz, .StoreDecrementedNameEntryCharacterIndex; $4f04: $20 $02
 
     ld a, $29                                     ; $4f06: $3e $29
 
-jr_002_4f08:
+.StoreDecrementedNameEntryCharacterIndex:
     ld [hl], a                                    ; $4f08: $77
     ret                                           ; $4f09: $c9
 
 
-jr_002_4f0a:
+.HandleNameEntryCharacterIncrement:
     ld a, [hl]                                    ; $4f0a: $7e
     inc a                                         ; $4f0b: $3c
     cp $2a                                        ; $4f0c: $fe $2a
-    jr nz, jr_002_4f11                            ; $4f0e: $20 $01
+    jr nz, .StoreIncrementedNameEntryCharacterIndex; $4f0e: $20 $01
 
     xor a                                         ; $4f10: $af
 
-jr_002_4f11:
+.StoreIncrementedNameEntryCharacterIndex:
     ld [hl], a                                    ; $4f11: $77
     ret                                           ; $4f12: $c9
 
 
-jr_002_4f13:
+.HandleNameEntryAdvanceWithA:
     ld a, [rInputButtonsPressed]                  ; $4f13: $fa $1e $c3
     bit 0, a                                      ; $4f16: $cb $47
-    jr z, jr_002_4f2c                             ; $4f18: $28 $12
+    jr z, .HandleNameEntryBackWithB               ; $4f18: $28 $12
 
     ld c, $03                                     ; $4f1a: $0e $03
     ld a, $02                                     ; $4f1c: $3e $02
     call CallSoundEffectDispatcher                ; $4f1e: $cd $b6 $03
-    ld a, [$d83e]                                 ; $4f21: $fa $3e $d8
+    ld a, [rGS07_NameEntryCursorColumnOrConfirmIndex]; $4f21: $fa $3e $d8
     cp $03                                        ; $4f24: $fe $03
     ret z                                         ; $4f26: $c8
 
     inc a                                         ; $4f27: $3c
-    ld [$d83e], a                                 ; $4f28: $ea $3e $d8
+    ld [rGS07_NameEntryCursorColumnOrConfirmIndex], a; $4f28: $ea $3e $d8
     ret                                           ; $4f2b: $c9
 
 
-jr_002_4f2c:
+.HandleNameEntryBackWithB:
     bit 1, a                                      ; $4f2c: $cb $4f
     ret z                                         ; $4f2e: $c8
 
     ld c, $04                                     ; $4f2f: $0e $04
     ld a, $02                                     ; $4f31: $3e $02
     call CallSoundEffectDispatcher                ; $4f33: $cd $b6 $03
-    ld a, [$d83e]                                 ; $4f36: $fa $3e $d8
+    ld a, [rGS07_NameEntryCursorColumnOrConfirmIndex]; $4f36: $fa $3e $d8
     and a                                         ; $4f39: $a7
-
-jr_002_4f3a:
     ret z                                         ; $4f3a: $c8
 
     dec a                                         ; $4f3b: $3d
-    ld [$d83e], a                                 ; $4f3c: $ea $3e $d8
+    ld [rGS07_NameEntryCursorColumnOrConfirmIndex], a; $4f3c: $ea $3e $d8
     ret                                           ; $4f3f: $c9
 
 
-Call_002_4f40:
+GS07_DrawNameEntryCharacterSlotSprite::
     push hl                                       ; $4f40: $e5
     ld c, a                                       ; $4f41: $4f
     ld b, $00                                     ; $4f42: $06 $00
     push bc                                       ; $4f44: $c5
-    ld hl, $d83f                                  ; $4f45: $21 $3f $d8
+    ld hl, rGS07_NameEntryCharacterIndexSlot0     ; $4f45: $21 $3f $d8
     add hl, bc                                    ; $4f48: $09
     ld c, [hl]                                    ; $4f49: $4e
     sla c                                         ; $4f4a: $cb $21
@@ -2077,7 +2038,7 @@ Call_002_4f40:
     ld a, $68                                     ; $4f57: $3e $68
     add c                                         ; $4f59: $81
     ld b, a                                       ; $4f5a: $47
-    ld a, [$d838]                                 ; $4f5b: $fa $38 $d8
+    ld a, [rGS07_NewRecordRankingPositionOrZero]  ; $4f5b: $fa $38 $d8
     swap a                                        ; $4f5e: $cb $37
     add $10                                       ; $4f60: $c6 $10
     ld c, a                                       ; $4f62: $4f
@@ -2087,7 +2048,7 @@ Call_002_4f40:
     ret                                           ; $4f68: $c9
 
 
-GS07_StatePhase_02_TODO::
+GS07_StatePhase_02_TransitionToPuzzleStart::
     ld bc, $003c                                  ; $4f69: $01 $3c $00
     call DelayFramesByBC                          ; $4f6c: $cd $fa $05
     ld a, $05                                     ; $4f6f: $3e $05
@@ -2106,7 +2067,7 @@ GS07_StatePhase_02_TODO::
     call PlayScreenTransitionFadeOut              ; $4f8f: $cd $4e $04
     call DisableLCDAtVBlank                       ; $4f92: $cd $83 $04
 
-jr_002_4f95:
+.SelectNextPuzzleOrderEntryLoop:
     ld a, [rPuzzleOrderTableCursor]               ; $4f95: $fa $01 $a0
     ld c, a                                       ; $4f98: $4f
     ld b, $00                                     ; $4f99: $06 $00
@@ -2114,7 +2075,7 @@ jr_002_4f95:
     add hl, bc                                    ; $4f9e: $09
     ld a, [hl]                                    ; $4f9f: $7e
     cp $40                                        ; $4fa0: $fe $40
-    jr c, jr_002_4fc6                             ; $4fa2: $38 $22
+    jr c, .LoadPuzzleDataIndexFromOrderEntry      ; $4fa2: $38 $22
 
     ld b, $02                                     ; $4fa4: $06 $02
     ld hl, InitializePuzzleOrderTable             ; $4fa6: $21 $67 $52
@@ -2128,12 +2089,12 @@ jr_002_4f95:
     ld b, $02                                     ; $4fbc: $06 $02
     ld hl, ShufflePuzzleOrderTable                ; $4fbe: $21 $74 $52
     call SwitchBankToBAndJumpToHL                 ; $4fc1: $cd $de $05
-    jr jr_002_4f95                                ; $4fc4: $18 $cf
+    jr .SelectNextPuzzleOrderEntryLoop            ; $4fc4: $18 $cf
 
-jr_002_4fc6:
+.LoadPuzzleDataIndexFromOrderEntry:
     sla a                                         ; $4fc6: $cb $27
     ld c, a                                       ; $4fc8: $4f
-    ld hl, GS07_StatePhase_02_TODO_Data           ; $4fc9: $21 $f4 $4f
+    ld hl, GS07_PuzzleDataIndexTableByOrderEntry  ; $4fc9: $21 $f4 $4f
     add hl, bc                                    ; $4fcc: $09
     ld a, [hl+]                                   ; $4fcd: $2a
     ld [rPuzzleDataIndexLow], a                   ; $4fce: $ea $07 $d8
@@ -2143,13 +2104,13 @@ jr_002_4fc6:
     inc a                                         ; $4fd8: $3c
     ld [rPuzzleOrderTableCursor], a               ; $4fd9: $ea $01 $a0
     cp $40                                        ; $4fdc: $fe $40
-    jr nz, jr_002_4fe8                            ; $4fde: $20 $08
+    jr nz, .CommitTransitionToPuzzleGameplay      ; $4fde: $20 $08
 
     ld b, $02                                     ; $4fe0: $06 $02
     ld hl, ShufflePuzzleOrderTable                ; $4fe2: $21 $74 $52
     call SwitchBankToBAndJumpToHL                 ; $4fe5: $cd $de $05
 
-jr_002_4fe8:
+.CommitTransitionToPuzzleGameplay:
     xor a                                         ; $4fe8: $af
     ld [rStatePhase_Current], a                   ; $4fe9: $ea $35 $d6
     ld a, $09                                     ; $4fec: $3e $09
@@ -2157,7 +2118,7 @@ jr_002_4fe8:
     jp RefreshSaveValidationChecksumsAndMirrors   ; $4ff1: $c3 $1f $1b
 
 
-GS07_StatePhase_02_TODO_Data::
+GS07_PuzzleDataIndexTableByOrderEntry::
     db $c1, $00, $c2, $00, $c3, $00, $c4, $00, $c5, $00, $c6, $00, $c7, $00, $c8, $00
     db $c9, $00, $ca, $00, $cb, $00, $cc, $00, $cd, $00, $ce, $00, $cf, $00, $d0, $00
     db $d1, $00, $d2, $00, $d3, $00, $d4, $00, $d5, $00, $d6, $00, $d7, $00, $d8, $00
@@ -2167,10 +2128,10 @@ GS07_StatePhase_02_TODO_Data::
     db $f1, $00, $f2, $00, $f3, $00, $f4, $00, $f5, $00, $f6, $00, $f7, $00, $f8, $00
     db $f9, $00, $fa, $00, $fb, $00, $fc, $00, $fd, $00, $fe, $00, $ff, $00, $00, $01
 
-GS07_StatePhase_03_TODO::
+GS07_StatePhase_03_TransitionBackToMenu::
     xor a                                         ; $5074: $af
-    ld [rHintCursorAnimationColumnAccumulator], a ; $5075: $ea $3e $d6
-    call Call_002_4ddc                            ; $5078: $cd $dc $4d
+    ld [rSharedUIAnimationColumnAccumulator], a   ; $5075: $ea $3e $d6
+    call GS07_TickNewRecordIndicatorBlinkSprites  ; $5078: $cd $dc $4d
     ld bc, $003c                                  ; $507b: $01 $3c $00
     call DelayFramesByBC                          ; $507e: $cd $fa $05
     ld a, $05                                     ; $5081: $3e $05
@@ -2195,7 +2156,7 @@ GS07_StatePhase_03_TODO::
     jp RefreshSaveValidationChecksumsAndMirrors   ; $50b0: $c3 $1f $1b
 
 
-Call_002_50b3:
+GS07_TryInsertCurrentClearTimeIntoRanking::
     ld a, [rPuzzleTimerMinuteTens]                ; $50b3: $fa $0a $d8
     ld b, a                                       ; $50b6: $47
     ld a, [rPuzzleTimerMinuteOnes]                ; $50b7: $fa $09 $d8
@@ -2204,37 +2165,37 @@ Call_002_50b3:
     ld d, a                                       ; $50be: $57
     ld a, [rPuzzleTimerSecondOnes]                ; $50bf: $fa $0b $d8
     ld e, a                                       ; $50c2: $5f
-    ld hl, rSaveDataDefaultBlockADest             ; $50c3: $21 $42 $a0
+    ld hl, rSaveDataTimeTrialRankingEntries       ; $50c3: $21 $42 $a0
     xor a                                         ; $50c6: $af
 
-jr_002_50c7:
+.FindRankingInsertionIndexLoop:
     push af                                       ; $50c7: $f5
     push hl                                       ; $50c8: $e5
     ld a, [hl+]                                   ; $50c9: $2a
     cp b                                          ; $50ca: $b8
-    jr c, jr_002_50e1                             ; $50cb: $38 $14
+    jr c, .AdvanceToNextRankingEntry              ; $50cb: $38 $14
 
-    jr nz, jr_002_50f5                            ; $50cd: $20 $26
+    jr nz, .InsertAtFoundRankingPosition          ; $50cd: $20 $26
 
     ld a, [hl+]                                   ; $50cf: $2a
     cp c                                          ; $50d0: $b9
-    jr c, jr_002_50e1                             ; $50d1: $38 $0e
+    jr c, .AdvanceToNextRankingEntry              ; $50d1: $38 $0e
 
-    jr nz, jr_002_50f5                            ; $50d3: $20 $20
+    jr nz, .InsertAtFoundRankingPosition          ; $50d3: $20 $20
 
     ld a, [hl+]                                   ; $50d5: $2a
     cp d                                          ; $50d6: $ba
-    jr c, jr_002_50e1                             ; $50d7: $38 $08
+    jr c, .AdvanceToNextRankingEntry              ; $50d7: $38 $08
 
-    jr nz, jr_002_50f5                            ; $50d9: $20 $1a
+    jr nz, .InsertAtFoundRankingPosition          ; $50d9: $20 $1a
 
     ld a, [hl+]                                   ; $50db: $2a
     cp e                                          ; $50dc: $bb
-    jr c, jr_002_50e1                             ; $50dd: $38 $02
+    jr c, .AdvanceToNextRankingEntry              ; $50dd: $38 $02
 
-    jr nz, jr_002_50f5                            ; $50df: $20 $14
+    jr nz, .InsertAtFoundRankingPosition          ; $50df: $20 $14
 
-jr_002_50e1:
+.AdvanceToNextRankingEntry:
     pop hl                                        ; $50e1: $e1
     ld a, $07                                     ; $50e2: $3e $07
     add l                                         ; $50e4: $85
@@ -2245,18 +2206,18 @@ jr_002_50e1:
     pop af                                        ; $50ea: $f1
     inc a                                         ; $50eb: $3c
     cp $05                                        ; $50ec: $fe $05
-    jr nz, jr_002_50c7                            ; $50ee: $20 $d7
+    jr nz, .FindRankingInsertionIndexLoop         ; $50ee: $20 $d7
 
     xor a                                         ; $50f0: $af
-    ld [$d838], a                                 ; $50f1: $ea $38 $d8
+    ld [rGS07_NewRecordRankingPositionOrZero], a  ; $50f1: $ea $38 $d8
     ret                                           ; $50f4: $c9
 
 
-jr_002_50f5:
+.InsertAtFoundRankingPosition:
     pop hl                                        ; $50f5: $e1
     pop af                                        ; $50f6: $f1
     inc a                                         ; $50f7: $3c
-    ld [$d838], a                                 ; $50f8: $ea $38 $d8
+    ld [rGS07_NewRecordRankingPositionOrZero], a  ; $50f8: $ea $38 $d8
     ld c, a                                       ; $50fb: $4f
     ld a, $05                                     ; $50fc: $3e $05
     sub c                                         ; $50fe: $91
@@ -2265,26 +2226,26 @@ jr_002_50f5:
     sla a                                         ; $5102: $cb $27
     sla a                                         ; $5104: $cb $27
     sub c                                         ; $5106: $91
-    jr z, jr_002_511c                             ; $5107: $28 $13
+    jr z, .WriteCurrentClearTimeAndInitializeNameFields; $5107: $28 $13
 
     ld c, a                                       ; $5109: $4f
     ld b, $00                                     ; $510a: $06 $00
     push hl                                       ; $510c: $e5
-    ld hl, $a05d                                  ; $510d: $21 $5d $a0
-    ld de, $a064                                  ; $5110: $11 $64 $a0
+    ld hl, rSaveDataTimeTrialRankingEntriesShiftSourceEnd; $510d: $21 $5d $a0
+    ld de, rSaveDataTimeTrialRankingEntriesShiftDestEnd; $5110: $11 $64 $a0
 
-jr_002_5113:
+.ShiftLowerRankingEntriesDownLoop:
     ld a, [hl-]                                   ; $5113: $3a
     ld [de], a                                    ; $5114: $12
     dec de                                        ; $5115: $1b
     dec bc                                        ; $5116: $0b
     ld a, c                                       ; $5117: $79
     or b                                          ; $5118: $b0
-    jr nz, jr_002_5113                            ; $5119: $20 $f8
+    jr nz, .ShiftLowerRankingEntriesDownLoop      ; $5119: $20 $f8
 
     pop hl                                        ; $511b: $e1
 
-jr_002_511c:
+.WriteCurrentClearTimeAndInitializeNameFields:
     ld a, [rPuzzleTimerMinuteTens]                ; $511c: $fa $0a $d8
     ld [hl+], a                                   ; $511f: $22
     ld a, [rPuzzleTimerMinuteOnes]                ; $5120: $fa $09 $d8
@@ -2300,12 +2261,12 @@ jr_002_511c:
     ret                                           ; $5131: $c9
 
 
-Call_002_5132:
-    ld hl, rSaveDataDefaultBlockADest             ; $5132: $21 $42 $a0
+GS07_DrawTimeTrialRankingEntriesFromSaveData::
+    ld hl, rSaveDataTimeTrialRankingEntries       ; $5132: $21 $42 $a0
     ld de, $9300                                  ; $5135: $11 $00 $93
     ld a, $05                                     ; $5138: $3e $05
 
-jr_002_513a:
+.DrawTimeTrialRankingEntryRowLoop:
     push af                                       ; $513a: $f5
     ld a, [hl+]                                   ; $513b: $2a
     or $30                                        ; $513c: $f6 $30
@@ -2339,12 +2300,12 @@ jr_002_513a:
     ld d, a                                       ; $516e: $57
     pop af                                        ; $516f: $f1
     dec a                                         ; $5170: $3d
-    jr nz, jr_002_513a                            ; $5171: $20 $c7
+    jr nz, .DrawTimeTrialRankingEntryRowLoop      ; $5171: $20 $c7
 
     ret                                           ; $5173: $c9
 
 
-Call_002_5174:
+GS07_DrawCurrentClearTimeFromTimer::
     ld de, $8800                                  ; $5174: $11 $00 $88
     ld a, [rPuzzleTimerMinuteTens]                ; $5177: $fa $0a $d8
     or $30                                        ; $517a: $f6 $30
@@ -2367,7 +2328,7 @@ Call_002_5174:
     ret                                           ; $519f: $c9
 
 
-Call_002_51a0:
+GS07_DrawCurrentClearTimePlaceholderDashes::
     ld de, $8800                                  ; $51a0: $11 $00 $88
     ld a, $2d                                     ; $51a3: $3e $2d
     call DrawUIFontGlyph                          ; $51a5: $cd $c0 $51
@@ -2470,10 +2431,10 @@ ShufflePuzzleOrderTable::
     jp ReturnFromBankedJumpRestoreBank            ; $5295: $c3 $ea $05
 
 
-Call_002_5298:
-    ld a, [$d839]                                 ; $5298: $fa $39 $d8
+GS07_DispatchBottomPromptBlinkVariant::
+    ld a, [rGS07_BottomPromptVariantFlag]         ; $5298: $fa $39 $d8
     and a                                         ; $529b: $a7
-    jr nz, jr_002_52a7                            ; $529c: $20 $09
+    jr nz, .DispatchBottomPromptBlink_TryAgain    ; $529c: $20 $09
 
     ld b, $03                                     ; $529e: $06 $03
     ld hl, $4ee9                                  ; $52a0: $21 $e9 $4e
@@ -2481,7 +2442,7 @@ Call_002_5298:
     ret                                           ; $52a6: $c9
 
 
-jr_002_52a7:
+.DispatchBottomPromptBlink_TryAgain:
     ld b, $03                                     ; $52a7: $06 $03
     ld hl, $4f10                                  ; $52a9: $21 $10 $4f
     call SwitchBankToBAndJumpToHL                 ; $52ac: $cd $de $05

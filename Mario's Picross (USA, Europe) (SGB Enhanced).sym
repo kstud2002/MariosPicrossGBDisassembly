@@ -7,9 +7,14 @@
 00:a000 rSaveDataPrimaryBlockStart
 00:a001 rPuzzleOrderTableCursor
 00:a002 rPuzzleOrderTableStart
-00:a042 rSaveDataDefaultBlockADest
+00:a03f rSaveDataTimeTrialRankingEntriesInsertAddressBias
+00:a042 rSaveDataTimeTrialRankingEntries
+00:a05d rSaveDataTimeTrialRankingEntriesShiftSourceEnd
+00:a064 rSaveDataTimeTrialRankingEntriesShiftDestEnd
 00:a065 rSelectedSaveSlotIndex
-00:a069 rSaveDataDefaultBlockBDest
+00:a069 rSaveSlot1ModeCursorRows
+00:a06e rSaveSlot2ModeCursorRows
+00:a073 rSaveSlot3ModeCursorRows
 00:a078 rSaveSlot1GameSelectCursorRow
 00:a079 rSaveSlot2GameSelectCursorRow
 00:a07a rSaveSlot3GameSelectCursorRow
@@ -185,7 +190,7 @@
 00:d63b rMenuCursorRowMaxIndex
 00:d63c rStatePhaseTimer
 00:d63d rSharedAnimationFrameState
-00:d63e rHintCursorAnimationColumnAccumulator
+00:d63e rSharedUIAnimationColumnAccumulator
 00:d63f rHintCursorAnimationRowAccumulator
 00:d73f rPuzzleCellStateBufferEnd
 00:d740 rClueRunLengthHorizontalBufferStart
@@ -195,7 +200,7 @@
 00:d800 rPuzzleGridWidth
 00:d801 rPuzzleGridHeight
 00:d804 rPuzzleCellPendingActionMode
-00:d805 rPuzzleFlowVariant_Unsure
+00:d805 rPuzzlePostClearFlowFlag
 00:d806 rPuzzleTimerCompletionState
 00:d807 rPuzzleDataIndexLow
 00:d808 rPuzzleDataIndexHigh
@@ -235,6 +240,12 @@
 00:d835 rAdvanceOrSkipTimeoutEnabled
 00:d836 rAdvanceOrSkipTimeoutCounter
 00:d837 rGS06_HowToPlaySkipRequestedFlag
+00:d838 rGS07_NewRecordRankingPositionOrZero
+00:d839 rGS07_BottomPromptVariantFlag
+00:d83e rGS07_NameEntryCursorColumnOrConfirmIndex
+00:d83f rGS07_NameEntryCharacterIndexSlot0
+00:d840 rGS07_NameEntryCharacterIndexSlot1
+00:d841 rGS07_NameEntryCharacterIndexSlot2
 00:d842 rSelectedPuzzleWasFirstClearInStatusAndTimeUpdateFlag
 00:d843 rMessageScriptStreamResetEntryLow
 00:d844 rMessageScriptStreamResetEntryHigh
@@ -307,8 +318,8 @@
 00:03ae .WaitForScanline40Loop
 
 00:03b6 CallSoundEffectDispatcher
-00:03ee CallSoundEngineUpdateRoutine_Unsure_PreserveRegisters
-00:03f2 CallSoundEngineUpdateRoutine_Unsure
+
+00:03ee CallSoundEngineUpdateRoutine_Unsure
 
 00:040d PlayScreenTransitionFadeIn
 00:0421 .ApplyFadeStepLoop
@@ -336,6 +347,14 @@
 00:0518 .MaskAndCopyLoop
 
 00:0538 BankedTileCopyVRAMSafe
+00:054b .WaitForLYBelow80_PreTransfer
+00:0557 .WaitForLYAtOrAbove90
+00:0566 .CopyChunkOf20BytesOrUntilDone
+00:0573 .WaitForLYBelow90BeforeNextChunk
+00:057b .PostCopySyncAndFinalizeTransfer
+00:0582 .WaitForLYAtOrAbove90_PostCopy
+00:058f .WaitForLYBelow80_PostCopy
+00:0595 .RestoreIEAndBankAndReturn
 
 00:05a0 FillBGMap0WithTile01
 00:05a5 .FillBGMap0WithTile01Loop
@@ -495,13 +514,13 @@
 
 00:1b96 ResetSaveDataAndLoadDefaults
 00:1b9c .ClearSaveDataLoop
-00:1be2 SaveDataDefaultBlockA
+00:1be2 SaveDataDefaultTimeTrialRankingEntries
 00:1be2 .text:0007:cm=ascii
 00:1be9 .text:0007:cm=ascii
 00:1bf0 .text:0007:cm=ascii
 00:1bf7 .text:0007:cm=ascii
 00:1bfe .text:0007:cm=ascii
-00:1c05 SaveDataDefaultBlockB
+00:1c05 SaveDataDefaultPerSaveSlotModeCursorRows
 00:1c05 .data:000f:5
 
 00:1d22 RunEraseDataConfirmationPrompt
@@ -1757,14 +1776,66 @@
 02:4c63 GS07_PhasePointer_05
 02:4c63 .data:2
 
-02:4c65 GS07_StatePhase_00_TODO
-02:4d8e GS07_StatePhase_01_TODO
-02:4f69 GS07_StatePhase_02_TODO
-02:4ff4 GS07_StatePhase_02_TODO_Data
+02:4c65 GS07_StatePhase_00_TimeTrialRankingScreenInit
+
+02:4cc4 GS07_StatePhase_04_PostClearRankingTransition
+02:4cf4 .DrawRankingAndCurrentTimeRow
+02:4d02 .DrawCurrentTimePlaceholderDashes
+02:4d05 .PrepareOAMAndBottomPromptLayout
+02:4d1b .LoadNewRecordNameEntryPromptLayout
+02:4d23 .PlayTransitionAndRouteToNextPhase
+02:4d5d .RouteToRankingScreenIdlePhase
+
+02:4d63 GS07_LoadTimeTrialRankingScreenGfxAndTilemap
+
+02:4d8e GS07_StatePhase_01_TimeTrialRankingScreenIdle
+02:4db8 .HandleTimeTrialRankingScreenCancelInput
+
+02:4ddc GS07_TickNewRecordIndicatorBlinkSprites
+02:4dea .StoreNewRecordIndicatorBlinkTimer
+
+02:4dff GS07_StatePhase_05_TimeTrialRankingScreenNewRecordNameEntry
+02:4e17 .DrawSlot0SpriteIfVisible
+02:4e1d .MaybeDrawSlot1Sprite
+02:4e25 .DrawSlot1SpriteIfVisible
+02:4e2c .MaybeDrawSlot2Sprite
+02:4e34 .DrawSlot2SpriteIfVisible
+02:4e3b .HandleNameEntryConfirmOrReturn
+02:4e4b .CommitEnteredNameToSaveData
+02:4e8d GS07_NameEntryCharacterCodeTilePairTable
+02:4e8d .data:54:2
+
+02:4ee1 GS07_HandleNameEntryInput
+02:4f08 .StoreDecrementedNameEntryCharacterIndex
+02:4f0a .HandleNameEntryCharacterIncrement
+02:4f11 .StoreIncrementedNameEntryCharacterIndex
+02:4f13 .HandleNameEntryAdvanceWithA
+02:4f2c .HandleNameEntryBackWithB
+
+02:4f40 GS07_DrawNameEntryCharacterSlotSprite
+
+02:4f69 GS07_StatePhase_02_TransitionToPuzzleStart
+02:4f95 .SelectNextPuzzleOrderEntryLoop
+02:4fc6 .LoadPuzzleDataIndexFromOrderEntry
+02:4fe8 .CommitTransitionToPuzzleGameplay
+02:4ff4 GS07_PuzzleDataIndexTableByOrderEntry
 02:4ff4 .data:80
-02:5074 GS07_StatePhase_03_TODO
-02:4cc4 GS07_StatePhase_04_TODO
-02:4dff GS07_StatePhase_05_TODO
+
+02:5074 GS07_StatePhase_03_TransitionBackToMenu
+
+02:50b3 GS07_TryInsertCurrentClearTimeIntoRanking
+02:50c7 .FindRankingInsertionIndexLoop
+02:50e1 .AdvanceToNextRankingEntry
+02:50f5 .InsertAtFoundRankingPosition
+02:5113 .ShiftLowerRankingEntriesDownLoop
+02:511c .WriteCurrentClearTimeAndInitializeNameFields
+
+02:5132 GS07_DrawTimeTrialRankingEntriesFromSaveData
+02:513a .DrawTimeTrialRankingEntryRowLoop
+
+02:5174 GS07_DrawCurrentClearTimeFromTimer
+
+02:51a0 GS07_DrawCurrentClearTimePlaceholderDashes
 
 02:51c0 DrawUIFontGlyph
 02:51e7 PromptFontLookup
@@ -1782,11 +1853,15 @@
 02:5274 ShufflePuzzleOrderTable
 02:5279 .ShufflePuzzleOrderTableLoop
 
+02:5298 GS07_DispatchBottomPromptBlinkVariant
+02:52a7 .DispatchBottomPromptBlink_TryAgain
+
 ; Puzzle data
 ; How To Play: 52b0-52cf
 ; Easy Picross: 52d0-5acf
-; Picross Kinoko: 5ad0-62cf
-; Picross Star: 62d0-
+; Kinoko Course: 5ad0-62cf
+; Star Course: 62d0-6acf
+; Time Trial: 6ad0-72cf
 02:52b0 Puzzle_HT00_LetterN_Data
 02:52b0 .data:0020:a
 02:52d0 Puzzle_EP00_LetterL_Data
@@ -2382,12 +2457,18 @@
 03:4e70 .data:0010
 
 03:4e80 InitBottomPromptBlinkTimerAndFrameState
+
 03:4ea6 TickBottomPromptBlinkSprite4C_A_OK
 03:4eaf .StoreBlinkTimerAndCheckDrawWindowSprite4C
+
 03:4ec2 TickBottomPromptBlinkSprite4C_A_OK_4D_B_CANCEL
 03:4ed3 .StoreBlinkTimerAndCheckDrawWindowSprite4C_4D
+
 03:4ee9 TickBottomPromptBlinkSprite4E_A_START_4F_B_EXIT
 03:4efa .StoreBlinkTimerAndCheckDrawWindowSprite4E_4F
+
+03:4f10 TickBottomPromptBlinkSprite4F_B_Exit_50_A_TRYAGAIN
+03:4f21 .StoreBlinkTimerAndCheckDrawWindowSprite4F_50
 
 ; GameState 00 Phase pointer table entries (accessed via RST_18 dispatcher):
 ; Offset calculation: Phase_value * 2, added to return address $4f8b yields pointer location
@@ -3468,6 +3549,12 @@
 03:5930 PuzzleNamePointerTable_Puzzle_TT3F
 03:5930 .data:0002
 
+; Puzzle names
+; Easy Picross: 5932-5d3b
+; Kinoko Course: 5d3c-623b
+; Star Course: 623c-6753
+; Time Trial: 6754-6c61
+; Special handling: 6c62
 03:5932 Puzzle_EP08_note_Name
 03:5932 .text:000d:cm=messages
 03:593f Puzzle_EP09_diamond_Name
@@ -4433,7 +4520,7 @@
 03:793d .data:001d:4
 03:795a OAMSpriteData_Event4f_ButtonPrompt_B_EXIT
 03:795a .data:0019:4
-03:7973 OAMSpriteData_Event50
+03:7973 OAMSpriteData_Event50_ButtonPrompt_A_TRYAGAIN
 03:7973 .data:0029:4
 03:799c OAMSpriteData_Event51_PromptFont_0
 03:799c .data:0005:4
@@ -4471,69 +4558,69 @@
 03:7a5c .data:0011:4
 03:7a6d OAMSpriteData_Event62_PuzzleSelectCursorPencil_ClearAnimation_Frame2
 03:7a6d .data:0011:4
-03:7a7e OAMSpriteData_Event63
+03:7a7e OAMSpriteData_Event63_PromptFont_Space
 03:7a7e .data:0005:4
-03:7a83 OAMSpriteData_Event64
+03:7a83 OAMSpriteData_Event64_PromptFont_A
 03:7a83 .data:0005:4
-03:7a88 OAMSpriteData_Event65
+03:7a88 OAMSpriteData_Event65_PromptFont_B
 03:7a88 .data:0005:4
-03:7a8d OAMSpriteData_Event66
+03:7a8d OAMSpriteData_Event66_PromptFont_C
 03:7a8d .data:0005:4
-03:7a92 OAMSpriteData_Event67
+03:7a92 OAMSpriteData_Event67_PromptFont_D
 03:7a92 .data:0005:4
-03:7a97 OAMSpriteData_Event68
+03:7a97 OAMSpriteData_Event68_PromptFont_E
 03:7a97 .data:0005:4
-03:7a9c OAMSpriteData_Event69
+03:7a9c OAMSpriteData_Event69_PromptFont_F
 03:7a9c .data:0005:4
-03:7aa1 OAMSpriteData_Event6a
+03:7aa1 OAMSpriteData_Event6a_PromptFont_G
 03:7aa1 .data:0005:4
-03:7aa6 OAMSpriteData_Event6b
+03:7aa6 OAMSpriteData_Event6b_PromptFont_H
 03:7aa6 .data:0005:4
-03:7aab OAMSpriteData_Event6c
+03:7aab OAMSpriteData_Event6c_PromptFont_I
 03:7aab .data:0005:4
-03:7ab0 OAMSpriteData_Event6d
+03:7ab0 OAMSpriteData_Event6d_PromptFont_J
 03:7ab0 .data:0005:4
-03:7ab5 OAMSpriteData_Event6e
+03:7ab5 OAMSpriteData_Event6e_PromptFont_K
 03:7ab5 .data:0005:4
-03:7aba OAMSpriteData_Event6f
+03:7aba OAMSpriteData_Event6f_PromptFont_L
 03:7aba .data:0005:4
-03:7abf OAMSpriteData_Event70
+03:7abf OAMSpriteData_Event70_PromptFont_M
 03:7abf .data:0005:4
-03:7ac4 OAMSpriteData_Event71
+03:7ac4 OAMSpriteData_Event71_PromptFont_N
 03:7ac4 .data:0005:4
-03:7ac9 OAMSpriteData_Event72
+03:7ac9 OAMSpriteData_Event72_PromptFont_O
 03:7ac9 .data:0005:4
-03:7ace OAMSpriteData_Event73
+03:7ace OAMSpriteData_Event73_PromptFont_P
 03:7ace .data:0005:4
-03:7ad3 OAMSpriteData_Event74
+03:7ad3 OAMSpriteData_Event74_PromptFont_Q
 03:7ad3 .data:0005:4
-03:7ad8 OAMSpriteData_Event75
+03:7ad8 OAMSpriteData_Event75_PromptFont_R
 03:7ad8 .data:0005:4
-03:7add OAMSpriteData_Event76
+03:7add OAMSpriteData_Event76_PromptFont_S
 03:7add .data:0005:4
-03:7ae2 OAMSpriteData_Event77
+03:7ae2 OAMSpriteData_Event77_PromptFont_T
 03:7ae2 .data:0005:4
-03:7ae7 OAMSpriteData_Event78
+03:7ae7 OAMSpriteData_Event78_PromptFont_U
 03:7ae7 .data:0005:4
-03:7aec OAMSpriteData_Event79
+03:7aec OAMSpriteData_Event79_PromptFont_V
 03:7aec .data:0005:4
-03:7af1 OAMSpriteData_Event7a
+03:7af1 OAMSpriteData_Event7a_PromptFont_W
 03:7af1 .data:0005:4
-03:7af6 OAMSpriteData_Event7b
+03:7af6 OAMSpriteData_Event7b_PromptFont_X
 03:7af6 .data:0005:4
-03:7afb OAMSpriteData_Event7c
+03:7afb OAMSpriteData_Event7c_PromptFont_Y
 03:7afb .data:0005:4
-03:7b00 OAMSpriteData_Event7d
+03:7b00 OAMSpriteData_Event7d_PromptFont_Z
 03:7b00 .data:0005:4
-03:7b05 OAMSpriteData_Event7e
+03:7b05 OAMSpriteData_Event7e_PromptFont_Apostrophe
 03:7b05 .data:0005:4
-03:7b0a OAMSpriteData_Event7f
+03:7b0a OAMSpriteData_Event7f_PromptFont_DoubleQuote
 03:7b0a .data:0005:4
-03:7b0f OAMSpriteData_Event80_PromptFont_Dash
+03:7b0f OAMSpriteData_Event80_PromptFont_Hyphen
 03:7b0f .data:0005:4
-03:7b14 OAMSpriteData_Event81
+03:7b14 OAMSpriteData_Event81_PromptFont_Period
 03:7b14 .data:0005:4
-03:7b19 OAMSpriteData_Event82
+03:7b19 OAMSpriteData_Event82_PromptFont_Comma
 03:7b19 .data:0005:4
 03:7b1e OAMSpriteData_Event83_TitleScreenMarioBlinking_Frame1
 03:7b1e .data:0081:4
@@ -4931,7 +5018,7 @@
 09:5800 DataSelectScreenTileData
 09:5800 .image:1000:pe1
 
-09:6800 TimeTrialLevelSelectTileData
+09:6800 TimeTrialRankingScreenTileData
 09:6800 .image:1000:pe1
 
 09:7800 ContinueSavedGameScreenTileData
@@ -5048,7 +5135,7 @@
 0c:7800 EasyPicrossContinueSavedGameScreenTileMap
 0c:7800 .data:0400:20
 
-0c:7c00 _TileMap_uncertain
+0c:7c00 TimeTrialRankingScreenTileMap
 0c:7c00 .data:0400:20
 
 ; =============================================================================

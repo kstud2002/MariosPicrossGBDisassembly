@@ -6208,7 +6208,7 @@ jr_00f_5ca5:
 
     ld b, h                                       ; $5cab: $44
     ei                                            ; $5cac: $fb
-    ld hl, rPuzzleFlowVariant_Unsure              ; $5cad: $21 $05 $d8
+    ld hl, rPuzzlePostClearFlowFlag               ; $5cad: $21 $05 $d8
     dec b                                         ; $5cb0: $05
     ret c                                         ; $5cb1: $d8
 

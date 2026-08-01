@@ -11,8 +11,8 @@ CourseSelectScreenTileData::
 DataSelectScreenTileData::
     INCBIN "gfx/DataSelectScreenTileData.2bpp"
 
-TimeTrialLevelSelectTileData::
-    INCBIN "gfx/TimeTrialLevelSelectTileData.2bpp"
+TimeTrialRankingScreenTileData::
+    INCBIN "gfx/TimeTrialRankingScreenTileData.2bpp"
 
 ContinueSavedGameScreenTileData::
     INCBIN "gfx/ContinueSavedGameScreenTileData.2bpp"

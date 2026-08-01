@@ -215,8 +215,8 @@ GameInitEntryPoint::
     ld [rSubtractiveRNGModulus], a                ; $01f4: $ea $69 $cd
     call InitializeSubtractiveRNGState            ; $01f7: $cd $31 $06
     call HandleStartupSaveDataIntegrityCheck      ; $01fa: $cd $da $1a
-    ld hl, SaveDataDefaultBlockB                  ; $01fd: $21 $05 $1c
-    ld de, rSaveDataDefaultBlockBDest             ; $0200: $11 $69 $a0
+    ld hl, SaveDataDefaultPerSaveSlotModeCursorRows; $01fd: $21 $05 $1c
+    ld de, rSaveSlot1ModeCursorRows               ; $0200: $11 $69 $a0
     ld bc, $000f                                  ; $0203: $01 $0f $00
     call CopyMemoryBlock                          ; $0206: $cd $db $04
     call RefreshSaveValidationChecksumsAndMirrors ; $0209: $cd $1f $1b
@@ -367,7 +367,7 @@ VBlankInterruptHandler::
     and a                                         ; $031c: $a7
     jr nz, .FinalizeAndExit                       ; $031d: $20 $03
 
-    call CallSoundEngineUpdateRoutine_Unsure_PreserveRegisters; $031f: $cd $ee $03
+    call CallSoundEngineUpdateRoutine_Unsure      ; $031f: $cd $ee $03
 
 .FinalizeAndExit:
     ld a, [rVBlankFrameCounter]                   ; $0322: $fa $3a $c3
@@ -549,13 +549,11 @@ jr_000_03df:
     ret                                           ; $03ed: $c9
 
 
-CallSoundEngineUpdateRoutine_Unsure_PreserveRegisters::
+CallSoundEngineUpdateRoutine_Unsure::
     push af                                       ; $03ee: $f5
     push bc                                       ; $03ef: $c5
     push de                                       ; $03f0: $d5
     push hl                                       ; $03f1: $e5
-
-CallSoundEngineUpdateRoutine_Unsure::
     ld a, [rActiveROMBank]                        ; $03f2: $fa $12 $c3
     push af                                       ; $03f5: $f5
     ld a, $0f                                     ; $03f6: $3e $0f
@@ -602,7 +600,7 @@ PlayScreenTransitionFadeIn::
 
     ld [rStatePhaseTimer], a                      ; $043a: $ea $3c $d6
     ld [rSharedAnimationFrameState], a            ; $043d: $ea $3d $d6
-    ld [rHintCursorAnimationColumnAccumulator], a ; $0440: $ea $3e $d6
+    ld [rSharedUIAnimationColumnAccumulator], a   ; $0440: $ea $3e $d6
     ld [rHintCursorAnimationRowAccumulator], a    ; $0443: $ea $3f $d6
     pop af                                        ; $0446: $f1
     ld [rActiveROMBank], a                        ; $0447: $ea $12 $c3
@@ -811,26 +809,26 @@ BankedTileCopyVRAMSafe::
     ldh a, [rIE]                                  ; $0548: $f0 $ff
     push af                                       ; $054a: $f5
 
-jr_000_054b:
+.WaitForLYBelow80_PreTransfer:
     ldh a, [rLY]                                  ; $054b: $f0 $44
     cp $80                                        ; $054d: $fe $80
-    jr nc, jr_000_054b                            ; $054f: $30 $fa
+    jr nc, .WaitForLYBelow80_PreTransfer          ; $054f: $30 $fa
 
     ldh a, [rIE]                                  ; $0551: $f0 $ff
     res 0, a                                      ; $0553: $cb $87
     ldh [rIE], a                                  ; $0555: $e0 $ff
 
-jr_000_0557:
+.WaitForLYAtOrAbove90:
     ldh a, [rLY]                                  ; $0557: $f0 $44
     cp $90                                        ; $0559: $fe $90
-    jr c, jr_000_0557                             ; $055b: $38 $fa
+    jr c, .WaitForLYAtOrAbove90                   ; $055b: $38 $fa
 
     ld a, [rLCDCShadow]                           ; $055d: $fa $2e $c3
     set 4, a                                      ; $0560: $cb $e7
     ldh [rLCDC], a                                ; $0562: $e0 $40
     ld a, $20                                     ; $0564: $3e $20
 
-jr_000_0566:
+.CopyChunkOf20BytesOrUntilDone:
     push af                                       ; $0566: $f5
     ld a, [hl+]                                   ; $0567: $2a
     ld [de], a                                    ; $0568: $12
@@ -838,40 +836,40 @@ jr_000_0566:
     dec bc                                        ; $056a: $0b
     ld a, b                                       ; $056b: $78
     or c                                          ; $056c: $b1
-    jr z, jr_000_057b                             ; $056d: $28 $0c
+    jr z, .PostCopySyncAndFinalizeTransfer        ; $056d: $28 $0c
 
     pop af                                        ; $056f: $f1
     dec a                                         ; $0570: $3d
-    jr nz, jr_000_0566                            ; $0571: $20 $f3
+    jr nz, .CopyChunkOf20BytesOrUntilDone         ; $0571: $20 $f3
 
-jr_000_0573:
+.WaitForLYBelow90BeforeNextChunk:
     ldh a, [rLY]                                  ; $0573: $f0 $44
     cp $90                                        ; $0575: $fe $90
-    jr c, jr_000_0557                             ; $0577: $38 $de
+    jr c, .WaitForLYAtOrAbove90                   ; $0577: $38 $de
 
-    jr jr_000_0573                                ; $0579: $18 $f8
+    jr .WaitForLYBelow90BeforeNextChunk           ; $0579: $18 $f8
 
-jr_000_057b:
+.PostCopySyncAndFinalizeTransfer:
     pop af                                        ; $057b: $f1
     ldh a, [rLY]                                  ; $057c: $f0 $44
     cp $80                                        ; $057e: $fe $80
-    jr c, jr_000_0595                             ; $0580: $38 $13
+    jr c, .RestoreIEAndBankAndReturn              ; $0580: $38 $13
 
-jr_000_0582:
+.WaitForLYAtOrAbove90_PostCopy:
     ldh a, [rLY]                                  ; $0582: $f0 $44
     cp $90                                        ; $0584: $fe $90
-    jr c, jr_000_0582                             ; $0586: $38 $fa
+    jr c, .WaitForLYAtOrAbove90_PostCopy          ; $0586: $38 $fa
 
     ld a, [rLCDCShadow]                           ; $0588: $fa $2e $c3
     set 4, a                                      ; $058b: $cb $e7
     ldh [rLCDC], a                                ; $058d: $e0 $40
 
-jr_000_058f:
+.WaitForLYBelow80_PostCopy:
     ldh a, [rLY]                                  ; $058f: $f0 $44
     cp $80                                        ; $0591: $fe $80
-    jr nc, jr_000_058f                            ; $0593: $30 $fa
+    jr nc, .WaitForLYBelow80_PostCopy             ; $0593: $30 $fa
 
-jr_000_0595:
+.RestoreIEAndBankAndReturn:
     pop af                                        ; $0595: $f1
     ldh [rIE], a                                  ; $0596: $e0 $ff
     pop af                                        ; $0598: $f1
@@ -1457,7 +1455,7 @@ LCDCInterruptDispatchRoutineAtLY2F_TickAndMaybeRunSoundEngineUpdate::
     and a                                         ; $0897: $a7
     jr nz, .Return                                ; $0898: $20 $03
 
-    call CallSoundEngineUpdateRoutine_Unsure_PreserveRegisters; $089a: $cd $ee $03
+    call CallSoundEngineUpdateRoutine_Unsure      ; $089a: $cd $ee $03
 
 .Return:
     ret                                           ; $089d: $c9
@@ -1476,7 +1474,7 @@ LCDCInterruptDispatchRoutineAtLY2F_MaybeRunSoundEngineUpdate::
     and a                                         ; $08ac: $a7
     jr nz, .Return                                ; $08ad: $20 $03
 
-    call CallSoundEngineUpdateRoutine_Unsure_PreserveRegisters; $08af: $cd $ee $03
+    call CallSoundEngineUpdateRoutine_Unsure      ; $08af: $cd $ee $03
 
 .Return:
     ret                                           ; $08b2: $c9
@@ -5666,12 +5664,12 @@ ResetSaveDataAndLoadDefaults::
     ld b, $02                                     ; $1bbb: $06 $02
     ld hl, $5274                                  ; $1bbd: $21 $74 $52
     call SwitchBankToBAndJumpToHL                 ; $1bc0: $cd $de $05
-    ld hl, SaveDataDefaultBlockA                  ; $1bc3: $21 $e2 $1b
-    ld de, rSaveDataDefaultBlockADest             ; $1bc6: $11 $42 $a0
+    ld hl, SaveDataDefaultTimeTrialRankingEntries ; $1bc3: $21 $e2 $1b
+    ld de, rSaveDataTimeTrialRankingEntries       ; $1bc6: $11 $42 $a0
     ld bc, $0023                                  ; $1bc9: $01 $23 $00
     call CopyMemoryBlock                          ; $1bcc: $cd $db $04
-    ld hl, SaveDataDefaultBlockB                  ; $1bcf: $21 $05 $1c
-    ld de, rSaveDataDefaultBlockBDest             ; $1bd2: $11 $69 $a0
+    ld hl, SaveDataDefaultPerSaveSlotModeCursorRows; $1bcf: $21 $05 $1c
+    ld de, rSaveSlot1ModeCursorRows               ; $1bd2: $11 $69 $a0
     ld bc, $000f                                  ; $1bd5: $01 $0f $00
     call CopyMemoryBlock                          ; $1bd8: $cd $db $04
     ld bc, $003c                                  ; $1bdb: $01 $3c $00
@@ -5679,7 +5677,7 @@ ResetSaveDataAndLoadDefaults::
     ret                                           ; $1be1: $c9
 
 
-SaveDataDefaultBlockA::
+SaveDataDefaultTimeTrialRankingEntries::
     db $01, $05, $00, $00, "NIN"
 
     db $02, $00, $00, $00, "APE"
@@ -5690,7 +5688,7 @@ SaveDataDefaultBlockA::
 
     db $05, $00, $00, $00, "PIC"
 
-SaveDataDefaultBlockB::
+SaveDataDefaultPerSaveSlotModeCursorRows::
     db $00, $01, $02, $03, $04
     db $00, $01, $02, $03, $04
     db $00, $01, $02, $03, $04
@@ -6269,7 +6267,7 @@ PlayScreenTransitionFadeIn_SGB::
 
     ld [rStatePhaseTimer], a                      ; $200a: $ea $3c $d6
     ld [rSharedAnimationFrameState], a            ; $200d: $ea $3d $d6
-    ld [rHintCursorAnimationColumnAccumulator], a ; $2010: $ea $3e $d6
+    ld [rSharedUIAnimationColumnAccumulator], a   ; $2010: $ea $3e $d6
     ld [rHintCursorAnimationRowAccumulator], a    ; $2013: $ea $3f $d6
     pop af                                        ; $2016: $f1
     ld [rActiveROMBank], a                        ; $2017: $ea $12 $c3
@@ -6625,7 +6623,7 @@ GS06_StatePhase_00_Init::
     ld [rVBlankLCDCBit4ForceFlag], a              ; $21d5: $ea $3c $c3
     ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $21d8: $ea $50 $c3
     xor a                                         ; $21db: $af
-    ld [rPuzzleFlowVariant_Unsure], a             ; $21dc: $ea $05 $d8
+    ld [rPuzzlePostClearFlowFlag], a              ; $21dc: $ea $05 $d8
     ld [rPuzzleTimerCompletionState], a           ; $21df: $ea $06 $d8
     ld [rMarioBlinkAnimationSequenceCursor], a    ; $21e2: $ea $18 $d8
     ld [rMarioBlinkAnimationDelay], a             ; $21e5: $ea $17 $d8
@@ -6634,7 +6632,7 @@ GS06_StatePhase_00_Init::
     ld [rCellEffectTargetRow], a                  ; $21ee: $ea $25 $d8
     ld [rPendingCellEffectCode], a                ; $21f1: $ea $23 $d8
     ld [rPendingCellEffectDelay], a               ; $21f4: $ea $22 $d8
-    ld [rHintCursorAnimationColumnAccumulator], a ; $21f7: $ea $3e $d6
+    ld [rSharedUIAnimationColumnAccumulator], a   ; $21f7: $ea $3e $d6
     ld [rHintCursorAnimationRowAccumulator], a    ; $21fa: $ea $3f $d6
     ld a, [rLCDCFrameTickCounter]                 ; $21fd: $fa $3b $c3
     ld [rSharedAnimationFrameState], a            ; $2200: $ea $3d $d6
@@ -7728,7 +7726,7 @@ GS06_StatePhase_29_AdvanceOrRestart::
     xor a                                         ; $2ae0: $af
     ld [rPuzzleCursorColumn], a                   ; $2ae1: $ea $36 $d6
     ld [rPuzzleAndMenuCursorRow], a               ; $2ae4: $ea $37 $d6
-    ld [rPuzzleFlowVariant_Unsure], a             ; $2ae7: $ea $05 $d8
+    ld [rPuzzlePostClearFlowFlag], a              ; $2ae7: $ea $05 $d8
     ld [rPuzzleTimerCompletionState], a           ; $2aea: $ea $06 $d8
     ld [rPuzzleActionRepeatGuard], a              ; $2aed: $ea $0f $d8
     call GS06_ResetMessageSequenceState           ; $2af0: $cd $3e $32
@@ -8415,7 +8413,7 @@ AdvanceHintCursorAnimation::
     ld hl, rSharedAnimationFrameState             ; $31ce: $21 $3d $d6
     sub [hl]                                      ; $31d1: $96
     push af                                       ; $31d2: $f5
-    ld hl, rHintCursorAnimationColumnAccumulator  ; $31d3: $21 $3e $d6
+    ld hl, rSharedUIAnimationColumnAccumulator    ; $31d3: $21 $3e $d6
     add [hl]                                      ; $31d6: $86
     ld [hl], a                                    ; $31d7: $77
     pop af                                        ; $31d8: $f1
@@ -8429,12 +8427,12 @@ AdvanceHintCursorAnimation::
     jr nc, .AdvanceHintCursorRow                  ; $31e7: $30 $25
 
     ld c, a                                       ; $31e9: $4f
-    ld a, [rHintCursorAnimationColumnAccumulator] ; $31ea: $fa $3e $d6
+    ld a, [rSharedUIAnimationColumnAccumulator]   ; $31ea: $fa $3e $d6
     cp c                                          ; $31ed: $b9
     jr c, .AdvanceHintCursorRow                   ; $31ee: $38 $1e
 
     xor a                                         ; $31f0: $af
-    ld [rHintCursorAnimationColumnAccumulator], a ; $31f1: $ea $3e $d6
+    ld [rSharedUIAnimationColumnAccumulator], a   ; $31f1: $ea $3e $d6
     ld a, c                                       ; $31f4: $79
     cp $02                                        ; $31f5: $fe $02
     jr z, .AdvanceHintCursorColumn                ; $31f7: $28 $06
