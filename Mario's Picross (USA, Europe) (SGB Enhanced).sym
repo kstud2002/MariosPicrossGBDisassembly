@@ -12,9 +12,9 @@
 00:a05d rSaveDataTimeTrialRankingEntriesShiftSourceEnd
 00:a064 rSaveDataTimeTrialRankingEntriesShiftDestEnd
 00:a065 rSelectedSaveSlotIndex
-00:a066 rSaveSlot1PuzzleActionRuleIndex_Unsure
-00:a067 rSaveSlot2PuzzleActionRuleIndex_Unsure
-00:a068 rSaveSlot3PuzzleActionRuleIndex_Unsure
+00:a066 rSaveSlot1PuzzleActionRuleIndex_Unused
+00:a067 rSaveSlot2PuzzleActionRuleIndex_Unused
+00:a068 rSaveSlot3PuzzleActionRuleIndex_Unused
 ; Per-save-slot BGM index entries: GS08 Easy Picross, GS0A Kinoko/Star, GS09 Time Trial, unknown
 00:a069 rSaveSlot1EasyPicrossBGMSelectionIndex
 00:a06a rSaveSlot1PicrossKinokoBGMSelectionIndex
@@ -1011,7 +1011,7 @@
 01:477a .AdvanceSelectionAfterPostResultPrompt
 01:47b7 GS04_StatePhase_05_ReturnFromPuzzleTransitionAndCommitResult
 
-01:49a2 GS04_LoadPicrossCoursePuzzleSelectCursorForSelectedSaveSlotAndCourse
+01:49a2 LoadPicrossCoursePuzzleSelectCursorForSelectedSaveSlotAndCourse
 
 01:49c8 GS04_SavePicrossCoursePuzzleSelectCursorForSelectedSaveSlotAndCourse
 
@@ -1059,7 +1059,7 @@
 
 01:4cbc GS04_IncrementSelectedPicrossCoursePuzzleClearCountIfAllowed
 
-01:4cef GS04_UpdateSelectedPicrossCoursePuzzleClearStatusAndTimes
+01:4cef UpdateSelectedPicrossCoursePuzzleClearStatusAndTimes
 01:4d76 .UpdateBestClearTime
 01:4dbb .CompareBestClearTimeLowByteAndHintUsedOnTie
 01:4dc7 .StoreNewBestClearTime
@@ -1409,18 +1409,37 @@
 01:6412 GS09_PhasePointer_09
 01:6412 .data:2
 
-01:6414 GS09_StatePhase_00_TODO
-01:656c GS09_StatePhase_01_TODO
-01:661f GS09_StatePhase_02_TODO
-01:6677 GS09_StatePhase_03_TODO
-01:66b3 GS09_StatePhase_04_TODO
-01:66e8 GS09_StatePhase_04_TODO_Data
+01:6414 GS09_StatePhase_00_TimeTrialPuzzleInit
+
+01:64b1 GS09_StatePhase_09_ContinueSavedPuzzleInitAndOpenPauseMenu
+
+01:656c GS09_StatePhase_01_PuzzleGameplayLoop
+01:6598 .HandlePostClearFlowOrCheckTimeout
+01:65d3 .WaitForPostClearInputAndAdvance
+01:65fe .HandleTimerCompletionGameOverFlow
+
+01:661f GS09_StatePhase_02_ConfirmExitAndReturnToTimeTrialRankingScreen
+
+01:6677 GS09_StatePhase_03_PauseMenuInitAndMaskClues
+
+01:66b3 GS09_StatePhase_04_PauseMenuIdle
+01:66d8 .HandlePauseMenuCloseInput
+01:66e8 GS09_PauseMenuSelectionNextPhaseTable
 01:66e8 .data:3
-01:66eb GS09_StatePhase_05_TODO
-01:677d GS09_StatePhase_06_TODO
-01:6798 GS09_StatePhase_07_TODO
-01:67f6 GS09_StatePhase_08_TODO
-01:64b1 GS09_StatePhase_09_TODO
+
+01:66eb GS09_StatePhase_05_PauseMenuSavePrompt
+01:670c .HandlePauseMenuSavePromptConfirmAndBeginExitFlow
+
+01:677d GS09_StatePhase_06_PauseMenuBGMSubmenu
+
+01:6798 GS09_StatePhase_07_PauseMenuGiveUpPrompt
+01:67b9 .HandlePauseMenuGiveUpConfirmAndStartGameOverFlow
+
+01:67f6 GS09_StatePhase_08_ClosePauseMenuAndResumeGameplay
+
+01:682f RouteTimeTrialCellActionInputByUnusedSaveRuleFlag
+01:683d .ResetActionRepeatGuard
+01:6841 .DispatchCellActionByUnusedSaveRuleFlag
 
 ; GameState 0A Phase pointer table entries (accessed via RST_18 dispatcher):
 ; Offset calculation: Phase_value * 2, added to return address $6871 yields pointer location
@@ -1461,9 +1480,14 @@
 01:6887 GS0A_PhasePointer_0b
 01:6887 .data:2
 
-01:6889 GS0A_StatePhase_00_TODO
+01:6889 GS0A_StatePhase_00_PicrossPuzzleInit
 
-01:6907 GS0A_StatePhase_0b_TODO
+01:6907 GS0A_StatePhase_0b_ContinueSavedPuzzleInitAndOpenPauseMenu
+
+01:69b9 LoadGameBoardTileData
+01:69f6 .Load10x10GameBoardTileData
+01:6a22 .Load15x15GameBoardTileData
+01:6a48 .InitializePuzzleRuntimeStateAfterBoardLoad
 
 01:6a92 GS0A_StatePhase_01_HintPopupSelection
 01:6ab7 .HandleHintPopupConfirmOrCancelInput
@@ -1485,29 +1509,30 @@
 01:6bf3 .AdvanceHintCursorColumnThresholdFromInitial
 01:6c18 .AdvanceHintCursorRowThresholdFromInitial
 
-01:6c41 GS0A_StatePhase_03_TODO
+01:6c41 GS0A_StatePhase_03_PuzzleGameplayLoop
+01:6c76 .HandlePostClearFlowOrCheckTimeout
+01:6c9c .WaitForPostClearInputAndAdvance
+01:6cde .HandleTimerCompletionGameOverFlow
 
-01:6cff GS0A_StatePhase_04_TODO
+01:6cff GS0A_StatePhase_04_ConfirmExitAndReturnToPicrossCoursePuzzleSelect
 
-01:6d57 GS0A_StatePhase_05_TODO
+01:6d57 GS0A_StatePhase_05_PauseMenuInitAndMaskClues
 
-01:6d9c GS0A_StatePhase_06_TODO
+01:6d9c GS0A_StatePhase_06_PauseMenuIdle
+01:6dc1 .HandlePauseMenuCloseInput
 
-01:6dd1 GS0A_StatePhase_06_TODO_Data
+01:6dd1 GS0A_PauseMenuSelectionNextPhaseTable
 01:6dd1 .data:3
 
-01:6dd4 GS0A_StatePhase_07_TODO
+01:6dd4 GS0A_StatePhase_07_PauseMenuSavePrompt
+01:6df5 .HandlePauseMenuSavePromptConfirmAndBeginExitFlow
 
-01:6e6e GS0A_StatePhase_08_TODO
+01:6e6e GS0A_StatePhase_08_PauseMenuBGMSubmenu
 
-01:6e89 GS0A_StatePhase_09_TODO
+01:6e89 GS0A_StatePhase_09_PauseMenuGiveUpPrompt
+01:6eaa .HandlePauseMenuGiveUpConfirmAndStartGameOverFlow
 
-01:6eef GS0A_StatePhase_0a_TODO
-
-01:69b9 LoadGameBoardTileData
-01:69f6 .Load10x10GameBoardTileData
-01:6a22 .Load15x15GameBoardTileData
-01:6a48 .InitializePuzzleRuntimeStateAfterBoardLoad
+01:6eef GS0A_StatePhase_0a_ClosePauseMenuAndResumeGameplay
 
 01:6c2c TickCountdownAndEmitSfx
 
@@ -1765,6 +1790,8 @@
 01:7de5 .AdjustCountersForBit1SetCellsLoop
 01:7df0 .AdvanceAdjustCountersForBit1SetCellsLoop
 
+01:7dfe PlayPuzzleModeSecondarySfxPairBySelectedCourseBGM
+
 01:7e2d PuzzleModeSecondarySfxIdTable
 01:7e2d .data:0006
 
@@ -1968,8 +1995,8 @@
 00:2111 GameState_06_HowToPlay_PhaseDispatcher
 02:4c55 GameState_07_TimeTrialRankingScreen_PhaseDispatcher
 01:5d7e GameState_08_EasyPicrossPuzzle_PhaseDispatcher
-01:63fc GameState_09_TODO_PhaseDispatcher
-01:686d GameState_0A_TODO_PhaseDispatcher
+01:63fc GameState_09_TimeTrialPuzzle_PhaseDispatcher
+01:686d GameState_0A_PicrossPuzzle_PhaseDispatcher
 
 ; GameState 01 Phase pointer table entries (accessed via RST_18 dispatcher):
 ; Offset calculation: Phase_value * 2, added to return address $4753 yields pointer location

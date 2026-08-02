@@ -112,7 +112,7 @@ GS04_StatePhase_00_PicrossCoursePuzzleSelectScreenInit::
     ld de, $8800                                  ; $43d6: $11 $00 $88
     ld bc, $1000                                  ; $43d9: $01 $00 $10
     call BankedTileCopy                           ; $43dc: $cd $e4 $04
-    call GS04_LoadPicrossCoursePuzzleSelectCursorForSelectedSaveSlotAndCourse; $43df: $cd $a2 $49
+    call LoadPicrossCoursePuzzleSelectCursorForSelectedSaveSlotAndCourse; $43df: $cd $a2 $49
     call GS04_LoadPicrossCourseSelectGraphicsBySelectedCourse; $43e2: $cd $80 $4a
     call GS04_DrawCompletedPuzzleMarkersForSelectedSaveSlotAndCourse; $43e5: $cd $0a $4c
     call ClearShadowOAMBuffer                     ; $43e8: $cd $b6 $05
@@ -159,7 +159,7 @@ GS04_StatePhase_04_ReturnFromPuzzleTransitionAndHandleUnlockFlow::
     ld de, $8800                                  ; $444c: $11 $00 $88
     ld bc, $1000                                  ; $444f: $01 $00 $10
     call BankedTileCopy                           ; $4452: $cd $e4 $04
-    call GS04_LoadPicrossCoursePuzzleSelectCursorForSelectedSaveSlotAndCourse; $4455: $cd $a2 $49
+    call LoadPicrossCoursePuzzleSelectCursorForSelectedSaveSlotAndCourse; $4455: $cd $a2 $49
     call GS04_LoadPicrossCourseSelectGraphicsBySelectedCourse; $4458: $cd $80 $4a
     call GS04_DrawCompletedPuzzleMarkersForSelectedSaveSlotAndCourseExceptCurrentSelection; $445b: $cd $3b $4c
     ld a, [rSelectedPuzzleStatusData]             ; $445e: $fa $4c $d8
@@ -605,10 +605,10 @@ GS04_StatePhase_05_ReturnFromPuzzleTransitionAndCommitResult::
     ld [rHintPopupSelection], a                   ; $47ec: $ea $33 $d8
     ld a, $01                                     ; $47ef: $3e $01
     ld [rPuzzlePostClearFlowFlag], a              ; $47f1: $ea $05 $d8
-    call GS04_LoadPicrossCoursePuzzleSelectCursorForSelectedSaveSlotAndCourse; $47f4: $cd $a2 $49
+    call LoadPicrossCoursePuzzleSelectCursorForSelectedSaveSlotAndCourse; $47f4: $cd $a2 $49
     call GS04_LoadSelectedPicrossCoursePuzzleStatusAndTimeDataRecord; $47f7: $cd $4b $50
     call GS04_IncrementSelectedPicrossCoursePuzzleClearCountIfAllowed; $47fa: $cd $bc $4c
-    call GS04_UpdateSelectedPicrossCoursePuzzleClearStatusAndTimes; $47fd: $cd $ef $4c
+    call UpdateSelectedPicrossCoursePuzzleClearStatusAndTimes; $47fd: $cd $ef $4c
     call RefreshSaveValidationChecksumsAndMirrors ; $4800: $cd $1f $1b
     ld a, $04                                     ; $4803: $3e $04
     ld [rStatePhase_Current], a                   ; $4805: $ea $35 $d6
@@ -728,7 +728,7 @@ GS04_StatePhase_03_CancelSelectionTransitionToCourseSelect::
     jp RefreshSaveValidationChecksumsAndMirrors   ; $499f: $c3 $1f $1b
 
 
-GS04_LoadPicrossCoursePuzzleSelectCursorForSelectedSaveSlotAndCourse::
+LoadPicrossCoursePuzzleSelectCursorForSelectedSaveSlotAndCourse::
     ld a, [rSelectedSaveSlotIndex]                ; $49a2: $fa $65 $a0
     ld c, a                                       ; $49a5: $4f
     ld b, $00                                     ; $49a6: $06 $00
@@ -1250,7 +1250,7 @@ GS04_IncrementSelectedPicrossCoursePuzzleClearCountIfAllowed::
     ret                                           ; $4cee: $c9
 
 
-GS04_UpdateSelectedPicrossCoursePuzzleClearStatusAndTimes::
+UpdateSelectedPicrossCoursePuzzleClearStatusAndTimes::
     xor a                                         ; $4cef: $af
     ld [rSelectedPuzzleWasFirstClearInStatusAndTimeUpdateFlag], a; $4cf0: $ea $42 $d8
     ld a, [rSelectedSaveSlotIndex]                ; $4cf3: $fa $65 $a0
@@ -4445,7 +4445,7 @@ GS08_StatePhase_0a_ClosePauseMenuAndResumeGameplay::
     jp RefreshSaveValidationChecksumsAndMirrors   ; $63f9: $c3 $1f $1b
 
 
-GameState_09_TODO_PhaseDispatcher::
+GameState_09_TimeTrialPuzzle_PhaseDispatcher::
     ld a, [rStatePhase_Current]                   ; $63fc: $fa $35 $d6
     rst RST_18                                    ; $63ff: $df
 
@@ -4479,7 +4479,7 @@ GS09_PhasePointer_08::
 GS09_PhasePointer_09::
     db $b1, $64
 
-GS09_StatePhase_00_TODO::
+GS09_StatePhase_00_TimeTrialPuzzleInit::
     ld a, $43                                     ; $6414: $3e $43
     ld [rLCDCShadow], a                           ; $6416: $ea $2e $c3
     xor a                                         ; $6419: $af
@@ -4547,7 +4547,7 @@ GS09_StatePhase_00_TODO::
     ret                                           ; $64b0: $c9
 
 
-GS09_StatePhase_09_TODO::
+GS09_StatePhase_09_ContinueSavedPuzzleInitAndOpenPauseMenu::
     ld a, $43                                     ; $64b1: $3e $43
     ld [rLCDCShadow], a                           ; $64b3: $ea $2e $c3
     xor a                                         ; $64b6: $af
@@ -4630,18 +4630,18 @@ GS09_StatePhase_09_TODO::
     ret                                           ; $656b: $c9
 
 
-GS09_StatePhase_01_TODO::
+GS09_StatePhase_01_PuzzleGameplayLoop::
     call UpdatePuzzleCursorFromDirectionalInput   ; $656c: $cd $ca $71
     call DrawPuzzleCursorSpritesAndTickStepSequence; $656f: $cd $3e $71
     call UpdatePuzzleTimerCountdown               ; $6572: $cd $ea $7a
     call TickMarioBlinkAnimation                  ; $6575: $cd $18 $79
-    call Call_001_682f                            ; $6578: $cd $2f $68
+    call RouteTimeTrialCellActionInputBySaveRule  ; $6578: $cd $2f $68
     call TickPendingCellActionEffect              ; $657b: $cd $16 $75
     call FinalizePuzzleClearAndSetPostClearFlowFlag; $657e: $cd $f6 $75
     call TickPuzzleTimerCompletionState           ; $6581: $cd $c8 $7c
     ld a, [rInputButtonsPressed]                  ; $6584: $fa $1e $c3
     and $08                                       ; $6587: $e6 $08
-    jr z, jr_001_6598                             ; $6589: $28 $0d
+    jr z, .HandlePostClearFlowOrCheckTimeout      ; $6589: $28 $0d
 
     ld c, $10                                     ; $658b: $0e $10
     ld a, $02                                     ; $658d: $3e $02
@@ -4651,10 +4651,10 @@ GS09_StatePhase_01_TODO::
     ret                                           ; $6597: $c9
 
 
-jr_001_6598:
+.HandlePostClearFlowOrCheckTimeout:
     ld a, [rPuzzlePostClearFlowFlag]              ; $6598: $fa $05 $d8
     and a                                         ; $659b: $a7
-    jr z, jr_001_65fe                             ; $659c: $28 $60
+    jr z, .HandleTimerCompletionGameOverFlow      ; $659c: $28 $60
 
     ld c, $00                                     ; $659e: $0e $00
     ld a, $05                                     ; $65a0: $3e $05
@@ -4678,11 +4678,11 @@ jr_001_6598:
     call ClearShadowOAMBuffer                     ; $65cd: $cd $b6 $05
     call RedrawPuzzleBoard                        ; $65d0: $cd $35 $76
 
-jr_001_65d3:
+.WaitForPostClearInputAndAdvance:
     rst RST_08                                    ; $65d3: $cf
     ld a, [rInputButtonsPressed]                  ; $65d4: $fa $1e $c3
     and $09                                       ; $65d7: $e6 $09
-    jr z, jr_001_65d3                             ; $65d9: $28 $f8
+    jr z, .WaitForPostClearInputAndAdvance        ; $65d9: $28 $f8
 
     ld c, $03                                     ; $65db: $0e $03
     ld a, $02                                     ; $65dd: $3e $02
@@ -4701,7 +4701,7 @@ jr_001_65d3:
     ret                                           ; $65fd: $c9
 
 
-jr_001_65fe:
+.HandleTimerCompletionGameOverFlow:
     ld a, [rPuzzleTimerCompletionState]           ; $65fe: $fa $06 $d8
     and a                                         ; $6601: $a7
     ret z                                         ; $6602: $c8
@@ -4720,7 +4720,7 @@ jr_001_65fe:
     ret                                           ; $661e: $c9
 
 
-GS09_StatePhase_02_TODO::
+GS09_StatePhase_02_ConfirmExitAndReturnToTimeTrialRankingScreen::
     ld a, [rInputButtonsPressed]                  ; $661f: $fa $1e $c3
     and $09                                       ; $6622: $e6 $09
     ret z                                         ; $6624: $c8
@@ -4760,7 +4760,7 @@ GS09_StatePhase_02_TODO::
     ret                                           ; $6676: $c9
 
 
-GS09_StatePhase_03_TODO::
+GS09_StatePhase_03_PauseMenuInitAndMaskClues::
     call ClearShadowOAMBuffer                     ; $6677: $cd $b6 $05
     rst RST_08                                    ; $667a: $cf
     xor a                                         ; $667b: $af
@@ -4791,13 +4791,13 @@ GS09_StatePhase_03_TODO::
     ret                                           ; $66b2: $c9
 
 
-GS09_StatePhase_04_TODO::
+GS09_StatePhase_04_PauseMenuIdle::
     ld b, $02                                     ; $66b3: $06 $02
     ld hl, $4632                                  ; $66b5: $21 $32 $46
     call SwitchBankToBAndJumpToHL                 ; $66b8: $cd $de $05
     ld a, [rInputButtonsPressed]                  ; $66bb: $fa $1e $c3
     bit 0, a                                      ; $66be: $cb $47
-    jr z, jr_001_66d8                             ; $66c0: $28 $16
+    jr z, .HandlePauseMenuCloseInput              ; $66c0: $28 $16
 
     ld c, $03                                     ; $66c2: $0e $03
     ld a, $02                                     ; $66c4: $3e $02
@@ -4805,14 +4805,14 @@ GS09_StatePhase_04_TODO::
     ld a, [rGS08_PauseMenuMainSelection]          ; $66c9: $fa $3a $d8
     ld c, a                                       ; $66cc: $4f
     ld b, $00                                     ; $66cd: $06 $00
-    ld hl, GS09_StatePhase_04_TODO_Data           ; $66cf: $21 $e8 $66
+    ld hl, GS09_PauseMenuSelectionNextPhaseTable  ; $66cf: $21 $e8 $66
     add hl, bc                                    ; $66d2: $09
     ld a, [hl]                                    ; $66d3: $7e
     ld [rStatePhase_Current], a                   ; $66d4: $ea $35 $d6
     ret                                           ; $66d7: $c9
 
 
-jr_001_66d8:
+.HandlePauseMenuCloseInput:
     bit 3, a                                      ; $66d8: $cb $5f
     ret z                                         ; $66da: $c8
 
@@ -4824,10 +4824,10 @@ jr_001_66d8:
     ret                                           ; $66e7: $c9
 
 
-GS09_StatePhase_04_TODO_Data::
+GS09_PauseMenuSelectionNextPhaseTable::
     db $05, $07, $06
 
-GS09_StatePhase_05_TODO::
+GS09_StatePhase_05_PauseMenuSavePrompt::
     ld b, $02                                     ; $66eb: $06 $02
     ld hl, $4672                                  ; $66ed: $21 $72 $46
     call SwitchBankToBAndJumpToHL                 ; $66f0: $cd $de $05
@@ -4840,14 +4840,14 @@ GS09_StatePhase_05_TODO::
     call CallSoundEffectDispatcher                ; $66fd: $cd $b6 $03
     ld a, [rGS08_PauseMenuSavePromptSelection]    ; $6700: $fa $3b $d8
     and a                                         ; $6703: $a7
-    jr z, jr_001_670c                             ; $6704: $28 $06
+    jr z, .HandlePauseMenuSavePromptConfirmAndBeginExitFlow; $6704: $28 $06
 
     ld a, $04                                     ; $6706: $3e $04
     ld [rStatePhase_Current], a                   ; $6708: $ea $35 $d6
     ret                                           ; $670b: $c9
 
 
-jr_001_670c:
+.HandlePauseMenuSavePromptConfirmAndBeginExitFlow:
     call SaveCurrentPuzzleProgressToSaveData      ; $670c: $cd $14 $1c
     ld a, $03                                     ; $670f: $3e $03
     ld [rContinueSavedGameFlowMode_Unsure], a     ; $6711: $ea $a2 $ac
@@ -4898,7 +4898,7 @@ jr_001_670c:
     jp RefreshSaveValidationChecksumsAndMirrors   ; $677a: $c3 $1f $1b
 
 
-GS09_StatePhase_06_TODO::
+GS09_StatePhase_06_PauseMenuBGMSubmenu::
     ld b, $02                                     ; $677d: $06 $02
     ld hl, $46b2                                  ; $677f: $21 $b2 $46
     call SwitchBankToBAndJumpToHL                 ; $6782: $cd $de $05
@@ -4914,7 +4914,7 @@ GS09_StatePhase_06_TODO::
     ret                                           ; $6797: $c9
 
 
-GS09_StatePhase_07_TODO::
+GS09_StatePhase_07_PauseMenuGiveUpPrompt::
     ld b, $02                                     ; $6798: $06 $02
     ld hl, $470f                                  ; $679a: $21 $0f $47
     call SwitchBankToBAndJumpToHL                 ; $679d: $cd $de $05
@@ -4927,14 +4927,14 @@ GS09_StatePhase_07_TODO::
     call CallSoundEffectDispatcher                ; $67aa: $cd $b6 $03
     ld a, [rGS08_PauseMenuGiveUpPromptSelection]  ; $67ad: $fa $3d $d8
     and a                                         ; $67b0: $a7
-    jr z, jr_001_67b9                             ; $67b1: $28 $06
+    jr z, .HandlePauseMenuGiveUpConfirmAndStartGameOverFlow; $67b1: $28 $06
 
     ld a, $04                                     ; $67b3: $3e $04
     ld [rStatePhase_Current], a                   ; $67b5: $ea $35 $d6
     ret                                           ; $67b8: $c9
 
 
-jr_001_67b9:
+.HandlePauseMenuGiveUpConfirmAndStartGameOverFlow:
     ld a, $01                                     ; $67b9: $3e $01
     ld [rPuzzleTimerCompletionState], a           ; $67bb: $ea $06 $d8
     ld c, $00                                     ; $67be: $0e $00
@@ -4965,7 +4965,7 @@ jr_001_67b9:
     jp RefreshSaveValidationChecksumsAndMirrors   ; $67f3: $c3 $1f $1b
 
 
-GS09_StatePhase_08_TODO::
+GS09_StatePhase_08_ClosePauseMenuAndResumeGameplay::
     call ClearShadowOAMBuffer                     ; $67f6: $cd $b6 $05
     rst RST_08                                    ; $67f9: $cf
     ld a, [rSelectedSaveSlotIndex]                ; $67fa: $fa $65 $a0
@@ -4994,20 +4994,20 @@ GS09_StatePhase_08_TODO::
     jp RefreshSaveValidationChecksumsAndMirrors   ; $682c: $c3 $1f $1b
 
 
-Call_001_682f:
+RouteTimeTrialCellActionInputBySaveRule::
     ld a, [rInputButtonsHeld]                     ; $682f: $fa $1a $c3
     and $01                                       ; $6832: $e6 $01
-    jr z, jr_001_683d                             ; $6834: $28 $07
+    jr z, .ResetActionRepeatGuard                 ; $6834: $28 $07
 
     ld a, [rInputButtonsPressedOrRepeated]        ; $6836: $fa $22 $c3
     and $f0                                       ; $6839: $e6 $f0
-    jr z, jr_001_6841                             ; $683b: $28 $04
+    jr z, .DispatchCellActionBySaveRule           ; $683b: $28 $04
 
-jr_001_683d:
+.ResetActionRepeatGuard:
     xor a                                         ; $683d: $af
     ld [rPuzzleActionRepeatGuard], a              ; $683e: $ea $0f $d8
 
-jr_001_6841:
+.DispatchCellActionBySaveRule:
     ld a, [rPuzzleAndMenuCursorRow]               ; $6841: $fa $37 $d6
     sla a                                         ; $6844: $cb $27
     sla a                                         ; $6846: $cb $27
@@ -5036,7 +5036,7 @@ jr_001_6841:
     ret                                           ; $686c: $c9
 
 
-GameState_0A_TODO_PhaseDispatcher::
+GameState_0A_PicrossPuzzle_PhaseDispatcher::
     ld a, [rStatePhase_Current]                   ; $686d: $fa $35 $d6
     rst RST_18                                    ; $6870: $df
 
@@ -5076,7 +5076,7 @@ GS0A_PhasePointer_0a::
 GS0A_PhasePointer_0b::
     db $07, $69
 
-GS0A_StatePhase_00_TODO::
+GS0A_StatePhase_00_PicrossPuzzleInit::
     ld a, $43                                     ; $6889: $3e $43
     ld [rLCDCShadow], a                           ; $688b: $ea $2e $c3
     xor a                                         ; $688e: $af
@@ -5115,7 +5115,7 @@ GS0A_StatePhase_00_TODO::
     call ClearShadowOAMBuffer                     ; $68e6: $cd $b6 $05
     call ResetPuzzleTimerState                    ; $68e9: $cd $eb $7b
     call RedrawBoardCellEffectFramesFromStateBuffer; $68ec: $cd $6e $78
-    call Call_001_7dfe                            ; $68ef: $cd $fe $7d
+    call PlayPuzzleModeSecondarySfxPairBySelectedCourseBGM; $68ef: $cd $fe $7d
     call EnableLCDFromShadow                      ; $68f2: $cd $a2 $04
     ld b, $03                                     ; $68f5: $06 $03
     ld hl, $4694                                  ; $68f7: $21 $94 $46
@@ -5127,7 +5127,7 @@ GS0A_StatePhase_00_TODO::
     ret                                           ; $6906: $c9
 
 
-GS0A_StatePhase_0b_TODO::
+GS0A_StatePhase_0b_ContinueSavedPuzzleInitAndOpenPauseMenu::
     ld a, $43                                     ; $6907: $3e $43
     ld [rLCDCShadow], a                           ; $6909: $ea $2e $c3
     xor a                                         ; $690c: $af
@@ -5161,7 +5161,7 @@ GS0A_StatePhase_0b_TODO::
     ld [rPuzzleTimerActive], a                    ; $6957: $ea $0d $d8
     call RenderPuzzleTimerDigits                  ; $695a: $cd $04 $7c
     call RedrawBoardCellEffectFramesFromStateBuffer; $695d: $cd $6e $78
-    call Call_001_7dfe                            ; $6960: $cd $fe $7d
+    call PlayPuzzleModeSecondarySfxPairBySelectedCourseBGM; $6960: $cd $fe $7d
     call EnableLCDFromShadow                      ; $6963: $cd $a2 $04
     ld b, $03                                     ; $6966: $06 $03
     ld hl, $4694                                  ; $6968: $21 $94 $46
@@ -5571,7 +5571,7 @@ TickCountdownAndEmitSfx::
     ret                                           ; $6c40: $c9
 
 
-GS0A_StatePhase_03_TODO::
+GS0A_StatePhase_03_PuzzleGameplayLoop::
     call UpdatePuzzleCursorFromDirectionalInput   ; $6c41: $cd $ca $71
     call DrawPuzzleCursorSpritesAndTickStepSequence; $6c44: $cd $3e $71
     call TickMarioBlinkAnimation                  ; $6c47: $cd $18 $79
@@ -5585,7 +5585,7 @@ GS0A_StatePhase_03_TODO::
     call TickPuzzleTimerCompletionState           ; $6c5f: $cd $c8 $7c
     ld a, [rInputButtonsPressed]                  ; $6c62: $fa $1e $c3
     and $08                                       ; $6c65: $e6 $08
-    jr z, jr_001_6c76                             ; $6c67: $28 $0d
+    jr z, .HandlePostClearFlowOrCheckTimeout      ; $6c67: $28 $0d
 
     ld c, $10                                     ; $6c69: $0e $10
     ld a, $02                                     ; $6c6b: $3e $02
@@ -5595,13 +5595,13 @@ GS0A_StatePhase_03_TODO::
     ret                                           ; $6c75: $c9
 
 
-jr_001_6c76:
+.HandlePostClearFlowOrCheckTimeout:
     ld a, [rPuzzlePostClearFlowFlag]              ; $6c76: $fa $05 $d8
     and a                                         ; $6c79: $a7
-    jr z, jr_001_6cde                             ; $6c7a: $28 $62
+    jr z, .HandleTimerCompletionGameOverFlow      ; $6c7a: $28 $62
 
-    call GS04_LoadPicrossCoursePuzzleSelectCursorForSelectedSaveSlotAndCourse; $6c7c: $cd $a2 $49
-    call GS04_UpdateSelectedPicrossCoursePuzzleClearStatusAndTimes; $6c7f: $cd $ef $4c
+    call LoadPicrossCoursePuzzleSelectCursorForSelectedSaveSlotAndCourse; $6c7c: $cd $a2 $49
+    call UpdateSelectedPicrossCoursePuzzleClearStatusAndTimes; $6c7f: $cd $ef $4c
     call RefreshSaveValidationChecksumsAndMirrors ; $6c82: $cd $1f $1b
     ld c, $00                                     ; $6c85: $0e $00
     ld a, $01                                     ; $6c87: $3e $01
@@ -5613,11 +5613,11 @@ jr_001_6c76:
     call ClearShadowOAMBuffer                     ; $6c96: $cd $b6 $05
     call RedrawPuzzleBoard                        ; $6c99: $cd $35 $76
 
-jr_001_6c9c:
+.WaitForPostClearInputAndAdvance:
     rst RST_08                                    ; $6c9c: $cf
     ld a, [rInputButtonsPressed]                  ; $6c9d: $fa $1e $c3
     and $09                                       ; $6ca0: $e6 $09
-    jr z, jr_001_6c9c                             ; $6ca2: $28 $f8
+    jr z, .WaitForPostClearInputAndAdvance        ; $6ca2: $28 $f8
 
     ld c, $03                                     ; $6ca4: $0e $03
     ld a, $02                                     ; $6ca6: $3e $02
@@ -5645,7 +5645,7 @@ jr_001_6c9c:
     ret                                           ; $6cdd: $c9
 
 
-jr_001_6cde:
+.HandleTimerCompletionGameOverFlow:
     ld a, [rPuzzleTimerCompletionState]           ; $6cde: $fa $06 $d8
     and a                                         ; $6ce1: $a7
     ret z                                         ; $6ce2: $c8
@@ -5664,7 +5664,7 @@ jr_001_6cde:
     ret                                           ; $6cfe: $c9
 
 
-GS0A_StatePhase_04_TODO::
+GS0A_StatePhase_04_ConfirmExitAndReturnToPicrossCoursePuzzleSelect::
     ld a, [rInputButtonsPressed]                  ; $6cff: $fa $1e $c3
     and $09                                       ; $6d02: $e6 $09
     ret z                                         ; $6d04: $c8
@@ -5704,7 +5704,7 @@ GS0A_StatePhase_04_TODO::
     ret                                           ; $6d56: $c9
 
 
-GS0A_StatePhase_05_TODO::
+GS0A_StatePhase_05_PauseMenuInitAndMaskClues::
     call ClearShadowOAMBuffer                     ; $6d57: $cd $b6 $05
     rst RST_08                                    ; $6d5a: $cf
     xor a                                         ; $6d5b: $af
@@ -5740,13 +5740,13 @@ GS0A_StatePhase_05_TODO::
     ret                                           ; $6d9b: $c9
 
 
-GS0A_StatePhase_06_TODO::
+GS0A_StatePhase_06_PauseMenuIdle::
     ld b, $02                                     ; $6d9c: $06 $02
     ld hl, $4632                                  ; $6d9e: $21 $32 $46
     call SwitchBankToBAndJumpToHL                 ; $6da1: $cd $de $05
     ld a, [rInputButtonsPressed]                  ; $6da4: $fa $1e $c3
     bit 0, a                                      ; $6da7: $cb $47
-    jr z, jr_001_6dc1                             ; $6da9: $28 $16
+    jr z, .HandlePauseMenuCloseInput              ; $6da9: $28 $16
 
     ld c, $03                                     ; $6dab: $0e $03
     ld a, $02                                     ; $6dad: $3e $02
@@ -5754,14 +5754,14 @@ GS0A_StatePhase_06_TODO::
     ld a, [rGS08_PauseMenuMainSelection]          ; $6db2: $fa $3a $d8
     ld c, a                                       ; $6db5: $4f
     ld b, $00                                     ; $6db6: $06 $00
-    ld hl, GS0A_StatePhase_06_TODO_Data           ; $6db8: $21 $d1 $6d
+    ld hl, GS0A_PauseMenuSelectionNextPhaseTable  ; $6db8: $21 $d1 $6d
     add hl, bc                                    ; $6dbb: $09
     ld a, [hl]                                    ; $6dbc: $7e
     ld [rStatePhase_Current], a                   ; $6dbd: $ea $35 $d6
     ret                                           ; $6dc0: $c9
 
 
-jr_001_6dc1:
+.HandlePauseMenuCloseInput:
     bit 3, a                                      ; $6dc1: $cb $5f
     ret z                                         ; $6dc3: $c8
 
@@ -5773,10 +5773,10 @@ jr_001_6dc1:
     ret                                           ; $6dd0: $c9
 
 
-GS0A_StatePhase_06_TODO_Data::
+GS0A_PauseMenuSelectionNextPhaseTable::
     db $07, $09, $08
 
-GS0A_StatePhase_07_TODO::
+GS0A_StatePhase_07_PauseMenuSavePrompt::
     ld b, $02                                     ; $6dd4: $06 $02
     ld hl, $4672                                  ; $6dd6: $21 $72 $46
     call SwitchBankToBAndJumpToHL                 ; $6dd9: $cd $de $05
@@ -5789,14 +5789,14 @@ GS0A_StatePhase_07_TODO::
     call CallSoundEffectDispatcher                ; $6de6: $cd $b6 $03
     ld a, [rGS08_PauseMenuSavePromptSelection]    ; $6de9: $fa $3b $d8
     and a                                         ; $6dec: $a7
-    jr z, jr_001_6df5                             ; $6ded: $28 $06
+    jr z, .HandlePauseMenuSavePromptConfirmAndBeginExitFlow; $6ded: $28 $06
 
     ld a, $06                                     ; $6def: $3e $06
     ld [rStatePhase_Current], a                   ; $6df1: $ea $35 $d6
     ret                                           ; $6df4: $c9
 
 
-jr_001_6df5:
+.HandlePauseMenuSavePromptConfirmAndBeginExitFlow:
     call SaveCurrentPuzzleProgressToSaveData      ; $6df5: $cd $14 $1c
     ld a, $02                                     ; $6df8: $3e $02
     ld [rContinueSavedGameFlowMode_Unsure], a     ; $6dfa: $ea $a2 $ac
@@ -5851,7 +5851,7 @@ jr_001_6df5:
     jp RefreshSaveValidationChecksumsAndMirrors   ; $6e6b: $c3 $1f $1b
 
 
-GS0A_StatePhase_08_TODO::
+GS0A_StatePhase_08_PauseMenuBGMSubmenu::
     ld b, $02                                     ; $6e6e: $06 $02
     ld hl, $46b2                                  ; $6e70: $21 $b2 $46
     call SwitchBankToBAndJumpToHL                 ; $6e73: $cd $de $05
@@ -5867,7 +5867,7 @@ GS0A_StatePhase_08_TODO::
     ret                                           ; $6e88: $c9
 
 
-GS0A_StatePhase_09_TODO::
+GS0A_StatePhase_09_PauseMenuGiveUpPrompt::
     ld b, $02                                     ; $6e89: $06 $02
     ld hl, $470f                                  ; $6e8b: $21 $0f $47
     call SwitchBankToBAndJumpToHL                 ; $6e8e: $cd $de $05
@@ -5880,14 +5880,14 @@ GS0A_StatePhase_09_TODO::
     call CallSoundEffectDispatcher                ; $6e9b: $cd $b6 $03
     ld a, [rGS08_PauseMenuGiveUpPromptSelection]  ; $6e9e: $fa $3d $d8
     and a                                         ; $6ea1: $a7
-    jr z, jr_001_6eaa                             ; $6ea2: $28 $06
+    jr z, .HandlePauseMenuGiveUpConfirmAndStartGameOverFlow; $6ea2: $28 $06
 
     ld a, $06                                     ; $6ea4: $3e $06
     ld [rStatePhase_Current], a                   ; $6ea6: $ea $35 $d6
     ret                                           ; $6ea9: $c9
 
 
-jr_001_6eaa:
+.HandlePauseMenuGiveUpConfirmAndStartGameOverFlow:
     ld a, $01                                     ; $6eaa: $3e $01
     ld [rPuzzleTimerCompletionState], a           ; $6eac: $ea $06 $d8
     ld c, $00                                     ; $6eaf: $0e $00
@@ -5922,7 +5922,7 @@ jr_001_6eaa:
     jp RefreshSaveValidationChecksumsAndMirrors   ; $6eec: $c3 $1f $1b
 
 
-GS0A_StatePhase_0a_TODO::
+GS0A_StatePhase_0a_ClosePauseMenuAndResumeGameplay::
     call ClearShadowOAMBuffer                     ; $6eef: $cd $b6 $05
     rst RST_08                                    ; $6ef2: $cf
     ld a, [rSelectedSaveSlotIndex]                ; $6ef3: $fa $65 $a0
@@ -8420,7 +8420,7 @@ RecomputePuzzleCellBitSetCounters::
     ret                                           ; $7dfd: $c9
 
 
-Call_001_7dfe:
+PlayPuzzleModeSecondarySfxPairBySelectedCourseBGM::
     ld a, [rSelectedSaveSlotIndex]                ; $7dfe: $fa $65 $a0
     ld c, a                                       ; $7e01: $4f
     ld b, $00                                     ; $7e02: $06 $00

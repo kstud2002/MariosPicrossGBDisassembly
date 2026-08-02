@@ -51,6 +51,8 @@ flowchart TD
     GS05 -->|exit| GS02
     GS05 -->|all puzzles cleared| GS02
 
+	GS06 -->|return to game select| GS02
+
     GS07 -->|start puzzle| GS09
     GS07 -->|exit| GS03
 
@@ -298,7 +300,7 @@ flowchart TD
 	GS08P06 -->|A on SAVE| GS08P07
 	GS08P06 -->|A on GIVE UP| GS08P09
 	GS08P06 -->|A on BGM| GS08P08
-	GS08P06 -->|B/START close| GS08P0A
+	GS08P06 -->|START close| GS08P0A
 	GS08P07 -->|cancel save| GS08P06
 	GS08P07 -->|confirm save and exit| GS00E
 	GS08P08 -->|confirm| GS08P06
@@ -306,6 +308,81 @@ flowchart TD
 	GS08P09 -->|confirm give up| GS08P04
 	GS08P0A --> GS08P03
 	GS08P04 --> GS05E
+```
+
+#### GS09 Phase Flow
+
+```mermaid
+flowchart TD
+	GS09P00[Phase 00 TimeTrialPuzzleInit]
+	GS09P09[Phase 09 ContinueSavedPuzzleInitAndOpenPauseMenu]
+	GS09P01[Phase 01 PuzzleGameplayLoop]
+	GS09P02[Phase 02 ConfirmExitAndReturnToTimeTrialRankingScreen]
+	GS09P03[Phase 03 PauseMenuInitAndMaskClues]
+	GS09P04[Phase 04 PauseMenuIdle]
+	GS09P05[Phase 05 PauseMenuSavePrompt]
+	GS09P06[Phase 06 PauseMenuBGMSubmenu]
+	GS09P07[Phase 07 PauseMenuGiveUpPrompt]
+	GS09P08[Phase 08 ClosePauseMenuAndResumeGameplay]
+	GS00E[Exit to GS00]
+	GS07E[Exit to GS07]
+
+	GS09P00 --> GS09P01
+	GS09P09 --> GS09P04
+	GS09P01 -->|START| GS09P03
+	GS09P01 -->|post-clear or game-over confirm| GS09P02
+	GS09P03 --> GS09P04
+	GS09P04 -->|A on SAVE| GS09P05
+	GS09P04 -->|A on GIVE UP| GS09P07
+	GS09P04 -->|A on BGM| GS09P06
+	GS09P04 -->|START close| GS09P08
+	GS09P05 -->|cancel save| GS09P04
+	GS09P05 -->|confirm save and exit| GS00E
+	GS09P06 -->|confirm| GS09P04
+	GS09P07 -->|cancel give up| GS09P04
+	GS09P07 -->|confirm give up| GS09P02
+	GS09P08 --> GS09P01
+	GS09P02 --> GS07E
+```
+
+#### GS0A Phase Flow
+
+```mermaid
+flowchart TD
+	GS0AP00[Phase 00 PicrossPuzzleInit]
+	GS0AP0B[Phase 0B ContinueSavedPuzzleInitAndOpenPauseMenu]
+	GS0AP01[Phase 01 HintPopupSelection]
+	GS0AP02[Phase 02 HintCursorSweepAndApplySelection]
+	GS0AP03[Phase 03 PuzzleGameplayLoop]
+	GS0AP04[Phase 04 ConfirmExitAndReturnToPicrossCoursePuzzleSelect]
+	GS0AP05[Phase 05 PauseMenuInitAndMaskClues]
+	GS0AP06[Phase 06 PauseMenuIdle]
+	GS0AP07[Phase 07 PauseMenuSavePrompt]
+	GS0AP08[Phase 08 PauseMenuBGMSubmenu]
+	GS0AP09[Phase 09 PauseMenuGiveUpPrompt]
+	GS0AP0A[Phase 0A ClosePauseMenuAndResumeGameplay]
+	GS00E[Exit to GS00]
+	GS04E[Exit to GS04]
+
+	GS0AP00 --> GS0AP01
+	GS0AP0B --> GS0AP06
+	GS0AP01 -->|selection routes to gameplay| GS0AP03
+	GS0AP01 -->|selection routes to hint sweep| GS0AP02
+	GS0AP02 --> GS0AP03
+	GS0AP03 -->|START| GS0AP05
+	GS0AP03 -->|post-clear or game-over confirm| GS0AP04
+	GS0AP05 --> GS0AP06
+	GS0AP06 -->|A on SAVE| GS0AP07
+	GS0AP06 -->|A on GIVE UP| GS0AP09
+	GS0AP06 -->|A on BGM| GS0AP08
+	GS0AP06 -->|START close| GS0AP0A
+	GS0AP07 -->|cancel save| GS0AP06
+	GS0AP07 -->|confirm save and exit| GS00E
+	GS0AP08 -->|confirm| GS0AP06
+	GS0AP09 -->|cancel give up| GS0AP06
+	GS0AP09 -->|confirm give up| GS0AP04
+	GS0AP0A --> GS0AP03
+	GS0AP04 --> GS04E
 ```
 
 ## 3) Graphics & Sprite Rendering System
@@ -324,7 +401,7 @@ The save-related region is centered in the `a000`-`ba07` address space and is sp
 | a03f | 1 | rSaveDataTimeTrialRankingEntriesInsertAddressBias | Bias/base byte used by GS07 name-entry commit math when targeting ranking entries. |
 | a042-a064 | 0x23 | rSaveDataTimeTrialRankingEntries, rSaveDataTimeTrialRankingEntriesShiftSourceEnd, rSaveDataTimeTrialRankingEntriesShiftDestEnd | Time Trial ranking table in save data (5 entries x 7 bytes: MMSS + 3-char name), plus helper endpoints used by ranking-entry shifting. |
 | a065 | 1 | rSelectedSaveSlotIndex | Active save-slot index used by GS01/GS04/GS05 logic. |
-| a066-a068 | 3 | rSaveSlotXPuzzleActionRuleIndex_Unsure | Per-slot puzzle action rule/mode index bytes (behavior still uncertain; used by puzzle-action routing logic). |
+| a066-a068 | 3 | rSaveSlotXPuzzleActionRuleIndex_Unused | Per-slot puzzle action rule bytes used by puzzle-action routing logic; appears unused in normal gameplay flow (0/1 allow routing, >=2 blocks cell-action handling). |
 | a069-a077 | 0x0f | rSaveSlotXEasyPicrossBGMSelectionIndex, rSaveSlotXPicrossKinokoBGMSelectionIndex, rSaveSlotXPicrossStarBGMSelectionIndex, rSaveSlotXTimeTrialBGMSelectionIndex, rSaveSlotXModeBGMSelectionIndexEntry4_Unknown | Per-slot BGM selection index entries (5 bytes per save slot: Easy Picross, Picross Kinoko, Picross Star, Time Trial, unknown entry4). |
 | a078-a07a | 3 | rSaveSlotXGameSelectCursorRow | Per-slot game-select cursor row. |
 | a07b-a07d | 3 | rSaveSlotXEasyPicrossPostClearUnlockFlowState_Unsure | Per-slot Easy Picross post-clear unlock-flow state bytes (observed in GS05). |
