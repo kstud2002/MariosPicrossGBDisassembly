@@ -367,7 +367,7 @@ VBlankInterruptHandler::
     and a                                         ; $031c: $a7
     jr nz, .FinalizeAndExit                       ; $031d: $20 $03
 
-    call CallSoundEngineUpdateRoutine_Unsure      ; $031f: $cd $ee $03
+    call CallSoundEngineUpdateRoutine             ; $031f: $cd $ee $03
 
 .FinalizeAndExit:
     ld a, [rVBlankFrameCounter]                   ; $0322: $fa $3a $c3
@@ -520,23 +520,23 @@ CallSoundEffectDispatcher::
     ld [rActiveROMBank], a                        ; $03c8: $ea $12 $c3
     ld [rROMB], a                                 ; $03cb: $ea $00 $20
 
-jr_000_03ce:
+.DispatchSoundCommandLoop:
     push bc                                       ; $03ce: $c5
     push hl                                       ; $03cf: $e5
     ld a, l                                       ; $03d0: $7d
     call $4000                                    ; $03d1: $cd $00 $40
     pop hl                                        ; $03d4: $e1
     pop bc                                        ; $03d5: $c1
-    jr nc, jr_000_03df                            ; $03d6: $30 $07
+    jr nc, .RestoreBankAndInterruptEnableAndReturn; $03d6: $30 $07
 
     nop                                           ; $03d8: $00
     nop                                           ; $03d9: $00
     nop                                           ; $03da: $00
     nop                                           ; $03db: $00
     nop                                           ; $03dc: $00
-    jr jr_000_03ce                                ; $03dd: $18 $ef
+    jr .DispatchSoundCommandLoop                  ; $03dd: $18 $ef
 
-jr_000_03df:
+.RestoreBankAndInterruptEnableAndReturn:
     pop af                                        ; $03df: $f1
     ld [rActiveROMBank], a                        ; $03e0: $ea $12 $c3
     ld [rROMB], a                                 ; $03e3: $ea $00 $20
@@ -549,7 +549,7 @@ jr_000_03df:
     ret                                           ; $03ed: $c9
 
 
-CallSoundEngineUpdateRoutine_Unsure::
+CallSoundEngineUpdateRoutine::
     push af                                       ; $03ee: $f5
     push bc                                       ; $03ef: $c5
     push de                                       ; $03f0: $d5
@@ -1453,7 +1453,7 @@ LCDCInterruptDispatchRoutineAtLY2F_TickAndMaybeRunSoundEngineUpdate::
     and a                                         ; $0897: $a7
     jr nz, .Return                                ; $0898: $20 $03
 
-    call CallSoundEngineUpdateRoutine_Unsure      ; $089a: $cd $ee $03
+    call CallSoundEngineUpdateRoutine             ; $089a: $cd $ee $03
 
 .Return:
     ret                                           ; $089d: $c9
@@ -1472,7 +1472,7 @@ LCDCInterruptDispatchRoutineAtLY2F_MaybeRunSoundEngineUpdate::
     and a                                         ; $08ac: $a7
     jr nz, .Return                                ; $08ad: $20 $03
 
-    call CallSoundEngineUpdateRoutine_Unsure      ; $08af: $cd $ee $03
+    call CallSoundEngineUpdateRoutine             ; $08af: $cd $ee $03
 
 .Return:
     ret                                           ; $08b2: $c9
@@ -2689,32 +2689,33 @@ SplitAToDecimalDigitsAndPushHundredsTens::
     jp hl                                         ; $199c: $e9
 
 
+SplitHLToDecimalDigitsAndPushHundredsTens_Unused::
     pop de                                        ; $199d: $d1
     ld bc, $ff9c                                  ; $199e: $01 $9c $ff
     xor a                                         ; $19a1: $af
 
-jr_000_19a2:
+.SubtractHundredsFromHLLoop:
     add hl, bc                                    ; $19a2: $09
     bit 7, h                                      ; $19a3: $cb $7c
-    jr nz, jr_000_19aa                            ; $19a5: $20 $03
+    jr nz, .PrepareSubtractTensFromHLLoop         ; $19a5: $20 $03
 
     inc a                                         ; $19a7: $3c
-    jr jr_000_19a2                                ; $19a8: $18 $f8
+    jr .SubtractHundredsFromHLLoop                ; $19a8: $18 $f8
 
-jr_000_19aa:
+.PrepareSubtractTensFromHLLoop:
     push af                                       ; $19aa: $f5
     ld bc, $000a                                  ; $19ab: $01 $0a $00
     ld a, $09                                     ; $19ae: $3e $09
 
-jr_000_19b0:
+.SubtractTensFromHLLoop:
     add hl, bc                                    ; $19b0: $09
     bit 7, h                                      ; $19b1: $cb $7c
-    jr z, jr_000_19b8                             ; $19b3: $28 $03
+    jr z, .PushTensAndReturnViaDE                 ; $19b3: $28 $03
 
     dec a                                         ; $19b5: $3d
-    jr jr_000_19b0                                ; $19b6: $18 $f8
+    jr .SubtractTensFromHLLoop                    ; $19b6: $18 $f8
 
-jr_000_19b8:
+.PushTensAndReturnViaDE:
     push af                                       ; $19b8: $f5
     ld a, l                                       ; $19b9: $7d
     ld l, e                                       ; $19ba: $6b

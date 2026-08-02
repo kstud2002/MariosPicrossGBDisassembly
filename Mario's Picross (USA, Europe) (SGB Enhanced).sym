@@ -365,8 +365,10 @@
 00:03ae .WaitForScanline40Loop
 
 00:03b6 CallSoundEffectDispatcher
+00:03ce .DispatchSoundCommandLoop
+00:03df .RestoreBankAndInterruptEnableAndReturn
 
-00:03ee CallSoundEngineUpdateRoutine_Unsure
+00:03ee CallSoundEngineUpdateRoutine
 
 00:040d PlayScreenTransitionFadeIn
 00:0421 .ApplyFadeStepLoop
@@ -684,6 +686,12 @@
 00:197f .SubtractTensLoop
 00:1988 .ApplyLeadingBlankDigits
 00:1995 .PushDigitsAndReturnViaDE
+
+00:199d SplitHLToDecimalDigitsAndPushHundredsTens_Unused
+00:19a2 .SubtractHundredsFromHLLoop
+00:19aa .PrepareSubtractTensFromHLLoop
+00:19b0 .SubtractTensFromHLLoop
+00:19b8 .PushTensAndReturnViaDE
 
 00:19bd GS06_UpdateOAMSequenceEventAndCopySprite
 00:19eb .LoadNextSequenceEvent
