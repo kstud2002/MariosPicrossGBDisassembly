@@ -5,8 +5,8 @@
 
 SECTION "ROM Bank $00b", ROMX[$4000], BANK[$b]
 
-UNMAPPEDTileData::
-    INCBIN "gfx/UNMAPPEDTileData.2bpp"
+ContinueSaveGameTimeTrialTileData::
+    INCBIN "gfx/ContinueSaveGameTimeTrialTileData.2bpp"
 
 PromptFontTileData::
     INCBIN "gfx/PromptFontTileData.2bpp"
@@ -14,7 +14,7 @@ PromptFontTileData::
     ; padding
     ds $500, $00
 
-UNMAPPEDTileMap::
+ContinueSaveGameTimeTrialTileMap::
     db $2d, $2d, $2d, $2d, $00, $01, $02, $03, $04, $05, $06, $07, $08, $09, $00, $01, $2d, $2d, $2d, $2d, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff
     db $1a, $1a, $1a, $1a, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $10, $11, $1a, $1a, $1a, $1a, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff
     db $25, $25, $25, $25, $25, $25, $25, $25, $25, $25, $25, $25, $25, $25, $25, $25, $25, $25, $25, $25, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff

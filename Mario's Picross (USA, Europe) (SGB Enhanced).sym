@@ -279,15 +279,16 @@
 00:d831 rGS06_ScriptedInputSequenceTableLow
 00:d832 rGS06_ScriptedInputSequenceTableHigh
 00:d833 rHintPopupSelection
-00:d83a rGS08_PauseMenuMainSelection
-00:d83b rGS08_PauseMenuSavePromptSelection
-00:d83c rGS08_PauseMenuBGMSubmenuSelection
-00:d83d rGS08_PauseMenuGiveUpPromptSelection
+00:d834 rGS06_HowToPlayInputButtonsPressedMirror
 00:d835 rAdvanceOrSkipTimeoutEnabled
 00:d836 rAdvanceOrSkipTimeoutCounter
 00:d837 rGS06_HowToPlaySkipRequestedFlag
 00:d838 rGS07_NewRecordRankingPositionOrZero
 00:d839 rGS07_BottomPromptVariantFlag
+00:d83a rGS08_PauseMenuMainSelection
+00:d83b rGS08_PauseMenuSavePromptSelection
+00:d83c rGS08_PauseMenuBGMSubmenuSelection
+00:d83d rGS08_PauseMenuGiveUpPromptSelection
 00:d83e rGS07_NameEntryCursorColumnOrConfirmIndex
 00:d83f rGS07_NameEntryCharacterIndexSlot0
 00:d840 rGS07_NameEntryCharacterIndexSlot1
@@ -489,47 +490,194 @@
 00:0ae8 .RestoreInterrupts
 00:0af3 .CopyTileDataLoopAlt
 
-00:0d6a ResolveTilemapTileDataAddressAndStoreToDE
+00:0b0d PrepareBGTileCopyNoLCDCBit4Force
+00:0b93 PrepareBGTileCopyLoop
+00:0bbd .PrepareBGTileCopyRow
+00:0c01 .PrepareBGTileCopyRowSpanLoop
+00:0c12 .PrepareBGTileCopyRowSpanFirstByte
+00:0c3c .PrepareBGTileCopyRowSpanSecondByte
+00:0c65 .PrepareBGTileCopyTail
+00:0c6b PrepareBGTileCopyNextRow
+00:0c7b .PrepareBGTileCopyNextRowPart1
+00:0ca5 .PrepareBGTileCopyNextRowPart2
+00:0ccf .PrepareBGTileCopyRowAdvance
+00:0cde .WaitForVBlank
+00:0cf4 .WaitForDisplayLine
+00:0cfc .CopyTileDataLoop
+00:0d19 .WaitForDisplayLineLoop
+00:0d21 .RestoreInterruptsAndReturn
+00:0d22 .RestoreInterruptsAndWaitForVBlank
+00:0d28 .WaitForDisplayLineAndRestore
+00:0d2e .WaitForVBlankLoop
+00:0d34 .RestoreInterrupts
+00:0d3f .CopyTileDataLoopAlt
 
-00:1096 GS06_ScreenTilemapTileDataAddressLookupTable
+00:0d59 BGTileCopyMaskLookupTable
+00:0d59 .data:0011:8
+
+00:0d6a ResolveTilemapTileDataAddressAndStoreToDE
+00:0d82 .LoadRowLookupSubtablePointer
+00:0d84 .ResolveTileDataAddressFromRowLookupSubtable
+
+00:0da2 PuzzleBoard15x15ScreenTilemapTileDataAddressLookupTable
+00:0da2 .data:0024:2
+
+00:0dc6 PuzzleBoard15x15ScreenTilemapTileDataAddressLookupRow00Table
+00:0dc6 .data:0028:28
+00:0dee PuzzleBoard15x15ScreenTilemapTileDataAddressLookupRow01Table
+00:0dee .data:0028:28
+00:0e16 PuzzleBoard15x15ScreenTilemapTileDataAddressLookupRow02Table
+00:0e16 .data:0028:28
+00:0e3e PuzzleBoard15x15ScreenTilemapTileDataAddressLookupRow03Table
+00:0e3e .data:0028:28
+00:0e66 PuzzleBoard15x15ScreenTilemapTileDataAddressLookupRow04Table
+00:0e66 .data:0028:28
+00:0e8e PuzzleBoard15x15ScreenTilemapTileDataAddressLookupRow05Table
+00:0e8e .data:0028:28
+00:0eb6 PuzzleBoard15x15ScreenTilemapTileDataAddressLookupRow06Table
+00:0eb6 .data:0028:28
+00:0ede PuzzleBoard15x15ScreenTilemapTileDataAddressLookupRow07Table
+00:0ede .data:0028:28
+00:0f06 PuzzleBoard15x15ScreenTilemapTileDataAddressLookupRow08Table
+00:0f06 .data:0028:28
+00:0f2e PuzzleBoard15x15ScreenTilemapTileDataAddressLookupRow09Table
+00:0f2e .data:0028:28
+00:0f56 PuzzleBoard15x15ScreenTilemapTileDataAddressLookupRow0aTable
+00:0f56 .data:0028:28
+00:0f7e PuzzleBoard15x15ScreenTilemapTileDataAddressLookupRow0bTable
+00:0f7e .data:0028:28
+00:0fa6 PuzzleBoard15x15ScreenTilemapTileDataAddressLookupRow0cTable
+00:0fa6 .data:0028:28
+00:0fce PuzzleBoard15x15ScreenTilemapTileDataAddressLookupRow0dTable
+00:0fce .data:0028:28
+00:0ff6 PuzzleBoard15x15ScreenTilemapTileDataAddressLookupRow0eTable
+00:0ff6 .data:0028:28
+00:101e PuzzleBoard15x15ScreenTilemapTileDataAddressLookupRow0fTable
+00:101e .data:0028:28
+00:1046 PuzzleBoard15x15ScreenTilemapTileDataAddressLookupRow10Table
+00:1046 .data:0028:28
+00:106e PuzzleBoard15x15ScreenTilemapTileDataAddressLookupRow11Table
+00:106e .data:0028:28
+
+00:1096 PuzzleBoard5x5ScreenTilemapTileDataAddressLookupTable
 00:1096 .data:0024:2
 
-00:10ba GS06_ScreenTilemapTileDataAddressLookupRow00Table
-00:10ba .data:0028:2
-00:10e2 GS06_ScreenTilemapTileDataAddressLookupRow01Table
-00:10e2 .data:0028:2
-00:110a GS06_ScreenTilemapTileDataAddressLookupRow02Table
-00:110a .data:0028:2
-00:1132 GS06_ScreenTilemapTileDataAddressLookupRow03Table
-00:1132 .data:0028:2
-00:115a GS06_ScreenTilemapTileDataAddressLookupRow04Table
-00:115a .data:0028:2
-00:1182 GS06_ScreenTilemapTileDataAddressLookupRow05Table
-00:1182 .data:0028:2
-00:11aa GS06_ScreenTilemapTileDataAddressLookupRow06Table
-00:11aa .data:0028:2
-00:11d2 GS06_ScreenTilemapTileDataAddressLookupRow07Table
-00:11d2 .data:0028:2
-00:11fa GS06_ScreenTilemapTileDataAddressLookupRow08Table
-00:11fa .data:0028:2
-00:1222 GS06_ScreenTilemapTileDataAddressLookupRow09Table
-00:1222 .data:0028:2
-00:124a GS06_ScreenTilemapTileDataAddressLookupRow0aTable
-00:124a .data:0028:2
-00:1272 GS06_ScreenTilemapTileDataAddressLookupRow0bTable
-00:1272 .data:0028:2
-00:129a GS06_ScreenTilemapTileDataAddressLookupRow0cTable
-00:129a .data:0028:2
-00:12c2 GS06_ScreenTilemapTileDataAddressLookupRow0dTable
-00:12c2 .data:0028:2
-00:12ea GS06_ScreenTilemapTileDataAddressLookupRow0eTable
-00:12ea .data:0028:2
-00:1312 GS06_ScreenTilemapTileDataAddressLookupRow0fTable
-00:1312 .data:0028:2
-00:133a GS06_ScreenTilemapTileDataAddressLookupRow10Table
-00:133a .data:0028:2
-00:1362 GS06_ScreenTilemapTileDataAddressLookupRow11Table
-00:1362 .data:0028:2
+00:10ba PuzzleBoard5x5ScreenTilemapTileDataAddressLookupRow00Table
+00:10ba .data:0028:28
+00:10e2 PuzzleBoard5x5ScreenTilemapTileDataAddressLookupRow01Table
+00:10e2 .data:0028:28
+00:110a PuzzleBoard5x5ScreenTilemapTileDataAddressLookupRow02Table
+00:110a .data:0028:28
+00:1132 PuzzleBoard5x5ScreenTilemapTileDataAddressLookupRow03Table
+00:1132 .data:0028:28
+00:115a PuzzleBoard5x5ScreenTilemapTileDataAddressLookupRow04Table
+00:115a .data:0028:28
+00:1182 PuzzleBoard5x5ScreenTilemapTileDataAddressLookupRow05Table
+00:1182 .data:0028:28
+00:11aa PuzzleBoard5x5ScreenTilemapTileDataAddressLookupRow06Table
+00:11aa .data:0028:28
+00:11d2 PuzzleBoard5x5ScreenTilemapTileDataAddressLookupRow07Table
+00:11d2 .data:0028:28
+00:11fa PuzzleBoard5x5ScreenTilemapTileDataAddressLookupRow08Table
+00:11fa .data:0028:28
+00:1222 PuzzleBoard5x5ScreenTilemapTileDataAddressLookupRow09Table
+00:1222 .data:0028:28
+00:124a PuzzleBoard5x5ScreenTilemapTileDataAddressLookupRow0aTable
+00:124a .data:0028:28
+00:1272 PuzzleBoard5x5ScreenTilemapTileDataAddressLookupRow0bTable
+00:1272 .data:0028:28
+00:129a PuzzleBoard5x5ScreenTilemapTileDataAddressLookupRow0cTable
+00:129a .data:0028:28
+00:12c2 PuzzleBoard5x5ScreenTilemapTileDataAddressLookupRow0dTable
+00:12c2 .data:0028:28
+00:12ea PuzzleBoard5x5ScreenTilemapTileDataAddressLookupRow0eTable
+00:12ea .data:0028:28
+00:1312 PuzzleBoard5x5ScreenTilemapTileDataAddressLookupRow0fTable
+00:1312 .data:0028:28
+00:133a PuzzleBoard5x5ScreenTilemapTileDataAddressLookupRow10Table
+00:133a .data:0028:28
+00:1362 PuzzleBoard5x5ScreenTilemapTileDataAddressLookupRow11Table
+00:1362 .data:0028:28
+
+00:138a PuzzleBoard10x10ScreenTilemapTileDataAddressLookupTable
+00:138a .data:0024:2
+
+00:13ae PuzzleBoard10x10ScreenTilemapTileDataAddressLookupRow00Table
+00:13ae .data:0028:28
+00:13d6 PuzzleBoard10x10ScreenTilemapTileDataAddressLookupRow01Table
+00:13d6 .data:0028:28
+00:13fe PuzzleBoard10x10ScreenTilemapTileDataAddressLookupRow02Table
+00:13fe .data:0028:28
+00:1426 PuzzleBoard10x10ScreenTilemapTileDataAddressLookupRow03Table
+00:1426 .data:0028:28
+00:144e PuzzleBoard10x10ScreenTilemapTileDataAddressLookupRow04Table
+00:144e .data:0028:28
+00:1476 PuzzleBoard10x10ScreenTilemapTileDataAddressLookupRow05Table
+00:1476 .data:0028:28
+00:149e PuzzleBoard10x10ScreenTilemapTileDataAddressLookupRow06Table
+00:149e .data:0028:28
+00:14c6 PuzzleBoard10x10ScreenTilemapTileDataAddressLookupRow07Table
+00:14c6 .data:0028:28
+00:14ee PuzzleBoard10x10ScreenTilemapTileDataAddressLookupRow08Table
+00:14ee .data:0028:28
+00:1516 PuzzleBoard10x10ScreenTilemapTileDataAddressLookupRow09Table
+00:1516 .data:0028:28
+00:153e PuzzleBoard10x10ScreenTilemapTileDataAddressLookupRow0aTable
+00:153e .data:0028:28
+00:1566 PuzzleBoard10x10ScreenTilemapTileDataAddressLookupRow0bTable
+00:1566 .data:0028:28
+00:158e PuzzleBoard10x10ScreenTilemapTileDataAddressLookupRow0cTable
+00:158e .data:0028:28
+00:15b6 PuzzleBoard10x10ScreenTilemapTileDataAddressLookupRow0dTable
+00:15b6 .data:0028:28
+00:15de PuzzleBoard10x10ScreenTilemapTileDataAddressLookupRow0eTable
+00:15de .data:0028:28
+00:1606 PuzzleBoard10x10ScreenTilemapTileDataAddressLookupRow0fTable
+00:1606 .data:0028:28
+00:162e PuzzleBoard10x10ScreenTilemapTileDataAddressLookupRow10Table
+00:162e .data:0028:28
+00:1656 PuzzleBoard10x10ScreenTilemapTileDataAddressLookupRow11Table
+00:1656 .data:0028:28
+
+00:167e ContinueSavedGameScreenTilemapTileDataAddressLookupTable
+00:167e .data:0024:2
+
+00:16a2 ContinueSavedGameScreenTilemapTileDataAddressLookupRow00Table
+00:16a2 .data:0028:28
+00:16ca ContinueSavedGameScreenTilemapTileDataAddressLookupRow01Table
+00:16ca .data:0028:28
+00:16f2 ContinueSavedGameScreenTilemapTileDataAddressLookupRow02Table
+00:16f2 .data:0028:28
+00:171a ContinueSavedGameScreenTilemapTileDataAddressLookupRow03Table
+00:171a .data:0028:28
+00:1742 ContinueSavedGameScreenTilemapTileDataAddressLookupRow04Table
+00:1742 .data:0028:28
+00:176a ContinueSavedGameScreenTilemapTileDataAddressLookupRow05Table
+00:176a .data:0028:28
+00:1792 ContinueSavedGameScreenTilemapTileDataAddressLookupRow06Table
+00:1792 .data:0028:28
+00:17ba ContinueSavedGameScreenTilemapTileDataAddressLookupRow07Table
+00:17ba .data:0028:28
+00:17e2 ContinueSavedGameScreenTilemapTileDataAddressLookupRow08Table
+00:17e2 .data:0028:28
+00:180a ContinueSavedGameScreenTilemapTileDataAddressLookupRow09Table
+00:180a .data:0028:28
+00:1832 ContinueSavedGameScreenTilemapTileDataAddressLookupRow0aTable
+00:1832 .data:0028:28
+00:185a ContinueSavedGameScreenTilemapTileDataAddressLookupRow0bTable
+00:185a .data:0028:28
+00:1882 ContinueSavedGameScreenTilemapTileDataAddressLookupRow0cTable
+00:1882 .data:0028:28
+00:18aa ContinueSavedGameScreenTilemapTileDataAddressLookupRow0dTable
+00:18aa .data:0028:28
+00:18d2 ContinueSavedGameScreenTilemapTileDataAddressLookupRow0eTable
+00:18d2 .data:0028:28
+00:18fa ContinueSavedGameScreenTilemapTileDataAddressLookupRow0fTable
+00:18fa .data:0028:28
+00:1922 ContinueSavedGameScreenTilemapTileDataAddressLookupRow10Table
+00:1922 .data:0028:28
+00:194a ContinueSavedGameScreenTilemapTileDataAddressLookupRow11Table
+00:194a .data:0028:28
 
 00:1972 SplitAToDecimalDigitsAndPushHundredsTens
 00:1976 .SubtractHundredsLoop
@@ -894,7 +1042,10 @@
 00:30d6 GS06_TickScriptedInputSequence
 00:310c .TickDelayAndReturnBusy
 
-00:3114 ClearGameBoard
+00:3114 GS06_RedrawGameBoard
+
+00:313a GS06_RedrawGameBoard_RestoreStateAfterGameOver
+
 00:3160 GS06_DecrementPuzzleTimer
 00:317e .DecrementPuzzleTimerSecondOnes
 00:3192 .DecrementPuzzleTimerSecondTens
@@ -1993,6 +2144,8 @@
 01:438a GameState_04_PicrossCoursePuzzleSelectScreen_PhaseDispatcher
 01:526d GameState_05_EasyPicrossPuzzleSelectScreen_PhaseDispatcher
 00:2111 GameState_06_HowToPlay_PhaseDispatcher
+00:212b .SetCancelAndReturnToMenuPhase
+00:2130 .DispatchCurrentPhase
 02:4c55 GameState_07_TimeTrialRankingScreen_PhaseDispatcher
 01:5d7e GameState_08_EasyPicrossPuzzle_PhaseDispatcher
 01:63fc GameState_09_TimeTrialPuzzle_PhaseDispatcher
@@ -5361,11 +5514,14 @@
 07:6200 .image:0100:pe1
 
 07:6300 Picross5x5GameOverMessageTileData
-07:6300 .image:1000:pe1
+07:6300 .image:0500:pe1
 07:6340 Picross5x5PuzzleClearRedrawFrameTileData
 
-07:6c00 GS06_RedrawSourceData_Bank07
-07:6c00 .data:0110:22
+07:6800 GS06_GameBoardRestoreAfterGameOverTileData
+07:6800 .image:0400:pe1
+
+07:6c00 GS06_MessageRedrawSourceTileData
+07:6c00 .image:0110:pe1,w110
 
 07:6d10 .data:02e0
 
@@ -5436,7 +5592,7 @@
 09:6800 TimeTrialRankingScreenTileData
 09:6800 .image:1000:pe1
 
-09:7800 ContinueSavedGameScreenTileData
+09:7800 GameSavedContinueLaterScreenTileData
 09:7800 .image:0800:pe1
 
 ; =============================================================================
@@ -5474,7 +5630,7 @@
 ; BANK 00B
 ; =============================================================================
 
-0b:4000 UNMAPPEDTileData
+0b:4000 ContinueSaveGameTimeTrialTileData
 0b:4000 .image:1000:pe1
 
 0b:5000 PromptFontTileData
@@ -5482,7 +5638,7 @@
 
 0b:5300 .padding:500
 
-0b:5800 UNMAPPEDTileMap
+0b:5800 ContinueSaveGameTimeTrialTileMap
 0b:5800 .data:0400:20
 
 0b:5c00 Picross15x15ScreenTileMap
@@ -5566,12 +5722,16 @@
 ; BANK 00E
 ; =============================================================================
 
+0e:404c .data:3
 0e:4566 .data:3
 0e:45c8 .data:3
-0e:404c .data:3
 0e:45ec .data:3
 0e:4e48 .data:3
 0e:54ec .data:3
+0e:5942 .data:3
+0e:5962 .data:3
+0e:59e2 .data:3
+0e:6409 .data:3
 
 ; =============================================================================
 ; BANK 00F
@@ -5629,9 +5789,11 @@
 0f:460b SoundEffectDispatcher_Event24
 0f:4545 SoundEffectDispatcher_Event26
 
+0f:4c55 .data:3
 0f:51ee .data:3
 0f:5208 .data:3
 0f:5344 .data:3
+0f:5372 .data:3
 0f:53dc .data:3
 0f:5519 .data:3
 0f:5542 .data:3
@@ -5649,6 +5811,7 @@
 0f:6239 .data:3
 0f:6268 .data:3
 0f:6396 .data:3
+0f:63c4 .data:3
 0f:63e4 .data:3
 0f:64ab .data:3
 0f:64e0 .data:3

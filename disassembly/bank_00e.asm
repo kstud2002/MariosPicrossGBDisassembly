@@ -6420,7 +6420,9 @@ jr_00e_5918:
     nop                                           ; $593f: $00
     ld a, b                                       ; $5940: $78
     ld a, b                                       ; $5941: $78
-    call z, Call_000_0ccc                         ; $5942: $cc $cc $0c
+
+    db $cc, $cc, $0c
+
     inc c                                         ; $5945: $0c
     ld a, b                                       ; $5946: $78
     ld a, b                                       ; $5947: $78
@@ -6452,7 +6454,9 @@ jr_00e_5918:
     nop                                           ; $595f: $00
     ld a, b                                       ; $5960: $78
     ld a, b                                       ; $5961: $78
-    call z, Call_000_18cc                         ; $5962: $cc $cc $18
+
+    db $cc, $cc, $18
+
     jr jr_00e_5973                                ; $5965: $18 $0c
 
     inc c                                         ; $5967: $0c
@@ -6581,7 +6585,9 @@ jr_00e_59ba:
     nop                                           ; $59df: $00
     db $fc                                        ; $59e0: $fc
     db $fc                                        ; $59e1: $fc
-    call z, Call_000_18cc                         ; $59e2: $cc $cc $18
+
+    db $cc, $cc, $18
+
     jr jr_00e_5a17                                ; $59e5: $18 $30
 
     jr nc, jr_00e_5a19                            ; $59e7: $30 $30
@@ -9276,7 +9282,9 @@ jr_00e_63b8:
     ld a, b                                       ; $6404: $78
     ld a, b                                       ; $6405: $78
     call z, $cccc                                 ; $6406: $cc $cc $cc
-    call z, Call_000_1818                         ; $6409: $cc $18 $18
+
+    db $cc, $18, $18
+
     jr nc, jr_00e_643e                            ; $640c: $30 $30
 
     nop                                           ; $640e: $00

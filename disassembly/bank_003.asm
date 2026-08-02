@@ -442,7 +442,7 @@ GS00_StatePhase_00_TitleScreenInit::
     ld bc, $0400                                  ; $4ffb: $01 $00 $04
     call BankedTileCopy                           ; $4ffe: $cd $e4 $04
     xor a                                         ; $5001: $af
-    ld [rSaveSlot1PuzzleActionRuleIndex_Unsure], a; $5002: $ea $66 $a0
+    ld [rSaveSlot1PuzzleActionRuleIndex_Unused], a; $5002: $ea $66 $a0
     ld [rPuzzleDataIndexLow], a                   ; $5005: $ea $07 $d8
     ld [rPuzzleDataIndexHigh], a                  ; $5008: $ea $08 $d8
     ld [rMarioBlinkAnimationSequenceCursor], a    ; $500b: $ea $18 $d8

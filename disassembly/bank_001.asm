@@ -2095,7 +2095,7 @@ GS04_CopyMessagePromptRowSpan::
     ld [rBGTileCopySourceY], a                    ; $5248: $ea $52 $c3
     add e                                         ; $524b: $83
     ld [rBGTileCopyDestY], a                      ; $524c: $ea $54 $c3
-    jp Jump_000_0b0d                              ; $524f: $c3 $0d $0b
+    jp PrepareBGTileCopyNoLCDCBit4Force           ; $524f: $c3 $0d $0b
 
 
 WaitForAConfirmOnBottomPrompt::
@@ -4635,7 +4635,7 @@ GS09_StatePhase_01_PuzzleGameplayLoop::
     call DrawPuzzleCursorSpritesAndTickStepSequence; $656f: $cd $3e $71
     call UpdatePuzzleTimerCountdown               ; $6572: $cd $ea $7a
     call TickMarioBlinkAnimation                  ; $6575: $cd $18 $79
-    call RouteTimeTrialCellActionInputBySaveRule  ; $6578: $cd $2f $68
+    call RouteTimeTrialCellActionInputByUnusedSaveRuleFlag; $6578: $cd $2f $68
     call TickPendingCellActionEffect              ; $657b: $cd $16 $75
     call FinalizePuzzleClearAndSetPostClearFlowFlag; $657e: $cd $f6 $75
     call TickPuzzleTimerCompletionState           ; $6581: $cd $c8 $7c
@@ -4994,20 +4994,20 @@ GS09_StatePhase_08_ClosePauseMenuAndResumeGameplay::
     jp RefreshSaveValidationChecksumsAndMirrors   ; $682c: $c3 $1f $1b
 
 
-RouteTimeTrialCellActionInputBySaveRule::
+RouteTimeTrialCellActionInputByUnusedSaveRuleFlag::
     ld a, [rInputButtonsHeld]                     ; $682f: $fa $1a $c3
     and $01                                       ; $6832: $e6 $01
     jr z, .ResetActionRepeatGuard                 ; $6834: $28 $07
 
     ld a, [rInputButtonsPressedOrRepeated]        ; $6836: $fa $22 $c3
     and $f0                                       ; $6839: $e6 $f0
-    jr z, .DispatchCellActionBySaveRule           ; $683b: $28 $04
+    jr z, .DispatchCellActionByUnusedSaveRuleFlag ; $683b: $28 $04
 
 .ResetActionRepeatGuard:
     xor a                                         ; $683d: $af
     ld [rPuzzleActionRepeatGuard], a              ; $683e: $ea $0f $d8
 
-.DispatchCellActionBySaveRule:
+.DispatchCellActionByUnusedSaveRuleFlag:
     ld a, [rPuzzleAndMenuCursorRow]               ; $6841: $fa $37 $d6
     sla a                                         ; $6844: $cb $27
     sla a                                         ; $6846: $cb $27
@@ -5023,7 +5023,7 @@ RouteTimeTrialCellActionInputBySaveRule::
     ld a, [rSelectedSaveSlotIndex]                ; $6858: $fa $65 $a0
     ld c, a                                       ; $685b: $4f
     ld b, $00                                     ; $685c: $06 $00
-    ld hl, rSaveSlot1PuzzleActionRuleIndex_Unsure ; $685e: $21 $66 $a0
+    ld hl, rSaveSlot1PuzzleActionRuleIndex_Unused ; $685e: $21 $66 $a0
     add hl, bc                                    ; $6861: $09
     ld a, [hl]                                    ; $6862: $7e
     pop hl                                        ; $6863: $e1
@@ -6569,7 +6569,7 @@ ProcessPuzzleCellActionInput::
     ld a, [rSelectedSaveSlotIndex]                ; $724b: $fa $65 $a0
     ld c, a                                       ; $724e: $4f
     ld b, $00                                     ; $724f: $06 $00
-    ld hl, rSaveSlot1PuzzleActionRuleIndex_Unsure ; $7251: $21 $66 $a0
+    ld hl, rSaveSlot1PuzzleActionRuleIndex_Unused ; $7251: $21 $66 $a0
     add hl, bc                                    ; $7254: $09
     ld a, [hl]                                    ; $7255: $7e
     pop hl                                        ; $7256: $e1

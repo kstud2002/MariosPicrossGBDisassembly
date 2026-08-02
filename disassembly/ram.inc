@@ -11,9 +11,9 @@ DEF rSaveDataTimeTrialRankingEntries EQU $a042
 DEF rSaveDataTimeTrialRankingEntriesShiftSourceEnd EQU $a05d
 DEF rSaveDataTimeTrialRankingEntriesShiftDestEnd EQU $a064
 DEF rSelectedSaveSlotIndex EQU $a065
-DEF rSaveSlot1PuzzleActionRuleIndex_Unsure EQU $a066
-DEF rSaveSlot2PuzzleActionRuleIndex_Unsure EQU $a067
-DEF rSaveSlot3PuzzleActionRuleIndex_Unsure EQU $a068
+DEF rSaveSlot1PuzzleActionRuleIndex_Unused EQU $a066
+DEF rSaveSlot2PuzzleActionRuleIndex_Unused EQU $a067
+DEF rSaveSlot3PuzzleActionRuleIndex_Unused EQU $a068
 DEF rSaveSlot1EasyPicrossBGMSelectionIndex EQU $a069
 DEF rSaveSlot1PicrossKinokoBGMSelectionIndex EQU $a06a
 DEF rSaveSlot1PicrossStarBGMSelectionIndex EQU $a06b
@@ -270,6 +270,7 @@ DEF rGS06_ScriptedInputSequenceDelay EQU $d830
 DEF rGS06_ScriptedInputSequenceTableLow EQU $d831
 DEF rGS06_ScriptedInputSequenceTableHigh EQU $d832
 DEF rHintPopupSelection EQU $d833
+DEF rGS06_HowToPlayInputButtonsPressedMirror EQU $d834
 DEF rAdvanceOrSkipTimeoutEnabled EQU $d835
 DEF rAdvanceOrSkipTimeoutCounter EQU $d836
 DEF rGS06_HowToPlaySkipRequestedFlag EQU $d837

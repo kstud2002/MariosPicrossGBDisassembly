@@ -2611,7 +2611,8 @@ jr_00f_4c4d:
 
     ld d, e                                       ; $4c53: $53
     dec b                                         ; $4c54: $05
-    jp z, Jump_000_05f7                           ; $4c55: $ca $f7 $05
+
+    db $ca, $f7, $05
 
     push af                                       ; $4c58: $f5
     ld bc, $6428                                  ; $4c59: $01 $28 $64
@@ -4126,7 +4127,9 @@ jr_00f_5363:
     ei                                            ; $536d: $fb
     ld de, $d404                                  ; $536e: $11 $04 $d4
     inc b                                         ; $5371: $04
-    call nc, Call_000_0bee                        ; $5372: $d4 $ee $0b
+
+    db $d4, $ee, $0b
+
     ld d, e                                       ; $5375: $53
     pop af                                        ; $5376: $f1
     ld [bc], a                                    ; $5377: $02
@@ -7764,7 +7767,9 @@ Call_00f_60ee:
 
 
     inc b                                         ; $63c3: $04
-    call nc, Call_000_1404                        ; $63c4: $d4 $04 $14
+
+    db $d4, $04, $14
+
     inc h                                         ; $63c7: $24
     inc b                                         ; $63c8: $04
     inc d                                         ; $63c9: $14
