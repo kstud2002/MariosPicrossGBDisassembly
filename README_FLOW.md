@@ -73,8 +73,8 @@ flowchart TD
 	GS00P00[Phase 00 TitleScreenInit]
 	GS00P01[Phase 01 TitleScreenIdle]
 	GS00P02[Phase 02 TitleScreenTransition]
-	GS00P03[Phase 03 ContinueSavedGameScreenInit]
-	GS00P04[Phase 04 ContinueSavedGameScreenIdle]
+	GS00P03[Phase 03 ContinueSavedPuzzlePromptAndRoute]
+	GS00P04[Phase 04 PostSaveReturnToTitlePrompt]
 	GS01E[Exit to GS01]
 	GS02E[Exit to GS02]
 	GS08E[Exit to GS08]
@@ -85,14 +85,11 @@ flowchart TD
 	GS00P01 --> GS00P02
 	GS00P02 -->|has save data| GS01E
 	GS00P02 -->|no save data| GS02E
-	GS00P02 -->|continue saved puzzle| GS00P03
-	GS00P03 --> GS00P04
+	GS00P02 -->|continue-saved flow mode set| GS00P03
 	GS00P03 -->|continue EASY PICROSS| GS08E
 	GS00P03 -->|continue KINOKO/STAR| GS0AE
 	GS00P03 -->|continue TIME TRIAL| GS09E
-	GS00P04 -->|confirm continue choice| GS08E
-	GS00P04 -->|confirm continue choice| GS0AE
-	GS00P04 -->|confirm continue choice| GS09E
+	GS00P04 -->|confirm| GS00P00
 ```
 
 #### GS01 Phase Flow
@@ -317,42 +314,42 @@ flowchart TD
 
 ## 5) Save-Slot RAM Region Structure
 
-The save-related region is centered in the `00:a000`-`00:ba07` address space and is split into a primary block plus a mirrored copy with checksums.
+The save-related region is centered in the `a000`-`ba07` address space and is split into a primary block plus a mirrored copy with checksums.
 
 | Address / Range | Size | Key symbols | Purpose |
 |---|---:|---|---|
-| 00:a000 | 1 | rSaveDataPrimaryBlockStart | Start of primary save-data block. |
-| 00:a001-00:a002 | 2 | rPuzzleOrderTableCursor, rPuzzleOrderTableStart | Puzzle-order table metadata. |
-| 00:a003-00:a03e | 0x3c | TODO | Unmapped bytes in primary save block (TODO). |
-| 00:a03f | 1 | rSaveDataTimeTrialRankingEntriesInsertAddressBias | Bias/base byte used by GS07 name-entry commit math when targeting ranking entries. |
-| 00:a042-00:a064 | 0x23 | rSaveDataTimeTrialRankingEntries, rSaveDataTimeTrialRankingEntriesShiftSourceEnd, rSaveDataTimeTrialRankingEntriesShiftDestEnd | Time Trial ranking table in save data (5 entries x 7 bytes: MMSS + 3-char name), plus helper endpoints used by ranking-entry shifting. |
-| 00:a065 | 1 | rSelectedSaveSlotIndex | Active save-slot index used by GS01/GS04/GS05 logic. |
-| 00:a066-00:a068 | 3 | TODO | Unmapped bytes in primary save block (TODO). |
-| 00:a069-00:a077 | 0x0f | rSaveSlotXEasyPicrossBGMSelectionIndex, rSaveSlotXPicrossKinokoBGMSelectionIndex, rSaveSlotXPicrossStarBGMSelectionIndex, rSaveSlotXTimeTrialBGMSelectionIndex, rSaveSlotXModeBGMSelectionIndexEntry4_Unknown | Per-slot BGM selection index entries (5 bytes per save slot: Easy Picross, Picross Kinoko, Picross Star, Time Trial, unknown entry4). |
-| 00:a078-00:a07a | 3 | rSaveSlotXGameSelectCursorRow | Per-slot game-select cursor row. |
-| 00:a07b-00:a07d | 3 | rSaveSlotXEasyPicrossPostClearUnlockFlowState_Unsure | Per-slot Easy Picross post-clear unlock-flow state bytes (observed in GS05). |
-| 00:a07e-00:a080 | 3 | rSaveSlotXEasyPicrossClearedPuzzleCount | Per-slot Easy Picross cleared-count values. |
-| 00:a081-00:a086 | 6 | rSaveSlotXEasyPicrossPuzzleSelectCursorColumn/Row | Per-slot Easy Picross puzzle-select cursor positions. |
-| 00:a087-00:a386 | 0x300 | rSaveSlotXEasyPicrossPuzzleTimeDataRecordTable | Easy Picross per-slot time records (3 slots, each 64 entries x 3 bytes). |
-| 00:a387-00:a389 | 3 | rSaveSlotXUnlockProgressState | Per-slot unlock progression state (`$01/$02/$03` observed). |
-| 00:a38a-00:a38c | 3 | rSaveSlotXPicrossKinokoStarClearedPuzzleCount | Per-slot shared cleared-count used for GS04 unlock checks. |
-| 00:a38d-00:a38f | 3 | rSaveSlotXCourseSelectCursorRow | Per-slot GS04 course-select row. |
-| 00:a390-00:a3a1 | 0x12 | rSaveSlotXPicross{Kinoko,Star,TimeTrial_Unsure}CoursePuzzleSelectCursorColumn/Row | Per-slot + per-course GS04 cursor caches (Kinoko, Star, TimeTrial_Unsure). |
-| 00:a3a2-00:aa61 | 0x6c0 | rSaveSlotXPicross{Course}PuzzleTimeDataRecordTable | GS04 time tables (3 slots x 3 course rows x 64 entries x 3 bytes). |
-| 00:aa62-00:aca1 | 0x240 | rSaveSlotXPicross{Course}PuzzleStatusDataTable | GS04 status tables (3 slots x 3 course rows x 64 entries x 1 byte). |
-| 00:aca2 | 1 | rContinueSavedGameFlowMode_Unsure | Continue/load flow mode byte (behavior still uncertain). |
-| 00:aca3-00:acea | 0x48 | rSavedPuzzleHintPopupSelection, rSavedPuzzleTimerAdjustmentStep, rSavedPuzzleTimerMinuteOnes, rSavedPuzzleTimerMinuteTens, rSavedPuzzleTimerSecondOnes, rSavedPuzzleTimerSecondTens, rSavedPuzzleDataIndexLow, rSavedPuzzleDataIndexHigh, rSavedPuzzleCursorColumn, rSavedPuzzleCursorRow, rSavedPuzzleCellStatePackedBuffer, rSavedPuzzleGridWidth, rSavedPuzzleGridHeight | Saved puzzle snapshot fields used by continue/restore flow (timer, puzzle id, cursor, packed cell-state buffer, grid dimensions). |
-| 00:aceb-00:acec | 2 | TODO | Unmapped bytes in primary save block (TODO). |
-| 00:aced | 1 | rHiddenProgrammerCreditsMirror | Mirror byte tied to signature validation data. |
-| 00:acee-00:acfc | 0x0f | TODO | Unmapped bytes in primary save block (TODO). |
-| 00:acfd | 1 | rSaveValidationMagicBytesMirror | Mirror of save-validation magic data. |
-| 00:acfe-00:ad01 | 4 | TODO | Unmapped bytes in primary save block (TODO). |
-| 00:ad02-00:ad03 | 2 | rSaveDataPrimaryChecksumSum, rSaveDataPrimaryChecksumXor | Checksums for primary save block. |
-| 00:ad04-00:ba05 | 0x0d02 | rSaveDataMirrorBlockStart | Mirror copy of save-data block. |
-| 00:ba06-00:ba07 | 2 | rSaveDataMirrorChecksumSum, rSaveDataMirrorChecksumXor | Checksums for mirror save block. |
+| a000 | 1 | rSaveDataPrimaryBlockStart | Start of primary save-data block. |
+| a001-a002 | 2 | rPuzzleOrderTableCursor, rPuzzleOrderTableStart | Puzzle-order table metadata. |
+| a003-a03e | 0x3c | TODO | Unmapped bytes in primary save block (TODO). |
+| a03f | 1 | rSaveDataTimeTrialRankingEntriesInsertAddressBias | Bias/base byte used by GS07 name-entry commit math when targeting ranking entries. |
+| a042-a064 | 0x23 | rSaveDataTimeTrialRankingEntries, rSaveDataTimeTrialRankingEntriesShiftSourceEnd, rSaveDataTimeTrialRankingEntriesShiftDestEnd | Time Trial ranking table in save data (5 entries x 7 bytes: MMSS + 3-char name), plus helper endpoints used by ranking-entry shifting. |
+| a065 | 1 | rSelectedSaveSlotIndex | Active save-slot index used by GS01/GS04/GS05 logic. |
+| a066-a068 | 3 | rSaveSlotXPuzzleActionRuleIndex_Unsure | Per-slot puzzle action rule/mode index bytes (behavior still uncertain; used by puzzle-action routing logic). |
+| a069-a077 | 0x0f | rSaveSlotXEasyPicrossBGMSelectionIndex, rSaveSlotXPicrossKinokoBGMSelectionIndex, rSaveSlotXPicrossStarBGMSelectionIndex, rSaveSlotXTimeTrialBGMSelectionIndex, rSaveSlotXModeBGMSelectionIndexEntry4_Unknown | Per-slot BGM selection index entries (5 bytes per save slot: Easy Picross, Picross Kinoko, Picross Star, Time Trial, unknown entry4). |
+| a078-a07a | 3 | rSaveSlotXGameSelectCursorRow | Per-slot game-select cursor row. |
+| a07b-a07d | 3 | rSaveSlotXEasyPicrossPostClearUnlockFlowState_Unsure | Per-slot Easy Picross post-clear unlock-flow state bytes (observed in GS05). |
+| a07e-a080 | 3 | rSaveSlotXEasyPicrossClearedPuzzleCount | Per-slot Easy Picross cleared-count values. |
+| a081-a086 | 6 | rSaveSlotXEasyPicrossPuzzleSelectCursorColumn/Row | Per-slot Easy Picross puzzle-select cursor positions. |
+| a087-a386 | 0x300 | rSaveSlotXEasyPicrossPuzzleTimeDataRecordTable | Easy Picross per-slot time records (3 slots, each 64 entries x 3 bytes). |
+| a387-a389 | 3 | rSaveSlotXUnlockProgressState | Per-slot unlock progression state (`$01/$02/$03` observed). |
+| a38a-a38c | 3 | rSaveSlotXPicrossKinokoStarClearedPuzzleCount | Per-slot shared cleared-count used for GS04 unlock checks. |
+| a38d-a38f | 3 | rSaveSlotXCourseSelectCursorRow | Per-slot GS04 course-select row. |
+| a390-a3a1 | 0x12 | rSaveSlotXPicross{Course}PuzzleSelectCursorColumn/Row | Per-slot + per-course GS04 cursor caches (Kinoko, Star, TimeTrial). |
+| a3a2-aa61 | 0x6c0 | rSaveSlotXPicross{Course}PuzzleTimeDataRecordTable | GS04 time tables (3 slots x 3 course rows x 64 entries x 3 bytes). |
+| aa62-aca1 | 0x240 | rSaveSlotXPicross{Course}PuzzleStatusDataTable | GS04 status tables (3 slots x 3 course rows x 64 entries x 1 byte). |
+| aca2 | 1 | rContinueSavedGameFlowMode_Unsure | Continue/load flow mode byte (behavior still uncertain). |
+| aca3-acea | 0x48 | rSavedPuzzleHintPopupSelection, rSavedPuzzleTimerPenaltyStep, rSavedPuzzleTimerMinuteOnes, rSavedPuzzleTimerMinuteTens, rSavedPuzzleTimerSecondOnes, rSavedPuzzleTimerSecondTens, rSavedPuzzleDataIndexLow, rSavedPuzzleDataIndexHigh, rSavedPuzzleCursorColumn, rSavedPuzzleCursorRow, rSavedPuzzleCellStatePackedBuffer, rSavedPuzzleGridWidth, rSavedPuzzleGridHeight | Saved puzzle snapshot fields used by continue/restore flow (timer, puzzle id, cursor, packed cell-state buffer, grid dimensions). |
+| aceb-acec | 2 | TODO | Unmapped bytes in primary save block (TODO). |
+| aced | 1 | rHiddenProgrammerCreditsMirror | Mirror byte tied to signature validation data. |
+| acee-acfc | 0x0f | TODO | Unmapped bytes in primary save block (TODO). |
+| acfd | 1 | rSaveValidationMagicBytesMirror | Mirror of save-validation magic data. |
+| acfe-ad01 | 4 | TODO | Unmapped bytes in primary save block (TODO). |
+| ad02-ad03 | 2 | rSaveDataPrimaryChecksumSum, rSaveDataPrimaryChecksumXor | Checksums for primary save block. |
+| ad04-ba05 | 0x0d02 | rSaveDataMirrorBlockStart | Mirror copy of save-data block. |
+| ba06-ba07 | 2 | rSaveDataMirrorChecksumSum, rSaveDataMirrorChecksumXor | Checksums for mirror save block. |
 
 Notes:
 - `rSaveSlotX...` denotes the slot-specific variants (slot 1/2/3 labels) already mapped in the symbol file.
-- `Picross{Course}` denotes the Kinoko/Star/TimeTrial_Unsure variants.
+- `Picross{Course}` denotes the Kinoko/Star/TimeTrial variants.
 
 ## 6) Unused / Cut Content

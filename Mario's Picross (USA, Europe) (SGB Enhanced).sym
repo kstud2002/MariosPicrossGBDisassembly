@@ -12,6 +12,9 @@
 00:a05d rSaveDataTimeTrialRankingEntriesShiftSourceEnd
 00:a064 rSaveDataTimeTrialRankingEntriesShiftDestEnd
 00:a065 rSelectedSaveSlotIndex
+00:a066 rSaveSlot1PuzzleActionRuleIndex_Unsure
+00:a067 rSaveSlot2PuzzleActionRuleIndex_Unsure
+00:a068 rSaveSlot3PuzzleActionRuleIndex_Unsure
 ; Per-save-slot BGM index entries: GS08 Easy Picross, GS0A Kinoko/Star, GS09 Time Trial, unknown
 00:a069 rSaveSlot1EasyPicrossBGMSelectionIndex
 00:a06a rSaveSlot1PicrossKinokoBGMSelectionIndex
@@ -60,45 +63,45 @@
 00:a38f rSaveSlot3CourseSelectCursorRow
 00:a390 rSaveSlot1PicrossKinokoCoursePuzzleSelectCursorColumn
 00:a391 rSaveSlot1PicrossStarCoursePuzzleSelectCursorColumn
-00:a392 rSaveSlot1PicrossTimeTrial_UnsurePuzzleSelectCursorColumn
+00:a392 rSaveSlot1PicrossTimeTrialPuzzleSelectCursorColumn
 00:a393 rSaveSlot2PicrossKinokoCoursePuzzleSelectCursorColumn
 00:a394 rSaveSlot2PicrossStarCoursePuzzleSelectCursorColumn
-00:a395 rSaveSlot2PicrossTimeTrial_UnsurePuzzleSelectCursorColumn
+00:a395 rSaveSlot2PicrossTimeTrialPuzzleSelectCursorColumn
 00:a396 rSaveSlot3PicrossKinokoCoursePuzzleSelectCursorColumn
 00:a397 rSaveSlot3PicrossStarCoursePuzzleSelectCursorColumn
-00:a398 rSaveSlot3PicrossTimeTrial_UnsurePuzzleSelectCursorColumn
+00:a398 rSaveSlot3PicrossTimeTrialPuzzleSelectCursorColumn
 00:a399 rSaveSlot1PicrossKinokoCoursePuzzleSelectCursorRow
 00:a39a rSaveSlot1PicrossStarCoursePuzzleSelectCursorRow
-00:a39b rSaveSlot1PicrossTimeTrial_UnsurePuzzleSelectCursorRow
+00:a39b rSaveSlot1PicrossTimeTrialPuzzleSelectCursorRow
 00:a39c rSaveSlot2PicrossKinokoCoursePuzzleSelectCursorRow
 00:a39d rSaveSlot2PicrossStarCoursePuzzleSelectCursorRow
-00:a39e rSaveSlot2PicrossTimeTrial_UnsurePuzzleSelectCursorRow
+00:a39e rSaveSlot2PicrossTimeTrialPuzzleSelectCursorRow
 00:a39f rSaveSlot3PicrossKinokoCoursePuzzleSelectCursorRow
 00:a3a0 rSaveSlot3PicrossStarCoursePuzzleSelectCursorRow
-00:a3a1 rSaveSlot3PicrossTimeTrial_UnsurePuzzleSelectCursorRow
+00:a3a1 rSaveSlot3PicrossTimeTrialPuzzleSelectCursorRow
 ; GS04 Picross course time-data tables (save slot x course row, 64 entries x 3 bytes)
 00:a3a2 rSaveSlot1PicrossKinokoCoursePuzzleTimeDataRecordTable
 00:a462 rSaveSlot1PicrossStarCoursePuzzleTimeDataRecordTable
-00:a522 rSaveSlot1PicrossTimeTrial_UnsurePuzzleTimeDataRecordTable
+00:a522 rSaveSlot1PicrossTimeTrialPuzzleTimeDataRecordTable
 00:a5e2 rSaveSlot2PicrossKinokoCoursePuzzleTimeDataRecordTable
 00:a6a2 rSaveSlot2PicrossStarCoursePuzzleTimeDataRecordTable
-00:a762 rSaveSlot2PicrossTimeTrial_UnsurePuzzleTimeDataRecordTable
+00:a762 rSaveSlot2PicrossTimeTrialPuzzleTimeDataRecordTable
 00:a822 rSaveSlot3PicrossKinokoCoursePuzzleTimeDataRecordTable
 00:a8e2 rSaveSlot3PicrossStarCoursePuzzleTimeDataRecordTable
-00:a9a2 rSaveSlot3PicrossTimeTrial_UnsurePuzzleTimeDataRecordTable
+00:a9a2 rSaveSlot3PicrossTimeTrialPuzzleTimeDataRecordTable
 ; GS04 Picross course status-data tables (save slot x course row, 64 entries x 1 byte)
 00:aa62 rSaveSlot1PicrossKinokoCoursePuzzleStatusDataTable
 00:aaa2 rSaveSlot1PicrossStarCoursePuzzleStatusDataTable
-00:aae2 rSaveSlot1PicrossTimeTrial_UnsurePuzzleStatusDataTable
+00:aae2 rSaveSlot1PicrossTimeTrialPuzzleStatusDataTable
 00:ab22 rSaveSlot2PicrossKinokoCoursePuzzleStatusDataTable
 00:ab62 rSaveSlot2PicrossStarCoursePuzzleStatusDataTable
-00:aba2 rSaveSlot2PicrossTimeTrial_UnsurePuzzleStatusDataTable
+00:aba2 rSaveSlot2PicrossTimeTrialPuzzleStatusDataTable
 00:abe2 rSaveSlot3PicrossKinokoCoursePuzzleStatusDataTable
 00:ac22 rSaveSlot3PicrossStarCoursePuzzleStatusDataTable
-00:ac62 rSaveSlot3PicrossTimeTrial_UnsurePuzzleStatusDataTable
+00:ac62 rSaveSlot3PicrossTimeTrialPuzzleStatusDataTable
 00:aca2 rContinueSavedGameFlowMode_Unsure
 00:aca3 rSavedPuzzleHintPopupSelection
-00:aca4 rSavedPuzzleTimerAdjustmentStep
+00:aca4 rSavedPuzzleTimerPenaltyStep
 00:aca5 rSavedPuzzleTimerMinuteOnes
 00:aca6 rSavedPuzzleTimerMinuteTens
 00:aca7 rSavedPuzzleTimerSecondOnes
@@ -221,11 +224,15 @@
 00:d640 rPuzzleCellStateBufferStart
 00:d73f rPuzzleCellStateBufferEnd
 00:d740 rClueRunLengthHorizontalBufferStart
+00:d745 rClueRunLengthHorizontalBufferField5Base
 00:d799 rClueRunLengthHorizontalBufferBuildBase
 00:d7a0 rClueRunLengthVerticalBufferStart
+00:d7a5 rClueRunLengthVerticalBufferField5Base
 00:d7f9 rClueRunLengthVerticalBufferBuildBase
 00:d800 rPuzzleGridWidth
 00:d801 rPuzzleGridHeight
+00:d802 rPuzzleBit0AndBit1ClearCellCounter_Unsure
+00:d803 rPuzzleBit1ClearCellCounter_Unsure
 00:d804 rPuzzleCellPendingActionMode
 00:d805 rPuzzlePostClearFlowFlag
 00:d806 rPuzzleTimerCompletionState
@@ -236,24 +243,32 @@
 00:d80b rPuzzleTimerSecondOnes
 00:d80c rPuzzleTimerSecondTens
 00:d80d rPuzzleTimerActive
+00:d80e rPuzzleTimerWarningSfxGateFlag
 00:d80f rPuzzleActionRepeatGuard
 00:d810 rCellEffectFrameSourceBaseIndex
-00:d811 rPuzzleTimerAdjustmentStep
+00:d811 rPuzzleTimerPenaltyStep
 00:d812 rHintCursorAnimationColumnThreshold
 00:d813 rHintCursorAnimationRowThreshold
+00:d814 rHintCursorSweepAdvanceDelayLow
+00:d815 rHintCursorSweepAdvanceDelayHigh
 00:d816 rMarioBlinkAnimationSpriteId
 00:d817 rMarioBlinkAnimationDelay
 00:d818 rMarioBlinkAnimationSequenceCursor
 00:d819 rGS06_MarioMouthAnimationSpriteId
 00:d81a rGS06_MarioMouthAnimationCountdown
 00:d81b rGS06_MarioMouthAnimationPatternCursor
-00:d81f rMessageStepDelayTimer
-00:d820 rMessageStepSequenceCursor
-00:d821 rMessageStepSequenceState
+00:d81c rLowTimerMarioSweatIndicatorTickCounter
+00:d81d rLowTimerMarioFaceTilesAppliedFlag
+00:d81e rCellActionStepSequenceSpriteId
+00:d81f rCellActionStepDelayTimer
+00:d820 rCellActionStepSequenceCursor
+00:d821 rCellActionStepSequenceState
 00:d822 rPendingCellEffectDelay
 00:d823 rPendingCellEffectCode
 00:d824 rCellEffectTargetColumn
 00:d825 rCellEffectTargetRow
+00:d826 rMistakePenaltyPopupSpriteX
+00:d827 rMistakePenaltyPopupSpriteY
 00:d82a rCountdownSfxTimer
 00:d82b rMessageScriptStreamEntryLow
 00:d82c rMessageScriptStreamEntryHigh
@@ -894,7 +909,7 @@
 00:3234 .AdvanceHintCursorAnimationComplete
 00:323a .FinalizeHintCursorAnimation
 
-00:323e GS06_ResetMessageSequenceState
+00:323e GS06_ResetCellActionStepAndMarioMouthAnimationState
 
 00:324f .padding:5b1
 00:3800 .data:100
@@ -1014,7 +1029,7 @@
 01:4a80 GS04_LoadPicrossCourseSelectGraphicsBySelectedCourse
 01:4ab9 .LoadStarCourseGraphicsVariant
 
-01:4ae4 GS04_LoadPicrossCourseSelectGraphicsBySelectedCourse_Banked
+01:4ae4 LoadPicrossCourseSelectGraphicsBySelectedCourse_Banked
 01:4b1f .LoadStarCourseGraphicsAndTilemapVariant
 
 01:4b5a GS04_PlayPicrossCourseSelectFadeInBySelectedCourse
@@ -1023,10 +1038,10 @@
 01:4b84 GS04_PlayPicrossCourseSelectFadeOutBySelectedCourse
 01:4ba0 .PlayStarCourseFadeOutVariant
 
-01:4bae GS04_PlayPicrossCourseSelectFadeInBySelectedCourse_Banked
+01:4bae PlayPicrossCourseSelectFadeInBySelectedCourse_Banked
 01:4bcc .PlayStarCourseFadeInBankedVariant
 
-01:4bdc GS04_PlayPicrossCourseSelectFadeOutBySelectedCourse_Banked
+01:4bdc PlayPicrossCourseSelectFadeOutBySelectedCourse_Banked
 01:4bfa .PlayStarCourseFadeOutBankedVariant
 
 01:4c0a GS04_DrawCompletedPuzzleMarkersForSelectedSaveSlotAndCourse
@@ -1490,8 +1505,9 @@
 01:6eef GS0A_StatePhase_0a_TODO
 
 01:69b9 LoadGameBoardTileData
-01:69f6 Load10x10GameBoardTileData
-01:6a22 Load15x15GameBoardTileData
+01:69f6 .Load10x10GameBoardTileData
+01:6a22 .Load15x15GameBoardTileData
+01:6a48 .InitializePuzzleRuntimeStateAfterBoardLoad
 
 01:6c2c TickCountdownAndEmitSfx
 
@@ -1573,11 +1589,17 @@
 01:72df .HandleDualHeldInputClearAction
 
 01:72e5 ProcessPuzzleCellActionInput_ApplyFillAction
-01:7328 .BeginFillEffectSequence
-01:735a .RunFillActionAnimationLoop
-01:736f .TickFillActionFrameDelay
-01:7382 .CheckLateFillEffectTrigger
-01:7391 .AdvanceFillAnimationFrame
+01:7328 .BeginMistakeFillEffectSequence
+01:735a .RunMistakeFillAnimationLoop
+01:736f .TickMistakeFillFrameDelay
+01:7382 .CheckLateMistakeFillEffectTrigger
+01:7391 .AdvanceMistakeFillAnimationFrame
+
+01:739f ApplyFillNoPenaltyPath
+01:73aa .QueueFillNoPenaltyEffects
+01:73c4 .BeginOrContinueNoPenaltyFillStepSequence
+01:73f2 .TickNoPenaltyFillStepSequence
+01:7405 .QueueNoPenaltyFillEffectFrame
 
 01:741c ProcessPuzzleCellActionInput_ApplyMarkXAction
 01:7431 .IncrementMarkedCellCounter
@@ -1594,6 +1616,10 @@
 01:74ff .QueueClearCellEffectFrame
 
 01:7516 TickPendingCellActionEffect
+
+01:7529 DispatchCellEffectSfxByEffectCode
+01:7535 .CheckClearCellEffectCode
+01:7541 .PlayDefaultCellEffectSfx
 
 01:7549 PrepareCellEffectFrameCopy
 
@@ -1664,19 +1690,57 @@
 01:794e MarioBlinkFrameDelayAndSpriteIdTable
 01:794e .data:0019:2
 
-01:7967 TickMessageStepSequenceAndEmitSprite
+01:7967 TickCellActionStepSequenceAndEmitSprite
+01:797f .FindNextCellActionStepEntry
+01:798b .ProcessCellActionStepEntryOrStateAdvance
+01:799e .AdvanceToNextCellActionState
+01:79ac .ApplyCellActionStepDelayAndSpriteId
+01:79ba .TickCellActionStepDelayAndEmitSprite
+01:79eb .CheckCellActionStepSfxTrigger
+
+01:79ff CellActionStepSequenceStateOffsetTable
+01:79ff .data:0006
+01:7a05 CellActionStepSequenceStream_ChisleIdle
+01:7a05 .data:0009
+01:7a0e CellActionStepSequenceStream_FillCell
+01:7a0e .data:0024
+01:7a32 CellActionStepSequenceStream_FillCell_Short
+01:7a32 .data:0020
+01:7a52 CellActionStepSequenceStream_MarkX
+01:7a52 .data:0008
+01:7a5a CellActionStepSequenceStream_FillWrongCell
+01:7a5a .data:0032
+01:7a8c CellActionStepSequenceStream_ClearCell
+01:7a8c .data:000c
 
 01:7a98 UpdatePuzzleTimerDisplayState
+01:7aba .CheckThreeMinuteWarningWindow
+01:7ac4 .CheckTwoMinuteWarningWindow
+01:7ad6 .CheckOneMinuteWarningWindow
+01:7ae2 .PlayLowTimeWarningSfx
 
 01:7aea UpdatePuzzleTimerCountdown
+01:7b18 .StoreSecondOnesAndRender_Down
+01:7b2e .StoreSecondTensAndRender_Down
+01:7b44 .StoreMinuteOnesAndRender_Down
+01:7b62 .StoreMinuteTensAndRender_Down
+01:7b6e .TickTimeTrialTimerCountUp
+01:7b8b .IncrementSecondOnes_CountUp
+01:7b94 .StoreSecondOnesAndRender_Up
+01:7ba9 .StoreSecondTensAndRender_Up
+01:7bbe .StoreMinuteOnesAndRender_Up
+01:7bdf .StoreMinuteTensAndRender_Up
 
 01:7beb ResetPuzzleTimerState
+01:7c01 .StoreInitialMinuteTensByMode
 
 01:7c04 RenderPuzzleTimerDigits
 
 01:7c29 RenderPuzzleTimerDigitTile
 
-01:7c88 TickPuzzleTimerInputAdjustment
+01:7c88 ApplyPuzzleTimerMistakePenalty
+01:7cb9 .DoubleTimerPenaltyStepIfNot8
+01:7cc5 .RenderTimerAfterPenalty
 
 01:7cc8 TickPuzzleTimerCompletionState
 
@@ -1687,6 +1751,13 @@
 01:7d19 Load10x10GameOverMessageTileData
 
 01:7d4d Load15x15GameOverMessageTileData
+
+01:7d81 TickAndDrawMistakePenaltyPopupSprite
+01:7d94 .CheckPenaltyStep4Sprite
+01:7d9c .UsePenaltyStep8OrMoreSprite
+01:7d9e .DrawPenaltyPopupAndTickPosition
+01:7daf .MaybeAdvancePenaltyPopupX
+01:7dc4 .SkipPenaltyPopupXAdvance
 
 01:7dcb RecomputePuzzleCellBitSetCounters
 01:7dd3 .CountBit0SetCellsLoop
@@ -2645,17 +2716,17 @@
 03:46d0 .data:000c:3
 03:46dc TransitionFadePaletteTable_Unused
 03:46dc .data:000c:3
-03:46e8 TransitionFadePaletteTable_GS00_GS05_Start
+03:46e8 TransitionFadePaletteTable_EasyPicross
 03:46e8 .data:000c:3
 03:46f4 TransitionFadePaletteTable_GS04_Start_1
 03:46f4 .data:000c:3
 03:4700 TransitionFadePaletteTable_GS04_Start_2
 03:4700 .data:000c:3
-03:470c TransitionFadePaletteTable_GS00_GS07_Start
+03:470c TransitionFadePaletteTable_TimeTrial
 03:470c .data:000c:3
-03:4718 TransitionFadePaletteTable_GS00_TitleScreenInit_Start
+03:4718 TransitionFadePaletteTable_TitleScreen
 03:4718 .data:000c:3
-03:4724 TransitionFadePaletteTable_GS00_Start_2
+03:4724 TransitionFadePaletteTable_PostSaveReturn
 03:4724 .data:000c:3
 
 03:4730 SGBPacket_PAL_TRN_StartupTransfer
@@ -2691,6 +2762,9 @@
 
 03:4e80 InitBottomPromptBlinkTimerAndFrameState
 
+03:4e8a TickBottomPromptBlinkSprite4E_A_START
+03:4e93 .StoreBlinkTimerAndCheckDrawWindowSprite4E
+
 03:4ea6 TickBottomPromptBlinkSprite4C_A_OK
 03:4eaf .StoreBlinkTimerAndCheckDrawWindowSprite4C
 
@@ -2702,6 +2776,10 @@
 
 03:4f10 TickBottomPromptBlinkSprite4F_B_Exit_50_A_TRYAGAIN
 03:4f21 .StoreBlinkTimerAndCheckDrawWindowSprite4F_50
+
+03:4f39 ContinueSavedGameText
+03:4f39 .text:002c:cm=messages
+03:4f65 .text:0022:cm=messages
 
 ; GameState 00 Phase pointer table entries (accessed via RST_18 dispatcher):
 ; Offset calculation: Phase_value * 2, added to return address $4f8b yields pointer location
@@ -2723,9 +2801,11 @@
 
 03:4f95 GS00_StatePhase_00_TitleScreenInit
 03:4fd1 .ContinueAfterOptionalSGBTransfers
+
 03:5049 GS00_StatePhase_01_TitleScreenIdle
 03:506e .ClearSGBBorderAlternateFlag
 03:5072 .CheckAdvanceInputAOrStart
+
 03:5084 GS00_StatePhase_02_TitleScreenTransition
 03:50ce .SGBStandardBorderTransfer
 03:510c .CheckRedBorderPatchInput
@@ -2735,15 +2815,28 @@
 03:5156 .SendPatchedDefaultBorderPacket
 03:515e GS00_SP02_ContinueAfterBorderTransfer
 03:51a9 GS00_SP02_NonSGBFadeOut
-03:51b6 PostFadeOutFlowRouter
+03:51b6 GS00_SP02_PostFadeOutFlowRouter
 03:51d1 .NoSaveDataInitPath
 03:51ee .AdvanceToContinueSavedGameScreen
-03:51f3 GS00_StatePhase_03_ContinueSavedGameScreenInit
-03:5366 GS00_SP03_ContinueSavedGameScreen_StatePhaseLookupTable
+
+03:51f3 GS00_StatePhase_03_ContinueSavedPuzzlePromptAndRoute
+03:5253 .CheckContinueFlowModeTimeTrialForPromptTilemap
+03:5273 .InitializeContinueSavedPuzzlePromptUI
+03:52c4 .CheckContinueFlowModeTimeTrialForPromptFadeIn
+03:52d7 .ApplyContinuePromptDefaultFadeIn
+03:52e4 .WaitForContinuePromptConfirmInput
+03:532b .CheckContinueFlowModeTimeTrialForPromptFadeOut
+03:533e .ApplyContinuePromptDefaultFadeOut
+03:534b .FinalizeContinuePromptAndRouteToSavedPuzzleState
+03:5366 GS00_SP03_ContinueSavedPuzzleRoute_StatePhaseLookupTable
 03:5366 .data:3
-03:5369 GS00_SP03_ContinueSavedGameScreen_GameStateLookupTable
+03:5369 GS00_SP03_ContinueSavedPuzzleRoute_GameStateLookupTable
 03:5369 .data:3
-03:536c GS00_StatePhase_04_ContinueSavedGameScreenIdle
+
+03:536c GS00_StatePhase_04_PostSaveReturnToTitlePrompt
+03:53d4 .WaitForPostSaveReturnPromptConfirmInput
+
+03:541f GS00_RunMessageScriptUntilEnd_NoBankSwitch
 
 03:5425 GS00_TickMarioBlinkAnimation
 03:5431 .FindNextBlinkFrameEntry
@@ -2751,6 +2844,31 @@
 03:544b .TickBlinkFrameDelay
 03:545d GS00_MarioBlinkFrameDelayAndSpriteIdTable
 03:545d .data:0025:2
+
+03:5482 TODO_QueueTODOCommandStream
+03:5492 TODO_CommandOffsetTable
+03:5492 .data:0003
+03:5495 TODO_1_CommandScript
+03:5495 .data:0007:7
+03:549c .data:0009:9
+03:54a5 .data:000a:a
+03:54af .data:000a:a
+03:54b9 .data:0008:8
+03:54c1 .data:0007:6
+03:54c8 TODO_2_CommandScript
+03:54c8 .data:0007:7
+03:54cf .data:0009:9
+03:54d8 .data:000a:a
+03:54e2 .data:000a:a
+03:54ec .data:0008:8
+03:54f4 .data:0007:6
+03:54fb TODO_3_CommandScript
+03:54fb .data:0007:7
+03:5502 .data:0009:9
+03:550b .data:000a:a
+03:5515 .data:000a:a
+03:551f .data:0008:8
+03:5527 .data:0007:6
 
 03:552e Bank2_PuzzleDataPointerTable_Puzzle_HT00
 03:552e .data:0002
@@ -4607,77 +4725,77 @@
 03:6d9c .data:0009:4
 03:6da5 OAMSpriteData_Event06_PositionCursorLeft_Frame2
 03:6da5 .data:0009:4
-03:6dae OAMSpriteData_Event07
+03:6dae OAMSpriteData_Event07_MistakePenalty_Minus2
 03:6dae .data:0009:4
-03:6db7 OAMSpriteData_Event08
+03:6db7 OAMSpriteData_Event08_MistakePenalty_Minus4
 03:6db7 .data:0009:4
-03:6dc0 OAMSpriteData_Event09
+03:6dc0 OAMSpriteData_Event09_MistakePenalty_Minus8
 03:6dc0 .data:0009:4
 03:6dc9 OAMSpriteData_Event0a_MarioSweat
 03:6dc9 .data:0005:4
-03:6dce OAMSpriteData_Event0b
+03:6dce OAMSpriteData_Event0b_PuzzleCursor_ChiselIdle_Frame1
 03:6dce .data:0011:4
-03:6ddf OAMSpriteData_Event0c
+03:6ddf OAMSpriteData_Event0c_PuzzleCursor_ChiselIdle_Frame2
 03:6ddf .data:0011:4
-03:6df0 OAMSpriteData_Event0d
+03:6df0 OAMSpriteData_Event0d_PuzzleCursor_ChiselIdle_Frame3
 03:6df0 .data:0011:4
-03:6e01 OAMSpriteData_Event0e
+03:6e01 OAMSpriteData_Event0e_PuzzleCursor_HammerSwing_Frame1
 03:6e01 .data:0021:4
-03:6e22 OAMSpriteData_Event0f
+03:6e22 OAMSpriteData_Event0f_PuzzleCursor_HammerSwing_Frame3
 03:6e22 .data:0015:4
-03:6e37 OAMSpriteData_Event10
+03:6e37 OAMSpriteData_Event10_PuzzleCursor_HammerSwing_Frame5
 03:6e37 .data:002d:4
-03:6e64 OAMSpriteData_Event11
+03:6e64 OAMSpriteData_Event11_PuzzleCursor_HammerSwing_Frame6
 03:6e64 .data:003d:4
-03:6ea1 OAMSpriteData_Event12
+03:6ea1 OAMSpriteData_Event12_PuzzleCursor_HammerSwing_Frame7
 03:6ea1 .data:003d:4
-03:6ede OAMSpriteData_Event13
+03:6ede OAMSpriteData_Event13_PuzzleCursor_HammerSwing_Frame8
 03:6ede .data:003d:4
-03:6f1b OAMSpriteData_Event14
+03:6f1b OAMSpriteData_Event14_PuzzleCursor_HammerSwing_Frame9
 03:6f1b .data:003d:4
-03:6f58 OAMSpriteData_Event15
+03:6f58 OAMSpriteData_Event15_PuzzleCursor_HammerSwing_Frame10
 03:6f58 .data:003d:4
-03:6f95 OAMSpriteData_Event16
+03:6f95 OAMSpriteData_Event16_PuzzleCursor_HammerSwing_Frame11
 03:6f95 .data:0039:4
-03:6fce OAMSpriteData_Event17
+03:6fce OAMSpriteData_Event17_PuzzleCursor_HammerSwing_Frame12
 03:6fce .data:0035:4
-03:7003 OAMSpriteData_Event18
+03:7003 OAMSpriteData_Event18_PuzzleCursor_HammerSwing_Frame13
 03:7003 .data:0031:4
-03:7034 OAMSpriteData_Event19
+03:7034 OAMSpriteData_Event19_PuzzleCursor_HammerSwing_Frame14
 03:7034 .data:0031:4
-03:7065 OAMSpriteData_Event1a
+03:7065 OAMSpriteData_Event1a_PuzzleCursor_HammerSwing_Frame15
 03:7065 .data:002d:4
-03:7092 OAMSpriteData_Event1b
+03:7092 OAMSpriteData_Event1b_PuzzleCursor_HammerSwing_Frame16
 03:7092 .data:002d:4
-03:70bf OAMSpriteData_Event1c
+03:70bf OAMSpriteData_Event1c_PuzzleCursor_MarkX_Frame1
 03:70bf .data:0019:4
-03:70d8 OAMSpriteData_Event1d
+03:70d8 OAMSpriteData_Event1d_PuzzleCursor_MarkX_Frame2
 03:70d8 .data:0019:4
-03:70f1 OAMSpriteData_Event1e
+03:70f1 OAMSpriteData_Event1e_PuzzleCursor_ChisleGrow
 03:70f1 .data:0011:4
-03:7102 OAMSpriteData_Event1f
+03:7102 OAMSpriteData_Event1f_PuzzleCursor_HammerSwing_Frame4
 03:7102 .data:0021:4
-03:7123 OAMSpriteData_Event20
+03:7123 OAMSpriteData_Event20_PuzzleCursor_HandSwipe_Frame1
 03:7123 .data:0011:4
-03:7134 OAMSpriteData_Event21
+03:7134 OAMSpriteData_Event21_PuzzleCursor_HandSwipe_Frame2
 03:7134 .data:0011:4
-03:7145 OAMSpriteData_Event22
+03:7145 OAMSpriteData_Event22_PuzzleCursor_HammerSwingReverse_Frame1
 03:7145 .data:0039:4
-03:717e OAMSpriteData_Event23
+03:717e OAMSpriteData_Event23_PuzzleCursor_HammerSwingReverse_Frame2
 03:717e .data:0035:4
-03:71b3 OAMSpriteData_Event24
+03:71b3 OAMSpriteData_Event24_PuzzleCursor_HammerSwingReverse_Frame3
 03:71b3 .data:0035:4
-03:71e8 OAMSpriteData_Event25
+03:71e8 OAMSpriteData_Event25_PuzzleCursor_HammerSwingReverse_Frame4
 03:71e8 .data:0035:4
-03:721d OAMSpriteData_Event26
+03:721d OAMSpriteData_Event26_PuzzleCursor_HammerSwingReverse_Frame5
 03:721d .data:0035:4
-03:7252 OAMSpriteData_Event27
+03:7252 OAMSpriteData_Event27_PuzzleCursor_HammerSwingReverse_Frame6
 03:7252 .data:0035:4
-03:7287 OAMSpriteData_Event28
+03:7287 OAMSpriteData_Event28_PuzzleCursor_HammerSwingReverse_Frame7
 03:7287 .data:0029:4
 03:72b0 OAMSpriteData_Event29
 03:72b0 .data:0029:4
-03:72d9 OAMSpriteData_Event2a
+03:72d9 OAMSpriteData_Event2a_PuzzleCursor_HammerSwing_Frame2
 03:72d9 .data:0021:4
 03:72fa OAMSpriteData_Event2b
 03:72fa .data:0005:4

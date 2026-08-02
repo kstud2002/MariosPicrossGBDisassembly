@@ -5736,8 +5736,8 @@ SaveCurrentPuzzleProgressToSaveData::
     ld [de], a                                    ; $1c56: $12
     ld a, [rHintPopupSelection]                   ; $1c57: $fa $33 $d8
     ld [rSavedPuzzleHintPopupSelection], a        ; $1c5a: $ea $a3 $ac
-    ld a, [rPuzzleTimerAdjustmentStep]            ; $1c5d: $fa $11 $d8
-    ld [rSavedPuzzleTimerAdjustmentStep], a       ; $1c60: $ea $a4 $ac
+    ld a, [rPuzzleTimerPenaltyStep]               ; $1c5d: $fa $11 $d8
+    ld [rSavedPuzzleTimerPenaltyStep], a          ; $1c60: $ea $a4 $ac
     ld a, [rPuzzleTimerMinuteOnes]                ; $1c63: $fa $09 $d8
     ld [rSavedPuzzleTimerMinuteOnes], a           ; $1c66: $ea $a5 $ac
     ld a, [rPuzzleTimerMinuteTens]                ; $1c69: $fa $0a $d8
@@ -5760,8 +5760,8 @@ SaveCurrentPuzzleProgressToSaveData::
 RestoreCurrentPuzzleProgressFromSaveData::
     ld a, [rSavedPuzzleHintPopupSelection]        ; $1c96: $fa $a3 $ac
     ld [rHintPopupSelection], a                   ; $1c99: $ea $33 $d8
-    ld a, [rSavedPuzzleTimerAdjustmentStep]       ; $1c9c: $fa $a4 $ac
-    ld [rPuzzleTimerAdjustmentStep], a            ; $1c9f: $ea $11 $d8
+    ld a, [rSavedPuzzleTimerPenaltyStep]          ; $1c9c: $fa $a4 $ac
+    ld [rPuzzleTimerPenaltyStep], a               ; $1c9f: $ea $11 $d8
     ld a, [rSavedPuzzleTimerMinuteOnes]           ; $1ca2: $fa $a5 $ac
     ld [rPuzzleTimerMinuteOnes], a                ; $1ca5: $ea $09 $d8
     ld a, [rSavedPuzzleTimerMinuteTens]           ; $1ca8: $fa $a6 $ac
@@ -6636,12 +6636,12 @@ GS06_StatePhase_00_Init::
     ld [rHintCursorAnimationRowAccumulator], a    ; $21fa: $ea $3f $d6
     ld a, [rLCDCFrameTickCounter]                 ; $21fd: $fa $3b $c3
     ld [rSharedAnimationFrameState], a            ; $2200: $ea $3d $d6
-    call GS06_ResetMessageSequenceState           ; $2203: $cd $3e $32
+    call GS06_ResetCellActionStepAndMarioMouthAnimationState; $2203: $cd $3e $32
     xor a                                         ; $2206: $af
     ld [rPuzzleDataIndexLow], a                   ; $2207: $ea $07 $d8
     ld [rPuzzleDataIndexHigh], a                  ; $220a: $ea $08 $d8
     ld a, $02                                     ; $220d: $3e $02
-    ld [rPuzzleTimerAdjustmentStep], a            ; $220f: $ea $11 $d8
+    ld [rPuzzleTimerPenaltyStep], a               ; $220f: $ea $11 $d8
     ld a, $02                                     ; $2212: $3e $02
     ld [rHintCursorAnimationColumnThreshold], a   ; $2214: $ea $12 $d8
     ld [rHintCursorAnimationRowThreshold], a      ; $2217: $ea $13 $d8
@@ -6702,7 +6702,7 @@ GS06_StatePhase_01_Message::
     ld [rMessageScriptStreamPointerLow], a        ; $229a: $ea $2d $d8
     ld a, $6a                                     ; $229d: $3e $6a
     ld [rMessageScriptStreamPointerHigh], a       ; $229f: $ea $2e $d8
-    call GS06_ResetMessageSequenceState           ; $22a2: $cd $3e $32
+    call GS06_ResetCellActionStepAndMarioMouthAnimationState; $22a2: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $22a5: $21 $35 $d6
     inc [hl]                                      ; $22a8: $34
     ret                                           ; $22a9: $c9
@@ -6729,7 +6729,7 @@ GS06_StatePhase_02_HighlightNumbersTop_Prepare::
     ld [rGS06_OAMSequenceEventTableBank], a       ; $22d1: $ea $a9 $cd
     ld a, $78                                     ; $22d4: $3e $78
     ld [rStatePhaseTimer], a                      ; $22d6: $ea $3c $d6
-    call GS06_ResetMessageSequenceState           ; $22d9: $cd $3e $32
+    call GS06_ResetCellActionStepAndMarioMouthAnimationState; $22d9: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $22dc: $21 $35 $d6
     inc [hl]                                      ; $22df: $34
     ret                                           ; $22e0: $c9
@@ -6753,7 +6753,7 @@ GS06_StatePhase_03_HighlightNumbersTop_Animation::
     ld [rMessageScriptStreamPointerLow], a        ; $2300: $ea $2d $d8
     ld a, $6b                                     ; $2303: $3e $6b
     ld [rMessageScriptStreamPointerHigh], a       ; $2305: $ea $2e $d8
-    call GS06_ResetMessageSequenceState           ; $2308: $cd $3e $32
+    call GS06_ResetCellActionStepAndMarioMouthAnimationState; $2308: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $230b: $21 $35 $d6
     inc [hl]                                      ; $230e: $34
     ret                                           ; $230f: $c9
@@ -6780,7 +6780,7 @@ GS06_StatePhase_04_HighlightNumbersLeft_Prepare::
     ld [rGS06_OAMSequenceEventTableBank], a       ; $2337: $ea $a9 $cd
     ld a, $78                                     ; $233a: $3e $78
     ld [rStatePhaseTimer], a                      ; $233c: $ea $3c $d6
-    call GS06_ResetMessageSequenceState           ; $233f: $cd $3e $32
+    call GS06_ResetCellActionStepAndMarioMouthAnimationState; $233f: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $2342: $21 $35 $d6
     inc [hl]                                      ; $2345: $34
     ret                                           ; $2346: $c9
@@ -6804,7 +6804,7 @@ GS06_StatePhase_05_HighlightNumbersLeft_Animation::
     ld [rMessageScriptStreamPointerLow], a        ; $2366: $ea $2d $d8
     ld a, $6b                                     ; $2369: $3e $6b
     ld [rMessageScriptStreamPointerHigh], a       ; $236b: $ea $2e $d8
-    call GS06_ResetMessageSequenceState           ; $236e: $cd $3e $32
+    call GS06_ResetCellActionStepAndMarioMouthAnimationState; $236e: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $2371: $21 $35 $d6
     inc [hl]                                      ; $2374: $34
     ret                                           ; $2375: $c9
@@ -6824,7 +6824,7 @@ GS06_StatePhase_06_Message::
     ld [rMessageScriptStreamPointerLow], a        ; $238e: $ea $2d $d8
     ld a, $6b                                     ; $2391: $3e $6b
     ld [rMessageScriptStreamPointerHigh], a       ; $2393: $ea $2e $d8
-    call GS06_ResetMessageSequenceState           ; $2396: $cd $3e $32
+    call GS06_ResetCellActionStepAndMarioMouthAnimationState; $2396: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $2399: $21 $35 $d6
     inc [hl]                                      ; $239c: $34
     ret                                           ; $239d: $c9
@@ -6844,7 +6844,7 @@ GS06_StatePhase_07_Message::
     ld [rMessageScriptStreamPointerLow], a        ; $23b6: $ea $2d $d8
     ld a, $6b                                     ; $23b9: $3e $6b
     ld [rMessageScriptStreamPointerHigh], a       ; $23bb: $ea $2e $d8
-    call GS06_ResetMessageSequenceState           ; $23be: $cd $3e $32
+    call GS06_ResetCellActionStepAndMarioMouthAnimationState; $23be: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $23c1: $21 $35 $d6
     inc [hl]                                      ; $23c4: $34
     ret                                           ; $23c5: $c9
@@ -6866,7 +6866,7 @@ GS06_StatePhase_08_SolvePuzzle_Prepare::
     ld [rGS06_ScriptedInputSequenceTableLow], a   ; $23e0: $ea $31 $d8
     ld a, $23                                     ; $23e3: $3e $23
     ld [rGS06_ScriptedInputSequenceTableHigh], a  ; $23e5: $ea $32 $d8
-    call GS06_ResetMessageSequenceState           ; $23e8: $cd $3e $32
+    call GS06_ResetCellActionStepAndMarioMouthAnimationState; $23e8: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $23eb: $21 $35 $d6
     inc [hl]                                      ; $23ee: $34
     ret                                           ; $23ef: $c9
@@ -6896,7 +6896,7 @@ GS06_StatePhase_09_SolvePuzzle_Animation::
 
     ld a, $0a                                     ; $2472: $3e $0a
     ld [rStatePhaseTimer], a                      ; $2474: $ea $3c $d6
-    call GS06_ResetMessageSequenceState           ; $2477: $cd $3e $32
+    call GS06_ResetCellActionStepAndMarioMouthAnimationState; $2477: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $247a: $21 $35 $d6
     inc [hl]                                      ; $247d: $34
     ret                                           ; $247e: $c9
@@ -6921,7 +6921,7 @@ GS06_StatePhase_0a_SolvePuzzle_Finish::
     ld [rMessageScriptStreamPointerLow], a        ; $249b: $ea $2d $d8
     ld a, $6c                                     ; $249e: $3e $6c
     ld [rMessageScriptStreamPointerHigh], a       ; $24a0: $ea $2e $d8
-    call GS06_ResetMessageSequenceState           ; $24a3: $cd $3e $32
+    call GS06_ResetCellActionStepAndMarioMouthAnimationState; $24a3: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $24a6: $21 $35 $d6
     inc [hl]                                      ; $24a9: $34
     ret                                           ; $24aa: $c9
@@ -6941,7 +6941,7 @@ GS06_StatePhase_0b_Message::
     ld [rMessageScriptStreamPointerLow], a        ; $24c3: $ea $2d $d8
     ld a, $6c                                     ; $24c6: $3e $6c
     ld [rMessageScriptStreamPointerHigh], a       ; $24c8: $ea $2e $d8
-    call GS06_ResetMessageSequenceState           ; $24cb: $cd $3e $32
+    call GS06_ResetCellActionStepAndMarioMouthAnimationState; $24cb: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $24ce: $21 $35 $d6
     inc [hl]                                      ; $24d1: $34
     ret                                           ; $24d2: $c9
@@ -6963,7 +6963,7 @@ GS06_StatePhase_0c_ResetBoard::
     ld [rMessageScriptStreamPointerLow], a        ; $24f1: $ea $2d $d8
     ld a, $6c                                     ; $24f4: $3e $6c
     ld [rMessageScriptStreamPointerHigh], a       ; $24f6: $ea $2e $d8
-    call GS06_ResetMessageSequenceState           ; $24f9: $cd $3e $32
+    call GS06_ResetCellActionStepAndMarioMouthAnimationState; $24f9: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $24fc: $21 $35 $d6
     inc [hl]                                      ; $24ff: $34
     ret                                           ; $2500: $c9
@@ -6990,7 +6990,7 @@ GS06_StatePhase_0d_HighlightNumbersTop_Prepare::
     ld [rGS06_OAMSequenceEventTableBank], a       ; $2528: $ea $a9 $cd
     ld a, $78                                     ; $252b: $3e $78
     ld [rStatePhaseTimer], a                      ; $252d: $ea $3c $d6
-    call GS06_ResetMessageSequenceState           ; $2530: $cd $3e $32
+    call GS06_ResetCellActionStepAndMarioMouthAnimationState; $2530: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $2533: $21 $35 $d6
     inc [hl]                                      ; $2536: $34
     ret                                           ; $2537: $c9
@@ -7014,7 +7014,7 @@ GS06_StatePhase_0e_HighlightNumbersTop_Animation::
     ld [rMessageScriptStreamPointerLow], a        ; $2557: $ea $2d $d8
     ld a, $6d                                     ; $255a: $3e $6d
     ld [rMessageScriptStreamPointerHigh], a       ; $255c: $ea $2e $d8
-    call GS06_ResetMessageSequenceState           ; $255f: $cd $3e $32
+    call GS06_ResetCellActionStepAndMarioMouthAnimationState; $255f: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $2562: $21 $35 $d6
     inc [hl]                                      ; $2565: $34
     ret                                           ; $2566: $c9
@@ -7034,7 +7034,7 @@ GS06_StatePhase_0f_Message::
     ld [rMessageScriptStreamPointerLow], a        ; $257f: $ea $2d $d8
     ld a, $6d                                     ; $2582: $3e $6d
     ld [rMessageScriptStreamPointerHigh], a       ; $2584: $ea $2e $d8
-    call GS06_ResetMessageSequenceState           ; $2587: $cd $3e $32
+    call GS06_ResetCellActionStepAndMarioMouthAnimationState; $2587: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $258a: $21 $35 $d6
     inc [hl]                                      ; $258d: $34
     ret                                           ; $258e: $c9
@@ -7061,7 +7061,7 @@ GS06_StatePhase_10_HighlightNumbersFirstColumn_Prepare::
     ld [rGS06_OAMSequenceEventTableBank], a       ; $25b6: $ea $a9 $cd
     ld a, $78                                     ; $25b9: $3e $78
     ld [rStatePhaseTimer], a                      ; $25bb: $ea $3c $d6
-    call GS06_ResetMessageSequenceState           ; $25be: $cd $3e $32
+    call GS06_ResetCellActionStepAndMarioMouthAnimationState; $25be: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $25c1: $21 $35 $d6
     inc [hl]                                      ; $25c4: $34
     ret                                           ; $25c5: $c9
@@ -7085,7 +7085,7 @@ GS06_StatePhase_11_HighlightNumbersFirstColumn_Animation::
     ld [rMessageScriptStreamPointerLow], a        ; $25e5: $ea $2d $d8
     ld a, $6d                                     ; $25e8: $3e $6d
     ld [rMessageScriptStreamPointerHigh], a       ; $25ea: $ea $2e $d8
-    call GS06_ResetMessageSequenceState           ; $25ed: $cd $3e $32
+    call GS06_ResetCellActionStepAndMarioMouthAnimationState; $25ed: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $25f0: $21 $35 $d6
     inc [hl]                                      ; $25f3: $34
     ret                                           ; $25f4: $c9
@@ -7107,7 +7107,7 @@ GS06_StatePhase_12_SolveFirstColumn_Prepare::
     ld [rGS06_ScriptedInputSequenceTableLow], a   ; $260f: $ea $31 $d8
     ld a, $26                                     ; $2612: $3e $26
     ld [rGS06_ScriptedInputSequenceTableHigh], a  ; $2614: $ea $32 $d8
-    call GS06_ResetMessageSequenceState           ; $2617: $cd $3e $32
+    call GS06_ResetCellActionStepAndMarioMouthAnimationState; $2617: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $261a: $21 $35 $d6
     inc [hl]                                      ; $261d: $34
     ret                                           ; $261e: $c9
@@ -7131,7 +7131,7 @@ GS06_StatePhase_13_SolveFirstColumn_Animation::
     ld [rMessageScriptStreamPointerLow], a        ; $2648: $ea $2d $d8
     ld a, $6e                                     ; $264b: $3e $6e
     ld [rMessageScriptStreamPointerHigh], a       ; $264d: $ea $2e $d8
-    call GS06_ResetMessageSequenceState           ; $2650: $cd $3e $32
+    call GS06_ResetCellActionStepAndMarioMouthAnimationState; $2650: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $2653: $21 $35 $d6
     inc [hl]                                      ; $2656: $34
     ret                                           ; $2657: $c9
@@ -7168,7 +7168,7 @@ GS06_StatePhase_14_HighlightNumbersLeft_Prepare::
     ld [rGS06_OAMSequenceEventTableBank], a       ; $2692: $ea $a9 $cd
     ld a, $78                                     ; $2695: $3e $78
     ld [rStatePhaseTimer], a                      ; $2697: $ea $3c $d6
-    call GS06_ResetMessageSequenceState           ; $269a: $cd $3e $32
+    call GS06_ResetCellActionStepAndMarioMouthAnimationState; $269a: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $269d: $21 $35 $d6
     inc [hl]                                      ; $26a0: $34
     ret                                           ; $26a1: $c9
@@ -7192,7 +7192,7 @@ GS06_StatePhase_15_HighlightNumbersLeft_Animation::
     ld [rMessageScriptStreamPointerLow], a        ; $26c1: $ea $2d $d8
     ld a, $6e                                     ; $26c4: $3e $6e
     ld [rMessageScriptStreamPointerHigh], a       ; $26c6: $ea $2e $d8
-    call GS06_ResetMessageSequenceState           ; $26c9: $cd $3e $32
+    call GS06_ResetCellActionStepAndMarioMouthAnimationState; $26c9: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $26cc: $21 $35 $d6
     inc [hl]                                      ; $26cf: $34
     ret                                           ; $26d0: $c9
@@ -7212,7 +7212,7 @@ GS06_StatePhase_16_Message::
     ld [rMessageScriptStreamPointerLow], a        ; $26e9: $ea $2d $d8
     ld a, $6f                                     ; $26ec: $3e $6f
     ld [rMessageScriptStreamPointerHigh], a       ; $26ee: $ea $2e $d8
-    call GS06_ResetMessageSequenceState           ; $26f1: $cd $3e $32
+    call GS06_ResetCellActionStepAndMarioMouthAnimationState; $26f1: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $26f4: $21 $35 $d6
     inc [hl]                                      ; $26f7: $34
     ret                                           ; $26f8: $c9
@@ -7239,7 +7239,7 @@ GS06_StatePhase_17_HighlightNumbersSecondRow_Prepare::
     ld [rGS06_OAMSequenceEventTableBank], a       ; $2720: $ea $a9 $cd
     ld a, $78                                     ; $2723: $3e $78
     ld [rStatePhaseTimer], a                      ; $2725: $ea $3c $d6
-    call GS06_ResetMessageSequenceState           ; $2728: $cd $3e $32
+    call GS06_ResetCellActionStepAndMarioMouthAnimationState; $2728: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $272b: $21 $35 $d6
     inc [hl]                                      ; $272e: $34
     ret                                           ; $272f: $c9
@@ -7263,7 +7263,7 @@ GS06_StatePhase_18_HighlightNumbersSecondRow_Animation::
     ld [rMessageScriptStreamPointerLow], a        ; $274f: $ea $2d $d8
     ld a, $6f                                     ; $2752: $3e $6f
     ld [rMessageScriptStreamPointerHigh], a       ; $2754: $ea $2e $d8
-    call GS06_ResetMessageSequenceState           ; $2757: $cd $3e $32
+    call GS06_ResetCellActionStepAndMarioMouthAnimationState; $2757: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $275a: $21 $35 $d6
     inc [hl]                                      ; $275d: $34
     ret                                           ; $275e: $c9
@@ -7286,7 +7286,7 @@ GS06_StatePhase_19_SolveSecondRow_Prepare::
     ld [rGS06_ScriptedInputSequenceTableLow], a   ; $277b: $ea $31 $d8
     ld a, $27                                     ; $277e: $3e $27
     ld [rGS06_ScriptedInputSequenceTableHigh], a  ; $2780: $ea $32 $d8
-    call GS06_ResetMessageSequenceState           ; $2783: $cd $3e $32
+    call GS06_ResetCellActionStepAndMarioMouthAnimationState; $2783: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $2786: $21 $35 $d6
     inc [hl]                                      ; $2789: $34
     ret                                           ; $278a: $c9
@@ -7309,7 +7309,7 @@ GS06_StatePhase_1a_SolveSecondRow_Animation::
     ld [rMessageScriptStreamPointerLow], a        ; $27b1: $ea $2d $d8
     ld a, $6f                                     ; $27b4: $3e $6f
     ld [rMessageScriptStreamPointerHigh], a       ; $27b6: $ea $2e $d8
-    call GS06_ResetMessageSequenceState           ; $27b9: $cd $3e $32
+    call GS06_ResetCellActionStepAndMarioMouthAnimationState; $27b9: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $27bc: $21 $35 $d6
     inc [hl]                                      ; $27bf: $34
     ret                                           ; $27c0: $c9
@@ -7331,7 +7331,7 @@ GS06_StatePhase_1b_Message::
     call AdvanceMessageScriptStream               ; $27da: $cd $6e $2b
     ret nz                                        ; $27dd: $c0
 
-    call GS06_ResetMessageSequenceState           ; $27de: $cd $3e $32
+    call GS06_ResetCellActionStepAndMarioMouthAnimationState; $27de: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $27e1: $21 $35 $d6
     inc [hl]                                      ; $27e4: $34
     ret                                           ; $27e5: $c9
@@ -7350,7 +7350,7 @@ GS06_StatePhase_1c_DecrementPuzzleTimer::
     ld [rMessageScriptStreamPointerLow], a        ; $27fa: $ea $2d $d8
     ld a, $70                                     ; $27fd: $3e $70
     ld [rMessageScriptStreamPointerHigh], a       ; $27ff: $ea $2e $d8
-    call GS06_ResetMessageSequenceState           ; $2802: $cd $3e $32
+    call GS06_ResetCellActionStepAndMarioMouthAnimationState; $2802: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $2805: $21 $35 $d6
     inc [hl]                                      ; $2808: $34
     ret                                           ; $2809: $c9
@@ -7373,7 +7373,7 @@ GS06_StatePhase_1d_GameOverMessage::
     ld [rMessageScriptStreamPointerLow], a        ; $282b: $ea $2d $d8
     ld a, $70                                     ; $282e: $3e $70
     ld [rMessageScriptStreamPointerHigh], a       ; $2830: $ea $2e $d8
-    call GS06_ResetMessageSequenceState           ; $2833: $cd $3e $32
+    call GS06_ResetCellActionStepAndMarioMouthAnimationState; $2833: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $2836: $21 $35 $d6
     inc [hl]                                      ; $2839: $34
     ret                                           ; $283a: $c9
@@ -7396,7 +7396,7 @@ GS06_StatePhase_1e_MakeMistake_Prepare::
     ld [rGS06_ScriptedInputSequenceTableLow], a   ; $2858: $ea $31 $d8
     ld a, $28                                     ; $285b: $3e $28
     ld [rGS06_ScriptedInputSequenceTableHigh], a  ; $285d: $ea $32 $d8
-    call GS06_ResetMessageSequenceState           ; $2860: $cd $3e $32
+    call GS06_ResetCellActionStepAndMarioMouthAnimationState; $2860: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $2863: $21 $35 $d6
     inc [hl]                                      ; $2866: $34
     ret                                           ; $2867: $c9
@@ -7413,7 +7413,7 @@ GS06_StatePhase_1f_MakeMistake_Animation::
     ld [rMessageScriptStreamPointerLow], a        ; $2877: $ea $2d $d8
     ld a, $71                                     ; $287a: $3e $71
     ld [rMessageScriptStreamPointerHigh], a       ; $287c: $ea $2e $d8
-    call GS06_ResetMessageSequenceState           ; $287f: $cd $3e $32
+    call GS06_ResetCellActionStepAndMarioMouthAnimationState; $287f: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $2882: $21 $35 $d6
     inc [hl]                                      ; $2885: $34
     ret                                           ; $2886: $c9
@@ -7443,7 +7443,7 @@ GS06_StatePhase_20_Message::
     ld [rMessageScriptStreamPointerLow], a        ; $28b2: $ea $2d $d8
     ld a, $71                                     ; $28b5: $3e $71
     ld [rMessageScriptStreamPointerHigh], a       ; $28b7: $ea $2e $d8
-    call GS06_ResetMessageSequenceState           ; $28ba: $cd $3e $32
+    call GS06_ResetCellActionStepAndMarioMouthAnimationState; $28ba: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $28bd: $21 $35 $d6
     inc [hl]                                      ; $28c0: $34
     ret                                           ; $28c1: $c9
@@ -7466,7 +7466,7 @@ GS06_StatePhase_21_MarkWithX_Prepare::
     ld [rGS06_ScriptedInputSequenceTableLow], a   ; $28df: $ea $31 $d8
     ld a, $28                                     ; $28e2: $3e $28
     ld [rGS06_ScriptedInputSequenceTableHigh], a  ; $28e4: $ea $32 $d8
-    call GS06_ResetMessageSequenceState           ; $28e7: $cd $3e $32
+    call GS06_ResetCellActionStepAndMarioMouthAnimationState; $28e7: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $28ea: $21 $35 $d6
     inc [hl]                                      ; $28ed: $34
     ret                                           ; $28ee: $c9
@@ -7490,7 +7490,7 @@ GS06_StatePhase_22_MarkWithX_Animation::
     ld [rMessageScriptStreamPointerLow], a        ; $2913: $ea $2d $d8
     ld a, $71                                     ; $2916: $3e $71
     ld [rMessageScriptStreamPointerHigh], a       ; $2918: $ea $2e $d8
-    call GS06_ResetMessageSequenceState           ; $291b: $cd $3e $32
+    call GS06_ResetCellActionStepAndMarioMouthAnimationState; $291b: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $291e: $21 $35 $d6
     inc [hl]                                      ; $2921: $34
     ret                                           ; $2922: $c9
@@ -7526,7 +7526,7 @@ GS06_StatePhase_23_WithHintPopUp_Prepare::
     ld [rGS06_ScriptedInputSequenceTableLow], a   ; $295c: $ea $31 $d8
     ld a, $29                                     ; $295f: $3e $29
     ld [rGS06_ScriptedInputSequenceTableHigh], a  ; $2961: $ea $32 $d8
-    call GS06_ResetMessageSequenceState           ; $2964: $cd $3e $32
+    call GS06_ResetCellActionStepAndMarioMouthAnimationState; $2964: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $2967: $21 $35 $d6
     inc [hl]                                      ; $296a: $34
     ret                                           ; $296b: $c9
@@ -7548,7 +7548,7 @@ GS06_StatePhase_24_WithHintPopUp_Demonstration::
     ld [rMessageScriptStreamPointerLow], a        ; $2988: $ea $2d $d8
     ld a, $72                                     ; $298b: $3e $72
     ld [rMessageScriptStreamPointerHigh], a       ; $298d: $ea $2e $d8
-    call GS06_ResetMessageSequenceState           ; $2990: $cd $3e $32
+    call GS06_ResetCellActionStepAndMarioMouthAnimationState; $2990: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $2993: $21 $35 $d6
     inc [hl]                                      ; $2996: $34
     rst RST_08                                    ; $2997: $cf
@@ -7597,7 +7597,7 @@ GS06_StatePhase_25_Message::
     ld [rMessageScriptStreamPointerLow], a        ; $29e4: $ea $2d $d8
     ld a, $73                                     ; $29e7: $3e $73
     ld [rMessageScriptStreamPointerHigh], a       ; $29e9: $ea $2e $d8
-    call GS06_ResetMessageSequenceState           ; $29ec: $cd $3e $32
+    call GS06_ResetCellActionStepAndMarioMouthAnimationState; $29ec: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $29ef: $21 $35 $d6
     inc [hl]                                      ; $29f2: $34
     ret                                           ; $29f3: $c9
@@ -7630,7 +7630,7 @@ GS06_StatePhase_26_StopTopHintCursor::
     ld [rMessageScriptStreamPointerLow], a        ; $2a23: $ea $2d $d8
     ld a, $73                                     ; $2a26: $3e $73
     ld [rMessageScriptStreamPointerHigh], a       ; $2a28: $ea $2e $d8
-    call GS06_ResetMessageSequenceState           ; $2a2b: $cd $3e $32
+    call GS06_ResetCellActionStepAndMarioMouthAnimationState; $2a2b: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $2a2e: $21 $35 $d6
     inc [hl]                                      ; $2a31: $34
     ret                                           ; $2a32: $c9
@@ -7666,7 +7666,7 @@ GS06_StatePhase_27_StopLeftHintCursor::
     ld [rMessageScriptStreamPointerLow], a        ; $2a6b: $ea $2d $d8
     ld a, $73                                     ; $2a6e: $3e $73
     ld [rMessageScriptStreamPointerHigh], a       ; $2a70: $ea $2e $d8
-    call GS06_ResetMessageSequenceState           ; $2a73: $cd $3e $32
+    call GS06_ResetCellActionStepAndMarioMouthAnimationState; $2a73: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $2a76: $21 $35 $d6
     inc [hl]                                      ; $2a79: $34
     ret                                           ; $2a7a: $c9
@@ -7689,7 +7689,7 @@ GS06_StatePhase_28_ApplyHintSolve::
     ld [rMessageScriptStreamPointerLow], a        ; $2a9c: $ea $2d $d8
     ld a, $74                                     ; $2a9f: $3e $74
     ld [rMessageScriptStreamPointerHigh], a       ; $2aa1: $ea $2e $d8
-    call GS06_ResetMessageSequenceState           ; $2aa4: $cd $3e $32
+    call GS06_ResetCellActionStepAndMarioMouthAnimationState; $2aa4: $cd $3e $32
     ld hl, rStatePhase_Current                    ; $2aa7: $21 $35 $d6
     inc [hl]                                      ; $2aaa: $34
     ret                                           ; $2aab: $c9
@@ -7729,9 +7729,9 @@ GS06_StatePhase_29_AdvanceOrRestart::
     ld [rPuzzlePostClearFlowFlag], a              ; $2ae7: $ea $05 $d8
     ld [rPuzzleTimerCompletionState], a           ; $2aea: $ea $06 $d8
     ld [rPuzzleActionRepeatGuard], a              ; $2aed: $ea $0f $d8
-    call GS06_ResetMessageSequenceState           ; $2af0: $cd $3e $32
+    call GS06_ResetCellActionStepAndMarioMouthAnimationState; $2af0: $cd $3e $32
     ld a, $02                                     ; $2af3: $3e $02
-    ld [rPuzzleTimerAdjustmentStep], a            ; $2af5: $ea $11 $d8
+    ld [rPuzzleTimerPenaltyStep], a               ; $2af5: $ea $11 $d8
     ld a, $02                                     ; $2af8: $3e $02
     ld [rHintCursorAnimationColumnThreshold], a   ; $2afa: $ea $12 $d8
     ld [rHintCursorAnimationRowThreshold], a      ; $2afd: $ea $13 $d8
@@ -8490,13 +8490,13 @@ AdvanceHintCursorAnimation::
     ret                                           ; $323d: $c9
 
 
-GS06_ResetMessageSequenceState::
+GS06_ResetCellActionStepAndMarioMouthAnimationState::
     xor a                                         ; $323e: $af
     ld [rGS06_MarioMouthAnimationPatternCursor], a; $323f: $ea $1b $d8
     ld [rGS06_MarioMouthAnimationCountdown], a    ; $3242: $ea $1a $d8
-    ld [rMessageStepDelayTimer], a                ; $3245: $ea $1f $d8
-    ld [rMessageStepSequenceCursor], a            ; $3248: $ea $20 $d8
-    ld [rMessageStepSequenceState], a             ; $324b: $ea $21 $d8
+    ld [rCellActionStepDelayTimer], a             ; $3245: $ea $1f $d8
+    ld [rCellActionStepSequenceCursor], a         ; $3248: $ea $20 $d8
+    ld [rCellActionStepSequenceState], a          ; $324b: $ea $21 $d8
     ret                                           ; $324e: $c9
 
 

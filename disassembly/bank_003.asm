@@ -79,7 +79,7 @@ TransitionFadePaletteTable_Unused::
     db $90, $80, $90
     db $e1, $d1, $e1
 
-TransitionFadePaletteTable_GS00_GS05_Start::
+TransitionFadePaletteTable_EasyPicross::
     db $00, $00, $00
     db $40, $40, $40
     db $90, $80, $90
@@ -97,19 +97,19 @@ TransitionFadePaletteTable_GS04_Start_2::
     db $90, $80, $40
     db $e1, $d1, $91
 
-TransitionFadePaletteTable_GS00_GS07_Start::
+TransitionFadePaletteTable_TimeTrial::
     db $00, $00, $00
     db $40, $40, $40
     db $90, $80, $90
     db $e1, $d1, $e1
 
-TransitionFadePaletteTable_GS00_TitleScreenInit_Start::
+TransitionFadePaletteTable_TitleScreen::
     db $00, $00, $00
     db $40, $40, $40
     db $90, $90, $90
     db $e4, $e4, $e4
 
-TransitionFadePaletteTable_GS00_Start_2::
+TransitionFadePaletteTable_PostSaveReturn::
     db $00, $00, $00
     db $40, $40, $40
     db $90, $80, $90
@@ -263,14 +263,15 @@ InitBottomPromptBlinkTimerAndFrameState::
     jp ReturnFromBankedJumpRestoreBank            ; $4e87: $c3 $ea $05
 
 
+TickBottomPromptBlinkSprite4E_A_START::
     ld a, [rStatePhaseTimer]                      ; $4e8a: $fa $3c $d6
     inc a                                         ; $4e8d: $3c
     cp $46                                        ; $4e8e: $fe $46
-    jr c, jr_003_4e93                             ; $4e90: $38 $01
+    jr c, .StoreBlinkTimerAndCheckDrawWindowSprite4E; $4e90: $38 $01
 
     xor a                                         ; $4e92: $af
 
-jr_003_4e93:
+.StoreBlinkTimerAndCheckDrawWindowSprite4E:
     ld [rStatePhaseTimer], a                      ; $4e93: $ea $3c $d6
     cp $30                                        ; $4e96: $fe $30
     jp nc, ReturnFromBankedJumpRestoreBank        ; $4e98: $d2 $ea $05
@@ -370,92 +371,12 @@ TickBottomPromptBlinkSprite4F_B_Exit_50_A_TRYAGAIN::
     jp ReturnFromBankedJumpRestoreBank            ; $4f36: $c3 $ea $05
 
 
-    or c                                          ; $4f39: $b1
-    nop                                           ; $4f3a: $00
-    ret                                           ; $4f3b: $c9
+SETCHARMAP messages
 
+ContinueSavedGameText::
+    db "Get ready to continue", $fe, $ff
 
-    nop                                           ; $4f3c: $00
-    ret c                                         ; $4f3d: $d8
-
-    nop                                           ; $4f3e: $00
-    rst RST_18                                    ; $4f3f: $df
-    nop                                           ; $4f40: $00
-    sub $00                                       ; $4f41: $d6 $00
-    ret                                           ; $4f43: $c9
-
-
-    nop                                           ; $4f44: $00
-    push bc                                       ; $4f45: $c5
-    nop                                           ; $4f46: $00
-    ret z                                         ; $4f47: $c8
-
-    nop                                           ; $4f48: $00
-    db $dd                                        ; $4f49: $dd
-    nop                                           ; $4f4a: $00
-    rst RST_18                                    ; $4f4b: $df
-    nop                                           ; $4f4c: $00
-    ret c                                         ; $4f4d: $d8
-
-    nop                                           ; $4f4e: $00
-    db $d3                                        ; $4f4f: $d3
-    nop                                           ; $4f50: $00
-    rst RST_18                                    ; $4f51: $df
-    nop                                           ; $4f52: $00
-    rst RST_00                                    ; $4f53: $c7
-    nop                                           ; $4f54: $00
-    db $d3                                        ; $4f55: $d3
-    nop                                           ; $4f56: $00
-    jp nc, rPuzzleGridWidth                       ; $4f57: $d2 $00 $d8
-
-    nop                                           ; $4f5a: $00
-    call $d200                                    ; $4f5b: $cd $00 $d2
-    nop                                           ; $4f5e: $00
-    reti                                          ; $4f5f: $d9
-
-
-    nop                                           ; $4f60: $00
-    ret                                           ; $4f61: $c9
-
-
-    nop                                           ; $4f62: $00
-    cp $ff                                        ; $4f63: $fe $ff
-    db $dd                                        ; $4f65: $dd
-    nop                                           ; $4f66: $00
-    db $d3                                        ; $4f67: $d3
-    nop                                           ; $4f68: $00
-    reti                                          ; $4f69: $d9
-
-
-    nop                                           ; $4f6a: $00
-    sub $00                                       ; $4f6b: $d6 $00
-    rst RST_18                                    ; $4f6d: $df
-    nop                                           ; $4f6e: $00
-    rst $10                                       ; $4f6f: $d7
-    nop                                           ; $4f70: $00
-    push bc                                       ; $4f71: $c5
-    nop                                           ; $4f72: $00
-    jp c, $c900                                   ; $4f73: $da $00 $c9
-
-    nop                                           ; $4f76: $00
-    ret z                                         ; $4f77: $c8
-
-    nop                                           ; $4f78: $00
-    rst RST_18                                    ; $4f79: $df
-    nop                                           ; $4f7a: $00
-    rlc b                                         ; $4f7b: $cb $00
-    push bc                                       ; $4f7d: $c5
-    nop                                           ; $4f7e: $00
-    pop de                                        ; $4f7f: $d1
-    nop                                           ; $4f80: $00
-    ret                                           ; $4f81: $c9
-
-
-    nop                                           ; $4f82: $00
-    db $ec                                        ; $4f83: $ec
-    nop                                           ; $4f84: $00
-    rst $38                                       ; $4f85: $ff
-    rst $38                                       ; $4f86: $ff
+    db "your saved game.", $ff, $ff
 
 GameState_00_TitleScreen_PhaseDispatcher::
     ld a, [rStatePhase_Current]                   ; $4f87: $fa $35 $d6
@@ -521,7 +442,7 @@ GS00_StatePhase_00_TitleScreenInit::
     ld bc, $0400                                  ; $4ffb: $01 $00 $04
     call BankedTileCopy                           ; $4ffe: $cd $e4 $04
     xor a                                         ; $5001: $af
-    ld [$a066], a                                 ; $5002: $ea $66 $a0
+    ld [rSaveSlot1PuzzleActionRuleIndex_Unsure], a; $5002: $ea $66 $a0
     ld [rPuzzleDataIndexLow], a                   ; $5005: $ea $07 $d8
     ld [rPuzzleDataIndexHigh], a                  ; $5008: $ea $08 $d8
     ld [rMarioBlinkAnimationSequenceCursor], a    ; $500b: $ea $18 $d8
@@ -541,7 +462,7 @@ GS00_StatePhase_00_TitleScreenInit::
     call EnableLCDFromShadow                      ; $5031: $cd $a2 $04
     call EnsureSGBMaskFreezeDisabled              ; $5034: $cd $a5 $1f
     ld b, $03                                     ; $5037: $06 $03
-    ld hl, TransitionFadePaletteTable_GS00_TitleScreenInit_Start; $5039: $21 $18 $47
+    ld hl, TransitionFadePaletteTable_TitleScreen ; $5039: $21 $18 $47
     ld c, $10                                     ; $503c: $0e $10
     ld de, $00b4                                  ; $503e: $11 $b4 $00
     call PlayScreenTransitionFadeIn               ; $5041: $cd $0d $04
@@ -720,7 +641,7 @@ GS00_SP02_ContinueAfterBorderTransfer::
     call PlayScreenTransitionFadeOut              ; $519e: $cd $4e $04
     ld bc, $0028                                  ; $51a1: $01 $28 $00
     call BusyWaitDelayByBC                        ; $51a4: $cd $03 $06
-    jr PostFadeOutFlowRouter                      ; $51a7: $18 $0d
+    jr GS00_SP02_PostFadeOutFlowRouter            ; $51a7: $18 $0d
 
 GS00_SP02_NonSGBFadeOut::
     ld b, $03                                     ; $51a9: $06 $03
@@ -729,7 +650,7 @@ GS00_SP02_NonSGBFadeOut::
     ld de, $00c3                                  ; $51b0: $11 $c3 $00
     call PlayScreenTransitionFadeOut              ; $51b3: $cd $4e $04
 
-PostFadeOutFlowRouter::
+GS00_SP02_PostFadeOutFlowRouter::
     call DisableLCDAtVBlank                       ; $51b6: $cd $83 $04
     ld a, [rContinueSavedGameFlowMode_Unsure]     ; $51b9: $fa $a2 $ac
     and a                                         ; $51bc: $a7
@@ -773,7 +694,7 @@ PostFadeOutFlowRouter::
     ret                                           ; $51f2: $c9
 
 
-GS00_StatePhase_03_ContinueSavedGameScreenInit::
+GS00_StatePhase_03_ContinueSavedPuzzlePromptAndRoute::
     ld a, $43                                     ; $51f3: $3e $43
     ld [rLCDCShadow], a                           ; $51f5: $ea $2e $c3
     xor a                                         ; $51f8: $af
@@ -805,16 +726,16 @@ GS00_StatePhase_03_ContinueSavedGameScreenInit::
     ld [rTilemapToTileDataAddressLookupTableHigh], a; $523f: $ea $64 $cd
     ld a, [rContinueSavedGameFlowMode_Unsure]     ; $5242: $fa $a2 $ac
     cp $02                                        ; $5245: $fe $02
-    jr nz, jr_003_5253                            ; $5247: $20 $0a
+    jr nz, .CheckContinueFlowModeTimeTrialForPromptTilemap; $5247: $20 $0a
 
     ld b, $01                                     ; $5249: $06 $01
     ld hl, $4ae4                                  ; $524b: $21 $e4 $4a
     call SwitchBankToBAndJumpToHL                 ; $524e: $cd $de $05
-    jr jr_003_5273                                ; $5251: $18 $20
+    jr .InitializeContinueSavedPuzzlePromptUI     ; $5251: $18 $20
 
-jr_003_5253:
+.CheckContinueFlowModeTimeTrialForPromptTilemap:
     cp $03                                        ; $5253: $fe $03
-    jr nz, jr_003_5273                            ; $5255: $20 $1c
+    jr nz, .InitializeContinueSavedPuzzlePromptUI ; $5255: $20 $1c
 
     ld a, $0b                                     ; $5257: $3e $0b
     ld hl, SGBPacket_MLT_REQ_DisableMultiplayer   ; $5259: $21 $00 $40
@@ -827,13 +748,13 @@ jr_003_5253:
     ld bc, $0400                                  ; $526d: $01 $00 $04
     call BankedTileCopy                           ; $5270: $cd $e4 $04
 
-jr_003_5273:
+.InitializeContinueSavedPuzzlePromptUI:
     call ClearShadowOAMBuffer                     ; $5273: $cd $b6 $05
     ld b, $03                                     ; $5276: $06 $03
     ld hl, InitBottomPromptBlinkTimerAndFrameState; $5278: $21 $80 $4e
     call SwitchBankToBAndJumpToHL                 ; $527b: $cd $de $05
     ld b, $03                                     ; $527e: $06 $03
-    ld hl, $4e8a                                  ; $5280: $21 $8a $4e
+    ld hl, TickBottomPromptBlinkSprite4E_A_START  ; $5280: $21 $8a $4e
     call SwitchBankToBAndJumpToHL                 ; $5283: $cd $de $05
     ld a, $10                                     ; $5286: $3e $10
     ld [rMessageScriptStreamResetEntryLow], a     ; $5288: $ea $43 $d8
@@ -849,45 +770,45 @@ jr_003_5273:
     ld [rMessageScriptStreamPointerLow], a        ; $52a2: $ea $2d $d8
     ld a, $4f                                     ; $52a5: $3e $4f
     ld [rMessageScriptStreamPointerHigh], a       ; $52a7: $ea $2e $d8
-    call Call_003_541f                            ; $52aa: $cd $1f $54
+    call GS00_RunMessageScriptUntilEnd_NoBankSwitch; $52aa: $cd $1f $54
     call EnableLCDFromShadow                      ; $52ad: $cd $a2 $04
     call EnsureSGBMaskFreezeDisabled              ; $52b0: $cd $a5 $1f
     ld a, [rContinueSavedGameFlowMode_Unsure]     ; $52b3: $fa $a2 $ac
     cp $02                                        ; $52b6: $fe $02
-    jr nz, jr_003_52c4                            ; $52b8: $20 $0a
+    jr nz, .CheckContinueFlowModeTimeTrialForPromptFadeIn; $52b8: $20 $0a
 
     ld b, $01                                     ; $52ba: $06 $01
     ld hl, $4bae                                  ; $52bc: $21 $ae $4b
     call SwitchBankToBAndJumpToHL                 ; $52bf: $cd $de $05
-    jr jr_003_52e4                                ; $52c2: $18 $20
+    jr .WaitForContinuePromptConfirmInput         ; $52c2: $18 $20
 
-jr_003_52c4:
+.CheckContinueFlowModeTimeTrialForPromptFadeIn:
     cp $03                                        ; $52c4: $fe $03
-    jr nz, jr_003_52d7                            ; $52c6: $20 $0f
+    jr nz, .ApplyContinuePromptDefaultFadeIn      ; $52c6: $20 $0f
 
     ld b, $03                                     ; $52c8: $06 $03
-    ld hl, TransitionFadePaletteTable_GS00_GS07_Start; $52ca: $21 $0c $47
+    ld hl, TransitionFadePaletteTable_TimeTrial   ; $52ca: $21 $0c $47
     ld c, $0f                                     ; $52cd: $0e $0f
     ld de, $00a4                                  ; $52cf: $11 $a4 $00
     call PlayScreenTransitionFadeIn               ; $52d2: $cd $0d $04
-    jr jr_003_52e4                                ; $52d5: $18 $0d
+    jr .WaitForContinuePromptConfirmInput         ; $52d5: $18 $0d
 
-jr_003_52d7:
+.ApplyContinuePromptDefaultFadeIn:
     ld b, $03                                     ; $52d7: $06 $03
-    ld hl, TransitionFadePaletteTable_GS00_GS05_Start; $52d9: $21 $e8 $46
+    ld hl, TransitionFadePaletteTable_EasyPicross ; $52d9: $21 $e8 $46
     ld c, $0b                                     ; $52dc: $0e $0b
     ld de, $0074                                  ; $52de: $11 $74 $00
     call PlayScreenTransitionFadeIn               ; $52e1: $cd $0d $04
 
-jr_003_52e4:
+.WaitForContinuePromptConfirmInput:
     call ClearShadowOAMBufferFromCursor           ; $52e4: $cd $c5 $05
     rst RST_08                                    ; $52e7: $cf
     ld b, $03                                     ; $52e8: $06 $03
-    ld hl, $4e8a                                  ; $52ea: $21 $8a $4e
+    ld hl, TickBottomPromptBlinkSprite4E_A_START  ; $52ea: $21 $8a $4e
     call SwitchBankToBAndJumpToHL                 ; $52ed: $cd $de $05
     ld a, [rInputButtonsPressed]                  ; $52f0: $fa $1e $c3
     and $01                                       ; $52f3: $e6 $01
-    jr z, jr_003_52e4                             ; $52f5: $28 $ed
+    jr z, .WaitForContinuePromptConfirmInput      ; $52f5: $28 $ed
 
     ld c, $03                                     ; $52f7: $0e $03
     ld a, $02                                     ; $52f9: $3e $02
@@ -905,55 +826,55 @@ jr_003_52e4:
     call CallSoundEffectDispatcher                ; $5317: $cd $b6 $03
     ld a, [rContinueSavedGameFlowMode_Unsure]     ; $531a: $fa $a2 $ac
     cp $02                                        ; $531d: $fe $02
-    jr nz, jr_003_532b                            ; $531f: $20 $0a
+    jr nz, .CheckContinueFlowModeTimeTrialForPromptFadeOut; $531f: $20 $0a
 
     ld b, $01                                     ; $5321: $06 $01
     ld hl, $4bdc                                  ; $5323: $21 $dc $4b
     call SwitchBankToBAndJumpToHL                 ; $5326: $cd $de $05
-    jr jr_003_534b                                ; $5329: $18 $20
+    jr .FinalizeContinuePromptAndRouteToSavedPuzzleState; $5329: $18 $20
 
-jr_003_532b:
+.CheckContinueFlowModeTimeTrialForPromptFadeOut:
     cp $03                                        ; $532b: $fe $03
-    jr nz, jr_003_533e                            ; $532d: $20 $0f
+    jr nz, .ApplyContinuePromptDefaultFadeOut     ; $532d: $20 $0f
 
     ld b, $03                                     ; $532f: $06 $03
     ld hl, $4717                                  ; $5331: $21 $17 $47
     ld c, $0f                                     ; $5334: $0e $0f
     ld de, $00b3                                  ; $5336: $11 $b3 $00
     call PlayScreenTransitionFadeOut              ; $5339: $cd $4e $04
-    jr jr_003_534b                                ; $533c: $18 $0d
+    jr .FinalizeContinuePromptAndRouteToSavedPuzzleState; $533c: $18 $0d
 
-jr_003_533e:
+.ApplyContinuePromptDefaultFadeOut:
     ld b, $03                                     ; $533e: $06 $03
     ld hl, $46f3                                  ; $5340: $21 $f3 $46
     ld c, $0b                                     ; $5343: $0e $0b
     ld de, $0083                                  ; $5345: $11 $83 $00
     call PlayScreenTransitionFadeOut              ; $5348: $cd $4e $04
 
-jr_003_534b:
+.FinalizeContinuePromptAndRouteToSavedPuzzleState:
     call DisableLCDAtVBlank                       ; $534b: $cd $83 $04
     ld a, [rContinueSavedGameFlowMode_Unsure]     ; $534e: $fa $a2 $ac
     dec a                                         ; $5351: $3d
     ld c, a                                       ; $5352: $4f
     ld b, $00                                     ; $5353: $06 $00
-    ld hl, GS00_SP03_ContinueSavedGameScreen_StatePhaseLookupTable; $5355: $21 $66 $53
+    ld hl, GS00_SP03_ContinueSavedPuzzleRoute_StatePhaseLookupTable; $5355: $21 $66 $53
     add hl, bc                                    ; $5358: $09
     ld a, [hl]                                    ; $5359: $7e
     ld [rStatePhase_Current], a                   ; $535a: $ea $35 $d6
-    ld hl, GS00_SP03_ContinueSavedGameScreen_GameStateLookupTable; $535d: $21 $69 $53
+    ld hl, GS00_SP03_ContinueSavedPuzzleRoute_GameStateLookupTable; $535d: $21 $69 $53
     add hl, bc                                    ; $5360: $09
     ld a, [hl]                                    ; $5361: $7e
     ld [rGameState_Current], a                    ; $5362: $ea $34 $d6
     ret                                           ; $5365: $c9
 
 
-GS00_SP03_ContinueSavedGameScreen_StatePhaseLookupTable::
+GS00_SP03_ContinueSavedPuzzleRoute_StatePhaseLookupTable::
     db $0b, $0b, $09
 
-GS00_SP03_ContinueSavedGameScreen_GameStateLookupTable::
+GS00_SP03_ContinueSavedPuzzleRoute_GameStateLookupTable::
     db $08, $0a, $09
 
-GS00_StatePhase_04_ContinueSavedGameScreenIdle::
+GS00_StatePhase_04_PostSaveReturnToTitlePrompt::
     ld a, $43                                     ; $536c: $3e $43
     ld [rLCDCShadow], a                           ; $536e: $ea $2e $c3
     xor a                                         ; $5371: $af
@@ -988,12 +909,12 @@ GS00_StatePhase_04_ContinueSavedGameScreenIdle::
     call SwitchBankToBAndJumpToHL                 ; $53c1: $cd $de $05
     call EnableLCDFromShadow                      ; $53c4: $cd $a2 $04
     ld b, $03                                     ; $53c7: $06 $03
-    ld hl, TransitionFadePaletteTable_GS00_Start_2; $53c9: $21 $24 $47
+    ld hl, TransitionFadePaletteTable_PostSaveReturn; $53c9: $21 $24 $47
     ld c, $11                                     ; $53cc: $0e $11
     ld de, $00c4                                  ; $53ce: $11 $c4 $00
     call PlayScreenTransitionFadeIn               ; $53d1: $cd $0d $04
 
-jr_003_53d4:
+.WaitForPostSaveReturnPromptConfirmInput:
     call ClearShadowOAMBufferFromCursor           ; $53d4: $cd $c5 $05
     rst RST_08                                    ; $53d7: $cf
     ld b, $03                                     ; $53d8: $06 $03
@@ -1001,7 +922,7 @@ jr_003_53d4:
     call SwitchBankToBAndJumpToHL                 ; $53dd: $cd $de $05
     ld a, [rInputButtonsPressed]                  ; $53e0: $fa $1e $c3
     and $01                                       ; $53e3: $e6 $01
-    jr z, jr_003_53d4                             ; $53e5: $28 $ed
+    jr z, .WaitForPostSaveReturnPromptConfirmInput; $53e5: $28 $ed
 
     ld c, $03                                     ; $53e7: $0e $03
     ld a, $02                                     ; $53e9: $3e $02
@@ -1028,10 +949,9 @@ jr_003_53d4:
     ret                                           ; $541e: $c9
 
 
-Call_003_541f:
-jr_003_541f:
+GS00_RunMessageScriptUntilEnd_NoBankSwitch::
     call AdvanceMessageScriptStreamHelper_NoBankSwitch; $541f: $cd $1f $2c
-    jr nz, jr_003_541f                            ; $5422: $20 $fb
+    jr nz, GS00_RunMessageScriptUntilEnd_NoBankSwitch; $5422: $20 $fb
 
     ret                                           ; $5424: $c9
 
@@ -1097,9 +1017,10 @@ GS00_MarioBlinkFrameDelayAndSpriteIdTable::
     db $03, $01
     db $00
 
+TODO_QueueTODOCommandStream::
     ld c, a                                       ; $5482: $4f
     ld b, $00                                     ; $5483: $06 $00
-    ld hl, $5492                                  ; $5485: $21 $92 $54
+    ld hl, TODO_CommandOffsetTable                ; $5485: $21 $92 $54
     add hl, bc                                    ; $5488: $09
     ld c, [hl]                                    ; $5489: $4e
     add hl, bc                                    ; $548a: $09
@@ -1109,149 +1030,50 @@ GS00_MarioBlinkFrameDelayAndSpriteIdTable::
     jp QueueCommandStreamAndProcessIfLCDOff       ; $548f: $c3 $38 $07
 
 
-    inc bc                                        ; $5492: $03
-    dec [hl]                                      ; $5493: $35
-    ld h, a                                       ; $5494: $67
-    sbc b                                         ; $5495: $98
-    add hl, hl                                    ; $5496: $29
-    inc b                                         ; $5497: $04
-    and b                                         ; $5498: $a0
-    and c                                         ; $5499: $a1
-    and d                                         ; $549a: $a2
-    and e                                         ; $549b: $a3
-    sbc b                                         ; $549c: $98
-    ld c, b                                       ; $549d: $48
-    ld b, $a4                                     ; $549e: $06 $a4
-    and l                                         ; $54a0: $a5
-    and [hl]                                      ; $54a1: $a6
-    and a                                         ; $54a2: $a7
-    xor b                                         ; $54a3: $a8
-    xor c                                         ; $54a4: $a9
-    sbc b                                         ; $54a5: $98
-    ld h, a                                       ; $54a6: $67
-    rlca                                          ; $54a7: $07
-    xor d                                         ; $54a8: $aa
-    xor e                                         ; $54a9: $ab
-    xor h                                         ; $54aa: $ac
-    xor l                                         ; $54ab: $ad
-    xor [hl]                                      ; $54ac: $ae
-    xor a                                         ; $54ad: $af
-    or b                                          ; $54ae: $b0
-    sbc b                                         ; $54af: $98
-    add a                                         ; $54b0: $87
-    rlca                                          ; $54b1: $07
-    or c                                          ; $54b2: $b1
-    or d                                          ; $54b3: $b2
-    or e                                          ; $54b4: $b3
-    or h                                          ; $54b5: $b4
-    or l                                          ; $54b6: $b5
-    or [hl]                                       ; $54b7: $b6
-    or a                                          ; $54b8: $b7
-    sbc b                                         ; $54b9: $98
-    and a                                         ; $54ba: $a7
-    dec b                                         ; $54bb: $05
-    cp b                                          ; $54bc: $b8
-    cp c                                          ; $54bd: $b9
-    cp d                                          ; $54be: $ba
-    cp e                                          ; $54bf: $bb
-    cp h                                          ; $54c0: $bc
-    sbc b                                         ; $54c1: $98
-    ret z                                         ; $54c2: $c8
+TODO_CommandOffsetTable::
+    db $03, $35, $67
 
-    inc bc                                        ; $54c3: $03
-    cp l                                          ; $54c4: $bd
-    cp [hl]                                       ; $54c5: $be
-    cp a                                          ; $54c6: $bf
-    nop                                           ; $54c7: $00
-    sbc b                                         ; $54c8: $98
-    add hl, hl                                    ; $54c9: $29
-    inc b                                         ; $54ca: $04
-    ret nz                                        ; $54cb: $c0
+TODO_1_CommandScript::
+    db $98, $29, $04, $a0, $a1, $a2, $a3
 
-    pop bc                                        ; $54cc: $c1
-    jp nz, $98c3                                  ; $54cd: $c2 $c3 $98
+    db $98, $48, $06, $a4, $a5, $a6, $a7, $a8, $a9
 
-    ld c, b                                       ; $54d0: $48
-    ld b, $c4                                     ; $54d1: $06 $c4
-    push bc                                       ; $54d3: $c5
-    add $c7                                       ; $54d4: $c6 $c7
-    ret z                                         ; $54d6: $c8
+    db $98, $67, $07, $aa, $ab, $ac, $ad, $ae, $af, $b0
 
-    ret                                           ; $54d7: $c9
+    db $98, $87, $07, $b1, $b2, $b3, $b4, $b5, $b6, $b7
 
+    db $98, $a7, $05, $b8, $b9, $ba, $bb, $bc
 
-    sbc b                                         ; $54d8: $98
-    ld h, a                                       ; $54d9: $67
-    rlca                                          ; $54da: $07
-    jp z, $cccb                                   ; $54db: $ca $cb $cc
+    db $98, $c8, $03, $bd, $be, $bf
+    db $00
 
-    call $cfce                                    ; $54de: $cd $ce $cf
-    ret nc                                        ; $54e1: $d0
+TODO_2_CommandScript::
+    db $98, $29, $04, $c0, $c1, $c2, $c3
 
-    sbc b                                         ; $54e2: $98
-    add a                                         ; $54e3: $87
-    rlca                                          ; $54e4: $07
-    pop de                                        ; $54e5: $d1
-    jp nc, $d4d3                                  ; $54e6: $d2 $d3 $d4
+    db $98, $48, $06, $c4, $c5, $c6, $c7, $c8, $c9
 
-    push de                                       ; $54e9: $d5
-    sub $d7                                       ; $54ea: $d6 $d7
-    sbc b                                         ; $54ec: $98
-    and a                                         ; $54ed: $a7
-    dec b                                         ; $54ee: $05
-    ret c                                         ; $54ef: $d8
+    db $98, $67, $07, $ca, $cb, $cc, $cd, $ce, $cf, $d0
 
-    reti                                          ; $54f0: $d9
+    db $98, $87, $07, $d1, $d2, $d3, $d4, $d5, $d6, $d7
 
+    db $98, $a7, $05, $d8, $d9, $da, $db, $dc
 
-    jp c, $dcdb                                   ; $54f1: $da $db $dc
+    db $98, $c8, $03, $dd, $de, $df
+    db $00
 
-    sbc b                                         ; $54f4: $98
-    ret z                                         ; $54f5: $c8
+TODO_3_CommandScript::
+    db $98, $29, $04, $e0, $e1, $e2, $e3
 
-    inc bc                                        ; $54f6: $03
-    db $dd                                        ; $54f7: $dd
-    sbc $df                                       ; $54f8: $de $df
-    nop                                           ; $54fa: $00
-    sbc b                                         ; $54fb: $98
-    add hl, hl                                    ; $54fc: $29
-    inc b                                         ; $54fd: $04
-    ldh [$ffe1], a                                ; $54fe: $e0 $e1
-    ldh [c], a                                    ; $5500: $e2
-    db $e3                                        ; $5501: $e3
-    sbc b                                         ; $5502: $98
-    ld c, b                                       ; $5503: $48
-    ld b, $e4                                     ; $5504: $06 $e4
-    push hl                                       ; $5506: $e5
-    and $e7                                       ; $5507: $e6 $e7
-    add sp, -$17                                  ; $5509: $e8 $e9
-    sbc b                                         ; $550b: $98
-    ld h, a                                       ; $550c: $67
-    rlca                                          ; $550d: $07
-    ld [$eceb], a                                 ; $550e: $ea $eb $ec
-    db $ed                                        ; $5511: $ed
-    xor $ef                                       ; $5512: $ee $ef
-    ldh a, [$ff98]                                ; $5514: $f0 $98
-    add a                                         ; $5516: $87
-    rlca                                          ; $5517: $07
-    pop af                                        ; $5518: $f1
-    ldh a, [c]                                    ; $5519: $f2
-    di                                            ; $551a: $f3
-    db $f4                                        ; $551b: $f4
-    push af                                       ; $551c: $f5
-    or $d7                                        ; $551d: $f6 $d7
-    sbc b                                         ; $551f: $98
-    and a                                         ; $5520: $a7
-    dec b                                         ; $5521: $05
-    ld hl, sp-$07                                 ; $5522: $f8 $f9
-    ld a, [$d7fb]                                 ; $5524: $fa $fb $d7
-    sbc b                                         ; $5527: $98
-    ret z                                         ; $5528: $c8
+    db $98, $48, $06, $e4, $e5, $e6, $e7, $e8, $e9
 
-    inc bc                                        ; $5529: $03
-    db $fd                                        ; $552a: $fd
-    cp $d7                                        ; $552b: $fe $d7
-    nop                                           ; $552d: $00
+    db $98, $67, $07, $ea, $eb, $ec, $ed, $ee, $ef, $f0
+
+    db $98, $87, $07, $f1, $f2, $f3, $f4, $f5, $f6, $d7
+
+    db $98, $a7, $05, $f8, $f9, $fa, $fb, $d7
+
+    db $98, $c8, $03, $fd, $fe, $d7
+    db $00
 
 Bank2_PuzzleDataPointerTable_Puzzle_HT00::
     db $b0, $52
@@ -2795,8 +2617,6 @@ PuzzleNamePointerTable_Puzzle_TT3E::
 PuzzleNamePointerTable_Puzzle_TT3F::
     db $4f, $6c
 
-SETCHARMAP messages
-
 Puzzle_EP08_note_Name::
     db $4d, $60, "note", $ff, $ff, $00
 
@@ -4055,17 +3875,17 @@ OAMSpriteData_Event06_PositionCursorLeft_Frame2::
     db $10, $38, $7c, $10
     db $ff
 
-OAMSpriteData_Event07::
+OAMSpriteData_Event07_MistakePenalty_Minus2::
     db $10, $08, $5e, $00
     db $10, $10, $6e, $00
     db $ff
 
-OAMSpriteData_Event08::
+OAMSpriteData_Event08_MistakePenalty_Minus4::
     db $10, $08, $5e, $00
     db $10, $10, $5f, $00
     db $ff
 
-OAMSpriteData_Event09::
+OAMSpriteData_Event09_MistakePenalty_Minus8::
     db $10, $08, $5e, $00
     db $10, $10, $6f, $00
     db $ff
@@ -4074,28 +3894,28 @@ OAMSpriteData_Event0a_MarioSweat::
     db $10, $08, $74, $10
     db $ff
 
-OAMSpriteData_Event0b::
+OAMSpriteData_Event0b_PuzzleCursor_ChiselIdle_Frame1::
     db $07, $08, $50, $10
     db $07, $10, $51, $10
     db $0f, $08, $60, $10
     db $0f, $10, $61, $10
     db $ff
 
-OAMSpriteData_Event0c::
+OAMSpriteData_Event0c_PuzzleCursor_ChiselIdle_Frame2::
     db $07, $08, $50, $10
     db $07, $10, $51, $10
     db $0f, $10, $61, $10
     db $0f, $08, $52, $10
     db $ff
 
-OAMSpriteData_Event0d::
+OAMSpriteData_Event0d_PuzzleCursor_ChiselIdle_Frame3::
     db $07, $08, $50, $10
     db $07, $10, $51, $10
     db $0f, $10, $61, $10
     db $0f, $08, $62, $10
     db $ff
 
-OAMSpriteData_Event0e::
+OAMSpriteData_Event0e_PuzzleCursor_HammerSwing_Frame1::
     db $07, $08, $53, $10
     db $0f, $08, $63, $10
     db $04, $1b, $58, $10
@@ -4106,7 +3926,7 @@ OAMSpriteData_Event0e::
     db $0c, $23, $69, $10
     db $ff
 
-OAMSpriteData_Event0f::
+OAMSpriteData_Event0f_PuzzleCursor_HammerSwing_Frame3::
     db $0f, $08, $63, $10
     db $04, $0d, $5a, $10
     db $04, $15, $5b, $10
@@ -4114,7 +3934,7 @@ OAMSpriteData_Event0f::
     db $0c, $0d, $6a, $10
     db $ff
 
-OAMSpriteData_Event10::
+OAMSpriteData_Event10_PuzzleCursor_HammerSwing_Frame5::
     db $12, $0d, $66, $10
     db $09, $06, $55, $10
     db $11, $06, $65, $10
@@ -4128,7 +3948,7 @@ OAMSpriteData_Event10::
     db $0c, $23, $69, $10
     db $ff
 
-OAMSpriteData_Event11::
+OAMSpriteData_Event11_PuzzleCursor_HammerSwing_Frame6::
     db $09, $fe, $55, $10
     db $17, $ff, $65, $10
     db $17, $0f, $66, $10
@@ -4146,7 +3966,7 @@ OAMSpriteData_Event11::
     db $0c, $23, $69, $10
     db $ff
 
-OAMSpriteData_Event12::
+OAMSpriteData_Event12_PuzzleCursor_HammerSwing_Frame7::
     db $0b, $fa, $55, $10
     db $1b, $07, $67, $10
     db $11, $fd, $67, $10
@@ -4164,7 +3984,7 @@ OAMSpriteData_Event12::
     db $0c, $23, $69, $10
     db $ff
 
-OAMSpriteData_Event13::
+OAMSpriteData_Event13_PuzzleCursor_HammerSwing_Frame8::
     db $22, $03, $67, $10
     db $16, $fd, $67, $10
     db $16, $11, $67, $10
@@ -4182,7 +4002,7 @@ OAMSpriteData_Event13::
     db $0c, $23, $69, $10
     db $ff
 
-OAMSpriteData_Event14::
+OAMSpriteData_Event14_PuzzleCursor_HammerSwing_Frame9::
     db $27, $09, $67, $10
     db $1b, $f5, $67, $10
     db $1b, $0f, $67, $10
@@ -4200,7 +4020,7 @@ OAMSpriteData_Event14::
     db $0c, $23, $69, $10
     db $ff
 
-OAMSpriteData_Event15::
+OAMSpriteData_Event15_PuzzleCursor_HammerSwing_Frame10::
     db $2e, $05, $67, $10
     db $22, $fb, $67, $10
     db $22, $13, $67, $10
@@ -4218,7 +4038,7 @@ OAMSpriteData_Event15::
     db $0c, $23, $69, $10
     db $ff
 
-OAMSpriteData_Event16::
+OAMSpriteData_Event16_PuzzleCursor_HammerSwing_Frame11::
     db $37, $05, $67, $10
     db $2b, $03, $67, $10
     db $2b, $17, $67, $10
@@ -4235,7 +4055,7 @@ OAMSpriteData_Event16::
     db $0c, $23, $69, $10
     db $ff
 
-OAMSpriteData_Event17::
+OAMSpriteData_Event17_PuzzleCursor_HammerSwing_Frame12::
     db $36, $ff, $67, $10
     db $36, $0f, $67, $10
     db $3f, $fb, $67, $10
@@ -4251,7 +4071,7 @@ OAMSpriteData_Event17::
     db $0c, $23, $69, $10
     db $ff
 
-OAMSpriteData_Event18::
+OAMSpriteData_Event18_PuzzleCursor_HammerSwing_Frame13::
     db $43, $17, $67, $10
     db $4c, $f9, $67, $10
     db $4c, $13, $67, $10
@@ -4266,7 +4086,7 @@ OAMSpriteData_Event18::
     db $0c, $23, $69, $10
     db $ff
 
-OAMSpriteData_Event19::
+OAMSpriteData_Event19_PuzzleCursor_HammerSwing_Frame14::
     db $52, $fb, $67, $10
     db $52, $0f, $67, $10
     db $5b, $f7, $67, $10
@@ -4281,7 +4101,7 @@ OAMSpriteData_Event19::
     db $0c, $23, $69, $10
     db $ff
 
-OAMSpriteData_Event1a::
+OAMSpriteData_Event1a_PuzzleCursor_HammerSwing_Frame15::
     db $6f, $09, $67, $10
     db $6c, $fb, $67, $10
     db $6c, $17, $67, $10
@@ -4295,7 +4115,7 @@ OAMSpriteData_Event1a::
     db $0c, $23, $69, $10
     db $ff
 
-OAMSpriteData_Event1b::
+OAMSpriteData_Event1b_PuzzleCursor_HammerSwing_Frame16::
     db $82, $07, $67, $10
     db $7f, $f7, $67, $10
     db $7f, $17, $67, $10
@@ -4309,7 +4129,7 @@ OAMSpriteData_Event1b::
     db $0c, $23, $69, $10
     db $ff
 
-OAMSpriteData_Event1c::
+OAMSpriteData_Event1c_PuzzleCursor_MarkX_Frame1::
     db $0e, $04, $67, $10
     db $15, $0b, $67, $30
     db $08, $09, $53, $10
@@ -4318,7 +4138,7 @@ OAMSpriteData_Event1c::
     db $10, $11, $64, $10
     db $ff
 
-OAMSpriteData_Event1d::
+OAMSpriteData_Event1d_PuzzleCursor_MarkX_Frame2::
     db $0f, $02, $67, $30
     db $13, $07, $67, $10
     db $06, $07, $53, $10
@@ -4327,14 +4147,14 @@ OAMSpriteData_Event1d::
     db $0e, $0f, $64, $10
     db $ff
 
-OAMSpriteData_Event1e::
+OAMSpriteData_Event1e_PuzzleCursor_ChisleGrow::
     db $07, $08, $53, $10
     db $07, $10, $54, $10
     db $0f, $08, $63, $10
     db $0f, $10, $64, $10
     db $ff
 
-OAMSpriteData_Event1f::
+OAMSpriteData_Event1f_PuzzleCursor_HammerSwing_Frame4::
     db $11, $0e, $64, $10
     db $09, $06, $53, $10
     db $11, $06, $63, $10
@@ -4345,21 +4165,21 @@ OAMSpriteData_Event1f::
     db $0c, $23, $69, $10
     db $ff
 
-OAMSpriteData_Event20::
+OAMSpriteData_Event20_PuzzleCursor_HandSwipe_Frame1::
     db $0e, $06, $3c, $10
     db $0e, $0e, $3d, $10
     db $16, $06, $4c, $10
     db $16, $0e, $4d, $10
     db $ff
 
-OAMSpriteData_Event21::
+OAMSpriteData_Event21_PuzzleCursor_HandSwipe_Frame2::
     db $0b, $09, $3e, $10
     db $0b, $11, $3f, $10
     db $13, $09, $4e, $10
     db $13, $11, $4f, $10
     db $ff
 
-OAMSpriteData_Event22::
+OAMSpriteData_Event22_PuzzleCursor_HammerSwingReverse_Frame1::
     db $07, $08, $53, $10
     db $07, $10, $54, $10
     db $0f, $08, $63, $10
@@ -4376,7 +4196,7 @@ OAMSpriteData_Event22::
     db $5e, $13, $66, $10
     db $ff
 
-OAMSpriteData_Event23::
+OAMSpriteData_Event23_PuzzleCursor_HammerSwingReverse_Frame2::
     db $07, $08, $53, $10
     db $07, $10, $54, $10
     db $0f, $08, $63, $10
@@ -4392,7 +4212,7 @@ OAMSpriteData_Event23::
     db $5a, $15, $66, $10
     db $ff
 
-OAMSpriteData_Event24::
+OAMSpriteData_Event24_PuzzleCursor_HammerSwingReverse_Frame3::
     db $07, $08, $53, $10
     db $07, $10, $54, $10
     db $0f, $08, $63, $10
@@ -4408,7 +4228,7 @@ OAMSpriteData_Event24::
     db $56, $ed, $56, $10
     db $ff
 
-OAMSpriteData_Event25::
+OAMSpriteData_Event25_PuzzleCursor_HammerSwingReverse_Frame4::
     db $07, $08, $53, $10
     db $07, $10, $54, $10
     db $0f, $08, $63, $10
@@ -4424,7 +4244,7 @@ OAMSpriteData_Event25::
     db $3b, $17, $56, $10
     db $ff
 
-OAMSpriteData_Event26::
+OAMSpriteData_Event26_PuzzleCursor_HammerSwingReverse_Frame5::
     db $07, $08, $53, $10
     db $07, $10, $54, $10
     db $0f, $08, $63, $10
@@ -4440,7 +4260,7 @@ OAMSpriteData_Event26::
     db $2d, $fb, $56, $10
     db $ff
 
-OAMSpriteData_Event27::
+OAMSpriteData_Event27_PuzzleCursor_HammerSwingReverse_Frame6::
     db $07, $08, $53, $10
     db $07, $10, $54, $10
     db $0f, $08, $63, $10
@@ -4456,7 +4276,7 @@ OAMSpriteData_Event27::
     db $20, $12, $56, $10
     db $ff
 
-OAMSpriteData_Event28::
+OAMSpriteData_Event28_PuzzleCursor_HammerSwingReverse_Frame7::
     db $07, $08, $53, $10
     db $07, $10, $54, $10
     db $0f, $08, $63, $10
@@ -4482,7 +4302,7 @@ OAMSpriteData_Event29::
     db $19, $07, $66, $10
     db $ff
 
-OAMSpriteData_Event2a::
+OAMSpriteData_Event2a_PuzzleCursor_HammerSwing_Frame2::
     db $07, $08, $53, $10
     db $0f, $08, $63, $10
     db $0f, $10, $64, $10
