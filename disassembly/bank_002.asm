@@ -101,11 +101,11 @@ GS03_StatePhase_00_CourseSelectScreenInit::
     call SwitchBankToBAndJumpToHL                 ; $40c0: $cd $de $05
     ld c, $00                                     ; $40c3: $0e $00
     ld a, $01                                     ; $40c5: $3e $01
-    call CallSoundEffectDispatcher                ; $40c7: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $40c7: $cd $b6 $03
     call WaitForScanline40OrDelay                 ; $40ca: $cd $99 $03
     ld c, $0e                                     ; $40cd: $0e $0e
     ld a, $01                                     ; $40cf: $3e $01
-    call CallSoundEffectDispatcher                ; $40d1: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $40d1: $cd $b6 $03
     call EnableLCDFromShadow                      ; $40d4: $cd $a2 $04
     ld a, [rMenuCursorRowMaxIndex]                ; $40d7: $fa $3b $d6
     cp $02                                        ; $40da: $fe $02
@@ -142,7 +142,7 @@ GS03_StatePhase_01_CourseSelectScreenIdle::
 
     ld c, $03                                     ; $4111: $0e $03
     ld a, $02                                     ; $4113: $3e $02
-    call CallSoundEffectDispatcher                ; $4115: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $4115: $cd $b6 $03
     ld hl, rStatePhase_Current                    ; $4118: $21 $35 $d6
     inc [hl]                                      ; $411b: $34
     ret                                           ; $411c: $c9
@@ -155,7 +155,7 @@ GS03_StatePhase_01_CourseSelectScreenIdle::
 
     ld c, $04                                     ; $4123: $0e $04
     ld a, $02                                     ; $4125: $3e $02
-    call CallSoundEffectDispatcher                ; $4127: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $4127: $cd $b6 $03
     ld a, $03                                     ; $412a: $3e $03
     ld [rStatePhase_Current], a                   ; $412c: $ea $35 $d6
     ret                                           ; $412f: $c9
@@ -165,14 +165,14 @@ GS03_StatePhase_02_ConfirmSelectionTransition::
     ld bc, $003c                                  ; $4130: $01 $3c $00
     call DelayFramesByBC                          ; $4133: $cd $fa $05
     ld a, $05                                     ; $4136: $3e $05
-    call CallSoundEffectDispatcher                ; $4138: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $4138: $cd $b6 $03
     ld c, $00                                     ; $413b: $0e $00
     ld a, $01                                     ; $413d: $3e $01
-    call CallSoundEffectDispatcher                ; $413f: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $413f: $cd $b6 $03
     call WaitForScanline40OrDelay                 ; $4142: $cd $99 $03
     ld c, $00                                     ; $4145: $0e $00
     ld a, $01                                     ; $4147: $3e $01
-    call CallSoundEffectDispatcher                ; $4149: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $4149: $cd $b6 $03
     ld a, [rMenuCursorRowMaxIndex]                ; $414c: $fa $3b $d6
     cp $02                                        ; $414f: $fe $02
     jr z, .RunConfirmTransitionFadeOut_AllCoursesUnlocked; $4151: $28 $0f
@@ -222,14 +222,14 @@ GS03_StatePhase_03_CancelSelectionTransition::
     ld bc, $003c                                  ; $419b: $01 $3c $00
     call DelayFramesByBC                          ; $419e: $cd $fa $05
     ld a, $05                                     ; $41a1: $3e $05
-    call CallSoundEffectDispatcher                ; $41a3: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $41a3: $cd $b6 $03
     ld c, $00                                     ; $41a6: $0e $00
     ld a, $01                                     ; $41a8: $3e $01
-    call CallSoundEffectDispatcher                ; $41aa: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $41aa: $cd $b6 $03
     call WaitForScanline40OrDelay                 ; $41ad: $cd $99 $03
     ld c, $00                                     ; $41b0: $0e $00
     ld a, $01                                     ; $41b2: $3e $01
-    call CallSoundEffectDispatcher                ; $41b4: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $41b4: $cd $b6 $03
     ld a, [rMenuCursorRowMaxIndex]                ; $41b7: $fa $3b $d6
     cp $02                                        ; $41ba: $fe $02
     jr z, .RunCancelTransitionFadeOut_AllCoursesUnlocked; $41bc: $28 $0f
@@ -341,7 +341,7 @@ GS03_HandleCourseSelectVerticalInput::
     rst RST_08                                    ; $42d0: $cf
     ld c, $0a                                     ; $42d1: $0e $0a
     ld a, $02                                     ; $42d3: $3e $02
-    call CallSoundEffectDispatcher                ; $42d5: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $42d5: $cd $b6 $03
     pop af                                        ; $42d8: $f1
     and $40                                       ; $42d9: $e6 $40
 
@@ -445,11 +445,11 @@ GS02_StatePhase_00_GameSelectScreenInit::
     call SwitchBankToBAndJumpToHL                 ; $4391: $cd $de $05
     ld c, $00                                     ; $4394: $0e $00
     ld a, $01                                     ; $4396: $3e $01
-    call CallSoundEffectDispatcher                ; $4398: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $4398: $cd $b6 $03
     call WaitForScanline40OrDelay                 ; $439b: $cd $99 $03
     ld c, $0d                                     ; $439e: $0e $0d
     ld a, $01                                     ; $43a0: $3e $01
-    call CallSoundEffectDispatcher                ; $43a2: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $43a2: $cd $b6 $03
     call EnableLCDFromShadow                      ; $43a5: $cd $a2 $04
     call EnsureSGBMaskFreezeDisabled              ; $43a8: $cd $a5 $1f
     ld b, $03                                     ; $43ab: $06 $03
@@ -473,7 +473,7 @@ GS02_StatePhase_01_GameSelectScreenIdle::
 
     ld c, $03                                     ; $43cf: $0e $03
     ld a, $02                                     ; $43d1: $3e $02
-    call CallSoundEffectDispatcher                ; $43d3: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $43d3: $cd $b6 $03
     ld hl, rStatePhase_Current                    ; $43d6: $21 $35 $d6
     inc [hl]                                      ; $43d9: $34
     ret                                           ; $43da: $c9
@@ -486,7 +486,7 @@ GS02_StatePhase_01_GameSelectScreenIdle::
 
     ld c, $04                                     ; $43e1: $0e $04
     ld a, $02                                     ; $43e3: $3e $02
-    call CallSoundEffectDispatcher                ; $43e5: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $43e5: $cd $b6 $03
     ld a, $03                                     ; $43e8: $3e $03
     ld [rStatePhase_Current], a                   ; $43ea: $ea $35 $d6
     ret                                           ; $43ed: $c9
@@ -496,14 +496,14 @@ GS02_StatePhase_02_ConfirmSelectionTransition::
     ld bc, $003c                                  ; $43ee: $01 $3c $00
     call DelayFramesByBC                          ; $43f1: $cd $fa $05
     ld a, $05                                     ; $43f4: $3e $05
-    call CallSoundEffectDispatcher                ; $43f6: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $43f6: $cd $b6 $03
     ld c, $00                                     ; $43f9: $0e $00
     ld a, $01                                     ; $43fb: $3e $01
-    call CallSoundEffectDispatcher                ; $43fd: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $43fd: $cd $b6 $03
     call WaitForScanline40OrDelay                 ; $4400: $cd $99 $03
     ld c, $00                                     ; $4403: $0e $00
     ld a, $01                                     ; $4405: $3e $01
-    call CallSoundEffectDispatcher                ; $4407: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $4407: $cd $b6 $03
     ld b, $03                                     ; $440a: $06 $03
     ld hl, $46db                                  ; $440c: $21 $db $46
     ld c, $06                                     ; $440f: $0e $06
@@ -546,14 +546,14 @@ GS02_StatePhase_03_CancelSelectionTransition::
     ld bc, $003c                                  ; $4458: $01 $3c $00
     call DelayFramesByBC                          ; $445b: $cd $fa $05
     ld a, $05                                     ; $445e: $3e $05
-    call CallSoundEffectDispatcher                ; $4460: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $4460: $cd $b6 $03
     ld c, $00                                     ; $4463: $0e $00
     ld a, $01                                     ; $4465: $3e $01
-    call CallSoundEffectDispatcher                ; $4467: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $4467: $cd $b6 $03
     call WaitForScanline40OrDelay                 ; $446a: $cd $99 $03
     ld c, $00                                     ; $446d: $0e $00
     ld a, $01                                     ; $446f: $3e $01
-    call CallSoundEffectDispatcher                ; $4471: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $4471: $cd $b6 $03
     ld b, $03                                     ; $4474: $06 $03
     ld hl, $46db                                  ; $4476: $21 $db $46
     ld c, $06                                     ; $4479: $0e $06
@@ -665,7 +665,7 @@ GS02_HandleGameSelectVerticalInput::
     rst RST_08                                    ; $45be: $cf
     ld c, $0a                                     ; $45bf: $0e $0a
     ld a, $02                                     ; $45c1: $3e $02
-    call CallSoundEffectDispatcher                ; $45c3: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $45c3: $cd $b6 $03
     pop af                                        ; $45c6: $f1
     and $40                                       ; $45c7: $e6 $40
     jr z, .HandleGameSelectMoveDown               ; $45c9: $28 $11
@@ -764,7 +764,7 @@ GS08_PauseMenuMainSelectionInputHandler_Banked::
     push af                                       ; $464c: $f5
     ld c, $0a                                     ; $464d: $0e $0a
     ld a, $02                                     ; $464f: $3e $02
-    call CallSoundEffectDispatcher                ; $4651: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $4651: $cd $b6 $03
     pop af                                        ; $4654: $f1
     and $40                                       ; $4655: $e6 $40
     ld a, [rGS08_PauseMenuMainSelection]          ; $4657: $fa $3a $d8
@@ -807,7 +807,7 @@ GS08_PauseMenuSavePromptSelectionInputHandler_Banked::
     push af                                       ; $468c: $f5
     ld c, $0a                                     ; $468d: $0e $0a
     ld a, $02                                     ; $468f: $3e $02
-    call CallSoundEffectDispatcher                ; $4691: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $4691: $cd $b6 $03
     pop af                                        ; $4694: $f1
     and $40                                       ; $4695: $e6 $40
     ld a, [rGS08_PauseMenuSavePromptSelection]    ; $4697: $fa $3b $d8
@@ -850,7 +850,7 @@ GS08_PauseMenuBGMSubmenuSelectionInputHandler_Banked::
     push af                                       ; $46cc: $f5
     ld c, $0a                                     ; $46cd: $0e $0a
     ld a, $02                                     ; $46cf: $3e $02
-    call CallSoundEffectDispatcher                ; $46d1: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $46d1: $cd $b6 $03
     pop af                                        ; $46d4: $f1
     and $40                                       ; $46d5: $e6 $40
     ld a, [rGS08_PauseMenuBGMSubmenuSelection]    ; $46d7: $fa $3c $d8
@@ -878,11 +878,11 @@ GS08_PauseMenuBGMSubmenuSelectionInputHandler_Banked::
     add hl, bc                                    ; $46f4: $09
     ld c, $00                                     ; $46f5: $0e $00
     ld a, $01                                     ; $46f7: $3e $01
-    call CallSoundEffectDispatcher                ; $46f9: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $46f9: $cd $b6 $03
     call WaitForScanline40OrDelay                 ; $46fc: $cd $99 $03
     ld c, [hl]                                    ; $46ff: $4e
     ld a, $01                                     ; $4700: $3e $01
-    call CallSoundEffectDispatcher                ; $4702: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $4702: $cd $b6 $03
     pop af                                        ; $4705: $f1
 
 .ReturnFromPauseMenuBGMSubmenuSelectionInputHandler:
@@ -907,7 +907,7 @@ GS08_PauseMenuGiveUpPromptSelectionInputHandler_Banked::
     push af                                       ; $4729: $f5
     ld c, $0a                                     ; $472a: $0e $0a
     ld a, $02                                     ; $472c: $3e $02
-    call CallSoundEffectDispatcher                ; $472e: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $472e: $cd $b6 $03
     pop af                                        ; $4731: $f1
     and $40                                       ; $4732: $e6 $40
     ld a, [rGS08_PauseMenuGiveUpPromptSelection]  ; $4734: $fa $3d $d8
@@ -992,11 +992,11 @@ GS01_StatePhase_00_DataSelectScreenInit::
     call SwitchBankToBAndJumpToHL                 ; $47c5: $cd $de $05
     ld c, $00                                     ; $47c8: $0e $00
     ld a, $01                                     ; $47ca: $3e $01
-    call CallSoundEffectDispatcher                ; $47cc: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $47cc: $cd $b6 $03
     call WaitForScanline40OrDelay                 ; $47cf: $cd $99 $03
     ld c, $0d                                     ; $47d2: $0e $0d
     ld a, $01                                     ; $47d4: $3e $01
-    call CallSoundEffectDispatcher                ; $47d6: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $47d6: $cd $b6 $03
     call EnableLCDFromShadow                      ; $47d9: $cd $a2 $04
     call EnsureSGBMaskFreezeDisabled              ; $47dc: $cd $a5 $1f
     ld b, $03                                     ; $47df: $06 $03
@@ -1031,7 +1031,7 @@ GS01_StatePhase_01_DataSelectScreenIdle::
 
     ld c, $03                                     ; $4810: $0e $03
     ld a, $02                                     ; $4812: $3e $02
-    call CallSoundEffectDispatcher                ; $4814: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $4814: $cd $b6 $03
     ld hl, rStatePhase_Current                    ; $4817: $21 $35 $d6
     inc [hl]                                      ; $481a: $34
     ret                                           ; $481b: $c9
@@ -1178,14 +1178,14 @@ GS01_StatePhase_02_DataSelectScreenFinish::
     ld bc, $003c                                  ; $4940: $01 $3c $00
     call DelayFramesByBC                          ; $4943: $cd $fa $05
     ld a, $05                                     ; $4946: $3e $05
-    call CallSoundEffectDispatcher                ; $4948: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $4948: $cd $b6 $03
     ld c, $00                                     ; $494b: $0e $00
     ld a, $01                                     ; $494d: $3e $01
-    call CallSoundEffectDispatcher                ; $494f: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $494f: $cd $b6 $03
     call WaitForScanline40OrDelay                 ; $4952: $cd $99 $03
     ld c, $00                                     ; $4955: $0e $00
     ld a, $01                                     ; $4957: $3e $01
-    call CallSoundEffectDispatcher                ; $4959: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $4959: $cd $b6 $03
     ld b, $03                                     ; $495c: $06 $03
     ld hl, $46cf                                  ; $495e: $21 $cf $46
     ld c, $05                                     ; $4961: $0e $05
@@ -1542,7 +1542,7 @@ GS01_HandleDataSelectVerticalInput::
     rst RST_08                                    ; $4c29: $cf
     ld c, $0a                                     ; $4c2a: $0e $0a
     ld a, $02                                     ; $4c2c: $3e $02
-    call CallSoundEffectDispatcher                ; $4c2e: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $4c2e: $cd $b6 $03
     pop af                                        ; $4c31: $f1
     and $40                                       ; $4c32: $e6 $40
     jr z, .HandleDataSelectMoveDown               ; $4c34: $28 $10
@@ -1618,11 +1618,11 @@ GS07_StatePhase_00_TimeTrialRankingScreenInit::
     call GS07_DispatchBottomPromptBlinkVariant    ; $4c9b: $cd $98 $52
     ld c, $00                                     ; $4c9e: $0e $00
     ld a, $01                                     ; $4ca0: $3e $01
-    call CallSoundEffectDispatcher                ; $4ca2: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $4ca2: $cd $b6 $03
     call WaitForScanline40OrDelay                 ; $4ca5: $cd $99 $03
     ld c, $0f                                     ; $4ca8: $0e $0f
     ld a, $01                                     ; $4caa: $3e $01
-    call CallSoundEffectDispatcher                ; $4cac: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $4cac: $cd $b6 $03
     call EnableLCDFromShadow                      ; $4caf: $cd $a2 $04
     ld b, $03                                     ; $4cb2: $06 $03
     ld hl, $470c                                  ; $4cb4: $21 $0c $47
@@ -1688,11 +1688,11 @@ GS07_StatePhase_04_PostClearRankingTransition::
 .PlayTransitionAndRouteToNextPhase:
     ld c, $00                                     ; $4d23: $0e $00
     ld a, $01                                     ; $4d25: $3e $01
-    call CallSoundEffectDispatcher                ; $4d27: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $4d27: $cd $b6 $03
     call WaitForScanline40OrDelay                 ; $4d2a: $cd $99 $03
     ld c, $0f                                     ; $4d2d: $0e $0f
     ld a, $01                                     ; $4d2f: $3e $01
-    call CallSoundEffectDispatcher                ; $4d31: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $4d31: $cd $b6 $03
     call EnableLCDFromShadow                      ; $4d34: $cd $a2 $04
     ld b, $03                                     ; $4d37: $06 $03
     ld hl, $470c                                  ; $4d39: $21 $0c $47
@@ -1747,7 +1747,7 @@ GS07_StatePhase_01_TimeTrialRankingScreenIdle::
 
     ld c, $03                                     ; $4d9b: $0e $03
     ld a, $02                                     ; $4d9d: $3e $02
-    call CallSoundEffectDispatcher                ; $4d9f: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $4d9f: $cd $b6 $03
     call ClearShadowOAMBufferFromCursor           ; $4da2: $cd $c5 $05
     rst RST_08                                    ; $4da5: $cf
     xor a                                         ; $4da6: $af
@@ -1767,7 +1767,7 @@ GS07_StatePhase_01_TimeTrialRankingScreenIdle::
 
     ld c, $04                                     ; $4dbe: $0e $04
     ld a, $02                                     ; $4dc0: $3e $02
-    call CallSoundEffectDispatcher                ; $4dc2: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $4dc2: $cd $b6 $03
     call ClearShadowOAMBufferFromCursor           ; $4dc5: $cd $c5 $05
     rst RST_08                                    ; $4dc8: $cf
     xor a                                         ; $4dc9: $af
@@ -1955,7 +1955,7 @@ GS07_HandleNameEntryInput::
 
     ld c, $0a                                     ; $4ee8: $0e $0a
     ld a, $02                                     ; $4eea: $3e $02
-    call CallSoundEffectDispatcher                ; $4eec: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $4eec: $cd $b6 $03
     ld a, [rGS07_NameEntryCursorColumnOrConfirmIndex]; $4eef: $fa $3e $d8
     ld c, a                                       ; $4ef2: $4f
     ld b, $00                                     ; $4ef3: $06 $00
@@ -1997,7 +1997,7 @@ GS07_HandleNameEntryInput::
 
     ld c, $03                                     ; $4f1a: $0e $03
     ld a, $02                                     ; $4f1c: $3e $02
-    call CallSoundEffectDispatcher                ; $4f1e: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $4f1e: $cd $b6 $03
     ld a, [rGS07_NameEntryCursorColumnOrConfirmIndex]; $4f21: $fa $3e $d8
     cp $03                                        ; $4f24: $fe $03
     ret z                                         ; $4f26: $c8
@@ -2013,7 +2013,7 @@ GS07_HandleNameEntryInput::
 
     ld c, $04                                     ; $4f2f: $0e $04
     ld a, $02                                     ; $4f31: $3e $02
-    call CallSoundEffectDispatcher                ; $4f33: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $4f33: $cd $b6 $03
     ld a, [rGS07_NameEntryCursorColumnOrConfirmIndex]; $4f36: $fa $3e $d8
     and a                                         ; $4f39: $a7
     ret z                                         ; $4f3a: $c8
@@ -2055,14 +2055,14 @@ GS07_StatePhase_02_TransitionToPuzzleStart::
     ld bc, $003c                                  ; $4f69: $01 $3c $00
     call DelayFramesByBC                          ; $4f6c: $cd $fa $05
     ld a, $05                                     ; $4f6f: $3e $05
-    call CallSoundEffectDispatcher                ; $4f71: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $4f71: $cd $b6 $03
     ld c, $00                                     ; $4f74: $0e $00
     ld a, $01                                     ; $4f76: $3e $01
-    call CallSoundEffectDispatcher                ; $4f78: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $4f78: $cd $b6 $03
     call WaitForScanline40OrDelay                 ; $4f7b: $cd $99 $03
     ld c, $00                                     ; $4f7e: $0e $00
     ld a, $01                                     ; $4f80: $3e $01
-    call CallSoundEffectDispatcher                ; $4f82: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $4f82: $cd $b6 $03
     ld b, $03                                     ; $4f85: $06 $03
     ld hl, $4717                                  ; $4f87: $21 $17 $47
     ld c, $0e                                     ; $4f8a: $0e $0e
@@ -2138,14 +2138,14 @@ GS07_StatePhase_03_TransitionBackToMenu::
     ld bc, $003c                                  ; $507b: $01 $3c $00
     call DelayFramesByBC                          ; $507e: $cd $fa $05
     ld a, $05                                     ; $5081: $3e $05
-    call CallSoundEffectDispatcher                ; $5083: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $5083: $cd $b6 $03
     ld c, $00                                     ; $5086: $0e $00
     ld a, $01                                     ; $5088: $3e $01
-    call CallSoundEffectDispatcher                ; $508a: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $508a: $cd $b6 $03
     call WaitForScanline40OrDelay                 ; $508d: $cd $99 $03
     ld c, $00                                     ; $5090: $0e $00
     ld a, $01                                     ; $5092: $3e $01
-    call CallSoundEffectDispatcher                ; $5094: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $5094: $cd $b6 $03
     ld b, $03                                     ; $5097: $06 $03
     ld hl, $4717                                  ; $5099: $21 $17 $47
     ld c, $0e                                     ; $509c: $0e $0e

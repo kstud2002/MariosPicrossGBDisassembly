@@ -305,6 +305,41 @@
 00:d84a rSelectedPuzzleTimeDataRecordByte1
 00:d84b rSelectedPuzzleTimeDataRecordByte2
 00:d84c rSelectedPuzzleStatusData
+
+; Sound engine WRAM state block (bank 0f driver, ddxx)
+00:dd00 rSoundUpperVoiceGroupCommandIndex
+00:dd01 rSoundLowerVoiceGroupCommandIndex
+00:dd02 rSoundCurrentVoiceIndex
+00:dd04 rSoundActiveVoiceMask
+00:dd05 rSoundCurrentVoiceMuteMask
+00:dd06 rSoundCurrentVoiceMaskBit
+00:dd07 rSoundCurrentVoiceUpdateFlags
+00:dd08 rSoundHighVoiceUpdateFlagsTable
+00:dd0c rSoundVoiceGroupAttenuationTable
+00:dd0d rSoundEvent01FFOverrideState_Unsure
+00:dd0e rSoundDeferredSGBPacketHeader
+00:dd13 rSoundDeferredSGBPacketPayloadClearStart
+00:dd20 rSoundVoiceScriptPointerTable
+00:dd28 rSoundVoiceScriptPointerRowBuffer
+00:dd30 rSoundVoiceControlTable
+00:dd40 rSoundVoiceNoteTickCountdownTable
+00:dd50 rSoundVoiceTickRateTable
+00:dd60 rSoundVoiceScaledTickTargetTable
+00:dd70 rSoundVoiceTickAccumulatorTable
+00:dd80 rSoundVoiceFrameCounterTable
+00:dd90 rSoundVoiceStereoPanningTable
+00:dda0 rSoundVoiceVolumeTable
+00:ddb0 rSoundVoiceTimbreTable
+00:ddc0 rSoundVoiceTriggerTable
+00:ddd0 rSoundVoiceFrequencyTable
+00:dde0 rSoundVoicePhaseAccumulatorTable
+00:ddf0 rSoundVoicePitchStepPhaseTable
+00:de00 rSoundVoicePitchOffsetGateTable
+00:de10 rSoundVoicePitchBaseTable
+00:de20 rSoundVoiceLoopCounterTable
+00:de30 rSoundVoiceLoopTargetPointerTable
+00:de40 rSoundVoiceCallReturnPointerTable
+
 00:dfff rSubtractiveRNGSeedSourceByte
 00:f636 rLevelSelectColumn
 00:f637 rLevelSelectRow
@@ -364,7 +399,7 @@
 00:03ad .SyncAndWaitForScanline40
 00:03ae .WaitForScanline40Loop
 
-00:03b6 CallSoundEffectDispatcher
+00:03b6 CallSoundCommandDispatcher
 00:03ce .DispatchSoundCommandLoop
 00:03df .RestoreBankAndInterruptEnableAndReturn
 
@@ -5722,7 +5757,7 @@
 ; =============================================================================
 
 0d:4000 MessageFontTileData
-0d:4000 .image:2800
+0d:4000 .image:2800:pe1
 
 0d:6800 .padding:1800
 
@@ -5730,23 +5765,17 @@
 ; BANK 00E
 ; =============================================================================
 
-0e:404c .data:3
-0e:4566 .data:3
-0e:45c8 .data:3
-0e:45ec .data:3
-0e:4e48 .data:3
-0e:54ec .data:3
-0e:5942 .data:3
-0e:5962 .data:3
-0e:59e2 .data:3
-0e:6409 .data:3
+0e:4000 Unused_MessageFontTileData
+0e:4000 .image:2800:pe1
+
+0e:6800 .padding:1800
 
 ; =============================================================================
 ; BANK 00F
 ; =============================================================================
 
-0f:4000 Jumpvector_SoundEffectDispatcher
-0f:4003 Jumpvector_SoundEngineUpdateRoutine_Unsure
+0f:4000 Jumpvector_SoundCommandDispatcher
+0f:4003 Jumpvector_SoundEngineUpdateRoutine
 
 0f:4006 .padding:a
 
@@ -5757,79 +5786,796 @@
 
 0f:4050 .padding:30
 
-0f:4080 SoundEffectDispatcherPointerTable
-0f:4080 .data:50:2
+0f:4080 SoundCommandDispatcher_Cmd00To07PointerTable
+0f:4080 .data:0010:2
+
+0f:4090 SoundEngine_EOpcodeDispatchPointerTable
+0f:4090 .data:0020:2
+
+0f:40b0 SoundEngine_FOpcodeDispatchPointerTable
+0f:40b0 .data:0020:2
 
 0f:40d0 .padding:30
 
-0f:4258 SoundEffectDispatcher
-0f:43ca SoundEngineUpdateRoutine_Unsure
+0f:4100 Unused_SoundEngine_SemitoneFrequencyWordTableEntry
+0f:4100 .data:0002:2
+0f:4102 SoundEngine_SemitoneFrequencyWordTable
+0f:4102 .data:001a:2
+0f:411c SoundEngine_PitchBendSlopeWordTable
+0f:411c .data:0018:2
+0f:4134 SoundEngine_NRFrequencyRegisterAddressTable
+0f:4134 .data:0004
+0f:4138 SoundEngine_NRTimbreRegisterAddressTable
+0f:4138 .data:0004
+0f:413c SoundEngine_NRVolumeRegisterAddressTable
+0f:413c .data:0004
+0f:4140 SoundEngine_CH3OutputLevelMapTable
+0f:4140 .data:0004
+0f:4144 SoundEngine_NR51ClearMaskByChannelTable
+0f:4144 .data:0004
+0f:4148 SoundEngine_NR51RoutingPatternTable
+0f:4148 .data:0004
 
-0f:4264 SoundEffectDispatcher_Event00
-0f:4286 SoundEffectDispatcher_Event00_Data
+0f:414c SoundEngine_NoteLengthTickTable
+0f:414c .data:0010:8
+
+0f:415c SoundEngine_WaveRAMPresetPointerTable
+0f:415c .data:001c:2
+
+0f:4178 SoundWavePatternPreset00
+0f:4178 .data:0010
+0f:4188 SoundWavePatternPreset01
+0f:4188 .data:0010
+0f:4198 SoundWavePatternPreset02
+0f:4198 .data:0010
+0f:41a8 SoundWavePatternPreset03
+0f:41a8 .data:0010
+0f:41b8 SoundWavePatternPreset04
+0f:41b8 .data:0010
+0f:41c8 SoundWavePatternPreset05
+0f:41c8 .data:0010
+0f:41d8 SoundWavePatternPreset06
+0f:41d8 .data:0010
+0f:41e8 SoundWavePatternPreset07
+0f:41e8 .data:0010
+0f:41f8 SoundWavePatternPreset08
+0f:41f8 .data:0010
+0f:4208 SoundWavePatternPreset09
+0f:4208 .data:0010
+0f:4218 SoundWavePatternPreset0a
+0f:4218 .data:0010
+0f:4228 SoundWavePatternPreset0b
+0f:4228 .data:0010
+0f:4238 SoundWavePatternPreset0c
+0f:4238 .data:0010
+0f:4248 SoundWavePatternPreset0d
+0f:4248 .data:0010
+
+0f:4258 SoundCommandDispatcher
+0f:43ca SoundEngine_FrameTickRoutine
+0f:43d8 .InitPerFrameVoiceIterationState
+0f:43e6 .PerVoiceTickLoop
+0f:43fc SoundEngine_ProcessActiveVoiceIfSet
+0f:4409 .AdvanceVoiceIndexAndLoop
+0f:440e SoundEngine_ProcessVoiceTick
+0f:4427 SoundEngine_DispatchVoiceOpcode
+0f:443b .HandleE0OpcodeGroup
+0f:444c .HandleVoiceDataOpcode
+0f:445e .ComputeVoicePitchControlByteFromOpcodeHighNibble
+0f:446d .StoreVoicePitchControlByteForCurrentVoice
+0f:4471 .AccumulateTickUnitsFromC0Chain
+0f:449b .ApplyVoiceRateScalingToTickUnits
+0f:44b3 .StoreScaledTickTargetAndRequestRegisterUpdates
+
+0f:4264 SoundCommandDispatcher_Cmd00_ResetAPUDriverState
+0f:4267 .ApplyAPURegisterInitPairsLoop
+0f:4270 .ClearRuntimeStateBlock
+0f:4276 .ClearRuntimeStateBlockLoop
+0f:4286 SoundCommandDispatcher_Cmd00_APURegisterInitPairs
 0f:4286 .data:001f:2
-0f:42a5 SoundEffectDispatcher_Event01
-0f:42dd SoundEffectDispatcher_Event02
-0f:436b SoundEffectDispatcher_Event02_Data
-0f:436b .data:003e:4
-0f:43a9 SoundEffectDispatcher_Event03
-0f:43b7 SoundEffectDispatcher_Event04
-0f:43bc SoundEffectDispatcher_Event05
-0f:43c1 SoundEffectDispatcher_Event06
-0f:43c5 SoundEffectDispatcher_Event07
-0f:4623 SoundEffectDispatcher_Event08To10
-0f:4630 SoundEffectDispatcher_Event11
-0f:463f SoundEffectDispatcher_Event12
-0f:464d SoundEffectDispatcher_Event13_14_1b_20_25_27
-0f:44c5 SoundEffectDispatcher_Event15
-0f:44db SoundEffectDispatcher_Event16
-0f:44e4 SoundEffectDispatcher_Event17
-0f:455c SoundEffectDispatcher_Event18
-0f:4593 SoundEffectDispatcher_Event19
-0f:45ab SoundEffectDispatcher_Event1a
-0f:45ff SoundEffectDispatcher_Event1c
-0f:4574 SoundEffectDispatcher_Event1d
-0f:45e6 SoundEffectDispatcher_Event1e
-0f:45d7 SoundEffectDispatcher_Event1f
-0f:45f3 SoundEffectDispatcher_Event21
-0f:45c3 SoundEffectDispatcher_Event22
-0f:4617 SoundEffectDispatcher_Event23
-0f:460b SoundEffectDispatcher_Event24
-0f:4545 SoundEffectDispatcher_Event26
 
-0f:4c55 .data:3
-0f:51ee .data:3
-0f:5208 .data:3
-0f:5344 .data:3
-0f:5372 .data:3
-0f:53dc .data:3
-0f:5519 .data:3
-0f:5542 .data:3
-0f:564d .data:3
-0f:56d0 .data:3
-0f:56d7 .data:3
-0f:56f7 .data:3
-0f:580d .data:3
-0f:5823 .data:3
-0f:5b03 .data:3
-0f:5b0e .data:3
-0f:6180 .data:3
-0f:61db .data:3
-0f:61df .data:3
-0f:6239 .data:3
-0f:6268 .data:3
-0f:6396 .data:3
-0f:63c4 .data:3
-0f:63e4 .data:3
-0f:64ab .data:3
-0f:64e0 .data:3
-0f:668a .data:3
-0f:6955 .data:3
-0f:69a4 .data:3
-0f:69ca .data:3
-0f:6a99 .data:3
-0f:6cf8 .data:3
-0f:70f4 .data:3
-0f:7104 .data:3
-0f:7114 .data:3
-0f:7125 .data:3
+0f:42a5 SoundCommandDispatcher_Cmd01_StartUpperVoiceGroup
+0f:42b7 .LoadUpperVoiceScriptPointerRow
+0f:42c7 .ClearPerVoiceSecondaryStateBlocksLoop
+
+0f:42dd SoundCommandDispatcher_Cmd02_ResetVoicesAndStartLowerVoiceGroup
+0f:42ec .InitPerVoiceMaskLoop
+0f:42fc .RotateVoiceMaskAndProcessActiveVoice
+0f:430b .AdvanceVoiceSlotIndexAndLoop
+0f:4322 .LoadLowerVoiceScriptPointerRow
+0f:433a .ClearActiveMaskBitIfScriptStartsWithEF
+0f:4346 .AdvanceMaskBitAndRowPointer
+0f:4352 .InitRuntimeClearTableCursor
+0f:4355 .ClearRuntimeTablesFromInitTable
+0f:436b SoundCommandDispatcher_Cmd02_RuntimeStateInitTable
+0f:436b .data:003e:4
+
+0f:43a9 SoundCommandDispatcher_Cmd03_StoreDeferredSGBPacketPrefix
+
+0f:43b7 SoundCommandDispatcher_Cmd04_InvokeCmd01WithFF
+
+0f:43bc SoundCommandDispatcher_Cmd05_InvokeCmd02WithFF
+
+0f:43c1 SoundCommandDispatcher_Cmd06_ReadUpperVoiceGroupCommandIndex
+
+0f:43c5 SoundCommandDispatcher_Cmd07_ReadLowerVoiceGroupCommandIndex
+
+0f:4623 SoundEngine_OpE0ToE8_SetVoiceControlLowNibble
+
+0f:4630 SoundEngine_OpE9_IncrementVoiceControlLowNibbleTo08
+
+0f:463f SoundEngine_OpEA_DecrementVoiceControlLowNibbleTo00
+
+0f:464d SoundEngine_OpEB_EC_F3_F8_FD_FF_Consume1ByteAndContinue
+0f:464e SoundCommandDispatcher_ContinueVoiceStreamDispatch
+
+0f:44c5 SoundEngine_OpED_SetGroupAttenuationFromNibble
+
+0f:44db SoundEngine_OpEE_JumpToInlinePointer
+
+0f:44e4 SoundEngine_OpEF_ReturnOrStopVoice
+
+0f:455c SoundEngine_OpF0_SetTimbreAndTrigger
+
+0f:4593 SoundEngine_OpF1_SetLoopCounterAndBranchPointer
+
+0f:45ab SoundEngine_OpF2_DecrementLoopCounterAndBranch
+
+0f:45ff SoundEngine_OpF4_SetPitchBaseLowByte
+
+0f:4574 SoundEngine_OpF5_SetPitchOffsetGateAndStep
+
+0f:45e6 SoundEngine_OpF6_SetPitchBaseHighByte
+
+0f:45d7 SoundEngine_OpF7_SetVoiceVolumeFromNibble
+
+0f:45f3 SoundEngine_OpF9_SetPhaseAccumulatorByte
+
+0f:45fc SoundEngine_StoreAAndConsume1ByteAndContinue
+
+0f:45c3 SoundEngine_OpFA_SetVoiceRateFromPackedNibbles
+
+0f:4617 SoundEngine_OpFB_SetVoicePanningByte
+
+0f:460b SoundEngine_OpFC_SetFrequencyLowByte
+
+0f:4545 SoundEngine_OpFE_CallInlinePointer
+
+0f:44fc SoundEngine_DeactivateCurrentVoiceAndUpdateActiveMasks
+0f:4523 .FinalizeVoiceDeactivationMasks
+0f:4527 .BuildVoiceClearMaskLoop
+0f:453a .MaybeResetLowerVoiceGroupCommandIndex
+0f:4544 .Return
+
+0f:4652 SoundEngine_SaveVoiceScriptPointer
+
+0f:465c SoundEngine_UpdateVoiceStateAndCommitAPURegisters
+0f:4689 .AdvanceVoiceFrameCounterPath
+0f:46a0 .UpdateFrequencyFromPitchBasePath
+0f:46a3 .AccumulatePhaseAndHandleOverflow
+0f:46b4 .HandleAccumulationOverflowLoop
+
+0f:46fc SoundEngine_StoreRoutingLowBitsAndSetNR51UpdateFlag
+0f:4706 .ContinueOverflowWhileTickCountdownNonZero
+0f:4715 .FinishOverflowLoop
+
+0f:4716 SoundEngine_ApplyPendingHardwareUpdates
+0f:4733 .ApplyNR51UpdateIfRequested
+0f:4744 .ApplyTimbreUpdateIfRequested
+0f:4755 .ApplyVolumeUpdateIfRequested
+0f:4769 .ComputeAttenuatedVolumeFromGroupAttenuation
+0f:4781 .WriteComputedVolume
+0f:4784 .ApplyFrequencyUpdateIfRequested
+0f:4798 .WriteFrequencyRegisters
+
+0f:479b SoundEngine_RestoreAccumulatorAndReturn
+
+0f:479f SoundEngine_HandleVoiceTrigger
+
+0f:47c1 SoundEngine_UpdateFrequencyFromPitchBase
+0f:47cc .RecomputeFrequencyFromPitchBaseAndVoiceControl
+
+0f:47f4 SoundEngine_CheckPitchOffsetGateAndComputeOffset
+0f:47fc .CheckPitchOffsetGateThresholdAndReturnOffset
+0f:4807 .ReturnNoOffsetForPitchGate
+0f:480d .ComputePitchOffsetUsingStepPhase
+0f:481f .ScaleOffsetByLookupEntry
+0f:483f .ReturnOffsetWithCarrySet
+
+0f:4842 SoundEngine_DivideHLByA_8Step
+0f:4847 .DivisionBitLoop
+0f:484e .SubtractDivisorAndSetQuotientBit
+0f:4851 .AdvanceDivisionLoop
+
+0f:485a SoundEngine_MultiplyHLByA_8Bit
+0f:4863 .MultiplyBitLoop
+0f:4867 .ShiftMultiplicandLeft
+
+0f:4871 SoundEngine_MultiplyLByALowNibble
+0f:4878 .ProcessBit1Contribution
+0f:487f .ProcessBit2Contribution
+0f:4886 .ProcessBit3ContributionAndReturn
+
+0f:488d SoundEngine_FillFourWordEntriesWithDEAtHL
+0f:4890 .WriteDEWordEntryLoop
+
+0f:4899 CopyIndexed8ByteRowToHLFromDE
+0f:48a4 .Copy8BytesLoop
+
+0f:48ab SoundEngine_CheckVoiceMuteGate
+0f:48b5 .ReturnCarryIfVoiceMuteGateSet
+
+0f:48b8 SoundEngine_UpdateVoicePanningNR51
+0f:48d3 .RotateNR51MaskLoop
+0f:48d9 .WriteNR51AndReturn
+
+0f:48df SoundEngine_TriggerVoiceChannel
+0f:48fa .TriggerPulseOrNoisePath
+0f:4908 .ReturnFromVoiceTrigger
+
+0f:490b SoundEngine_WriteVoiceVolumeNibble
+0f:4923 .SelectVolumeTargetRegister
+
+0f:4931 SoundEngine_WriteVoiceTimbreOrWave
+0f:4945 .WritePulseDutyFromNibble
+0f:494f .ReturnFromWriteTimbre
+
+0f:4952 SoundEngine_WriteVoiceFrequencyPair
+0f:4968 .SelectFrequencyTargetRegisters
+
+0f:4976 SoundEngine_LoadWaveRAMPresetByIndex
+
+0f:49bd SoundEngine_ComputeFrequencyPairFromPitchControl
+0f:49c2 .ComputeOctaveAndSemitoneLoop
+0f:49e9 .LookupSemitoneAndApplyOctaveShift
+0f:4a0f .ApplyOctaveShiftLoop
+0f:4a18 .ReturnFromFrequencyPairCompute
+
+0f:4a1a SoundEngine_SendDeferredSGBPacketWithClearedPayloadTail
+0f:4a25 .ClearDeferredPacketPayloadLoop
+
+0f:4a30 SoundEngine_SendSGBPacketStreamFromHL
+0f:4a36 .SendNextSGBPacket
+0f:4a42 .SendPacketByteLoop
+0f:4a46 .SendPacketBitLoop
+0f:4a4e .ClockOutCurrentSGBBit
+
+0f:4a66 SoundEngine_BusyWaitDelayForSGBPacketTiming
+0f:4a6a .DelayLoop
+
+0f:4a74 SCD_Cmd01_02_VoiceCommandStreamPointerRow_ParamFF
+0f:4a74 .data:0008:2
+
+0f:4a7c SCD_Cmd01_02_ParamFF_CommandStream_Shared
+0f:4a7c .data:0001
+
+0f:4a7d SCD_Cmd01_VoiceCommandStreamPointerRow_Param00_DeactivateBGM
+0f:4a7d .data:0008:2
+0f:4a85 SCD_Cmd01_VoiceCommandStreamPointerRow_Param01_PuzzleBGM_2
+0f:4a85 .data:0008:2
+0f:4a8d SCD_Cmd01_VoiceCommandStreamPointerRow_Param02_HowToPlay_PuzzleBGM_5
+0f:4a8d .data:0008:2
+0f:4a95 SCD_Cmd01_VoiceCommandStreamPointerRow_Param03_PuzzleBGM_4
+0f:4a95 .data:0008:2
+0f:4a9d SCD_Cmd01_VoiceCommandStreamPointerRow_Param04_EasyPicross_KinokoCoursePuzzleSelectScreenBGM
+0f:4a9d .data:0008:2
+0f:4aa5 SCD_Cmd01_VoiceCommandStreamPointerRow_Param05_PuzzleBGM_1
+0f:4aa5 .data:0008:2
+0f:4aad SCD_Cmd01_VoiceCommandStreamPointerRow_Param06_TimeTrialUnlockedBGM
+0f:4aad .data:0008:2
+0f:4ab5 SCD_Cmd01_VoiceCommandStreamPointerRow_Param07_EasyPicross_KinokoCourseAllPuzzlesSolvedJingle
+0f:4ab5 .data:0008:2
+0f:4abd SCD_Cmd01_VoiceCommandStreamPointerRow_Param08_GameOverJingle
+0f:4abd .data:0008:2
+0f:4ac5 SCD_Cmd01_VoiceCommandStreamPointerRow_Param09_PuzzleCompletedBGM
+0f:4ac5 .data:0008:2
+0f:4acd SCD_Cmd01_VoiceCommandStreamPointerRow_Param0A_TitleScreenBGM
+0f:4acd .data:0008:2
+0f:4ad5 SCD_Cmd01_VoiceCommandStreamPointerRow_Param0B_PuzzleBGM_3
+0f:4ad5 .data:0008:2
+0f:4add SCD_Cmd01_VoiceCommandStreamPointerRow_Param0C_TimeTrialRankingScreenBGM_Unused
+0f:4add .data:0008:2
+0f:4ae5 SCD_Cmd01_VoiceCommandStreamPointerRow_Param0D_DataSelect_GameSelectScreenBGM
+0f:4ae5 .data:0008:2
+0f:4aed SCD_Cmd01_VoiceCommandStreamPointerRow_Param0E_CourseSelectScreenBGM
+0f:4aed .data:0008:2
+0f:4af5 SCD_Cmd01_VoiceCommandStreamPointerRow_Param0F_TimeTrialRankingScreenBGM
+0f:4af5 .data:0008:2
+0f:4afd SCD_Cmd01_VoiceCommandStreamPointerRow_Param10_StarCoursePuzzleSelectScreenBGM
+0f:4afd .data:0008:2
+0f:4b05 SCD_Cmd01_VoiceCommandStreamPointerRow_Param11_Unused
+0f:4b05 .data:0008:2
+0f:4b0d SCD_Cmd01_VoiceCommandStreamPointerRow_Param12_PuzzleClearJingle
+0f:4b0d .data:0008:2
+0f:4b15 SCD_Cmd01_VoiceCommandStreamPointerRow_Param13_Unused
+0f:4b15 .data:0008:2
+0f:4b1d SCD_Cmd01_VoiceCommandStreamPointerRow_Param14_Unused
+0f:4b1d .data:0008:2
+
+0f:4b25 SCD_Cmd01_Param01_CommandStream_Voice1_Entry
+0f:4b25 .data:000f
+0f:4b34 SCD_Cmd01_Param01_CommandStream_Voice1_LoopBody01
+0f:4b34 .data:00fb
+0f:4c2f SCD_Cmd01_Param01_CommandStream_Voice1_CallTarget01
+0f:4c2f .data:003a
+
+0f:4c69 SCD_Cmd01_Param01_CommandStream_Voice2_Entry
+0f:4c69 .data:0007
+0f:4c70 SCD_Cmd01_Param01_CommandStream_Voice2_LoopBody01
+0f:4c70 .data:0135
+0f:4da5 SCD_Cmd01_Param01_CommandStream_Voice2_CallTarget01
+0f:4da5 .data:0048
+0f:4ded SCD_Cmd01_Param01_CommandStream_Voice3_Entry
+0f:4ded .data:000d
+0f:4dfa SCD_Cmd01_Param01_CommandStream_Voice3_LoopBody01
+0f:4dfa .data:0071
+0f:4e6b SCD_Cmd01_Param01_CommandStream_Voice3_CallTarget01
+0f:4e6b .data:0031
+0f:4e9c SCD_Cmd01_Param01_CommandStream_Voice4_Entry
+0f:4e9c .data:0008
+0f:4ea4 SCD_Cmd01_Param01_CommandStream_Voice4_LoopBody01
+0f:4ea4 .data:0145
+0f:4fe9 SCD_Cmd01_Param01_CommandStream_Voice4_CallTarget01
+0f:4fe9 .data:00a4
+
+0f:508d SCD_Cmd01_Param02_CommandStream_Voice1_Entry
+0f:508d .data:000f
+0f:509c SCD_Cmd01_Param02_CommandStream_Voice1_LoopBody01
+0f:509c .data:0068
+0f:5104 SCD_Cmd01_Param02_CommandStream_Voice1_CallTarget01
+0f:5104 .data:0026
+0f:512a SCD_Cmd01_Param02_CommandStream_Voice1_CallTarget02
+0f:512a .data:0046
+0f:5170 SCD_Cmd01_Param02_CommandStream_Voice2_Entry
+0f:5170 .data:000d
+0f:517d SCD_Cmd01_Param02_CommandStream_Voice2_LoopBody01
+0f:517d .data:007a
+0f:51f7 SCD_Cmd01_Param02_CommandStream_Voice2_CallTarget01
+0f:51f7 .data:0026
+0f:521d SCD_Cmd01_Param02_CommandStream_Voice2_CallTarget02
+0f:521d .data:0053
+0f:5270 SCD_Cmd01_Param02_CommandStream_Voice3_Entry
+0f:5270 .data:000d
+0f:527d SCD_Cmd01_Param02_CommandStream_Voice3_LoopBody01
+0f:527d .data:0033
+0f:52b0 SCD_Cmd01_Param02_CommandStream_Voice3_CallTarget01
+0f:52b0 .data:0026
+0f:52d6 SCD_Cmd01_Param02_CommandStream_Voice3_CallTarget02
+0f:52d6 .data:002d
+0f:5303 SCD_Cmd01_Param02_CommandStream_Voice4_Entry
+0f:5303 .data:0008
+0f:530b SCD_Cmd01_Param02_CommandStream_Voice4_LoopBody01
+0f:530b .data:006b
+0f:5376 SCD_Cmd01_Param02_CommandStream_Voice4_CallTarget01
+0f:5376 .data:0032
+0f:53a8 SCD_Cmd01_Param02_CommandStream_Voice4_CallTarget02
+0f:53a8 .data:006b
+
+0f:5413 SCD_Cmd01_Param03_CommandStream_Voice1_Entry
+0f:5413 .data:0011
+0f:5424 SCD_Cmd01_Param03_CommandStream_Voice1_LoopBody01
+0f:5424 .data:00a5
+0f:54c9 SCD_Cmd01_Param03_CommandStream_Voice2_Entry
+0f:54c9 .data:0011
+0f:54da SCD_Cmd01_Param03_CommandStream_Voice2_LoopBody01
+0f:54da .data:0095
+0f:556f SCD_Cmd01_Param03_CommandStream_Voice3_Entry
+0f:556f .data:000d
+0f:557c SCD_Cmd01_Param03_CommandStream_Voice3_LoopBody01
+0f:557c .data:0097
+
+0f:5613 SCD_Cmd01_Param04_CommandStream_Voice1_Entry
+0f:5613 .data:000f
+0f:5622 SCD_Cmd01_Param04_CommandStream_Voice1_LoopBody01
+0f:5622 .data:002f
+0f:5651 SCD_Cmd01_Param04_CommandStream_Voice2_Entry
+0f:5651 .data:000f
+0f:5660 SCD_Cmd01_Param04_CommandStream_Voice2_LoopBody01
+0f:5660 .data:003b
+0f:569b SCD_Cmd01_Param04_CommandStream_Voice3_Entry
+0f:569b .data:000d
+0f:56a8 SCD_Cmd01_Param04_CommandStream_Voice3_LoopBody01
+0f:56a8 .data:001a
+0f:56c2 SCD_Cmd01_Param04_CommandStream_Voice4_Entry
+0f:56c2 .data:0006
+0f:56c8 SCD_Cmd01_Param04_CommandStream_Voice4_LoopBody01
+0f:56c8 .data:0043
+
+0f:597f SCD_Cmd01_Param05_CommandStream_Voice1_Entry
+0f:597f .data:000f
+0f:598e SCD_Cmd01_Param05_CommandStream_Voice1_LoopBody01
+0f:598e .data:0116
+0f:586a SCD_Cmd01_Param05_CommandStream_Voice2_Entry
+0f:586a .data:000f
+0f:5879 SCD_Cmd01_Param05_CommandStream_Voice2_LoopBody01
+0f:5879 .data:0106
+0f:570b SCD_Cmd01_Param05_CommandStream_Voice3_Entry
+0f:570b .data:000f
+0f:571a SCD_Cmd01_Param05_CommandStream_Voice3_LoopBody01
+0f:571a .data:0150
+0f:5aa4 SCD_Cmd01_Param05_CommandStream_Voice4_Entry
+0f:5aa4 .data:000a
+0f:5aae SCD_Cmd01_Param05_CommandStream_Voice4_LoopBody01
+0f:5aae .data:00de
+
+0f:5b8c SCD_Cmd01_Param06_CommandStream_Voice1_Setup
+0f:5b8c .data:0011
+0f:5b9d SCD_Cmd01_Param06_CommandStream_Voice1_Phrase01
+0f:5b9d .data:004a
+0f:5be7 SCD_Cmd01_Param06_CommandStream_Voice2_Setup
+0f:5be7 .data:0011
+0f:5bf8 SCD_Cmd01_Param06_CommandStream_Voice2_Phrase01
+0f:5bf8 .data:004e
+0f:5c46 SCD_Cmd01_Param06_CommandStream_Voice3_Setup
+0f:5c46 .data:000d
+0f:5c53 SCD_Cmd01_Param06_CommandStream_Voice3_Phrase01
+0f:5c53 .data:0051
+0f:5ca4 SCD_Cmd01_Param06_CommandStream_Voice4_Setup
+0f:5ca4 .data:000a
+0f:5cae SCD_Cmd01_Param06_CommandStream_Voice4_Phrase01
+0f:5cae .data:0068
+
+0f:5d16 SCD_Cmd01_Param07_CommandStream_Voice1_Setup
+0f:5d16 .data:0011
+0f:5d27 SCD_Cmd01_Param07_CommandStream_Voice1_Phrase01
+0f:5d27 .data:0027
+0f:5d4e SCD_Cmd01_Param07_CommandStream_Voice2_Setup
+0f:5d4e .data:0011
+0f:5d5f SCD_Cmd01_Param07_CommandStream_Voice2_Phrase01
+0f:5d5f .data:0049
+0f:5da8 SCD_Cmd01_Param07_CommandStream_Voice3_Setup
+0f:5da8 .data:000d
+0f:5db5 SCD_Cmd01_Param07_CommandStream_Voice3_Phrase01
+0f:5db5 .data:001e
+0f:5dd3 SCD_Cmd01_Param07_CommandStream_Voice4_Setup
+0f:5dd3 .data:000c
+0f:5ddf SCD_Cmd01_Param07_CommandStream_Voice4_Phrase01
+0f:5ddf .data:0012
+
+0f:5df1 SCD_Cmd01_Param08_CommandStream_Voice1_Setup
+0f:5df1 .data:0011
+0f:5e02 SCD_Cmd01_Param08_CommandStream_Voice1_Phrase01
+0f:5e02 .data:0015
+0f:5e17 SCD_Cmd01_Param08_CommandStream_Voice2_Setup
+0f:5e17 .data:0011
+0f:5e28 SCD_Cmd01_Param08_CommandStream_Voice2_Phrase01
+0f:5e28 .data:0011
+0f:5e39 SCD_Cmd01_Param08_CommandStream_Voice3_Setup
+0f:5e39 .data:000d
+0f:5e46 SCD_Cmd01_Param08_CommandStream_Voice3_Phrase01
+0f:5e46 .data:0016
+
+0f:5e5c SCD_Cmd01_Param09_CommandStream_Voice1_Entry
+0f:5e5c .data:0011
+0f:5e6d SCD_Cmd01_Param09_CommandStream_Voice1_LoopBody01
+0f:5e6d .data:0059
+0f:5ec6 SCD_Cmd01_Param09_CommandStream_Voice2_Setup
+0f:5ec6 .data:0013
+0f:5ed9 SCD_Cmd01_Param09_CommandStream_Voice2_Phrase01
+0f:5ed9 .data:0004
+0f:5edd SCD_Cmd01_Param09_CommandStream_Voice3_Setup
+0f:5edd .data:000f
+0f:5eec SCD_Cmd01_Param09_CommandStream_Voice3_Phrase01
+0f:5eec .data:0004
+
+0f:5ef0 SCD_Cmd01_Param0A_CommandStream_Voice1_Entry
+0f:5ef0 .data:00a0
+0f:5f90 SCD_Cmd01_Param0A_CommandStream_Voice1_CallTarget01
+0f:5f90 .data:003d
+0f:5fcd SCD_Cmd01_Param0A_CommandStream_Voice2_Entry
+0f:5fcd .data:00c1
+0f:608e SCD_Cmd01_Param0A_CommandStream_Voice2_CallTarget01
+0f:608e .data:0074
+0f:6102 SCD_Cmd01_Param0A_CommandStream_Voice3_Entry
+0f:6102 .data:000d
+0f:610f SCD_Cmd01_Param0A_CommandStream_Voice3_LoopBody01
+0f:610f .data:005c
+0f:616b SCD_Cmd01_Param0A_CommandStream_Voice3_CallTarget01
+0f:616b .data:0034
+0f:619f SCD_Cmd01_Param0A_CommandStream_Voice4_Entry
+0f:619f .data:000a
+0f:61a9 SCD_Cmd01_Param0A_CommandStream_Voice4_LoopBody01
+0f:61a9 .data:0055
+0f:61fe SCD_Cmd01_Param0A_CommandStream_Voice4_CallTarget01
+0f:61fe .data:0045
+
+0f:6243 SCD_Cmd01_Param0B_CommandStream_Voice1_Entry
+0f:6243 .data:002e
+0f:6271 SCD_Cmd01_Param0B_CommandStream_Voice1_LoopBody01
+0f:6271 .data:010d
+0f:637e SCD_Cmd01_Param0B_CommandStream_Voice2_Entry
+0f:637e .data:002d
+0f:63ab SCD_Cmd01_Param0B_CommandStream_Voice2_LoopBody01
+0f:63ab .data:023a
+0f:65e5 SCD_Cmd01_Param0B_CommandStream_Voice3_Entry
+0f:65e5 .data:0030
+0f:6615 SCD_Cmd01_Param0B_CommandStream_Voice3_LoopBody01
+0f:6615 .data:016b
+
+0f:6780 SCD_Cmd01_02_Param0C_0F_CommandStream_Voice1_Setup
+0f:6780 .data:000d
+0f:678d SCD_Cmd01_02_Param0C_0F_CommandStream_Voice1_Phrase01
+0f:678d .data:0014
+0f:67a1 SCD_Cmd01_02_Param0C_0F_CommandStream_Voice2_Setup
+0f:67a1 .data:000d
+0f:67ae SCD_Cmd01_02_Param0C_0F_CommandStream_Voice2_Phrase01
+0f:67ae .data:0011
+
+0f:67bf SCD_Cmd01_Param0D_CommandStream_Voice1_Entry
+0f:67bf .data:0011
+0f:67d0 SCD_Cmd01_Param0D_CommandStream_Voice1_LoopBody01
+0f:67d0 .data:0054
+0f:6824 SCD_Cmd01_Param0D_CommandStream_Voice2_Entry
+0f:6824 .data:0011
+0f:6835 SCD_Cmd01_Param0D_CommandStream_Voice2_LoopBody01
+0f:6835 .data:003d
+0f:6872 SCD_Cmd01_Param0D_CommandStream_Voice3_Entry
+0f:6872 .data:000d
+0f:687f SCD_Cmd01_Param0D_CommandStream_Voice3_LoopBody01
+0f:687f .data:004e
+
+0f:68cd SCD_Cmd01_Param0E_CommandStream_Voice1_Setup
+0f:68cd .data:0011
+0f:68de SCD_Cmd01_Param0E_CommandStream_Voice1_Phrase01
+0f:68de .data:0015
+0f:68f3 SCD_Cmd01_Param0E_CommandStream_Voice2_Setup
+0f:68f3 .data:0011
+0f:6904 SCD_Cmd01_Param0E_CommandStream_Voice2_Phrase01
+0f:6904 .data:0013
+0f:6917 SCD_Cmd01_Param0E_CommandStream_Voice3_Entry
+0f:6917 .data:000d
+0f:6924 SCD_Cmd01_Param0E_CommandStream_Voice3_LoopBody01
+0f:6924 .data:000c
+
+0f:6930 SCD_Cmd01_Param0F_CommandStream_Voice1_Entry
+0f:6930 .data:0011
+0f:6941 SCD_Cmd01_Param0F_CommandStream_Voice1_LoopBody01
+0f:6941 .data:004c
+0f:698d SCD_Cmd01_Param0F_CommandStream_Voice2_Entry
+0f:698d .data:0011
+0f:699e SCD_Cmd01_Param0F_CommandStream_Voice2_LoopBody01
+0f:699e .data:0059
+0f:69f7 SCD_Cmd01_Param0F_CommandStream_Voice3_Setup
+0f:69f7 .data:000d
+0f:6a04 SCD_Cmd01_Param0F_CommandStream_Voice3_Phrase01
+0f:6a04 .data:0009
+
+0f:6a0d SCD_Cmd01_Param10_CommandStream_Voice1_Setup
+0f:6a0d .data:0011
+0f:6a1e SCD_Cmd01_Param10_CommandStream_Voice1_PhraseCallLoop
+0f:6a1e .data:001b:3
+0f:6a39 SCD_Cmd01_Param10_CommandStream_Voice1_Phrase01
+0f:6a39 .data:0011
+0f:6a4a SCD_Cmd01_Param10_CommandStream_Voice1_Phrase02
+0f:6a4a .data:0043
+0f:6a8d SCD_Cmd01_Param10_CommandStream_Voice1_Phrase03
+0f:6a8d .data:001c
+0f:6aa9 SCD_Cmd01_Param10_CommandStream_Voice1_Phrase04
+0f:6aa9 .data:0016
+0f:6abf SCD_Cmd01_Param10_CommandStream_Voice1_Phrase05
+0f:6abf .data:001d
+
+0f:6adc SCD_Cmd01_Param10_CommandStream_Voice2_Setup
+0f:6adc .data:0011
+0f:6aed SCD_Cmd01_Param10_CommandStream_Voice2_PhraseCallLoop
+0f:6aed .data:001b:3
+0f:6b08 SCD_Cmd01_Param10_CommandStream_Voice2_Phrase01
+0f:6b08 .data:004d
+0f:6b55 SCD_Cmd01_Param10_CommandStream_Voice2_Phrase02
+0f:6b55 .data:0049
+
+0f:6b9e SCD_Cmd01_Param10_CommandStream_Voice3_Setup
+0f:6b9e .data:000d
+0f:6bab SCD_Cmd01_Param10_CommandStream_Voice3_PhraseCallLoop
+0f:6bab .data:001b:3
+0f:6bc6 SCD_Cmd01_Param10_CommandStream_Voice3_Phrase01
+0f:6bc6 .data:0016
+0f:6bdc SCD_Cmd01_Param10_CommandStream_Voice3_Phrase02
+0f:6bdc .data:002b
+0f:6c07 SCD_Cmd01_Param10_CommandStream_Voice3_Phrase03
+0f:6c07 .data:002b
+0f:6c32 SCD_Cmd01_Param10_CommandStream_Voice3_Phrase04
+0f:6c32 .data:0019
+0f:6c4b SCD_Cmd01_Param10_CommandStream_Voice3_Phrase05
+0f:6c4b .data:000e
+
+0f:6c59 SCD_Cmd01_Param11_CommandStream_Voice1_Setup
+0f:6c59 .data:0011
+0f:6c6a SCD_Cmd01_Param11_CommandStream_Voice1_Phrase01
+0f:6c6a .data:000d
+
+0f:6c77 SCD_Cmd01_Param11_CommandStream_Voice2_Setup
+0f:6c77 .data:0011
+0f:6c88 SCD_Cmd01_Param11_CommandStream_Voice2_Phrase01
+0f:6c88 .data:0012
+
+0f:6c9a SCD_Cmd01_Param11_CommandStream_Voice3_Setup
+0f:6c9a .data:000d
+0f:6ca7 SCD_Cmd01_Param11_CommandStream_Voice3_Phrase01
+0f:6ca7 .data:000c
+
+0f:6cb3 SCD_Cmd01_Param12_CommandStream_Voice1_Setup
+0f:6cb3 .data:0011
+0f:6cc4 SCD_Cmd01_Param12_CommandStream_Voice1_Phrase01
+0f:6cc4 .data:000a
+0f:6cce SCD_Cmd01_Param12_CommandStream_Voice2_Setup
+0f:6cce .data:0011
+0f:6cdf SCD_Cmd01_Param12_CommandStream_Voice2_Phrase01
+0f:6cdf .data:000b
+0f:6cea SCD_Cmd01_Param12_CommandStream_Voice3_Setup
+0f:6cea .data:000d
+0f:6cf7 SCD_Cmd01_Param12_CommandStream_Voice3_Phrase01
+0f:6cf7 .data:0007
+
+0f:6cfe SCD_Cmd01_Param13_CommandStream_Voice1_Setup
+0f:6cfe .data:0011
+0f:6d0f SCD_Cmd01_Param13_CommandStream_Voice1_Phrase01
+0f:6d0f .data:0005
+0f:6d14 SCD_Cmd01_Param13_CommandStream_Voice2_Setup
+0f:6d14 .data:0011
+0f:6d25 SCD_Cmd01_Param13_CommandStream_Voice2_Phrase01
+0f:6d25 .data:0006
+0f:6d2b SCD_Cmd01_Param13_CommandStream_Voice3_Setup
+0f:6d2b .data:000d
+0f:6d38 SCD_Cmd01_Param13_CommandStream_Voice3_Phrase01
+0f:6d38 .data:0004
+
+0f:6d3c SCD_Cmd01_CommandStream_DeactivateVoice_Setup
+0f:6d3c .data:0002
+0f:6d3e SCD_Cmd01_CommandStream_DeactivateVoice_Phrase01
+0f:6d3e .data:0001
+
+0f:6d3f Unused_VibratoTestTrack_CommandStream_Voice
+0f:6d3f .data:006d
+
+0f:6dac SCD_Cmd01_Param14_CommandStream_Voice4
+0f:6dac .data:0021
+
+0f:6dcd Unused_UnknownTrack_CommandStream_Voice1_Setup
+0f:6dcd .data:0012
+0f:6ddf Unused_UnknownTrack_CommandStream_Voice1_Phrase01
+0f:6ddf .data:002b
+
+0f:6e0a Unused_UnknownTrack_CommandStream_Voice2_Setup
+0f:6e0a .data:000d
+0f:6e17 Unused_UnknownTrack_CommandStream_Voice2_Phrase01
+0f:6e17 .data:008a
+
+0f:6ea1 Unused_UnknownTrack_CommandStream_Voice3_Setup
+0f:6ea1 .data:000d
+0f:6eae Unused_UnknownTrack_CommandStream_Voice3_Phrase01
+0f:6eae .data:0030
+
+0f:6ede Unused_UnknownTrack_CommandStream_Voice4_Setup
+0f:6ede .data:000c
+0f:6eea Unused_UnknownTrack_CommandStream_Voice4_Phrase01
+0f:6eea .data:0010
+
+0f:6efa SCD_Cmd02_VoiceCommandStreamPointerRow_Param00
+0f:6efa .data:0008:2
+0f:6f02 SCD_Cmd02_VoiceCommandStreamPointerRow_Param01
+0f:6f02 .data:0008:2
+0f:6f0a SCD_Cmd02_VoiceCommandStreamPointerRow_Param02
+0f:6f0a .data:0008:2
+0f:6f12 SCD_Cmd02_VoiceCommandStreamPointerRow_Param03
+0f:6f12 .data:0008:2
+0f:6f1a SCD_Cmd02_VoiceCommandStreamPointerRow_Param04
+0f:6f1a .data:0008:2
+0f:6f22 SCD_Cmd02_VoiceCommandStreamPointerRow_Param05
+0f:6f22 .data:0008:2
+0f:6f2a SCD_Cmd02_VoiceCommandStreamPointerRow_Param06
+0f:6f2a .data:0008:2
+0f:6f32 SCD_Cmd02_VoiceCommandStreamPointerRow_Param07
+0f:6f32 .data:0008:2
+0f:6f3a SCD_Cmd02_VoiceCommandStreamPointerRow_Param08
+0f:6f3a .data:0008:2
+0f:6f42 SCD_Cmd02_VoiceCommandStreamPointerRow_Param09
+0f:6f42 .data:0008:2
+0f:6f4a SCD_Cmd02_VoiceCommandStreamPointerRow_Param0A
+0f:6f4a .data:0008:2
+0f:6f52 SCD_Cmd02_VoiceCommandStreamPointerRow_Param0B
+0f:6f52 .data:0008:2
+0f:6f5a SCD_Cmd02_VoiceCommandStreamPointerRow_Param0C
+0f:6f5a .data:0008:2
+0f:6f62 SCD_Cmd02_VoiceCommandStreamPointerRow_Param0D
+0f:6f62 .data:0008:2
+0f:6f6a SCD_Cmd02_VoiceCommandStreamPointerRow_Param0E
+0f:6f6a .data:0008:2
+0f:6f72 SCD_Cmd02_VoiceCommandStreamPointerRow_Param0F
+0f:6f72 .data:0008:2
+0f:6f7a SCD_Cmd02_VoiceCommandStreamPointerRow_Param10
+0f:6f7a .data:0008:2
+
+0f:70f0 SCD_Cmd02_Param00_CommandStream_Voice1_Setup
+0f:70f0 .data:000b
+0f:70fb SCD_Cmd02_Param00_CommandStream_Voice1_Phrase01
+0f:70fb .data:0005
+0f:7100 SCD_Cmd02_Param00_CommandStream_Voice2_Setup
+0f:7100 .data:000b
+0f:710b SCD_Cmd02_Param00_CommandStream_Voice2_Phrase01
+0f:710b .data:0005
+
+0f:7110 SCD_Cmd02_Param01_CommandStream_Voice1_Setup
+0f:7110 .data:000b
+0f:711b SCD_Cmd02_Param01_CommandStream_Voice1_Phrase01
+0f:711b .data:0006
+0f:7121 SCD_Cmd02_Param01_CommandStream_Voice2_Setup
+0f:7121 .data:000b
+0f:712c SCD_Cmd02_Param01_CommandStream_Voice2_Phrase01
+0f:712c .data:0006
+
+0f:7132 SCD_Cmd02_Param02_CommandStream_Voice2_Setup
+0f:7132 .data:000b
+0f:713d SCD_Cmd02_Param02_CommandStream_Voice2_Phrase01
+0f:713d .data:000e
+
+0f:714b SCD_Cmd02_Param03_CommandStream_Voice2_Setup
+0f:714b .data:000b
+0f:7156 SCD_Cmd02_Param03_CommandStream_Voice2_Phrase01
+0f:7156 .data:0011
+
+0f:7167 SCD_Cmd02_Param04_CommandStream_Voice2_Setup
+0f:7167 .data:000b
+0f:7172 SCD_Cmd02_Param04_CommandStream_Voice2_Phrase01
+0f:7172 .data:0011
+
+0f:70b3 SCD_Cmd02_Param05_CommandStream_Voice2_Setup
+0f:70b3 .data:000b
+0f:70be SCD_Cmd02_Param05_CommandStream_Voice2_Phrase01
+0f:70be .data:000e
+0f:70cc SCD_Cmd02_Param05_CommandStream_Voice4_Setup
+0f:70cc .data:0006
+0f:70d2 SCD_Cmd02_Param05_CommandStream_Voice4_Phrase01
+0f:70d2 .data:001e
+
+0f:70a0 SCD_Cmd02_Param06_CommandStream_Voice4_Setup
+0f:70a0 .data:0008
+0f:70a8 SCD_Cmd02_Param06_CommandStream_Voice4_Phrase01
+0f:70a8 .data:000b
+
+0f:707a SCD_Cmd02_Param07_CommandStream_Voice4_Setup
+0f:707a .data:0006
+0f:7080 SCD_Cmd02_Param07_CommandStream_Voice4_Phrase01
+0f:7080 .data:0020
+
+0f:705f SCD_Cmd02_Param08_CommandStream_Voice2_Setup
+0f:705f .data:000b
+0f:706a SCD_Cmd02_Param08_CommandStream_Voice2_Phrase01
+0f:706a .data:0010
+
+0f:703d SCD_Cmd02_Param09_CommandStream_Voice2_Setup
+0f:703d .data:000b
+0f:7048 SCD_Cmd02_Param09_CommandStream_Voice2_Phrase01
+0f:7048 .data:0017
+
+0f:701b SCD_Cmd02_Param0A_CommandStream_Voice2_Setup
+0f:701b .data:000b
+0f:7026 SCD_Cmd02_Param0A_CommandStream_Voice2_Phrase01
+0f:7026 .data:0017
+
+0f:700e SCD_Cmd02_Param0B_CommandStream_Voice2_Setup
+0f:700e .data:000b
+0f:7019 SCD_Cmd02_Param0B_CommandStream_Voice2_Phrase01
+0f:7019 .data:0002
+
+0f:6fef SCD_Cmd02_Param0C_CommandStream_Voice2_Setup
+0f:6fef .data:000d
+0f:6ffc SCD_Cmd02_Param0C_CommandStream_Voice2_Phrase01
+0f:6ffc .data:0012
+
+0f:6fd2 SCD_Cmd02_Param0D_CommandStream_Voice2_Setup
+0f:6fd2 .data:000b
+0f:6fdd SCD_Cmd02_Param0D_CommandStream_Voice2_Phrase01
+0f:6fdd .data:0012
+
+0f:6fb4 SCD_Cmd02_Param0E_CommandStream_Voice2_Setup
+0f:6fb4 .data:000b
+0f:6fbf SCD_Cmd02_Param0E_CommandStream_Voice2_Phrase01
+0f:6fbf .data:0013
+
+0f:6f82 SCD_Cmd02_Param10_CommandStream_Voice2_Setup
+0f:6f82 .data:000b
+0f:6f8d SCD_Cmd02_Param10_CommandStream_Voice2_Phrase01
+0f:6f8d .data:0027
+
+0f:7183 .padding:0e7d

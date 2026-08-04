@@ -387,7 +387,70 @@ flowchart TD
 
 ## 3) Graphics & Sprite Rendering System
 
-## 4) Sound Engine (Bank ???)
+## 4) Sound Engine (Bank 0f core)
+
+The mapped sound driver is centered in bank 0f and exposed through two call points in bank 00:
+
+- `CallSoundCommandDispatcher` (`00:03b6`) forwards command ID + parameter into bank 0f dispatcher logic.
+- `CallSoundEngineUpdateRoutine` (`00:03ee`) runs the per-frame audio update routine.
+
+At bank 0f entry:
+
+- `Jumpvector_SoundCommandDispatcher` (`0f:4000`) -> `SoundCommandDispatcher`.
+- `Jumpvector_SoundEngineUpdateRoutine` (`0f:4003`) -> `SoundEngine_FrameTickRoutine`.
+
+### Runtime model
+
+1. Game logic calls the dispatcher with command byte in `A` and parameter in `C`.
+2. The dispatcher routes command IDs through `SoundCommandDispatcher_Cmd00To07PointerTable` (`0f:4080`) to top-level Cmd handlers.
+3. `Cmd01`/`Cmd02` load a 4-pointer row (voice 1..4 command streams) and update the active-voice mask.
+4. `SoundEngine_FrameTickRoutine` iterates active voices each frame.
+5. For each voice, `SoundEngine_ProcessVoiceTick` either:
+- consumes a new commandstream byte sequence when countdown reaches zero, or
+- advances runtime counters and applies staged NRxx writes.
+
+### Commandstream format
+
+- `F0`-`FF`: F-group opcode dispatch via `SoundEngine_FOpcodeDispatchPointerTable` (`0f:40b0`).
+- `E0`-`EF`: E-group opcode dispatch via `SoundEngine_EOpcodeDispatchPointerTable` (`0f:4090`).
+- Other bytes: timed event bytes handled by voice-data path.
+
+F-group payload widths (bytes consumed after the opcode):
+
+- `0-byte`: `F2`, `F3`, `F8`, `FD`, `FF`
+- `1-byte`: `F1`, `F4`, `F6`, `F7`, `F9`, `FA`, `FB`, `FC`
+- `2-byte`: `F0`, `FE`
+- `3-byte`: `F5`
+
+Timed event byte behavior:
+
+- Low nibble selects base duration index from `SoundEngine_NoteLengthTickTable`.
+- Consecutive `Cx` bytes extend/accumulate duration in the same event chain.
+- High nibble contributes the per-event pitch/control selection; `Dx` takes the special rest/sentinel path in the data decoder.
+
+### Control-flow opcodes used by streams
+
+- `EE`: jump to inline 16-bit pointer (unconditional branch), handled by `SoundEngine_OpEE_Cmd16_JumpToInlinePointer`.
+- `FE`: call inline 16-bit pointer (pushes return context), handled by `SoundEngine_OpFE_Cmd26_CallInlinePointer`.
+- `EF`: return from `FE` subroutine; if no return context exists, deactivate/stop voice, handled by `SoundEngine_OpEF_Cmd17_ReturnOrStopVoice`.
+- `F1` / `F2`: counted loop start/end pair (`SoundEngine_OpF1_Cmd19_SetLoopCounterAndBranchPointer` / `SoundEngine_OpF2_Cmd1A_DecrementLoopCounterAndBranch`).
+
+### Setup opcodes seen at stream heads
+
+- `F0`: timbre/trigger payload setup (`SoundEngine_OpF0_SetTimbreAndTrigger`).
+- `F4`: pitch-base low-byte setup (`SoundEngine_OpF4_SetPitchBaseLowByte`).
+- `F5`: pitch-offset gate/step payload setup (`SoundEngine_OpF5_SetPitchOffsetGateAndStep`).
+- `F6`: pitch-base high-byte setup (`SoundEngine_OpF6_SetPitchBaseHighByte`).
+- `F7`: volume setup (`SoundEngine_OpF7_SetVoiceVolumeFromNibble`).
+- `F9`: phase accumulator setup (`SoundEngine_OpF9_SetPhaseAccumulatorByte`).
+- `FA`: voice-rate setup (`SoundEngine_OpFA_SetVoiceRateFromPackedNibbles`).
+- `FB`: stereo panning setup (`SoundEngine_OpFB_SetVoicePanningByte`).
+- `FC`: frequency low-byte setup (`SoundEngine_OpFC_SetFrequencyLowByte`).
+- `FD`: shared advance/continue opcode (`SoundEngine_OpEB_EC_F3_F8_FD_FF_Consume1ByteAndContinue`).
+- `E0`-`E8`: set voice-control low nibble to immediate opcode nibble (`SoundEngine_OpE0ToE8_SetVoiceControlLowNibble`).
+- `E9`: increment voice-control low nibble up to `08` (`SoundEngine_OpE9_IncrementVoiceControlLowNibbleTo08`).
+- `EA`: decrement voice-control low nibble down to `00` (`SoundEngine_OpEA_DecrementVoiceControlLowNibbleTo00`).
+- `ED`: group attenuation setup from opcode low nibble (`SoundEngine_OpED_SetGroupAttenuationFromNibble`).
 
 ## 5) Save-Slot RAM Region Structure
 

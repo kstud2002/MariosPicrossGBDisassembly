@@ -454,11 +454,11 @@ GS00_StatePhase_00_TitleScreenInit::
     call GS00_TickMarioBlinkAnimation             ; $501d: $cd $25 $54
     ld c, $00                                     ; $5020: $0e $00
     ld a, $01                                     ; $5022: $3e $01
-    call CallSoundEffectDispatcher                ; $5024: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $5024: $cd $b6 $03
     call WaitForScanline40OrDelay                 ; $5027: $cd $99 $03
     ld c, $0a                                     ; $502a: $0e $0a
     ld a, $01                                     ; $502c: $3e $01
-    call CallSoundEffectDispatcher                ; $502e: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $502e: $cd $b6 $03
     call EnableLCDFromShadow                      ; $5031: $cd $a2 $04
     call EnsureSGBMaskFreezeDisabled              ; $5034: $cd $a5 $1f
     ld b, $03                                     ; $5037: $06 $03
@@ -487,7 +487,7 @@ GS00_StatePhase_01_TitleScreenIdle::
 
     ld c, $03                                     ; $5060: $0e $03
     ld a, $02                                     ; $5062: $3e $02
-    call CallSoundEffectDispatcher                ; $5064: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $5064: $cd $b6 $03
     ld a, $01                                     ; $5067: $3e $01
     ld [rGS00_TitleSGBXRayBorderFlag], a          ; $5069: $ea $47 $d8
     jr .CheckAdvanceInputAOrStart                 ; $506c: $18 $04
@@ -503,7 +503,7 @@ GS00_StatePhase_01_TitleScreenIdle::
 
     ld c, $03                                     ; $5078: $0e $03
     ld a, $02                                     ; $507a: $3e $02
-    call CallSoundEffectDispatcher                ; $507c: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $507c: $cd $b6 $03
     ld hl, rStatePhase_Current                    ; $507f: $21 $35 $d6
     inc [hl]                                      ; $5082: $34
     ret                                           ; $5083: $c9
@@ -513,14 +513,14 @@ GS00_StatePhase_02_TitleScreenTransition::
     ld bc, $003c                                  ; $5084: $01 $3c $00
     call DelayFramesByBC                          ; $5087: $cd $fa $05
     ld a, $05                                     ; $508a: $3e $05
-    call CallSoundEffectDispatcher                ; $508c: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $508c: $cd $b6 $03
     ld c, $00                                     ; $508f: $0e $00
     ld a, $01                                     ; $5091: $3e $01
-    call CallSoundEffectDispatcher                ; $5093: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $5093: $cd $b6 $03
     call WaitForScanline40OrDelay                 ; $5096: $cd $99 $03
     ld c, $00                                     ; $5099: $0e $00
     ld a, $01                                     ; $509b: $3e $01
-    call CallSoundEffectDispatcher                ; $509d: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $509d: $cd $b6 $03
     call EnsureSGBMaskFreezeEnabled               ; $50a0: $cd $87 $1f
     ld a, [rIsSuperGameBoyMode]                   ; $50a3: $fa $3d $c3
     and a                                         ; $50a6: $a7
@@ -812,18 +812,18 @@ GS00_StatePhase_03_ContinueSavedPuzzlePromptAndRoute::
 
     ld c, $03                                     ; $52f7: $0e $03
     ld a, $02                                     ; $52f9: $3e $02
-    call CallSoundEffectDispatcher                ; $52fb: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $52fb: $cd $b6 $03
     ld bc, $003c                                  ; $52fe: $01 $3c $00
     call DelayFramesByBC                          ; $5301: $cd $fa $05
     ld a, $05                                     ; $5304: $3e $05
-    call CallSoundEffectDispatcher                ; $5306: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $5306: $cd $b6 $03
     ld c, $00                                     ; $5309: $0e $00
     ld a, $01                                     ; $530b: $3e $01
-    call CallSoundEffectDispatcher                ; $530d: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $530d: $cd $b6 $03
     call WaitForScanline40OrDelay                 ; $5310: $cd $99 $03
     ld c, $00                                     ; $5313: $0e $00
     ld a, $01                                     ; $5315: $3e $01
-    call CallSoundEffectDispatcher                ; $5317: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $5317: $cd $b6 $03
     ld a, [rContinueSavedGameFlowMode_Unsure]     ; $531a: $fa $a2 $ac
     cp $02                                        ; $531d: $fe $02
     jr nz, .CheckContinueFlowModeTimeTrialForPromptFadeOut; $531f: $20 $0a
@@ -926,18 +926,18 @@ GS00_StatePhase_04_PostSaveReturnToTitlePrompt::
 
     ld c, $03                                     ; $53e7: $0e $03
     ld a, $02                                     ; $53e9: $3e $02
-    call CallSoundEffectDispatcher                ; $53eb: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $53eb: $cd $b6 $03
     ld bc, $003c                                  ; $53ee: $01 $3c $00
     call DelayFramesByBC                          ; $53f1: $cd $fa $05
     ld a, $05                                     ; $53f4: $3e $05
-    call CallSoundEffectDispatcher                ; $53f6: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $53f6: $cd $b6 $03
     ld c, $00                                     ; $53f9: $0e $00
     ld a, $01                                     ; $53fb: $3e $01
-    call CallSoundEffectDispatcher                ; $53fd: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $53fd: $cd $b6 $03
     call WaitForScanline40OrDelay                 ; $5400: $cd $99 $03
     ld c, $00                                     ; $5403: $0e $00
     ld a, $01                                     ; $5405: $3e $01
-    call CallSoundEffectDispatcher                ; $5407: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $5407: $cd $b6 $03
     ld b, $03                                     ; $540a: $06 $03
     ld hl, $472f                                  ; $540c: $21 $2f $47
     ld c, $11                                     ; $540f: $0e $11

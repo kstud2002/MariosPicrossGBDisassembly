@@ -210,7 +210,7 @@ GameInitEntryPoint::
     xor a                                         ; $01e9: $af
     ld [rSGBPacketTransferBusyFlag], a            ; $01ea: $ea $3e $c3
     ld a, $00                                     ; $01ed: $3e $00
-    call CallSoundEffectDispatcher                ; $01ef: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $01ef: $cd $b6 $03
     ld a, $40                                     ; $01f2: $3e $40
     ld [rSubtractiveRNGModulus], a                ; $01f4: $ea $69 $cd
     call InitializeSubtractiveRNGState            ; $01f7: $cd $31 $06
@@ -227,14 +227,14 @@ GameInitEntryPoint::
     ld bc, $003c                                  ; $0217: $01 $3c $00
     call BusyWaitDelayByBC                        ; $021a: $cd $03 $06
     ld a, $05                                     ; $021d: $3e $05
-    call CallSoundEffectDispatcher                ; $021f: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $021f: $cd $b6 $03
     ld c, $00                                     ; $0222: $0e $00
     ld a, $01                                     ; $0224: $3e $01
-    call CallSoundEffectDispatcher                ; $0226: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $0226: $cd $b6 $03
     call WaitForScanline40OrDelay                 ; $0229: $cd $99 $03
     ld c, $00                                     ; $022c: $0e $00
     ld a, $01                                     ; $022e: $3e $01
-    call CallSoundEffectDispatcher                ; $0230: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $0230: $cd $b6 $03
     xor a                                         ; $0233: $af
     ld [rBGPShadow], a                            ; $0234: $ea $2f $c3
     ld [rOBP0Shadow], a                           ; $0237: $ea $30 $c3
@@ -288,7 +288,7 @@ GameInitEntryPoint::
     xor a                                         ; $029d: $af
     ld [rSGBPacketTransferBusyFlag], a            ; $029e: $ea $3e $c3
     ld a, $00                                     ; $02a1: $3e $00
-    call CallSoundEffectDispatcher                ; $02a3: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $02a3: $cd $b6 $03
     ld a, $40                                     ; $02a6: $3e $40
     ld [rSubtractiveRNGModulus], a                ; $02a8: $ea $69 $cd
     call InitializeSubtractiveRNGState            ; $02ab: $cd $31 $06
@@ -504,7 +504,7 @@ WaitForScanline40OrDelay::
     ret                                           ; $03b5: $c9
 
 
-CallSoundEffectDispatcher::
+CallSoundCommandDispatcher::
     push af                                       ; $03b6: $f5
     push bc                                       ; $03b7: $c5
     push de                                       ; $03b8: $d5
@@ -3317,7 +3317,7 @@ RunEraseDataConfirmationPrompt::
 .HandleCancelSelection:
     ld c, $04                                     ; $1d95: $0e $04
     ld a, $02                                     ; $1d97: $3e $02
-    call CallSoundEffectDispatcher                ; $1d99: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $1d99: $cd $b6 $03
     ld bc, $003c                                  ; $1d9c: $01 $3c $00
     call BusyWaitDelayByBC                        ; $1d9f: $cd $03 $06
     call ClearShadowOAMBuffer                     ; $1da2: $cd $b6 $05
@@ -3335,7 +3335,7 @@ RunEraseDataConfirmationPrompt::
 .HandleConfirmSelection:
     ld c, $03                                     ; $1db9: $0e $03
     ld a, $02                                     ; $1dbb: $3e $02
-    call CallSoundEffectDispatcher                ; $1dbd: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $1dbd: $cd $b6 $03
     ld bc, $003c                                  ; $1dc0: $01 $3c $00
     call BusyWaitDelayByBC                        ; $1dc3: $cd $03 $06
     call ClearShadowOAMBuffer                     ; $1dc6: $cd $b6 $05
@@ -3858,7 +3858,7 @@ GameState_06_HowToPlay_PhaseDispatcher::
 
     ld c, $04                                     ; $2124: $0e $04
     ld a, $02                                     ; $2126: $3e $02
-    call CallSoundEffectDispatcher                ; $2128: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $2128: $cd $b6 $03
 
 .SetCancelAndReturnToMenuPhase:
     ld a, $2a                                     ; $212b: $3e $2a
@@ -4077,11 +4077,11 @@ GS06_StatePhase_00_Init::
     call $7beb                                    ; $2256: $cd $eb $7b
     ld c, $00                                     ; $2259: $0e $00
     ld a, $01                                     ; $225b: $3e $01
-    call CallSoundEffectDispatcher                ; $225d: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $225d: $cd $b6 $03
     call WaitForScanline40OrDelay                 ; $2260: $cd $99 $03
     ld c, $02                                     ; $2263: $0e $02
     ld a, $01                                     ; $2265: $3e $01
-    call CallSoundEffectDispatcher                ; $2267: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $2267: $cd $b6 $03
     call EnableLCDFromShadow                      ; $226a: $cd $a2 $04
     ld b, $03                                     ; $226d: $06 $03
     ld hl, $46a0                                  ; $226f: $21 $a0 $46
@@ -4974,7 +4974,7 @@ GS06_StatePhase_24_WithHintPopUp_Demonstration::
 
     ld c, $0a                                     ; $29b0: $0e $0a
     ld a, $02                                     ; $29b2: $3e $02
-    call CallSoundEffectDispatcher                ; $29b4: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $29b4: $cd $b6 $03
     ld a, [rHintPopupSelection]                   ; $29b7: $fa $33 $d8
     xor $01                                       ; $29ba: $ee $01
     ld [rHintPopupSelection], a                   ; $29bc: $ea $33 $d8
@@ -5161,14 +5161,14 @@ GS06_StatePhase_2a_CancelAndReturnToMenu::
     ld bc, $003c                                  ; $2b24: $01 $3c $00
     call DelayFramesByBC                          ; $2b27: $cd $fa $05
     ld a, $05                                     ; $2b2a: $3e $05
-    call CallSoundEffectDispatcher                ; $2b2c: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $2b2c: $cd $b6 $03
     ld c, $00                                     ; $2b2f: $0e $00
     ld a, $01                                     ; $2b31: $3e $01
-    call CallSoundEffectDispatcher                ; $2b33: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $2b33: $cd $b6 $03
     call WaitForScanline40OrDelay                 ; $2b36: $cd $99 $03
     ld c, $00                                     ; $2b39: $0e $00
     ld a, $01                                     ; $2b3b: $3e $01
-    call CallSoundEffectDispatcher                ; $2b3d: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $2b3d: $cd $b6 $03
     ld b, $03                                     ; $2b40: $06 $03
     ld hl, $46ab                                  ; $2b42: $21 $ab $46
     ld c, $01                                     ; $2b45: $0e $01
@@ -5513,7 +5513,7 @@ GS06_WaitForAdvanceOrSkip_PollLoop::
 
     ld c, $03                                     ; $2fd0: $0e $03
     ld a, $02                                     ; $2fd2: $3e $02
-    call CallSoundEffectDispatcher                ; $2fd4: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $2fd4: $cd $b6 $03
     ret                                           ; $2fd7: $c9
 
 
@@ -5525,7 +5525,7 @@ GS06_WaitForAdvanceOrSkip_PollLoop::
     ld [rGS06_HowToPlaySkipRequestedFlag], a      ; $2fdf: $ea $37 $d8
     ld c, $04                                     ; $2fe2: $0e $04
     ld a, $02                                     ; $2fe4: $3e $02
-    call CallSoundEffectDispatcher                ; $2fe6: $cd $b6 $03
+    call CallSoundCommandDispatcher               ; $2fe6: $cd $b6 $03
     ret                                           ; $2fe9: $c9
 
 
