@@ -332,7 +332,7 @@ SoundCommandDispatcher_Cmd02_ResetVoicesAndStartLowerVoiceGroup::
     pop bc                                        ; $430f: $c1
     ld a, c                                       ; $4310: $79
     ld [rSoundLowerVoiceGroupCommandIndex], a     ; $4311: $ea $01 $dd
-    ld de, SCD_Cmd02_VoiceCommandStreamPointerRow_Param00; $4314: $11 $fa $6e
+    ld de, SCD_Cmd02_VoiceCommandStreamPointerRow_Param00_Unused; $4314: $11 $fa $6e
     cp $ff                                        ; $4317: $fe $ff
     jr nz, .LoadLowerVoiceScriptPointerRow        ; $4319: $20 $07
 
@@ -3121,103 +3121,103 @@ Unused_UnknownTrack_CommandStream_Voice4_Setup::
 Unused_UnknownTrack_CommandStream_Voice4_Phrase01::
     db $f1, $0c, $08, $d5, $05, $d5, $05, $08, $d5, $05, $d5, $05, $f2, $ee, $ea, $6e
 
-SCD_Cmd02_VoiceCommandStreamPointerRow_Param00::
+SCD_Cmd02_VoiceCommandStreamPointerRow_Param00_Unused::
     db $f0, $70
     db $00, $71
     db $7c, $4a
     db $7c, $4a
 
-SCD_Cmd02_VoiceCommandStreamPointerRow_Param01::
+SCD_Cmd02_VoiceCommandStreamPointerRow_Param01_Unused::
     db $10, $71
     db $21, $71
     db $7c, $4a
     db $7c, $4a
 
-SCD_Cmd02_VoiceCommandStreamPointerRow_Param02::
+SCD_Cmd02_VoiceCommandStreamPointerRow_Param02_HintRouletteFinishSFX::
     db $7c, $4a
     db $32, $71
     db $7c, $4a
     db $7c, $4a
 
-SCD_Cmd02_VoiceCommandStreamPointerRow_Param03::
+SCD_Cmd02_VoiceCommandStreamPointerRow_Param03_ConfirmSFX::
     db $7c, $4a
     db $4b, $71
     db $7c, $4a
     db $7c, $4a
 
-SCD_Cmd02_VoiceCommandStreamPointerRow_Param04::
+SCD_Cmd02_VoiceCommandStreamPointerRow_Param04_CancelSFX::
     db $7c, $4a
     db $67, $71
     db $7c, $4a
     db $7c, $4a
 
-SCD_Cmd02_VoiceCommandStreamPointerRow_Param05::
+SCD_Cmd02_VoiceCommandStreamPointerRow_Param05_FillCellSFX::
     db $7c, $4a
     db $b3, $70
     db $7c, $4a
     db $cc, $70
 
-SCD_Cmd02_VoiceCommandStreamPointerRow_Param06::
+SCD_Cmd02_VoiceCommandStreamPointerRow_Param06_FillStepTickSFX::
     db $7c, $4a
     db $7c, $4a
     db $7c, $4a
     db $a0, $70
 
-SCD_Cmd02_VoiceCommandStreamPointerRow_Param07::
+SCD_Cmd02_VoiceCommandStreamPointerRow_Param07_ResetCellSFX::
     db $7c, $4a
     db $7c, $4a
     db $7c, $4a
     db $7a, $70
 
-SCD_Cmd02_VoiceCommandStreamPointerRow_Param08::
+SCD_Cmd02_VoiceCommandStreamPointerRow_Param08_LevelSelect_AdvanceLevelSFX::
     db $7c, $4a
     db $5f, $70
     db $7c, $4a
     db $7c, $4a
 
-SCD_Cmd02_VoiceCommandStreamPointerRow_Param09::
+SCD_Cmd02_VoiceCommandStreamPointerRow_Param09_MistakeSFX::
     db $7c, $4a
     db $3d, $70
     db $7c, $4a
     db $7c, $4a
 
-SCD_Cmd02_VoiceCommandStreamPointerRow_Param0A::
+SCD_Cmd02_VoiceCommandStreamPointerRow_Param0A_MenuCursorMoveSFX::
     db $7c, $4a
     db $1b, $70
     db $7c, $4a
     db $7c, $4a
 
-SCD_Cmd02_VoiceCommandStreamPointerRow_Param0B::
+SCD_Cmd02_VoiceCommandStreamPointerRow_Param0B_PuzzleCursorMoveSFX::
     db $7c, $4a
     db $0e, $70
     db $7c, $4a
     db $7c, $4a
 
-SCD_Cmd02_VoiceCommandStreamPointerRow_Param0C::
+SCD_Cmd02_VoiceCommandStreamPointerRow_Param0C_MarkXSFX::
     db $7c, $4a
     db $ef, $6f
     db $7c, $4a
     db $7c, $4a
 
-SCD_Cmd02_VoiceCommandStreamPointerRow_Param0D::
+SCD_Cmd02_VoiceCommandStreamPointerRow_Param0D_LowTimeWarningSFX::
     db $7c, $4a
     db $d2, $6f
     db $7c, $4a
     db $7c, $4a
 
-SCD_Cmd02_VoiceCommandStreamPointerRow_Param0E::
+SCD_Cmd02_VoiceCommandStreamPointerRow_Param0E_Unused::
     db $7c, $4a
     db $b4, $6f
     db $7c, $4a
     db $7c, $4a
 
-SCD_Cmd02_VoiceCommandStreamPointerRow_Param0F::
+SCD_Cmd02_VoiceCommandStreamPointerRow_Param0F_Unused::
     db $80, $67
     db $a1, $67
     db $7c, $4a
     db $7c, $4a
 
-SCD_Cmd02_VoiceCommandStreamPointerRow_Param10::
+SCD_Cmd02_VoiceCommandStreamPointerRow_Param10_OpenPauseMenuSFX::
     db $7c, $4a
     db $82, $6f
     db $7c, $4a

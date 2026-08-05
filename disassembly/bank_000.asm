@@ -193,7 +193,7 @@ GameInitEntryPoint::
     xor a                                         ; $01cd: $af
     ld [hl+], a                                   ; $01ce: $22
     ld [hl+], a                                   ; $01cf: $22
-    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $01d0: $ea $50 $c3
+    ld [rUseLCDCInterruptForSoundEngineUpdateFlag], a; $01d0: $ea $50 $c3
     ld a, $01                                     ; $01d3: $3e $01
     ldh [rIE], a                                  ; $01d5: $e0 $ff
     ldh [rIE], a                                  ; $01d7: $e0 $ff
@@ -265,7 +265,7 @@ GameInitEntryPoint::
     ld [rCommandQueueReservedOrUnused], a         ; $0277: $ea $17 $c3
     ld [rLCDCInterruptDispatchIndex], a           ; $027a: $ea $38 $c3
     ld [rVBlankLCDCBit4ForceFlag], a              ; $027d: $ea $3c $c3
-    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $0280: $ea $50 $c3
+    ld [rUseLCDCInterruptForSoundEngineUpdateFlag], a; $0280: $ea $50 $c3
     ld hl, rLCDCShadow                            ; $0283: $21 $2e $c3
     xor a                                         ; $0286: $af
     ld [hl+], a                                   ; $0287: $22
@@ -359,7 +359,7 @@ VBlankInterruptHandler::
 
 
 .MaybeRunSoundEngineUpdate:
-    ld a, [rVBlankSoundEngineUpdateEnabled_Unsure]; $0313: $fa $50 $c3
+    ld a, [rUseLCDCInterruptForSoundEngineUpdateFlag]; $0313: $fa $50 $c3
     and a                                         ; $0316: $a7
     jr nz, .FinalizeAndExit                       ; $0317: $20 $09
 
@@ -1445,7 +1445,7 @@ LCDCInterruptDispatchRoutineAtLY2F_TickAndMaybeRunSoundEngineUpdate::
     ld a, [rLCDCFrameTickCounter]                 ; $0888: $fa $3b $c3
     inc a                                         ; $088b: $3c
     ld [rLCDCFrameTickCounter], a                 ; $088c: $ea $3b $c3
-    ld a, [rVBlankSoundEngineUpdateEnabled_Unsure]; $088f: $fa $50 $c3
+    ld a, [rUseLCDCInterruptForSoundEngineUpdateFlag]; $088f: $fa $50 $c3
     and a                                         ; $0892: $a7
     ret z                                         ; $0893: $c8
 
@@ -1464,7 +1464,7 @@ LCDCInterruptDispatchRoutineAtLY2F_MaybeRunSoundEngineUpdate::
     cp $2f                                        ; $08a0: $fe $2f
     jr nz, .Return                                ; $08a2: $20 $0e
 
-    ld a, [rVBlankSoundEngineUpdateEnabled_Unsure]; $08a4: $fa $50 $c3
+    ld a, [rUseLCDCInterruptForSoundEngineUpdateFlag]; $08a4: $fa $50 $c3
     and a                                         ; $08a7: $a7
     ret z                                         ; $08a8: $c8
 
@@ -4020,14 +4020,14 @@ GS06_StatePhase_00_Init::
     call BankedTileCopy                           ; $21be: $cd $e4 $04
     ld a, $2f                                     ; $21c1: $3e $2f
     ld [rLYCShadow], a                            ; $21c3: $ea $36 $c3
-    ld hl, rLCDCInterruptControlFlags_Unsure      ; $21c6: $21 $37 $c3
+    ld hl, rLCDCInterruptControlFlags             ; $21c6: $21 $37 $c3
     set 6, [hl]                                   ; $21c9: $cb $f6
     ld hl, rIE                                    ; $21cb: $21 $ff $ff
     set 1, [hl]                                   ; $21ce: $cb $ce
     ld a, $01                                     ; $21d0: $3e $01
     ld [rLCDCInterruptDispatchIndex], a           ; $21d2: $ea $38 $c3
     ld [rVBlankLCDCBit4ForceFlag], a              ; $21d5: $ea $3c $c3
-    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $21d8: $ea $50 $c3
+    ld [rUseLCDCInterruptForSoundEngineUpdateFlag], a; $21d8: $ea $50 $c3
     xor a                                         ; $21db: $af
     ld [rPuzzlePostClearFlowFlag], a              ; $21dc: $ea $05 $d8
     ld [rPuzzleTimerCompletionState], a           ; $21df: $ea $06 $d8
@@ -5175,14 +5175,14 @@ GS06_StatePhase_2a_CancelAndReturnToMenu::
     ld de, $0023                                  ; $2b47: $11 $23 $00
     call PlayScreenTransitionFadeOut              ; $2b4a: $cd $4e $04
     call DisableLCDAtVBlank                       ; $2b4d: $cd $83 $04
-    ld hl, rLCDCInterruptControlFlags_Unsure      ; $2b50: $21 $37 $c3
+    ld hl, rLCDCInterruptControlFlags             ; $2b50: $21 $37 $c3
     res 6, [hl]                                   ; $2b53: $cb $b6
     ld hl, rIE                                    ; $2b55: $21 $ff $ff
     res 1, [hl]                                   ; $2b58: $cb $8e
     xor a                                         ; $2b5a: $af
     ld [rLCDCInterruptDispatchIndex], a           ; $2b5b: $ea $38 $c3
     ld [rVBlankLCDCBit4ForceFlag], a              ; $2b5e: $ea $3c $c3
-    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $2b61: $ea $50 $c3
+    ld [rUseLCDCInterruptForSoundEngineUpdateFlag], a; $2b61: $ea $50 $c3
     xor a                                         ; $2b64: $af
     ld [rStatePhase_Current], a                   ; $2b65: $ea $35 $d6
     ld a, $02                                     ; $2b68: $3e $02

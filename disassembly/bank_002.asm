@@ -418,14 +418,14 @@ GS02_StatePhase_00_GameSelectScreenInit::
     call BankedTileCopy                           ; $434e: $cd $e4 $04
     ld a, $2f                                     ; $4351: $3e $2f
     ld [rLYCShadow], a                            ; $4353: $ea $36 $c3
-    ld hl, rLCDCInterruptControlFlags_Unsure      ; $4356: $21 $37 $c3
+    ld hl, rLCDCInterruptControlFlags             ; $4356: $21 $37 $c3
     set 6, [hl]                                   ; $4359: $cb $f6
     ld hl, rIE                                    ; $435b: $21 $ff $ff
     set 1, [hl]                                   ; $435e: $cb $ce
     ld a, $01                                     ; $4360: $3e $01
     ld [rLCDCInterruptDispatchIndex], a           ; $4362: $ea $38 $c3
     ld [rVBlankLCDCBit4ForceFlag], a              ; $4365: $ea $3c $c3
-    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $4368: $ea $50 $c3
+    ld [rUseLCDCInterruptForSoundEngineUpdateFlag], a; $4368: $ea $50 $c3
     ld a, $02                                     ; $436b: $3e $02
     ld [rMenuCursorRowMaxIndex], a                ; $436d: $ea $3b $d6
     ld a, [rSelectedSaveSlotIndex]                ; $4370: $fa $65 $a0
@@ -510,14 +510,14 @@ GS02_StatePhase_02_ConfirmSelectionTransition::
     ld de, $0063                                  ; $4411: $11 $63 $00
     call PlayScreenTransitionFadeOut              ; $4414: $cd $4e $04
     call DisableLCDAtVBlank                       ; $4417: $cd $83 $04
-    ld hl, rLCDCInterruptControlFlags_Unsure      ; $441a: $21 $37 $c3
+    ld hl, rLCDCInterruptControlFlags             ; $441a: $21 $37 $c3
     res 6, [hl]                                   ; $441d: $cb $b6
     ld hl, rIE                                    ; $441f: $21 $ff $ff
     res 1, [hl]                                   ; $4422: $cb $8e
     xor a                                         ; $4424: $af
     ld [rLCDCInterruptDispatchIndex], a           ; $4425: $ea $38 $c3
     ld [rVBlankLCDCBit4ForceFlag], a              ; $4428: $ea $3c $c3
-    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $442b: $ea $50 $c3
+    ld [rUseLCDCInterruptForSoundEngineUpdateFlag], a; $442b: $ea $50 $c3
     ld a, [rSelectedSaveSlotIndex]                ; $442e: $fa $65 $a0
     ld c, a                                       ; $4431: $4f
     ld b, $00                                     ; $4432: $06 $00
@@ -560,14 +560,14 @@ GS02_StatePhase_03_CancelSelectionTransition::
     ld de, $0063                                  ; $447b: $11 $63 $00
     call PlayScreenTransitionFadeOut              ; $447e: $cd $4e $04
     call DisableLCDAtVBlank                       ; $4481: $cd $83 $04
-    ld hl, rLCDCInterruptControlFlags_Unsure      ; $4484: $21 $37 $c3
+    ld hl, rLCDCInterruptControlFlags             ; $4484: $21 $37 $c3
     res 6, [hl]                                   ; $4487: $cb $b6
     ld hl, rIE                                    ; $4489: $21 $ff $ff
     res 1, [hl]                                   ; $448c: $cb $8e
     xor a                                         ; $448e: $af
     ld [rLCDCInterruptDispatchIndex], a           ; $448f: $ea $38 $c3
     ld [rVBlankLCDCBit4ForceFlag], a              ; $4492: $ea $3c $c3
-    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $4495: $ea $50 $c3
+    ld [rUseLCDCInterruptForSoundEngineUpdateFlag], a; $4495: $ea $50 $c3
     ld a, [rSelectedSaveSlotIndex]                ; $4498: $fa $65 $a0
     ld c, a                                       ; $449b: $4f
     ld b, $00                                     ; $449c: $06 $00

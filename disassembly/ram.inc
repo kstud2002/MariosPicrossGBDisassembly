@@ -32,9 +32,9 @@ DEF rSaveSlot3ModeBGMSelectionIndexEntry4_Unknown EQU $a077
 DEF rSaveSlot1GameSelectCursorRow EQU $a078
 DEF rSaveSlot2GameSelectCursorRow EQU $a079
 DEF rSaveSlot3GameSelectCursorRow EQU $a07a
-DEF rSaveSlot1EasyPicrossPostClearUnlockFlowState_Unsure EQU $a07b
-DEF rSaveSlot2EasyPicrossPostClearUnlockFlowState_Unsure EQU $a07c
-DEF rSaveSlot3EasyPicrossPostClearUnlockFlowState_Unsure EQU $a07d
+DEF rSaveSlot1EasyPicrossPostClearUnlockHandledFlag EQU $a07b
+DEF rSaveSlot2EasyPicrossPostClearUnlockHandledFlag EQU $a07c
+DEF rSaveSlot3EasyPicrossPostClearUnlockHandledFlag EQU $a07d
 DEF rSaveSlot1EasyPicrossClearedPuzzleCount EQU $a07e
 DEF rSaveSlot2EasyPicrossClearedPuzzleCount EQU $a07f
 DEF rSaveSlot3EasyPicrossClearedPuzzleCount EQU $a080
@@ -92,7 +92,7 @@ DEF rSaveSlot2PicrossTimeTrialPuzzleStatusDataTable EQU $aba2
 DEF rSaveSlot3PicrossKinokoCoursePuzzleStatusDataTable EQU $abe2
 DEF rSaveSlot3PicrossStarCoursePuzzleStatusDataTable EQU $ac22
 DEF rSaveSlot3PicrossTimeTrialPuzzleStatusDataTable EQU $ac62
-DEF rContinueSavedGameFlowMode_Unsure EQU $aca2
+DEF rContinueSavedPuzzlePromptRouteMode EQU $aca2
 DEF rSavedPuzzleHintPopupSelection EQU $aca3
 DEF rSavedPuzzleTimerPenaltyStep EQU $aca4
 DEF rSavedPuzzleTimerMinuteOnes EQU $aca5
@@ -154,7 +154,7 @@ DEF rOBP1Shadow EQU $c331
 DEF rSCXShadow EQU $c332
 DEF rSCYShadow EQU $c333
 DEF rLYCShadow EQU $c336
-DEF rLCDCInterruptControlFlags_Unsure EQU $c337
+DEF rLCDCInterruptControlFlags EQU $c337
 DEF rLCDCInterruptDispatchIndex EQU $c338
 DEF rVBlankSyncFlag EQU $c339
 DEF rVBlankFrameCounter EQU $c33a
@@ -165,7 +165,7 @@ DEF rSGBPacketTransferBusyFlag EQU $c33e
 DEF rSGBScreenTransitionPAL_SETPacketBuffer EQU $c340
 DEF rSGBScreenTransitionPAL_SETPacketColorData EQU $c341
 DEF rSGBScreenTransitionPAL_SETPacketControl EQU $c349
-DEF rVBlankSoundEngineUpdateEnabled_Unsure EQU $c350
+DEF rUseLCDCInterruptForSoundEngineUpdateFlag EQU $c350
 DEF rBGTileCopySourceX EQU $c351
 DEF rBGTileCopySourceY EQU $c352
 DEF rBGTileCopyDestX EQU $c353
@@ -222,8 +222,8 @@ DEF rClueRunLengthVerticalBufferField5Base EQU $d7a5
 DEF rClueRunLengthVerticalBufferBuildBase EQU $d7f9
 DEF rPuzzleGridWidth EQU $d800
 DEF rPuzzleGridHeight EQU $d801
-DEF rPuzzleBit0AndBit1ClearCellCounter_Unsure EQU $d802
-DEF rPuzzleBit1ClearCellCounter_Unsure EQU $d803
+DEF rPuzzleBit0AndBit1ClearCellCounter EQU $d802
+DEF rPuzzleBit1ClearCellCounter EQU $d803
 DEF rPuzzleCellPendingActionMode EQU $d804
 DEF rPuzzlePostClearFlowFlag EQU $d805
 DEF rPuzzleTimerCompletionState EQU $d806

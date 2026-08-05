@@ -652,7 +652,7 @@ GS00_SP02_NonSGBFadeOut::
 
 GS00_SP02_PostFadeOutFlowRouter::
     call DisableLCDAtVBlank                       ; $51b6: $cd $83 $04
-    ld a, [rContinueSavedGameFlowMode_Unsure]     ; $51b9: $fa $a2 $ac
+    ld a, [rContinueSavedPuzzlePromptRouteMode]   ; $51b9: $fa $a2 $ac
     and a                                         ; $51bc: $a7
     jr nz, .AdvanceToContinueSavedGameScreen      ; $51bd: $20 $2f
 
@@ -724,7 +724,7 @@ GS00_StatePhase_03_ContinueSavedPuzzlePromptAndRoute::
     ld [rTilemapToTileDataAddressLookupTableLow], a; $523a: $ea $63 $cd
     ld a, $16                                     ; $523d: $3e $16
     ld [rTilemapToTileDataAddressLookupTableHigh], a; $523f: $ea $64 $cd
-    ld a, [rContinueSavedGameFlowMode_Unsure]     ; $5242: $fa $a2 $ac
+    ld a, [rContinueSavedPuzzlePromptRouteMode]   ; $5242: $fa $a2 $ac
     cp $02                                        ; $5245: $fe $02
     jr nz, .CheckContinueFlowModeTimeTrialForPromptTilemap; $5247: $20 $0a
 
@@ -773,7 +773,7 @@ GS00_StatePhase_03_ContinueSavedPuzzlePromptAndRoute::
     call GS00_RunMessageScriptUntilEnd_NoBankSwitch; $52aa: $cd $1f $54
     call EnableLCDFromShadow                      ; $52ad: $cd $a2 $04
     call EnsureSGBMaskFreezeDisabled              ; $52b0: $cd $a5 $1f
-    ld a, [rContinueSavedGameFlowMode_Unsure]     ; $52b3: $fa $a2 $ac
+    ld a, [rContinueSavedPuzzlePromptRouteMode]   ; $52b3: $fa $a2 $ac
     cp $02                                        ; $52b6: $fe $02
     jr nz, .CheckContinueFlowModeTimeTrialForPromptFadeIn; $52b8: $20 $0a
 
@@ -824,7 +824,7 @@ GS00_StatePhase_03_ContinueSavedPuzzlePromptAndRoute::
     ld c, $00                                     ; $5313: $0e $00
     ld a, $01                                     ; $5315: $3e $01
     call CallSoundCommandDispatcher               ; $5317: $cd $b6 $03
-    ld a, [rContinueSavedGameFlowMode_Unsure]     ; $531a: $fa $a2 $ac
+    ld a, [rContinueSavedPuzzlePromptRouteMode]   ; $531a: $fa $a2 $ac
     cp $02                                        ; $531d: $fe $02
     jr nz, .CheckContinueFlowModeTimeTrialForPromptFadeOut; $531f: $20 $0a
 
@@ -853,7 +853,7 @@ GS00_StatePhase_03_ContinueSavedPuzzlePromptAndRoute::
 
 .FinalizeContinuePromptAndRouteToSavedPuzzleState:
     call DisableLCDAtVBlank                       ; $534b: $cd $83 $04
-    ld a, [rContinueSavedGameFlowMode_Unsure]     ; $534e: $fa $a2 $ac
+    ld a, [rContinueSavedPuzzlePromptRouteMode]   ; $534e: $fa $a2 $ac
     dec a                                         ; $5351: $3d
     ld c, a                                       ; $5352: $4f
     ld b, $00                                     ; $5353: $06 $00

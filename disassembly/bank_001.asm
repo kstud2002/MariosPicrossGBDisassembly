@@ -254,13 +254,13 @@ GS04_StatePhase_04_ReturnFromPuzzleTransitionAndHandleUnlockFlow::
     call CallSoundCommandDispatcher               ; $4514: $cd $b6 $03
     ld a, $2f                                     ; $4517: $3e $2f
     ld [rLYCShadow], a                            ; $4519: $ea $36 $c3
-    ld hl, rLCDCInterruptControlFlags_Unsure      ; $451c: $21 $37 $c3
+    ld hl, rLCDCInterruptControlFlags             ; $451c: $21 $37 $c3
     set 6, [hl]                                   ; $451f: $cb $f6
     ld hl, rIE                                    ; $4521: $21 $ff $ff
     set 1, [hl]                                   ; $4524: $cb $ce
     ld a, $02                                     ; $4526: $3e $02
     ld [rLCDCInterruptDispatchIndex], a           ; $4528: $ea $38 $c3
-    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $452b: $ea $50 $c3
+    ld [rUseLCDCInterruptForSoundEngineUpdateFlag], a; $452b: $ea $50 $c3
     call EnableLCDFromShadow                      ; $452e: $cd $a2 $04
     ld b, $01                                     ; $4531: $06 $01
     ld hl, PlayPicrossCourseSelectFadeInBySelectedCourse_Banked; $4533: $21 $ae $4b
@@ -299,13 +299,13 @@ GS04_StatePhase_04_ReturnFromPuzzleTransitionAndHandleUnlockFlow::
     ld hl, PlayPicrossCourseSelectFadeOutBySelectedCourse_Banked; $4588: $21 $dc $4b
     call SwitchBankToBAndJumpToHL                 ; $458b: $cd $de $05
     call DisableLCDAtVBlank                       ; $458e: $cd $83 $04
-    ld hl, rLCDCInterruptControlFlags_Unsure      ; $4591: $21 $37 $c3
+    ld hl, rLCDCInterruptControlFlags             ; $4591: $21 $37 $c3
     res 6, [hl]                                   ; $4594: $cb $b6
     ld hl, rIE                                    ; $4596: $21 $ff $ff
     res 1, [hl]                                   ; $4599: $cb $8e
     xor a                                         ; $459b: $af
     ld [rLCDCInterruptDispatchIndex], a           ; $459c: $ea $38 $c3
-    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $459f: $ea $50 $c3
+    ld [rUseLCDCInterruptForSoundEngineUpdateFlag], a; $459f: $ea $50 $c3
     ld a, [rSelectedSaveSlotIndex]                ; $45a2: $fa $65 $a0
     ld c, a                                       ; $45a5: $4f
     ld b, $00                                     ; $45a6: $06 $00
@@ -352,13 +352,13 @@ GS04_RunTimeTrialUnlockMessageFlowAndReturnToCourseSelect::
     call CallSoundCommandDispatcher               ; $4603: $cd $b6 $03
     ld a, $2f                                     ; $4606: $3e $2f
     ld [rLYCShadow], a                            ; $4608: $ea $36 $c3
-    ld hl, rLCDCInterruptControlFlags_Unsure      ; $460b: $21 $37 $c3
+    ld hl, rLCDCInterruptControlFlags             ; $460b: $21 $37 $c3
     set 6, [hl]                                   ; $460e: $cb $f6
     ld hl, rIE                                    ; $4610: $21 $ff $ff
     set 1, [hl]                                   ; $4613: $cb $ce
     ld a, $02                                     ; $4615: $3e $02
     ld [rLCDCInterruptDispatchIndex], a           ; $4617: $ea $38 $c3
-    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $461a: $ea $50 $c3
+    ld [rUseLCDCInterruptForSoundEngineUpdateFlag], a; $461a: $ea $50 $c3
     call EnableLCDFromShadow                      ; $461d: $cd $a2 $04
     ld b, $01                                     ; $4620: $06 $01
     ld hl, PlayPicrossCourseSelectFadeInBySelectedCourse_Banked; $4622: $21 $ae $4b
@@ -415,13 +415,13 @@ GS04_RunTimeTrialUnlockMessageFlowAndReturnToCourseSelect::
     ld hl, PlayPicrossCourseSelectFadeOutBySelectedCourse_Banked; $46a9: $21 $dc $4b
     call SwitchBankToBAndJumpToHL                 ; $46ac: $cd $de $05
     call DisableLCDAtVBlank                       ; $46af: $cd $83 $04
-    ld hl, rLCDCInterruptControlFlags_Unsure      ; $46b2: $21 $37 $c3
+    ld hl, rLCDCInterruptControlFlags             ; $46b2: $21 $37 $c3
     res 6, [hl]                                   ; $46b5: $cb $b6
     ld hl, rIE                                    ; $46b7: $21 $ff $ff
     res 1, [hl]                                   ; $46ba: $cb $8e
     xor a                                         ; $46bc: $af
     ld [rLCDCInterruptDispatchIndex], a           ; $46bd: $ea $38 $c3
-    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $46c0: $ea $50 $c3
+    ld [rUseLCDCInterruptForSoundEngineUpdateFlag], a; $46c0: $ea $50 $c3
     ld a, [rSelectedSaveSlotIndex]                ; $46c3: $fa $65 $a0
     ld c, a                                       ; $46c6: $4f
     ld b, $00                                     ; $46c7: $06 $00
@@ -2278,7 +2278,7 @@ GS05_StatePhase_04_TODO::
     ld a, [rSelectedSaveSlotIndex]                ; $53ca: $fa $65 $a0
     ld c, a                                       ; $53cd: $4f
     ld b, $00                                     ; $53ce: $06 $00
-    ld hl, rSaveSlot1EasyPicrossPostClearUnlockFlowState_Unsure; $53d0: $21 $7b $a0
+    ld hl, rSaveSlot1EasyPicrossPostClearUnlockHandledFlag; $53d0: $21 $7b $a0
     add hl, bc                                    ; $53d3: $09
     ld a, [hl]                                    ; $53d4: $7e
     and a                                         ; $53d5: $a7
@@ -2290,7 +2290,7 @@ GS05_StatePhase_04_TODO::
     cp $40                                        ; $53de: $fe $40
     jp nz, GS05_ReturnToIdlePhaseAndRefreshSaveChecksums; $53e0: $c2 $ed $54
 
-    ld hl, rSaveSlot1EasyPicrossPostClearUnlockFlowState_Unsure; $53e3: $21 $7b $a0
+    ld hl, rSaveSlot1EasyPicrossPostClearUnlockHandledFlag; $53e3: $21 $7b $a0
     add hl, bc                                    ; $53e6: $09
     inc [hl]                                      ; $53e7: $34
     ld a, [rSelectedSaveSlotIndex]                ; $53e8: $fa $65 $a0
@@ -2337,13 +2337,13 @@ GS05_StatePhase_04_TODO::
     call CallSoundCommandDispatcher               ; $544d: $cd $b6 $03
     ld a, $2f                                     ; $5450: $3e $2f
     ld [rLYCShadow], a                            ; $5452: $ea $36 $c3
-    ld hl, rLCDCInterruptControlFlags_Unsure      ; $5455: $21 $37 $c3
+    ld hl, rLCDCInterruptControlFlags             ; $5455: $21 $37 $c3
     set 6, [hl]                                   ; $5458: $cb $f6
     ld hl, rIE                                    ; $545a: $21 $ff $ff
     set 1, [hl]                                   ; $545d: $cb $ce
     ld a, $02                                     ; $545f: $3e $02
     ld [rLCDCInterruptDispatchIndex], a           ; $5461: $ea $38 $c3
-    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $5464: $ea $50 $c3
+    ld [rUseLCDCInterruptForSoundEngineUpdateFlag], a; $5464: $ea $50 $c3
     call EnableLCDFromShadow                      ; $5467: $cd $a2 $04
     ld b, $03                                     ; $546a: $06 $03
     ld hl, $46e8                                  ; $546c: $21 $e8 $46
@@ -2383,13 +2383,13 @@ GS05_StatePhase_04_TODO::
     ld de, $0083                                  ; $54c4: $11 $83 $00
     call PlayScreenTransitionFadeOut              ; $54c7: $cd $4e $04
     call DisableLCDAtVBlank                       ; $54ca: $cd $83 $04
-    ld hl, rLCDCInterruptControlFlags_Unsure      ; $54cd: $21 $37 $c3
+    ld hl, rLCDCInterruptControlFlags             ; $54cd: $21 $37 $c3
     res 6, [hl]                                   ; $54d0: $cb $b6
     ld hl, rIE                                    ; $54d2: $21 $ff $ff
     res 1, [hl]                                   ; $54d5: $cb $8e
     xor a                                         ; $54d7: $af
     ld [rLCDCInterruptDispatchIndex], a           ; $54d8: $ea $38 $c3
-    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $54db: $ea $50 $c3
+    ld [rUseLCDCInterruptForSoundEngineUpdateFlag], a; $54db: $ea $50 $c3
     call GS05_SaveEasyPicrossPuzzleSelectCursorForSelectedSaveSlot; $54de: $cd $49 $57
     xor a                                         ; $54e1: $af
     ld [rStatePhase_Current], a                   ; $54e2: $ea $35 $d6
@@ -3645,14 +3645,14 @@ GS08_StatePhase_00_EasyPicrossPuzzleInit::
     call BankedTileCopy                           ; $5dd7: $cd $e4 $04
     ld a, $2f                                     ; $5dda: $3e $2f
     ld [rLYCShadow], a                            ; $5ddc: $ea $36 $c3
-    ld hl, rLCDCInterruptControlFlags_Unsure      ; $5ddf: $21 $37 $c3
+    ld hl, rLCDCInterruptControlFlags             ; $5ddf: $21 $37 $c3
     set 6, [hl]                                   ; $5de2: $cb $f6
     ld hl, rIE                                    ; $5de4: $21 $ff $ff
     set 1, [hl]                                   ; $5de7: $cb $ce
     ld a, $01                                     ; $5de9: $3e $01
     ld [rLCDCInterruptDispatchIndex], a           ; $5deb: $ea $38 $c3
     ld [rVBlankLCDCBit4ForceFlag], a              ; $5dee: $ea $3c $c3
-    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $5df1: $ea $50 $c3
+    ld [rUseLCDCInterruptForSoundEngineUpdateFlag], a; $5df1: $ea $50 $c3
     call BuildClueRunLengthBuffers                ; $5df4: $cd $30 $6f
     call ClearShadowOAMBuffer                     ; $5df7: $cd $b6 $05
     call ResetPuzzleTimerState                    ; $5dfa: $cd $eb $7b
@@ -3749,14 +3749,14 @@ GS08_StatePhase_0b_ContinueSavedPuzzleInitAndOpenPauseMenu::
     call LoadGameBoardTileData                    ; $5eb1: $cd $b9 $69
     ld a, $2f                                     ; $5eb4: $3e $2f
     ld [rLYCShadow], a                            ; $5eb6: $ea $36 $c3
-    ld hl, rLCDCInterruptControlFlags_Unsure      ; $5eb9: $21 $37 $c3
+    ld hl, rLCDCInterruptControlFlags             ; $5eb9: $21 $37 $c3
     set 6, [hl]                                   ; $5ebc: $cb $f6
     ld hl, rIE                                    ; $5ebe: $21 $ff $ff
     set 1, [hl]                                   ; $5ec1: $cb $ce
     ld a, $01                                     ; $5ec3: $3e $01
     ld [rLCDCInterruptDispatchIndex], a           ; $5ec5: $ea $38 $c3
     ld [rVBlankLCDCBit4ForceFlag], a              ; $5ec8: $ea $3c $c3
-    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $5ecb: $ea $50 $c3
+    ld [rUseLCDCInterruptForSoundEngineUpdateFlag], a; $5ecb: $ea $50 $c3
     call BuildClueRunLengthBuffers                ; $5ece: $cd $30 $6f
     call ClearShadowOAMBuffer                     ; $5ed1: $cd $b6 $05
     call RenderPuzzleTimerDigits                  ; $5ed4: $cd $04 $7c
@@ -4156,14 +4156,14 @@ GS08_StatePhase_04_ConfirmExitAndReturnToEasyPicrossSelect::
 
 .FinalizeExitTransitionToGS05:
     call DisableLCDAtVBlank                       ; $61da: $cd $83 $04
-    ld hl, rLCDCInterruptControlFlags_Unsure      ; $61dd: $21 $37 $c3
+    ld hl, rLCDCInterruptControlFlags             ; $61dd: $21 $37 $c3
     res 6, [hl]                                   ; $61e0: $cb $b6
     ld hl, rIE                                    ; $61e2: $21 $ff $ff
     res 1, [hl]                                   ; $61e5: $cb $8e
     xor a                                         ; $61e7: $af
     ld [rLCDCInterruptDispatchIndex], a           ; $61e8: $ea $38 $c3
     ld [rVBlankLCDCBit4ForceFlag], a              ; $61eb: $ea $3c $c3
-    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $61ee: $ea $50 $c3
+    ld [rUseLCDCInterruptForSoundEngineUpdateFlag], a; $61ee: $ea $50 $c3
     ld a, $04                                     ; $61f1: $3e $04
     ld [rStatePhase_Current], a                   ; $61f3: $ea $35 $d6
     ld a, $05                                     ; $61f6: $3e $05
@@ -4261,7 +4261,7 @@ GS08_StatePhase_07_PauseMenuSavePrompt::
 .HandlePauseMenuSavePromptConfirmAndBeginExitFlow:
     call SaveCurrentPuzzleProgressToSaveData      ; $6291: $cd $14 $1c
     ld a, $01                                     ; $6294: $3e $01
-    ld [rContinueSavedGameFlowMode_Unsure], a     ; $6296: $ea $a2 $ac
+    ld [rContinueSavedPuzzlePromptRouteMode], a   ; $6296: $ea $a2 $ac
     ld c, $03                                     ; $6299: $0e $03
     ld a, $02                                     ; $629b: $3e $02
     call CallSoundCommandDispatcher               ; $629d: $cd $b6 $03
@@ -4307,14 +4307,14 @@ GS08_StatePhase_07_PauseMenuSavePrompt::
 
 .FinalizeSavePromptTransitionToGS00:
     call DisableLCDAtVBlank                       ; $62f2: $cd $83 $04
-    ld hl, rLCDCInterruptControlFlags_Unsure      ; $62f5: $21 $37 $c3
+    ld hl, rLCDCInterruptControlFlags             ; $62f5: $21 $37 $c3
     res 6, [hl]                                   ; $62f8: $cb $b6
     ld hl, rIE                                    ; $62fa: $21 $ff $ff
     res 1, [hl]                                   ; $62fd: $cb $8e
     xor a                                         ; $62ff: $af
     ld [rLCDCInterruptDispatchIndex], a           ; $6300: $ea $38 $c3
     ld [rVBlankLCDCBit4ForceFlag], a              ; $6303: $ea $3c $c3
-    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $6306: $ea $50 $c3
+    ld [rUseLCDCInterruptForSoundEngineUpdateFlag], a; $6306: $ea $50 $c3
     ld c, a                                       ; $6309: $4f
     sla a                                         ; $630a: $cb $27
     sla a                                         ; $630c: $cb $27
@@ -4412,7 +4412,7 @@ GS08_StatePhase_09_PauseMenuGiveUpPrompt::
     ld a, $04                                     ; $63b7: $3e $04
     ld [rStatePhase_Current], a                   ; $63b9: $ea $35 $d6
     xor a                                         ; $63bc: $af
-    ld [rContinueSavedGameFlowMode_Unsure], a     ; $63bd: $ea $a2 $ac
+    ld [rContinueSavedPuzzlePromptRouteMode], a   ; $63bd: $ea $a2 $ac
     jp RefreshSaveValidationChecksumsAndMirrors   ; $63c0: $c3 $1f $1b
 
 
@@ -4441,7 +4441,7 @@ GS08_StatePhase_0a_ClosePauseMenuAndResumeGameplay::
     ld a, $03                                     ; $63f0: $3e $03
     ld [rStatePhase_Current], a                   ; $63f2: $ea $35 $d6
     xor a                                         ; $63f5: $af
-    ld [rContinueSavedGameFlowMode_Unsure], a     ; $63f6: $ea $a2 $ac
+    ld [rContinueSavedPuzzlePromptRouteMode], a   ; $63f6: $ea $a2 $ac
     jp RefreshSaveValidationChecksumsAndMirrors   ; $63f9: $c3 $1f $1b
 
 
@@ -4501,14 +4501,14 @@ GS09_StatePhase_00_TimeTrialPuzzleInit::
     ld [rPuzzleTimerPenaltyStep], a               ; $6443: $ea $11 $d8
     ld a, $2f                                     ; $6446: $3e $2f
     ld [rLYCShadow], a                            ; $6448: $ea $36 $c3
-    ld hl, rLCDCInterruptControlFlags_Unsure      ; $644b: $21 $37 $c3
+    ld hl, rLCDCInterruptControlFlags             ; $644b: $21 $37 $c3
     set 6, [hl]                                   ; $644e: $cb $f6
     ld hl, rIE                                    ; $6450: $21 $ff $ff
     set 1, [hl]                                   ; $6453: $cb $ce
     ld a, $01                                     ; $6455: $3e $01
     ld [rLCDCInterruptDispatchIndex], a           ; $6457: $ea $38 $c3
     ld [rVBlankLCDCBit4ForceFlag], a              ; $645a: $ea $3c $c3
-    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $645d: $ea $50 $c3
+    ld [rUseLCDCInterruptForSoundEngineUpdateFlag], a; $645d: $ea $50 $c3
     call BuildClueRunLengthBuffers                ; $6460: $cd $30 $6f
     call RecomputePuzzleCellBitSetCounters        ; $6463: $cd $cb $7d
     call ClearShadowOAMBuffer                     ; $6466: $cd $b6 $05
@@ -4562,14 +4562,14 @@ GS09_StatePhase_09_ContinueSavedPuzzleInitAndOpenPauseMenu::
     call LoadGameBoardTileData                    ; $64cf: $cd $b9 $69
     ld a, $2f                                     ; $64d2: $3e $2f
     ld [rLYCShadow], a                            ; $64d4: $ea $36 $c3
-    ld hl, rLCDCInterruptControlFlags_Unsure      ; $64d7: $21 $37 $c3
+    ld hl, rLCDCInterruptControlFlags             ; $64d7: $21 $37 $c3
     set 6, [hl]                                   ; $64da: $cb $f6
     ld hl, rIE                                    ; $64dc: $21 $ff $ff
     set 1, [hl]                                   ; $64df: $cb $ce
     ld a, $01                                     ; $64e1: $3e $01
     ld [rLCDCInterruptDispatchIndex], a           ; $64e3: $ea $38 $c3
     ld [rVBlankLCDCBit4ForceFlag], a              ; $64e6: $ea $3c $c3
-    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $64e9: $ea $50 $c3
+    ld [rUseLCDCInterruptForSoundEngineUpdateFlag], a; $64e9: $ea $50 $c3
     call BuildClueRunLengthBuffers                ; $64ec: $cd $30 $6f
     call ClearShadowOAMBuffer                     ; $64ef: $cd $b6 $05
     call RenderPuzzleTimerDigits                  ; $64f2: $cd $04 $7c
@@ -4745,14 +4745,14 @@ GS09_StatePhase_02_ConfirmExitAndReturnToTimeTrialRankingScreen::
     ld de, $0013                                  ; $664f: $11 $13 $00
     call PlayScreenTransitionFadeOut              ; $6652: $cd $4e $04
     call DisableLCDAtVBlank                       ; $6655: $cd $83 $04
-    ld hl, rLCDCInterruptControlFlags_Unsure      ; $6658: $21 $37 $c3
+    ld hl, rLCDCInterruptControlFlags             ; $6658: $21 $37 $c3
     res 6, [hl]                                   ; $665b: $cb $b6
     ld hl, rIE                                    ; $665d: $21 $ff $ff
     res 1, [hl]                                   ; $6660: $cb $8e
     xor a                                         ; $6662: $af
     ld [rLCDCInterruptDispatchIndex], a           ; $6663: $ea $38 $c3
     ld [rVBlankLCDCBit4ForceFlag], a              ; $6666: $ea $3c $c3
-    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $6669: $ea $50 $c3
+    ld [rUseLCDCInterruptForSoundEngineUpdateFlag], a; $6669: $ea $50 $c3
     ld a, $04                                     ; $666c: $3e $04
     ld [rStatePhase_Current], a                   ; $666e: $ea $35 $d6
     ld a, $07                                     ; $6671: $3e $07
@@ -4850,7 +4850,7 @@ GS09_StatePhase_05_PauseMenuSavePrompt::
 .HandlePauseMenuSavePromptConfirmAndBeginExitFlow:
     call SaveCurrentPuzzleProgressToSaveData      ; $670c: $cd $14 $1c
     ld a, $03                                     ; $670f: $3e $03
-    ld [rContinueSavedGameFlowMode_Unsure], a     ; $6711: $ea $a2 $ac
+    ld [rContinueSavedPuzzlePromptRouteMode], a   ; $6711: $ea $a2 $ac
     ld c, $03                                     ; $6714: $0e $03
     ld a, $02                                     ; $6716: $3e $02
     call CallSoundCommandDispatcher               ; $6718: $cd $b6 $03
@@ -4871,14 +4871,14 @@ GS09_StatePhase_05_PauseMenuSavePrompt::
     ld de, $0013                                  ; $673e: $11 $13 $00
     call PlayScreenTransitionFadeOut              ; $6741: $cd $4e $04
     call DisableLCDAtVBlank                       ; $6744: $cd $83 $04
-    ld hl, rLCDCInterruptControlFlags_Unsure      ; $6747: $21 $37 $c3
+    ld hl, rLCDCInterruptControlFlags             ; $6747: $21 $37 $c3
     res 6, [hl]                                   ; $674a: $cb $b6
     ld hl, rIE                                    ; $674c: $21 $ff $ff
     res 1, [hl]                                   ; $674f: $cb $8e
     xor a                                         ; $6751: $af
     ld [rLCDCInterruptDispatchIndex], a           ; $6752: $ea $38 $c3
     ld [rVBlankLCDCBit4ForceFlag], a              ; $6755: $ea $3c $c3
-    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $6758: $ea $50 $c3
+    ld [rUseLCDCInterruptForSoundEngineUpdateFlag], a; $6758: $ea $50 $c3
     ld a, [rSelectedSaveSlotIndex]                ; $675b: $fa $65 $a0
     ld c, a                                       ; $675e: $4f
     sla a                                         ; $675f: $cb $27
@@ -4961,7 +4961,7 @@ GS09_StatePhase_07_PauseMenuGiveUpPrompt::
     ld a, $02                                     ; $67ea: $3e $02
     ld [rStatePhase_Current], a                   ; $67ec: $ea $35 $d6
     xor a                                         ; $67ef: $af
-    ld [rContinueSavedGameFlowMode_Unsure], a     ; $67f0: $ea $a2 $ac
+    ld [rContinueSavedPuzzlePromptRouteMode], a   ; $67f0: $ea $a2 $ac
     jp RefreshSaveValidationChecksumsAndMirrors   ; $67f3: $c3 $1f $1b
 
 
@@ -4990,7 +4990,7 @@ GS09_StatePhase_08_ClosePauseMenuAndResumeGameplay::
     ld a, $01                                     ; $6823: $3e $01
     ld [rStatePhase_Current], a                   ; $6825: $ea $35 $d6
     xor a                                         ; $6828: $af
-    ld [rContinueSavedGameFlowMode_Unsure], a     ; $6829: $ea $a2 $ac
+    ld [rContinueSavedPuzzlePromptRouteMode], a   ; $6829: $ea $a2 $ac
     jp RefreshSaveValidationChecksumsAndMirrors   ; $682c: $c3 $1f $1b
 
 
@@ -5103,14 +5103,14 @@ GS0A_StatePhase_00_PicrossPuzzleInit::
     call BankedTileCopy                           ; $68c6: $cd $e4 $04
     ld a, $2f                                     ; $68c9: $3e $2f
     ld [rLYCShadow], a                            ; $68cb: $ea $36 $c3
-    ld hl, rLCDCInterruptControlFlags_Unsure      ; $68ce: $21 $37 $c3
+    ld hl, rLCDCInterruptControlFlags             ; $68ce: $21 $37 $c3
     set 6, [hl]                                   ; $68d1: $cb $f6
     ld hl, rIE                                    ; $68d3: $21 $ff $ff
     set 1, [hl]                                   ; $68d6: $cb $ce
     ld a, $01                                     ; $68d8: $3e $01
     ld [rLCDCInterruptDispatchIndex], a           ; $68da: $ea $38 $c3
     ld [rVBlankLCDCBit4ForceFlag], a              ; $68dd: $ea $3c $c3
-    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $68e0: $ea $50 $c3
+    ld [rUseLCDCInterruptForSoundEngineUpdateFlag], a; $68e0: $ea $50 $c3
     call BuildClueRunLengthBuffers                ; $68e3: $cd $30 $6f
     call ClearShadowOAMBuffer                     ; $68e6: $cd $b6 $05
     call ResetPuzzleTimerState                    ; $68e9: $cd $eb $7b
@@ -5147,14 +5147,14 @@ GS0A_StatePhase_0b_ContinueSavedPuzzleInitAndOpenPauseMenu::
     call BankedTileCopy                           ; $6933: $cd $e4 $04
     ld a, $2f                                     ; $6936: $3e $2f
     ld [rLYCShadow], a                            ; $6938: $ea $36 $c3
-    ld hl, rLCDCInterruptControlFlags_Unsure      ; $693b: $21 $37 $c3
+    ld hl, rLCDCInterruptControlFlags             ; $693b: $21 $37 $c3
     set 6, [hl]                                   ; $693e: $cb $f6
     ld hl, rIE                                    ; $6940: $21 $ff $ff
     set 1, [hl]                                   ; $6943: $cb $ce
     ld a, $01                                     ; $6945: $3e $01
     ld [rLCDCInterruptDispatchIndex], a           ; $6947: $ea $38 $c3
     ld [rVBlankLCDCBit4ForceFlag], a              ; $694a: $ea $3c $c3
-    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $694d: $ea $50 $c3
+    ld [rUseLCDCInterruptForSoundEngineUpdateFlag], a; $694d: $ea $50 $c3
     call BuildClueRunLengthBuffers                ; $6950: $cd $30 $6f
     call ClearShadowOAMBuffer                     ; $6953: $cd $b6 $05
     xor a                                         ; $6956: $af
@@ -5689,14 +5689,14 @@ GS0A_StatePhase_04_ConfirmExitAndReturnToPicrossCoursePuzzleSelect::
     ld de, $0013                                  ; $6d2f: $11 $13 $00
     call PlayScreenTransitionFadeOut              ; $6d32: $cd $4e $04
     call DisableLCDAtVBlank                       ; $6d35: $cd $83 $04
-    ld hl, rLCDCInterruptControlFlags_Unsure      ; $6d38: $21 $37 $c3
+    ld hl, rLCDCInterruptControlFlags             ; $6d38: $21 $37 $c3
     res 6, [hl]                                   ; $6d3b: $cb $b6
     ld hl, rIE                                    ; $6d3d: $21 $ff $ff
     res 1, [hl]                                   ; $6d40: $cb $8e
     xor a                                         ; $6d42: $af
     ld [rLCDCInterruptDispatchIndex], a           ; $6d43: $ea $38 $c3
     ld [rVBlankLCDCBit4ForceFlag], a              ; $6d46: $ea $3c $c3
-    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $6d49: $ea $50 $c3
+    ld [rUseLCDCInterruptForSoundEngineUpdateFlag], a; $6d49: $ea $50 $c3
     ld a, $04                                     ; $6d4c: $3e $04
     ld [rStatePhase_Current], a                   ; $6d4e: $ea $35 $d6
     ld a, $04                                     ; $6d51: $3e $04
@@ -5799,7 +5799,7 @@ GS0A_StatePhase_07_PauseMenuSavePrompt::
 .HandlePauseMenuSavePromptConfirmAndBeginExitFlow:
     call SaveCurrentPuzzleProgressToSaveData      ; $6df5: $cd $14 $1c
     ld a, $02                                     ; $6df8: $3e $02
-    ld [rContinueSavedGameFlowMode_Unsure], a     ; $6dfa: $ea $a2 $ac
+    ld [rContinueSavedPuzzlePromptRouteMode], a   ; $6dfa: $ea $a2 $ac
     ld c, $03                                     ; $6dfd: $0e $03
     ld a, $02                                     ; $6dff: $3e $02
     call CallSoundCommandDispatcher               ; $6e01: $cd $b6 $03
@@ -5820,14 +5820,14 @@ GS0A_StatePhase_07_PauseMenuSavePrompt::
     ld de, $0013                                  ; $6e27: $11 $13 $00
     call PlayScreenTransitionFadeOut              ; $6e2a: $cd $4e $04
     call DisableLCDAtVBlank                       ; $6e2d: $cd $83 $04
-    ld hl, rLCDCInterruptControlFlags_Unsure      ; $6e30: $21 $37 $c3
+    ld hl, rLCDCInterruptControlFlags             ; $6e30: $21 $37 $c3
     res 6, [hl]                                   ; $6e33: $cb $b6
     ld hl, rIE                                    ; $6e35: $21 $ff $ff
     res 1, [hl]                                   ; $6e38: $cb $8e
     xor a                                         ; $6e3a: $af
     ld [rLCDCInterruptDispatchIndex], a           ; $6e3b: $ea $38 $c3
     ld [rVBlankLCDCBit4ForceFlag], a              ; $6e3e: $ea $3c $c3
-    ld [rVBlankSoundEngineUpdateEnabled_Unsure], a; $6e41: $ea $50 $c3
+    ld [rUseLCDCInterruptForSoundEngineUpdateFlag], a; $6e41: $ea $50 $c3
     ld a, [rSelectedSaveSlotIndex]                ; $6e44: $fa $65 $a0
     ld c, a                                       ; $6e47: $4f
     ld b, $00                                     ; $6e48: $06 $00
@@ -5918,7 +5918,7 @@ GS0A_StatePhase_09_PauseMenuGiveUpPrompt::
     ld a, $04                                     ; $6ee3: $3e $04
     ld [rStatePhase_Current], a                   ; $6ee5: $ea $35 $d6
     xor a                                         ; $6ee8: $af
-    ld [rContinueSavedGameFlowMode_Unsure], a     ; $6ee9: $ea $a2 $ac
+    ld [rContinueSavedPuzzlePromptRouteMode], a   ; $6ee9: $ea $a2 $ac
     jp RefreshSaveValidationChecksumsAndMirrors   ; $6eec: $c3 $1f $1b
 
 
@@ -5951,7 +5951,7 @@ GS0A_StatePhase_0a_ClosePauseMenuAndResumeGameplay::
     ld a, $03                                     ; $6f24: $3e $03
     ld [rStatePhase_Current], a                   ; $6f26: $ea $35 $d6
     xor a                                         ; $6f29: $af
-    ld [rContinueSavedGameFlowMode_Unsure], a     ; $6f2a: $ea $a2 $ac
+    ld [rContinueSavedPuzzlePromptRouteMode], a   ; $6f2a: $ea $a2 $ac
     jp RefreshSaveValidationChecksumsAndMirrors   ; $6f2d: $c3 $1f $1b
 
 
@@ -6792,14 +6792,14 @@ ApplyFillNoPenaltyPath::
     bit 0, [hl]                                   ; $739f: $cb $46
     jr z, .QueueFillNoPenaltyEffects              ; $73a1: $28 $07
 
-    ld a, [rPuzzleBit0AndBit1ClearCellCounter_Unsure]; $73a3: $fa $02 $d8
+    ld a, [rPuzzleBit0AndBit1ClearCellCounter]    ; $73a3: $fa $02 $d8
     dec a                                         ; $73a6: $3d
-    ld [rPuzzleBit0AndBit1ClearCellCounter_Unsure], a; $73a7: $ea $02 $d8
+    ld [rPuzzleBit0AndBit1ClearCellCounter], a    ; $73a7: $ea $02 $d8
 
 .QueueFillNoPenaltyEffects:
-    ld a, [rPuzzleBit1ClearCellCounter_Unsure]    ; $73aa: $fa $03 $d8
+    ld a, [rPuzzleBit1ClearCellCounter]           ; $73aa: $fa $03 $d8
     dec a                                         ; $73ad: $3d
-    ld [rPuzzleBit1ClearCellCounter_Unsure], a    ; $73ae: $ea $03 $d8
+    ld [rPuzzleBit1ClearCellCounter], a           ; $73ae: $ea $03 $d8
     set 1, [hl]                                   ; $73b1: $cb $ce
     res 2, [hl]                                   ; $73b3: $cb $96
     ld a, [rPendingCellEffectDelay]               ; $73b5: $fa $22 $d8
@@ -6869,14 +6869,14 @@ ProcessPuzzleCellActionInput_ApplyMarkXAction::
     bit 0, [hl]                                   ; $7426: $cb $46
     jr z, .IncrementMarkedCellCounter             ; $7428: $28 $07
 
-    ld a, [rPuzzleBit0AndBit1ClearCellCounter_Unsure]; $742a: $fa $02 $d8
+    ld a, [rPuzzleBit0AndBit1ClearCellCounter]    ; $742a: $fa $02 $d8
     inc a                                         ; $742d: $3c
-    ld [rPuzzleBit0AndBit1ClearCellCounter_Unsure], a; $742e: $ea $02 $d8
+    ld [rPuzzleBit0AndBit1ClearCellCounter], a    ; $742e: $ea $02 $d8
 
 .IncrementMarkedCellCounter:
-    ld a, [rPuzzleBit1ClearCellCounter_Unsure]    ; $7431: $fa $03 $d8
+    ld a, [rPuzzleBit1ClearCellCounter]           ; $7431: $fa $03 $d8
     inc a                                         ; $7434: $3c
-    ld [rPuzzleBit1ClearCellCounter_Unsure], a    ; $7435: $ea $03 $d8
+    ld [rPuzzleBit1ClearCellCounter], a           ; $7435: $ea $03 $d8
 
 .ApplyMarkXBits:
     res 1, [hl]                                   ; $7438: $cb $8e
@@ -6942,14 +6942,14 @@ ProcessPuzzleCellActionInput_ClearCellState::
     bit 0, [hl]                                   ; $74a2: $cb $46
     jr z, .IncrementClearedCellCounter            ; $74a4: $28 $07
 
-    ld a, [rPuzzleBit0AndBit1ClearCellCounter_Unsure]; $74a6: $fa $02 $d8
+    ld a, [rPuzzleBit0AndBit1ClearCellCounter]    ; $74a6: $fa $02 $d8
     inc a                                         ; $74a9: $3c
-    ld [rPuzzleBit0AndBit1ClearCellCounter_Unsure], a; $74aa: $ea $02 $d8
+    ld [rPuzzleBit0AndBit1ClearCellCounter], a    ; $74aa: $ea $02 $d8
 
 .IncrementClearedCellCounter:
-    ld a, [rPuzzleBit1ClearCellCounter_Unsure]    ; $74ad: $fa $03 $d8
+    ld a, [rPuzzleBit1ClearCellCounter]           ; $74ad: $fa $03 $d8
     inc a                                         ; $74b0: $3c
-    ld [rPuzzleBit1ClearCellCounter_Unsure], a    ; $74b1: $ea $03 $d8
+    ld [rPuzzleBit1ClearCellCounter], a           ; $74b1: $ea $03 $d8
 
 .ClearCellMarkBits:
     res 1, [hl]                                   ; $74b4: $cb $8e
@@ -7146,8 +7146,8 @@ PrepareBGTileCopyFromCellEffectParams::
 
 
 FinalizePuzzleClearAndSetPostClearFlowFlag::
-    ld a, [rPuzzleBit1ClearCellCounter_Unsure]    ; $75f6: $fa $03 $d8
-    ld hl, rPuzzleBit0AndBit1ClearCellCounter_Unsure; $75f9: $21 $02 $d8
+    ld a, [rPuzzleBit1ClearCellCounter]           ; $75f6: $fa $03 $d8
+    ld hl, rPuzzleBit0AndBit1ClearCellCounter     ; $75f9: $21 $02 $d8
     or [hl]                                       ; $75fc: $b6
     ret nz                                        ; $75fd: $c0
 
@@ -8414,9 +8414,9 @@ RecomputePuzzleCellBitSetCounters::
     jr nz, .AdjustCountersForBit1SetCellsLoop     ; $7df3: $20 $f0
 
     ld a, e                                       ; $7df5: $7b
-    ld [rPuzzleBit1ClearCellCounter_Unsure], a    ; $7df6: $ea $03 $d8
+    ld [rPuzzleBit1ClearCellCounter], a           ; $7df6: $ea $03 $d8
     ld a, d                                       ; $7df9: $7a
-    ld [rPuzzleBit0AndBit1ClearCellCounter_Unsure], a; $7dfa: $ea $02 $d8
+    ld [rPuzzleBit0AndBit1ClearCellCounter], a    ; $7dfa: $ea $02 $d8
     ret                                           ; $7dfd: $c9
 
 

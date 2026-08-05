@@ -4,7 +4,34 @@ Based on currently mapped symbols in `Mario's Picross (USA, Europe) (SGB Enhance
 
 ## 1) Main Game Loop & Interrupts
 
+At a high level, runtime is frame-driven: game logic advances in a repeating loop, while
+interrupt-time work coordinates display-safe updates and frame pacing. The active game
+state/phase variables select which handler runs each frame, and those handlers update
+input-driven state, timers, puzzle/menu logic, and queued rendering/audio requests.
+
+Mapped RAM labels indicate a standard split between mainline state progression and
+interrupt-coordinated synchronization:
+
+- Mainline state context is tracked through bytes such as `rGameState_Current` and
+	`rStatePhase_Current`.
+- Frame synchronization is tracked via `rVBlankSyncFlag`, `rVBlankFrameCounter`, and
+	`rLCDCFrameTickCounter`.
+- Buffered rendering writes use shadow state (for example `rShadowOAMWriteCursor`) that
+	is consumed/applied during safe timing windows.
+- Audio update cadence is integrated with the frame cycle through the sound dispatcher and
+	per-frame update routine, with LCDC-assisted scheduling controlled by
+	`rUseLCDCInterruptForSoundEngineUpdateFlag`.
+
 ### VBlank interrupt
+
+Broadly, the VBlank interrupt acts as the frame boundary and safe transfer window. Based on
+mapped symbols and observed call structure, its responsibilities include:
+
+- Advancing frame-sync flags/counters used by the main loop wait-and-step pattern.
+- Applying buffered video-facing state (for example OAM/palette/register shadow values)
+	during VBlank-safe timing.
+- Coordinating per-frame audio timing with the sound engine update path.
+- Supporting SGB/LCDC timing-sensitive operations when those flows are active.
 
 ## 2) State Flow
 
@@ -387,6 +414,10 @@ flowchart TD
 
 ## 3) Graphics & Sprite Rendering System
 
+### CopyOAMSpriteById
+
+`CopyOAMSpriteById` (`00:20ce`) is a shared sprite blit helper used widely by UI and gameplay code. It takes a sprite ID in `A`, uses that ID to look up a pointer in a bank-03 sprite pointer table (`03:6c63`), then copies one or more 4-byte OAM entries into shadow OAM at `c000 + rShadowOAMWriteCursor`. For each entry, it applies the call-site position offsets (`B` added to X, `C` added to Y), writes tile/attribute bytes unchanged, stops on `$ff`, and finally stores the updated shadow OAM cursor.
+
 ## 4) Sound Engine (Bank 0f core)
 
 The mapped sound driver is centered in bank 0f and exposed through two call points in bank 00:
@@ -459,15 +490,15 @@ The save-related region is centered in the `a000`-`ba07` address space and is sp
 | Address / Range | Size | Key symbols | Purpose |
 |---|---:|---|---|
 | a000 | 1 | rSaveDataPrimaryBlockStart | Start of primary save-data block. |
-| a001-a002 | 2 | rPuzzleOrderTableCursor, rPuzzleOrderTableStart | Puzzle-order table metadata. |
-| a003-a03e | 0x3c | TODO | Unmapped bytes in primary save block (TODO). |
-| a03f | 1 | rSaveDataTimeTrialRankingEntriesInsertAddressBias | Bias/base byte used by GS07 name-entry commit math when targeting ranking entries. |
+| a001-a002 | 2 | rPuzzleOrderTableCursor, rPuzzleOrderTableStart | Puzzle-order table cursor + start pointer label. |
+| a003-a03e | 0x3c | rPuzzleOrderTableStart (continuation) | Interior bytes of the 64-byte puzzle-order table (initialized/shuffled from bank 02 at 02:5267/02:5274). |
+| a03f | 1 | rSaveDataTimeTrialRankingEntriesInsertAddressBias | Address-bias anchor used by GS07 name-entry commit address math (`base + 7 * rankPos`); this is an anchor constant, not a separately updated gameplay field. |
 | a042-a064 | 0x23 | rSaveDataTimeTrialRankingEntries, rSaveDataTimeTrialRankingEntriesShiftSourceEnd, rSaveDataTimeTrialRankingEntriesShiftDestEnd | Time Trial ranking table in save data (5 entries x 7 bytes: MMSS + 3-char name), plus helper endpoints used by ranking-entry shifting. |
 | a065 | 1 | rSelectedSaveSlotIndex | Active save-slot index used by GS01/GS04/GS05 logic. |
 | a066-a068 | 3 | rSaveSlotXPuzzleActionRuleIndex_Unused | Per-slot puzzle action rule bytes used by puzzle-action routing logic; appears unused in normal gameplay flow (0/1 allow routing, >=2 blocks cell-action handling). |
 | a069-a077 | 0x0f | rSaveSlotXEasyPicrossBGMSelectionIndex, rSaveSlotXPicrossKinokoBGMSelectionIndex, rSaveSlotXPicrossStarBGMSelectionIndex, rSaveSlotXTimeTrialBGMSelectionIndex, rSaveSlotXModeBGMSelectionIndexEntry4_Unknown | Per-slot BGM selection index entries (5 bytes per save slot: Easy Picross, Picross Kinoko, Picross Star, Time Trial, unknown entry4). |
 | a078-a07a | 3 | rSaveSlotXGameSelectCursorRow | Per-slot game-select cursor row. |
-| a07b-a07d | 3 | rSaveSlotXEasyPicrossPostClearUnlockFlowState_Unsure | Per-slot Easy Picross post-clear unlock-flow state bytes (observed in GS05). |
+| a07b-a07d | 3 | rSaveSlotXEasyPicrossPostClearUnlockHandledFlag | Per-slot Easy Picross post-clear unlock-handled flags (observed in GS05 return/unlock flow). |
 | a07e-a080 | 3 | rSaveSlotXEasyPicrossClearedPuzzleCount | Per-slot Easy Picross cleared-count values. |
 | a081-a086 | 6 | rSaveSlotXEasyPicrossPuzzleSelectCursorColumn/Row | Per-slot Easy Picross puzzle-select cursor positions. |
 | a087-a386 | 0x300 | rSaveSlotXEasyPicrossPuzzleTimeDataRecordTable | Easy Picross per-slot time records (3 slots, each 64 entries x 3 bytes). |
@@ -477,13 +508,13 @@ The save-related region is centered in the `a000`-`ba07` address space and is sp
 | a390-a3a1 | 0x12 | rSaveSlotXPicross{Course}PuzzleSelectCursorColumn/Row | Per-slot + per-course GS04 cursor caches (Kinoko, Star, TimeTrial). |
 | a3a2-aa61 | 0x6c0 | rSaveSlotXPicross{Course}PuzzleTimeDataRecordTable | GS04 time tables (3 slots x 3 course rows x 64 entries x 3 bytes). |
 | aa62-aca1 | 0x240 | rSaveSlotXPicross{Course}PuzzleStatusDataTable | GS04 status tables (3 slots x 3 course rows x 64 entries x 1 byte). |
-| aca2 | 1 | rContinueSavedGameFlowMode_Unsure | Continue/load flow mode byte (behavior still uncertain). |
+| aca2 | 1 | rContinueSavedPuzzlePromptRouteMode | Continue-saved prompt route mode byte used to choose the resume destination path. |
 | aca3-acea | 0x48 | rSavedPuzzleHintPopupSelection, rSavedPuzzleTimerPenaltyStep, rSavedPuzzleTimerMinuteOnes, rSavedPuzzleTimerMinuteTens, rSavedPuzzleTimerSecondOnes, rSavedPuzzleTimerSecondTens, rSavedPuzzleDataIndexLow, rSavedPuzzleDataIndexHigh, rSavedPuzzleCursorColumn, rSavedPuzzleCursorRow, rSavedPuzzleCellStatePackedBuffer, rSavedPuzzleGridWidth, rSavedPuzzleGridHeight | Saved puzzle snapshot fields used by continue/restore flow (timer, puzzle id, cursor, packed cell-state buffer, grid dimensions). |
-| aceb-acec | 2 | TODO | Unmapped bytes in primary save block (TODO). |
+| aceb-acec | 2 | (unmapped) | No direct read/write path is currently mapped for these two bytes; they sit between the saved-puzzle snapshot end (`acea`) and the hidden-signature mirror start (`aced`), and are still persisted/validated as part of the full save block checksum/mirror flow. |
 | aced | 1 | rHiddenProgrammerCreditsMirror | Mirror byte tied to signature validation data. |
-| acee-acfc | 0x0f | TODO | Unmapped bytes in primary save block (TODO). |
+| acee-acfc | 0x0f | rHiddenProgrammerCreditsMirror (continuation) | Remaining bytes of the 16-byte hidden-signature mirror block copied/validated with `aced` as the block start. |
 | acfd | 1 | rSaveValidationMagicBytesMirror | Mirror of save-validation magic data. |
-| acfe-ad01 | 4 | TODO | Unmapped bytes in primary save block (TODO). |
+| acfe-ad01 | 4 | rSaveValidationMagicBytesMirror (continuation) | Remaining bytes of the 5-byte save-validation magic mirror block copied/validated with `acfd` as the block start. |
 | ad02-ad03 | 2 | rSaveDataPrimaryChecksumSum, rSaveDataPrimaryChecksumXor | Checksums for primary save block. |
 | ad04-ba05 | 0x0d02 | rSaveDataMirrorBlockStart | Mirror copy of save-data block. |
 | ba06-ba07 | 2 | rSaveDataMirrorChecksumSum, rSaveDataMirrorChecksumXor | Checksums for mirror save block. |
@@ -493,3 +524,55 @@ Notes:
 - `Picross{Course}` denotes the Kinoko/Star/TimeTrial variants.
 
 ## 6) Unused / Cut Content
+
+Symbols currently marked as unused, grouped by type.
+
+### Save data and gameplay routing leftovers
+
+- `00:a066` `rSaveSlot1PuzzleActionRuleIndex_Unused`: Save-slot rule byte; logic exists to read it, but normal gameplay appears not to rely on it.
+- `00:a067` `rSaveSlot2PuzzleActionRuleIndex_Unused`: Save-slot rule byte variant for slot 2; same behavior pattern as slot 1.
+- `00:a068` `rSaveSlot3PuzzleActionRuleIndex_Unused`: Save-slot rule byte variant for slot 3; same behavior pattern as slot 1.
+- `01:682f` `RouteTimeTrialCellActionInputByUnusedSaveRuleFlag`: Branch helper that routes Time Trial cell-action handling via the save-rule byte.
+- `01:6841` `.DispatchCellActionByUnusedSaveRuleFlag`: Local dispatch target for the same save-rule based route.
+- `01:408a` `GS04_KinokoCourseCompletionMessage_Unused`: GS04 message-related symbol present in mapped code/data, but currently tagged unused.
+
+### Utility and reserved runtime symbols
+
+- `00:c317` `rCommandQueueReservedOrUnused`: Byte in the command-queue RAM area with no confirmed active role yet.
+- `00:199d` `SplitHLToDecimalDigitsAndPushHundredsTens_Unused`: Decimal conversion helper routine currently marked unused.
+
+### UI script and palette data
+
+- `02:4516` `UnusedHighlightCommandScript`: Highlight command script data block not mapped to an active script path yet.
+- `02:4596` `UnusedUnhighlightCommandScript`: Unhighlight counterpart script, similarly not mapped to an active path.
+- `03:46dc` `TransitionFadePaletteTable_Unused`: Palette table likely tied to a fade/transition variant not observed in active flow.
+
+### Graphics tile/font assets
+
+- `07:59e0` `Unused_FontTileData`: Tile data for a font variant not currently mapped into active rendering flow.
+- `07:6000` `Unused_CellEffectTileData`: Tile set for cell effects, present but marked unused.
+- `07:6040` `Unused_PuzzleTimerDigitsTileData`: Puzzle-timer digit tiles not mapped to active UI draw paths.
+- `07:6100` `Unused_ClueDigitsWhiteBGTileData`: Clue-digit tile set for white background variant, marked unused.
+- `07:6200` `Unused_ClueDigitsGreyBGTileData`: Clue-digit tile set for grey background variant, marked unused.
+- `0e:4000` `Unused_MessageFontTileData`: Additional message-font tile data block not mapped to active text rendering.
+
+### Sound engine tables and command-stream content
+
+- `0f:4100` `Unused_SoundEngine_SemitoneFrequencyWordTableEntry`: Extra semitone table entry present in the sound-engine table region.
+- `0f:4add` `SCD_Cmd01_VoiceCommandStreamPointerRow_Param0C_TimeTrialRankingScreenBGM_Unused`: Cmd01 pointer-row entry labeled unused for parameter `0C`.
+- `0f:4b05` `SCD_Cmd01_VoiceCommandStreamPointerRow_Param11_Unused`: Cmd01 pointer-row entry labeled unused for parameter `11`.
+- `0f:4b15` `SCD_Cmd01_VoiceCommandStreamPointerRow_Param13_Unused`: Cmd01 pointer-row entry labeled unused for parameter `13`.
+- `0f:4b1d` `SCD_Cmd01_VoiceCommandStreamPointerRow_Param14_Unused`: Cmd01 pointer-row entry labeled unused for parameter `14`.
+- `0f:6d3f` `Unused_VibratoTestTrack_CommandStream_Voice`: Standalone command stream labeled as a vibrato test voice.
+- `0f:6dcd` `Unused_UnknownTrack_CommandStream_Voice1_Setup`: Setup stream for an unused/unknown multi-voice track (voice 1).
+- `0f:6ddf` `Unused_UnknownTrack_CommandStream_Voice1_Phrase01`: First phrase stream for the same unused track (voice 1).
+- `0f:6e0a` `Unused_UnknownTrack_CommandStream_Voice2_Setup`: Setup stream for unused/unknown track voice 2.
+- `0f:6e17` `Unused_UnknownTrack_CommandStream_Voice2_Phrase01`: First phrase stream for unused/unknown track voice 2.
+- `0f:6ea1` `Unused_UnknownTrack_CommandStream_Voice3_Setup`: Setup stream for unused/unknown track voice 3.
+- `0f:6eae` `Unused_UnknownTrack_CommandStream_Voice3_Phrase01`: First phrase stream for unused/unknown track voice 3.
+- `0f:6ede` `Unused_UnknownTrack_CommandStream_Voice4_Setup`: Setup stream for unused/unknown track voice 4.
+- `0f:6eea` `Unused_UnknownTrack_CommandStream_Voice4_Phrase01`: First phrase stream for unused/unknown track voice 4.
+- `0f:6efa` `SCD_Cmd02_VoiceCommandStreamPointerRow_Param00_Unused`: Cmd02 pointer-row entry labeled unused for parameter `00`.
+- `0f:6f02` `SCD_Cmd02_VoiceCommandStreamPointerRow_Param01_Unused`: Cmd02 pointer-row entry labeled unused for parameter `01`.
+- `0f:6f6a` `SCD_Cmd02_VoiceCommandStreamPointerRow_Param0E_Unused`: Cmd02 pointer-row entry labeled unused for parameter `0E`.
+- `0f:6f72` `SCD_Cmd02_VoiceCommandStreamPointerRow_Param0F_Unused`: Cmd02 pointer-row entry labeled unused for parameter `0F`.

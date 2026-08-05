@@ -34,9 +34,9 @@
 00:a078 rSaveSlot1GameSelectCursorRow
 00:a079 rSaveSlot2GameSelectCursorRow
 00:a07a rSaveSlot3GameSelectCursorRow
-00:a07b rSaveSlot1EasyPicrossPostClearUnlockFlowState_Unsure
-00:a07c rSaveSlot2EasyPicrossPostClearUnlockFlowState_Unsure
-00:a07d rSaveSlot3EasyPicrossPostClearUnlockFlowState_Unsure
+00:a07b rSaveSlot1EasyPicrossPostClearUnlockHandledFlag
+00:a07c rSaveSlot2EasyPicrossPostClearUnlockHandledFlag
+00:a07d rSaveSlot3EasyPicrossPostClearUnlockHandledFlag
 00:a07e rSaveSlot1EasyPicrossClearedPuzzleCount
 00:a07f rSaveSlot2EasyPicrossClearedPuzzleCount
 00:a080 rSaveSlot3EasyPicrossClearedPuzzleCount
@@ -99,7 +99,7 @@
 00:abe2 rSaveSlot3PicrossKinokoCoursePuzzleStatusDataTable
 00:ac22 rSaveSlot3PicrossStarCoursePuzzleStatusDataTable
 00:ac62 rSaveSlot3PicrossTimeTrialPuzzleStatusDataTable
-00:aca2 rContinueSavedGameFlowMode_Unsure
+00:aca2 rContinueSavedPuzzlePromptRouteMode
 00:aca3 rSavedPuzzleHintPopupSelection
 00:aca4 rSavedPuzzleTimerPenaltyStep
 00:aca5 rSavedPuzzleTimerMinuteOnes
@@ -163,7 +163,7 @@
 00:c332 rSCXShadow
 00:c333 rSCYShadow
 00:c336 rLYCShadow
-00:c337 rLCDCInterruptControlFlags_Unsure
+00:c337 rLCDCInterruptControlFlags
 00:c338 rLCDCInterruptDispatchIndex
 00:c339 rVBlankSyncFlag
 00:c33a rVBlankFrameCounter
@@ -174,7 +174,7 @@
 00:c340 rSGBScreenTransitionPAL_SETPacketBuffer
 00:c341 rSGBScreenTransitionPAL_SETPacketColorData
 00:c349 rSGBScreenTransitionPAL_SETPacketControl
-00:c350 rVBlankSoundEngineUpdateEnabled_Unsure
+00:c350 rUseLCDCInterruptForSoundEngineUpdateFlag
 00:c351 rBGTileCopySourceX
 00:c352 rBGTileCopySourceY
 00:c353 rBGTileCopyDestX
@@ -231,8 +231,8 @@
 00:d7f9 rClueRunLengthVerticalBufferBuildBase
 00:d800 rPuzzleGridWidth
 00:d801 rPuzzleGridHeight
-00:d802 rPuzzleBit0AndBit1ClearCellCounter_Unsure
-00:d803 rPuzzleBit1ClearCellCounter_Unsure
+00:d802 rPuzzleBit0AndBit1ClearCellCounter
+00:d803 rPuzzleBit1ClearCellCounter
 00:d804 rPuzzleCellPendingActionMode
 00:d805 rPuzzlePostClearFlowFlag
 00:d806 rPuzzleTimerCompletionState
@@ -5234,6 +5234,12 @@
 04:6890 SGBTransferPayload_PCT_TRN_TitleScreenBorder_Unused_2
 04:6890 .data:07a0
 
+; buffer ???
+04:7030 .data:0210
+
+04:7240 .padding:01c0
+04:7400 .padding:0c00
+
 ; =============================================================================
 ; BANK 005
 ; =============================================================================
@@ -5276,6 +5282,9 @@
 05:68f0 .data:0040:6
 05:6930 SGBTransferPayload_PCT_TRN_DefaultBorder_BGPaletteData_White
 05:6930 .data:0040:6
+
+; buffer
+05:6970 .data:00c0
 
 05:6a30 HowToPlayText_State01
 05:6a30 .text:0016:cm=messages
@@ -6451,39 +6460,39 @@
 0f:6eea Unused_UnknownTrack_CommandStream_Voice4_Phrase01
 0f:6eea .data:0010
 
-0f:6efa SCD_Cmd02_VoiceCommandStreamPointerRow_Param00
+0f:6efa SCD_Cmd02_VoiceCommandStreamPointerRow_Param00_Unused
 0f:6efa .data:0008:2
-0f:6f02 SCD_Cmd02_VoiceCommandStreamPointerRow_Param01
+0f:6f02 SCD_Cmd02_VoiceCommandStreamPointerRow_Param01_Unused
 0f:6f02 .data:0008:2
-0f:6f0a SCD_Cmd02_VoiceCommandStreamPointerRow_Param02
+0f:6f0a SCD_Cmd02_VoiceCommandStreamPointerRow_Param02_HintRouletteFinishSFX
 0f:6f0a .data:0008:2
-0f:6f12 SCD_Cmd02_VoiceCommandStreamPointerRow_Param03
+0f:6f12 SCD_Cmd02_VoiceCommandStreamPointerRow_Param03_ConfirmSFX
 0f:6f12 .data:0008:2
-0f:6f1a SCD_Cmd02_VoiceCommandStreamPointerRow_Param04
+0f:6f1a SCD_Cmd02_VoiceCommandStreamPointerRow_Param04_CancelSFX
 0f:6f1a .data:0008:2
-0f:6f22 SCD_Cmd02_VoiceCommandStreamPointerRow_Param05
+0f:6f22 SCD_Cmd02_VoiceCommandStreamPointerRow_Param05_FillCellSFX
 0f:6f22 .data:0008:2
-0f:6f2a SCD_Cmd02_VoiceCommandStreamPointerRow_Param06
+0f:6f2a SCD_Cmd02_VoiceCommandStreamPointerRow_Param06_FillStepTickSFX
 0f:6f2a .data:0008:2
-0f:6f32 SCD_Cmd02_VoiceCommandStreamPointerRow_Param07
+0f:6f32 SCD_Cmd02_VoiceCommandStreamPointerRow_Param07_ResetCellSFX
 0f:6f32 .data:0008:2
-0f:6f3a SCD_Cmd02_VoiceCommandStreamPointerRow_Param08
+0f:6f3a SCD_Cmd02_VoiceCommandStreamPointerRow_Param08_LevelSelect_AdvanceLevelSFX
 0f:6f3a .data:0008:2
-0f:6f42 SCD_Cmd02_VoiceCommandStreamPointerRow_Param09
+0f:6f42 SCD_Cmd02_VoiceCommandStreamPointerRow_Param09_MistakeSFX
 0f:6f42 .data:0008:2
-0f:6f4a SCD_Cmd02_VoiceCommandStreamPointerRow_Param0A
+0f:6f4a SCD_Cmd02_VoiceCommandStreamPointerRow_Param0A_MenuCursorMoveSFX
 0f:6f4a .data:0008:2
-0f:6f52 SCD_Cmd02_VoiceCommandStreamPointerRow_Param0B
+0f:6f52 SCD_Cmd02_VoiceCommandStreamPointerRow_Param0B_PuzzleCursorMoveSFX
 0f:6f52 .data:0008:2
-0f:6f5a SCD_Cmd02_VoiceCommandStreamPointerRow_Param0C
+0f:6f5a SCD_Cmd02_VoiceCommandStreamPointerRow_Param0C_MarkXSFX
 0f:6f5a .data:0008:2
-0f:6f62 SCD_Cmd02_VoiceCommandStreamPointerRow_Param0D
+0f:6f62 SCD_Cmd02_VoiceCommandStreamPointerRow_Param0D_LowTimeWarningSFX
 0f:6f62 .data:0008:2
-0f:6f6a SCD_Cmd02_VoiceCommandStreamPointerRow_Param0E
+0f:6f6a SCD_Cmd02_VoiceCommandStreamPointerRow_Param0E_Unused
 0f:6f6a .data:0008:2
-0f:6f72 SCD_Cmd02_VoiceCommandStreamPointerRow_Param0F
+0f:6f72 SCD_Cmd02_VoiceCommandStreamPointerRow_Param0F_Unused
 0f:6f72 .data:0008:2
-0f:6f7a SCD_Cmd02_VoiceCommandStreamPointerRow_Param10
+0f:6f7a SCD_Cmd02_VoiceCommandStreamPointerRow_Param10_OpenPauseMenuSFX
 0f:6f7a .data:0008:2
 
 0f:70f0 SCD_Cmd02_Param00_CommandStream_Voice1_Setup

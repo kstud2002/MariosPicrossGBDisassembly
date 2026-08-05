@@ -11,21 +11,21 @@ The ROM is 256 KB with 16 banks:
 | Bank | Role |
 |------|------|
 | `bank_000` | EntryPoint, InterruptHandlers, GameStateDispatcher, Helpers, GameStateHandlers |
-| `bank_001` | GameStateHandlers, ??? |
-| `bank_002` | StatePhaseDispatcher, GameStateHandlers, ??? |
-| `bank_003` | GameStateHandlers, ??? |
-| `bank_004` | ??? |
-| `bank_005` | ??? |
-| `bank_006` | TileData, ??? |
-| `bank_007` | ??? |
-| `bank_008` | ??? |
-| `bank_009` | TileData |
-| `bank_00a` | TileData |
-| `bank_00b` | TileData, TileMaps, ??? |
-| `bank_00c` | TileMaps, ??? |
+| `bank_001` | GameStateHandlers, PuzzleGameplay/State-Flow Logic, Message Scripts |
+| `bank_002` | StatePhaseDispatcher, GameStateHandlers, Menu/Ranking Flow Logic |
+| `bank_003` | GameStateHandlers, UI/Sprite Data, Screen Transition & SGB Control Data |
+| `bank_004` | SGB Border Transfer Payloads (Title Border) |
+| `bank_005` | SGB Border Transfer Payloads (Default Border), Text/Message Data |
+| `bank_006` | TileData, Puzzle/UI Graphics |
+| `bank_007` | TileData (5x5 Set + Unused Graphics Variants) |
+| `bank_008` | TileData (10x10 Set + Title-Related Graphics) |
+| `bank_009` | TileData (Course/Data Select, Ranking, Continue Screens) |
+| `bank_00a` | TileData (Game Select + Course Select Assets) |
+| `bank_00b` | TileData, TileMaps, Continue/Puzzle Screen Map Data |
+| `bank_00c` | TileMaps, SGB Border Transfer Payloads (X-Ray Border) |
 | `bank_00d` | MessageFont-TileData |
-| `bank_00e` | ??? |
-| `bank_00f` | ??? |
+| `bank_00e` | Unused MessageFont-TileData |
+| `bank_00f` | SoundEngine, Music/SE Command Streams, Audio Driver Data |
 
 ## Repository layout
 
@@ -43,7 +43,7 @@ disassembly/
   charmap.asm               – character map copy for assembler
   hardware.inc              – hardware register copy for assembler
   Makefile                  – builds game.gb with rgbds
-README_FLOW.md              – detailed game-flow, state-machine, and internals reference
+GAME_FLOW_REFERENCE.md      – detailed game-flow, state-machine, and internals reference
 ```
 
 ## Regenerating the disassembly
@@ -132,6 +132,8 @@ cd disassembly && make
 A successful build means the disassembly is byte-accurate.
 
 ## Documentation
+
+- [GAME_FLOW_REFERENCE.md](GAME_FLOW_REFERENCE.md): High-level reference for runtime flow, including the game-state/phase graphs, core rendering and sound-engine notes, save-slot RAM structure, and currently tracked unused/cut-content symbols.
 
 ## Tools used
 
