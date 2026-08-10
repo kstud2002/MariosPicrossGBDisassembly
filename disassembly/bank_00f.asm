@@ -6,11 +6,11 @@
 SECTION "ROM Bank $00f", ROMX[$4000], BANK[$f]
 
 Jumpvector_SoundCommandDispatcher::
-    jp SoundCommandDispatcher                     ; $4000: $c3 $58 $42
+    jp SoundCommandDispatcher
 
 
 Jumpvector_SoundEngineUpdateRoutine::
-    jp SoundEngine_FrameTickRoutine               ; $4003: $c3 $ca $43
+    jp SoundEngine_FrameTickRoutine
 
 
     ; padding
@@ -190,46 +190,46 @@ SoundWavePatternPreset0d::
     db $11, $67, $77, $77, $77, $77, $77, $43, $34, $56, $78, $9a, $aa, $aa, $aa, $af
 
 SoundCommandDispatcher::
-    ld hl, SoundCommandDispatcher_Cmd00To07PointerTable; $4258: $21 $80 $40
-    push af                                       ; $425b: $f5
-    add a                                         ; $425c: $87
-    add l                                         ; $425d: $85
-    ld l, a                                       ; $425e: $6f
-    ld a, [hl+]                                   ; $425f: $2a
-    ld h, [hl]                                    ; $4260: $66
-    ld l, a                                       ; $4261: $6f
-    pop af                                        ; $4262: $f1
-    jp hl                                         ; $4263: $e9
+    ld hl, SoundCommandDispatcher_Cmd00To07PointerTable
+    push af
+    add a
+    add l
+    ld l, a
+    ld a, [hl+]
+    ld h, [hl]
+    ld l, a
+    pop af
+    jp hl
 
 
 SoundCommandDispatcher_Cmd00_ResetAPUDriverState::
-    ld hl, SoundCommandDispatcher_Cmd00_APURegisterInitPairs; $4264: $21 $86 $42
+    ld hl, SoundCommandDispatcher_Cmd00_APURegisterInitPairs
 
 .ApplyAPURegisterInitPairsLoop:
-    ld a, [hl+]                                   ; $4267: $2a
-    or a                                          ; $4268: $b7
-    jr z, .ClearRuntimeStateBlock                 ; $4269: $28 $05
+    ld a, [hl+]
+    or a
+    jr z, .ClearRuntimeStateBlock
 
-    ld c, a                                       ; $426b: $4f
-    ld a, [hl+]                                   ; $426c: $2a
-    ldh [c], a                                    ; $426d: $e2
-    jr .ApplyAPURegisterInitPairsLoop             ; $426e: $18 $f7
+    ld c, a
+    ld a, [hl+]
+    ldh [c], a
+    jr .ApplyAPURegisterInitPairsLoop
 
 .ClearRuntimeStateBlock:
-    ld b, $0c                                     ; $4270: $06 $0c
-    ld hl, rSoundCurrentVoiceIndex                ; $4272: $21 $02 $dd
-    xor a                                         ; $4275: $af
+    ld b, $0c
+    ld hl, rSoundCurrentVoiceIndex
+    xor a
 
 .ClearRuntimeStateBlockLoop:
-    ld [hl+], a                                   ; $4276: $22
-    dec b                                         ; $4277: $05
-    jr nz, .ClearRuntimeStateBlockLoop            ; $4278: $20 $fc
+    ld [hl+], a
+    dec b
+    jr nz, .ClearRuntimeStateBlockLoop
 
-    call SoundEngine_LoadWaveRAMPresetByIndex     ; $427a: $cd $76 $49
-    ld a, $ff                                     ; $427d: $3e $ff
-    ld [rSoundUpperVoiceGroupCommandIndex], a     ; $427f: $ea $00 $dd
-    ld [rSoundLowerVoiceGroupCommandIndex], a     ; $4282: $ea $01 $dd
-    ret                                           ; $4285: $c9
+    call SoundEngine_LoadWaveRAMPresetByIndex
+    ld a, $ff
+    ld [rSoundUpperVoiceGroupCommandIndex], a
+    ld [rSoundLowerVoiceGroupCommandIndex], a
+    ret
 
 
 SoundCommandDispatcher_Cmd00_APURegisterInitPairs::
@@ -251,155 +251,155 @@ SoundCommandDispatcher_Cmd00_APURegisterInitPairs::
     db $00
 
 SoundCommandDispatcher_Cmd01_StartUpperVoiceGroup::
-    ld a, c                                       ; $42a5: $79
-    ld [rSoundUpperVoiceGroupCommandIndex], a     ; $42a6: $ea $00 $dd
-    ld de, SCD_Cmd01_VoiceCommandStreamPointerRow_Param00_DeactivateBGM; $42a9: $11 $7d $4a
-    cp $ff                                        ; $42ac: $fe $ff
-    jr nz, .LoadUpperVoiceScriptPointerRow        ; $42ae: $20 $07
+    ld a, c
+    ld [rSoundUpperVoiceGroupCommandIndex], a
+    ld de, SCD_Cmd01_VoiceCommandStreamPointerRow_Param00_DeactivateBGM
+    cp $ff
+    jr nz, .LoadUpperVoiceScriptPointerRow
 
-    ld de, SCD_Cmd01_02_VoiceCommandStreamPointerRow_ParamFF; $42b0: $11 $74 $4a
-    xor a                                         ; $42b3: $af
-    ld [rSoundEvent01FFOverrideState_Unsure], a   ; $42b4: $ea $0d $dd
+    ld de, SCD_Cmd01_02_VoiceCommandStreamPointerRow_ParamFF
+    xor a
+    ld [rSoundEvent01FFOverrideState_Unsure], a
 
 .LoadUpperVoiceScriptPointerRow:
-    ld hl, rSoundVoiceScriptPointerRowBuffer      ; $42b7: $21 $28 $dd
-    call CopyIndexed8ByteRowToHLFromDE            ; $42ba: $cd $99 $48
-    ld hl, rSoundActiveVoiceMask                  ; $42bd: $21 $04 $dd
-    ld a, $f0                                     ; $42c0: $3e $f0
-    or [hl]                                       ; $42c2: $b6
-    ld [hl], a                                    ; $42c3: $77
-    ld hl, SoundCommandDispatcher_Cmd02_RuntimeStateInitTable; $42c4: $21 $6b $43
+    ld hl, rSoundVoiceScriptPointerRowBuffer
+    call CopyIndexed8ByteRowToHLFromDE
+    ld hl, rSoundActiveVoiceMask
+    ld a, $f0
+    or [hl]
+    ld [hl], a
+    ld hl, SoundCommandDispatcher_Cmd02_RuntimeStateInitTable
 
 .ClearPerVoiceSecondaryStateBlocksLoop:
-    ld c, [hl]                                    ; $42c7: $4e
-    inc hl                                        ; $42c8: $23
-    ld a, [hl]                                    ; $42c9: $7e
-    inc hl                                        ; $42ca: $23
-    or a                                          ; $42cb: $b7
-    ret z                                         ; $42cc: $c8
+    ld c, [hl]
+    inc hl
+    ld a, [hl]
+    inc hl
+    or a
+    ret z
 
-    ld b, a                                       ; $42cd: $47
-    ld e, [hl]                                    ; $42ce: $5e
-    inc hl                                        ; $42cf: $23
-    ld d, [hl]                                    ; $42d0: $56
-    inc hl                                        ; $42d1: $23
-    push hl                                       ; $42d2: $e5
-    ld hl, $0008                                  ; $42d3: $21 $08 $00
-    add hl, bc                                    ; $42d6: $09
-    call SoundEngine_FillFourWordEntriesWithDEAtHL; $42d7: $cd $8d $48
-    pop hl                                        ; $42da: $e1
-    jr .ClearPerVoiceSecondaryStateBlocksLoop     ; $42db: $18 $ea
+    ld b, a
+    ld e, [hl]
+    inc hl
+    ld d, [hl]
+    inc hl
+    push hl
+    ld hl, $0008
+    add hl, bc
+    call SoundEngine_FillFourWordEntriesWithDEAtHL
+    pop hl
+    jr .ClearPerVoiceSecondaryStateBlocksLoop
 
 SoundCommandDispatcher_Cmd02_ResetVoicesAndStartLowerVoiceGroup::
-    push bc                                       ; $42dd: $c5
-    ld hl, rSoundCurrentVoiceIndex                ; $42de: $21 $02 $dd
-    xor a                                         ; $42e1: $af
-    ld [hl], a                                    ; $42e2: $77
-    ld a, [rSoundActiveVoiceMask]                 ; $42e3: $fa $04 $dd
-    ld c, $10                                     ; $42e6: $0e $10
-    ld d, $01                                     ; $42e8: $16 $01
-    ld b, $04                                     ; $42ea: $06 $04
+    push bc
+    ld hl, rSoundCurrentVoiceIndex
+    xor a
+    ld [hl], a
+    ld a, [rSoundActiveVoiceMask]
+    ld c, $10
+    ld d, $01
+    ld b, $04
 
 .InitPerVoiceMaskLoop:
-    push af                                       ; $42ec: $f5
-    ld a, d                                       ; $42ed: $7a
-    ld [rSoundCurrentVoiceMaskBit], a             ; $42ee: $ea $06 $dd
-    ld a, [rSoundActiveVoiceMask]                 ; $42f1: $fa $04 $dd
-    and c                                         ; $42f4: $a1
-    and $0f                                       ; $42f5: $e6 $0f
-    ld [rSoundCurrentVoiceMuteMask], a            ; $42f7: $ea $05 $dd
-    rlc c                                         ; $42fa: $cb $01
+    push af
+    ld a, d
+    ld [rSoundCurrentVoiceMaskBit], a
+    ld a, [rSoundActiveVoiceMask]
+    and c
+    and $0f
+    ld [rSoundCurrentVoiceMuteMask], a
+    rlc c
 
 .RotateVoiceMaskAndProcessActiveVoice:
-    rlc d                                         ; $42fc: $cb $02
-    pop af                                        ; $42fe: $f1
-    rrca                                          ; $42ff: $0f
-    jr nc, .AdvanceVoiceSlotIndexAndLoop          ; $4300: $30 $09
+    rlc d
+    pop af
+    rrca
+    jr nc, .AdvanceVoiceSlotIndexAndLoop
 
-    push af                                       ; $4302: $f5
-    push bc                                       ; $4303: $c5
-    push hl                                       ; $4304: $e5
-    call SoundEngine_DeactivateCurrentVoiceAndUpdateActiveMasks; $4305: $cd $fc $44
-    pop hl                                        ; $4308: $e1
-    pop bc                                        ; $4309: $c1
-    pop af                                        ; $430a: $f1
+    push af
+    push bc
+    push hl
+    call SoundEngine_DeactivateCurrentVoiceAndUpdateActiveMasks
+    pop hl
+    pop bc
+    pop af
 
 .AdvanceVoiceSlotIndexAndLoop:
-    inc [hl]                                      ; $430b: $34
-    dec b                                         ; $430c: $05
-    jr nz, .InitPerVoiceMaskLoop                  ; $430d: $20 $dd
+    inc [hl]
+    dec b
+    jr nz, .InitPerVoiceMaskLoop
 
-    pop bc                                        ; $430f: $c1
-    ld a, c                                       ; $4310: $79
-    ld [rSoundLowerVoiceGroupCommandIndex], a     ; $4311: $ea $01 $dd
-    ld de, SCD_Cmd02_VoiceCommandStreamPointerRow_Param00_Unused; $4314: $11 $fa $6e
-    cp $ff                                        ; $4317: $fe $ff
-    jr nz, .LoadLowerVoiceScriptPointerRow        ; $4319: $20 $07
+    pop bc
+    ld a, c
+    ld [rSoundLowerVoiceGroupCommandIndex], a
+    ld de, SCD_Cmd02_VoiceCommandStreamPointerRow_Param00_Unused
+    cp $ff
+    jr nz, .LoadLowerVoiceScriptPointerRow
 
-    ld de, SCD_Cmd01_02_VoiceCommandStreamPointerRow_ParamFF; $431b: $11 $74 $4a
-    xor a                                         ; $431e: $af
-    ld [rSoundVoiceGroupAttenuationTable], a      ; $431f: $ea $0c $dd
+    ld de, SCD_Cmd01_02_VoiceCommandStreamPointerRow_ParamFF
+    xor a
+    ld [rSoundVoiceGroupAttenuationTable], a
 
 .LoadLowerVoiceScriptPointerRow:
-    ld hl, rSoundVoiceScriptPointerTable          ; $4322: $21 $20 $dd
-    call CopyIndexed8ByteRowToHLFromDE            ; $4325: $cd $99 $48
-    ld a, c                                       ; $4328: $79
-    cp $ff                                        ; $4329: $fe $ff
-    jr z, .InitRuntimeClearTableCursor            ; $432b: $28 $25
+    ld hl, rSoundVoiceScriptPointerTable
+    call CopyIndexed8ByteRowToHLFromDE
+    ld a, c
+    cp $ff
+    jr z, .InitRuntimeClearTableCursor
 
-    ld a, [rSoundActiveVoiceMask]                 ; $432d: $fa $04 $dd
-    or $0f                                        ; $4330: $f6 $0f
-    ld d, a                                       ; $4332: $57
-    ld e, $fe                                     ; $4333: $1e $fe
-    ld b, $04                                     ; $4335: $06 $04
-    ld hl, rSoundVoiceScriptPointerTable          ; $4337: $21 $20 $dd
+    ld a, [rSoundActiveVoiceMask]
+    or $0f
+    ld d, a
+    ld e, $fe
+    ld b, $04
+    ld hl, rSoundVoiceScriptPointerTable
 
 .ClearActiveMaskBitIfScriptStartsWithEF:
-    push hl                                       ; $433a: $e5
-    ld a, [hl+]                                   ; $433b: $2a
-    ld h, [hl]                                    ; $433c: $66
-    ld l, a                                       ; $433d: $6f
-    ld a, [hl]                                    ; $433e: $7e
-    cp $ef                                        ; $433f: $fe $ef
-    jr nz, .AdvanceMaskBitAndRowPointer           ; $4341: $20 $03
+    push hl
+    ld a, [hl+]
+    ld h, [hl]
+    ld l, a
+    ld a, [hl]
+    cp $ef
+    jr nz, .AdvanceMaskBitAndRowPointer
 
-    ld a, d                                       ; $4343: $7a
-    and e                                         ; $4344: $a3
-    ld d, a                                       ; $4345: $57
+    ld a, d
+    and e
+    ld d, a
 
 .AdvanceMaskBitAndRowPointer:
-    rlc e                                         ; $4346: $cb $03
-    pop hl                                        ; $4348: $e1
-    inc hl                                        ; $4349: $23
-    inc hl                                        ; $434a: $23
-    dec b                                         ; $434b: $05
-    jr nz, .ClearActiveMaskBitIfScriptStartsWithEF; $434c: $20 $ec
+    rlc e
+    pop hl
+    inc hl
+    inc hl
+    dec b
+    jr nz, .ClearActiveMaskBitIfScriptStartsWithEF
 
-    ld a, d                                       ; $434e: $7a
-    ld [rSoundActiveVoiceMask], a                 ; $434f: $ea $04 $dd
+    ld a, d
+    ld [rSoundActiveVoiceMask], a
 
 .InitRuntimeClearTableCursor:
-    ld hl, SoundCommandDispatcher_Cmd02_RuntimeStateInitTable; $4352: $21 $6b $43
+    ld hl, SoundCommandDispatcher_Cmd02_RuntimeStateInitTable
 
 .ClearRuntimeTablesFromInitTable:
-    ld c, [hl]                                    ; $4355: $4e
-    inc hl                                        ; $4356: $23
-    ld a, [hl]                                    ; $4357: $7e
-    inc hl                                        ; $4358: $23
-    or a                                          ; $4359: $b7
-    ret z                                         ; $435a: $c8
+    ld c, [hl]
+    inc hl
+    ld a, [hl]
+    inc hl
+    or a
+    ret z
 
-    ld b, a                                       ; $435b: $47
-    ld e, [hl]                                    ; $435c: $5e
-    inc hl                                        ; $435d: $23
-    ld d, [hl]                                    ; $435e: $56
-    inc hl                                        ; $435f: $23
-    push hl                                       ; $4360: $e5
-    ld hl, $0000                                  ; $4361: $21 $00 $00
-    add hl, bc                                    ; $4364: $09
-    call SoundEngine_FillFourWordEntriesWithDEAtHL; $4365: $cd $8d $48
-    pop hl                                        ; $4368: $e1
-    jr .ClearRuntimeTablesFromInitTable           ; $4369: $18 $ea
+    ld b, a
+    ld e, [hl]
+    inc hl
+    ld d, [hl]
+    inc hl
+    push hl
+    ld hl, $0000
+    add hl, bc
+    call SoundEngine_FillFourWordEntriesWithDEAtHL
+    pop hl
+    jr .ClearRuntimeTablesFromInitTable
 
 SoundCommandDispatcher_Cmd02_RuntimeStateInitTable::
     db $40, $dd, $00, $00
@@ -420,1566 +420,1566 @@ SoundCommandDispatcher_Cmd02_RuntimeStateInitTable::
     db $00, $00
 
 SoundCommandDispatcher_Cmd03_StoreDeferredSGBPacketPrefix::
-    ld hl, rSoundDeferredSGBPacketHeader          ; $43a9: $21 $0e $dd
-    ld [hl], $41                                  ; $43ac: $36 $41
-    inc hl                                        ; $43ae: $23
-    ld [hl], b                                    ; $43af: $70
-    inc hl                                        ; $43b0: $23
-    ld [hl], c                                    ; $43b1: $71
-    inc hl                                        ; $43b2: $23
-    ld [hl], d                                    ; $43b3: $72
-    inc hl                                        ; $43b4: $23
-    ld [hl], e                                    ; $43b5: $73
-    ret                                           ; $43b6: $c9
+    ld hl, rSoundDeferredSGBPacketHeader
+    ld [hl], $41
+    inc hl
+    ld [hl], b
+    inc hl
+    ld [hl], c
+    inc hl
+    ld [hl], d
+    inc hl
+    ld [hl], e
+    ret
 
 
 SoundCommandDispatcher_Cmd04_InvokeCmd01WithFF::
-    ld c, $ff                                     ; $43b7: $0e $ff
-    jp SoundCommandDispatcher_Cmd01_StartUpperVoiceGroup; $43b9: $c3 $a5 $42
+    ld c, $ff
+    jp SoundCommandDispatcher_Cmd01_StartUpperVoiceGroup
 
 
 SoundCommandDispatcher_Cmd05_InvokeCmd02WithFF::
-    ld c, $ff                                     ; $43bc: $0e $ff
-    jp SoundCommandDispatcher_Cmd02_ResetVoicesAndStartLowerVoiceGroup; $43be: $c3 $dd $42
+    ld c, $ff
+    jp SoundCommandDispatcher_Cmd02_ResetVoicesAndStartLowerVoiceGroup
 
 
 SoundCommandDispatcher_Cmd06_ReadUpperVoiceGroupCommandIndex::
-    ld a, [rSoundUpperVoiceGroupCommandIndex]     ; $43c1: $fa $00 $dd
-    ret                                           ; $43c4: $c9
+    ld a, [rSoundUpperVoiceGroupCommandIndex]
+    ret
 
 
 SoundCommandDispatcher_Cmd07_ReadLowerVoiceGroupCommandIndex::
-    ld a, [rSoundLowerVoiceGroupCommandIndex]     ; $43c5: $fa $01 $dd
-    ret                                           ; $43c8: $c9
+    ld a, [rSoundLowerVoiceGroupCommandIndex]
+    ret
 
 
-    ret                                           ; $43c9: $c9
+    ret
 
 
 SoundEngine_FrameTickRoutine::
-    ld a, [rSoundDeferredSGBPacketHeader]         ; $43ca: $fa $0e $dd
-    inc a                                         ; $43cd: $3c
-    jr z, .InitPerFrameVoiceIterationState        ; $43ce: $28 $08
+    ld a, [rSoundDeferredSGBPacketHeader]
+    inc a
+    jr z, .InitPerFrameVoiceIterationState
 
-    call SoundEngine_SendDeferredSGBPacketWithClearedPayloadTail; $43d0: $cd $1a $4a
-    ld a, $ff                                     ; $43d3: $3e $ff
-    ld [rSoundDeferredSGBPacketHeader], a         ; $43d5: $ea $0e $dd
+    call SoundEngine_SendDeferredSGBPacketWithClearedPayloadTail
+    ld a, $ff
+    ld [rSoundDeferredSGBPacketHeader], a
 
 .InitPerFrameVoiceIterationState:
-    ld hl, rSoundCurrentVoiceIndex                ; $43d8: $21 $02 $dd
-    xor a                                         ; $43db: $af
-    ld [hl], a                                    ; $43dc: $77
-    ld a, [rSoundActiveVoiceMask]                 ; $43dd: $fa $04 $dd
-    ld c, $10                                     ; $43e0: $0e $10
-    ld d, $01                                     ; $43e2: $16 $01
-    ld b, $08                                     ; $43e4: $06 $08
+    ld hl, rSoundCurrentVoiceIndex
+    xor a
+    ld [hl], a
+    ld a, [rSoundActiveVoiceMask]
+    ld c, $10
+    ld d, $01
+    ld b, $08
 
 PerVoiceTickLoop::
-    push af                                       ; $43e6: $f5
-    xor a                                         ; $43e7: $af
-    ld [rSoundCurrentVoiceUpdateFlags], a         ; $43e8: $ea $07 $dd
-    ld a, d                                       ; $43eb: $7a
-    ld [rSoundCurrentVoiceMaskBit], a             ; $43ec: $ea $06 $dd
-    ld a, [rSoundActiveVoiceMask]                 ; $43ef: $fa $04 $dd
-    and c                                         ; $43f2: $a1
-    and $0f                                       ; $43f3: $e6 $0f
-    ld [rSoundCurrentVoiceMuteMask], a            ; $43f5: $ea $05 $dd
-    rlc c                                         ; $43f8: $cb $01
-    rlc d                                         ; $43fa: $cb $02
+    push af
+    xor a
+    ld [rSoundCurrentVoiceUpdateFlags], a
+    ld a, d
+    ld [rSoundCurrentVoiceMaskBit], a
+    ld a, [rSoundActiveVoiceMask]
+    and c
+    and $0f
+    ld [rSoundCurrentVoiceMuteMask], a
+    rlc c
+    rlc d
 
 SoundEngine_ProcessActiveVoiceIfSet::
-    pop af                                        ; $43fc: $f1
-    rrca                                          ; $43fd: $0f
-    jr nc, .AdvanceVoiceIndexAndLoop              ; $43fe: $30 $09
+    pop af
+    rrca
+    jr nc, .AdvanceVoiceIndexAndLoop
 
-    push af                                       ; $4400: $f5
-    push bc                                       ; $4401: $c5
-    push hl                                       ; $4402: $e5
-    call SoundEngine_ProcessVoiceTick             ; $4403: $cd $0e $44
-    pop hl                                        ; $4406: $e1
-    pop bc                                        ; $4407: $c1
-    pop af                                        ; $4408: $f1
+    push af
+    push bc
+    push hl
+    call SoundEngine_ProcessVoiceTick
+    pop hl
+    pop bc
+    pop af
 
 .AdvanceVoiceIndexAndLoop:
-    inc [hl]                                      ; $4409: $34
-    dec b                                         ; $440a: $05
-    jr nz, PerVoiceTickLoop                       ; $440b: $20 $d9
+    inc [hl]
+    dec b
+    jr nz, PerVoiceTickLoop
 
-    ret                                           ; $440d: $c9
+    ret
 
 
 SoundEngine_ProcessVoiceTick::
-    ld a, [rSoundCurrentVoiceIndex]               ; $440e: $fa $02 $dd
-    ld c, a                                       ; $4411: $4f
-    ld hl, rSoundVoiceNoteTickCountdownTable      ; $4412: $21 $40 $dd
-    add a                                         ; $4415: $87
-    add l                                         ; $4416: $85
-    ld l, a                                       ; $4417: $6f
-    ld a, [hl]                                    ; $4418: $7e
-    or a                                          ; $4419: $b7
-    jp nz, SoundEngine_UpdateVoiceStateAndCommitAPURegisters; $441a: $c2 $5c $46
+    ld a, [rSoundCurrentVoiceIndex]
+    ld c, a
+    ld hl, rSoundVoiceNoteTickCountdownTable
+    add a
+    add l
+    ld l, a
+    ld a, [hl]
+    or a
+    jp nz, SoundEngine_UpdateVoiceStateAndCommitAPURegisters
 
-    ld hl, rSoundVoiceScriptPointerTable          ; $441d: $21 $20 $dd
-    ld a, c                                       ; $4420: $79
-    add a                                         ; $4421: $87
-    add l                                         ; $4422: $85
-    ld l, a                                       ; $4423: $6f
-    ld e, [hl]                                    ; $4424: $5e
-    inc hl                                        ; $4425: $23
-    ld d, [hl]                                    ; $4426: $56
+    ld hl, rSoundVoiceScriptPointerTable
+    ld a, c
+    add a
+    add l
+    ld l, a
+    ld e, [hl]
+    inc hl
+    ld d, [hl]
 
 SoundEngine_DispatchVoiceOpcode::
-    ld a, [de]                                    ; $4427: $1a
-    and $f0                                       ; $4428: $e6 $f0
-    cp $f0                                        ; $442a: $fe $f0
-    jr nz, .HandleE0OpcodeGroup                   ; $442c: $20 $0d
+    ld a, [de]
+    and $f0
+    cp $f0
+    jr nz, .HandleE0OpcodeGroup
 
-    ld a, [de]                                    ; $442e: $1a
-    and $0f                                       ; $442f: $e6 $0f
-    ld hl, SoundEngine_FOpcodeDispatchPointerTable; $4431: $21 $b0 $40
-    add a                                         ; $4434: $87
-    add l                                         ; $4435: $85
-    ld l, a                                       ; $4436: $6f
-    ld a, [hl+]                                   ; $4437: $2a
-    ld h, [hl]                                    ; $4438: $66
-    ld l, a                                       ; $4439: $6f
-    jp hl                                         ; $443a: $e9
+    ld a, [de]
+    and $0f
+    ld hl, SoundEngine_FOpcodeDispatchPointerTable
+    add a
+    add l
+    ld l, a
+    ld a, [hl+]
+    ld h, [hl]
+    ld l, a
+    jp hl
 
 
 .HandleE0OpcodeGroup:
-    cp $e0                                        ; $443b: $fe $e0
-    jr nz, .HandleVoiceDataOpcode                 ; $443d: $20 $0d
+    cp $e0
+    jr nz, .HandleVoiceDataOpcode
 
-    ld a, [de]                                    ; $443f: $1a
-    and $0f                                       ; $4440: $e6 $0f
-    ld hl, SoundEngine_EOpcodeDispatchPointerTable; $4442: $21 $90 $40
-    add a                                         ; $4445: $87
-    add l                                         ; $4446: $85
-    ld l, a                                       ; $4447: $6f
-    ld a, [hl+]                                   ; $4448: $2a
-    ld h, [hl]                                    ; $4449: $66
-    ld l, a                                       ; $444a: $6f
-    jp hl                                         ; $444b: $e9
+    ld a, [de]
+    and $0f
+    ld hl, SoundEngine_EOpcodeDispatchPointerTable
+    add a
+    add l
+    ld l, a
+    ld a, [hl+]
+    ld h, [hl]
+    ld l, a
+    jp hl
 
 
 .HandleVoiceDataOpcode:
-    ld hl, rSoundVoiceControlTable                ; $444c: $21 $30 $dd
-    ld a, c                                       ; $444f: $79
-    add a                                         ; $4450: $87
-    add l                                         ; $4451: $85
-    ld l, a                                       ; $4452: $6f
-    ld a, [de]                                    ; $4453: $1a
-    and $f0                                       ; $4454: $e6 $f0
-    cp $d0                                        ; $4456: $fe $d0
-    jr nz, .ComputeVoicePitchControlByteFromOpcodeHighNibble; $4458: $20 $04
+    ld hl, rSoundVoiceControlTable
+    ld a, c
+    add a
+    add l
+    ld l, a
+    ld a, [de]
+    and $f0
+    cp $d0
+    jr nz, .ComputeVoicePitchControlByteFromOpcodeHighNibble
 
-    ld a, $ff                                     ; $445a: $3e $ff
-    jr .StoreVoicePitchControlByteForCurrentVoice ; $445c: $18 $0f
+    ld a, $ff
+    jr .StoreVoicePitchControlByteForCurrentVoice
 
 .ComputeVoicePitchControlByteFromOpcodeHighNibble:
-    push hl                                       ; $445e: $e5
-    ld a, [hl]                                    ; $445f: $7e
-    ld l, $0c                                     ; $4460: $2e $0c
-    call SoundEngine_MultiplyLByALowNibble        ; $4462: $cd $71 $48
-    ld l, a                                       ; $4465: $6f
-    ld a, [de]                                    ; $4466: $1a
-    and $f0                                       ; $4467: $e6 $f0
-    swap a                                        ; $4469: $cb $37
-    add l                                         ; $446b: $85
-    pop hl                                        ; $446c: $e1
+    push hl
+    ld a, [hl]
+    ld l, $0c
+    call SoundEngine_MultiplyLByALowNibble
+    ld l, a
+    ld a, [de]
+    and $f0
+    swap a
+    add l
+    pop hl
 
 .StoreVoicePitchControlByteForCurrentVoice:
-    inc hl                                        ; $446d: $23
-    ld [hl], a                                    ; $446e: $77
-    ld b, $00                                     ; $446f: $06 $00
+    inc hl
+    ld [hl], a
+    ld b, $00
 
 .AccumulateTickUnitsFromC0Chain:
-    ld a, [de]                                    ; $4471: $1a
-    and $0f                                       ; $4472: $e6 $0f
-    ld hl, SoundEngine_NoteLengthTickTable        ; $4474: $21 $4c $41
-    add l                                         ; $4477: $85
-    ld l, a                                       ; $4478: $6f
-    ld a, [hl]                                    ; $4479: $7e
-    add b                                         ; $447a: $80
-    ld b, a                                       ; $447b: $47
-    inc de                                        ; $447c: $13
-    ld a, [de]                                    ; $447d: $1a
-    and $f0                                       ; $447e: $e6 $f0
-    cp $c0                                        ; $4480: $fe $c0
-    jr z, .AccumulateTickUnitsFromC0Chain         ; $4482: $28 $ed
+    ld a, [de]
+    and $0f
+    ld hl, SoundEngine_NoteLengthTickTable
+    add l
+    ld l, a
+    ld a, [hl]
+    add b
+    ld b, a
+    inc de
+    ld a, [de]
+    and $f0
+    cp $c0
+    jr z, .AccumulateTickUnitsFromC0Chain
 
-    ld hl, rSoundVoiceNoteTickCountdownTable      ; $4484: $21 $40 $dd
-    ld a, c                                       ; $4487: $79
-    add a                                         ; $4488: $87
-    add l                                         ; $4489: $85
-    ld l, a                                       ; $448a: $6f
-    ld [hl], b                                    ; $448b: $70
-    ld hl, rSoundVoiceTickRateTable               ; $448c: $21 $50 $dd
-    ld a, c                                       ; $448f: $79
-    add a                                         ; $4490: $87
-    add l                                         ; $4491: $85
-    ld l, a                                       ; $4492: $6f
-    ld a, [hl]                                    ; $4493: $7e
-    or a                                          ; $4494: $b7
-    jr nz, .ApplyVoiceRateScalingToTickUnits      ; $4495: $20 $04
+    ld hl, rSoundVoiceNoteTickCountdownTable
+    ld a, c
+    add a
+    add l
+    ld l, a
+    ld [hl], b
+    ld hl, rSoundVoiceTickRateTable
+    ld a, c
+    add a
+    add l
+    ld l, a
+    ld a, [hl]
+    or a
+    jr nz, .ApplyVoiceRateScalingToTickUnits
 
-    ld b, $00                                     ; $4497: $06 $00
-    jr .StoreScaledTickTargetAndRequestRegisterUpdates; $4499: $18 $18
+    ld b, $00
+    jr .StoreScaledTickTargetAndRequestRegisterUpdates
 
 .ApplyVoiceRateScalingToTickUnits:
-    ld l, b                                       ; $449b: $68
-    ld h, $00                                     ; $449c: $26 $00
-    call SoundEngine_MultiplyHLByA_8Bit           ; $449e: $cd $5a $48
-    srl h                                         ; $44a1: $cb $3c
-    rr l                                          ; $44a3: $cb $1d
-    srl h                                         ; $44a5: $cb $3c
-    rr l                                          ; $44a7: $cb $1d
-    srl h                                         ; $44a9: $cb $3c
-    rr l                                          ; $44ab: $cb $1d
-    ld b, l                                       ; $44ad: $45
-    ld a, b                                       ; $44ae: $78
-    or a                                          ; $44af: $b7
-    jr nz, .StoreScaledTickTargetAndRequestRegisterUpdates; $44b0: $20 $01
+    ld l, b
+    ld h, $00
+    call SoundEngine_MultiplyHLByA_8Bit
+    srl h
+    rr l
+    srl h
+    rr l
+    srl h
+    rr l
+    ld b, l
+    ld a, b
+    or a
+    jr nz, .StoreScaledTickTargetAndRequestRegisterUpdates
 
-    inc b                                         ; $44b2: $04
+    inc b
 
 .StoreScaledTickTargetAndRequestRegisterUpdates:
-    ld hl, rSoundVoiceScaledTickTargetTable       ; $44b3: $21 $60 $dd
-    ld a, c                                       ; $44b6: $79
-    add a                                         ; $44b7: $87
-    add l                                         ; $44b8: $85
-    ld l, a                                       ; $44b9: $6f
-    ld [hl], b                                    ; $44ba: $70
-    ld hl, rSoundCurrentVoiceUpdateFlags          ; $44bb: $21 $07 $dd
-    ld a, $f9                                     ; $44be: $3e $f9
-    or [hl]                                       ; $44c0: $b6
-    ld [hl], a                                    ; $44c1: $77
-    jp SoundEngine_SaveVoiceScriptPointer         ; $44c2: $c3 $52 $46
+    ld hl, rSoundVoiceScaledTickTargetTable
+    ld a, c
+    add a
+    add l
+    ld l, a
+    ld [hl], b
+    ld hl, rSoundCurrentVoiceUpdateFlags
+    ld a, $f9
+    or [hl]
+    ld [hl], a
+    jp SoundEngine_SaveVoiceScriptPointer
 
 
 SoundEngine_OpED_SetGroupAttenuationFromNibble::
-    ld a, c                                       ; $44c5: $79
-    ld hl, rSoundVoiceGroupAttenuationTable       ; $44c6: $21 $0c $dd
-    srl a                                         ; $44c9: $cb $3f
-    srl a                                         ; $44cb: $cb $3f
-    add l                                         ; $44cd: $85
-    ld l, a                                       ; $44ce: $6f
-    inc de                                        ; $44cf: $13
-    ld a, [de]                                    ; $44d0: $1a
-    and $0f                                       ; $44d1: $e6 $0f
-    ld b, a                                       ; $44d3: $47
-    ld a, $0f                                     ; $44d4: $3e $0f
-    sub b                                         ; $44d6: $90
-    ld [hl], a                                    ; $44d7: $77
-    jp SoundEngine_OpEB_EC_F3_F8_FD_FF_Consume1ByteAndContinue; $44d8: $c3 $4d $46
+    ld a, c
+    ld hl, rSoundVoiceGroupAttenuationTable
+    srl a
+    srl a
+    add l
+    ld l, a
+    inc de
+    ld a, [de]
+    and $0f
+    ld b, a
+    ld a, $0f
+    sub b
+    ld [hl], a
+    jp SoundEngine_OpEB_EC_F3_F8_FD_FF_Consume1ByteAndContinue
 
 
 SoundEngine_OpEE_JumpToInlinePointer::
-    ld h, d                                       ; $44db: $62
-    ld l, e                                       ; $44dc: $6b
-    inc hl                                        ; $44dd: $23
-    ld e, [hl]                                    ; $44de: $5e
-    inc hl                                        ; $44df: $23
-    ld d, [hl]                                    ; $44e0: $56
-    jp SoundCommandDispatcher_ContinueVoiceStreamDispatch; $44e1: $c3 $4e $46
+    ld h, d
+    ld l, e
+    inc hl
+    ld e, [hl]
+    inc hl
+    ld d, [hl]
+    jp SoundCommandDispatcher_ContinueVoiceStreamDispatch
 
 
 SoundEngine_OpEF_ReturnOrStopVoice::
-    ld hl, rSoundVoiceCallReturnPointerTable      ; $44e4: $21 $40 $de
-    ld a, c                                       ; $44e7: $79
-    add a                                         ; $44e8: $87
-    add l                                         ; $44e9: $85
-    ld l, a                                       ; $44ea: $6f
-    xor a                                         ; $44eb: $af
-    ld e, [hl]                                    ; $44ec: $5e
-    ld [hl], a                                    ; $44ed: $77
-    inc hl                                        ; $44ee: $23
-    ld d, [hl]                                    ; $44ef: $56
-    ld [hl], a                                    ; $44f0: $77
-    ld a, d                                       ; $44f1: $7a
-    or a                                          ; $44f2: $b7
-    jp nz, SoundCommandDispatcher_ContinueVoiceStreamDispatch; $44f3: $c2 $4e $46
+    ld hl, rSoundVoiceCallReturnPointerTable
+    ld a, c
+    add a
+    add l
+    ld l, a
+    xor a
+    ld e, [hl]
+    ld [hl], a
+    inc hl
+    ld d, [hl]
+    ld [hl], a
+    ld a, d
+    or a
+    jp nz, SoundCommandDispatcher_ContinueVoiceStreamDispatch
 
-    call SoundEngine_DeactivateCurrentVoiceAndUpdateActiveMasks; $44f6: $cd $fc $44
-    jp SoundEngine_SaveVoiceScriptPointer         ; $44f9: $c3 $52 $46
+    call SoundEngine_DeactivateCurrentVoiceAndUpdateActiveMasks
+    jp SoundEngine_SaveVoiceScriptPointer
 
 
 SoundEngine_DeactivateCurrentVoiceAndUpdateActiveMasks::
-    ld a, [rSoundCurrentVoiceIndex]               ; $44fc: $fa $02 $dd
-    ld c, a                                       ; $44ff: $4f
-    call SoundEngine_CheckVoiceMuteGate           ; $4500: $cd $ab $48
-    jr c, .FinalizeVoiceDeactivationMasks         ; $4503: $38 $1e
+    ld a, [rSoundCurrentVoiceIndex]
+    ld c, a
+    call SoundEngine_CheckVoiceMuteGate
+    jr c, .FinalizeVoiceDeactivationMasks
 
-    xor a                                         ; $4505: $af
-    call SoundEngine_WriteVoiceVolumeNibble       ; $4506: $cd $0b $49
-    ld a, c                                       ; $4509: $79
-    cp $04                                        ; $450a: $fe $04
-    jr nc, .FinalizeVoiceDeactivationMasks        ; $450c: $30 $15
+    xor a
+    call SoundEngine_WriteVoiceVolumeNibble
+    ld a, c
+    cp $04
+    jr nc, .FinalizeVoiceDeactivationMasks
 
-    ld a, [rSoundCurrentVoiceMaskBit]             ; $450e: $fa $06 $dd
-    swap a                                        ; $4511: $cb $37
-    ld hl, rSoundActiveVoiceMask                  ; $4513: $21 $04 $dd
-    and [hl]                                      ; $4516: $a6
-    jr z, .FinalizeVoiceDeactivationMasks         ; $4517: $28 $0a
+    ld a, [rSoundCurrentVoiceMaskBit]
+    swap a
+    ld hl, rSoundActiveVoiceMask
+    and [hl]
+    jr z, .FinalizeVoiceDeactivationMasks
 
-    ld hl, rSoundHighVoiceUpdateFlagsTable        ; $4519: $21 $08 $dd
-    ld a, c                                       ; $451c: $79
-    add l                                         ; $451d: $85
-    ld l, a                                       ; $451e: $6f
-    ld a, $f0                                     ; $451f: $3e $f0
-    or [hl]                                       ; $4521: $b6
-    ld [hl], a                                    ; $4522: $77
+    ld hl, rSoundHighVoiceUpdateFlagsTable
+    ld a, c
+    add l
+    ld l, a
+    ld a, $f0
+    or [hl]
+    ld [hl], a
 
 .FinalizeVoiceDeactivationMasks:
-    ld b, c                                       ; $4523: $41
-    inc b                                         ; $4524: $04
-    xor a                                         ; $4525: $af
-    dec a                                         ; $4526: $3d
+    ld b, c
+    inc b
+    xor a
+    dec a
 
 .BuildVoiceClearMaskLoop:
-    rla                                           ; $4527: $17
-    dec b                                         ; $4528: $05
-    jr nz, .BuildVoiceClearMaskLoop               ; $4529: $20 $fc
+    rla
+    dec b
+    jr nz, .BuildVoiceClearMaskLoop
 
-    ld hl, rSoundActiveVoiceMask                  ; $452b: $21 $04 $dd
-    and [hl]                                      ; $452e: $a6
-    ld [hl], a                                    ; $452f: $77
-    push af                                       ; $4530: $f5
-    and $f0                                       ; $4531: $e6 $f0
-    jr nz, .MaybeResetLowerVoiceGroupCommandIndex ; $4533: $20 $05
+    ld hl, rSoundActiveVoiceMask
+    and [hl]
+    ld [hl], a
+    push af
+    and $f0
+    jr nz, .MaybeResetLowerVoiceGroupCommandIndex
 
-    ld a, $ff                                     ; $4535: $3e $ff
-    ld [rSoundUpperVoiceGroupCommandIndex], a     ; $4537: $ea $00 $dd
+    ld a, $ff
+    ld [rSoundUpperVoiceGroupCommandIndex], a
 
 .MaybeResetLowerVoiceGroupCommandIndex:
-    pop af                                        ; $453a: $f1
-    and $0f                                       ; $453b: $e6 $0f
-    jr nz, .Return                                ; $453d: $20 $05
+    pop af
+    and $0f
+    jr nz, .Return
 
-    ld a, $ff                                     ; $453f: $3e $ff
-    ld [rSoundLowerVoiceGroupCommandIndex], a     ; $4541: $ea $01 $dd
+    ld a, $ff
+    ld [rSoundLowerVoiceGroupCommandIndex], a
 
 .Return:
-    ret                                           ; $4544: $c9
+    ret
 
 
 SoundEngine_OpFE_CallInlinePointer::
-    ld hl, rSoundVoiceCallReturnPointerTable      ; $4545: $21 $40 $de
-    ld a, c                                       ; $4548: $79
-    add a                                         ; $4549: $87
-    add l                                         ; $454a: $85
-    ld l, a                                       ; $454b: $6f
-    inc de                                        ; $454c: $13
-    inc de                                        ; $454d: $13
-    inc de                                        ; $454e: $13
-    ld [hl], e                                    ; $454f: $73
-    inc hl                                        ; $4550: $23
-    ld [hl], d                                    ; $4551: $72
-    dec de                                        ; $4552: $1b
-    dec de                                        ; $4553: $1b
-    ld h, d                                       ; $4554: $62
-    ld l, e                                       ; $4555: $6b
-    ld e, [hl]                                    ; $4556: $5e
-    inc hl                                        ; $4557: $23
-    ld d, [hl]                                    ; $4558: $56
-    jp SoundCommandDispatcher_ContinueVoiceStreamDispatch; $4559: $c3 $4e $46
+    ld hl, rSoundVoiceCallReturnPointerTable
+    ld a, c
+    add a
+    add l
+    ld l, a
+    inc de
+    inc de
+    inc de
+    ld [hl], e
+    inc hl
+    ld [hl], d
+    dec de
+    dec de
+    ld h, d
+    ld l, e
+    ld e, [hl]
+    inc hl
+    ld d, [hl]
+    jp SoundCommandDispatcher_ContinueVoiceStreamDispatch
 
 
 SoundEngine_OpF0_SetTimbreAndTrigger::
-    ld hl, rSoundVoiceTimbreTable                 ; $455c: $21 $b0 $dd
-    ld a, c                                       ; $455f: $79
-    add a                                         ; $4560: $87
-    add l                                         ; $4561: $85
-    ld l, a                                       ; $4562: $6f
-    inc de                                        ; $4563: $13
-    ld a, [de]                                    ; $4564: $1a
-    inc de                                        ; $4565: $13
-    ld [hl], a                                    ; $4566: $77
-    ld hl, rSoundVoiceTriggerTable                ; $4567: $21 $c0 $dd
-    ld a, c                                       ; $456a: $79
-    add a                                         ; $456b: $87
-    add l                                         ; $456c: $85
-    ld l, a                                       ; $456d: $6f
-    ld a, [de]                                    ; $456e: $1a
-    inc de                                        ; $456f: $13
-    ld [hl], a                                    ; $4570: $77
-    jp SoundEngine_OpEB_EC_F3_F8_FD_FF_Consume1ByteAndContinue; $4571: $c3 $4d $46
+    ld hl, rSoundVoiceTimbreTable
+    ld a, c
+    add a
+    add l
+    ld l, a
+    inc de
+    ld a, [de]
+    inc de
+    ld [hl], a
+    ld hl, rSoundVoiceTriggerTable
+    ld a, c
+    add a
+    add l
+    ld l, a
+    ld a, [de]
+    inc de
+    ld [hl], a
+    jp SoundEngine_OpEB_EC_F3_F8_FD_FF_Consume1ByteAndContinue
 
 
 SoundEngine_OpF5_SetPitchOffsetGateAndStep::
-    ld hl, rSoundVoicePitchOffsetGateTable        ; $4574: $21 $00 $de
-    ld a, c                                       ; $4577: $79
-    add a                                         ; $4578: $87
-    add l                                         ; $4579: $85
-    ld l, a                                       ; $457a: $6f
-    push hl                                       ; $457b: $e5
-    inc hl                                        ; $457c: $23
-    inc de                                        ; $457d: $13
-    ld a, [de]                                    ; $457e: $1a
-    ld [hl], a                                    ; $457f: $77
-    ld hl, rSoundVoicePitchStepPhaseTable         ; $4580: $21 $f0 $dd
-    ld a, c                                       ; $4583: $79
-    add a                                         ; $4584: $87
-    add l                                         ; $4585: $85
-    ld l, a                                       ; $4586: $6f
-    inc de                                        ; $4587: $13
-    ld a, [de]                                    ; $4588: $1a
-    ld [hl+], a                                   ; $4589: $22
-    ld [hl], $00                                  ; $458a: $36 $00
-    inc de                                        ; $458c: $13
-    ld a, [de]                                    ; $458d: $1a
-    pop hl                                        ; $458e: $e1
-    ld [hl], a                                    ; $458f: $77
-    jp SoundEngine_OpEB_EC_F3_F8_FD_FF_Consume1ByteAndContinue; $4590: $c3 $4d $46
+    ld hl, rSoundVoicePitchOffsetGateTable
+    ld a, c
+    add a
+    add l
+    ld l, a
+    push hl
+    inc hl
+    inc de
+    ld a, [de]
+    ld [hl], a
+    ld hl, rSoundVoicePitchStepPhaseTable
+    ld a, c
+    add a
+    add l
+    ld l, a
+    inc de
+    ld a, [de]
+    ld [hl+], a
+    ld [hl], $00
+    inc de
+    ld a, [de]
+    pop hl
+    ld [hl], a
+    jp SoundEngine_OpEB_EC_F3_F8_FD_FF_Consume1ByteAndContinue
 
 
 SoundEngine_OpF1_SetLoopCounterAndBranchPointer::
-    ld hl, rSoundVoiceLoopCounterTable            ; $4593: $21 $20 $de
-    ld a, c                                       ; $4596: $79
-    add a                                         ; $4597: $87
-    add l                                         ; $4598: $85
-    ld l, a                                       ; $4599: $6f
-    inc de                                        ; $459a: $13
-    ld a, [de]                                    ; $459b: $1a
-    ld [hl], a                                    ; $459c: $77
-    ld hl, rSoundVoiceLoopTargetPointerTable      ; $459d: $21 $30 $de
-    ld a, c                                       ; $45a0: $79
-    add a                                         ; $45a1: $87
-    add l                                         ; $45a2: $85
-    ld l, a                                       ; $45a3: $6f
-    inc de                                        ; $45a4: $13
-    ld [hl], e                                    ; $45a5: $73
-    inc hl                                        ; $45a6: $23
-    ld [hl], d                                    ; $45a7: $72
-    jp SoundCommandDispatcher_ContinueVoiceStreamDispatch; $45a8: $c3 $4e $46
+    ld hl, rSoundVoiceLoopCounterTable
+    ld a, c
+    add a
+    add l
+    ld l, a
+    inc de
+    ld a, [de]
+    ld [hl], a
+    ld hl, rSoundVoiceLoopTargetPointerTable
+    ld a, c
+    add a
+    add l
+    ld l, a
+    inc de
+    ld [hl], e
+    inc hl
+    ld [hl], d
+    jp SoundCommandDispatcher_ContinueVoiceStreamDispatch
 
 
 SoundEngine_OpF2_DecrementLoopCounterAndBranch::
-    ld hl, rSoundVoiceLoopCounterTable            ; $45ab: $21 $20 $de
-    ld a, c                                       ; $45ae: $79
-    add a                                         ; $45af: $87
-    add l                                         ; $45b0: $85
-    ld l, a                                       ; $45b1: $6f
-    dec [hl]                                      ; $45b2: $35
-    jp z, SoundEngine_OpEB_EC_F3_F8_FD_FF_Consume1ByteAndContinue; $45b3: $ca $4d $46
+    ld hl, rSoundVoiceLoopCounterTable
+    ld a, c
+    add a
+    add l
+    ld l, a
+    dec [hl]
+    jp z, SoundEngine_OpEB_EC_F3_F8_FD_FF_Consume1ByteAndContinue
 
-    ld hl, rSoundVoiceLoopTargetPointerTable      ; $45b6: $21 $30 $de
-    ld a, c                                       ; $45b9: $79
-    add a                                         ; $45ba: $87
-    add l                                         ; $45bb: $85
-    ld l, a                                       ; $45bc: $6f
-    ld e, [hl]                                    ; $45bd: $5e
-    inc hl                                        ; $45be: $23
-    ld d, [hl]                                    ; $45bf: $56
-    jp SoundCommandDispatcher_ContinueVoiceStreamDispatch; $45c0: $c3 $4e $46
+    ld hl, rSoundVoiceLoopTargetPointerTable
+    ld a, c
+    add a
+    add l
+    ld l, a
+    ld e, [hl]
+    inc hl
+    ld d, [hl]
+    jp SoundCommandDispatcher_ContinueVoiceStreamDispatch
 
 
 SoundEngine_OpFA_SetVoiceRateFromPackedNibbles::
-    ld hl, rSoundVoiceTickRateTable               ; $45c3: $21 $50 $dd
-    ld a, c                                       ; $45c6: $79
-    add a                                         ; $45c7: $87
-    add l                                         ; $45c8: $85
-    ld l, a                                       ; $45c9: $6f
-    inc de                                        ; $45ca: $13
-    ld a, [de]                                    ; $45cb: $1a
-    and $f0                                       ; $45cc: $e6 $f0
-    swap a                                        ; $45ce: $cb $37
-    ld [hl+], a                                   ; $45d0: $22
-    ld a, [de]                                    ; $45d1: $1a
-    and $0f                                       ; $45d2: $e6 $0f
-    ld [hl], a                                    ; $45d4: $77
-    jr SoundEngine_OpEB_EC_F3_F8_FD_FF_Consume1ByteAndContinue; $45d5: $18 $76
+    ld hl, rSoundVoiceTickRateTable
+    ld a, c
+    add a
+    add l
+    ld l, a
+    inc de
+    ld a, [de]
+    and $f0
+    swap a
+    ld [hl+], a
+    ld a, [de]
+    and $0f
+    ld [hl], a
+    jr SoundEngine_OpEB_EC_F3_F8_FD_FF_Consume1ByteAndContinue
 
 SoundEngine_OpF7_SetVoiceVolumeFromNibble::
-    ld hl, rSoundVoiceVolumeTable                 ; $45d7: $21 $a0 $dd
-    ld a, c                                       ; $45da: $79
-    add a                                         ; $45db: $87
-    add l                                         ; $45dc: $85
-    ld l, a                                       ; $45dd: $6f
-    inc de                                        ; $45de: $13
-    ld a, [de]                                    ; $45df: $1a
-    and $0f                                       ; $45e0: $e6 $0f
-    ld [hl+], a                                   ; $45e2: $22
-    ld [hl], a                                    ; $45e3: $77
-    jr SoundEngine_OpEB_EC_F3_F8_FD_FF_Consume1ByteAndContinue; $45e4: $18 $67
+    ld hl, rSoundVoiceVolumeTable
+    ld a, c
+    add a
+    add l
+    ld l, a
+    inc de
+    ld a, [de]
+    and $0f
+    ld [hl+], a
+    ld [hl], a
+    jr SoundEngine_OpEB_EC_F3_F8_FD_FF_Consume1ByteAndContinue
 
 SoundEngine_OpF6_SetPitchBaseHighByte::
-    ld hl, rSoundVoicePitchBaseTable              ; $45e6: $21 $10 $de
-    ld a, c                                       ; $45e9: $79
-    add a                                         ; $45ea: $87
-    add l                                         ; $45eb: $85
-    ld l, a                                       ; $45ec: $6f
-    inc hl                                        ; $45ed: $23
-    inc de                                        ; $45ee: $13
-    ld a, [de]                                    ; $45ef: $1a
-    ld [hl], a                                    ; $45f0: $77
-    jr SoundEngine_OpEB_EC_F3_F8_FD_FF_Consume1ByteAndContinue; $45f1: $18 $5a
+    ld hl, rSoundVoicePitchBaseTable
+    ld a, c
+    add a
+    add l
+    ld l, a
+    inc hl
+    inc de
+    ld a, [de]
+    ld [hl], a
+    jr SoundEngine_OpEB_EC_F3_F8_FD_FF_Consume1ByteAndContinue
 
 SoundEngine_OpF9_SetPhaseAccumulatorByte::
-    ld hl, rSoundVoicePhaseAccumulatorTable       ; $45f3: $21 $e0 $dd
-    ld a, c                                       ; $45f6: $79
-    add a                                         ; $45f7: $87
-    add l                                         ; $45f8: $85
-    ld l, a                                       ; $45f9: $6f
-    inc de                                        ; $45fa: $13
-    ld a, [de]                                    ; $45fb: $1a
+    ld hl, rSoundVoicePhaseAccumulatorTable
+    ld a, c
+    add a
+    add l
+    ld l, a
+    inc de
+    ld a, [de]
 
 SoundEngine_StoreAAndConsume1ByteAndContinue::
-    ld [hl], a                                    ; $45fc: $77
-    jr SoundEngine_OpEB_EC_F3_F8_FD_FF_Consume1ByteAndContinue; $45fd: $18 $4e
+    ld [hl], a
+    jr SoundEngine_OpEB_EC_F3_F8_FD_FF_Consume1ByteAndContinue
 
 SoundEngine_OpF4_SetPitchBaseLowByte::
-    ld hl, rSoundVoicePitchBaseTable              ; $45ff: $21 $10 $de
-    ld a, c                                       ; $4602: $79
-    add a                                         ; $4603: $87
-    add l                                         ; $4604: $85
-    ld l, a                                       ; $4605: $6f
-    inc de                                        ; $4606: $13
-    ld a, [de]                                    ; $4607: $1a
-    ld [hl], a                                    ; $4608: $77
-    jr SoundEngine_OpEB_EC_F3_F8_FD_FF_Consume1ByteAndContinue; $4609: $18 $42
+    ld hl, rSoundVoicePitchBaseTable
+    ld a, c
+    add a
+    add l
+    ld l, a
+    inc de
+    ld a, [de]
+    ld [hl], a
+    jr SoundEngine_OpEB_EC_F3_F8_FD_FF_Consume1ByteAndContinue
 
 SoundEngine_OpFC_SetFrequencyLowByte::
-    ld hl, rSoundVoiceFrequencyTable              ; $460b: $21 $d0 $dd
-    ld a, c                                       ; $460e: $79
-    add a                                         ; $460f: $87
-    add l                                         ; $4610: $85
-    ld l, a                                       ; $4611: $6f
-    inc de                                        ; $4612: $13
-    ld a, [de]                                    ; $4613: $1a
-    ld [hl], a                                    ; $4614: $77
-    jr SoundEngine_OpEB_EC_F3_F8_FD_FF_Consume1ByteAndContinue; $4615: $18 $36
+    ld hl, rSoundVoiceFrequencyTable
+    ld a, c
+    add a
+    add l
+    ld l, a
+    inc de
+    ld a, [de]
+    ld [hl], a
+    jr SoundEngine_OpEB_EC_F3_F8_FD_FF_Consume1ByteAndContinue
 
 SoundEngine_OpFB_SetVoicePanningByte::
-    ld hl, rSoundVoiceStereoPanningTable          ; $4617: $21 $90 $dd
-    ld a, c                                       ; $461a: $79
-    add a                                         ; $461b: $87
-    add l                                         ; $461c: $85
-    ld l, a                                       ; $461d: $6f
-    inc de                                        ; $461e: $13
-    ld a, [de]                                    ; $461f: $1a
-    ld [hl], a                                    ; $4620: $77
-    jr SoundEngine_OpEB_EC_F3_F8_FD_FF_Consume1ByteAndContinue; $4621: $18 $2a
+    ld hl, rSoundVoiceStereoPanningTable
+    ld a, c
+    add a
+    add l
+    ld l, a
+    inc de
+    ld a, [de]
+    ld [hl], a
+    jr SoundEngine_OpEB_EC_F3_F8_FD_FF_Consume1ByteAndContinue
 
 SoundEngine_OpE0ToE8_SetVoiceControlLowNibble::
-    ld hl, rSoundVoiceControlTable                ; $4623: $21 $30 $dd
-    ld a, c                                       ; $4626: $79
-    add a                                         ; $4627: $87
-    add l                                         ; $4628: $85
-    ld l, a                                       ; $4629: $6f
-    ld a, [de]                                    ; $462a: $1a
-    and $0f                                       ; $462b: $e6 $0f
-    ld [hl], a                                    ; $462d: $77
-    jr SoundEngine_OpEB_EC_F3_F8_FD_FF_Consume1ByteAndContinue; $462e: $18 $1d
+    ld hl, rSoundVoiceControlTable
+    ld a, c
+    add a
+    add l
+    ld l, a
+    ld a, [de]
+    and $0f
+    ld [hl], a
+    jr SoundEngine_OpEB_EC_F3_F8_FD_FF_Consume1ByteAndContinue
 
 SoundEngine_OpE9_IncrementVoiceControlLowNibbleTo08::
-    ld hl, rSoundVoiceControlTable                ; $4630: $21 $30 $dd
-    ld a, c                                       ; $4633: $79
-    add a                                         ; $4634: $87
-    add l                                         ; $4635: $85
-    ld l, a                                       ; $4636: $6f
-    ld a, [hl]                                    ; $4637: $7e
-    cp $08                                        ; $4638: $fe $08
-    jr z, SoundEngine_OpEB_EC_F3_F8_FD_FF_Consume1ByteAndContinue; $463a: $28 $11
+    ld hl, rSoundVoiceControlTable
+    ld a, c
+    add a
+    add l
+    ld l, a
+    ld a, [hl]
+    cp $08
+    jr z, SoundEngine_OpEB_EC_F3_F8_FD_FF_Consume1ByteAndContinue
 
-    inc [hl]                                      ; $463c: $34
-    jr SoundEngine_OpEB_EC_F3_F8_FD_FF_Consume1ByteAndContinue; $463d: $18 $0e
+    inc [hl]
+    jr SoundEngine_OpEB_EC_F3_F8_FD_FF_Consume1ByteAndContinue
 
 SoundEngine_OpEA_DecrementVoiceControlLowNibbleTo00::
-    ld hl, rSoundVoiceControlTable                ; $463f: $21 $30 $dd
-    ld a, c                                       ; $4642: $79
-    add a                                         ; $4643: $87
-    add l                                         ; $4644: $85
-    ld l, a                                       ; $4645: $6f
-    ld a, [hl]                                    ; $4646: $7e
-    or a                                          ; $4647: $b7
-    jr z, SoundEngine_OpEB_EC_F3_F8_FD_FF_Consume1ByteAndContinue; $4648: $28 $03
+    ld hl, rSoundVoiceControlTable
+    ld a, c
+    add a
+    add l
+    ld l, a
+    ld a, [hl]
+    or a
+    jr z, SoundEngine_OpEB_EC_F3_F8_FD_FF_Consume1ByteAndContinue
 
-    dec [hl]                                      ; $464a: $35
-    jr SoundEngine_OpEB_EC_F3_F8_FD_FF_Consume1ByteAndContinue; $464b: $18 $00
+    dec [hl]
+    jr SoundEngine_OpEB_EC_F3_F8_FD_FF_Consume1ByteAndContinue
 
 SoundEngine_OpEB_EC_F3_F8_FD_FF_Consume1ByteAndContinue::
-    inc de                                        ; $464d: $13
+    inc de
 
 SoundCommandDispatcher_ContinueVoiceStreamDispatch::
-    jp SoundEngine_DispatchVoiceOpcode            ; $464e: $c3 $27 $44
+    jp SoundEngine_DispatchVoiceOpcode
 
 
-    inc de                                        ; $4651: $13
+    inc de
 
 SoundEngine_SaveVoiceScriptPointer::
-    ld hl, rSoundVoiceScriptPointerTable          ; $4652: $21 $20 $dd
-    ld a, c                                       ; $4655: $79
-    add a                                         ; $4656: $87
-    add l                                         ; $4657: $85
-    ld l, a                                       ; $4658: $6f
-    ld [hl], e                                    ; $4659: $73
-    inc hl                                        ; $465a: $23
-    ld [hl], d                                    ; $465b: $72
+    ld hl, rSoundVoiceScriptPointerTable
+    ld a, c
+    add a
+    add l
+    ld l, a
+    ld [hl], e
+    inc hl
+    ld [hl], d
 
 SoundEngine_UpdateVoiceStateAndCommitAPURegisters::
-    ld a, [rSoundCurrentVoiceUpdateFlags]         ; $465c: $fa $07 $dd
-    and $01                                       ; $465f: $e6 $01
-    ld a, [rSoundCurrentVoiceIndex]               ; $4661: $fa $02 $dd
-    ld c, a                                       ; $4664: $4f
-    jr z, .AdvanceVoiceFrameCounterPath           ; $4665: $28 $22
+    ld a, [rSoundCurrentVoiceUpdateFlags]
+    and $01
+    ld a, [rSoundCurrentVoiceIndex]
+    ld c, a
+    jr z, .AdvanceVoiceFrameCounterPath
 
-    ld hl, rSoundVoiceTickAccumulatorTable        ; $4667: $21 $70 $dd
-    add a                                         ; $466a: $87
-    add l                                         ; $466b: $85
-    ld l, a                                       ; $466c: $6f
-    xor a                                         ; $466d: $af
-    ld [hl], a                                    ; $466e: $77
-    ld de, $0010                                  ; $466f: $11 $10 $00
-    add hl, de                                    ; $4672: $19
-    ld [hl], a                                    ; $4673: $77
-    add hl, de                                    ; $4674: $19
-    dec de                                        ; $4675: $1b
-    ld a, [hl+]                                   ; $4676: $2a
-    ld [hl], a                                    ; $4677: $77
-    add hl, de                                    ; $4678: $19
-    ld a, [hl+]                                   ; $4679: $2a
-    ld [hl], a                                    ; $467a: $77
-    add hl, de                                    ; $467b: $19
-    ld a, [hl+]                                   ; $467c: $2a
-    ld [hl], a                                    ; $467d: $77
-    ld a, c                                       ; $467e: $79
-    and $03                                       ; $467f: $e6 $03
-    cp $03                                        ; $4681: $fe $03
-    ld b, $00                                     ; $4683: $06 $00
-    jr z, .AccumulatePhaseAndHandleOverflow       ; $4685: $28 $1c
+    ld hl, rSoundVoiceTickAccumulatorTable
+    add a
+    add l
+    ld l, a
+    xor a
+    ld [hl], a
+    ld de, $0010
+    add hl, de
+    ld [hl], a
+    add hl, de
+    dec de
+    ld a, [hl+]
+    ld [hl], a
+    add hl, de
+    ld a, [hl+]
+    ld [hl], a
+    add hl, de
+    ld a, [hl+]
+    ld [hl], a
+    ld a, c
+    and $03
+    cp $03
+    ld b, $00
+    jr z, .AccumulatePhaseAndHandleOverflow
 
-    jr .UpdateFrequencyFromPitchBasePath          ; $4687: $18 $17
+    jr .UpdateFrequencyFromPitchBasePath
 
 .AdvanceVoiceFrameCounterPath:
-    ld hl, rSoundVoiceFrameCounterTable           ; $4689: $21 $80 $dd
-    ld a, [rSoundCurrentVoiceIndex]               ; $468c: $fa $02 $dd
-    add a                                         ; $468f: $87
-    add l                                         ; $4690: $85
-    ld l, a                                       ; $4691: $6f
-    inc [hl]                                      ; $4692: $34
-    ld b, [hl]                                    ; $4693: $46
-    ld a, c                                       ; $4694: $79
-    and $03                                       ; $4695: $e6 $03
-    cp $03                                        ; $4697: $fe $03
-    jr z, .AccumulatePhaseAndHandleOverflow       ; $4699: $28 $08
+    ld hl, rSoundVoiceFrameCounterTable
+    ld a, [rSoundCurrentVoiceIndex]
+    add a
+    add l
+    ld l, a
+    inc [hl]
+    ld b, [hl]
+    ld a, c
+    and $03
+    cp $03
+    jr z, .AccumulatePhaseAndHandleOverflow
 
-    push bc                                       ; $469b: $c5
-    call SoundEngine_HandleVoiceTrigger           ; $469c: $cd $9f $47
-    pop bc                                        ; $469f: $c1
+    push bc
+    call SoundEngine_HandleVoiceTrigger
+    pop bc
 
 .UpdateFrequencyFromPitchBasePath:
-    call SoundEngine_UpdateFrequencyFromPitchBase ; $46a0: $cd $c1 $47
+    call SoundEngine_UpdateFrequencyFromPitchBase
 
 .AccumulatePhaseAndHandleOverflow:
-    ld hl, rSoundVoicePhaseAccumulatorTable       ; $46a3: $21 $e0 $dd
-    ld a, c                                       ; $46a6: $79
-    add a                                         ; $46a7: $87
-    add l                                         ; $46a8: $85
-    ld l, a                                       ; $46a9: $6f
-    ld a, [hl+]                                   ; $46aa: $2a
-    add [hl]                                      ; $46ab: $86
-    push hl                                       ; $46ac: $e5
-    jr c, HandleAccumulationOverflowLoop          ; $46ad: $38 $05
+    ld hl, rSoundVoicePhaseAccumulatorTable
+    ld a, c
+    add a
+    add l
+    ld l, a
+    ld a, [hl+]
+    add [hl]
+    push hl
+    jr c, HandleAccumulationOverflowLoop
 
-    cp $90                                        ; $46af: $fe $90
-    jp c, SoundEngine_ApplyPendingHardwareUpdates ; $46b1: $da $16 $47
+    cp $90
+    jp c, SoundEngine_ApplyPendingHardwareUpdates
 
 HandleAccumulationOverflowLoop::
-    sub $90                                       ; $46b4: $d6 $90
-    ld hl, rSoundVoiceNoteTickCountdownTable      ; $46b6: $21 $40 $dd
-    push af                                       ; $46b9: $f5
-    ld a, c                                       ; $46ba: $79
-    add a                                         ; $46bb: $87
-    add l                                         ; $46bc: $85
-    ld l, a                                       ; $46bd: $6f
-    pop af                                        ; $46be: $f1
-    dec [hl]                                      ; $46bf: $35
-    ld b, [hl]                                    ; $46c0: $46
-    push bc                                       ; $46c1: $c5
-    push af                                       ; $46c2: $f5
-    ld hl, rSoundVoiceTickAccumulatorTable        ; $46c3: $21 $70 $dd
-    ld a, c                                       ; $46c6: $79
-    add a                                         ; $46c7: $87
-    add l                                         ; $46c8: $85
-    ld l, a                                       ; $46c9: $6f
-    inc [hl]                                      ; $46ca: $34
-    ld b, [hl]                                    ; $46cb: $46
-    ld hl, rSoundVoiceScaledTickTargetTable       ; $46cc: $21 $60 $dd
-    ld a, c                                       ; $46cf: $79
-    add a                                         ; $46d0: $87
-    add l                                         ; $46d1: $85
-    ld l, a                                       ; $46d2: $6f
-    ld a, b                                       ; $46d3: $78
-    cp [hl]                                       ; $46d4: $be
-    jr nz, ContinueOverflowWhileTickCountdownNonZero; $46d5: $20 $2f
+    sub $90
+    ld hl, rSoundVoiceNoteTickCountdownTable
+    push af
+    ld a, c
+    add a
+    add l
+    ld l, a
+    pop af
+    dec [hl]
+    ld b, [hl]
+    push bc
+    push af
+    ld hl, rSoundVoiceTickAccumulatorTable
+    ld a, c
+    add a
+    add l
+    ld l, a
+    inc [hl]
+    ld b, [hl]
+    ld hl, rSoundVoiceScaledTickTargetTable
+    ld a, c
+    add a
+    add l
+    ld l, a
+    ld a, b
+    cp [hl]
+    jr nz, ContinueOverflowWhileTickCountdownNonZero
 
-    ld hl, rSoundVoiceTickRateTable               ; $46d7: $21 $50 $dd
-    ld a, c                                       ; $46da: $79
-    add a                                         ; $46db: $87
-    add l                                         ; $46dc: $85
-    ld l, a                                       ; $46dd: $6f
-    inc hl                                        ; $46de: $23
-    ld a, [hl]                                    ; $46df: $7e
-    ld hl, rSoundVoiceVolumeTable                 ; $46e0: $21 $a0 $dd
-    push af                                       ; $46e3: $f5
-    ld a, c                                       ; $46e4: $79
-    add a                                         ; $46e5: $87
-    add l                                         ; $46e6: $85
-    ld l, a                                       ; $46e7: $6f
-    pop af                                        ; $46e8: $f1
-    inc hl                                        ; $46e9: $23
-    ld [hl], a                                    ; $46ea: $77
-    ld hl, rSoundCurrentVoiceUpdateFlags          ; $46eb: $21 $07 $dd
-    ld a, $c0                                     ; $46ee: $3e $c0
-    or [hl]                                       ; $46f0: $b6
-    ld [hl], a                                    ; $46f1: $77
-    ld hl, rSoundVoiceStereoPanningTable          ; $46f2: $21 $90 $dd
-    ld a, c                                       ; $46f5: $79
-    add a                                         ; $46f6: $87
-    add l                                         ; $46f7: $85
-    ld l, a                                       ; $46f8: $6f
-    ld a, [hl+]                                   ; $46f9: $2a
-    swap a                                        ; $46fa: $cb $37
+    ld hl, rSoundVoiceTickRateTable
+    ld a, c
+    add a
+    add l
+    ld l, a
+    inc hl
+    ld a, [hl]
+    ld hl, rSoundVoiceVolumeTable
+    push af
+    ld a, c
+    add a
+    add l
+    ld l, a
+    pop af
+    inc hl
+    ld [hl], a
+    ld hl, rSoundCurrentVoiceUpdateFlags
+    ld a, $c0
+    or [hl]
+    ld [hl], a
+    ld hl, rSoundVoiceStereoPanningTable
+    ld a, c
+    add a
+    add l
+    ld l, a
+    ld a, [hl+]
+    swap a
 
 SoundEngine_StoreRoutingLowBitsAndSetNR51UpdateFlag::
-    and $03                                       ; $46fc: $e6 $03
-    ld [hl], a                                    ; $46fe: $77
-    ld hl, rSoundCurrentVoiceUpdateFlags          ; $46ff: $21 $07 $dd
-    ld a, $10                                     ; $4702: $3e $10
-    or [hl]                                       ; $4704: $b6
-    ld [hl], a                                    ; $4705: $77
+    and $03
+    ld [hl], a
+    ld hl, rSoundCurrentVoiceUpdateFlags
+    ld a, $10
+    or [hl]
+    ld [hl], a
 
 ContinueOverflowWhileTickCountdownNonZero::
-    pop af                                        ; $4706: $f1
-    pop bc                                        ; $4707: $c1
-    push af                                       ; $4708: $f5
-    ld a, b                                       ; $4709: $78
-    or a                                          ; $470a: $b7
-    jr z, .FinishOverflowLoop                     ; $470b: $28 $08
+    pop af
+    pop bc
+    push af
+    ld a, b
+    or a
+    jr z, .FinishOverflowLoop
 
-    pop af                                        ; $470d: $f1
-    cp $90                                        ; $470e: $fe $90
-    jr c, SoundEngine_ApplyPendingHardwareUpdates ; $4710: $38 $04
+    pop af
+    cp $90
+    jr c, SoundEngine_ApplyPendingHardwareUpdates
 
-    jp HandleAccumulationOverflowLoop             ; $4712: $c3 $b4 $46
+    jp HandleAccumulationOverflowLoop
 
 
 .FinishOverflowLoop:
-    pop af                                        ; $4715: $f1
+    pop af
 
 SoundEngine_ApplyPendingHardwareUpdates::
-    push af                                       ; $4716: $f5
-    call SoundEngine_CheckVoiceMuteGate           ; $4717: $cd $ab $48
-    jp c, SoundEngine_RestoreAccumulatorAndReturn ; $471a: $da $9b $47
+    push af
+    call SoundEngine_CheckVoiceMuteGate
+    jp c, SoundEngine_RestoreAccumulatorAndReturn
 
-    ld a, c                                       ; $471d: $79
-    ld de, rSoundCurrentVoiceUpdateFlags          ; $471e: $11 $07 $dd
-    cp $04                                        ; $4721: $fe $04
-    jr c, .ApplyNR51UpdateIfRequested             ; $4723: $38 $0e
+    ld a, c
+    ld de, rSoundCurrentVoiceUpdateFlags
+    cp $04
+    jr c, .ApplyNR51UpdateIfRequested
 
-    ld hl, rSoundHighVoiceUpdateFlagsTable        ; $4725: $21 $08 $dd
-    and $03                                       ; $4728: $e6 $03
-    add l                                         ; $472a: $85
-    ld l, a                                       ; $472b: $6f
-    ld a, [hl]                                    ; $472c: $7e
-    ld [hl], $00                                  ; $472d: $36 $00
-    ld h, d                                       ; $472f: $62
-    ld l, e                                       ; $4730: $6b
-    or [hl]                                       ; $4731: $b6
-    ld [hl], a                                    ; $4732: $77
+    ld hl, rSoundHighVoiceUpdateFlagsTable
+    and $03
+    add l
+    ld l, a
+    ld a, [hl]
+    ld [hl], $00
+    ld h, d
+    ld l, e
+    or [hl]
+    ld [hl], a
 
 .ApplyNR51UpdateIfRequested:
-    ld a, [de]                                    ; $4733: $1a
-    and $10                                       ; $4734: $e6 $10
-    jr z, .ApplyTimbreUpdateIfRequested           ; $4736: $28 $0c
+    ld a, [de]
+    and $10
+    jr z, .ApplyTimbreUpdateIfRequested
 
-    ld hl, rSoundVoiceStereoPanningTable          ; $4738: $21 $90 $dd
-    ld a, c                                       ; $473b: $79
-    add a                                         ; $473c: $87
-    add l                                         ; $473d: $85
-    ld l, a                                       ; $473e: $6f
-    inc hl                                        ; $473f: $23
-    ld a, [hl]                                    ; $4740: $7e
-    call SoundEngine_UpdateVoicePanningNR51       ; $4741: $cd $b8 $48
+    ld hl, rSoundVoiceStereoPanningTable
+    ld a, c
+    add a
+    add l
+    ld l, a
+    inc hl
+    ld a, [hl]
+    call SoundEngine_UpdateVoicePanningNR51
 
 .ApplyTimbreUpdateIfRequested:
-    ld a, [de]                                    ; $4744: $1a
-    and $20                                       ; $4745: $e6 $20
-    jr z, .ApplyVolumeUpdateIfRequested           ; $4747: $28 $0c
+    ld a, [de]
+    and $20
+    jr z, .ApplyVolumeUpdateIfRequested
 
-    ld hl, rSoundVoiceTimbreTable                 ; $4749: $21 $b0 $dd
-    ld a, c                                       ; $474c: $79
-    add a                                         ; $474d: $87
-    add l                                         ; $474e: $85
-    ld l, a                                       ; $474f: $6f
-    inc hl                                        ; $4750: $23
-    ld a, [hl]                                    ; $4751: $7e
-    call SoundEngine_WriteVoiceTimbreOrWave       ; $4752: $cd $31 $49
+    ld hl, rSoundVoiceTimbreTable
+    ld a, c
+    add a
+    add l
+    ld l, a
+    inc hl
+    ld a, [hl]
+    call SoundEngine_WriteVoiceTimbreOrWave
 
 .ApplyVolumeUpdateIfRequested:
-    ld a, [de]                                    ; $4755: $1a
-    and $40                                       ; $4756: $e6 $40
-    jr z, .ApplyFrequencyUpdateIfRequested        ; $4758: $28 $2a
+    ld a, [de]
+    and $40
+    jr z, .ApplyFrequencyUpdateIfRequested
 
-    ld hl, rSoundVoiceControlTable                ; $475a: $21 $30 $dd
-    ld a, c                                       ; $475d: $79
-    add a                                         ; $475e: $87
-    add l                                         ; $475f: $85
-    ld l, a                                       ; $4760: $6f
-    inc hl                                        ; $4761: $23
-    ld a, [hl]                                    ; $4762: $7e
-    rlca                                          ; $4763: $07
-    jr nc, .ComputeAttenuatedVolumeFromGroupAttenuation; $4764: $30 $03
+    ld hl, rSoundVoiceControlTable
+    ld a, c
+    add a
+    add l
+    ld l, a
+    inc hl
+    ld a, [hl]
+    rlca
+    jr nc, .ComputeAttenuatedVolumeFromGroupAttenuation
 
-    xor a                                         ; $4766: $af
-    jr .WriteComputedVolume                       ; $4767: $18 $18
+    xor a
+    jr .WriteComputedVolume
 
 .ComputeAttenuatedVolumeFromGroupAttenuation:
-    ld a, c                                       ; $4769: $79
-    ld hl, rSoundVoiceGroupAttenuationTable       ; $476a: $21 $0c $dd
-    srl a                                         ; $476d: $cb $3f
-    srl a                                         ; $476f: $cb $3f
-    add l                                         ; $4771: $85
-    ld l, a                                       ; $4772: $6f
-    ld b, [hl]                                    ; $4773: $46
-    ld a, c                                       ; $4774: $79
-    ld hl, rSoundVoiceVolumeTable                 ; $4775: $21 $a0 $dd
-    add a                                         ; $4778: $87
-    add l                                         ; $4779: $85
-    ld l, a                                       ; $477a: $6f
-    inc hl                                        ; $477b: $23
-    ld a, [hl]                                    ; $477c: $7e
-    sub b                                         ; $477d: $90
-    jr nc, .WriteComputedVolume                   ; $477e: $30 $01
+    ld a, c
+    ld hl, rSoundVoiceGroupAttenuationTable
+    srl a
+    srl a
+    add l
+    ld l, a
+    ld b, [hl]
+    ld a, c
+    ld hl, rSoundVoiceVolumeTable
+    add a
+    add l
+    ld l, a
+    inc hl
+    ld a, [hl]
+    sub b
+    jr nc, .WriteComputedVolume
 
-    xor a                                         ; $4780: $af
+    xor a
 
 .WriteComputedVolume:
-    call SoundEngine_WriteVoiceVolumeNibble       ; $4781: $cd $0b $49
+    call SoundEngine_WriteVoiceVolumeNibble
 
 .ApplyFrequencyUpdateIfRequested:
-    ld hl, rSoundVoiceFrequencyTable              ; $4784: $21 $d0 $dd
-    ld a, c                                       ; $4787: $79
-    add a                                         ; $4788: $87
-    add l                                         ; $4789: $85
-    ld l, a                                       ; $478a: $6f
-    ld a, [hl+]                                   ; $478b: $2a
-    ld h, [hl]                                    ; $478c: $66
-    ld l, a                                       ; $478d: $6f
-    ld a, [de]                                    ; $478e: $1a
-    and $80                                       ; $478f: $e6 $80
-    jr z, .WriteFrequencyRegisters                ; $4791: $28 $05
+    ld hl, rSoundVoiceFrequencyTable
+    ld a, c
+    add a
+    add l
+    ld l, a
+    ld a, [hl+]
+    ld h, [hl]
+    ld l, a
+    ld a, [de]
+    and $80
+    jr z, .WriteFrequencyRegisters
 
-    sla h                                         ; $4793: $cb $24
-    scf                                           ; $4795: $37
-    rr h                                          ; $4796: $cb $1c
+    sla h
+    scf
+    rr h
 
 .WriteFrequencyRegisters:
-    call SoundEngine_WriteVoiceFrequencyPair      ; $4798: $cd $52 $49
+    call SoundEngine_WriteVoiceFrequencyPair
 
 SoundEngine_RestoreAccumulatorAndReturn::
-    pop af                                        ; $479b: $f1
-    pop hl                                        ; $479c: $e1
-    ld [hl], a                                    ; $479d: $77
-    ret                                           ; $479e: $c9
+    pop af
+    pop hl
+    ld [hl], a
+    ret
 
 
 SoundEngine_HandleVoiceTrigger::
-    ld hl, rSoundVoiceTriggerTable                ; $479f: $21 $c0 $dd
-    ld a, c                                       ; $47a2: $79
-    add a                                         ; $47a3: $87
-    add l                                         ; $47a4: $85
-    ld l, a                                       ; $47a5: $6f
-    ld a, [hl]                                    ; $47a6: $7e
-    or a                                          ; $47a7: $b7
-    ret z                                         ; $47a8: $c8
+    ld hl, rSoundVoiceTriggerTable
+    ld a, c
+    add a
+    add l
+    ld l, a
+    ld a, [hl]
+    or a
+    ret z
 
-    cp b                                          ; $47a9: $b8
-    ret nz                                        ; $47aa: $c0
+    cp b
+    ret nz
 
-    ld a, c                                       ; $47ab: $79
-    ld hl, rSoundVoiceTimbreTable                 ; $47ac: $21 $b0 $dd
-    add a                                         ; $47af: $87
-    add l                                         ; $47b0: $85
-    ld l, a                                       ; $47b1: $6f
-    ld a, [hl]                                    ; $47b2: $7e
-    swap a                                        ; $47b3: $cb $37
-    and $0f                                       ; $47b5: $e6 $0f
-    inc hl                                        ; $47b7: $23
-    ld [hl], a                                    ; $47b8: $77
-    ld hl, rSoundCurrentVoiceUpdateFlags          ; $47b9: $21 $07 $dd
-    ld a, $a0                                     ; $47bc: $3e $a0
-    or [hl]                                       ; $47be: $b6
-    ld [hl], a                                    ; $47bf: $77
-    ret                                           ; $47c0: $c9
+    ld a, c
+    ld hl, rSoundVoiceTimbreTable
+    add a
+    add l
+    ld l, a
+    ld a, [hl]
+    swap a
+    and $0f
+    inc hl
+    ld [hl], a
+    ld hl, rSoundCurrentVoiceUpdateFlags
+    ld a, $a0
+    or [hl]
+    ld [hl], a
+    ret
 
 
 SoundEngine_UpdateFrequencyFromPitchBase::
-    call SoundEngine_CheckPitchOffsetGateAndComputeOffset; $47c1: $cd $f4 $47
-    jr c, .RecomputeFrequencyFromPitchBaseAndVoiceControl; $47c4: $38 $06
+    call SoundEngine_CheckPitchOffsetGateAndComputeOffset
+    jr c, .RecomputeFrequencyFromPitchBaseAndVoiceControl
 
-    ld a, [rSoundCurrentVoiceUpdateFlags]         ; $47c6: $fa $07 $dd
-    and $08                                       ; $47c9: $e6 $08
-    ret z                                         ; $47cb: $c8
+    ld a, [rSoundCurrentVoiceUpdateFlags]
+    and $08
+    ret z
 
 .RecomputeFrequencyFromPitchBaseAndVoiceControl:
-    ld e, l                                       ; $47cc: $5d
-    ld d, h                                       ; $47cd: $54
-    ld hl, rSoundVoicePitchBaseTable              ; $47ce: $21 $10 $de
-    ld a, c                                       ; $47d1: $79
-    add a                                         ; $47d2: $87
-    add l                                         ; $47d3: $85
-    ld l, a                                       ; $47d4: $6f
-    ld a, [hl+]                                   ; $47d5: $2a
-    ld h, [hl]                                    ; $47d6: $66
-    ld l, a                                       ; $47d7: $6f
-    add hl, de                                    ; $47d8: $19
-    push hl                                       ; $47d9: $e5
-    ld hl, rSoundVoiceControlTable                ; $47da: $21 $30 $dd
-    ld a, c                                       ; $47dd: $79
-    add a                                         ; $47de: $87
-    add l                                         ; $47df: $85
-    ld l, a                                       ; $47e0: $6f
-    inc hl                                        ; $47e1: $23
-    ld a, [hl]                                    ; $47e2: $7e
-    pop hl                                        ; $47e3: $e1
-    call SoundEngine_ComputeFrequencyPairFromPitchControl; $47e4: $cd $bd $49
-    ld d, h                                       ; $47e7: $54
-    ld e, l                                       ; $47e8: $5d
-    ld hl, rSoundVoiceFrequencyTable              ; $47e9: $21 $d0 $dd
-    ld a, c                                       ; $47ec: $79
-    add a                                         ; $47ed: $87
-    add l                                         ; $47ee: $85
-    ld l, a                                       ; $47ef: $6f
-    ld [hl], e                                    ; $47f0: $73
-    inc hl                                        ; $47f1: $23
-    ld [hl], d                                    ; $47f2: $72
-    ret                                           ; $47f3: $c9
+    ld e, l
+    ld d, h
+    ld hl, rSoundVoicePitchBaseTable
+    ld a, c
+    add a
+    add l
+    ld l, a
+    ld a, [hl+]
+    ld h, [hl]
+    ld l, a
+    add hl, de
+    push hl
+    ld hl, rSoundVoiceControlTable
+    ld a, c
+    add a
+    add l
+    ld l, a
+    inc hl
+    ld a, [hl]
+    pop hl
+    call SoundEngine_ComputeFrequencyPairFromPitchControl
+    ld d, h
+    ld e, l
+    ld hl, rSoundVoiceFrequencyTable
+    ld a, c
+    add a
+    add l
+    ld l, a
+    ld [hl], e
+    inc hl
+    ld [hl], d
+    ret
 
 
 SoundEngine_CheckPitchOffsetGateAndComputeOffset::
-    push bc                                       ; $47f4: $c5
-    ld hl, rSoundVoicePitchOffsetGateTable        ; $47f5: $21 $00 $de
-    ld a, c                                       ; $47f8: $79
-    add a                                         ; $47f9: $87
-    add l                                         ; $47fa: $85
-    ld l, a                                       ; $47fb: $6f
+    push bc
+    ld hl, rSoundVoicePitchOffsetGateTable
+    ld a, c
+    add a
+    add l
+    ld l, a
 
 .CheckPitchOffsetGateThresholdAndReturnOffset:
-    ld a, [hl]                                    ; $47fc: $7e
-    or a                                          ; $47fd: $b7
-    jr z, .ReturnNoOffsetForPitchGate             ; $47fe: $28 $07
+    ld a, [hl]
+    or a
+    jr z, .ReturnNoOffsetForPitchGate
 
-    push hl                                       ; $4800: $e5
-    inc hl                                        ; $4801: $23
-    ld a, [hl]                                    ; $4802: $7e
-    cp b                                          ; $4803: $b8
-    jr c, .ComputePitchOffsetUsingStepPhase       ; $4804: $38 $07
+    push hl
+    inc hl
+    ld a, [hl]
+    cp b
+    jr c, .ComputePitchOffsetUsingStepPhase
 
-    pop hl                                        ; $4806: $e1
+    pop hl
 
 .ReturnNoOffsetForPitchGate:
-    ld hl, $0000                                  ; $4807: $21 $00 $00
-    pop bc                                        ; $480a: $c1
-    or a                                          ; $480b: $b7
-    ret                                           ; $480c: $c9
+    ld hl, $0000
+    pop bc
+    or a
+    ret
 
 
 .ComputePitchOffsetUsingStepPhase:
-    ld hl, rSoundVoicePitchStepPhaseTable         ; $480d: $21 $f0 $dd
-    ld a, c                                       ; $4810: $79
-    add a                                         ; $4811: $87
-    add l                                         ; $4812: $85
-    ld l, a                                       ; $4813: $6f
-    ld a, [hl+]                                   ; $4814: $2a
-    add [hl]                                      ; $4815: $86
-    ld [hl], a                                    ; $4816: $77
-    ld c, a                                       ; $4817: $4f
-    sla a                                         ; $4818: $cb $27
-    sla a                                         ; $481a: $cb $27
-    jr nc, .ScaleOffsetByLookupEntry              ; $481c: $30 $01
+    ld hl, rSoundVoicePitchStepPhaseTable
+    ld a, c
+    add a
+    add l
+    ld l, a
+    ld a, [hl+]
+    add [hl]
+    ld [hl], a
+    ld c, a
+    sla a
+    sla a
+    jr nc, .ScaleOffsetByLookupEntry
 
-    cpl                                           ; $481e: $2f
+    cpl
 
 .ScaleOffsetByLookupEntry:
-    pop hl                                        ; $481f: $e1
-    ld l, [hl]                                    ; $4820: $6e
-    ld h, $00                                     ; $4821: $26 $00
-    call SoundEngine_MultiplyHLByA_8Bit           ; $4823: $cd $5a $48
-    ld a, l                                       ; $4826: $7d
-    srl h                                         ; $4827: $cb $3c
-    rra                                           ; $4829: $1f
-    srl h                                         ; $482a: $cb $3c
-    rra                                           ; $482c: $1f
-    srl h                                         ; $482d: $cb $3c
-    rra                                           ; $482f: $1f
-    srl h                                         ; $4830: $cb $3c
-    rra                                           ; $4832: $1f
-    ld l, a                                       ; $4833: $6f
-    sla c                                         ; $4834: $cb $21
-    jr nc, .ReturnOffsetWithCarrySet              ; $4836: $30 $07
+    pop hl
+    ld l, [hl]
+    ld h, $00
+    call SoundEngine_MultiplyHLByA_8Bit
+    ld a, l
+    srl h
+    rra
+    srl h
+    rra
+    srl h
+    rra
+    srl h
+    rra
+    ld l, a
+    sla c
+    jr nc, .ReturnOffsetWithCarrySet
 
-    ld a, h                                       ; $4838: $7c
-    scf                                           ; $4839: $37
-    ld h, a                                       ; $483a: $67
-    ld a, l                                       ; $483b: $7d
-    scf                                           ; $483c: $37
-    ld l, a                                       ; $483d: $6f
-    inc hl                                        ; $483e: $23
+    ld a, h
+    scf
+    ld h, a
+    ld a, l
+    scf
+    ld l, a
+    inc hl
 
 .ReturnOffsetWithCarrySet:
-    pop bc                                        ; $483f: $c1
-    scf                                           ; $4840: $37
-    ret                                           ; $4841: $c9
+    pop bc
+    scf
+    ret
 
 
 SoundEngine_DivideHLByA_8Step::
-    push bc                                       ; $4842: $c5
-    push de                                       ; $4843: $d5
-    ld e, a                                       ; $4844: $5f
-    ld b, $08                                     ; $4845: $06 $08
+    push bc
+    push de
+    ld e, a
+    ld b, $08
 
 .DivisionBitLoop:
-    add hl, hl                                    ; $4847: $29
-    ld a, h                                       ; $4848: $7c
-    jr c, .SubtractDivisorAndSetQuotientBit       ; $4849: $38 $03
+    add hl, hl
+    ld a, h
+    jr c, .SubtractDivisorAndSetQuotientBit
 
-    cp e                                          ; $484b: $bb
-    jr c, .AdvanceDivisionLoop                    ; $484c: $38 $03
+    cp e
+    jr c, .AdvanceDivisionLoop
 
 .SubtractDivisorAndSetQuotientBit:
-    sub e                                         ; $484e: $93
-    ld h, a                                       ; $484f: $67
-    inc hl                                        ; $4850: $23
+    sub e
+    ld h, a
+    inc hl
 
 .AdvanceDivisionLoop:
-    dec b                                         ; $4851: $05
-    jr nz, .DivisionBitLoop                       ; $4852: $20 $f3
+    dec b
+    jr nz, .DivisionBitLoop
 
-    ld a, l                                       ; $4854: $7d
-    ld l, h                                       ; $4855: $6c
-    ld h, a                                       ; $4856: $67
-    pop de                                        ; $4857: $d1
-    pop bc                                        ; $4858: $c1
-    ret                                           ; $4859: $c9
+    ld a, l
+    ld l, h
+    ld h, a
+    pop de
+    pop bc
+    ret
 
 
 SoundEngine_MultiplyHLByA_8Bit::
-    push bc                                       ; $485a: $c5
-    push de                                       ; $485b: $d5
-    ld d, h                                       ; $485c: $54
-    ld e, l                                       ; $485d: $5d
-    ld hl, $0000                                  ; $485e: $21 $00 $00
-    ld b, $08                                     ; $4861: $06 $08
+    push bc
+    push de
+    ld d, h
+    ld e, l
+    ld hl, $0000
+    ld b, $08
 
 .MultiplyBitLoop:
-    rrca                                          ; $4863: $0f
-    jr nc, .ShiftMultiplicandLeft                 ; $4864: $30 $01
+    rrca
+    jr nc, .ShiftMultiplicandLeft
 
-    add hl, de                                    ; $4866: $19
+    add hl, de
 
 .ShiftMultiplicandLeft:
-    sla e                                         ; $4867: $cb $23
-    rl d                                          ; $4869: $cb $12
-    dec b                                         ; $486b: $05
-    jr nz, .MultiplyBitLoop                       ; $486c: $20 $f5
+    sla e
+    rl d
+    dec b
+    jr nz, .MultiplyBitLoop
 
-    pop de                                        ; $486e: $d1
-    pop bc                                        ; $486f: $c1
-    ret                                           ; $4870: $c9
+    pop de
+    pop bc
+    ret
 
 
 SoundEngine_MultiplyLByALowNibble::
-    ld h, a                                       ; $4871: $67
-    xor a                                         ; $4872: $af
-    srl h                                         ; $4873: $cb $3c
-    jr nc, .ProcessBit1Contribution               ; $4875: $30 $01
+    ld h, a
+    xor a
+    srl h
+    jr nc, .ProcessBit1Contribution
 
-    add l                                         ; $4877: $85
+    add l
 
 .ProcessBit1Contribution:
-    sla l                                         ; $4878: $cb $25
-    srl h                                         ; $487a: $cb $3c
-    jr nc, .ProcessBit2Contribution               ; $487c: $30 $01
+    sla l
+    srl h
+    jr nc, .ProcessBit2Contribution
 
-    add l                                         ; $487e: $85
+    add l
 
 .ProcessBit2Contribution:
-    sla l                                         ; $487f: $cb $25
-    srl h                                         ; $4881: $cb $3c
-    jr nc, .ProcessBit3ContributionAndReturn      ; $4883: $30 $01
+    sla l
+    srl h
+    jr nc, .ProcessBit3ContributionAndReturn
 
-    add l                                         ; $4885: $85
+    add l
 
 .ProcessBit3ContributionAndReturn:
-    sla l                                         ; $4886: $cb $25
-    srl h                                         ; $4888: $cb $3c
-    ret nc                                        ; $488a: $d0
+    sla l
+    srl h
+    ret nc
 
-    add l                                         ; $488b: $85
-    ret                                           ; $488c: $c9
+    add l
+    ret
 
 
 SoundEngine_FillFourWordEntriesWithDEAtHL::
-    push bc                                       ; $488d: $c5
-    ld b, $04                                     ; $488e: $06 $04
+    push bc
+    ld b, $04
 
 .WriteDEWordEntryLoop:
-    ld [hl], d                                    ; $4890: $72
-    inc hl                                        ; $4891: $23
-    ld [hl], e                                    ; $4892: $73
-    inc hl                                        ; $4893: $23
-    dec b                                         ; $4894: $05
-    jr nz, .WriteDEWordEntryLoop                  ; $4895: $20 $f9
+    ld [hl], d
+    inc hl
+    ld [hl], e
+    inc hl
+    dec b
+    jr nz, .WriteDEWordEntryLoop
 
-    pop bc                                        ; $4897: $c1
-    ret                                           ; $4898: $c9
+    pop bc
+    ret
 
 
 CopyIndexed8ByteRowToHLFromDE::
-    add a                                         ; $4899: $87
-    add a                                         ; $489a: $87
-    add a                                         ; $489b: $87
-    add e                                         ; $489c: $83
-    ld e, a                                       ; $489d: $5f
-    ld a, d                                       ; $489e: $7a
-    adc $00                                       ; $489f: $ce $00
-    ld d, a                                       ; $48a1: $57
-    ld b, $08                                     ; $48a2: $06 $08
+    add a
+    add a
+    add a
+    add e
+    ld e, a
+    ld a, d
+    adc $00
+    ld d, a
+    ld b, $08
 
 .Copy8BytesLoop:
-    ld a, [de]                                    ; $48a4: $1a
-    inc de                                        ; $48a5: $13
-    ld [hl+], a                                   ; $48a6: $22
-    dec b                                         ; $48a7: $05
-    jr nz, .Copy8BytesLoop                        ; $48a8: $20 $fa
+    ld a, [de]
+    inc de
+    ld [hl+], a
+    dec b
+    jr nz, .Copy8BytesLoop
 
-    ret                                           ; $48aa: $c9
+    ret
 
 
 SoundEngine_CheckVoiceMuteGate::
-    push af                                       ; $48ab: $f5
-    ld a, [rSoundCurrentVoiceMuteMask]            ; $48ac: $fa $05 $dd
-    or a                                          ; $48af: $b7
-    jr nz, .ReturnCarryIfVoiceMuteGateSet         ; $48b0: $20 $03
+    push af
+    ld a, [rSoundCurrentVoiceMuteMask]
+    or a
+    jr nz, .ReturnCarryIfVoiceMuteGateSet
 
-    pop af                                        ; $48b2: $f1
-    or a                                          ; $48b3: $b7
-    ret                                           ; $48b4: $c9
+    pop af
+    or a
+    ret
 
 
 .ReturnCarryIfVoiceMuteGateSet:
-    pop af                                        ; $48b5: $f1
-    scf                                           ; $48b6: $37
-    ret                                           ; $48b7: $c9
+    pop af
+    scf
+    ret
 
 
 SoundEngine_UpdateVoicePanningNR51::
-    push bc                                       ; $48b8: $c5
-    push hl                                       ; $48b9: $e5
-    push af                                       ; $48ba: $f5
-    ld a, c                                       ; $48bb: $79
-    and $03                                       ; $48bc: $e6 $03
-    ld c, a                                       ; $48be: $4f
-    ld hl, SoundEngine_NR51ClearMaskByChannelTable; $48bf: $21 $44 $41
-    add l                                         ; $48c2: $85
-    ld l, a                                       ; $48c3: $6f
-    ld b, [hl]                                    ; $48c4: $46
-    ldh a, [rNR51]                                ; $48c5: $f0 $25
-    and b                                         ; $48c7: $a0
-    ld b, a                                       ; $48c8: $47
-    pop af                                        ; $48c9: $f1
-    and $03                                       ; $48ca: $e6 $03
-    ld hl, SoundEngine_NR51RoutingPatternTable    ; $48cc: $21 $48 $41
-    add l                                         ; $48cf: $85
-    ld l, a                                       ; $48d0: $6f
-    ld a, [hl]                                    ; $48d1: $7e
-    inc c                                         ; $48d2: $0c
+    push bc
+    push hl
+    push af
+    ld a, c
+    and $03
+    ld c, a
+    ld hl, SoundEngine_NR51ClearMaskByChannelTable
+    add l
+    ld l, a
+    ld b, [hl]
+    ldh a, [rNR51]
+    and b
+    ld b, a
+    pop af
+    and $03
+    ld hl, SoundEngine_NR51RoutingPatternTable
+    add l
+    ld l, a
+    ld a, [hl]
+    inc c
 
 .RotateNR51MaskLoop:
-    dec c                                         ; $48d3: $0d
-    jr z, .WriteNR51AndReturn                     ; $48d4: $28 $03
+    dec c
+    jr z, .WriteNR51AndReturn
 
-    rlca                                          ; $48d6: $07
-    jr .RotateNR51MaskLoop                        ; $48d7: $18 $fa
+    rlca
+    jr .RotateNR51MaskLoop
 
 .WriteNR51AndReturn:
-    or b                                          ; $48d9: $b0
-    ldh [rNR51], a                                ; $48da: $e0 $25
-    pop hl                                        ; $48dc: $e1
-    pop bc                                        ; $48dd: $c1
-    ret                                           ; $48de: $c9
+    or b
+    ldh [rNR51], a
+    pop hl
+    pop bc
+    ret
 
 
 SoundEngine_TriggerVoiceChannel::
-    push bc                                       ; $48df: $c5
-    push hl                                       ; $48e0: $e5
-    ld a, c                                       ; $48e1: $79
-    and $03                                       ; $48e2: $e6 $03
-    ld b, a                                       ; $48e4: $47
-    ld hl, SoundEngine_NRVolumeRegisterAddressTable; $48e5: $21 $3c $41
-    add l                                         ; $48e8: $85
-    ld l, a                                       ; $48e9: $6f
-    ld c, [hl]                                    ; $48ea: $4e
-    ld a, b                                       ; $48eb: $78
-    cp $02                                        ; $48ec: $fe $02
-    jr nz, .TriggerPulseOrNoisePath               ; $48ee: $20 $0a
+    push bc
+    push hl
+    ld a, c
+    and $03
+    ld b, a
+    ld hl, SoundEngine_NRVolumeRegisterAddressTable
+    add l
+    ld l, a
+    ld c, [hl]
+    ld a, b
+    cp $02
+    jr nz, .TriggerPulseOrNoisePath
 
-    xor a                                         ; $48f0: $af
-    ldh [c], a                                    ; $48f1: $e2
-    ldh [rNR30], a                                ; $48f2: $e0 $1a
-    ld a, $80                                     ; $48f4: $3e $80
-    ldh [rNR30], a                                ; $48f6: $e0 $1a
-    jr .ReturnFromVoiceTrigger                    ; $48f8: $18 $0e
+    xor a
+    ldh [c], a
+    ldh [rNR30], a
+    ld a, $80
+    ldh [rNR30], a
+    jr .ReturnFromVoiceTrigger
 
 .TriggerPulseOrNoisePath:
-    ld a, $08                                     ; $48fa: $3e $08
-    ldh [c], a                                    ; $48fc: $e2
-    ld hl, SoundEngine_NRFrequencyRegisterAddressTable; $48fd: $21 $34 $41
-    ld a, b                                       ; $4900: $78
-    add l                                         ; $4901: $85
-    ld l, a                                       ; $4902: $6f
-    ld c, [hl]                                    ; $4903: $4e
-    inc c                                         ; $4904: $0c
-    ld a, $80                                     ; $4905: $3e $80
-    ldh [c], a                                    ; $4907: $e2
+    ld a, $08
+    ldh [c], a
+    ld hl, SoundEngine_NRFrequencyRegisterAddressTable
+    ld a, b
+    add l
+    ld l, a
+    ld c, [hl]
+    inc c
+    ld a, $80
+    ldh [c], a
 
 .ReturnFromVoiceTrigger:
-    pop hl                                        ; $4908: $e1
-    pop bc                                        ; $4909: $c1
-    ret                                           ; $490a: $c9
+    pop hl
+    pop bc
+    ret
 
 
 SoundEngine_WriteVoiceVolumeNibble::
-    push bc                                       ; $490b: $c5
-    push hl                                       ; $490c: $e5
-    and $0f                                       ; $490d: $e6 $0f
-    ld b, a                                       ; $490f: $47
-    ld a, c                                       ; $4910: $79
-    and $03                                       ; $4911: $e6 $03
-    ld c, a                                       ; $4913: $4f
-    cp $02                                        ; $4914: $fe $02
-    jr nz, .SelectVolumeTargetRegister            ; $4916: $20 $0b
+    push bc
+    push hl
+    and $0f
+    ld b, a
+    ld a, c
+    and $03
+    ld c, a
+    cp $02
+    jr nz, .SelectVolumeTargetRegister
 
-    ld a, b                                       ; $4918: $78
-    srl a                                         ; $4919: $cb $3f
-    srl a                                         ; $491b: $cb $3f
-    ld hl, SoundEngine_CH3OutputLevelMapTable     ; $491d: $21 $40 $41
-    add l                                         ; $4920: $85
-    ld l, a                                       ; $4921: $6f
-    ld b, [hl]                                    ; $4922: $46
+    ld a, b
+    srl a
+    srl a
+    ld hl, SoundEngine_CH3OutputLevelMapTable
+    add l
+    ld l, a
+    ld b, [hl]
 
 .SelectVolumeTargetRegister:
-    ld hl, SoundEngine_NRVolumeRegisterAddressTable; $4923: $21 $3c $41
-    ld a, c                                       ; $4926: $79
-    add l                                         ; $4927: $85
-    ld l, a                                       ; $4928: $6f
-    ld c, [hl]                                    ; $4929: $4e
-    ld a, b                                       ; $492a: $78
-    swap a                                        ; $492b: $cb $37
-    ldh [c], a                                    ; $492d: $e2
-    pop hl                                        ; $492e: $e1
-    pop bc                                        ; $492f: $c1
-    ret                                           ; $4930: $c9
+    ld hl, SoundEngine_NRVolumeRegisterAddressTable
+    ld a, c
+    add l
+    ld l, a
+    ld c, [hl]
+    ld a, b
+    swap a
+    ldh [c], a
+    pop hl
+    pop bc
+    ret
 
 
 SoundEngine_WriteVoiceTimbreOrWave::
-    push bc                                       ; $4931: $c5
-    push hl                                       ; $4932: $e5
-    ld b, a                                       ; $4933: $47
-    ld a, c                                       ; $4934: $79
-    and $03                                       ; $4935: $e6 $03
-    cp $03                                        ; $4937: $fe $03
-    jr z, .ReturnFromWriteTimbre                  ; $4939: $28 $14
+    push bc
+    push hl
+    ld b, a
+    ld a, c
+    and $03
+    cp $03
+    jr z, .ReturnFromWriteTimbre
 
-    cp $02                                        ; $493b: $fe $02
-    jr nz, .WritePulseDutyFromNibble              ; $493d: $20 $06
+    cp $02
+    jr nz, .WritePulseDutyFromNibble
 
-    ld a, b                                       ; $493f: $78
-    call SoundEngine_LoadWaveRAMPresetByIndex     ; $4940: $cd $76 $49
-    jr .ReturnFromWriteTimbre                     ; $4943: $18 $0a
+    ld a, b
+    call SoundEngine_LoadWaveRAMPresetByIndex
+    jr .ReturnFromWriteTimbre
 
 .WritePulseDutyFromNibble:
-    ld hl, SoundEngine_NRTimbreRegisterAddressTable; $4945: $21 $38 $41
-    add l                                         ; $4948: $85
-    ld l, a                                       ; $4949: $6f
-    ld c, [hl]                                    ; $494a: $4e
-    ld a, b                                       ; $494b: $78
-    rrca                                          ; $494c: $0f
-    rrca                                          ; $494d: $0f
-    ldh [c], a                                    ; $494e: $e2
+    ld hl, SoundEngine_NRTimbreRegisterAddressTable
+    add l
+    ld l, a
+    ld c, [hl]
+    ld a, b
+    rrca
+    rrca
+    ldh [c], a
 
 .ReturnFromWriteTimbre:
-    pop hl                                        ; $494f: $e1
-    pop bc                                        ; $4950: $c1
-    ret                                           ; $4951: $c9
+    pop hl
+    pop bc
+    ret
 
 
 SoundEngine_WriteVoiceFrequencyPair::
-    push bc                                       ; $4952: $c5
-    ld a, c                                       ; $4953: $79
-    and $03                                       ; $4954: $e6 $03
-    push hl                                       ; $4956: $e5
-    cp $02                                        ; $4957: $fe $02
-    jr nz, .SelectFrequencyTargetRegisters        ; $4959: $20 $0d
+    push bc
+    ld a, c
+    and $03
+    push hl
+    cp $02
+    jr nz, .SelectFrequencyTargetRegisters
 
-    rlc h                                         ; $495b: $cb $04
-    jr nc, .SelectFrequencyTargetRegisters        ; $495d: $30 $09
+    rlc h
+    jr nc, .SelectFrequencyTargetRegisters
 
-    push af                                       ; $495f: $f5
-    xor a                                         ; $4960: $af
-    ldh [rNR30], a                                ; $4961: $e0 $1a
-    ld a, $80                                     ; $4963: $3e $80
-    ldh [rNR30], a                                ; $4965: $e0 $1a
-    pop af                                        ; $4967: $f1
+    push af
+    xor a
+    ldh [rNR30], a
+    ld a, $80
+    ldh [rNR30], a
+    pop af
 
 .SelectFrequencyTargetRegisters:
-    ld hl, SoundEngine_NRFrequencyRegisterAddressTable; $4968: $21 $34 $41
-    add l                                         ; $496b: $85
-    ld l, a                                       ; $496c: $6f
-    ld c, [hl]                                    ; $496d: $4e
-    pop hl                                        ; $496e: $e1
-    ld a, l                                       ; $496f: $7d
-    ldh [c], a                                    ; $4970: $e2
-    inc c                                         ; $4971: $0c
-    ld a, h                                       ; $4972: $7c
-    ldh [c], a                                    ; $4973: $e2
-    pop bc                                        ; $4974: $c1
-    ret                                           ; $4975: $c9
+    ld hl, SoundEngine_NRFrequencyRegisterAddressTable
+    add l
+    ld l, a
+    ld c, [hl]
+    pop hl
+    ld a, l
+    ldh [c], a
+    inc c
+    ld a, h
+    ldh [c], a
+    pop bc
+    ret
 
 
 SoundEngine_LoadWaveRAMPresetByIndex::
-    push bc                                       ; $4976: $c5
-    push hl                                       ; $4977: $e5
-    add a                                         ; $4978: $87
-    ld hl, SoundEngine_WaveRAMPresetPointerTable  ; $4979: $21 $5c $41
-    add l                                         ; $497c: $85
-    ld l, a                                       ; $497d: $6f
-    ld a, [hl+]                                   ; $497e: $2a
-    ld h, [hl]                                    ; $497f: $66
-    ld l, a                                       ; $4980: $6f
-    ld c, $30                                     ; $4981: $0e $30
-    xor a                                         ; $4983: $af
-    ldh [rNR30], a                                ; $4984: $e0 $1a
-    ld a, [hl+]                                   ; $4986: $2a
-    ldh [c], a                                    ; $4987: $e2
-    inc c                                         ; $4988: $0c
-    ld a, [hl+]                                   ; $4989: $2a
-    ldh [c], a                                    ; $498a: $e2
-    inc c                                         ; $498b: $0c
-    ld a, [hl+]                                   ; $498c: $2a
-    ldh [c], a                                    ; $498d: $e2
-    inc c                                         ; $498e: $0c
-    ld a, [hl+]                                   ; $498f: $2a
-    ldh [c], a                                    ; $4990: $e2
-    inc c                                         ; $4991: $0c
-    ld a, [hl+]                                   ; $4992: $2a
-    ldh [c], a                                    ; $4993: $e2
-    inc c                                         ; $4994: $0c
-    ld a, [hl+]                                   ; $4995: $2a
-    ldh [c], a                                    ; $4996: $e2
-    inc c                                         ; $4997: $0c
-    ld a, [hl+]                                   ; $4998: $2a
-    ldh [c], a                                    ; $4999: $e2
-    inc c                                         ; $499a: $0c
-    ld a, [hl+]                                   ; $499b: $2a
-    ldh [c], a                                    ; $499c: $e2
-    inc c                                         ; $499d: $0c
-    ld a, [hl+]                                   ; $499e: $2a
-    ldh [c], a                                    ; $499f: $e2
-    inc c                                         ; $49a0: $0c
-    ld a, [hl+]                                   ; $49a1: $2a
-    ldh [c], a                                    ; $49a2: $e2
-    inc c                                         ; $49a3: $0c
-    ld a, [hl+]                                   ; $49a4: $2a
-    ldh [c], a                                    ; $49a5: $e2
-    inc c                                         ; $49a6: $0c
-    ld a, [hl+]                                   ; $49a7: $2a
-    ldh [c], a                                    ; $49a8: $e2
-    inc c                                         ; $49a9: $0c
-    ld a, [hl+]                                   ; $49aa: $2a
-    ldh [c], a                                    ; $49ab: $e2
-    inc c                                         ; $49ac: $0c
-    ld a, [hl+]                                   ; $49ad: $2a
-    ldh [c], a                                    ; $49ae: $e2
-    inc c                                         ; $49af: $0c
-    ld a, [hl+]                                   ; $49b0: $2a
-    ldh [c], a                                    ; $49b1: $e2
-    inc c                                         ; $49b2: $0c
-    ld a, [hl+]                                   ; $49b3: $2a
-    ldh [c], a                                    ; $49b4: $e2
-    inc c                                         ; $49b5: $0c
-    ld a, $80                                     ; $49b6: $3e $80
-    ldh [rNR30], a                                ; $49b8: $e0 $1a
-    pop hl                                        ; $49ba: $e1
-    pop bc                                        ; $49bb: $c1
-    ret                                           ; $49bc: $c9
+    push bc
+    push hl
+    add a
+    ld hl, SoundEngine_WaveRAMPresetPointerTable
+    add l
+    ld l, a
+    ld a, [hl+]
+    ld h, [hl]
+    ld l, a
+    ld c, $30
+    xor a
+    ldh [rNR30], a
+    ld a, [hl+]
+    ldh [c], a
+    inc c
+    ld a, [hl+]
+    ldh [c], a
+    inc c
+    ld a, [hl+]
+    ldh [c], a
+    inc c
+    ld a, [hl+]
+    ldh [c], a
+    inc c
+    ld a, [hl+]
+    ldh [c], a
+    inc c
+    ld a, [hl+]
+    ldh [c], a
+    inc c
+    ld a, [hl+]
+    ldh [c], a
+    inc c
+    ld a, [hl+]
+    ldh [c], a
+    inc c
+    ld a, [hl+]
+    ldh [c], a
+    inc c
+    ld a, [hl+]
+    ldh [c], a
+    inc c
+    ld a, [hl+]
+    ldh [c], a
+    inc c
+    ld a, [hl+]
+    ldh [c], a
+    inc c
+    ld a, [hl+]
+    ldh [c], a
+    inc c
+    ld a, [hl+]
+    ldh [c], a
+    inc c
+    ld a, [hl+]
+    ldh [c], a
+    inc c
+    ld a, [hl+]
+    ldh [c], a
+    inc c
+    ld a, $80
+    ldh [rNR30], a
+    pop hl
+    pop bc
+    ret
 
 
 SoundEngine_ComputeFrequencyPairFromPitchControl::
-    push bc                                       ; $49bd: $c5
-    ld c, l                                       ; $49be: $4d
-    add h                                         ; $49bf: $84
-    ld b, $00                                     ; $49c0: $06 $00
+    push bc
+    ld c, l
+    add h
+    ld b, $00
 
 .ComputeOctaveAndSemitoneLoop:
-    sub $0c                                       ; $49c2: $d6 $0c
-    inc b                                         ; $49c4: $04
-    jr nc, .ComputeOctaveAndSemitoneLoop          ; $49c5: $30 $fb
+    sub $0c
+    inc b
+    jr nc, .ComputeOctaveAndSemitoneLoop
 
-    dec b                                         ; $49c7: $05
-    add $0c                                       ; $49c8: $c6 $0c
-    jr .LookupSemitoneAndApplyOctaveShift         ; $49ca: $18 $1d
+    dec b
+    add $0c
+    jr .LookupSemitoneAndApplyOctaveShift
 
-    push bc                                       ; $49cc: $c5
-    ld b, h                                       ; $49cd: $44
-    ld c, l                                       ; $49ce: $4d
-    push af                                       ; $49cf: $f5
-    swap a                                        ; $49d0: $cb $37
-    and $0f                                       ; $49d2: $e6 $0f
-    ld l, $0c                                     ; $49d4: $2e $0c
-    call SoundEngine_MultiplyLByALowNibble        ; $49d6: $cd $71 $48
-    ld l, a                                       ; $49d9: $6f
-    pop af                                        ; $49da: $f1
-    and $0f                                       ; $49db: $e6 $0f
-    add l                                         ; $49dd: $85
-    add b                                         ; $49de: $80
-    ld h, $00                                     ; $49df: $26 $00
-    ld l, a                                       ; $49e1: $6f
-    ld a, $0c                                     ; $49e2: $3e $0c
-    call SoundEngine_DivideHLByA_8Step            ; $49e4: $cd $42 $48
-    ld b, h                                       ; $49e7: $44
-    ld a, l                                       ; $49e8: $7d
+    push bc
+    ld b, h
+    ld c, l
+    push af
+    swap a
+    and $0f
+    ld l, $0c
+    call SoundEngine_MultiplyLByALowNibble
+    ld l, a
+    pop af
+    and $0f
+    add l
+    add b
+    ld h, $00
+    ld l, a
+    ld a, $0c
+    call SoundEngine_DivideHLByA_8Step
+    ld b, h
+    ld a, l
 
 .LookupSemitoneAndApplyOctaveShift:
-    add a                                         ; $49e9: $87
-    push af                                       ; $49ea: $f5
-    ld hl, SoundEngine_PitchBendSlopeWordTable    ; $49eb: $21 $1c $41
-    add l                                         ; $49ee: $85
-    ld l, a                                       ; $49ef: $6f
-    ld a, [hl+]                                   ; $49f0: $2a
-    ld h, [hl]                                    ; $49f1: $66
-    ld l, a                                       ; $49f2: $6f
-    ld a, c                                       ; $49f3: $79
-    call SoundEngine_MultiplyHLByA_8Bit           ; $49f4: $cd $5a $48
-    ld c, h                                       ; $49f7: $4c
-    pop af                                        ; $49f8: $f1
-    ld hl, SoundEngine_SemitoneFrequencyWordTable ; $49f9: $21 $02 $41
-    add l                                         ; $49fc: $85
-    ld l, a                                       ; $49fd: $6f
-    ld a, [hl+]                                   ; $49fe: $2a
-    ld h, [hl]                                    ; $49ff: $66
-    ld l, a                                       ; $4a00: $6f
-    ld a, c                                       ; $4a01: $79
-    add l                                         ; $4a02: $85
-    ld l, a                                       ; $4a03: $6f
-    ld a, h                                       ; $4a04: $7c
-    adc $00                                       ; $4a05: $ce $00
-    ld h, a                                       ; $4a07: $67
-    ld a, b                                       ; $4a08: $78
-    or a                                          ; $4a09: $b7
-    jr z, .ReturnFromFrequencyPairCompute         ; $4a0a: $28 $0c
+    add a
+    push af
+    ld hl, SoundEngine_PitchBendSlopeWordTable
+    add l
+    ld l, a
+    ld a, [hl+]
+    ld h, [hl]
+    ld l, a
+    ld a, c
+    call SoundEngine_MultiplyHLByA_8Bit
+    ld c, h
+    pop af
+    ld hl, SoundEngine_SemitoneFrequencyWordTable
+    add l
+    ld l, a
+    ld a, [hl+]
+    ld h, [hl]
+    ld l, a
+    ld a, c
+    add l
+    ld l, a
+    ld a, h
+    adc $00
+    ld h, a
+    ld a, b
+    or a
+    jr z, .ReturnFromFrequencyPairCompute
 
-    ld a, h                                       ; $4a0c: $7c
-    ld h, $04                                     ; $4a0d: $26 $04
+    ld a, h
+    ld h, $04
 
 .ApplyOctaveShiftLoop:
-    srl a                                         ; $4a0f: $cb $3f
-    rr l                                          ; $4a11: $cb $1d
-    or h                                          ; $4a13: $b4
-    dec b                                         ; $4a14: $05
-    jr nz, .ApplyOctaveShiftLoop                  ; $4a15: $20 $f8
+    srl a
+    rr l
+    or h
+    dec b
+    jr nz, .ApplyOctaveShiftLoop
 
-    ld h, a                                       ; $4a17: $67
+    ld h, a
 
 .ReturnFromFrequencyPairCompute:
-    pop bc                                        ; $4a18: $c1
-    ret                                           ; $4a19: $c9
+    pop bc
+    ret
 
 
 SoundEngine_SendDeferredSGBPacketWithClearedPayloadTail::
-    ld a, $41                                     ; $4a1a: $3e $41
-    ld [rSoundDeferredSGBPacketHeader], a         ; $4a1c: $ea $0e $dd
-    ld b, $0b                                     ; $4a1f: $06 $0b
-    ld hl, rSoundDeferredSGBPacketPayloadClearStart; $4a21: $21 $13 $dd
-    xor a                                         ; $4a24: $af
+    ld a, $41
+    ld [rSoundDeferredSGBPacketHeader], a
+    ld b, $0b
+    ld hl, rSoundDeferredSGBPacketPayloadClearStart
+    xor a
 
 .ClearDeferredPacketPayloadLoop:
-    ld [hl+], a                                   ; $4a25: $22
-    dec b                                         ; $4a26: $05
-    jr nz, .ClearDeferredPacketPayloadLoop        ; $4a27: $20 $fc
+    ld [hl+], a
+    dec b
+    jr nz, .ClearDeferredPacketPayloadLoop
 
-    ld hl, rSoundDeferredSGBPacketHeader          ; $4a29: $21 $0e $dd
-    call SoundEngine_SendSGBPacketStreamFromHL    ; $4a2c: $cd $30 $4a
-    ret                                           ; $4a2f: $c9
+    ld hl, rSoundDeferredSGBPacketHeader
+    call SoundEngine_SendSGBPacketStreamFromHL
+    ret
 
 
 SoundEngine_SendSGBPacketStreamFromHL::
-    ld a, [hl]                                    ; $4a30: $7e
-    and $07                                       ; $4a31: $e6 $07
-    ret z                                         ; $4a33: $c8
+    ld a, [hl]
+    and $07
+    ret z
 
-    ld c, $00                                     ; $4a34: $0e $00
+    ld c, $00
 
 .SendNextSGBPacket:
-    push af                                       ; $4a36: $f5
-    ld a, $30                                     ; $4a37: $3e $30
-    ldh [c], a                                    ; $4a39: $e2
-    ld a, $00                                     ; $4a3a: $3e $00
-    ldh [c], a                                    ; $4a3c: $e2
-    ld a, $30                                     ; $4a3d: $3e $30
-    ldh [c], a                                    ; $4a3f: $e2
-    ld d, $10                                     ; $4a40: $16 $10
+    push af
+    ld a, $30
+    ldh [c], a
+    ld a, $00
+    ldh [c], a
+    ld a, $30
+    ldh [c], a
+    ld d, $10
 
 .SendPacketByteLoop:
-    ld b, [hl]                                    ; $4a42: $46
-    inc hl                                        ; $4a43: $23
-    ld e, $08                                     ; $4a44: $1e $08
+    ld b, [hl]
+    inc hl
+    ld e, $08
 
 .SendPacketBitLoop:
-    ld a, $10                                     ; $4a46: $3e $10
-    rrc b                                         ; $4a48: $cb $08
-    jr c, .ClockOutCurrentSGBBit                  ; $4a4a: $38 $02
+    ld a, $10
+    rrc b
+    jr c, .ClockOutCurrentSGBBit
 
-    ld a, $20                                     ; $4a4c: $3e $20
+    ld a, $20
 
 .ClockOutCurrentSGBBit:
-    ldh [c], a                                    ; $4a4e: $e2
-    ld a, $30                                     ; $4a4f: $3e $30
-    ldh [c], a                                    ; $4a51: $e2
-    dec e                                         ; $4a52: $1d
-    jr nz, .SendPacketBitLoop                     ; $4a53: $20 $f1
+    ldh [c], a
+    ld a, $30
+    ldh [c], a
+    dec e
+    jr nz, .SendPacketBitLoop
 
-    dec d                                         ; $4a55: $15
-    jr nz, .SendPacketByteLoop                    ; $4a56: $20 $ea
+    dec d
+    jr nz, .SendPacketByteLoop
 
-    ld a, $20                                     ; $4a58: $3e $20
-    ldh [c], a                                    ; $4a5a: $e2
-    ld a, $30                                     ; $4a5b: $3e $30
-    ldh [c], a                                    ; $4a5d: $e2
-    pop af                                        ; $4a5e: $f1
-    dec a                                         ; $4a5f: $3d
-    ret z                                         ; $4a60: $c8
+    ld a, $20
+    ldh [c], a
+    ld a, $30
+    ldh [c], a
+    pop af
+    dec a
+    ret z
 
-    call SoundEngine_BusyWaitDelayForSGBPacketTiming; $4a61: $cd $66 $4a
-    jr .SendNextSGBPacket                         ; $4a64: $18 $d0
+    call SoundEngine_BusyWaitDelayForSGBPacketTiming
+    jr .SendNextSGBPacket
 
 SoundEngine_BusyWaitDelayForSGBPacketTiming::
-    push hl                                       ; $4a66: $e5
-    ld hl, $1b58                                  ; $4a67: $21 $58 $1b
+    push hl
+    ld hl, $1b58
 
 .DelayLoop:
-    nop                                           ; $4a6a: $00
-    nop                                           ; $4a6b: $00
-    nop                                           ; $4a6c: $00
-    dec hl                                        ; $4a6d: $2b
-    ld a, h                                       ; $4a6e: $7c
-    or l                                          ; $4a6f: $b5
-    jr nz, .DelayLoop                             ; $4a70: $20 $f8
+    nop
+    nop
+    nop
+    dec hl
+    ld a, h
+    or l
+    jr nz, .DelayLoop
 
-    pop hl                                        ; $4a72: $e1
-    ret                                           ; $4a73: $c9
+    pop hl
+    ret
 
 
 SCD_Cmd01_02_VoiceCommandStreamPointerRow_ParamFF::

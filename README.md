@@ -59,11 +59,11 @@ GAME_FLOW_REFERENCE.md      – detailed game-flow, state-machine, and internals
 After editing the symbol map, regenerate `bank_00X.asm` with:
 
 ```sh
-mgbdis --output "disassembly" --print-hex --character-map-path "charmap.asm" --exclude-default-symbols "RST_10,RST_20,RST_28,RST_30,RST_38" --overwrite "Mario's Picross (USA, Europe) (SGB Enhanced).gb"
+python3 -m mgbdis --output "disassembly" --character-map-path "charmap.asm" --exclude-default-symbols "RST_10,RST_20,RST_28,RST_30,RST_38" --overwrite "Mario's Picross (USA, Europe) (SGB Enhanced).gb"
 ```
 
 ```sh
-mgbdis --print-hex --output "disassembly_jp" --character-map-path "charmap.asm" --exclude-default-symbols "RST_10,RST_20,RST_28,RST_30,RST_38" --overwrite "Mario no Picross (Japan) (SGB Enhanced).gb"
+python3 -m mgbdis --output "disassembly_jp" --character-map-path "charmap.asm" --exclude-default-symbols "RST_10,RST_20,RST_28,RST_30,RST_38" --overwrite "Mario no Picross (Japan) (SGB Enhanced).gb"
 ```
 
 (Note: mgbdis.py is included in this repository with enhancements for:
@@ -83,7 +83,9 @@ Run extraction with:
 
 ```sh
 python3 sgbborder_extract.py --output "disassembly/sgb" --overwrite --sym "sgbborder.sym" "Mario's Picross (USA, Europe) (SGB Enhanced).gb"
+```
 
+```sh
 python3 sgbborder_extract.py --output "disassembly_jp/sgb" --overwrite --sym "sgbborder.sym" "Mario no Picross (Japan) (SGB Enhanced).gb"
 ```
 

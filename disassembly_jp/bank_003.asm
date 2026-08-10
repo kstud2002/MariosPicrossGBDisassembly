@@ -257,118 +257,118 @@ SGBPacket_MASK_EN_CancelMask::
     db $b9, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
 
 InitBottomPromptBlinkTimerAndFrameState::
-    xor a                                         ; $4e80: $af
-    ld [rStatePhaseTimer], a                      ; $4e81: $ea $3c $d6
-    ld [rSharedAnimationFrameState], a            ; $4e84: $ea $3d $d6
-    jp ReturnFromBankedJumpRestoreBank            ; $4e87: $c3 $e7 $05
+    xor a
+    ld [rStatePhaseTimer], a
+    ld [rSharedAnimationFrameState], a
+    jp ReturnFromBankedJumpRestoreBank
 
 
 TickBottomPromptBlinkSprite4E_A_START::
-    ld a, [rStatePhaseTimer]                      ; $4e8a: $fa $3c $d6
-    inc a                                         ; $4e8d: $3c
-    cp $46                                        ; $4e8e: $fe $46
-    jr c, .StoreBlinkTimerAndCheckDrawWindowSprite4E; $4e90: $38 $01
+    ld a, [rStatePhaseTimer]
+    inc a
+    cp $46
+    jr c, .StoreBlinkTimerAndCheckDrawWindowSprite4E
 
-    xor a                                         ; $4e92: $af
+    xor a
 
 .StoreBlinkTimerAndCheckDrawWindowSprite4E:
-    ld [rStatePhaseTimer], a                      ; $4e93: $ea $3c $d6
-    cp $30                                        ; $4e96: $fe $30
-    jp nc, ReturnFromBankedJumpRestoreBank        ; $4e98: $d2 $e7 $05
+    ld [rStatePhaseTimer], a
+    cp $30
+    jp nc, ReturnFromBankedJumpRestoreBank
 
-    ld a, $4e                                     ; $4e9b: $3e $4e
-    ld bc, $3088                                  ; $4e9d: $01 $88 $30
-    call CopyOAMSpriteById                        ; $4ea0: $cd $cb $20
-    jp ReturnFromBankedJumpRestoreBank            ; $4ea3: $c3 $e7 $05
+    ld a, $4e
+    ld bc, $3088
+    call CopyOAMSpriteById
+    jp ReturnFromBankedJumpRestoreBank
 
 
 TickBottomPromptBlinkSprite4C_A_OK::
-    ld a, [rStatePhaseTimer]                      ; $4ea6: $fa $3c $d6
-    inc a                                         ; $4ea9: $3c
-    cp $46                                        ; $4eaa: $fe $46
-    jr c, .StoreBlinkTimerAndCheckDrawWindowSprite4C; $4eac: $38 $01
+    ld a, [rStatePhaseTimer]
+    inc a
+    cp $46
+    jr c, .StoreBlinkTimerAndCheckDrawWindowSprite4C
 
-    xor a                                         ; $4eae: $af
+    xor a
 
 .StoreBlinkTimerAndCheckDrawWindowSprite4C:
-    ld [rStatePhaseTimer], a                      ; $4eaf: $ea $3c $d6
-    cp $30                                        ; $4eb2: $fe $30
-    jp nc, ReturnFromBankedJumpRestoreBank        ; $4eb4: $d2 $e7 $05
+    ld [rStatePhaseTimer], a
+    cp $30
+    jp nc, ReturnFromBankedJumpRestoreBank
 
-    ld a, $4c                                     ; $4eb7: $3e $4c
-    ld bc, $3088                                  ; $4eb9: $01 $88 $30
-    call CopyOAMSpriteById                        ; $4ebc: $cd $cb $20
-    jp ReturnFromBankedJumpRestoreBank            ; $4ebf: $c3 $e7 $05
+    ld a, $4c
+    ld bc, $3088
+    call CopyOAMSpriteById
+    jp ReturnFromBankedJumpRestoreBank
 
 
 TickBottomPromptBlinkSprite4C_A_OK_4D_B_CANCEL::
-    ld a, [rStatePhaseTimer]                      ; $4ec2: $fa $3c $d6
-    inc a                                         ; $4ec5: $3c
-    cp $46                                        ; $4ec6: $fe $46
-    jr c, .StoreBlinkTimerAndCheckDrawWindowSprite4C_4D; $4ec8: $38 $09
+    ld a, [rStatePhaseTimer]
+    inc a
+    cp $46
+    jr c, .StoreBlinkTimerAndCheckDrawWindowSprite4C_4D
 
-    ld a, [rSharedAnimationFrameState]            ; $4eca: $fa $3d $d6
-    xor $01                                       ; $4ecd: $ee $01
-    ld [rSharedAnimationFrameState], a            ; $4ecf: $ea $3d $d6
-    xor a                                         ; $4ed2: $af
+    ld a, [rSharedAnimationFrameState]
+    xor $01
+    ld [rSharedAnimationFrameState], a
+    xor a
 
 .StoreBlinkTimerAndCheckDrawWindowSprite4C_4D:
-    ld [rStatePhaseTimer], a                      ; $4ed3: $ea $3c $d6
-    cp $30                                        ; $4ed6: $fe $30
-    jp nc, ReturnFromBankedJumpRestoreBank        ; $4ed8: $d2 $e7 $05
+    ld [rStatePhaseTimer], a
+    cp $30
+    jp nc, ReturnFromBankedJumpRestoreBank
 
-    ld a, [rSharedAnimationFrameState]            ; $4edb: $fa $3d $d6
-    add $4c                                       ; $4ede: $c6 $4c
-    ld bc, $3088                                  ; $4ee0: $01 $88 $30
-    call CopyOAMSpriteById                        ; $4ee3: $cd $cb $20
-    jp ReturnFromBankedJumpRestoreBank            ; $4ee6: $c3 $e7 $05
+    ld a, [rSharedAnimationFrameState]
+    add $4c
+    ld bc, $3088
+    call CopyOAMSpriteById
+    jp ReturnFromBankedJumpRestoreBank
 
 
 TickBottomPromptBlinkSprite4E_A_START_4F_B_EXIT::
-    ld a, [rStatePhaseTimer]                      ; $4ee9: $fa $3c $d6
-    inc a                                         ; $4eec: $3c
-    cp $46                                        ; $4eed: $fe $46
-    jr c, .StoreBlinkTimerAndCheckDrawWindowSprite4E_4F; $4eef: $38 $09
+    ld a, [rStatePhaseTimer]
+    inc a
+    cp $46
+    jr c, .StoreBlinkTimerAndCheckDrawWindowSprite4E_4F
 
-    ld a, [rSharedAnimationFrameState]            ; $4ef1: $fa $3d $d6
-    xor $01                                       ; $4ef4: $ee $01
-    ld [rSharedAnimationFrameState], a            ; $4ef6: $ea $3d $d6
-    xor a                                         ; $4ef9: $af
+    ld a, [rSharedAnimationFrameState]
+    xor $01
+    ld [rSharedAnimationFrameState], a
+    xor a
 
 .StoreBlinkTimerAndCheckDrawWindowSprite4E_4F:
-    ld [rStatePhaseTimer], a                      ; $4efa: $ea $3c $d6
-    cp $30                                        ; $4efd: $fe $30
-    jp nc, ReturnFromBankedJumpRestoreBank        ; $4eff: $d2 $e7 $05
+    ld [rStatePhaseTimer], a
+    cp $30
+    jp nc, ReturnFromBankedJumpRestoreBank
 
-    ld a, [rSharedAnimationFrameState]            ; $4f02: $fa $3d $d6
-    add $4e                                       ; $4f05: $c6 $4e
-    ld bc, $3088                                  ; $4f07: $01 $88 $30
-    call CopyOAMSpriteById                        ; $4f0a: $cd $cb $20
-    jp ReturnFromBankedJumpRestoreBank            ; $4f0d: $c3 $e7 $05
+    ld a, [rSharedAnimationFrameState]
+    add $4e
+    ld bc, $3088
+    call CopyOAMSpriteById
+    jp ReturnFromBankedJumpRestoreBank
 
 
 TickBottomPromptBlinkSprite4F_B_Exit_50_A_TRYAGAIN::
-    ld a, [rStatePhaseTimer]                      ; $4f10: $fa $3c $d6
-    inc a                                         ; $4f13: $3c
-    cp $46                                        ; $4f14: $fe $46
-    jr c, .StoreBlinkTimerAndCheckDrawWindowSprite4F_50; $4f16: $38 $09
+    ld a, [rStatePhaseTimer]
+    inc a
+    cp $46
+    jr c, .StoreBlinkTimerAndCheckDrawWindowSprite4F_50
 
-    ld a, [rSharedAnimationFrameState]            ; $4f18: $fa $3d $d6
-    xor $01                                       ; $4f1b: $ee $01
-    ld [rSharedAnimationFrameState], a            ; $4f1d: $ea $3d $d6
-    xor a                                         ; $4f20: $af
+    ld a, [rSharedAnimationFrameState]
+    xor $01
+    ld [rSharedAnimationFrameState], a
+    xor a
 
 .StoreBlinkTimerAndCheckDrawWindowSprite4F_50:
-    ld [rStatePhaseTimer], a                      ; $4f21: $ea $3c $d6
-    cp $30                                        ; $4f24: $fe $30
-    jp nc, ReturnFromBankedJumpRestoreBank        ; $4f26: $d2 $e7 $05
+    ld [rStatePhaseTimer], a
+    cp $30
+    jp nc, ReturnFromBankedJumpRestoreBank
 
-    ld a, [rSharedAnimationFrameState]            ; $4f29: $fa $3d $d6
-    xor $01                                       ; $4f2c: $ee $01
-    add $4f                                       ; $4f2e: $c6 $4f
-    ld bc, $3088                                  ; $4f30: $01 $88 $30
-    call CopyOAMSpriteById                        ; $4f33: $cd $cb $20
-    jp ReturnFromBankedJumpRestoreBank            ; $4f36: $c3 $e7 $05
+    ld a, [rSharedAnimationFrameState]
+    xor $01
+    add $4f
+    ld bc, $3088
+    call CopyOAMSpriteById
+    jp ReturnFromBankedJumpRestoreBank
 
 
 SETCHARMAP messages
@@ -383,8 +383,8 @@ ContinueSavedGameText::
     db "ください｡", $ff, $ff
 
 GameState_00_TitleScreen_PhaseDispatcher::
-    ld a, [rStatePhase_Current]                   ; $4f8d: $fa $35 $d6
-    rst RST_18                                    ; $4f90: $df
+    ld a, [rStatePhase_Current]
+    rst RST_18
 
 GS00_PhasePointer_00::
     db $9b, $4f
@@ -402,474 +402,474 @@ GS00_PhasePointer_04::
     db $72, $53
 
 GS00_StatePhase_00_TitleScreenInit::
-    ld a, $43                                     ; $4f9b: $3e $43
-    ld [rLCDCShadow], a                           ; $4f9d: $ea $2e $c3
-    xor a                                         ; $4fa0: $af
-    ld [rBGPShadow], a                            ; $4fa1: $ea $2f $c3
-    ld [rOBP0Shadow], a                           ; $4fa4: $ea $30 $c3
-    ld [rOBP1Shadow], a                           ; $4fa7: $ea $31 $c3
-    ld [rSCXShadow], a                            ; $4faa: $ea $32 $c3
-    ld [rSCYShadow], a                            ; $4fad: $ea $33 $c3
-    call EnsureSGBMaskFreezeEnabled               ; $4fb0: $cd $84 $1f
-    ld a, [rIsSuperGameBoyMode]                   ; $4fb3: $fa $3d $c3
-    and a                                         ; $4fb6: $a7
-    jr z, .ContinueAfterOptionalSGBTransfers      ; $4fb7: $28 $1e
+    ld a, $43
+    ld [rLCDCShadow], a
+    xor a
+    ld [rBGPShadow], a
+    ld [rOBP0Shadow], a
+    ld [rOBP1Shadow], a
+    ld [rSCXShadow], a
+    ld [rSCYShadow], a
+    call EnsureSGBMaskFreezeEnabled
+    ld a, [rIsSuperGameBoyMode]
+    and a
+    jr z, .ContinueAfterOptionalSGBTransfers
 
-    ld a, $04                                     ; $4fb9: $3e $04
-    ld hl, SGBPacket_MLT_REQ_DisableMultiplayer   ; $4fbb: $21 $00 $40
-    call SendSGBTransferPacketStreamWithVRAMBufferFromBankedAddress; $4fbe: $cd $9b $1e
-    ld a, $04                                     ; $4fc1: $3e $04
-    ld hl, $5010                                  ; $4fc3: $21 $10 $50
-    call SendSGBTransferPacketStreamWithVRAMBufferFromBankedAddress; $4fc6: $cd $9b $1e
-    ld a, $04                                     ; $4fc9: $3e $04
-    ld hl, $6020                                  ; $4fcb: $21 $20 $60
-    call SendSGBTransferPacketStreamWithVRAMBufferFromBankedAddress; $4fce: $cd $9b $1e
-    ld bc, $003c                                  ; $4fd1: $01 $3c $00
-    call BusyWaitDelayByBC                        ; $4fd4: $cd $00 $06
+    ld a, $04
+    ld hl, SGBPacket_MLT_REQ_DisableMultiplayer
+    call SendSGBTransferPacketStreamWithVRAMBufferFromBankedAddress
+    ld a, $04
+    ld hl, $5010
+    call SendSGBTransferPacketStreamWithVRAMBufferFromBankedAddress
+    ld a, $04
+    ld hl, $6020
+    call SendSGBTransferPacketStreamWithVRAMBufferFromBankedAddress
+    ld bc, $003c
+    call BusyWaitDelayByBC
 
 .ContinueAfterOptionalSGBTransfers:
-    call FillBGMap0WithTile01                     ; $4fd7: $cd $9d $05
-    call FillBGMap1WithTile01                     ; $4fda: $cd $a8 $05
-    ld a, $08                                     ; $4fdd: $3e $08
-    ld hl, $6800                                  ; $4fdf: $21 $00 $68
-    ld de, $8800                                  ; $4fe2: $11 $00 $88
-    ld bc, $1000                                  ; $4fe5: $01 $00 $10
-    call BankedTileCopy                           ; $4fe8: $cd $e1 $04
-    ld a, $08                                     ; $4feb: $3e $08
-    ld hl, $7800                                  ; $4fed: $21 $00 $78
-    ld de, $8000                                  ; $4ff0: $11 $00 $80
-    ld bc, $0800                                  ; $4ff3: $01 $00 $08
-    call BankedTileCopy                           ; $4ff6: $cd $e1 $04
-    ld a, $0b                                     ; $4ff9: $3e $0b
-    ld hl, $6800                                  ; $4ffb: $21 $00 $68
-    ld de, $9800                                  ; $4ffe: $11 $00 $98
-    ld bc, $0400                                  ; $5001: $01 $00 $04
-    call BankedTileCopy                           ; $5004: $cd $e1 $04
-    xor a                                         ; $5007: $af
-    ld [rSaveSlot1PuzzleActionRuleIndex_Unused], a; $5008: $ea $66 $a0
-    ld [rPuzzleDataIndexLow], a                   ; $500b: $ea $07 $d8
-    ld [rPuzzleDataIndexHigh], a                  ; $500e: $ea $08 $d8
-    ld [rMarioBlinkAnimationSequenceCursor], a    ; $5011: $ea $18 $d8
-    ld [rMarioBlinkAnimationDelay], a             ; $5014: $ea $17 $d8
-    ld [rCellEffectFrameSourceBaseIndex], a       ; $5017: $ea $10 $d8
-    ld [rGS00_TitleSGBXRayBorderFlag], a          ; $501a: $ea $47 $d8
-    ld [rGS00_TitleDPadXorHistory], a             ; $501d: $ea $48 $d8
-    call ClearShadowOAMBuffer                     ; $5020: $cd $b3 $05
-    call GS00_TickMarioBlinkAnimation             ; $5023: $cd $2b $54
-    ld c, $00                                     ; $5026: $0e $00
-    ld a, $01                                     ; $5028: $3e $01
-    call CallSoundCommandDispatcher               ; $502a: $cd $b3 $03
-    call WaitForScanline40OrDelay                 ; $502d: $cd $96 $03
-    ld c, $0a                                     ; $5030: $0e $0a
-    ld a, $01                                     ; $5032: $3e $01
-    call CallSoundCommandDispatcher               ; $5034: $cd $b3 $03
-    call EnableLCDFromShadow                      ; $5037: $cd $9f $04
-    call EnsureSGBMaskFreezeDisabled              ; $503a: $cd $a2 $1f
-    ld b, $03                                     ; $503d: $06 $03
-    ld hl, TransitionFadePaletteTable_TitleScreen ; $503f: $21 $18 $47
-    ld c, $10                                     ; $5042: $0e $10
-    ld de, $00b4                                  ; $5044: $11 $b4 $00
-    call PlayScreenTransitionFadeIn               ; $5047: $cd $0a $04
-    ld hl, rStatePhase_Current                    ; $504a: $21 $35 $d6
-    inc [hl]                                      ; $504d: $34
-    ret                                           ; $504e: $c9
+    call FillBGMap0WithTile01
+    call FillBGMap1WithTile01
+    ld a, $08
+    ld hl, $6800
+    ld de, $8800
+    ld bc, $1000
+    call BankedTileCopy
+    ld a, $08
+    ld hl, $7800
+    ld de, $8000
+    ld bc, $0800
+    call BankedTileCopy
+    ld a, $0b
+    ld hl, $6800
+    ld de, $9800
+    ld bc, $0400
+    call BankedTileCopy
+    xor a
+    ld [rSaveSlot1PuzzleActionRuleIndex_Unused], a
+    ld [rPuzzleDataIndexLow], a
+    ld [rPuzzleDataIndexHigh], a
+    ld [rMarioBlinkAnimationSequenceCursor], a
+    ld [rMarioBlinkAnimationDelay], a
+    ld [rCellEffectFrameSourceBaseIndex], a
+    ld [rGS00_TitleSGBXRayBorderFlag], a
+    ld [rGS00_TitleDPadXorHistory], a
+    call ClearShadowOAMBuffer
+    call GS00_TickMarioBlinkAnimation
+    ld c, $00
+    ld a, $01
+    call CallSoundCommandDispatcher
+    call WaitForScanline40OrDelay
+    ld c, $0a
+    ld a, $01
+    call CallSoundCommandDispatcher
+    call EnableLCDFromShadow
+    call EnsureSGBMaskFreezeDisabled
+    ld b, $03
+    ld hl, TransitionFadePaletteTable_TitleScreen
+    ld c, $10
+    ld de, $00b4
+    call PlayScreenTransitionFadeIn
+    ld hl, rStatePhase_Current
+    inc [hl]
+    ret
 
 
 GS00_StatePhase_01_TitleScreenIdle::
-    call GS00_TickMarioBlinkAnimation             ; $504f: $cd $2b $54
-    ld a, [rInputButtonsPressed]                  ; $5052: $fa $1e $c3
-    ld hl, rGS00_TitleDPadXorHistory              ; $5055: $21 $48 $d8
-    xor [hl]                                      ; $5058: $ae
-    ld [hl], a                                    ; $5059: $77
-    and $f0                                       ; $505a: $e6 $f0
-    cp $f0                                        ; $505c: $fe $f0
-    jr nz, .ClearSGBBorderAlternateFlag           ; $505e: $20 $14
+    call GS00_TickMarioBlinkAnimation
+    ld a, [rInputButtonsPressed]
+    ld hl, rGS00_TitleDPadXorHistory
+    xor [hl]
+    ld [hl], a
+    and $f0
+    cp $f0
+    jr nz, .ClearSGBBorderAlternateFlag
 
-    ld a, [rGS00_TitleSGBXRayBorderFlag]          ; $5060: $fa $47 $d8
-    and a                                         ; $5063: $a7
-    jr nz, .CheckAdvanceInputAOrStart             ; $5064: $20 $12
+    ld a, [rGS00_TitleSGBXRayBorderFlag]
+    and a
+    jr nz, .CheckAdvanceInputAOrStart
 
-    ld c, $03                                     ; $5066: $0e $03
-    ld a, $02                                     ; $5068: $3e $02
-    call CallSoundCommandDispatcher               ; $506a: $cd $b3 $03
-    ld a, $01                                     ; $506d: $3e $01
-    ld [rGS00_TitleSGBXRayBorderFlag], a          ; $506f: $ea $47 $d8
-    jr .CheckAdvanceInputAOrStart                 ; $5072: $18 $04
+    ld c, $03
+    ld a, $02
+    call CallSoundCommandDispatcher
+    ld a, $01
+    ld [rGS00_TitleSGBXRayBorderFlag], a
+    jr .CheckAdvanceInputAOrStart
 
 .ClearSGBBorderAlternateFlag:
-    xor a                                         ; $5074: $af
-    ld [rGS00_TitleSGBXRayBorderFlag], a          ; $5075: $ea $47 $d8
+    xor a
+    ld [rGS00_TitleSGBXRayBorderFlag], a
 
 .CheckAdvanceInputAOrStart:
-    ld a, [rInputButtonsPressed]                  ; $5078: $fa $1e $c3
-    and $09                                       ; $507b: $e6 $09
-    ret z                                         ; $507d: $c8
+    ld a, [rInputButtonsPressed]
+    and $09
+    ret z
 
-    ld c, $03                                     ; $507e: $0e $03
-    ld a, $02                                     ; $5080: $3e $02
-    call CallSoundCommandDispatcher               ; $5082: $cd $b3 $03
-    ld hl, rStatePhase_Current                    ; $5085: $21 $35 $d6
-    inc [hl]                                      ; $5088: $34
-    ret                                           ; $5089: $c9
+    ld c, $03
+    ld a, $02
+    call CallSoundCommandDispatcher
+    ld hl, rStatePhase_Current
+    inc [hl]
+    ret
 
 
 GS00_StatePhase_02_TitleScreenTransition::
-    ld bc, $003c                                  ; $508a: $01 $3c $00
-    call DelayFramesByBC                          ; $508d: $cd $f7 $05
-    ld a, $05                                     ; $5090: $3e $05
-    call CallSoundCommandDispatcher               ; $5092: $cd $b3 $03
-    ld c, $00                                     ; $5095: $0e $00
-    ld a, $01                                     ; $5097: $3e $01
-    call CallSoundCommandDispatcher               ; $5099: $cd $b3 $03
-    call WaitForScanline40OrDelay                 ; $509c: $cd $96 $03
-    ld c, $00                                     ; $509f: $0e $00
-    ld a, $01                                     ; $50a1: $3e $01
-    call CallSoundCommandDispatcher               ; $50a3: $cd $b3 $03
-    call EnsureSGBMaskFreezeEnabled               ; $50a6: $cd $84 $1f
-    ld a, [rIsSuperGameBoyMode]                   ; $50a9: $fa $3d $c3
-    and a                                         ; $50ac: $a7
-    jp z, GS00_SP02_NonSGBFadeOut                 ; $50ad: $ca $af $51
+    ld bc, $003c
+    call DelayFramesByBC
+    ld a, $05
+    call CallSoundCommandDispatcher
+    ld c, $00
+    ld a, $01
+    call CallSoundCommandDispatcher
+    call WaitForScanline40OrDelay
+    ld c, $00
+    ld a, $01
+    call CallSoundCommandDispatcher
+    call EnsureSGBMaskFreezeEnabled
+    ld a, [rIsSuperGameBoyMode]
+    and a
+    jp z, GS00_SP02_NonSGBFadeOut
 
-    call DisableLCDAtVBlank                       ; $50b0: $cd $80 $04
-    ld a, [rGS00_TitleSGBXRayBorderFlag]          ; $50b3: $fa $47 $d8
-    and a                                         ; $50b6: $a7
-    jr z, .SGBStandardBorderTransfer              ; $50b7: $28 $1b
+    call DisableLCDAtVBlank
+    ld a, [rGS00_TitleSGBXRayBorderFlag]
+    and a
+    jr z, .SGBStandardBorderTransfer
 
-    ld a, $0c                                     ; $50b9: $3e $0c
-    ld hl, SGBPacket_MLT_REQ_DisableMultiplayer   ; $50bb: $21 $00 $40
-    call SendSGBTransferPacketStreamWithVRAMBufferFromBankedAddress; $50be: $cd $9b $1e
-    ld a, $0c                                     ; $50c1: $3e $0c
-    ld hl, $5010                                  ; $50c3: $21 $10 $50
-    call SendSGBTransferPacketStreamWithVRAMBufferFromBankedAddress; $50c6: $cd $9b $1e
-    ld a, $0c                                     ; $50c9: $3e $0c
-    ld hl, $6020                                  ; $50cb: $21 $20 $60
-    call SendSGBTransferPacketStreamWithVRAMBufferFromBankedAddress; $50ce: $cd $9b $1e
-    jp GS00_SP02_ContinueAfterBorderTransfer      ; $50d1: $c3 $64 $51
+    ld a, $0c
+    ld hl, SGBPacket_MLT_REQ_DisableMultiplayer
+    call SendSGBTransferPacketStreamWithVRAMBufferFromBankedAddress
+    ld a, $0c
+    ld hl, $5010
+    call SendSGBTransferPacketStreamWithVRAMBufferFromBankedAddress
+    ld a, $0c
+    ld hl, $6020
+    call SendSGBTransferPacketStreamWithVRAMBufferFromBankedAddress
+    jp GS00_SP02_ContinueAfterBorderTransfer
 
 
 .SGBStandardBorderTransfer:
-    ld a, $05                                     ; $50d4: $3e $05
-    ld hl, SGBPacket_MLT_REQ_DisableMultiplayer   ; $50d6: $21 $00 $40
-    call SendSGBTransferPacketStreamWithVRAMBufferFromBankedAddress; $50d9: $cd $9b $1e
-    ld a, $05                                     ; $50dc: $3e $05
-    ld hl, $5010                                  ; $50de: $21 $10 $50
-    call SendSGBTransferPacketStreamWithVRAMBufferFromBankedAddress; $50e1: $cd $9b $1e
-    ld a, $05                                     ; $50e4: $3e $05
-    ld hl, $6020                                  ; $50e6: $21 $20 $60
-    ld de, rSGBDefaultBorderPCTPacketStreamBuffer ; $50e9: $11 $c2 $cd
-    ld bc, $0810                                  ; $50ec: $01 $10 $08
-    call BankedTileCopy                           ; $50ef: $cd $e1 $04
-    ld hl, $d612                                  ; $50f2: $21 $12 $d6
-    ld bc, $0020                                  ; $50f5: $01 $20 $00
-    call ZeroMemoryBlock                          ; $50f8: $cd $d0 $04
-    ld a, [rInputButtonsHeld]                     ; $50fb: $fa $1a $c3
-    bit 5, a                                      ; $50fe: $cb $6f
-    jr z, .CheckRedBorderPatchInput               ; $5100: $28 $10
+    ld a, $05
+    ld hl, SGBPacket_MLT_REQ_DisableMultiplayer
+    call SendSGBTransferPacketStreamWithVRAMBufferFromBankedAddress
+    ld a, $05
+    ld hl, $5010
+    call SendSGBTransferPacketStreamWithVRAMBufferFromBankedAddress
+    ld a, $05
+    ld hl, $6020
+    ld de, rSGBDefaultBorderPCTPacketStreamBuffer
+    ld bc, $0810
+    call BankedTileCopy
+    ld hl, $d612
+    ld bc, $0020
+    call ZeroMemoryBlock
+    ld a, [rInputButtonsHeld]
+    bit 5, a
+    jr z, .CheckRedBorderPatchInput
 
-    ld a, $05                                     ; $5102: $3e $05
-    ld hl, $6870                                  ; $5104: $21 $70 $68
-    ld de, rSGBDefaultBorderPCTPalettePatchBuffer ; $5107: $11 $d2 $d5
-    ld bc, $0040                                  ; $510a: $01 $40 $00
-    call BankedTileCopy                           ; $510d: $cd $e1 $04
-    jr .SendPatchedDefaultBorderPacket            ; $5110: $18 $4a
+    ld a, $05
+    ld hl, $6870
+    ld de, rSGBDefaultBorderPCTPalettePatchBuffer
+    ld bc, $0040
+    call BankedTileCopy
+    jr .SendPatchedDefaultBorderPacket
 
 .CheckRedBorderPatchInput:
-    bit 4, a                                      ; $5112: $cb $67
-    jr z, .CheckBlackBorderPatchInput             ; $5114: $28 $10
+    bit 4, a
+    jr z, .CheckBlackBorderPatchInput
 
-    ld a, $05                                     ; $5116: $3e $05
-    ld hl, $68b0                                  ; $5118: $21 $b0 $68
-    ld de, rSGBDefaultBorderPCTPalettePatchBuffer ; $511b: $11 $d2 $d5
-    ld bc, $0040                                  ; $511e: $01 $40 $00
-    call BankedTileCopy                           ; $5121: $cd $e1 $04
-    jr .SendPatchedDefaultBorderPacket            ; $5124: $18 $36
+    ld a, $05
+    ld hl, $68b0
+    ld de, rSGBDefaultBorderPCTPalettePatchBuffer
+    ld bc, $0040
+    call BankedTileCopy
+    jr .SendPatchedDefaultBorderPacket
 
 .CheckBlackBorderPatchInput:
-    bit 6, a                                      ; $5126: $cb $77
-    jr z, .CheckWhiteBorderPatchInput             ; $5128: $28 $10
+    bit 6, a
+    jr z, .CheckWhiteBorderPatchInput
 
-    ld a, $05                                     ; $512a: $3e $05
-    ld hl, $68f0                                  ; $512c: $21 $f0 $68
-    ld de, rSGBDefaultBorderPCTPalettePatchBuffer ; $512f: $11 $d2 $d5
-    ld bc, $0040                                  ; $5132: $01 $40 $00
-    call BankedTileCopy                           ; $5135: $cd $e1 $04
-    jr .SendPatchedDefaultBorderPacket            ; $5138: $18 $22
+    ld a, $05
+    ld hl, $68f0
+    ld de, rSGBDefaultBorderPCTPalettePatchBuffer
+    ld bc, $0040
+    call BankedTileCopy
+    jr .SendPatchedDefaultBorderPacket
 
 .CheckWhiteBorderPatchInput:
-    bit 7, a                                      ; $513a: $cb $7f
-    jr z, .ApplyGreenBorderPatch                  ; $513c: $28 $10
+    bit 7, a
+    jr z, .ApplyGreenBorderPatch
 
-    ld a, $05                                     ; $513e: $3e $05
-    ld hl, $6930                                  ; $5140: $21 $30 $69
-    ld de, rSGBDefaultBorderPCTPalettePatchBuffer ; $5143: $11 $d2 $d5
-    ld bc, $0040                                  ; $5146: $01 $40 $00
-    call BankedTileCopy                           ; $5149: $cd $e1 $04
-    jr .SendPatchedDefaultBorderPacket            ; $514c: $18 $0e
+    ld a, $05
+    ld hl, $6930
+    ld de, rSGBDefaultBorderPCTPalettePatchBuffer
+    ld bc, $0040
+    call BankedTileCopy
+    jr .SendPatchedDefaultBorderPacket
 
 .ApplyGreenBorderPatch:
-    ld a, $05                                     ; $514e: $3e $05
-    ld hl, $6830                                  ; $5150: $21 $30 $68
-    ld de, rSGBDefaultBorderPCTPalettePatchBuffer ; $5153: $11 $d2 $d5
-    ld bc, $0040                                  ; $5156: $01 $40 $00
-    call BankedTileCopy                           ; $5159: $cd $e1 $04
+    ld a, $05
+    ld hl, $6830
+    ld de, rSGBDefaultBorderPCTPalettePatchBuffer
+    ld bc, $0040
+    call BankedTileCopy
 
 .SendPatchedDefaultBorderPacket:
-    ld a, $00                                     ; $515c: $3e $00
-    ld hl, rSGBDefaultBorderPCTPacketStreamBuffer ; $515e: $21 $c2 $cd
-    call SendSGBTransferPacketStreamWithVRAMBufferFromBankedAddress; $5161: $cd $9b $1e
+    ld a, $00
+    ld hl, rSGBDefaultBorderPCTPacketStreamBuffer
+    call SendSGBTransferPacketStreamWithVRAMBufferFromBankedAddress
 
 GS00_SP02_ContinueAfterBorderTransfer::
-    ld a, $08                                     ; $5164: $3e $08
-    ld hl, $6800                                  ; $5166: $21 $00 $68
-    ld de, $8800                                  ; $5169: $11 $00 $88
-    ld bc, $1000                                  ; $516c: $01 $00 $10
-    call BankedTileCopy                           ; $516f: $cd $e1 $04
-    ld a, $08                                     ; $5172: $3e $08
-    ld hl, $7800                                  ; $5174: $21 $00 $78
-    ld de, $8000                                  ; $5177: $11 $00 $80
-    ld bc, $0800                                  ; $517a: $01 $00 $08
-    call BankedTileCopy                           ; $517d: $cd $e1 $04
-    ld a, $0b                                     ; $5180: $3e $0b
-    ld hl, $6800                                  ; $5182: $21 $00 $68
-    ld de, $9800                                  ; $5185: $11 $00 $98
-    ld bc, $0400                                  ; $5188: $01 $00 $04
-    call BankedTileCopy                           ; $518b: $cd $e1 $04
-    call EnableLCDFromShadow                      ; $518e: $cd $9f $04
-    call EnsureSGBMaskFreezeDisabled              ; $5191: $cd $a2 $1f
-    ld bc, $0014                                  ; $5194: $01 $14 $00
-    call BusyWaitDelayByBC                        ; $5197: $cd $00 $06
-    ld b, $03                                     ; $519a: $06 $03
-    ld hl, $4723                                  ; $519c: $21 $23 $47
-    ld c, $10                                     ; $519f: $0e $10
-    ld de, $00c3                                  ; $51a1: $11 $c3 $00
-    call PlayScreenTransitionFadeOut              ; $51a4: $cd $4b $04
-    ld bc, $0028                                  ; $51a7: $01 $28 $00
-    call BusyWaitDelayByBC                        ; $51aa: $cd $00 $06
-    jr GS00_SP02_PostFadeOutFlowRouter            ; $51ad: $18 $0d
+    ld a, $08
+    ld hl, $6800
+    ld de, $8800
+    ld bc, $1000
+    call BankedTileCopy
+    ld a, $08
+    ld hl, $7800
+    ld de, $8000
+    ld bc, $0800
+    call BankedTileCopy
+    ld a, $0b
+    ld hl, $6800
+    ld de, $9800
+    ld bc, $0400
+    call BankedTileCopy
+    call EnableLCDFromShadow
+    call EnsureSGBMaskFreezeDisabled
+    ld bc, $0014
+    call BusyWaitDelayByBC
+    ld b, $03
+    ld hl, $4723
+    ld c, $10
+    ld de, $00c3
+    call PlayScreenTransitionFadeOut
+    ld bc, $0028
+    call BusyWaitDelayByBC
+    jr GS00_SP02_PostFadeOutFlowRouter
 
 GS00_SP02_NonSGBFadeOut::
-    ld b, $03                                     ; $51af: $06 $03
-    ld hl, $4723                                  ; $51b1: $21 $23 $47
-    ld c, $10                                     ; $51b4: $0e $10
-    ld de, $00c3                                  ; $51b6: $11 $c3 $00
-    call PlayScreenTransitionFadeOut              ; $51b9: $cd $4b $04
+    ld b, $03
+    ld hl, $4723
+    ld c, $10
+    ld de, $00c3
+    call PlayScreenTransitionFadeOut
 
 GS00_SP02_PostFadeOutFlowRouter::
-    call DisableLCDAtVBlank                       ; $51bc: $cd $80 $04
-    ld a, [rContinueSavedPuzzlePromptRouteMode]   ; $51bf: $fa $a2 $ac
-    and a                                         ; $51c2: $a7
-    jr nz, .AdvanceToContinueSavedGameScreen      ; $51c3: $20 $2f
+    call DisableLCDAtVBlank
+    ld a, [rContinueSavedPuzzlePromptRouteMode]
+    and a
+    jr nz, .AdvanceToContinueSavedGameScreen
 
-    ld hl, rSaveSlot1UnlockProgressState          ; $51c5: $21 $87 $a3
-    ld a, [hl+]                                   ; $51c8: $2a
-    or [hl]                                       ; $51c9: $b6
-    inc hl                                        ; $51ca: $23
-    or [hl]                                       ; $51cb: $b6
-    jr z, .NoSaveDataInitPath                     ; $51cc: $28 $09
+    ld hl, rSaveSlot1UnlockProgressState
+    ld a, [hl+]
+    or [hl]
+    inc hl
+    or [hl]
+    jr z, .NoSaveDataInitPath
 
-    xor a                                         ; $51ce: $af
-    ld [rStatePhase_Current], a                   ; $51cf: $ea $35 $d6
-    ld hl, rGameState_Current                     ; $51d2: $21 $34 $d6
-    inc [hl]                                      ; $51d5: $34
-    ret                                           ; $51d6: $c9
+    xor a
+    ld [rStatePhase_Current], a
+    ld hl, rGameState_Current
+    inc [hl]
+    ret
 
 
 .NoSaveDataInitPath:
-    xor a                                         ; $51d7: $af
-    ld [rSelectedSaveSlotIndex], a                ; $51d8: $ea $65 $a0
-    ld c, a                                       ; $51db: $4f
-    ld b, $00                                     ; $51dc: $06 $00
-    ld hl, rSaveSlot1UnlockProgressState          ; $51de: $21 $87 $a3
-    add hl, bc                                    ; $51e1: $09
-    inc [hl]                                      ; $51e2: $34
-    ld hl, rSaveSlot1PicrossKinokoStarClearedPuzzleCount; $51e3: $21 $8a $a3
-    add hl, bc                                    ; $51e6: $09
-    ld [hl], a                                    ; $51e7: $77
-    xor a                                         ; $51e8: $af
-    ld [rStatePhase_Current], a                   ; $51e9: $ea $35 $d6
-    ld a, $02                                     ; $51ec: $3e $02
-    ld [rGameState_Current], a                    ; $51ee: $ea $34 $d6
-    jp RefreshSaveValidationChecksumsAndMirrors   ; $51f1: $c3 $1c $1b
+    xor a
+    ld [rSelectedSaveSlotIndex], a
+    ld c, a
+    ld b, $00
+    ld hl, rSaveSlot1UnlockProgressState
+    add hl, bc
+    inc [hl]
+    ld hl, rSaveSlot1PicrossKinokoStarClearedPuzzleCount
+    add hl, bc
+    ld [hl], a
+    xor a
+    ld [rStatePhase_Current], a
+    ld a, $02
+    ld [rGameState_Current], a
+    jp RefreshSaveValidationChecksumsAndMirrors
 
 
 .AdvanceToContinueSavedGameScreen:
-    ld hl, rStatePhase_Current                    ; $51f4: $21 $35 $d6
-    inc [hl]                                      ; $51f7: $34
-    ret                                           ; $51f8: $c9
+    ld hl, rStatePhase_Current
+    inc [hl]
+    ret
 
 
 GS00_StatePhase_03_ContinueSavedPuzzlePromptAndRoute::
-    ld a, $43                                     ; $51f9: $3e $43
-    ld [rLCDCShadow], a                           ; $51fb: $ea $2e $c3
-    xor a                                         ; $51fe: $af
-    ld [rBGPShadow], a                            ; $51ff: $ea $2f $c3
-    ld [rOBP0Shadow], a                           ; $5202: $ea $30 $c3
-    ld [rOBP1Shadow], a                           ; $5205: $ea $31 $c3
-    ld [rSCXShadow], a                            ; $5208: $ea $32 $c3
-    ld [rSCYShadow], a                            ; $520b: $ea $33 $c3
-    call FillBGMap0WithTile01                     ; $520e: $cd $9d $05
-    call FillBGMap1WithTile01                     ; $5211: $cd $a8 $05
-    ld a, $0b                                     ; $5214: $3e $0b
-    ld hl, $5000                                  ; $5216: $21 $00 $50
-    ld de, $8000                                  ; $5219: $11 $00 $80
-    ld bc, $0300                                  ; $521c: $01 $00 $03
-    call BankedTileCopy                           ; $521f: $cd $e1 $04
-    ld a, $0a                                     ; $5222: $3e $0a
-    ld hl, $6000                                  ; $5224: $21 $00 $60
-    ld de, $8800                                  ; $5227: $11 $00 $88
-    ld bc, $1000                                  ; $522a: $01 $00 $10
-    call BankedTileCopy                           ; $522d: $cd $e1 $04
-    ld a, $0c                                     ; $5230: $3e $0c
-    ld hl, $7800                                  ; $5232: $21 $00 $78
-    ld de, $9800                                  ; $5235: $11 $00 $98
-    ld bc, $0400                                  ; $5238: $01 $00 $04
-    call BankedTileCopy                           ; $523b: $cd $e1 $04
-    ld a, $7b                                     ; $523e: $3e $7b
-    ld [rTilemapToTileDataAddressLookupTableLow], a; $5240: $ea $63 $cd
-    ld a, $16                                     ; $5243: $3e $16
-    ld [rTilemapToTileDataAddressLookupTableHigh], a; $5245: $ea $64 $cd
-    ld a, [rContinueSavedPuzzlePromptRouteMode]   ; $5248: $fa $a2 $ac
-    cp $02                                        ; $524b: $fe $02
-    jr nz, .CheckContinueFlowModeTimeTrialForPromptTilemap; $524d: $20 $0a
+    ld a, $43
+    ld [rLCDCShadow], a
+    xor a
+    ld [rBGPShadow], a
+    ld [rOBP0Shadow], a
+    ld [rOBP1Shadow], a
+    ld [rSCXShadow], a
+    ld [rSCYShadow], a
+    call FillBGMap0WithTile01
+    call FillBGMap1WithTile01
+    ld a, $0b
+    ld hl, $5000
+    ld de, $8000
+    ld bc, $0300
+    call BankedTileCopy
+    ld a, $0a
+    ld hl, $6000
+    ld de, $8800
+    ld bc, $1000
+    call BankedTileCopy
+    ld a, $0c
+    ld hl, $7800
+    ld de, $9800
+    ld bc, $0400
+    call BankedTileCopy
+    ld a, $7b
+    ld [rTilemapToTileDataAddressLookupTableLow], a
+    ld a, $16
+    ld [rTilemapToTileDataAddressLookupTableHigh], a
+    ld a, [rContinueSavedPuzzlePromptRouteMode]
+    cp $02
+    jr nz, .CheckContinueFlowModeTimeTrialForPromptTilemap
 
-    ld b, $01                                     ; $524f: $06 $01
-    ld hl, $499e                                  ; $5251: $21 $9e $49
-    call SwitchBankToBAndJumpToHL                 ; $5254: $cd $db $05
-    jr .InitializeContinueSavedPuzzlePromptUI     ; $5257: $18 $20
+    ld b, $01
+    ld hl, $499e
+    call SwitchBankToBAndJumpToHL
+    jr .InitializeContinueSavedPuzzlePromptUI
 
 .CheckContinueFlowModeTimeTrialForPromptTilemap:
-    cp $03                                        ; $5259: $fe $03
-    jr nz, .InitializeContinueSavedPuzzlePromptUI ; $525b: $20 $1c
+    cp $03
+    jr nz, .InitializeContinueSavedPuzzlePromptUI
 
-    ld a, $0b                                     ; $525d: $3e $0b
-    ld hl, SGBPacket_MLT_REQ_DisableMultiplayer   ; $525f: $21 $00 $40
-    ld de, $8800                                  ; $5262: $11 $00 $88
-    ld bc, $1000                                  ; $5265: $01 $00 $10
-    call BankedTileCopy                           ; $5268: $cd $e1 $04
-    ld a, $0b                                     ; $526b: $3e $0b
-    ld hl, PuzzleNamePointerTable_Puzzle_KC24     ; $526d: $21 $00 $58
-    ld de, $9800                                  ; $5270: $11 $00 $98
-    ld bc, $0400                                  ; $5273: $01 $00 $04
-    call BankedTileCopy                           ; $5276: $cd $e1 $04
+    ld a, $0b
+    ld hl, SGBPacket_MLT_REQ_DisableMultiplayer
+    ld de, $8800
+    ld bc, $1000
+    call BankedTileCopy
+    ld a, $0b
+    ld hl, PuzzleNamePointerTable_Puzzle_KC24
+    ld de, $9800
+    ld bc, $0400
+    call BankedTileCopy
 
 .InitializeContinueSavedPuzzlePromptUI:
-    call ClearShadowOAMBuffer                     ; $5279: $cd $b3 $05
-    ld b, $03                                     ; $527c: $06 $03
-    ld hl, InitBottomPromptBlinkTimerAndFrameState; $527e: $21 $80 $4e
-    call SwitchBankToBAndJumpToHL                 ; $5281: $cd $db $05
-    ld b, $03                                     ; $5284: $06 $03
-    ld hl, TickBottomPromptBlinkSprite4E_A_START  ; $5286: $21 $8a $4e
-    call SwitchBankToBAndJumpToHL                 ; $5289: $cd $db $05
-    ld a, $10                                     ; $528c: $3e $10
-    ld [rMessageScriptStreamResetEntryLow], a     ; $528e: $ea $43 $d8
-    ld [rMessageScriptStreamEntryLow], a          ; $5291: $ea $2b $d8
-    ld a, $20                                     ; $5294: $3e $20
-    ld [rMessageScriptStreamResetEntryHigh], a    ; $5296: $ea $44 $d8
-    ld [rMessageScriptStreamEntryHigh], a         ; $5299: $ea $2c $d8
-    ld a, $90                                     ; $529c: $3e $90
-    ld [rMessageScriptStreamLimitLow], a          ; $529e: $ea $45 $d8
-    ld a, $58                                     ; $52a1: $3e $58
-    ld [rMessageScriptStreamLimitHigh], a         ; $52a3: $ea $46 $d8
-    ld a, $39                                     ; $52a6: $3e $39
-    ld [rMessageScriptStreamPointerLow], a        ; $52a8: $ea $2d $d8
-    ld a, $4f                                     ; $52ab: $3e $4f
-    ld [rMessageScriptStreamPointerHigh], a       ; $52ad: $ea $2e $d8
-    call GS00_RunMessageScriptUntilEnd_NoBankSwitch; $52b0: $cd $25 $54
-    call EnableLCDFromShadow                      ; $52b3: $cd $9f $04
-    call EnsureSGBMaskFreezeDisabled              ; $52b6: $cd $a2 $1f
-    ld a, [rContinueSavedPuzzlePromptRouteMode]   ; $52b9: $fa $a2 $ac
-    cp $02                                        ; $52bc: $fe $02
-    jr nz, .CheckContinueFlowModeTimeTrialForPromptFadeIn; $52be: $20 $0a
+    call ClearShadowOAMBuffer
+    ld b, $03
+    ld hl, InitBottomPromptBlinkTimerAndFrameState
+    call SwitchBankToBAndJumpToHL
+    ld b, $03
+    ld hl, TickBottomPromptBlinkSprite4E_A_START
+    call SwitchBankToBAndJumpToHL
+    ld a, $10
+    ld [rMessageScriptStreamResetEntryLow], a
+    ld [rMessageScriptStreamEntryLow], a
+    ld a, $20
+    ld [rMessageScriptStreamResetEntryHigh], a
+    ld [rMessageScriptStreamEntryHigh], a
+    ld a, $90
+    ld [rMessageScriptStreamLimitLow], a
+    ld a, $58
+    ld [rMessageScriptStreamLimitHigh], a
+    ld a, $39
+    ld [rMessageScriptStreamPointerLow], a
+    ld a, $4f
+    ld [rMessageScriptStreamPointerHigh], a
+    call GS00_RunMessageScriptUntilEnd_NoBankSwitch
+    call EnableLCDFromShadow
+    call EnsureSGBMaskFreezeDisabled
+    ld a, [rContinueSavedPuzzlePromptRouteMode]
+    cp $02
+    jr nz, .CheckContinueFlowModeTimeTrialForPromptFadeIn
 
-    ld b, $01                                     ; $52c0: $06 $01
-    ld hl, $4a68                                  ; $52c2: $21 $68 $4a
-    call SwitchBankToBAndJumpToHL                 ; $52c5: $cd $db $05
-    jr .WaitForContinuePromptConfirmInput         ; $52c8: $18 $20
+    ld b, $01
+    ld hl, $4a68
+    call SwitchBankToBAndJumpToHL
+    jr .WaitForContinuePromptConfirmInput
 
 .CheckContinueFlowModeTimeTrialForPromptFadeIn:
-    cp $03                                        ; $52ca: $fe $03
-    jr nz, .ApplyContinuePromptDefaultFadeIn      ; $52cc: $20 $0f
+    cp $03
+    jr nz, .ApplyContinuePromptDefaultFadeIn
 
-    ld b, $03                                     ; $52ce: $06 $03
-    ld hl, TransitionFadePaletteTable_TimeTrial   ; $52d0: $21 $0c $47
-    ld c, $0f                                     ; $52d3: $0e $0f
-    ld de, $00a4                                  ; $52d5: $11 $a4 $00
-    call PlayScreenTransitionFadeIn               ; $52d8: $cd $0a $04
-    jr .WaitForContinuePromptConfirmInput         ; $52db: $18 $0d
+    ld b, $03
+    ld hl, TransitionFadePaletteTable_TimeTrial
+    ld c, $0f
+    ld de, $00a4
+    call PlayScreenTransitionFadeIn
+    jr .WaitForContinuePromptConfirmInput
 
 .ApplyContinuePromptDefaultFadeIn:
-    ld b, $03                                     ; $52dd: $06 $03
-    ld hl, TransitionFadePaletteTable_EasyPicross ; $52df: $21 $e8 $46
-    ld c, $0b                                     ; $52e2: $0e $0b
-    ld de, $0074                                  ; $52e4: $11 $74 $00
-    call PlayScreenTransitionFadeIn               ; $52e7: $cd $0a $04
+    ld b, $03
+    ld hl, TransitionFadePaletteTable_EasyPicross
+    ld c, $0b
+    ld de, $0074
+    call PlayScreenTransitionFadeIn
 
 .WaitForContinuePromptConfirmInput:
-    call ClearShadowOAMBufferFromCursor           ; $52ea: $cd $c2 $05
-    rst RST_08                                    ; $52ed: $cf
-    ld b, $03                                     ; $52ee: $06 $03
-    ld hl, TickBottomPromptBlinkSprite4E_A_START  ; $52f0: $21 $8a $4e
-    call SwitchBankToBAndJumpToHL                 ; $52f3: $cd $db $05
-    ld a, [rInputButtonsPressed]                  ; $52f6: $fa $1e $c3
-    and $01                                       ; $52f9: $e6 $01
-    jr z, .WaitForContinuePromptConfirmInput      ; $52fb: $28 $ed
+    call ClearShadowOAMBufferFromCursor
+    rst RST_08
+    ld b, $03
+    ld hl, TickBottomPromptBlinkSprite4E_A_START
+    call SwitchBankToBAndJumpToHL
+    ld a, [rInputButtonsPressed]
+    and $01
+    jr z, .WaitForContinuePromptConfirmInput
 
-    ld c, $03                                     ; $52fd: $0e $03
-    ld a, $02                                     ; $52ff: $3e $02
-    call CallSoundCommandDispatcher               ; $5301: $cd $b3 $03
-    ld bc, $003c                                  ; $5304: $01 $3c $00
-    call DelayFramesByBC                          ; $5307: $cd $f7 $05
-    ld a, $05                                     ; $530a: $3e $05
-    call CallSoundCommandDispatcher               ; $530c: $cd $b3 $03
-    ld c, $00                                     ; $530f: $0e $00
-    ld a, $01                                     ; $5311: $3e $01
-    call CallSoundCommandDispatcher               ; $5313: $cd $b3 $03
-    call WaitForScanline40OrDelay                 ; $5316: $cd $96 $03
-    ld c, $00                                     ; $5319: $0e $00
-    ld a, $01                                     ; $531b: $3e $01
-    call CallSoundCommandDispatcher               ; $531d: $cd $b3 $03
-    ld a, [rContinueSavedPuzzlePromptRouteMode]   ; $5320: $fa $a2 $ac
-    cp $02                                        ; $5323: $fe $02
-    jr nz, .CheckContinueFlowModeTimeTrialForPromptFadeOut; $5325: $20 $0a
+    ld c, $03
+    ld a, $02
+    call CallSoundCommandDispatcher
+    ld bc, $003c
+    call DelayFramesByBC
+    ld a, $05
+    call CallSoundCommandDispatcher
+    ld c, $00
+    ld a, $01
+    call CallSoundCommandDispatcher
+    call WaitForScanline40OrDelay
+    ld c, $00
+    ld a, $01
+    call CallSoundCommandDispatcher
+    ld a, [rContinueSavedPuzzlePromptRouteMode]
+    cp $02
+    jr nz, .CheckContinueFlowModeTimeTrialForPromptFadeOut
 
-    ld b, $01                                     ; $5327: $06 $01
-    ld hl, $4a96                                  ; $5329: $21 $96 $4a
-    call SwitchBankToBAndJumpToHL                 ; $532c: $cd $db $05
-    jr .FinalizeContinuePromptAndRouteToSavedPuzzleState; $532f: $18 $20
+    ld b, $01
+    ld hl, $4a96
+    call SwitchBankToBAndJumpToHL
+    jr .FinalizeContinuePromptAndRouteToSavedPuzzleState
 
 .CheckContinueFlowModeTimeTrialForPromptFadeOut:
-    cp $03                                        ; $5331: $fe $03
-    jr nz, .ApplyContinuePromptDefaultFadeOut     ; $5333: $20 $0f
+    cp $03
+    jr nz, .ApplyContinuePromptDefaultFadeOut
 
-    ld b, $03                                     ; $5335: $06 $03
-    ld hl, $4717                                  ; $5337: $21 $17 $47
-    ld c, $0f                                     ; $533a: $0e $0f
-    ld de, $00b3                                  ; $533c: $11 $b3 $00
-    call PlayScreenTransitionFadeOut              ; $533f: $cd $4b $04
-    jr .FinalizeContinuePromptAndRouteToSavedPuzzleState; $5342: $18 $0d
+    ld b, $03
+    ld hl, $4717
+    ld c, $0f
+    ld de, $00b3
+    call PlayScreenTransitionFadeOut
+    jr .FinalizeContinuePromptAndRouteToSavedPuzzleState
 
 .ApplyContinuePromptDefaultFadeOut:
-    ld b, $03                                     ; $5344: $06 $03
-    ld hl, $46f3                                  ; $5346: $21 $f3 $46
-    ld c, $0b                                     ; $5349: $0e $0b
-    ld de, $0083                                  ; $534b: $11 $83 $00
-    call PlayScreenTransitionFadeOut              ; $534e: $cd $4b $04
+    ld b, $03
+    ld hl, $46f3
+    ld c, $0b
+    ld de, $0083
+    call PlayScreenTransitionFadeOut
 
 .FinalizeContinuePromptAndRouteToSavedPuzzleState:
-    call DisableLCDAtVBlank                       ; $5351: $cd $80 $04
-    ld a, [rContinueSavedPuzzlePromptRouteMode]   ; $5354: $fa $a2 $ac
-    dec a                                         ; $5357: $3d
-    ld c, a                                       ; $5358: $4f
-    ld b, $00                                     ; $5359: $06 $00
-    ld hl, GS00_SP03_ContinueSavedPuzzleRoute_StatePhaseLookupTable; $535b: $21 $6c $53
-    add hl, bc                                    ; $535e: $09
-    ld a, [hl]                                    ; $535f: $7e
-    ld [rStatePhase_Current], a                   ; $5360: $ea $35 $d6
-    ld hl, GS00_SP03_ContinueSavedPuzzleRoute_GameStateLookupTable; $5363: $21 $6f $53
-    add hl, bc                                    ; $5366: $09
-    ld a, [hl]                                    ; $5367: $7e
-    ld [rGameState_Current], a                    ; $5368: $ea $34 $d6
-    ret                                           ; $536b: $c9
+    call DisableLCDAtVBlank
+    ld a, [rContinueSavedPuzzlePromptRouteMode]
+    dec a
+    ld c, a
+    ld b, $00
+    ld hl, GS00_SP03_ContinueSavedPuzzleRoute_StatePhaseLookupTable
+    add hl, bc
+    ld a, [hl]
+    ld [rStatePhase_Current], a
+    ld hl, GS00_SP03_ContinueSavedPuzzleRoute_GameStateLookupTable
+    add hl, bc
+    ld a, [hl]
+    ld [rGameState_Current], a
+    ret
 
 
 GS00_SP03_ContinueSavedPuzzleRoute_StatePhaseLookupTable::
@@ -879,125 +879,125 @@ GS00_SP03_ContinueSavedPuzzleRoute_GameStateLookupTable::
     db $08, $0a, $09
 
 GS00_StatePhase_04_PostSaveReturnToTitlePrompt::
-    ld a, $43                                     ; $5372: $3e $43
-    ld [rLCDCShadow], a                           ; $5374: $ea $2e $c3
-    xor a                                         ; $5377: $af
-    ld [rBGPShadow], a                            ; $5378: $ea $2f $c3
-    ld [rOBP0Shadow], a                           ; $537b: $ea $30 $c3
-    ld [rOBP1Shadow], a                           ; $537e: $ea $31 $c3
-    ld [rSCXShadow], a                            ; $5381: $ea $32 $c3
-    ld [rSCYShadow], a                            ; $5384: $ea $33 $c3
-    call FillBGMap0WithTile01                     ; $5387: $cd $9d $05
-    call FillBGMap1WithTile01                     ; $538a: $cd $a8 $05
-    ld a, $0b                                     ; $538d: $3e $0b
-    ld hl, $5000                                  ; $538f: $21 $00 $50
-    ld de, $8000                                  ; $5392: $11 $00 $80
-    ld bc, $0300                                  ; $5395: $01 $00 $03
-    call BankedTileCopy                           ; $5398: $cd $e1 $04
-    ld a, $09                                     ; $539b: $3e $09
-    ld hl, $7800                                  ; $539d: $21 $00 $78
-    ld de, $9000                                  ; $53a0: $11 $00 $90
-    ld bc, $0800                                  ; $53a3: $01 $00 $08
-    call BankedTileCopy                           ; $53a6: $cd $e1 $04
-    ld a, $0b                                     ; $53a9: $3e $0b
-    ld hl, $6c00                                  ; $53ab: $21 $00 $6c
-    ld de, $9800                                  ; $53ae: $11 $00 $98
-    ld bc, $0400                                  ; $53b1: $01 $00 $04
-    call BankedTileCopy                           ; $53b4: $cd $e1 $04
-    call ClearShadowOAMBuffer                     ; $53b7: $cd $b3 $05
-    ld b, $03                                     ; $53ba: $06 $03
-    ld hl, InitBottomPromptBlinkTimerAndFrameState; $53bc: $21 $80 $4e
-    call SwitchBankToBAndJumpToHL                 ; $53bf: $cd $db $05
-    ld b, $03                                     ; $53c2: $06 $03
-    ld hl, TickBottomPromptBlinkSprite4C_A_OK     ; $53c4: $21 $a6 $4e
-    call SwitchBankToBAndJumpToHL                 ; $53c7: $cd $db $05
-    call EnableLCDFromShadow                      ; $53ca: $cd $9f $04
-    ld b, $03                                     ; $53cd: $06 $03
-    ld hl, TransitionFadePaletteTable_PostSaveReturn; $53cf: $21 $24 $47
-    ld c, $11                                     ; $53d2: $0e $11
-    ld de, $00c4                                  ; $53d4: $11 $c4 $00
-    call PlayScreenTransitionFadeIn               ; $53d7: $cd $0a $04
+    ld a, $43
+    ld [rLCDCShadow], a
+    xor a
+    ld [rBGPShadow], a
+    ld [rOBP0Shadow], a
+    ld [rOBP1Shadow], a
+    ld [rSCXShadow], a
+    ld [rSCYShadow], a
+    call FillBGMap0WithTile01
+    call FillBGMap1WithTile01
+    ld a, $0b
+    ld hl, $5000
+    ld de, $8000
+    ld bc, $0300
+    call BankedTileCopy
+    ld a, $09
+    ld hl, $7800
+    ld de, $9000
+    ld bc, $0800
+    call BankedTileCopy
+    ld a, $0b
+    ld hl, $6c00
+    ld de, $9800
+    ld bc, $0400
+    call BankedTileCopy
+    call ClearShadowOAMBuffer
+    ld b, $03
+    ld hl, InitBottomPromptBlinkTimerAndFrameState
+    call SwitchBankToBAndJumpToHL
+    ld b, $03
+    ld hl, TickBottomPromptBlinkSprite4C_A_OK
+    call SwitchBankToBAndJumpToHL
+    call EnableLCDFromShadow
+    ld b, $03
+    ld hl, TransitionFadePaletteTable_PostSaveReturn
+    ld c, $11
+    ld de, $00c4
+    call PlayScreenTransitionFadeIn
 
 .WaitForPostSaveReturnPromptConfirmInput:
-    call ClearShadowOAMBufferFromCursor           ; $53da: $cd $c2 $05
-    rst RST_08                                    ; $53dd: $cf
-    ld b, $03                                     ; $53de: $06 $03
-    ld hl, TickBottomPromptBlinkSprite4C_A_OK     ; $53e0: $21 $a6 $4e
-    call SwitchBankToBAndJumpToHL                 ; $53e3: $cd $db $05
-    ld a, [rInputButtonsPressed]                  ; $53e6: $fa $1e $c3
-    and $01                                       ; $53e9: $e6 $01
-    jr z, .WaitForPostSaveReturnPromptConfirmInput; $53eb: $28 $ed
+    call ClearShadowOAMBufferFromCursor
+    rst RST_08
+    ld b, $03
+    ld hl, TickBottomPromptBlinkSprite4C_A_OK
+    call SwitchBankToBAndJumpToHL
+    ld a, [rInputButtonsPressed]
+    and $01
+    jr z, .WaitForPostSaveReturnPromptConfirmInput
 
-    ld c, $03                                     ; $53ed: $0e $03
-    ld a, $02                                     ; $53ef: $3e $02
-    call CallSoundCommandDispatcher               ; $53f1: $cd $b3 $03
-    ld bc, $003c                                  ; $53f4: $01 $3c $00
-    call DelayFramesByBC                          ; $53f7: $cd $f7 $05
-    ld a, $05                                     ; $53fa: $3e $05
-    call CallSoundCommandDispatcher               ; $53fc: $cd $b3 $03
-    ld c, $00                                     ; $53ff: $0e $00
-    ld a, $01                                     ; $5401: $3e $01
-    call CallSoundCommandDispatcher               ; $5403: $cd $b3 $03
-    call WaitForScanline40OrDelay                 ; $5406: $cd $96 $03
-    ld c, $00                                     ; $5409: $0e $00
-    ld a, $01                                     ; $540b: $3e $01
-    call CallSoundCommandDispatcher               ; $540d: $cd $b3 $03
-    ld b, $03                                     ; $5410: $06 $03
-    ld hl, $472f                                  ; $5412: $21 $2f $47
-    ld c, $11                                     ; $5415: $0e $11
-    ld de, $00d3                                  ; $5417: $11 $d3 $00
-    call PlayScreenTransitionFadeOut              ; $541a: $cd $4b $04
-    call DisableLCDAtVBlank                       ; $541d: $cd $80 $04
-    xor a                                         ; $5420: $af
-    ld [rStatePhase_Current], a                   ; $5421: $ea $35 $d6
-    ret                                           ; $5424: $c9
+    ld c, $03
+    ld a, $02
+    call CallSoundCommandDispatcher
+    ld bc, $003c
+    call DelayFramesByBC
+    ld a, $05
+    call CallSoundCommandDispatcher
+    ld c, $00
+    ld a, $01
+    call CallSoundCommandDispatcher
+    call WaitForScanline40OrDelay
+    ld c, $00
+    ld a, $01
+    call CallSoundCommandDispatcher
+    ld b, $03
+    ld hl, $472f
+    ld c, $11
+    ld de, $00d3
+    call PlayScreenTransitionFadeOut
+    call DisableLCDAtVBlank
+    xor a
+    ld [rStatePhase_Current], a
+    ret
 
 
 GS00_RunMessageScriptUntilEnd_NoBankSwitch::
-    call AdvanceMessageScriptStreamHelper_NoBankSwitch; $5425: $cd $24 $2c
-    jr nz, GS00_RunMessageScriptUntilEnd_NoBankSwitch; $5428: $20 $fb
+    call AdvanceMessageScriptStreamHelper_NoBankSwitch
+    jr nz, GS00_RunMessageScriptUntilEnd_NoBankSwitch
 
-    ret                                           ; $542a: $c9
+    ret
 
 
 GS00_TickMarioBlinkAnimation::
-    ld a, [rMarioBlinkAnimationDelay]             ; $542b: $fa $17 $d8
-    and a                                         ; $542e: $a7
-    jr nz, .TickBlinkFrameDelay                   ; $542f: $20 $20
+    ld a, [rMarioBlinkAnimationDelay]
+    and a
+    jr nz, .TickBlinkFrameDelay
 
-    ld a, [rMarioBlinkAnimationSequenceCursor]    ; $5431: $fa $18 $d8
-    ld c, a                                       ; $5434: $4f
-    ld b, $00                                     ; $5435: $06 $00
+    ld a, [rMarioBlinkAnimationSequenceCursor]
+    ld c, a
+    ld b, $00
 
 .FindNextBlinkFrameEntry:
-    ld hl, GS00_MarioBlinkFrameDelayAndSpriteIdTable; $5437: $21 $63 $54
-    add hl, bc                                    ; $543a: $09
-    ld a, [hl+]                                   ; $543b: $2a
-    and a                                         ; $543c: $a7
-    jr nz, .LoadBlinkFrameEntry                   ; $543d: $20 $05
+    ld hl, GS00_MarioBlinkFrameDelayAndSpriteIdTable
+    add hl, bc
+    ld a, [hl+]
+    and a
+    jr nz, .LoadBlinkFrameEntry
 
-    ld bc, $0000                                  ; $543f: $01 $00 $00
-    jr .FindNextBlinkFrameEntry                   ; $5442: $18 $f3
+    ld bc, $0000
+    jr .FindNextBlinkFrameEntry
 
 .LoadBlinkFrameEntry:
-    ld [rMarioBlinkAnimationDelay], a             ; $5444: $ea $17 $d8
-    ld a, [hl]                                    ; $5447: $7e
-    ld [rMarioBlinkAnimationSpriteId], a          ; $5448: $ea $16 $d8
-    inc c                                         ; $544b: $0c
-    inc c                                         ; $544c: $0c
-    ld a, c                                       ; $544d: $79
-    ld [rMarioBlinkAnimationSequenceCursor], a    ; $544e: $ea $18 $d8
+    ld [rMarioBlinkAnimationDelay], a
+    ld a, [hl]
+    ld [rMarioBlinkAnimationSpriteId], a
+    inc c
+    inc c
+    ld a, c
+    ld [rMarioBlinkAnimationSequenceCursor], a
 
 .TickBlinkFrameDelay:
-    ld hl, rMarioBlinkAnimationDelay              ; $5451: $21 $17 $d8
-    dec [hl]                                      ; $5454: $35
-    ld a, [rMarioBlinkAnimationSpriteId]          ; $5455: $fa $16 $d8
-    cp $ff                                        ; $5458: $fe $ff
-    ret z                                         ; $545a: $c8
+    ld hl, rMarioBlinkAnimationDelay
+    dec [hl]
+    ld a, [rMarioBlinkAnimationSpriteId]
+    cp $ff
+    ret z
 
-    add $83                                       ; $545b: $c6 $83
-    ld bc, PuzzleNamePointerTable_Puzzle_KC38     ; $545d: $01 $28 $58
-    jp CopyOAMSpriteById                          ; $5460: $c3 $cb $20
+    add $83
+    ld bc, PuzzleNamePointerTable_Puzzle_KC38
+    jp CopyOAMSpriteById
 
 
 GS00_MarioBlinkFrameDelayAndSpriteIdTable::
@@ -1022,16 +1022,16 @@ GS00_MarioBlinkFrameDelayAndSpriteIdTable::
     db $00
 
 TODO_QueueTODOCommandStream::
-    ld c, a                                       ; $5488: $4f
-    ld b, $00                                     ; $5489: $06 $00
-    ld hl, TODO_CommandOffsetTable                ; $548b: $21 $98 $54
-    add hl, bc                                    ; $548e: $09
-    ld c, [hl]                                    ; $548f: $4e
-    add hl, bc                                    ; $5490: $09
-    ld a, $03                                     ; $5491: $3e $03
-    ld c, l                                       ; $5493: $4d
-    ld b, h                                       ; $5494: $44
-    jp QueueCommandStreamAndProcessIfLCDOff       ; $5495: $c3 $35 $07
+    ld c, a
+    ld b, $00
+    ld hl, TODO_CommandOffsetTable
+    add hl, bc
+    ld c, [hl]
+    add hl, bc
+    ld a, $03
+    ld c, l
+    ld b, h
+    jp QueueCommandStreamAndProcessIfLCDOff
 
 
 TODO_CommandOffsetTable::

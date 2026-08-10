@@ -6,8 +6,8 @@
 SECTION "ROM Bank $002", ROMX[$4000], BANK[$2]
 
 GameState_03_CourseSelectScreen_PhaseDispatcher::
-    ld a, [rStatePhase_Current]                   ; $4000: $fa $35 $d6
-    rst RST_18                                    ; $4003: $df
+    ld a, [rStatePhase_Current]
+    rst RST_18
 
 GS03_PhasePointer_00::
     db $0c, $40
@@ -22,259 +22,259 @@ GS03_PhasePointer_03::
     db $9b, $41
 
 GS03_StatePhase_00_CourseSelectScreenInit::
-    ld a, $43                                     ; $400c: $3e $43
-    ld [rLCDCShadow], a                           ; $400e: $ea $2e $c3
-    xor a                                         ; $4011: $af
-    ld [rBGPShadow], a                            ; $4012: $ea $2f $c3
-    ld [rOBP0Shadow], a                           ; $4015: $ea $30 $c3
-    ld [rOBP1Shadow], a                           ; $4018: $ea $31 $c3
-    ld [rSCXShadow], a                            ; $401b: $ea $32 $c3
-    ld [rSCYShadow], a                            ; $401e: $ea $33 $c3
-    call FillBGMap0WithTile01                     ; $4021: $cd $9d $05
-    call FillBGMap1WithTile01                     ; $4024: $cd $a8 $05
-    ld a, $0b                                     ; $4027: $3e $0b
-    ld hl, $5000                                  ; $4029: $21 $00 $50
-    ld de, $8000                                  ; $402c: $11 $00 $80
-    ld bc, $0300                                  ; $402f: $01 $00 $03
-    call BankedTileCopy                           ; $4032: $cd $e1 $04
-    ld a, $09                                     ; $4035: $3e $09
-    ld hl, GameState_03_CourseSelectScreen_PhaseDispatcher; $4037: $21 $00 $40
-    ld de, $8800                                  ; $403a: $11 $00 $88
-    ld bc, $1000                                  ; $403d: $01 $00 $10
-    call BankedTileCopy                           ; $4040: $cd $e1 $04
-    ld a, $0b                                     ; $4043: $3e $0b
-    ld hl, $7c00                                  ; $4045: $21 $00 $7c
-    ld de, $9800                                  ; $4048: $11 $00 $98
-    ld bc, $0400                                  ; $404b: $01 $00 $04
-    call BankedTileCopy                           ; $404e: $cd $e1 $04
-    ld a, [rSelectedSaveSlotIndex]                ; $4051: $fa $65 $a0
-    ld c, a                                       ; $4054: $4f
-    ld b, $00                                     ; $4055: $06 $00
-    ld hl, rSaveSlot1UnlockProgressState          ; $4057: $21 $87 $a3
-    add hl, bc                                    ; $405a: $09
-    ld a, [hl]                                    ; $405b: $7e
-    dec a                                         ; $405c: $3d
-    ld [rMenuCursorRowMaxIndex], a                ; $405d: $ea $3b $d6
-    jr z, .ContinueCourseSelectInitAfterCourseTileLoad; $4060: $28 $3d
+    ld a, $43
+    ld [rLCDCShadow], a
+    xor a
+    ld [rBGPShadow], a
+    ld [rOBP0Shadow], a
+    ld [rOBP1Shadow], a
+    ld [rSCXShadow], a
+    ld [rSCYShadow], a
+    call FillBGMap0WithTile01
+    call FillBGMap1WithTile01
+    ld a, $0b
+    ld hl, $5000
+    ld de, $8000
+    ld bc, $0300
+    call BankedTileCopy
+    ld a, $09
+    ld hl, GameState_03_CourseSelectScreen_PhaseDispatcher
+    ld de, $8800
+    ld bc, $1000
+    call BankedTileCopy
+    ld a, $0b
+    ld hl, $7c00
+    ld de, $9800
+    ld bc, $0400
+    call BankedTileCopy
+    ld a, [rSelectedSaveSlotIndex]
+    ld c, a
+    ld b, $00
+    ld hl, rSaveSlot1UnlockProgressState
+    add hl, bc
+    ld a, [hl]
+    dec a
+    ld [rMenuCursorRowMaxIndex], a
+    jr z, .ContinueCourseSelectInitAfterCourseTileLoad
 
-    push af                                       ; $4062: $f5
-    ld a, $09                                     ; $4063: $3e $09
-    ld hl, $5000                                  ; $4065: $21 $00 $50
-    ld de, $9200                                  ; $4068: $11 $00 $92
-    ld bc, $00a0                                  ; $406b: $01 $a0 $00
-    call BankedTileCopy                           ; $406e: $cd $e1 $04
-    ld a, $09                                     ; $4071: $3e $09
-    ld hl, $5100                                  ; $4073: $21 $00 $51
-    ld de, $9300                                  ; $4076: $11 $00 $93
-    ld bc, $00a0                                  ; $4079: $01 $a0 $00
-    call BankedTileCopy                           ; $407c: $cd $e1 $04
-    pop af                                        ; $407f: $f1
-    dec a                                         ; $4080: $3d
-    jr z, .ContinueCourseSelectInitAfterCourseTileLoad; $4081: $28 $1c
+    push af
+    ld a, $09
+    ld hl, $5000
+    ld de, $9200
+    ld bc, $00a0
+    call BankedTileCopy
+    ld a, $09
+    ld hl, $5100
+    ld de, $9300
+    ld bc, $00a0
+    call BankedTileCopy
+    pop af
+    dec a
+    jr z, .ContinueCourseSelectInitAfterCourseTileLoad
 
-    ld a, $09                                     ; $4083: $3e $09
-    ld hl, $5200                                  ; $4085: $21 $00 $52
-    ld de, $9400                                  ; $4088: $11 $00 $94
-    ld bc, $00a0                                  ; $408b: $01 $a0 $00
-    call BankedTileCopy                           ; $408e: $cd $e1 $04
-    ld a, $09                                     ; $4091: $3e $09
-    ld hl, $5300                                  ; $4093: $21 $00 $53
-    ld de, $9500                                  ; $4096: $11 $00 $95
-    ld bc, $00a0                                  ; $4099: $01 $a0 $00
-    call BankedTileCopy                           ; $409c: $cd $e1 $04
+    ld a, $09
+    ld hl, $5200
+    ld de, $9400
+    ld bc, $00a0
+    call BankedTileCopy
+    ld a, $09
+    ld hl, $5300
+    ld de, $9500
+    ld bc, $00a0
+    call BankedTileCopy
 
 .ContinueCourseSelectInitAfterCourseTileLoad:
-    ld a, [rSelectedSaveSlotIndex]                ; $409f: $fa $65 $a0
-    ld c, a                                       ; $40a2: $4f
-    ld b, $00                                     ; $40a3: $06 $00
-    ld hl, rSaveSlot1CourseSelectCursorRow        ; $40a5: $21 $8d $a3
-    add hl, bc                                    ; $40a8: $09
-    ld a, [hl]                                    ; $40a9: $7e
-    ld [rPuzzleAndMenuCursorRow], a               ; $40aa: $ea $37 $d6
-    call GS03_QueueCourseSelectionHighlightCommandStream; $40ad: $cd $f6 $41
-    call ClearShadowOAMBuffer                     ; $40b0: $cd $b3 $05
-    ld b, $03                                     ; $40b3: $06 $03
-    ld hl, $4e80                                  ; $40b5: $21 $80 $4e
-    call SwitchBankToBAndJumpToHL                 ; $40b8: $cd $db $05
-    ld b, $03                                     ; $40bb: $06 $03
-    ld hl, $4ec2                                  ; $40bd: $21 $c2 $4e
-    call SwitchBankToBAndJumpToHL                 ; $40c0: $cd $db $05
-    ld c, $00                                     ; $40c3: $0e $00
-    ld a, $01                                     ; $40c5: $3e $01
-    call CallSoundCommandDispatcher               ; $40c7: $cd $b3 $03
-    call WaitForScanline40OrDelay                 ; $40ca: $cd $96 $03
-    ld c, $0e                                     ; $40cd: $0e $0e
-    ld a, $01                                     ; $40cf: $3e $01
-    call CallSoundCommandDispatcher               ; $40d1: $cd $b3 $03
-    call EnableLCDFromShadow                      ; $40d4: $cd $9f $04
-    ld a, [rMenuCursorRowMaxIndex]                ; $40d7: $fa $3b $d6
-    cp $02                                        ; $40da: $fe $02
-    jr z, .RunCourseSelectFadeIn_AllCoursesUnlocked; $40dc: $28 $0f
+    ld a, [rSelectedSaveSlotIndex]
+    ld c, a
+    ld b, $00
+    ld hl, rSaveSlot1CourseSelectCursorRow
+    add hl, bc
+    ld a, [hl]
+    ld [rPuzzleAndMenuCursorRow], a
+    call GS03_QueueCourseSelectionHighlightCommandStream
+    call ClearShadowOAMBuffer
+    ld b, $03
+    ld hl, $4e80
+    call SwitchBankToBAndJumpToHL
+    ld b, $03
+    ld hl, $4ec2
+    call SwitchBankToBAndJumpToHL
+    ld c, $00
+    ld a, $01
+    call CallSoundCommandDispatcher
+    call WaitForScanline40OrDelay
+    ld c, $0e
+    ld a, $01
+    call CallSoundCommandDispatcher
+    call EnableLCDFromShadow
+    ld a, [rMenuCursorRowMaxIndex]
+    cp $02
+    jr z, .RunCourseSelectFadeIn_AllCoursesUnlocked
 
-    ld b, $03                                     ; $40de: $06 $03
-    ld hl, $46b8                                  ; $40e0: $21 $b8 $46
-    ld c, $03                                     ; $40e3: $0e $03
-    ld de, $0034                                  ; $40e5: $11 $34 $00
-    call PlayScreenTransitionFadeIn               ; $40e8: $cd $0a $04
-    jr .AdvanceToCourseSelectIdlePhase            ; $40eb: $18 $0d
+    ld b, $03
+    ld hl, $46b8
+    ld c, $03
+    ld de, $0034
+    call PlayScreenTransitionFadeIn
+    jr .AdvanceToCourseSelectIdlePhase
 
 .RunCourseSelectFadeIn_AllCoursesUnlocked:
-    ld b, $03                                     ; $40ed: $06 $03
-    ld hl, $46b8                                  ; $40ef: $21 $b8 $46
-    ld c, $04                                     ; $40f2: $0e $04
-    ld de, $0034                                  ; $40f4: $11 $34 $00
-    call PlayScreenTransitionFadeIn               ; $40f7: $cd $0a $04
+    ld b, $03
+    ld hl, $46b8
+    ld c, $04
+    ld de, $0034
+    call PlayScreenTransitionFadeIn
 
 .AdvanceToCourseSelectIdlePhase:
-    ld hl, rStatePhase_Current                    ; $40fa: $21 $35 $d6
-    inc [hl]                                      ; $40fd: $34
-    ret                                           ; $40fe: $c9
+    ld hl, rStatePhase_Current
+    inc [hl]
+    ret
 
 
 GS03_StatePhase_01_CourseSelectScreenIdle::
-    ld b, $03                                     ; $40ff: $06 $03
-    ld hl, $4ec2                                  ; $4101: $21 $c2 $4e
-    call SwitchBankToBAndJumpToHL                 ; $4104: $cd $db $05
-    call GS03_HandleCourseSelectVerticalInput     ; $4107: $cd $be $42
-    ld a, [rInputButtonsPressed]                  ; $410a: $fa $1e $c3
-    and $09                                       ; $410d: $e6 $09
-    jr z, .CheckCourseSelectCancelInput           ; $410f: $28 $0c
+    ld b, $03
+    ld hl, $4ec2
+    call SwitchBankToBAndJumpToHL
+    call GS03_HandleCourseSelectVerticalInput
+    ld a, [rInputButtonsPressed]
+    and $09
+    jr z, .CheckCourseSelectCancelInput
 
-    ld c, $03                                     ; $4111: $0e $03
-    ld a, $02                                     ; $4113: $3e $02
-    call CallSoundCommandDispatcher               ; $4115: $cd $b3 $03
-    ld hl, rStatePhase_Current                    ; $4118: $21 $35 $d6
-    inc [hl]                                      ; $411b: $34
-    ret                                           ; $411c: $c9
+    ld c, $03
+    ld a, $02
+    call CallSoundCommandDispatcher
+    ld hl, rStatePhase_Current
+    inc [hl]
+    ret
 
 
 .CheckCourseSelectCancelInput:
-    ld a, [rInputButtonsPressed]                  ; $411d: $fa $1e $c3
-    and $02                                       ; $4120: $e6 $02
-    ret z                                         ; $4122: $c8
+    ld a, [rInputButtonsPressed]
+    and $02
+    ret z
 
-    ld c, $04                                     ; $4123: $0e $04
-    ld a, $02                                     ; $4125: $3e $02
-    call CallSoundCommandDispatcher               ; $4127: $cd $b3 $03
-    ld a, $03                                     ; $412a: $3e $03
-    ld [rStatePhase_Current], a                   ; $412c: $ea $35 $d6
-    ret                                           ; $412f: $c9
+    ld c, $04
+    ld a, $02
+    call CallSoundCommandDispatcher
+    ld a, $03
+    ld [rStatePhase_Current], a
+    ret
 
 
 GS03_StatePhase_02_ConfirmSelectionTransition::
-    ld bc, $003c                                  ; $4130: $01 $3c $00
-    call DelayFramesByBC                          ; $4133: $cd $f7 $05
-    ld a, $05                                     ; $4136: $3e $05
-    call CallSoundCommandDispatcher               ; $4138: $cd $b3 $03
-    ld c, $00                                     ; $413b: $0e $00
-    ld a, $01                                     ; $413d: $3e $01
-    call CallSoundCommandDispatcher               ; $413f: $cd $b3 $03
-    call WaitForScanline40OrDelay                 ; $4142: $cd $96 $03
-    ld c, $00                                     ; $4145: $0e $00
-    ld a, $01                                     ; $4147: $3e $01
-    call CallSoundCommandDispatcher               ; $4149: $cd $b3 $03
-    ld a, [rMenuCursorRowMaxIndex]                ; $414c: $fa $3b $d6
-    cp $02                                        ; $414f: $fe $02
-    jr z, .RunConfirmTransitionFadeOut_AllCoursesUnlocked; $4151: $28 $0f
+    ld bc, $003c
+    call DelayFramesByBC
+    ld a, $05
+    call CallSoundCommandDispatcher
+    ld c, $00
+    ld a, $01
+    call CallSoundCommandDispatcher
+    call WaitForScanline40OrDelay
+    ld c, $00
+    ld a, $01
+    call CallSoundCommandDispatcher
+    ld a, [rMenuCursorRowMaxIndex]
+    cp $02
+    jr z, .RunConfirmTransitionFadeOut_AllCoursesUnlocked
 
-    ld b, $03                                     ; $4153: $06 $03
-    ld hl, $46c3                                  ; $4155: $21 $c3 $46
-    ld c, $03                                     ; $4158: $0e $03
-    ld de, $0043                                  ; $415a: $11 $43 $00
-    call PlayScreenTransitionFadeOut              ; $415d: $cd $4b $04
-    jr .FinalizeConfirmSelectionTransition        ; $4160: $18 $0d
+    ld b, $03
+    ld hl, $46c3
+    ld c, $03
+    ld de, $0043
+    call PlayScreenTransitionFadeOut
+    jr .FinalizeConfirmSelectionTransition
 
 .RunConfirmTransitionFadeOut_AllCoursesUnlocked:
-    ld b, $03                                     ; $4162: $06 $03
-    ld hl, $46c3                                  ; $4164: $21 $c3 $46
-    ld c, $04                                     ; $4167: $0e $04
-    ld de, $0043                                  ; $4169: $11 $43 $00
-    call PlayScreenTransitionFadeOut              ; $416c: $cd $4b $04
+    ld b, $03
+    ld hl, $46c3
+    ld c, $04
+    ld de, $0043
+    call PlayScreenTransitionFadeOut
 
 .FinalizeConfirmSelectionTransition:
-    call DisableLCDAtVBlank                       ; $416f: $cd $80 $04
-    ld a, [rSelectedSaveSlotIndex]                ; $4172: $fa $65 $a0
-    ld c, a                                       ; $4175: $4f
-    ld b, $00                                     ; $4176: $06 $00
-    ld hl, rSaveSlot1CourseSelectCursorRow        ; $4178: $21 $8d $a3
-    add hl, bc                                    ; $417b: $09
-    ld a, [rPuzzleAndMenuCursorRow]               ; $417c: $fa $37 $d6
-    ld [hl], a                                    ; $417f: $77
-    cp $02                                        ; $4180: $fe $02
-    jr z, .SetNextGameState_TimeTrial             ; $4182: $28 $0b
+    call DisableLCDAtVBlank
+    ld a, [rSelectedSaveSlotIndex]
+    ld c, a
+    ld b, $00
+    ld hl, rSaveSlot1CourseSelectCursorRow
+    add hl, bc
+    ld a, [rPuzzleAndMenuCursorRow]
+    ld [hl], a
+    cp $02
+    jr z, .SetNextGameState_TimeTrial
 
-    xor a                                         ; $4184: $af
-    ld [rStatePhase_Current], a                   ; $4185: $ea $35 $d6
-    ld hl, rGameState_Current                     ; $4188: $21 $34 $d6
-    inc [hl]                                      ; $418b: $34
-    jp RefreshSaveValidationChecksumsAndMirrors   ; $418c: $c3 $1c $1b
+    xor a
+    ld [rStatePhase_Current], a
+    ld hl, rGameState_Current
+    inc [hl]
+    jp RefreshSaveValidationChecksumsAndMirrors
 
 
 .SetNextGameState_TimeTrial:
-    xor a                                         ; $418f: $af
-    ld [rStatePhase_Current], a                   ; $4190: $ea $35 $d6
-    ld a, $07                                     ; $4193: $3e $07
-    ld [rGameState_Current], a                    ; $4195: $ea $34 $d6
-    jp RefreshSaveValidationChecksumsAndMirrors   ; $4198: $c3 $1c $1b
+    xor a
+    ld [rStatePhase_Current], a
+    ld a, $07
+    ld [rGameState_Current], a
+    jp RefreshSaveValidationChecksumsAndMirrors
 
 
 GS03_StatePhase_03_CancelSelectionTransition::
-    ld bc, $003c                                  ; $419b: $01 $3c $00
-    call DelayFramesByBC                          ; $419e: $cd $f7 $05
-    ld a, $05                                     ; $41a1: $3e $05
-    call CallSoundCommandDispatcher               ; $41a3: $cd $b3 $03
-    ld c, $00                                     ; $41a6: $0e $00
-    ld a, $01                                     ; $41a8: $3e $01
-    call CallSoundCommandDispatcher               ; $41aa: $cd $b3 $03
-    call WaitForScanline40OrDelay                 ; $41ad: $cd $96 $03
-    ld c, $00                                     ; $41b0: $0e $00
-    ld a, $01                                     ; $41b2: $3e $01
-    call CallSoundCommandDispatcher               ; $41b4: $cd $b3 $03
-    ld a, [rMenuCursorRowMaxIndex]                ; $41b7: $fa $3b $d6
-    cp $02                                        ; $41ba: $fe $02
-    jr z, .RunCancelTransitionFadeOut_AllCoursesUnlocked; $41bc: $28 $0f
+    ld bc, $003c
+    call DelayFramesByBC
+    ld a, $05
+    call CallSoundCommandDispatcher
+    ld c, $00
+    ld a, $01
+    call CallSoundCommandDispatcher
+    call WaitForScanline40OrDelay
+    ld c, $00
+    ld a, $01
+    call CallSoundCommandDispatcher
+    ld a, [rMenuCursorRowMaxIndex]
+    cp $02
+    jr z, .RunCancelTransitionFadeOut_AllCoursesUnlocked
 
-    ld b, $03                                     ; $41be: $06 $03
-    ld hl, $46c3                                  ; $41c0: $21 $c3 $46
-    ld c, $03                                     ; $41c3: $0e $03
-    ld de, $0043                                  ; $41c5: $11 $43 $00
-    call PlayScreenTransitionFadeOut              ; $41c8: $cd $4b $04
-    jr .FinalizeCancelSelectionTransition         ; $41cb: $18 $0d
+    ld b, $03
+    ld hl, $46c3
+    ld c, $03
+    ld de, $0043
+    call PlayScreenTransitionFadeOut
+    jr .FinalizeCancelSelectionTransition
 
 .RunCancelTransitionFadeOut_AllCoursesUnlocked:
-    ld b, $03                                     ; $41cd: $06 $03
-    ld hl, $46c3                                  ; $41cf: $21 $c3 $46
-    ld c, $04                                     ; $41d2: $0e $04
-    ld de, $0043                                  ; $41d4: $11 $43 $00
-    call PlayScreenTransitionFadeOut              ; $41d7: $cd $4b $04
+    ld b, $03
+    ld hl, $46c3
+    ld c, $04
+    ld de, $0043
+    call PlayScreenTransitionFadeOut
 
 .FinalizeCancelSelectionTransition:
-    call DisableLCDAtVBlank                       ; $41da: $cd $80 $04
-    ld a, [rSelectedSaveSlotIndex]                ; $41dd: $fa $65 $a0
-    ld c, a                                       ; $41e0: $4f
-    ld b, $00                                     ; $41e1: $06 $00
-    ld hl, rSaveSlot1CourseSelectCursorRow        ; $41e3: $21 $8d $a3
-    add hl, bc                                    ; $41e6: $09
-    ld a, [rPuzzleAndMenuCursorRow]               ; $41e7: $fa $37 $d6
-    ld [hl], a                                    ; $41ea: $77
-    xor a                                         ; $41eb: $af
-    ld [rStatePhase_Current], a                   ; $41ec: $ea $35 $d6
-    ld hl, rGameState_Current                     ; $41ef: $21 $34 $d6
-    dec [hl]                                      ; $41f2: $35
-    jp RefreshSaveValidationChecksumsAndMirrors   ; $41f3: $c3 $1c $1b
+    call DisableLCDAtVBlank
+    ld a, [rSelectedSaveSlotIndex]
+    ld c, a
+    ld b, $00
+    ld hl, rSaveSlot1CourseSelectCursorRow
+    add hl, bc
+    ld a, [rPuzzleAndMenuCursorRow]
+    ld [hl], a
+    xor a
+    ld [rStatePhase_Current], a
+    ld hl, rGameState_Current
+    dec [hl]
+    jp RefreshSaveValidationChecksumsAndMirrors
 
 
 GS03_QueueCourseSelectionHighlightCommandStream::
-    ld c, a                                       ; $41f6: $4f
-    ld b, $00                                     ; $41f7: $06 $00
-    ld hl, CourseSelectHighlightCommandOffsetTable; $41f9: $21 $06 $42
-    add hl, bc                                    ; $41fc: $09
-    ld c, [hl]                                    ; $41fd: $4e
-    add hl, bc                                    ; $41fe: $09
-    ld a, $02                                     ; $41ff: $3e $02
-    ld c, l                                       ; $4201: $4d
-    ld b, h                                       ; $4202: $44
-    jp QueueCommandStreamAndProcessIfLCDOff       ; $4203: $c3 $35 $07
+    ld c, a
+    ld b, $00
+    ld hl, CourseSelectHighlightCommandOffsetTable
+    add hl, bc
+    ld c, [hl]
+    add hl, bc
+    ld a, $02
+    ld c, l
+    ld b, h
+    jp QueueCommandStreamAndProcessIfLCDOff
 
 
 CourseSelectHighlightCommandOffsetTable::
@@ -296,16 +296,16 @@ TimeTrialCourseHighlightCommandScript::
     db $00
 
 GS03_QueueCourseSelectionUnhighlightCommandStream::
-    ld c, a                                       ; $425a: $4f
-    ld b, $00                                     ; $425b: $06 $00
-    ld hl, CourseSelectUnhighlightCommandOffsetTable; $425d: $21 $6a $42
-    add hl, bc                                    ; $4260: $09
-    ld c, [hl]                                    ; $4261: $4e
-    add hl, bc                                    ; $4262: $09
-    ld a, $02                                     ; $4263: $3e $02
-    ld c, l                                       ; $4265: $4d
-    ld b, h                                       ; $4266: $44
-    jp QueueCommandStreamAndProcessIfLCDOff       ; $4267: $c3 $35 $07
+    ld c, a
+    ld b, $00
+    ld hl, CourseSelectUnhighlightCommandOffsetTable
+    add hl, bc
+    ld c, [hl]
+    add hl, bc
+    ld a, $02
+    ld c, l
+    ld b, h
+    jp QueueCommandStreamAndProcessIfLCDOff
 
 
 CourseSelectUnhighlightCommandOffsetTable::
@@ -327,56 +327,56 @@ TimeTrialCourseUnhighlightCommandScript::
     db $00
 
 GS03_HandleCourseSelectVerticalInput::
-    ld a, [rMenuCursorRowMaxIndex]                ; $42be: $fa $3b $d6
-    and a                                         ; $42c1: $a7
-    ret z                                         ; $42c2: $c8
+    ld a, [rMenuCursorRowMaxIndex]
+    and a
+    ret z
 
-    ld a, [rInputButtonsPressedOrRepeated]        ; $42c3: $fa $22 $c3
-    and $c0                                       ; $42c6: $e6 $c0
-    ret z                                         ; $42c8: $c8
+    ld a, [rInputButtonsPressedOrRepeated]
+    and $c0
+    ret z
 
-    push af                                       ; $42c9: $f5
-    ld a, [rPuzzleAndMenuCursorRow]               ; $42ca: $fa $37 $d6
-    call GS03_QueueCourseSelectionUnhighlightCommandStream; $42cd: $cd $5a $42
-    rst RST_08                                    ; $42d0: $cf
-    ld c, $0a                                     ; $42d1: $0e $0a
-    ld a, $02                                     ; $42d3: $3e $02
-    call CallSoundCommandDispatcher               ; $42d5: $cd $b3 $03
-    pop af                                        ; $42d8: $f1
-    and $40                                       ; $42d9: $e6 $40
+    push af
+    ld a, [rPuzzleAndMenuCursorRow]
+    call GS03_QueueCourseSelectionUnhighlightCommandStream
+    rst RST_08
+    ld c, $0a
+    ld a, $02
+    call CallSoundCommandDispatcher
+    pop af
+    and $40
 
 .HandleCourseSelectMoveUp:
-    jr z, .HandleCourseSelectMoveDown             ; $42db: $28 $11
+    jr z, .HandleCourseSelectMoveDown
 
-    ld a, [rPuzzleAndMenuCursorRow]               ; $42dd: $fa $37 $d6
-    dec a                                         ; $42e0: $3d
-    cp $ff                                        ; $42e1: $fe $ff
-    jr nz, .StoreCursorRowAndQueueSelectionUpdate_UpPath; $42e3: $20 $03
+    ld a, [rPuzzleAndMenuCursorRow]
+    dec a
+    cp $ff
+    jr nz, .StoreCursorRowAndQueueSelectionUpdate_UpPath
 
-    ld a, [rMenuCursorRowMaxIndex]                ; $42e5: $fa $3b $d6
+    ld a, [rMenuCursorRowMaxIndex]
 
 .StoreCursorRowAndQueueSelectionUpdate_UpPath:
-    ld [rPuzzleAndMenuCursorRow], a               ; $42e8: $ea $37 $d6
-    jp GS03_QueueCourseSelectionHighlightCommandStream; $42eb: $c3 $f6 $41
+    ld [rPuzzleAndMenuCursorRow], a
+    jp GS03_QueueCourseSelectionHighlightCommandStream
 
 
 .HandleCourseSelectMoveDown:
-    ld a, [rPuzzleAndMenuCursorRow]               ; $42ee: $fa $37 $d6
-    ld hl, rMenuCursorRowMaxIndex                 ; $42f1: $21 $3b $d6
-    cp [hl]                                       ; $42f4: $be
-    jr nz, .StoreCursorRowAndQueueSelectionUpdate_DownPath; $42f5: $20 $02
+    ld a, [rPuzzleAndMenuCursorRow]
+    ld hl, rMenuCursorRowMaxIndex
+    cp [hl]
+    jr nz, .StoreCursorRowAndQueueSelectionUpdate_DownPath
 
-    ld a, $ff                                     ; $42f7: $3e $ff
+    ld a, $ff
 
 .StoreCursorRowAndQueueSelectionUpdate_DownPath:
-    inc a                                         ; $42f9: $3c
-    ld [rPuzzleAndMenuCursorRow], a               ; $42fa: $ea $37 $d6
-    jp GS03_QueueCourseSelectionHighlightCommandStream; $42fd: $c3 $f6 $41
+    inc a
+    ld [rPuzzleAndMenuCursorRow], a
+    jp GS03_QueueCourseSelectionHighlightCommandStream
 
 
 GameState_02_GameSelectScreen_PhaseDispatcher::
-    ld a, [rStatePhase_Current]                   ; $4300: $fa $35 $d6
-    rst RST_18                                    ; $4303: $df
+    ld a, [rStatePhase_Current]
+    rst RST_18
 
 GS02_PhasePointer_00::
     db $0c, $43
@@ -391,208 +391,208 @@ GS02_PhasePointer_03::
     db $58, $44
 
 GS02_StatePhase_00_GameSelectScreenInit::
-    ld a, $43                                     ; $430c: $3e $43
-    ld [rLCDCShadow], a                           ; $430e: $ea $2e $c3
-    xor a                                         ; $4311: $af
-    ld [rBGPShadow], a                            ; $4312: $ea $2f $c3
-    ld [rOBP0Shadow], a                           ; $4315: $ea $30 $c3
-    ld [rOBP1Shadow], a                           ; $4318: $ea $31 $c3
-    ld [rSCXShadow], a                            ; $431b: $ea $32 $c3
-    ld [rSCYShadow], a                            ; $431e: $ea $33 $c3
-    call FillBGMap0WithTile01                     ; $4321: $cd $9d $05
-    call FillBGMap1WithTile01                     ; $4324: $cd $a8 $05
-    ld a, $0b                                     ; $4327: $3e $0b
-    ld hl, $5000                                  ; $4329: $21 $00 $50
-    ld de, $8000                                  ; $432c: $11 $00 $80
-    ld bc, $0300                                  ; $432f: $01 $00 $03
-    call BankedTileCopy                           ; $4332: $cd $e1 $04
-    ld a, $0a                                     ; $4335: $3e $0a
-    ld hl, GameState_02_GameSelectScreen_PhaseDispatcher; $4337: $21 $00 $43
-    ld de, $8300                                  ; $433a: $11 $00 $83
-    ld bc, $1500                                  ; $433d: $01 $00 $15
-    call BankedTileCopy                           ; $4340: $cd $e1 $04
-    ld a, $0b                                     ; $4343: $3e $0b
-    ld hl, $7400                                  ; $4345: $21 $00 $74
-    ld de, $9800                                  ; $4348: $11 $00 $98
-    ld bc, $0400                                  ; $434b: $01 $00 $04
-    call BankedTileCopy                           ; $434e: $cd $e1 $04
-    ld a, $2f                                     ; $4351: $3e $2f
-    ld [rLYCShadow], a                            ; $4353: $ea $36 $c3
-    ld hl, rLCDCInterruptControlFlags             ; $4356: $21 $37 $c3
-    set 6, [hl]                                   ; $4359: $cb $f6
-    ld hl, rIE                                    ; $435b: $21 $ff $ff
-    set 1, [hl]                                   ; $435e: $cb $ce
-    ld a, $01                                     ; $4360: $3e $01
-    ld [rLCDCInterruptDispatchIndex], a           ; $4362: $ea $38 $c3
-    ld [rVBlankLCDCBit4ForceFlag], a              ; $4365: $ea $3c $c3
-    ld [rUseLCDCInterruptForSoundEngineUpdateFlag], a; $4368: $ea $50 $c3
-    ld a, $02                                     ; $436b: $3e $02
-    ld [rMenuCursorRowMaxIndex], a                ; $436d: $ea $3b $d6
-    ld a, [rSelectedSaveSlotIndex]                ; $4370: $fa $65 $a0
-    ld c, a                                       ; $4373: $4f
-    ld b, $00                                     ; $4374: $06 $00
-    ld hl, rSaveSlot1GameSelectCursorRow          ; $4376: $21 $78 $a0
-    add hl, bc                                    ; $4379: $09
-    ld a, [hl]                                    ; $437a: $7e
-    ld [rPuzzleAndMenuCursorRow], a               ; $437b: $ea $37 $d6
-    call GS02_QueueSelectionHighlightCommandStream; $437e: $cd $b1 $44
-    call ClearShadowOAMBuffer                     ; $4381: $cd $b3 $05
-    ld b, $03                                     ; $4384: $06 $03
-    ld hl, $4e80                                  ; $4386: $21 $80 $4e
-    call SwitchBankToBAndJumpToHL                 ; $4389: $cd $db $05
-    ld b, $03                                     ; $438c: $06 $03
-    ld hl, $4ec2                                  ; $438e: $21 $c2 $4e
-    call SwitchBankToBAndJumpToHL                 ; $4391: $cd $db $05
-    ld c, $00                                     ; $4394: $0e $00
-    ld a, $01                                     ; $4396: $3e $01
-    call CallSoundCommandDispatcher               ; $4398: $cd $b3 $03
-    call WaitForScanline40OrDelay                 ; $439b: $cd $96 $03
-    ld c, $0d                                     ; $439e: $0e $0d
-    ld a, $01                                     ; $43a0: $3e $01
-    call CallSoundCommandDispatcher               ; $43a2: $cd $b3 $03
-    call EnableLCDFromShadow                      ; $43a5: $cd $9f $04
-    call EnsureSGBMaskFreezeDisabled              ; $43a8: $cd $a2 $1f
-    ld b, $03                                     ; $43ab: $06 $03
-    ld hl, $46d0                                  ; $43ad: $21 $d0 $46
-    ld c, $06                                     ; $43b0: $0e $06
-    ld de, $0054                                  ; $43b2: $11 $54 $00
-    call PlayScreenTransitionFadeIn               ; $43b5: $cd $0a $04
-    ld hl, rStatePhase_Current                    ; $43b8: $21 $35 $d6
-    inc [hl]                                      ; $43bb: $34
-    ret                                           ; $43bc: $c9
+    ld a, $43
+    ld [rLCDCShadow], a
+    xor a
+    ld [rBGPShadow], a
+    ld [rOBP0Shadow], a
+    ld [rOBP1Shadow], a
+    ld [rSCXShadow], a
+    ld [rSCYShadow], a
+    call FillBGMap0WithTile01
+    call FillBGMap1WithTile01
+    ld a, $0b
+    ld hl, $5000
+    ld de, $8000
+    ld bc, $0300
+    call BankedTileCopy
+    ld a, $0a
+    ld hl, GameState_02_GameSelectScreen_PhaseDispatcher
+    ld de, $8300
+    ld bc, $1500
+    call BankedTileCopy
+    ld a, $0b
+    ld hl, $7400
+    ld de, $9800
+    ld bc, $0400
+    call BankedTileCopy
+    ld a, $2f
+    ld [rLYCShadow], a
+    ld hl, rLCDCInterruptControlFlags
+    set 6, [hl]
+    ld hl, rIE
+    set 1, [hl]
+    ld a, $01
+    ld [rLCDCInterruptDispatchIndex], a
+    ld [rVBlankLCDCBit4ForceFlag], a
+    ld [rUseLCDCInterruptForSoundEngineUpdateFlag], a
+    ld a, $02
+    ld [rMenuCursorRowMaxIndex], a
+    ld a, [rSelectedSaveSlotIndex]
+    ld c, a
+    ld b, $00
+    ld hl, rSaveSlot1GameSelectCursorRow
+    add hl, bc
+    ld a, [hl]
+    ld [rPuzzleAndMenuCursorRow], a
+    call GS02_QueueSelectionHighlightCommandStream
+    call ClearShadowOAMBuffer
+    ld b, $03
+    ld hl, $4e80
+    call SwitchBankToBAndJumpToHL
+    ld b, $03
+    ld hl, $4ec2
+    call SwitchBankToBAndJumpToHL
+    ld c, $00
+    ld a, $01
+    call CallSoundCommandDispatcher
+    call WaitForScanline40OrDelay
+    ld c, $0d
+    ld a, $01
+    call CallSoundCommandDispatcher
+    call EnableLCDFromShadow
+    call EnsureSGBMaskFreezeDisabled
+    ld b, $03
+    ld hl, $46d0
+    ld c, $06
+    ld de, $0054
+    call PlayScreenTransitionFadeIn
+    ld hl, rStatePhase_Current
+    inc [hl]
+    ret
 
 
 GS02_StatePhase_01_GameSelectScreenIdle::
-    ld b, $03                                     ; $43bd: $06 $03
-    ld hl, $4ec2                                  ; $43bf: $21 $c2 $4e
-    call SwitchBankToBAndJumpToHL                 ; $43c2: $cd $db $05
-    call GS02_HandleGameSelectVerticalInput       ; $43c5: $cd $b1 $45
-    ld a, [rInputButtonsPressed]                  ; $43c8: $fa $1e $c3
-    and $09                                       ; $43cb: $e6 $09
-    jr z, .CheckGameSelectCancelInput             ; $43cd: $28 $0c
+    ld b, $03
+    ld hl, $4ec2
+    call SwitchBankToBAndJumpToHL
+    call GS02_HandleGameSelectVerticalInput
+    ld a, [rInputButtonsPressed]
+    and $09
+    jr z, .CheckGameSelectCancelInput
 
-    ld c, $03                                     ; $43cf: $0e $03
-    ld a, $02                                     ; $43d1: $3e $02
-    call CallSoundCommandDispatcher               ; $43d3: $cd $b3 $03
-    ld hl, rStatePhase_Current                    ; $43d6: $21 $35 $d6
-    inc [hl]                                      ; $43d9: $34
-    ret                                           ; $43da: $c9
+    ld c, $03
+    ld a, $02
+    call CallSoundCommandDispatcher
+    ld hl, rStatePhase_Current
+    inc [hl]
+    ret
 
 
 .CheckGameSelectCancelInput:
-    ld a, [rInputButtonsPressed]                  ; $43db: $fa $1e $c3
-    cp $02                                        ; $43de: $fe $02
-    ret nz                                        ; $43e0: $c0
+    ld a, [rInputButtonsPressed]
+    cp $02
+    ret nz
 
-    ld c, $04                                     ; $43e1: $0e $04
-    ld a, $02                                     ; $43e3: $3e $02
-    call CallSoundCommandDispatcher               ; $43e5: $cd $b3 $03
-    ld a, $03                                     ; $43e8: $3e $03
-    ld [rStatePhase_Current], a                   ; $43ea: $ea $35 $d6
-    ret                                           ; $43ed: $c9
+    ld c, $04
+    ld a, $02
+    call CallSoundCommandDispatcher
+    ld a, $03
+    ld [rStatePhase_Current], a
+    ret
 
 
 GS02_StatePhase_02_ConfirmSelectionTransition::
-    ld bc, $003c                                  ; $43ee: $01 $3c $00
-    call DelayFramesByBC                          ; $43f1: $cd $f7 $05
-    ld a, $05                                     ; $43f4: $3e $05
-    call CallSoundCommandDispatcher               ; $43f6: $cd $b3 $03
-    ld c, $00                                     ; $43f9: $0e $00
-    ld a, $01                                     ; $43fb: $3e $01
-    call CallSoundCommandDispatcher               ; $43fd: $cd $b3 $03
-    call WaitForScanline40OrDelay                 ; $4400: $cd $96 $03
-    ld c, $00                                     ; $4403: $0e $00
-    ld a, $01                                     ; $4405: $3e $01
-    call CallSoundCommandDispatcher               ; $4407: $cd $b3 $03
-    ld b, $03                                     ; $440a: $06 $03
-    ld hl, $46db                                  ; $440c: $21 $db $46
-    ld c, $06                                     ; $440f: $0e $06
-    ld de, $0063                                  ; $4411: $11 $63 $00
-    call PlayScreenTransitionFadeOut              ; $4414: $cd $4b $04
-    call DisableLCDAtVBlank                       ; $4417: $cd $80 $04
-    ld hl, rLCDCInterruptControlFlags             ; $441a: $21 $37 $c3
-    res 6, [hl]                                   ; $441d: $cb $b6
-    ld hl, rIE                                    ; $441f: $21 $ff $ff
-    res 1, [hl]                                   ; $4422: $cb $8e
-    xor a                                         ; $4424: $af
-    ld [rLCDCInterruptDispatchIndex], a           ; $4425: $ea $38 $c3
-    ld [rVBlankLCDCBit4ForceFlag], a              ; $4428: $ea $3c $c3
-    ld [rUseLCDCInterruptForSoundEngineUpdateFlag], a; $442b: $ea $50 $c3
-    ld a, [rSelectedSaveSlotIndex]                ; $442e: $fa $65 $a0
-    ld c, a                                       ; $4431: $4f
-    ld b, $00                                     ; $4432: $06 $00
-    ld hl, rSaveSlot1GameSelectCursorRow          ; $4434: $21 $78 $a0
-    add hl, bc                                    ; $4437: $09
-    ld a, [rPuzzleAndMenuCursorRow]               ; $4438: $fa $37 $d6
-    ld [hl], a                                    ; $443b: $77
-    ld c, a                                       ; $443c: $4f
-    ld b, $00                                     ; $443d: $06 $00
-    ld hl, GS02_StatePhase_02_ConfirmSelectionTargetGameStateTable; $443f: $21 $55 $44
-    add hl, bc                                    ; $4442: $09
-    xor a                                         ; $4443: $af
-    ld [rAdvanceOrSkipTimeoutEnabled], a          ; $4444: $ea $35 $d8
-    ld [rGS06_HowToPlaySkipRequestedFlag], a      ; $4447: $ea $37 $d8
-    xor a                                         ; $444a: $af
-    ld [rStatePhase_Current], a                   ; $444b: $ea $35 $d6
-    ld a, [hl]                                    ; $444e: $7e
-    ld [rGameState_Current], a                    ; $444f: $ea $34 $d6
-    jp RefreshSaveValidationChecksumsAndMirrors   ; $4452: $c3 $1c $1b
+    ld bc, $003c
+    call DelayFramesByBC
+    ld a, $05
+    call CallSoundCommandDispatcher
+    ld c, $00
+    ld a, $01
+    call CallSoundCommandDispatcher
+    call WaitForScanline40OrDelay
+    ld c, $00
+    ld a, $01
+    call CallSoundCommandDispatcher
+    ld b, $03
+    ld hl, $46db
+    ld c, $06
+    ld de, $0063
+    call PlayScreenTransitionFadeOut
+    call DisableLCDAtVBlank
+    ld hl, rLCDCInterruptControlFlags
+    res 6, [hl]
+    ld hl, rIE
+    res 1, [hl]
+    xor a
+    ld [rLCDCInterruptDispatchIndex], a
+    ld [rVBlankLCDCBit4ForceFlag], a
+    ld [rUseLCDCInterruptForSoundEngineUpdateFlag], a
+    ld a, [rSelectedSaveSlotIndex]
+    ld c, a
+    ld b, $00
+    ld hl, rSaveSlot1GameSelectCursorRow
+    add hl, bc
+    ld a, [rPuzzleAndMenuCursorRow]
+    ld [hl], a
+    ld c, a
+    ld b, $00
+    ld hl, GS02_StatePhase_02_ConfirmSelectionTargetGameStateTable
+    add hl, bc
+    xor a
+    ld [rAdvanceOrSkipTimeoutEnabled], a
+    ld [rGS06_HowToPlaySkipRequestedFlag], a
+    xor a
+    ld [rStatePhase_Current], a
+    ld a, [hl]
+    ld [rGameState_Current], a
+    jp RefreshSaveValidationChecksumsAndMirrors
 
 
 GS02_StatePhase_02_ConfirmSelectionTargetGameStateTable::
     db $06, $05, $03
 
 GS02_StatePhase_03_CancelSelectionTransition::
-    ld bc, $003c                                  ; $4458: $01 $3c $00
-    call DelayFramesByBC                          ; $445b: $cd $f7 $05
-    ld a, $05                                     ; $445e: $3e $05
-    call CallSoundCommandDispatcher               ; $4460: $cd $b3 $03
-    ld c, $00                                     ; $4463: $0e $00
-    ld a, $01                                     ; $4465: $3e $01
-    call CallSoundCommandDispatcher               ; $4467: $cd $b3 $03
-    call WaitForScanline40OrDelay                 ; $446a: $cd $96 $03
-    ld c, $00                                     ; $446d: $0e $00
-    ld a, $01                                     ; $446f: $3e $01
-    call CallSoundCommandDispatcher               ; $4471: $cd $b3 $03
-    ld b, $03                                     ; $4474: $06 $03
-    ld hl, $46db                                  ; $4476: $21 $db $46
-    ld c, $06                                     ; $4479: $0e $06
-    ld de, $0063                                  ; $447b: $11 $63 $00
-    call PlayScreenTransitionFadeOut              ; $447e: $cd $4b $04
-    call DisableLCDAtVBlank                       ; $4481: $cd $80 $04
-    ld hl, rLCDCInterruptControlFlags             ; $4484: $21 $37 $c3
-    res 6, [hl]                                   ; $4487: $cb $b6
-    ld hl, rIE                                    ; $4489: $21 $ff $ff
-    res 1, [hl]                                   ; $448c: $cb $8e
-    xor a                                         ; $448e: $af
-    ld [rLCDCInterruptDispatchIndex], a           ; $448f: $ea $38 $c3
-    ld [rVBlankLCDCBit4ForceFlag], a              ; $4492: $ea $3c $c3
-    ld [rUseLCDCInterruptForSoundEngineUpdateFlag], a; $4495: $ea $50 $c3
-    ld a, [rSelectedSaveSlotIndex]                ; $4498: $fa $65 $a0
-    ld c, a                                       ; $449b: $4f
-    ld b, $00                                     ; $449c: $06 $00
-    ld hl, rSaveSlot1GameSelectCursorRow          ; $449e: $21 $78 $a0
-    add hl, bc                                    ; $44a1: $09
-    ld a, [rPuzzleAndMenuCursorRow]               ; $44a2: $fa $37 $d6
-    ld [hl], a                                    ; $44a5: $77
-    xor a                                         ; $44a6: $af
-    ld [rStatePhase_Current], a                   ; $44a7: $ea $35 $d6
-    ld hl, rGameState_Current                     ; $44aa: $21 $34 $d6
-    dec [hl]                                      ; $44ad: $35
-    jp RefreshSaveValidationChecksumsAndMirrors   ; $44ae: $c3 $1c $1b
+    ld bc, $003c
+    call DelayFramesByBC
+    ld a, $05
+    call CallSoundCommandDispatcher
+    ld c, $00
+    ld a, $01
+    call CallSoundCommandDispatcher
+    call WaitForScanline40OrDelay
+    ld c, $00
+    ld a, $01
+    call CallSoundCommandDispatcher
+    ld b, $03
+    ld hl, $46db
+    ld c, $06
+    ld de, $0063
+    call PlayScreenTransitionFadeOut
+    call DisableLCDAtVBlank
+    ld hl, rLCDCInterruptControlFlags
+    res 6, [hl]
+    ld hl, rIE
+    res 1, [hl]
+    xor a
+    ld [rLCDCInterruptDispatchIndex], a
+    ld [rVBlankLCDCBit4ForceFlag], a
+    ld [rUseLCDCInterruptForSoundEngineUpdateFlag], a
+    ld a, [rSelectedSaveSlotIndex]
+    ld c, a
+    ld b, $00
+    ld hl, rSaveSlot1GameSelectCursorRow
+    add hl, bc
+    ld a, [rPuzzleAndMenuCursorRow]
+    ld [hl], a
+    xor a
+    ld [rStatePhase_Current], a
+    ld hl, rGameState_Current
+    dec [hl]
+    jp RefreshSaveValidationChecksumsAndMirrors
 
 
 GS02_QueueSelectionHighlightCommandStream::
-    ld c, a                                       ; $44b1: $4f
-    ld b, $00                                     ; $44b2: $06 $00
-    ld hl, GameSelectHighlightCommandOffsetTable  ; $44b4: $21 $c1 $44
-    add hl, bc                                    ; $44b7: $09
-    ld c, [hl]                                    ; $44b8: $4e
-    add hl, bc                                    ; $44b9: $09
-    ld a, $02                                     ; $44ba: $3e $02
-    ld c, l                                       ; $44bc: $4d
-    ld b, h                                       ; $44bd: $44
-    jp QueueCommandStreamAndProcessIfLCDOff       ; $44be: $c3 $35 $07
+    ld c, a
+    ld b, $00
+    ld hl, GameSelectHighlightCommandOffsetTable
+    add hl, bc
+    ld c, [hl]
+    add hl, bc
+    ld a, $02
+    ld c, l
+    ld b, h
+    jp QueueCommandStreamAndProcessIfLCDOff
 
 
 GameSelectHighlightCommandOffsetTable::
@@ -619,16 +619,16 @@ UnusedHighlightCommandScript::
     db $00
 
 GS02_QueueSelectionUnhighlightCommandStream::
-    ld c, a                                       ; $4531: $4f
-    ld b, $00                                     ; $4532: $06 $00
-    ld hl, GameSelectUnhighlightCommandOffsetTable; $4534: $21 $41 $45
-    add hl, bc                                    ; $4537: $09
-    ld c, [hl]                                    ; $4538: $4e
-    add hl, bc                                    ; $4539: $09
-    ld a, $02                                     ; $453a: $3e $02
-    ld c, l                                       ; $453c: $4d
-    ld b, h                                       ; $453d: $44
-    jp QueueCommandStreamAndProcessIfLCDOff       ; $453e: $c3 $35 $07
+    ld c, a
+    ld b, $00
+    ld hl, GameSelectUnhighlightCommandOffsetTable
+    add hl, bc
+    ld c, [hl]
+    add hl, bc
+    ld a, $02
+    ld c, l
+    ld b, h
+    jp QueueCommandStreamAndProcessIfLCDOff
 
 
 GameSelectUnhighlightCommandOffsetTable::
@@ -655,66 +655,66 @@ UnusedUnhighlightCommandScript::
     db $00
 
 GS02_HandleGameSelectVerticalInput::
-    ld a, [rInputButtonsPressedOrRepeated]        ; $45b1: $fa $22 $c3
-    and $c0                                       ; $45b4: $e6 $c0
-    ret z                                         ; $45b6: $c8
+    ld a, [rInputButtonsPressedOrRepeated]
+    and $c0
+    ret z
 
-    push af                                       ; $45b7: $f5
-    ld a, [rPuzzleAndMenuCursorRow]               ; $45b8: $fa $37 $d6
-    call GS02_QueueSelectionUnhighlightCommandStream; $45bb: $cd $31 $45
-    rst RST_08                                    ; $45be: $cf
-    ld c, $0a                                     ; $45bf: $0e $0a
-    ld a, $02                                     ; $45c1: $3e $02
-    call CallSoundCommandDispatcher               ; $45c3: $cd $b3 $03
-    pop af                                        ; $45c6: $f1
-    and $40                                       ; $45c7: $e6 $40
-    jr z, .HandleGameSelectMoveDown               ; $45c9: $28 $11
+    push af
+    ld a, [rPuzzleAndMenuCursorRow]
+    call GS02_QueueSelectionUnhighlightCommandStream
+    rst RST_08
+    ld c, $0a
+    ld a, $02
+    call CallSoundCommandDispatcher
+    pop af
+    and $40
+    jr z, .HandleGameSelectMoveDown
 
-    ld a, [rPuzzleAndMenuCursorRow]               ; $45cb: $fa $37 $d6
-    dec a                                         ; $45ce: $3d
-    cp $ff                                        ; $45cf: $fe $ff
-    jr nz, .StoreCursorRowAndQueueSelectionUpdate_UpPath; $45d1: $20 $03
+    ld a, [rPuzzleAndMenuCursorRow]
+    dec a
+    cp $ff
+    jr nz, .StoreCursorRowAndQueueSelectionUpdate_UpPath
 
-    ld a, [rMenuCursorRowMaxIndex]                ; $45d3: $fa $3b $d6
+    ld a, [rMenuCursorRowMaxIndex]
 
 .StoreCursorRowAndQueueSelectionUpdate_UpPath:
-    ld [rPuzzleAndMenuCursorRow], a               ; $45d6: $ea $37 $d6
-    jp GS02_QueueSelectionHighlightCommandStream  ; $45d9: $c3 $b1 $44
+    ld [rPuzzleAndMenuCursorRow], a
+    jp GS02_QueueSelectionHighlightCommandStream
 
 
 .HandleGameSelectMoveDown:
-    ld a, [rPuzzleAndMenuCursorRow]               ; $45dc: $fa $37 $d6
-    ld hl, rMenuCursorRowMaxIndex                 ; $45df: $21 $3b $d6
-    cp [hl]                                       ; $45e2: $be
-    jr nz, .StoreCursorRowAndQueueSelectionUpdate_DownPath; $45e3: $20 $02
+    ld a, [rPuzzleAndMenuCursorRow]
+    ld hl, rMenuCursorRowMaxIndex
+    cp [hl]
+    jr nz, .StoreCursorRowAndQueueSelectionUpdate_DownPath
 
-    ld a, $ff                                     ; $45e5: $3e $ff
+    ld a, $ff
 
 .StoreCursorRowAndQueueSelectionUpdate_DownPath:
-    inc a                                         ; $45e7: $3c
-    ld [rPuzzleAndMenuCursorRow], a               ; $45e8: $ea $37 $d6
-    jp GS02_QueueSelectionHighlightCommandStream  ; $45eb: $c3 $b1 $44
+    inc a
+    ld [rPuzzleAndMenuCursorRow], a
+    jp GS02_QueueSelectionHighlightCommandStream
 
 
 InitializeMainLoopAndEnter::
-    ld a, $0c                                     ; $45ee: $3e $0c
-    ld [rInputRepeatInitialDelay], a              ; $45f0: $ea $18 $c3
-    ld a, $04                                     ; $45f3: $3e $04
-    ld [rInputRepeatSubsequentInterval], a        ; $45f5: $ea $19 $c3
-    xor a                                         ; $45f8: $af
-    ld [rGameState_Current], a                    ; $45f9: $ea $34 $d6
-    ld [rStatePhase_Current], a                   ; $45fc: $ea $35 $d6
-    ld [rMainLoopInitScratchFlag_Unsure], a       ; $45ff: $ea $10 $c3
+    ld a, $0c
+    ld [rInputRepeatInitialDelay], a
+    ld a, $04
+    ld [rInputRepeatSubsequentInterval], a
+    xor a
+    ld [rGameState_Current], a
+    ld [rStatePhase_Current], a
+    ld [rMainLoopInitScratchFlag_Unsure], a
 
 .MainLoop:
-    call DispatchCurrentGameState                 ; $4602: $cd $0b $46
-    call ClearShadowOAMBufferFromCursor           ; $4605: $cd $c2 $05
-    rst RST_08                                    ; $4608: $cf
-    jr .MainLoop                                  ; $4609: $18 $f7
+    call DispatchCurrentGameState
+    call ClearShadowOAMBufferFromCursor
+    rst RST_08
+    jr .MainLoop
 
 DispatchCurrentGameState::
-    ld a, [rGameState_Current]                    ; $460b: $fa $34 $d6
-    call GameStateDispatcher                      ; $460e: $cd $70 $03
+    ld a, [rGameState_Current]
+    call GameStateDispatcher
 
 StatePointer_00::
     db $8d, $4f, $03
@@ -750,194 +750,194 @@ StatePointer_0a::
     db $df, $67, $01
 
 GS08_PauseMenuMainSelectionInputHandler_Banked::
-    ld a, [rGS08_PauseMenuMainSelection]          ; $4632: $fa $3a $d8
-    add $40                                       ; $4635: $c6 $40
-    ld bc, $4038                                  ; $4637: $01 $38 $40
-    call CopyOAMSpriteById                        ; $463a: $cd $cb $20
-    ld a, $3c                                     ; $463d: $3e $3c
-    ld bc, $4038                                  ; $463f: $01 $38 $40
-    call CopyOAMSpriteById                        ; $4642: $cd $cb $20
-    ld a, [rInputButtonsPressedOrRepeated]        ; $4645: $fa $22 $c3
-    and $c0                                       ; $4648: $e6 $c0
-    jr z, .ReturnFromPauseMenuMainSelectionInputHandler; $464a: $28 $23
+    ld a, [rGS08_PauseMenuMainSelection]
+    add $40
+    ld bc, $4038
+    call CopyOAMSpriteById
+    ld a, $3c
+    ld bc, $4038
+    call CopyOAMSpriteById
+    ld a, [rInputButtonsPressedOrRepeated]
+    and $c0
+    jr z, .ReturnFromPauseMenuMainSelectionInputHandler
 
-    push af                                       ; $464c: $f5
-    ld c, $0a                                     ; $464d: $0e $0a
-    ld a, $02                                     ; $464f: $3e $02
-    call CallSoundCommandDispatcher               ; $4651: $cd $b3 $03
-    pop af                                        ; $4654: $f1
-    and $40                                       ; $4655: $e6 $40
-    ld a, [rGS08_PauseMenuMainSelection]          ; $4657: $fa $3a $d8
-    jr z, .HandlePauseMenuSelectionMoveDown       ; $465a: $28 $09
+    push af
+    ld c, $0a
+    ld a, $02
+    call CallSoundCommandDispatcher
+    pop af
+    and $40
+    ld a, [rGS08_PauseMenuMainSelection]
+    jr z, .HandlePauseMenuSelectionMoveDown
 
-    dec a                                         ; $465c: $3d
-    cp $ff                                        ; $465d: $fe $ff
-    jr nz, .StorePauseMenuSelectionAndRestoreAF   ; $465f: $20 $0a
+    dec a
+    cp $ff
+    jr nz, .StorePauseMenuSelectionAndRestoreAF
 
-    ld a, $02                                     ; $4661: $3e $02
-    jr .StorePauseMenuSelectionAndRestoreAF       ; $4663: $18 $06
+    ld a, $02
+    jr .StorePauseMenuSelectionAndRestoreAF
 
 .HandlePauseMenuSelectionMoveDown:
-    inc a                                         ; $4665: $3c
-    cp $03                                        ; $4666: $fe $03
-    jr nz, .StorePauseMenuSelectionAndRestoreAF   ; $4668: $20 $01
+    inc a
+    cp $03
+    jr nz, .StorePauseMenuSelectionAndRestoreAF
 
-    xor a                                         ; $466a: $af
+    xor a
 
 .StorePauseMenuSelectionAndRestoreAF:
-    ld [rGS08_PauseMenuMainSelection], a          ; $466b: $ea $3a $d8
-    pop af                                        ; $466e: $f1
+    ld [rGS08_PauseMenuMainSelection], a
+    pop af
 
 .ReturnFromPauseMenuMainSelectionInputHandler:
-    jp ReturnFromBankedJumpRestoreBank            ; $466f: $c3 $e7 $05
+    jp ReturnFromBankedJumpRestoreBank
 
 
 GS08_PauseMenuSavePromptSelectionInputHandler_Banked::
-    ld a, [rGS08_PauseMenuSavePromptSelection]    ; $4672: $fa $3b $d8
-    add $43                                       ; $4675: $c6 $43
-    ld bc, $4038                                  ; $4677: $01 $38 $40
-    call CopyOAMSpriteById                        ; $467a: $cd $cb $20
-    ld a, $3f                                     ; $467d: $3e $3f
-    ld bc, $4038                                  ; $467f: $01 $38 $40
-    call CopyOAMSpriteById                        ; $4682: $cd $cb $20
-    ld a, [rInputButtonsPressedOrRepeated]        ; $4685: $fa $22 $c3
-    and $c0                                       ; $4688: $e6 $c0
-    jr z, .ReturnFromPauseMenuSavePromptSelectionInputHandler; $468a: $28 $23
+    ld a, [rGS08_PauseMenuSavePromptSelection]
+    add $43
+    ld bc, $4038
+    call CopyOAMSpriteById
+    ld a, $3f
+    ld bc, $4038
+    call CopyOAMSpriteById
+    ld a, [rInputButtonsPressedOrRepeated]
+    and $c0
+    jr z, .ReturnFromPauseMenuSavePromptSelectionInputHandler
 
-    push af                                       ; $468c: $f5
-    ld c, $0a                                     ; $468d: $0e $0a
-    ld a, $02                                     ; $468f: $3e $02
-    call CallSoundCommandDispatcher               ; $4691: $cd $b3 $03
-    pop af                                        ; $4694: $f1
-    and $40                                       ; $4695: $e6 $40
-    ld a, [rGS08_PauseMenuSavePromptSelection]    ; $4697: $fa $3b $d8
-    jr z, .HandlePauseMenuSavePromptSelectionMoveDown; $469a: $28 $09
+    push af
+    ld c, $0a
+    ld a, $02
+    call CallSoundCommandDispatcher
+    pop af
+    and $40
+    ld a, [rGS08_PauseMenuSavePromptSelection]
+    jr z, .HandlePauseMenuSavePromptSelectionMoveDown
 
-    dec a                                         ; $469c: $3d
-    cp $ff                                        ; $469d: $fe $ff
-    jr nz, .StorePauseMenuSavePromptSelectionAndRestoreAF; $469f: $20 $0a
+    dec a
+    cp $ff
+    jr nz, .StorePauseMenuSavePromptSelectionAndRestoreAF
 
-    ld a, $01                                     ; $46a1: $3e $01
-    jr .StorePauseMenuSavePromptSelectionAndRestoreAF; $46a3: $18 $06
+    ld a, $01
+    jr .StorePauseMenuSavePromptSelectionAndRestoreAF
 
 .HandlePauseMenuSavePromptSelectionMoveDown:
-    inc a                                         ; $46a5: $3c
-    cp $02                                        ; $46a6: $fe $02
-    jr nz, .StorePauseMenuSavePromptSelectionAndRestoreAF; $46a8: $20 $01
+    inc a
+    cp $02
+    jr nz, .StorePauseMenuSavePromptSelectionAndRestoreAF
 
-    xor a                                         ; $46aa: $af
+    xor a
 
 .StorePauseMenuSavePromptSelectionAndRestoreAF:
-    ld [rGS08_PauseMenuSavePromptSelection], a    ; $46ab: $ea $3b $d8
-    pop af                                        ; $46ae: $f1
+    ld [rGS08_PauseMenuSavePromptSelection], a
+    pop af
 
 .ReturnFromPauseMenuSavePromptSelectionInputHandler:
-    jp ReturnFromBankedJumpRestoreBank            ; $46af: $c3 $e7 $05
+    jp ReturnFromBankedJumpRestoreBank
 
 
 GS08_PauseMenuBGMSubmenuSelectionInputHandler_Banked::
-    ld a, [rGS08_PauseMenuBGMSubmenuSelection]    ; $46b2: $fa $3c $d8
-    add $45                                       ; $46b5: $c6 $45
-    ld bc, $4038                                  ; $46b7: $01 $38 $40
-    call CopyOAMSpriteById                        ; $46ba: $cd $cb $20
-    ld a, $3e                                     ; $46bd: $3e $3e
-    ld bc, $4038                                  ; $46bf: $01 $38 $40
-    call CopyOAMSpriteById                        ; $46c2: $cd $cb $20
-    ld a, [rInputButtonsPressedOrRepeated]        ; $46c5: $fa $22 $c3
-    and $c0                                       ; $46c8: $e6 $c0
-    jr z, .ReturnFromPauseMenuBGMSubmenuSelectionInputHandler; $46ca: $28 $3a
+    ld a, [rGS08_PauseMenuBGMSubmenuSelection]
+    add $45
+    ld bc, $4038
+    call CopyOAMSpriteById
+    ld a, $3e
+    ld bc, $4038
+    call CopyOAMSpriteById
+    ld a, [rInputButtonsPressedOrRepeated]
+    and $c0
+    jr z, .ReturnFromPauseMenuBGMSubmenuSelectionInputHandler
 
-    push af                                       ; $46cc: $f5
-    ld c, $0a                                     ; $46cd: $0e $0a
-    ld a, $02                                     ; $46cf: $3e $02
-    call CallSoundCommandDispatcher               ; $46d1: $cd $b3 $03
-    pop af                                        ; $46d4: $f1
-    and $40                                       ; $46d5: $e6 $40
-    ld a, [rGS08_PauseMenuBGMSubmenuSelection]    ; $46d7: $fa $3c $d8
-    jr z, .HandlePauseMenuBGMSubmenuSelectionMoveDown; $46da: $28 $09
+    push af
+    ld c, $0a
+    ld a, $02
+    call CallSoundCommandDispatcher
+    pop af
+    and $40
+    ld a, [rGS08_PauseMenuBGMSubmenuSelection]
+    jr z, .HandlePauseMenuBGMSubmenuSelectionMoveDown
 
-    dec a                                         ; $46dc: $3d
-    cp $ff                                        ; $46dd: $fe $ff
-    jr nz, .StorePauseMenuBGMSubmenuSelectionAndPlayPreviewSfx; $46df: $20 $0a
+    dec a
+    cp $ff
+    jr nz, .StorePauseMenuBGMSubmenuSelectionAndPlayPreviewSfx
 
-    ld a, $05                                     ; $46e1: $3e $05
-    jr .StorePauseMenuBGMSubmenuSelectionAndPlayPreviewSfx; $46e3: $18 $06
+    ld a, $05
+    jr .StorePauseMenuBGMSubmenuSelectionAndPlayPreviewSfx
 
 .HandlePauseMenuBGMSubmenuSelectionMoveDown:
-    inc a                                         ; $46e5: $3c
-    cp $06                                        ; $46e6: $fe $06
-    jr nz, .StorePauseMenuBGMSubmenuSelectionAndPlayPreviewSfx; $46e8: $20 $01
+    inc a
+    cp $06
+    jr nz, .StorePauseMenuBGMSubmenuSelectionAndPlayPreviewSfx
 
-    xor a                                         ; $46ea: $af
+    xor a
 
 .StorePauseMenuBGMSubmenuSelectionAndPlayPreviewSfx:
-    ld [rGS08_PauseMenuBGMSubmenuSelection], a    ; $46eb: $ea $3c $d8
-    ld c, a                                       ; $46ee: $4f
-    ld b, $00                                     ; $46ef: $06 $00
-    ld hl, GS08_PauseMenuBGMSubmenuPreviewSfxIdTable; $46f1: $21 $09 $47
-    add hl, bc                                    ; $46f4: $09
-    ld c, $00                                     ; $46f5: $0e $00
-    ld a, $01                                     ; $46f7: $3e $01
-    call CallSoundCommandDispatcher               ; $46f9: $cd $b3 $03
-    call WaitForScanline40OrDelay                 ; $46fc: $cd $96 $03
-    ld c, [hl]                                    ; $46ff: $4e
-    ld a, $01                                     ; $4700: $3e $01
-    call CallSoundCommandDispatcher               ; $4702: $cd $b3 $03
-    pop af                                        ; $4705: $f1
+    ld [rGS08_PauseMenuBGMSubmenuSelection], a
+    ld c, a
+    ld b, $00
+    ld hl, GS08_PauseMenuBGMSubmenuPreviewSfxIdTable
+    add hl, bc
+    ld c, $00
+    ld a, $01
+    call CallSoundCommandDispatcher
+    call WaitForScanline40OrDelay
+    ld c, [hl]
+    ld a, $01
+    call CallSoundCommandDispatcher
+    pop af
 
 .ReturnFromPauseMenuBGMSubmenuSelectionInputHandler:
-    jp ReturnFromBankedJumpRestoreBank            ; $4706: $c3 $e7 $05
+    jp ReturnFromBankedJumpRestoreBank
 
 
 GS08_PauseMenuBGMSubmenuPreviewSfxIdTable::
     db $05, $01, $0b, $03, $02, $00
 
 GS08_PauseMenuGiveUpPromptSelectionInputHandler_Banked::
-    ld a, [rGS08_PauseMenuGiveUpPromptSelection]  ; $470f: $fa $3d $d8
-    add $43                                       ; $4712: $c6 $43
-    ld bc, $4038                                  ; $4714: $01 $38 $40
-    call CopyOAMSpriteById                        ; $4717: $cd $cb $20
-    ld a, $3f                                     ; $471a: $3e $3f
-    ld bc, $4038                                  ; $471c: $01 $38 $40
-    call CopyOAMSpriteById                        ; $471f: $cd $cb $20
-    ld a, [rInputButtonsPressedOrRepeated]        ; $4722: $fa $22 $c3
-    and $c0                                       ; $4725: $e6 $c0
-    jr z, .ReturnFromPauseMenuGiveUpPromptSelectionInputHandler; $4727: $28 $23
+    ld a, [rGS08_PauseMenuGiveUpPromptSelection]
+    add $43
+    ld bc, $4038
+    call CopyOAMSpriteById
+    ld a, $3f
+    ld bc, $4038
+    call CopyOAMSpriteById
+    ld a, [rInputButtonsPressedOrRepeated]
+    and $c0
+    jr z, .ReturnFromPauseMenuGiveUpPromptSelectionInputHandler
 
-    push af                                       ; $4729: $f5
-    ld c, $0a                                     ; $472a: $0e $0a
-    ld a, $02                                     ; $472c: $3e $02
-    call CallSoundCommandDispatcher               ; $472e: $cd $b3 $03
-    pop af                                        ; $4731: $f1
-    and $40                                       ; $4732: $e6 $40
-    ld a, [rGS08_PauseMenuGiveUpPromptSelection]  ; $4734: $fa $3d $d8
-    jr z, .HandlePauseMenuGiveUpPromptSelectionMoveDown; $4737: $28 $09
+    push af
+    ld c, $0a
+    ld a, $02
+    call CallSoundCommandDispatcher
+    pop af
+    and $40
+    ld a, [rGS08_PauseMenuGiveUpPromptSelection]
+    jr z, .HandlePauseMenuGiveUpPromptSelectionMoveDown
 
-    dec a                                         ; $4739: $3d
-    cp $ff                                        ; $473a: $fe $ff
-    jr nz, .StorePauseMenuGiveUpPromptSelectionAndRestoreAF; $473c: $20 $0a
+    dec a
+    cp $ff
+    jr nz, .StorePauseMenuGiveUpPromptSelectionAndRestoreAF
 
-    ld a, $01                                     ; $473e: $3e $01
-    jr .StorePauseMenuGiveUpPromptSelectionAndRestoreAF; $4740: $18 $06
+    ld a, $01
+    jr .StorePauseMenuGiveUpPromptSelectionAndRestoreAF
 
 .HandlePauseMenuGiveUpPromptSelectionMoveDown:
-    inc a                                         ; $4742: $3c
-    cp $02                                        ; $4743: $fe $02
-    jr nz, .StorePauseMenuGiveUpPromptSelectionAndRestoreAF; $4745: $20 $01
+    inc a
+    cp $02
+    jr nz, .StorePauseMenuGiveUpPromptSelectionAndRestoreAF
 
-    xor a                                         ; $4747: $af
+    xor a
 
 .StorePauseMenuGiveUpPromptSelectionAndRestoreAF:
-    ld [rGS08_PauseMenuGiveUpPromptSelection], a  ; $4748: $ea $3d $d8
-    pop af                                        ; $474b: $f1
+    ld [rGS08_PauseMenuGiveUpPromptSelection], a
+    pop af
 
 .ReturnFromPauseMenuGiveUpPromptSelectionInputHandler:
-    jp ReturnFromBankedJumpRestoreBank            ; $474c: $c3 $e7 $05
+    jp ReturnFromBankedJumpRestoreBank
 
 
 GameState_01_DataSelectScreen_PhaseDispatcher::
-    ld a, [rStatePhase_Current]                   ; $474f: $fa $35 $d6
-    rst RST_18                                    ; $4752: $df
+    ld a, [rStatePhase_Current]
+    rst RST_18
 
 GS01_PhasePointer_00::
     db $59, $47
@@ -949,206 +949,206 @@ GS01_PhasePointer_02::
     db $40, $49
 
 GS01_StatePhase_00_DataSelectScreenInit::
-    ld a, $43                                     ; $4759: $3e $43
-    ld [rLCDCShadow], a                           ; $475b: $ea $2e $c3
-    xor a                                         ; $475e: $af
-    ld [rBGPShadow], a                            ; $475f: $ea $2f $c3
-    ld [rOBP0Shadow], a                           ; $4762: $ea $30 $c3
-    ld [rOBP1Shadow], a                           ; $4765: $ea $31 $c3
-    ld [rSCXShadow], a                            ; $4768: $ea $32 $c3
-    ld [rSCYShadow], a                            ; $476b: $ea $33 $c3
-    call FillBGMap0WithTile01                     ; $476e: $cd $9d $05
-    call FillBGMap1WithTile01                     ; $4771: $cd $a8 $05
-    ld a, $0b                                     ; $4774: $3e $0b
-    ld hl, $5000                                  ; $4776: $21 $00 $50
-    ld de, $8000                                  ; $4779: $11 $00 $80
-    ld bc, $0300                                  ; $477c: $01 $00 $03
-    call BankedTileCopy                           ; $477f: $cd $e1 $04
-    ld a, $09                                     ; $4782: $3e $09
-    ld hl, $5800                                  ; $4784: $21 $00 $58
-    ld de, $8800                                  ; $4787: $11 $00 $88
-    ld bc, $1000                                  ; $478a: $01 $00 $10
-    call BankedTileCopy                           ; $478d: $cd $e1 $04
-    ld a, $0b                                     ; $4790: $3e $0b
-    ld hl, $7800                                  ; $4792: $21 $00 $78
-    ld de, $9800                                  ; $4795: $11 $00 $98
-    ld bc, $0400                                  ; $4798: $01 $00 $04
-    call BankedTileCopy                           ; $479b: $cd $e1 $04
-    xor a                                         ; $479e: $af
-    call GS01_BuildSaveSlotTemplateCommandStream  ; $479f: $cd $d5 $4a
-    ld a, $01                                     ; $47a2: $3e $01
-    call GS01_BuildSaveSlotTemplateCommandStream  ; $47a4: $cd $d5 $4a
-    ld a, $02                                     ; $47a7: $3e $02
-    call GS01_BuildSaveSlotTemplateCommandStream  ; $47a9: $cd $d5 $4a
-    ld a, [rSelectedSaveSlotIndex]                ; $47ac: $fa $65 $a0
-    ld [rPuzzleAndMenuCursorRow], a               ; $47af: $ea $37 $d6
-    call GS01_BuildSelectedSaveSlotTemplateCommandStream; $47b2: $cd $8e $49
-    call ClearShadowOAMBuffer                     ; $47b5: $cd $b3 $05
-    ld b, $03                                     ; $47b8: $06 $03
-    ld hl, $4e80                                  ; $47ba: $21 $80 $4e
-    call SwitchBankToBAndJumpToHL                 ; $47bd: $cd $db $05
-    ld b, $03                                     ; $47c0: $06 $03
-    ld hl, $4ea6                                  ; $47c2: $21 $a6 $4e
-    call SwitchBankToBAndJumpToHL                 ; $47c5: $cd $db $05
-    ld c, $00                                     ; $47c8: $0e $00
-    ld a, $01                                     ; $47ca: $3e $01
-    call CallSoundCommandDispatcher               ; $47cc: $cd $b3 $03
-    call WaitForScanline40OrDelay                 ; $47cf: $cd $96 $03
-    ld c, $0d                                     ; $47d2: $0e $0d
-    ld a, $01                                     ; $47d4: $3e $01
-    call CallSoundCommandDispatcher               ; $47d6: $cd $b3 $03
-    call EnableLCDFromShadow                      ; $47d9: $cd $9f $04
-    call EnsureSGBMaskFreezeDisabled              ; $47dc: $cd $a2 $1f
-    ld b, $03                                     ; $47df: $06 $03
-    ld hl, $46c4                                  ; $47e1: $21 $c4 $46
-    ld c, $05                                     ; $47e4: $0e $05
-    ld de, $0044                                  ; $47e6: $11 $44 $00
-    call PlayScreenTransitionFadeIn               ; $47e9: $cd $0a $04
-    ld hl, rStatePhase_Current                    ; $47ec: $21 $35 $d6
-    inc [hl]                                      ; $47ef: $34
-    ret                                           ; $47f0: $c9
+    ld a, $43
+    ld [rLCDCShadow], a
+    xor a
+    ld [rBGPShadow], a
+    ld [rOBP0Shadow], a
+    ld [rOBP1Shadow], a
+    ld [rSCXShadow], a
+    ld [rSCYShadow], a
+    call FillBGMap0WithTile01
+    call FillBGMap1WithTile01
+    ld a, $0b
+    ld hl, $5000
+    ld de, $8000
+    ld bc, $0300
+    call BankedTileCopy
+    ld a, $09
+    ld hl, $5800
+    ld de, $8800
+    ld bc, $1000
+    call BankedTileCopy
+    ld a, $0b
+    ld hl, $7800
+    ld de, $9800
+    ld bc, $0400
+    call BankedTileCopy
+    xor a
+    call GS01_BuildSaveSlotTemplateCommandStream
+    ld a, $01
+    call GS01_BuildSaveSlotTemplateCommandStream
+    ld a, $02
+    call GS01_BuildSaveSlotTemplateCommandStream
+    ld a, [rSelectedSaveSlotIndex]
+    ld [rPuzzleAndMenuCursorRow], a
+    call GS01_BuildSelectedSaveSlotTemplateCommandStream
+    call ClearShadowOAMBuffer
+    ld b, $03
+    ld hl, $4e80
+    call SwitchBankToBAndJumpToHL
+    ld b, $03
+    ld hl, $4ea6
+    call SwitchBankToBAndJumpToHL
+    ld c, $00
+    ld a, $01
+    call CallSoundCommandDispatcher
+    call WaitForScanline40OrDelay
+    ld c, $0d
+    ld a, $01
+    call CallSoundCommandDispatcher
+    call EnableLCDFromShadow
+    call EnsureSGBMaskFreezeDisabled
+    ld b, $03
+    ld hl, $46c4
+    ld c, $05
+    ld de, $0044
+    call PlayScreenTransitionFadeIn
+    ld hl, rStatePhase_Current
+    inc [hl]
+    ret
 
 
 GS01_StatePhase_01_DataSelectScreenIdle::
-    ld b, $03                                     ; $47f1: $06 $03
-    ld hl, $4ea6                                  ; $47f3: $21 $a6 $4e
-    call SwitchBankToBAndJumpToHL                 ; $47f6: $cd $db $05
-    call GS01_HandleDataSelectVerticalInput       ; $47f9: $cd $1c $4c
-    ld a, [rInputButtonsHeld]                     ; $47fc: $fa $1a $c3
-    bit 2, a                                      ; $47ff: $cb $57
-    jr z, .CheckDataSelectAOrStartInput           ; $4801: $28 $06
+    ld b, $03
+    ld hl, $4ea6
+    call SwitchBankToBAndJumpToHL
+    call GS01_HandleDataSelectVerticalInput
+    ld a, [rInputButtonsHeld]
+    bit 2, a
+    jr z, .CheckDataSelectAOrStartInput
 
-    cp $07                                        ; $4803: $fe $07
-    ret nz                                        ; $4805: $c0
+    cp $07
+    ret nz
 
-    jp GS01_RunEraseSelectedSavePrompt            ; $4806: $c3 $1d $48
+    jp GS01_RunEraseSelectedSavePrompt
 
 
 .CheckDataSelectAOrStartInput:
-    ld a, [rInputButtonsPressed]                  ; $4809: $fa $1e $c3
-    and $09                                       ; $480c: $e6 $09
-    jr z, .ReturnIfNoDataSelectAOrStart           ; $480e: $28 $0c
+    ld a, [rInputButtonsPressed]
+    and $09
+    jr z, .ReturnIfNoDataSelectAOrStart
 
-    ld c, $03                                     ; $4810: $0e $03
-    ld a, $02                                     ; $4812: $3e $02
-    call CallSoundCommandDispatcher               ; $4814: $cd $b3 $03
-    ld hl, rStatePhase_Current                    ; $4817: $21 $35 $d6
-    inc [hl]                                      ; $481a: $34
-    ret                                           ; $481b: $c9
+    ld c, $03
+    ld a, $02
+    call CallSoundCommandDispatcher
+    ld hl, rStatePhase_Current
+    inc [hl]
+    ret
 
 
 .ReturnIfNoDataSelectAOrStart:
-    ret                                           ; $481c: $c9
+    ret
 
 
 GS01_RunEraseSelectedSavePrompt::
-    call ClearShadowOAMBufferFromCursor           ; $481d: $cd $c2 $05
-    ld bc, $0014                                  ; $4820: $01 $14 $00
-    call DelayFramesByBC                          ; $4823: $cd $f7 $05
+    call ClearShadowOAMBufferFromCursor
+    ld bc, $0014
+    call DelayFramesByBC
 
 .EraseSelectedSavePromptLoop:
-    ld b, $03                                     ; $4826: $06 $03
-    ld hl, $4ec2                                  ; $4828: $21 $c2 $4e
-    call SwitchBankToBAndJumpToHL                 ; $482b: $cd $db $05
-    ld a, [rVBlankFrameCounter]                   ; $482e: $fa $3a $c3
-    bit 4, a                                      ; $4831: $cb $67
-    jr nz, .CheckEraseSelectedSaveConfirmInput    ; $4833: $20 $11
+    ld b, $03
+    ld hl, $4ec2
+    call SwitchBankToBAndJumpToHL
+    ld a, [rVBlankFrameCounter]
+    bit 4, a
+    jr nz, .CheckEraseSelectedSaveConfirmInput
 
-    ld a, [rPuzzleAndMenuCursorRow]               ; $4835: $fa $37 $d6
-    swap a                                        ; $4838: $cb $37
-    sla a                                         ; $483a: $cb $27
-    add $10                                       ; $483c: $c6 $10
-    ld c, a                                       ; $483e: $4f
-    ld b, $30                                     ; $483f: $06 $30
-    ld a, $4b                                     ; $4841: $3e $4b
-    call CopyOAMSpriteById                        ; $4843: $cd $cb $20
+    ld a, [rPuzzleAndMenuCursorRow]
+    swap a
+    sla a
+    add $10
+    ld c, a
+    ld b, $30
+    ld a, $4b
+    call CopyOAMSpriteById
 
 .CheckEraseSelectedSaveConfirmInput:
-    ld a, [rInputButtonsPressed]                  ; $4846: $fa $1e $c3
-    bit 0, a                                      ; $4849: $cb $47
-    jr z, .CheckEraseSelectedSaveCancelInput      ; $484b: $28 $4b
+    ld a, [rInputButtonsPressed]
+    bit 0, a
+    jr z, .CheckEraseSelectedSaveCancelInput
 
-    ld a, [rPuzzleAndMenuCursorRow]               ; $484d: $fa $37 $d6
-    ld c, a                                       ; $4850: $4f
-    ld b, $00                                     ; $4851: $06 $00
-    ld hl, EraseSelectedSaveSlotDestinationPointerOffsetTable; $4853: $21 $a2 $48
-    add hl, bc                                    ; $4856: $09
-    ld c, [hl]                                    ; $4857: $4e
-    add hl, bc                                    ; $4858: $09
-    ld bc, EraseSelectedSaveSlotRewriteScript     ; $4859: $01 $0b $49
+    ld a, [rPuzzleAndMenuCursorRow]
+    ld c, a
+    ld b, $00
+    ld hl, EraseSelectedSaveSlotDestinationPointerOffsetTable
+    add hl, bc
+    ld c, [hl]
+    add hl, bc
+    ld bc, EraseSelectedSaveSlotRewriteScript
 
 .RunEraseSelectedSaveRewriteStepLoop:
-    ld a, [hl+]                                   ; $485c: $2a
-    ld e, a                                       ; $485d: $5f
-    ld d, [hl]                                    ; $485e: $56
-    or d                                          ; $485f: $b2
-    jr z, .FinalizeEraseSelectedSaveRewrite       ; $4860: $28 $2b
+    ld a, [hl+]
+    ld e, a
+    ld d, [hl]
+    or d
+    jr z, .FinalizeEraseSelectedSaveRewrite
 
-    inc hl                                        ; $4862: $23
-    ld a, [bc]                                    ; $4863: $0a
-    inc bc                                        ; $4864: $03
-    and a                                         ; $4865: $a7
-    jr nz, .CopyLiteralEraseSelectedSaveRange     ; $4866: $20 $12
+    inc hl
+    ld a, [bc]
+    inc bc
+    and a
+    jr nz, .CopyLiteralEraseSelectedSaveRange
 
-    push hl                                       ; $4868: $e5
-    ld a, [bc]                                    ; $4869: $0a
-    ld l, a                                       ; $486a: $6f
-    inc bc                                        ; $486b: $03
-    ld a, [bc]                                    ; $486c: $0a
-    ld h, a                                       ; $486d: $67
-    inc bc                                        ; $486e: $03
+    push hl
+    ld a, [bc]
+    ld l, a
+    inc bc
+    ld a, [bc]
+    ld h, a
+    inc bc
 
 .ZeroFillEraseSelectedSaveRangeLoop:
-    xor a                                         ; $486f: $af
-    ld [de], a                                    ; $4870: $12
-    inc de                                        ; $4871: $13
-    dec hl                                        ; $4872: $2b
-    ld a, l                                       ; $4873: $7d
-    or h                                          ; $4874: $b4
-    jr nz, .ZeroFillEraseSelectedSaveRangeLoop    ; $4875: $20 $f8
+    xor a
+    ld [de], a
+    inc de
+    dec hl
+    ld a, l
+    or h
+    jr nz, .ZeroFillEraseSelectedSaveRangeLoop
 
-    pop hl                                        ; $4877: $e1
-    jr .RunEraseSelectedSaveRewriteStepLoop       ; $4878: $18 $e2
+    pop hl
+    jr .RunEraseSelectedSaveRewriteStepLoop
 
 .CopyLiteralEraseSelectedSaveRange:
-    push hl                                       ; $487a: $e5
-    ld a, [bc]                                    ; $487b: $0a
-    ld l, a                                       ; $487c: $6f
-    inc bc                                        ; $487d: $03
-    ld a, [bc]                                    ; $487e: $0a
-    ld h, a                                       ; $487f: $67
-    inc bc                                        ; $4880: $03
+    push hl
+    ld a, [bc]
+    ld l, a
+    inc bc
+    ld a, [bc]
+    ld h, a
+    inc bc
 
 .CopyLiteralEraseSelectedSaveRangeLoop:
-    ld a, [bc]                                    ; $4881: $0a
-    ld [de], a                                    ; $4882: $12
-    inc bc                                        ; $4883: $03
-    inc de                                        ; $4884: $13
-    dec hl                                        ; $4885: $2b
-    ld a, l                                       ; $4886: $7d
-    or h                                          ; $4887: $b4
-    jr nz, .CopyLiteralEraseSelectedSaveRangeLoop ; $4888: $20 $f7
+    ld a, [bc]
+    ld [de], a
+    inc bc
+    inc de
+    dec hl
+    ld a, l
+    or h
+    jr nz, .CopyLiteralEraseSelectedSaveRangeLoop
 
-    pop hl                                        ; $488a: $e1
-    jr .RunEraseSelectedSaveRewriteStepLoop       ; $488b: $18 $cf
+    pop hl
+    jr .RunEraseSelectedSaveRewriteStepLoop
 
 .FinalizeEraseSelectedSaveRewrite:
-    call RefreshSaveValidationChecksumsAndMirrors ; $488d: $cd $1c $1b
-    ld a, [rPuzzleAndMenuCursorRow]               ; $4890: $fa $37 $d6
-    call GS01_BuildSelectedSaveSlotTemplateCommandStream; $4893: $cd $8e $49
+    call RefreshSaveValidationChecksumsAndMirrors
+    ld a, [rPuzzleAndMenuCursorRow]
+    call GS01_BuildSelectedSaveSlotTemplateCommandStream
 
 .PresentFrameAndReturnFromEraseSelectedSavePrompt:
-    rst RST_08                                    ; $4896: $cf
-    ret                                           ; $4897: $c9
+    rst RST_08
+    ret
 
 
 .CheckEraseSelectedSaveCancelInput:
-    bit 1, a                                      ; $4898: $cb $4f
-    jr nz, .PresentFrameAndReturnFromEraseSelectedSavePrompt; $489a: $20 $fa
+    bit 1, a
+    jr nz, .PresentFrameAndReturnFromEraseSelectedSavePrompt
 
-    call ClearShadowOAMBufferFromCursor           ; $489c: $cd $c2 $05
-    rst RST_08                                    ; $489f: $cf
-    jr .EraseSelectedSavePromptLoop               ; $48a0: $18 $84
+    call ClearShadowOAMBufferFromCursor
+    rst RST_08
+    jr .EraseSelectedSavePromptLoop
 
 EraseSelectedSaveSlotDestinationPointerOffsetTable::
     db $03, $24, $45
@@ -1175,175 +1175,175 @@ EraseSelectedSaveSlotRewriteScript::
     db $40, $02, $00, $c0, $00
 
 GS01_StatePhase_02_DataSelectScreenFinish::
-    ld bc, $003c                                  ; $4940: $01 $3c $00
-    call DelayFramesByBC                          ; $4943: $cd $f7 $05
-    ld a, $05                                     ; $4946: $3e $05
-    call CallSoundCommandDispatcher               ; $4948: $cd $b3 $03
-    ld c, $00                                     ; $494b: $0e $00
-    ld a, $01                                     ; $494d: $3e $01
-    call CallSoundCommandDispatcher               ; $494f: $cd $b3 $03
-    call WaitForScanline40OrDelay                 ; $4952: $cd $96 $03
-    ld c, $00                                     ; $4955: $0e $00
-    ld a, $01                                     ; $4957: $3e $01
-    call CallSoundCommandDispatcher               ; $4959: $cd $b3 $03
-    ld b, $03                                     ; $495c: $06 $03
-    ld hl, $46cf                                  ; $495e: $21 $cf $46
-    ld c, $05                                     ; $4961: $0e $05
-    ld de, $0053                                  ; $4963: $11 $53 $00
-    call PlayScreenTransitionFadeOut              ; $4966: $cd $4b $04
-    call DisableLCDAtVBlank                       ; $4969: $cd $80 $04
-    ld a, [rPuzzleAndMenuCursorRow]               ; $496c: $fa $37 $d6
-    ld [rSelectedSaveSlotIndex], a                ; $496f: $ea $65 $a0
-    ld c, a                                       ; $4972: $4f
-    ld b, $00                                     ; $4973: $06 $00
-    ld hl, rSaveSlot1UnlockProgressState          ; $4975: $21 $87 $a3
-    add hl, bc                                    ; $4978: $09
-    ld a, [hl]                                    ; $4979: $7e
-    and a                                         ; $497a: $a7
-    jr nz, .AdvanceFromDataSelectAndCommitSaveChecksums; $497b: $20 $06
+    ld bc, $003c
+    call DelayFramesByBC
+    ld a, $05
+    call CallSoundCommandDispatcher
+    ld c, $00
+    ld a, $01
+    call CallSoundCommandDispatcher
+    call WaitForScanline40OrDelay
+    ld c, $00
+    ld a, $01
+    call CallSoundCommandDispatcher
+    ld b, $03
+    ld hl, $46cf
+    ld c, $05
+    ld de, $0053
+    call PlayScreenTransitionFadeOut
+    call DisableLCDAtVBlank
+    ld a, [rPuzzleAndMenuCursorRow]
+    ld [rSelectedSaveSlotIndex], a
+    ld c, a
+    ld b, $00
+    ld hl, rSaveSlot1UnlockProgressState
+    add hl, bc
+    ld a, [hl]
+    and a
+    jr nz, .AdvanceFromDataSelectAndCommitSaveChecksums
 
-    inc [hl]                                      ; $497d: $34
-    ld hl, rSaveSlot1PicrossKinokoStarClearedPuzzleCount; $497e: $21 $8a $a3
-    add hl, bc                                    ; $4981: $09
-    ld [hl], a                                    ; $4982: $77
+    inc [hl]
+    ld hl, rSaveSlot1PicrossKinokoStarClearedPuzzleCount
+    add hl, bc
+    ld [hl], a
 
 .AdvanceFromDataSelectAndCommitSaveChecksums:
-    xor a                                         ; $4983: $af
-    ld [rStatePhase_Current], a                   ; $4984: $ea $35 $d6
-    ld hl, rGameState_Current                     ; $4987: $21 $34 $d6
-    inc [hl]                                      ; $498a: $34
-    jp RefreshSaveValidationChecksumsAndMirrors   ; $498b: $c3 $1c $1b
+    xor a
+    ld [rStatePhase_Current], a
+    ld hl, rGameState_Current
+    inc [hl]
+    jp RefreshSaveValidationChecksumsAndMirrors
 
 
 GS01_BuildSelectedSaveSlotTemplateCommandStream::
-    push af                                       ; $498e: $f5
-    ld c, a                                       ; $498f: $4f
-    ld b, $00                                     ; $4990: $06 $00
-    ld hl, SelectedSaveSlotTemplateCommandOffsetTable; $4992: $21 $57 $4a
-    add hl, bc                                    ; $4995: $09
-    ld c, [hl]                                    ; $4996: $4e
-    add hl, bc                                    ; $4997: $09
-    ld a, $02                                     ; $4998: $3e $02
-    ld de, rSharedSingleTileCommandStreamDestHigh ; $499a: $11 $00 $c1
-    ld bc, $0023                                  ; $499d: $01 $23 $00
-    call BankedTileCopy                           ; $49a0: $cd $e1 $04
-    pop af                                        ; $49a3: $f1
-    ld c, a                                       ; $49a4: $4f
-    ld b, $00                                     ; $49a5: $06 $00
-    ld hl, rSaveSlot1UnlockProgressState          ; $49a7: $21 $87 $a3
-    add hl, bc                                    ; $49aa: $09
-    ld a, [hl]                                    ; $49ab: $7e
-    and a                                         ; $49ac: $a7
-    jp z, GS01_CommitSelectedSaveSlotTemplateCommandStream; $49ad: $ca $4f $4a
+    push af
+    ld c, a
+    ld b, $00
+    ld hl, SelectedSaveSlotTemplateCommandOffsetTable
+    add hl, bc
+    ld c, [hl]
+    add hl, bc
+    ld a, $02
+    ld de, rSharedSingleTileCommandStreamDestHigh
+    ld bc, $0023
+    call BankedTileCopy
+    pop af
+    ld c, a
+    ld b, $00
+    ld hl, rSaveSlot1UnlockProgressState
+    add hl, bc
+    ld a, [hl]
+    and a
+    jp z, GS01_CommitSelectedSaveSlotTemplateCommandStream
 
-    push bc                                       ; $49b0: $c5
-    cp $03                                        ; $49b1: $fe $03
-    jr nz, .NormalizeSelectedSaveSlotStateToIconVariantIndex; $49b3: $20 $01
+    push bc
+    cp $03
+    jr nz, .NormalizeSelectedSaveSlotStateToIconVariantIndex
 
-    dec a                                         ; $49b5: $3d
+    dec a
 
 .NormalizeSelectedSaveSlotStateToIconVariantIndex:
-    dec a                                         ; $49b6: $3d
-    ld c, a                                       ; $49b7: $4f
-    ld b, $00                                     ; $49b8: $06 $00
-    ld hl, SelectedSaveSlotIconVariantCommandOffsetTable; $49ba: $21 $c3 $4a
-    add hl, bc                                    ; $49bd: $09
-    ld c, [hl]                                    ; $49be: $4e
-    add hl, bc                                    ; $49bf: $09
-    ld de, rGS01_SaveSlotTemplateRow1KinokoStarIconChunkStart; $49c0: $11 $09 $c1
-    ld c, $04                                     ; $49c3: $0e $04
+    dec a
+    ld c, a
+    ld b, $00
+    ld hl, SelectedSaveSlotIconVariantCommandOffsetTable
+    add hl, bc
+    ld c, [hl]
+    add hl, bc
+    ld de, rGS01_SaveSlotTemplateRow1KinokoStarIconChunkStart
+    ld c, $04
 
 .CopySelectedSaveSlotIconScriptRow1Loop:
-    ld a, [hl+]                                   ; $49c5: $2a
-    ld [de], a                                    ; $49c6: $12
-    inc de                                        ; $49c7: $13
-    dec c                                         ; $49c8: $0d
-    jr nz, .CopySelectedSaveSlotIconScriptRow1Loop; $49c9: $20 $fa
+    ld a, [hl+]
+    ld [de], a
+    inc de
+    dec c
+    jr nz, .CopySelectedSaveSlotIconScriptRow1Loop
 
-    ld de, rGS01_SaveSlotTemplateRow2KinokoStarIconChunkStart; $49cb: $11 $1a $c1
-    ld c, $04                                     ; $49ce: $0e $04
+    ld de, rGS01_SaveSlotTemplateRow2KinokoStarIconChunkStart
+    ld c, $04
 
 .CopySelectedSaveSlotIconScriptRow2Loop:
-    ld a, [hl+]                                   ; $49d0: $2a
-    ld [de], a                                    ; $49d1: $12
-    inc de                                        ; $49d2: $13
-    dec c                                         ; $49d3: $0d
-    jr nz, .CopySelectedSaveSlotIconScriptRow2Loop; $49d4: $20 $fa
+    ld a, [hl+]
+    ld [de], a
+    inc de
+    dec c
+    jr nz, .CopySelectedSaveSlotIconScriptRow2Loop
 
-    pop bc                                        ; $49d6: $c1
-    push bc                                       ; $49d7: $c5
-    ld hl, rSaveSlot1PicrossKinokoStarClearedPuzzleCount; $49d8: $21 $8a $a3
-    add hl, bc                                    ; $49db: $09
-    ld a, [hl]                                    ; $49dc: $7e
-    call SplitAToDecimalDigitsAndPushHundredsTens ; $49dd: $cd $6f $19
-    add $60                                       ; $49e0: $c6 $60
-    ld hl, rGS01_SaveSlotTemplateRow1KinokoStarCountDigitOnes; $49e2: $21 $0e $c1
-    ld [hl], a                                    ; $49e5: $77
-    add $10                                       ; $49e6: $c6 $10
-    ld hl, rGS01_SaveSlotTemplateRow2KinokoStarCountDigitOnes; $49e8: $21 $1f $c1
-    ld [hl], a                                    ; $49eb: $77
-    pop af                                        ; $49ec: $f1
-    add $60                                       ; $49ed: $c6 $60
-    ld hl, rGS01_SaveSlotTemplateRow1KinokoStarCountDigitTens; $49ef: $21 $0d $c1
-    ld [hl], a                                    ; $49f2: $77
-    add $10                                       ; $49f3: $c6 $10
-    ld hl, rGS01_SaveSlotTemplateRow2KinokoStarCountDigitTens; $49f5: $21 $1e $c1
-    ld [hl], a                                    ; $49f8: $77
-    pop af                                        ; $49f9: $f1
-    ld a, $6b                                     ; $49fa: $3e $6b
-    ld hl, rSharedSingleTileCommandStreamTileId   ; $49fc: $21 $03 $c1
-    ld [hl+], a                                   ; $49ff: $22
-    inc a                                         ; $4a00: $3c
-    ld [hl], a                                    ; $4a01: $77
-    ld a, $7b                                     ; $4a02: $3e $7b
-    ld hl, rGS01_SaveSlotTemplateRow2EasyPicrossIconPairLeft; $4a04: $21 $14 $c1
-    ld [hl+], a                                   ; $4a07: $22
-    inc a                                         ; $4a08: $3c
-    ld [hl], a                                    ; $4a09: $77
-    pop bc                                        ; $4a0a: $c1
-    ld hl, rSaveSlot1EasyPicrossClearedPuzzleCount; $4a0b: $21 $7e $a0
-    add hl, bc                                    ; $4a0e: $09
-    ld a, [hl]                                    ; $4a0f: $7e
-    call SplitAToDecimalDigitsAndPushHundredsTens ; $4a10: $cd $6f $19
-    add $60                                       ; $4a13: $c6 $60
-    ld hl, rGS01_SaveSlotTemplateRow1EasyPicrossCountDigitOnes; $4a15: $21 $06 $c1
-    ld [hl], a                                    ; $4a18: $77
-    add $10                                       ; $4a19: $c6 $10
-    ld hl, rGS01_SaveSlotTemplateRow2EasyPicrossCountDigitOnes; $4a1b: $21 $17 $c1
-    ld [hl], a                                    ; $4a1e: $77
-    pop af                                        ; $4a1f: $f1
-    add $60                                       ; $4a20: $c6 $60
-    ld hl, rGS01_SaveSlotTemplateRow1EasyPicrossCountDigitTens; $4a22: $21 $05 $c1
-    ld [hl], a                                    ; $4a25: $77
-    add $10                                       ; $4a26: $c6 $10
-    ld hl, rGS01_SaveSlotTemplateRow2EasyPicrossCountDigitTens; $4a28: $21 $16 $c1
-    ld [hl], a                                    ; $4a2b: $77
-    pop af                                        ; $4a2c: $f1
-    ld a, $ac                                     ; $4a2d: $3e $ac
-    ld hl, rGS01_SaveSlotTemplateRow1EasyPicrossCountSuffixPairLeft; $4a2f: $21 $07 $c1
-    ld [hl+], a                                   ; $4a32: $22
-    ld a, $ae                                     ; $4a33: $3e $ae
-    ld [hl], a                                    ; $4a35: $77
-    ld a, $bc                                     ; $4a36: $3e $bc
-    ld hl, rGS01_SaveSlotTemplateRow2EasyPicrossCountSuffixPairLeft; $4a38: $21 $18 $c1
-    ld [hl+], a                                   ; $4a3b: $22
-    ld a, $be                                     ; $4a3c: $3e $be
-    ld [hl], a                                    ; $4a3e: $77
-    ld a, $ac                                     ; $4a3f: $3e $ac
-    ld hl, rGS01_SaveSlotTemplateRow1KinokoStarCountSuffixPairLeft; $4a41: $21 $0f $c1
-    ld [hl+], a                                   ; $4a44: $22
-    inc a                                         ; $4a45: $3c
-    ld [hl], a                                    ; $4a46: $77
-    ld a, $bc                                     ; $4a47: $3e $bc
-    ld hl, rGS01_SaveSlotTemplateRow2KinokoStarCountSuffixPairLeft; $4a49: $21 $20 $c1
-    ld [hl+], a                                   ; $4a4c: $22
-    inc a                                         ; $4a4d: $3c
-    ld [hl], a                                    ; $4a4e: $77
+    pop bc
+    push bc
+    ld hl, rSaveSlot1PicrossKinokoStarClearedPuzzleCount
+    add hl, bc
+    ld a, [hl]
+    call SplitAToDecimalDigitsAndPushHundredsTens
+    add $60
+    ld hl, rGS01_SaveSlotTemplateRow1KinokoStarCountDigitOnes
+    ld [hl], a
+    add $10
+    ld hl, rGS01_SaveSlotTemplateRow2KinokoStarCountDigitOnes
+    ld [hl], a
+    pop af
+    add $60
+    ld hl, rGS01_SaveSlotTemplateRow1KinokoStarCountDigitTens
+    ld [hl], a
+    add $10
+    ld hl, rGS01_SaveSlotTemplateRow2KinokoStarCountDigitTens
+    ld [hl], a
+    pop af
+    ld a, $6b
+    ld hl, rSharedSingleTileCommandStreamTileId
+    ld [hl+], a
+    inc a
+    ld [hl], a
+    ld a, $7b
+    ld hl, rGS01_SaveSlotTemplateRow2EasyPicrossIconPairLeft
+    ld [hl+], a
+    inc a
+    ld [hl], a
+    pop bc
+    ld hl, rSaveSlot1EasyPicrossClearedPuzzleCount
+    add hl, bc
+    ld a, [hl]
+    call SplitAToDecimalDigitsAndPushHundredsTens
+    add $60
+    ld hl, rGS01_SaveSlotTemplateRow1EasyPicrossCountDigitOnes
+    ld [hl], a
+    add $10
+    ld hl, rGS01_SaveSlotTemplateRow2EasyPicrossCountDigitOnes
+    ld [hl], a
+    pop af
+    add $60
+    ld hl, rGS01_SaveSlotTemplateRow1EasyPicrossCountDigitTens
+    ld [hl], a
+    add $10
+    ld hl, rGS01_SaveSlotTemplateRow2EasyPicrossCountDigitTens
+    ld [hl], a
+    pop af
+    ld a, $ac
+    ld hl, rGS01_SaveSlotTemplateRow1EasyPicrossCountSuffixPairLeft
+    ld [hl+], a
+    ld a, $ae
+    ld [hl], a
+    ld a, $bc
+    ld hl, rGS01_SaveSlotTemplateRow2EasyPicrossCountSuffixPairLeft
+    ld [hl+], a
+    ld a, $be
+    ld [hl], a
+    ld a, $ac
+    ld hl, rGS01_SaveSlotTemplateRow1KinokoStarCountSuffixPairLeft
+    ld [hl+], a
+    inc a
+    ld [hl], a
+    ld a, $bc
+    ld hl, rGS01_SaveSlotTemplateRow2KinokoStarCountSuffixPairLeft
+    ld [hl+], a
+    inc a
+    ld [hl], a
 
 GS01_CommitSelectedSaveSlotTemplateCommandStream::
-    ld a, $00                                     ; $4a4f: $3e $00
-    ld bc, rSharedSingleTileCommandStreamDestHigh ; $4a51: $01 $00 $c1
-    jp QueueCommandStreamAndProcessIfLCDOff       ; $4a54: $c3 $35 $07
+    ld a, $00
+    ld bc, rSharedSingleTileCommandStreamDestHigh
+    jp QueueCommandStreamAndProcessIfLCDOff
 
 
 SelectedSaveSlotTemplateCommandOffsetTable::
@@ -1374,134 +1374,134 @@ SelectedSaveSlotIconKinokoStarCommandScript::
     db $29, $2a, $2d, $2e, $39, $3a, $3d, $3e
 
 GS01_BuildSaveSlotTemplateCommandStream::
-    push af                                       ; $4ad5: $f5
-    ld c, a                                       ; $4ad6: $4f
-    ld b, $00                                     ; $4ad7: $06 $00
-    ld hl, SaveSlotTemplateCommandOffsetTable     ; $4ad9: $21 $9e $4b
-    add hl, bc                                    ; $4adc: $09
-    ld c, [hl]                                    ; $4add: $4e
-    add hl, bc                                    ; $4ade: $09
-    ld a, $02                                     ; $4adf: $3e $02
-    ld de, rSharedSingleTileCommandStreamDestHigh ; $4ae1: $11 $00 $c1
-    ld bc, $0023                                  ; $4ae4: $01 $23 $00
-    call BankedTileCopy                           ; $4ae7: $cd $e1 $04
-    pop af                                        ; $4aea: $f1
-    ld c, a                                       ; $4aeb: $4f
-    ld b, $00                                     ; $4aec: $06 $00
-    ld hl, rSaveSlot1UnlockProgressState          ; $4aee: $21 $87 $a3
-    add hl, bc                                    ; $4af1: $09
-    ld a, [hl]                                    ; $4af2: $7e
-    and a                                         ; $4af3: $a7
-    jp z, GS01_CommitSaveSlotTemplateCommandStream; $4af4: $ca $96 $4b
+    push af
+    ld c, a
+    ld b, $00
+    ld hl, SaveSlotTemplateCommandOffsetTable
+    add hl, bc
+    ld c, [hl]
+    add hl, bc
+    ld a, $02
+    ld de, rSharedSingleTileCommandStreamDestHigh
+    ld bc, $0023
+    call BankedTileCopy
+    pop af
+    ld c, a
+    ld b, $00
+    ld hl, rSaveSlot1UnlockProgressState
+    add hl, bc
+    ld a, [hl]
+    and a
+    jp z, GS01_CommitSaveSlotTemplateCommandStream
 
-    push bc                                       ; $4af7: $c5
-    cp $03                                        ; $4af8: $fe $03
-    jr nz, .NormalizeSaveSlotStateToIconVariantIndex; $4afa: $20 $01
+    push bc
+    cp $03
+    jr nz, .NormalizeSaveSlotStateToIconVariantIndex
 
-    dec a                                         ; $4afc: $3d
+    dec a
 
 .NormalizeSaveSlotStateToIconVariantIndex:
-    dec a                                         ; $4afd: $3d
-    ld c, a                                       ; $4afe: $4f
-    ld b, $00                                     ; $4aff: $06 $00
-    ld hl, SaveSlotIconVariantCommandOffsetTable  ; $4b01: $21 $0a $4c
-    add hl, bc                                    ; $4b04: $09
-    ld c, [hl]                                    ; $4b05: $4e
-    add hl, bc                                    ; $4b06: $09
-    ld de, rGS01_SaveSlotTemplateRow1KinokoStarIconChunkStart; $4b07: $11 $09 $c1
-    ld c, $04                                     ; $4b0a: $0e $04
+    dec a
+    ld c, a
+    ld b, $00
+    ld hl, SaveSlotIconVariantCommandOffsetTable
+    add hl, bc
+    ld c, [hl]
+    add hl, bc
+    ld de, rGS01_SaveSlotTemplateRow1KinokoStarIconChunkStart
+    ld c, $04
 
 .CopySaveSlotIconScriptRow1Loop:
-    ld a, [hl+]                                   ; $4b0c: $2a
-    ld [de], a                                    ; $4b0d: $12
-    inc de                                        ; $4b0e: $13
-    dec c                                         ; $4b0f: $0d
-    jr nz, .CopySaveSlotIconScriptRow1Loop        ; $4b10: $20 $fa
+    ld a, [hl+]
+    ld [de], a
+    inc de
+    dec c
+    jr nz, .CopySaveSlotIconScriptRow1Loop
 
-    ld de, rGS01_SaveSlotTemplateRow2KinokoStarIconChunkStart; $4b12: $11 $1a $c1
-    ld c, $04                                     ; $4b15: $0e $04
+    ld de, rGS01_SaveSlotTemplateRow2KinokoStarIconChunkStart
+    ld c, $04
 
 .CopySaveSlotIconScriptRow2Loop:
-    ld a, [hl+]                                   ; $4b17: $2a
-    ld [de], a                                    ; $4b18: $12
-    inc de                                        ; $4b19: $13
-    dec c                                         ; $4b1a: $0d
-    jr nz, .CopySaveSlotIconScriptRow2Loop        ; $4b1b: $20 $fa
+    ld a, [hl+]
+    ld [de], a
+    inc de
+    dec c
+    jr nz, .CopySaveSlotIconScriptRow2Loop
 
-    pop bc                                        ; $4b1d: $c1
-    push bc                                       ; $4b1e: $c5
-    ld hl, rSaveSlot1PicrossKinokoStarClearedPuzzleCount; $4b1f: $21 $8a $a3
-    add hl, bc                                    ; $4b22: $09
-    ld a, [hl]                                    ; $4b23: $7e
-    call SplitAToDecimalDigitsAndPushHundredsTens ; $4b24: $cd $6f $19
-    add $40                                       ; $4b27: $c6 $40
-    ld hl, rGS01_SaveSlotTemplateRow1KinokoStarCountDigitOnes; $4b29: $21 $0e $c1
-    ld [hl], a                                    ; $4b2c: $77
-    add $10                                       ; $4b2d: $c6 $10
-    ld hl, rGS01_SaveSlotTemplateRow2KinokoStarCountDigitOnes; $4b2f: $21 $1f $c1
-    ld [hl], a                                    ; $4b32: $77
-    pop af                                        ; $4b33: $f1
-    add $40                                       ; $4b34: $c6 $40
-    ld hl, rGS01_SaveSlotTemplateRow1KinokoStarCountDigitTens; $4b36: $21 $0d $c1
-    ld [hl], a                                    ; $4b39: $77
-    add $10                                       ; $4b3a: $c6 $10
-    ld hl, rGS01_SaveSlotTemplateRow2KinokoStarCountDigitTens; $4b3c: $21 $1e $c1
-    ld [hl], a                                    ; $4b3f: $77
-    pop af                                        ; $4b40: $f1
-    ld a, $4b                                     ; $4b41: $3e $4b
-    ld hl, rSharedSingleTileCommandStreamTileId   ; $4b43: $21 $03 $c1
-    ld [hl+], a                                   ; $4b46: $22
-    inc a                                         ; $4b47: $3c
-    ld [hl], a                                    ; $4b48: $77
-    ld a, $5b                                     ; $4b49: $3e $5b
-    ld hl, rGS01_SaveSlotTemplateRow2EasyPicrossIconPairLeft; $4b4b: $21 $14 $c1
-    ld [hl+], a                                   ; $4b4e: $22
-    inc a                                         ; $4b4f: $3c
-    ld [hl], a                                    ; $4b50: $77
-    pop bc                                        ; $4b51: $c1
-    ld hl, rSaveSlot1EasyPicrossClearedPuzzleCount; $4b52: $21 $7e $a0
-    add hl, bc                                    ; $4b55: $09
-    ld a, [hl]                                    ; $4b56: $7e
-    call SplitAToDecimalDigitsAndPushHundredsTens ; $4b57: $cd $6f $19
-    add $40                                       ; $4b5a: $c6 $40
-    ld hl, rGS01_SaveSlotTemplateRow1EasyPicrossCountDigitOnes; $4b5c: $21 $06 $c1
-    ld [hl], a                                    ; $4b5f: $77
-    add $10                                       ; $4b60: $c6 $10
-    ld hl, rGS01_SaveSlotTemplateRow2EasyPicrossCountDigitOnes; $4b62: $21 $17 $c1
-    ld [hl], a                                    ; $4b65: $77
-    pop af                                        ; $4b66: $f1
-    add $40                                       ; $4b67: $c6 $40
-    ld hl, rGS01_SaveSlotTemplateRow1EasyPicrossCountDigitTens; $4b69: $21 $05 $c1
-    ld [hl], a                                    ; $4b6c: $77
-    add $10                                       ; $4b6d: $c6 $10
-    ld hl, rGS01_SaveSlotTemplateRow2EasyPicrossCountDigitTens; $4b6f: $21 $16 $c1
-    ld [hl], a                                    ; $4b72: $77
-    pop af                                        ; $4b73: $f1
-    ld a, $8c                                     ; $4b74: $3e $8c
-    ld hl, rGS01_SaveSlotTemplateRow1EasyPicrossCountSuffixPairLeft; $4b76: $21 $07 $c1
-    ld [hl+], a                                   ; $4b79: $22
-    ld a, $8e                                     ; $4b7a: $3e $8e
-    ld [hl], a                                    ; $4b7c: $77
-    ld a, $9c                                     ; $4b7d: $3e $9c
-    ld hl, rGS01_SaveSlotTemplateRow2EasyPicrossCountSuffixPairLeft; $4b7f: $21 $18 $c1
-    ld [hl+], a                                   ; $4b82: $22
-    ld a, $9e                                     ; $4b83: $3e $9e
-    ld [hl], a                                    ; $4b85: $77
-    ld a, $8c                                     ; $4b86: $3e $8c
-    ld hl, rGS01_SaveSlotTemplateRow1KinokoStarCountSuffixPairLeft; $4b88: $21 $0f $c1
-    ld [hl+], a                                   ; $4b8b: $22
-    inc a                                         ; $4b8c: $3c
-    ld [hl], a                                    ; $4b8d: $77
-    ld a, $9c                                     ; $4b8e: $3e $9c
-    ld hl, rGS01_SaveSlotTemplateRow2KinokoStarCountSuffixPairLeft; $4b90: $21 $20 $c1
-    ld [hl+], a                                   ; $4b93: $22
-    inc a                                         ; $4b94: $3c
-    ld [hl], a                                    ; $4b95: $77
+    pop bc
+    push bc
+    ld hl, rSaveSlot1PicrossKinokoStarClearedPuzzleCount
+    add hl, bc
+    ld a, [hl]
+    call SplitAToDecimalDigitsAndPushHundredsTens
+    add $40
+    ld hl, rGS01_SaveSlotTemplateRow1KinokoStarCountDigitOnes
+    ld [hl], a
+    add $10
+    ld hl, rGS01_SaveSlotTemplateRow2KinokoStarCountDigitOnes
+    ld [hl], a
+    pop af
+    add $40
+    ld hl, rGS01_SaveSlotTemplateRow1KinokoStarCountDigitTens
+    ld [hl], a
+    add $10
+    ld hl, rGS01_SaveSlotTemplateRow2KinokoStarCountDigitTens
+    ld [hl], a
+    pop af
+    ld a, $4b
+    ld hl, rSharedSingleTileCommandStreamTileId
+    ld [hl+], a
+    inc a
+    ld [hl], a
+    ld a, $5b
+    ld hl, rGS01_SaveSlotTemplateRow2EasyPicrossIconPairLeft
+    ld [hl+], a
+    inc a
+    ld [hl], a
+    pop bc
+    ld hl, rSaveSlot1EasyPicrossClearedPuzzleCount
+    add hl, bc
+    ld a, [hl]
+    call SplitAToDecimalDigitsAndPushHundredsTens
+    add $40
+    ld hl, rGS01_SaveSlotTemplateRow1EasyPicrossCountDigitOnes
+    ld [hl], a
+    add $10
+    ld hl, rGS01_SaveSlotTemplateRow2EasyPicrossCountDigitOnes
+    ld [hl], a
+    pop af
+    add $40
+    ld hl, rGS01_SaveSlotTemplateRow1EasyPicrossCountDigitTens
+    ld [hl], a
+    add $10
+    ld hl, rGS01_SaveSlotTemplateRow2EasyPicrossCountDigitTens
+    ld [hl], a
+    pop af
+    ld a, $8c
+    ld hl, rGS01_SaveSlotTemplateRow1EasyPicrossCountSuffixPairLeft
+    ld [hl+], a
+    ld a, $8e
+    ld [hl], a
+    ld a, $9c
+    ld hl, rGS01_SaveSlotTemplateRow2EasyPicrossCountSuffixPairLeft
+    ld [hl+], a
+    ld a, $9e
+    ld [hl], a
+    ld a, $8c
+    ld hl, rGS01_SaveSlotTemplateRow1KinokoStarCountSuffixPairLeft
+    ld [hl+], a
+    inc a
+    ld [hl], a
+    ld a, $9c
+    ld hl, rGS01_SaveSlotTemplateRow2KinokoStarCountSuffixPairLeft
+    ld [hl+], a
+    inc a
+    ld [hl], a
 
 GS01_CommitSaveSlotTemplateCommandStream::
-    ld a, $00                                     ; $4b96: $3e $00
-    ld bc, rSharedSingleTileCommandStreamDestHigh ; $4b98: $01 $00 $c1
-    jp QueueCommandStreamAndProcessIfLCDOff       ; $4b9b: $c3 $35 $07
+    ld a, $00
+    ld bc, rSharedSingleTileCommandStreamDestHigh
+    jp QueueCommandStreamAndProcessIfLCDOff
 
 
 SaveSlotTemplateCommandOffsetTable::
@@ -1532,49 +1532,49 @@ SaveSlotIconKinokoStarCommandScript::
     db $21, $22, $25, $26, $31, $32, $35, $36
 
 GS01_HandleDataSelectVerticalInput::
-    ld a, [rInputButtonsPressedOrRepeated]        ; $4c1c: $fa $22 $c3
-    and $c0                                       ; $4c1f: $e6 $c0
-    ret z                                         ; $4c21: $c8
+    ld a, [rInputButtonsPressedOrRepeated]
+    and $c0
+    ret z
 
-    push af                                       ; $4c22: $f5
-    ld a, [rPuzzleAndMenuCursorRow]               ; $4c23: $fa $37 $d6
-    call GS01_BuildSaveSlotTemplateCommandStream  ; $4c26: $cd $d5 $4a
-    rst RST_08                                    ; $4c29: $cf
-    ld c, $0a                                     ; $4c2a: $0e $0a
-    ld a, $02                                     ; $4c2c: $3e $02
-    call CallSoundCommandDispatcher               ; $4c2e: $cd $b3 $03
-    pop af                                        ; $4c31: $f1
-    and $40                                       ; $4c32: $e6 $40
-    jr z, .HandleDataSelectMoveDown               ; $4c34: $28 $10
+    push af
+    ld a, [rPuzzleAndMenuCursorRow]
+    call GS01_BuildSaveSlotTemplateCommandStream
+    rst RST_08
+    ld c, $0a
+    ld a, $02
+    call CallSoundCommandDispatcher
+    pop af
+    and $40
+    jr z, .HandleDataSelectMoveDown
 
-    ld a, [rPuzzleAndMenuCursorRow]               ; $4c36: $fa $37 $d6
-    dec a                                         ; $4c39: $3d
-    cp $ff                                        ; $4c3a: $fe $ff
-    jr nz, .StoreCursorRowAndBuildSelectedTemplate_UpPath; $4c3c: $20 $02
+    ld a, [rPuzzleAndMenuCursorRow]
+    dec a
+    cp $ff
+    jr nz, .StoreCursorRowAndBuildSelectedTemplate_UpPath
 
-    ld a, $02                                     ; $4c3e: $3e $02
+    ld a, $02
 
 .StoreCursorRowAndBuildSelectedTemplate_UpPath:
-    ld [rPuzzleAndMenuCursorRow], a               ; $4c40: $ea $37 $d6
-    jp GS01_BuildSelectedSaveSlotTemplateCommandStream; $4c43: $c3 $8e $49
+    ld [rPuzzleAndMenuCursorRow], a
+    jp GS01_BuildSelectedSaveSlotTemplateCommandStream
 
 
 .HandleDataSelectMoveDown:
-    ld a, [rPuzzleAndMenuCursorRow]               ; $4c46: $fa $37 $d6
-    inc a                                         ; $4c49: $3c
-    cp $03                                        ; $4c4a: $fe $03
-    jr nz, .StoreCursorRowAndBuildSelectedTemplate_DownPath; $4c4c: $20 $01
+    ld a, [rPuzzleAndMenuCursorRow]
+    inc a
+    cp $03
+    jr nz, .StoreCursorRowAndBuildSelectedTemplate_DownPath
 
-    xor a                                         ; $4c4e: $af
+    xor a
 
 .StoreCursorRowAndBuildSelectedTemplate_DownPath:
-    ld [rPuzzleAndMenuCursorRow], a               ; $4c4f: $ea $37 $d6
-    jp GS01_BuildSelectedSaveSlotTemplateCommandStream; $4c52: $c3 $8e $49
+    ld [rPuzzleAndMenuCursorRow], a
+    jp GS01_BuildSelectedSaveSlotTemplateCommandStream
 
 
 GameState_07_TimeTrialRankingScreen_PhaseDispatcher::
-    ld a, [rStatePhase_Current]                   ; $4c55: $fa $35 $d6
-    rst RST_18                                    ; $4c58: $df
+    ld a, [rStatePhase_Current]
+    rst RST_18
 
 GS07_PhasePointer_00::
     db $65, $4c
@@ -1595,313 +1595,313 @@ GS07_PhasePointer_05::
     db $ff, $4d
 
 GS07_StatePhase_00_TimeTrialRankingScreenInit::
-    ld a, $43                                     ; $4c65: $3e $43
-    ld [rLCDCShadow], a                           ; $4c67: $ea $2e $c3
-    xor a                                         ; $4c6a: $af
-    ld [rBGPShadow], a                            ; $4c6b: $ea $2f $c3
-    ld [rOBP0Shadow], a                           ; $4c6e: $ea $30 $c3
-    ld [rOBP1Shadow], a                           ; $4c71: $ea $31 $c3
-    ld [rSCXShadow], a                            ; $4c74: $ea $32 $c3
-    ld [rSCYShadow], a                            ; $4c77: $ea $33 $c3
-    call FillBGMap0WithTile01                     ; $4c7a: $cd $9d $05
-    call FillBGMap1WithTile01                     ; $4c7d: $cd $a8 $05
-    call GS07_LoadTimeTrialRankingScreenGfxAndTilemap; $4c80: $cd $63 $4d
-    call GS07_DrawTimeTrialRankingEntriesFromSaveData; $4c83: $cd $32 $51
-    call GS07_DrawCurrentClearTimePlaceholderDashes; $4c86: $cd $a0 $51
-    xor a                                         ; $4c89: $af
-    ld [rGS07_NewRecordRankingPositionOrZero], a  ; $4c8a: $ea $38 $d8
-    ld [rGS07_BottomPromptVariantFlag], a         ; $4c8d: $ea $39 $d8
-    call ClearShadowOAMBuffer                     ; $4c90: $cd $b3 $05
-    ld b, $03                                     ; $4c93: $06 $03
-    ld hl, $4e80                                  ; $4c95: $21 $80 $4e
-    call SwitchBankToBAndJumpToHL                 ; $4c98: $cd $db $05
-    call GS07_DispatchBottomPromptBlinkVariant    ; $4c9b: $cd $98 $52
-    ld c, $00                                     ; $4c9e: $0e $00
-    ld a, $01                                     ; $4ca0: $3e $01
-    call CallSoundCommandDispatcher               ; $4ca2: $cd $b3 $03
-    call WaitForScanline40OrDelay                 ; $4ca5: $cd $96 $03
-    ld c, $0f                                     ; $4ca8: $0e $0f
-    ld a, $01                                     ; $4caa: $3e $01
-    call CallSoundCommandDispatcher               ; $4cac: $cd $b3 $03
-    call EnableLCDFromShadow                      ; $4caf: $cd $9f $04
-    ld b, $03                                     ; $4cb2: $06 $03
-    ld hl, $470c                                  ; $4cb4: $21 $0c $47
-    ld c, $0e                                     ; $4cb7: $0e $0e
-    ld de, $00a4                                  ; $4cb9: $11 $a4 $00
-    call PlayScreenTransitionFadeIn               ; $4cbc: $cd $0a $04
-    ld hl, rStatePhase_Current                    ; $4cbf: $21 $35 $d6
-    inc [hl]                                      ; $4cc2: $34
-    ret                                           ; $4cc3: $c9
+    ld a, $43
+    ld [rLCDCShadow], a
+    xor a
+    ld [rBGPShadow], a
+    ld [rOBP0Shadow], a
+    ld [rOBP1Shadow], a
+    ld [rSCXShadow], a
+    ld [rSCYShadow], a
+    call FillBGMap0WithTile01
+    call FillBGMap1WithTile01
+    call GS07_LoadTimeTrialRankingScreenGfxAndTilemap
+    call GS07_DrawTimeTrialRankingEntriesFromSaveData
+    call GS07_DrawCurrentClearTimePlaceholderDashes
+    xor a
+    ld [rGS07_NewRecordRankingPositionOrZero], a
+    ld [rGS07_BottomPromptVariantFlag], a
+    call ClearShadowOAMBuffer
+    ld b, $03
+    ld hl, $4e80
+    call SwitchBankToBAndJumpToHL
+    call GS07_DispatchBottomPromptBlinkVariant
+    ld c, $00
+    ld a, $01
+    call CallSoundCommandDispatcher
+    call WaitForScanline40OrDelay
+    ld c, $0f
+    ld a, $01
+    call CallSoundCommandDispatcher
+    call EnableLCDFromShadow
+    ld b, $03
+    ld hl, $470c
+    ld c, $0e
+    ld de, $00a4
+    call PlayScreenTransitionFadeIn
+    ld hl, rStatePhase_Current
+    inc [hl]
+    ret
 
 
 GS07_StatePhase_04_PostClearRankingTransition::
-    ld a, $43                                     ; $4cc4: $3e $43
-    ld [rLCDCShadow], a                           ; $4cc6: $ea $2e $c3
-    xor a                                         ; $4cc9: $af
-    ld [rBGPShadow], a                            ; $4cca: $ea $2f $c3
-    ld [rOBP0Shadow], a                           ; $4ccd: $ea $30 $c3
-    ld [rOBP1Shadow], a                           ; $4cd0: $ea $31 $c3
-    ld [rSCXShadow], a                            ; $4cd3: $ea $32 $c3
-    ld [rSCYShadow], a                            ; $4cd6: $ea $33 $c3
-    call FillBGMap0WithTile01                     ; $4cd9: $cd $9d $05
-    call FillBGMap1WithTile01                     ; $4cdc: $cd $a8 $05
-    call GS07_LoadTimeTrialRankingScreenGfxAndTilemap; $4cdf: $cd $63 $4d
-    xor a                                         ; $4ce2: $af
-    ld [rGS07_NewRecordRankingPositionOrZero], a  ; $4ce3: $ea $38 $d8
-    ld a, $01                                     ; $4ce6: $3e $01
-    ld [rGS07_BottomPromptVariantFlag], a         ; $4ce8: $ea $39 $d8
-    ld a, [rPuzzlePostClearFlowFlag]              ; $4ceb: $fa $05 $d8
-    and a                                         ; $4cee: $a7
-    jr z, .DrawRankingAndCurrentTimeRow           ; $4cef: $28 $03
+    ld a, $43
+    ld [rLCDCShadow], a
+    xor a
+    ld [rBGPShadow], a
+    ld [rOBP0Shadow], a
+    ld [rOBP1Shadow], a
+    ld [rSCXShadow], a
+    ld [rSCYShadow], a
+    call FillBGMap0WithTile01
+    call FillBGMap1WithTile01
+    call GS07_LoadTimeTrialRankingScreenGfxAndTilemap
+    xor a
+    ld [rGS07_NewRecordRankingPositionOrZero], a
+    ld a, $01
+    ld [rGS07_BottomPromptVariantFlag], a
+    ld a, [rPuzzlePostClearFlowFlag]
+    and a
+    jr z, .DrawRankingAndCurrentTimeRow
 
-    call GS07_TryInsertCurrentClearTimeIntoRanking; $4cf1: $cd $b3 $50
+    call GS07_TryInsertCurrentClearTimeIntoRanking
 
 .DrawRankingAndCurrentTimeRow:
-    call GS07_DrawTimeTrialRankingEntriesFromSaveData; $4cf4: $cd $32 $51
-    ld a, [rPuzzlePostClearFlowFlag]              ; $4cf7: $fa $05 $d8
-    and a                                         ; $4cfa: $a7
-    jr z, .DrawCurrentTimePlaceholderDashes       ; $4cfb: $28 $05
+    call GS07_DrawTimeTrialRankingEntriesFromSaveData
+    ld a, [rPuzzlePostClearFlowFlag]
+    and a
+    jr z, .DrawCurrentTimePlaceholderDashes
 
-    call GS07_DrawCurrentClearTimeFromTimer       ; $4cfd: $cd $74 $51
-    jr .PrepareOAMAndBottomPromptLayout           ; $4d00: $18 $03
+    call GS07_DrawCurrentClearTimeFromTimer
+    jr .PrepareOAMAndBottomPromptLayout
 
 .DrawCurrentTimePlaceholderDashes:
-    call GS07_DrawCurrentClearTimePlaceholderDashes; $4d02: $cd $a0 $51
+    call GS07_DrawCurrentClearTimePlaceholderDashes
 
 .PrepareOAMAndBottomPromptLayout:
-    call ClearShadowOAMBuffer                     ; $4d05: $cd $b3 $05
-    ld b, $03                                     ; $4d08: $06 $03
-    ld hl, $4e80                                  ; $4d0a: $21 $80 $4e
-    call SwitchBankToBAndJumpToHL                 ; $4d0d: $cd $db $05
-    ld a, [rGS07_NewRecordRankingPositionOrZero]  ; $4d10: $fa $38 $d8
-    and a                                         ; $4d13: $a7
-    jr nz, .LoadNewRecordNameEntryPromptLayout    ; $4d14: $20 $05
+    call ClearShadowOAMBuffer
+    ld b, $03
+    ld hl, $4e80
+    call SwitchBankToBAndJumpToHL
+    ld a, [rGS07_NewRecordRankingPositionOrZero]
+    and a
+    jr nz, .LoadNewRecordNameEntryPromptLayout
 
-    call GS07_DispatchBottomPromptBlinkVariant    ; $4d16: $cd $98 $52
-    jr .PlayTransitionAndRouteToNextPhase         ; $4d19: $18 $08
+    call GS07_DispatchBottomPromptBlinkVariant
+    jr .PlayTransitionAndRouteToNextPhase
 
 .LoadNewRecordNameEntryPromptLayout:
-    ld b, $03                                     ; $4d1b: $06 $03
-    ld hl, $4ec2                                  ; $4d1d: $21 $c2 $4e
-    call SwitchBankToBAndJumpToHL                 ; $4d20: $cd $db $05
+    ld b, $03
+    ld hl, $4ec2
+    call SwitchBankToBAndJumpToHL
 
 .PlayTransitionAndRouteToNextPhase:
-    ld c, $00                                     ; $4d23: $0e $00
-    ld a, $01                                     ; $4d25: $3e $01
-    call CallSoundCommandDispatcher               ; $4d27: $cd $b3 $03
-    call WaitForScanline40OrDelay                 ; $4d2a: $cd $96 $03
-    ld c, $0f                                     ; $4d2d: $0e $0f
-    ld a, $01                                     ; $4d2f: $3e $01
-    call CallSoundCommandDispatcher               ; $4d31: $cd $b3 $03
-    call EnableLCDFromShadow                      ; $4d34: $cd $9f $04
-    ld b, $03                                     ; $4d37: $06 $03
-    ld hl, $470c                                  ; $4d39: $21 $0c $47
-    ld c, $0e                                     ; $4d3c: $0e $0e
-    ld de, $00a4                                  ; $4d3e: $11 $a4 $00
-    call PlayScreenTransitionFadeIn               ; $4d41: $cd $0a $04
-    ld a, [rGS07_NewRecordRankingPositionOrZero]  ; $4d44: $fa $38 $d8
-    and a                                         ; $4d47: $a7
-    jr z, .RouteToRankingScreenIdlePhase          ; $4d48: $28 $13
+    ld c, $00
+    ld a, $01
+    call CallSoundCommandDispatcher
+    call WaitForScanline40OrDelay
+    ld c, $0f
+    ld a, $01
+    call CallSoundCommandDispatcher
+    call EnableLCDFromShadow
+    ld b, $03
+    ld hl, $470c
+    ld c, $0e
+    ld de, $00a4
+    call PlayScreenTransitionFadeIn
+    ld a, [rGS07_NewRecordRankingPositionOrZero]
+    and a
+    jr z, .RouteToRankingScreenIdlePhase
 
-    xor a                                         ; $4d4a: $af
-    ld [rGS07_NameEntryCursorColumnOrConfirmIndex], a; $4d4b: $ea $3e $d8
-    ld [rGS07_NameEntryCharacterIndexSlot0], a    ; $4d4e: $ea $3f $d8
-    ld [rGS07_NameEntryCharacterIndexSlot1], a    ; $4d51: $ea $40 $d8
-    ld [rGS07_NameEntryCharacterIndexSlot2], a    ; $4d54: $ea $41 $d8
-    ld a, $05                                     ; $4d57: $3e $05
-    ld [rStatePhase_Current], a                   ; $4d59: $ea $35 $d6
-    ret                                           ; $4d5c: $c9
+    xor a
+    ld [rGS07_NameEntryCursorColumnOrConfirmIndex], a
+    ld [rGS07_NameEntryCharacterIndexSlot0], a
+    ld [rGS07_NameEntryCharacterIndexSlot1], a
+    ld [rGS07_NameEntryCharacterIndexSlot2], a
+    ld a, $05
+    ld [rStatePhase_Current], a
+    ret
 
 
 .RouteToRankingScreenIdlePhase:
-    ld a, $01                                     ; $4d5d: $3e $01
-    ld [rStatePhase_Current], a                   ; $4d5f: $ea $35 $d6
-    ret                                           ; $4d62: $c9
+    ld a, $01
+    ld [rStatePhase_Current], a
+    ret
 
 
 GS07_LoadTimeTrialRankingScreenGfxAndTilemap::
-    ld a, $0b                                     ; $4d63: $3e $0b
-    ld hl, $5000                                  ; $4d65: $21 $00 $50
-    ld de, $8000                                  ; $4d68: $11 $00 $80
-    ld bc, $0300                                  ; $4d6b: $01 $00 $03
-    call BankedTileCopy                           ; $4d6e: $cd $e1 $04
-    ld a, $09                                     ; $4d71: $3e $09
-    ld hl, $6800                                  ; $4d73: $21 $00 $68
-    ld de, $8800                                  ; $4d76: $11 $00 $88
-    ld bc, $1000                                  ; $4d79: $01 $00 $10
-    call BankedTileCopy                           ; $4d7c: $cd $e1 $04
-    ld a, $0c                                     ; $4d7f: $3e $0c
-    ld hl, $7c00                                  ; $4d81: $21 $00 $7c
-    ld de, $9800                                  ; $4d84: $11 $00 $98
-    ld bc, $0400                                  ; $4d87: $01 $00 $04
-    call BankedTileCopy                           ; $4d8a: $cd $e1 $04
-    ret                                           ; $4d8d: $c9
+    ld a, $0b
+    ld hl, $5000
+    ld de, $8000
+    ld bc, $0300
+    call BankedTileCopy
+    ld a, $09
+    ld hl, $6800
+    ld de, $8800
+    ld bc, $1000
+    call BankedTileCopy
+    ld a, $0c
+    ld hl, $7c00
+    ld de, $9800
+    ld bc, $0400
+    call BankedTileCopy
+    ret
 
 
 GS07_StatePhase_01_TimeTrialRankingScreenIdle::
-    call GS07_DispatchBottomPromptBlinkVariant    ; $4d8e: $cd $98 $52
-    call GS07_TickNewRecordIndicatorBlinkSprites  ; $4d91: $cd $dc $4d
-    ld a, [rInputButtonsPressed]                  ; $4d94: $fa $1e $c3
-    and $09                                       ; $4d97: $e6 $09
-    jr z, .HandleTimeTrialRankingScreenCancelInput; $4d99: $28 $1d
+    call GS07_DispatchBottomPromptBlinkVariant
+    call GS07_TickNewRecordIndicatorBlinkSprites
+    ld a, [rInputButtonsPressed]
+    and $09
+    jr z, .HandleTimeTrialRankingScreenCancelInput
 
-    ld c, $03                                     ; $4d9b: $0e $03
-    ld a, $02                                     ; $4d9d: $3e $02
-    call CallSoundCommandDispatcher               ; $4d9f: $cd $b3 $03
-    call ClearShadowOAMBufferFromCursor           ; $4da2: $cd $c2 $05
-    rst RST_08                                    ; $4da5: $cf
-    xor a                                         ; $4da6: $af
-    ld [rSharedUIAnimationColumnAccumulator], a   ; $4da7: $ea $3e $d6
-    call GS07_TickNewRecordIndicatorBlinkSprites  ; $4daa: $cd $dc $4d
-    call ClearShadowOAMBufferFromCursor           ; $4dad: $cd $c2 $05
-    call GS07_TickNewRecordIndicatorBlinkSprites  ; $4db0: $cd $dc $4d
-    ld hl, rStatePhase_Current                    ; $4db3: $21 $35 $d6
-    inc [hl]                                      ; $4db6: $34
-    ret                                           ; $4db7: $c9
+    ld c, $03
+    ld a, $02
+    call CallSoundCommandDispatcher
+    call ClearShadowOAMBufferFromCursor
+    rst RST_08
+    xor a
+    ld [rSharedUIAnimationColumnAccumulator], a
+    call GS07_TickNewRecordIndicatorBlinkSprites
+    call ClearShadowOAMBufferFromCursor
+    call GS07_TickNewRecordIndicatorBlinkSprites
+    ld hl, rStatePhase_Current
+    inc [hl]
+    ret
 
 
 .HandleTimeTrialRankingScreenCancelInput:
-    ld a, [rInputButtonsPressed]                  ; $4db8: $fa $1e $c3
-    and $02                                       ; $4dbb: $e6 $02
-    ret z                                         ; $4dbd: $c8
+    ld a, [rInputButtonsPressed]
+    and $02
+    ret z
 
-    ld c, $04                                     ; $4dbe: $0e $04
-    ld a, $02                                     ; $4dc0: $3e $02
-    call CallSoundCommandDispatcher               ; $4dc2: $cd $b3 $03
-    call ClearShadowOAMBufferFromCursor           ; $4dc5: $cd $c2 $05
-    rst RST_08                                    ; $4dc8: $cf
-    xor a                                         ; $4dc9: $af
-    ld [rSharedUIAnimationColumnAccumulator], a   ; $4dca: $ea $3e $d6
-    call GS07_TickNewRecordIndicatorBlinkSprites  ; $4dcd: $cd $dc $4d
-    call ClearShadowOAMBufferFromCursor           ; $4dd0: $cd $c2 $05
-    call GS07_TickNewRecordIndicatorBlinkSprites  ; $4dd3: $cd $dc $4d
-    ld a, $03                                     ; $4dd6: $3e $03
-    ld [rStatePhase_Current], a                   ; $4dd8: $ea $35 $d6
-    ret                                           ; $4ddb: $c9
+    ld c, $04
+    ld a, $02
+    call CallSoundCommandDispatcher
+    call ClearShadowOAMBufferFromCursor
+    rst RST_08
+    xor a
+    ld [rSharedUIAnimationColumnAccumulator], a
+    call GS07_TickNewRecordIndicatorBlinkSprites
+    call ClearShadowOAMBufferFromCursor
+    call GS07_TickNewRecordIndicatorBlinkSprites
+    ld a, $03
+    ld [rStatePhase_Current], a
+    ret
 
 
 GS07_TickNewRecordIndicatorBlinkSprites::
-    ld a, [rGS07_NewRecordRankingPositionOrZero]  ; $4ddc: $fa $38 $d8
-    and a                                         ; $4ddf: $a7
-    ret z                                         ; $4de0: $c8
+    ld a, [rGS07_NewRecordRankingPositionOrZero]
+    and a
+    ret z
 
-    ld a, [rSharedUIAnimationColumnAccumulator]   ; $4de1: $fa $3e $d6
-    inc a                                         ; $4de4: $3c
-    cp $28                                        ; $4de5: $fe $28
-    jr c, .StoreNewRecordIndicatorBlinkTimer      ; $4de7: $38 $01
+    ld a, [rSharedUIAnimationColumnAccumulator]
+    inc a
+    cp $28
+    jr c, .StoreNewRecordIndicatorBlinkTimer
 
-    xor a                                         ; $4de9: $af
+    xor a
 
 .StoreNewRecordIndicatorBlinkTimer:
-    ld [rSharedUIAnimationColumnAccumulator], a   ; $4dea: $ea $3e $d6
-    cp $16                                        ; $4ded: $fe $16
-    ret nc                                        ; $4def: $d0
+    ld [rSharedUIAnimationColumnAccumulator], a
+    cp $16
+    ret nc
 
-    xor a                                         ; $4df0: $af
-    call GS07_DrawNameEntryCharacterSlotSprite    ; $4df1: $cd $40 $4f
-    ld a, $01                                     ; $4df4: $3e $01
-    call GS07_DrawNameEntryCharacterSlotSprite    ; $4df6: $cd $40 $4f
-    ld a, $02                                     ; $4df9: $3e $02
-    call GS07_DrawNameEntryCharacterSlotSprite    ; $4dfb: $cd $40 $4f
-    ret                                           ; $4dfe: $c9
+    xor a
+    call GS07_DrawNameEntryCharacterSlotSprite
+    ld a, $01
+    call GS07_DrawNameEntryCharacterSlotSprite
+    ld a, $02
+    call GS07_DrawNameEntryCharacterSlotSprite
+    ret
 
 
 GS07_StatePhase_05_TimeTrialRankingScreenNewRecordNameEntry::
-    ld b, $03                                     ; $4dff: $06 $03
-    ld hl, $4ec2                                  ; $4e01: $21 $c2 $4e
-    call SwitchBankToBAndJumpToHL                 ; $4e04: $cd $db $05
-    call GS07_HandleNameEntryInput                ; $4e07: $cd $e1 $4e
-    ld hl, rVBlankFrameCounter                    ; $4e0a: $21 $3a $c3
-    ld a, [rGS07_NameEntryCursorColumnOrConfirmIndex]; $4e0d: $fa $3e $d8
-    and a                                         ; $4e10: $a7
-    jr nz, .DrawSlot0SpriteIfVisible              ; $4e11: $20 $04
+    ld b, $03
+    ld hl, $4ec2
+    call SwitchBankToBAndJumpToHL
+    call GS07_HandleNameEntryInput
+    ld hl, rVBlankFrameCounter
+    ld a, [rGS07_NameEntryCursorColumnOrConfirmIndex]
+    and a
+    jr nz, .DrawSlot0SpriteIfVisible
 
-    bit 3, [hl]                                   ; $4e13: $cb $5e
-    jr z, .MaybeDrawSlot1Sprite                   ; $4e15: $28 $06
+    bit 3, [hl]
+    jr z, .MaybeDrawSlot1Sprite
 
 .DrawSlot0SpriteIfVisible:
-    push af                                       ; $4e17: $f5
-    xor a                                         ; $4e18: $af
-    call GS07_DrawNameEntryCharacterSlotSprite    ; $4e19: $cd $40 $4f
-    pop af                                        ; $4e1c: $f1
+    push af
+    xor a
+    call GS07_DrawNameEntryCharacterSlotSprite
+    pop af
 
 .MaybeDrawSlot1Sprite:
-    cp $01                                        ; $4e1d: $fe $01
-    jr nz, .DrawSlot1SpriteIfVisible              ; $4e1f: $20 $04
+    cp $01
+    jr nz, .DrawSlot1SpriteIfVisible
 
-    bit 3, [hl]                                   ; $4e21: $cb $5e
-    jr z, .MaybeDrawSlot2Sprite                   ; $4e23: $28 $07
+    bit 3, [hl]
+    jr z, .MaybeDrawSlot2Sprite
 
 .DrawSlot1SpriteIfVisible:
-    push af                                       ; $4e25: $f5
-    ld a, $01                                     ; $4e26: $3e $01
-    call GS07_DrawNameEntryCharacterSlotSprite    ; $4e28: $cd $40 $4f
-    pop af                                        ; $4e2b: $f1
+    push af
+    ld a, $01
+    call GS07_DrawNameEntryCharacterSlotSprite
+    pop af
 
 .MaybeDrawSlot2Sprite:
-    cp $02                                        ; $4e2c: $fe $02
-    jr nz, .DrawSlot2SpriteIfVisible              ; $4e2e: $20 $04
+    cp $02
+    jr nz, .DrawSlot2SpriteIfVisible
 
-    bit 3, [hl]                                   ; $4e30: $cb $5e
-    jr z, .HandleNameEntryConfirmOrReturn         ; $4e32: $28 $07
+    bit 3, [hl]
+    jr z, .HandleNameEntryConfirmOrReturn
 
 .DrawSlot2SpriteIfVisible:
-    push af                                       ; $4e34: $f5
-    ld a, $02                                     ; $4e35: $3e $02
-    call GS07_DrawNameEntryCharacterSlotSprite    ; $4e37: $cd $40 $4f
-    pop af                                        ; $4e3a: $f1
+    push af
+    ld a, $02
+    call GS07_DrawNameEntryCharacterSlotSprite
+    pop af
 
 .HandleNameEntryConfirmOrReturn:
-    ld a, [rInputButtonsPressed]                  ; $4e3b: $fa $1e $c3
-    bit 3, a                                      ; $4e3e: $cb $5f
-    jr nz, .CommitEnteredNameToSaveData           ; $4e40: $20 $09
+    ld a, [rInputButtonsPressed]
+    bit 3, a
+    jr nz, .CommitEnteredNameToSaveData
 
-    bit 0, a                                      ; $4e42: $cb $47
-    ret z                                         ; $4e44: $c8
+    bit 0, a
+    ret z
 
-    ld a, [rGS07_NameEntryCursorColumnOrConfirmIndex]; $4e45: $fa $3e $d8
-    cp $03                                        ; $4e48: $fe $03
-    ret nz                                        ; $4e4a: $c0
+    ld a, [rGS07_NameEntryCursorColumnOrConfirmIndex]
+    cp $03
+    ret nz
 
 .CommitEnteredNameToSaveData:
-    ld a, [rGS07_NewRecordRankingPositionOrZero]  ; $4e4b: $fa $38 $d8
-    ld c, a                                       ; $4e4e: $4f
-    sla a                                         ; $4e4f: $cb $27
-    sla a                                         ; $4e51: $cb $27
-    sla a                                         ; $4e53: $cb $27
-    sub c                                         ; $4e55: $91
-    ld c, a                                       ; $4e56: $4f
-    ld b, $00                                     ; $4e57: $06 $00
-    ld hl, rSaveDataTimeTrialRankingEntriesInsertAddressBias; $4e59: $21 $3f $a0
-    add hl, bc                                    ; $4e5c: $09
-    ld e, l                                       ; $4e5d: $5d
-    ld d, h                                       ; $4e5e: $54
-    ld a, [rGS07_NameEntryCharacterIndexSlot0]    ; $4e5f: $fa $3f $d8
-    sla a                                         ; $4e62: $cb $27
-    ld c, a                                       ; $4e64: $4f
-    ld hl, GS07_NameEntryCharacterCodeTilePairTable; $4e65: $21 $8d $4e
-    add hl, bc                                    ; $4e68: $09
-    ld a, [hl]                                    ; $4e69: $7e
-    ld [de], a                                    ; $4e6a: $12
-    inc de                                        ; $4e6b: $13
-    ld a, [rGS07_NameEntryCharacterIndexSlot1]    ; $4e6c: $fa $40 $d8
-    sla a                                         ; $4e6f: $cb $27
-    ld c, a                                       ; $4e71: $4f
-    ld hl, GS07_NameEntryCharacterCodeTilePairTable; $4e72: $21 $8d $4e
-    add hl, bc                                    ; $4e75: $09
-    ld a, [hl]                                    ; $4e76: $7e
-    ld [de], a                                    ; $4e77: $12
-    inc de                                        ; $4e78: $13
-    ld a, [rGS07_NameEntryCharacterIndexSlot2]    ; $4e79: $fa $41 $d8
-    sla a                                         ; $4e7c: $cb $27
-    ld c, a                                       ; $4e7e: $4f
-    ld hl, GS07_NameEntryCharacterCodeTilePairTable; $4e7f: $21 $8d $4e
-    add hl, bc                                    ; $4e82: $09
-    ld a, [hl]                                    ; $4e83: $7e
-    ld [de], a                                    ; $4e84: $12
-    ld a, $01                                     ; $4e85: $3e $01
-    ld [rStatePhase_Current], a                   ; $4e87: $ea $35 $d6
-    jp RefreshSaveValidationChecksumsAndMirrors   ; $4e8a: $c3 $1c $1b
+    ld a, [rGS07_NewRecordRankingPositionOrZero]
+    ld c, a
+    sla a
+    sla a
+    sla a
+    sub c
+    ld c, a
+    ld b, $00
+    ld hl, rSaveDataTimeTrialRankingEntriesInsertAddressBias
+    add hl, bc
+    ld e, l
+    ld d, h
+    ld a, [rGS07_NameEntryCharacterIndexSlot0]
+    sla a
+    ld c, a
+    ld hl, GS07_NameEntryCharacterCodeTilePairTable
+    add hl, bc
+    ld a, [hl]
+    ld [de], a
+    inc de
+    ld a, [rGS07_NameEntryCharacterIndexSlot1]
+    sla a
+    ld c, a
+    ld hl, GS07_NameEntryCharacterCodeTilePairTable
+    add hl, bc
+    ld a, [hl]
+    ld [de], a
+    inc de
+    ld a, [rGS07_NameEntryCharacterIndexSlot2]
+    sla a
+    ld c, a
+    ld hl, GS07_NameEntryCharacterCodeTilePairTable
+    add hl, bc
+    ld a, [hl]
+    ld [de], a
+    ld a, $01
+    ld [rStatePhase_Current], a
+    jp RefreshSaveValidationChecksumsAndMirrors
 
 
 GS07_NameEntryCharacterCodeTilePairTable::
@@ -1949,176 +1949,176 @@ GS07_NameEntryCharacterCodeTilePairTable::
     db $2c, $82
 
 GS07_HandleNameEntryInput::
-    ld a, [rInputButtonsPressedOrRepeated]        ; $4ee1: $fa $22 $c3
-    and $c0                                       ; $4ee4: $e6 $c0
-    jr z, .HandleNameEntryAdvanceWithA            ; $4ee6: $28 $2b
+    ld a, [rInputButtonsPressedOrRepeated]
+    and $c0
+    jr z, .HandleNameEntryAdvanceWithA
 
-    ld c, $0a                                     ; $4ee8: $0e $0a
-    ld a, $02                                     ; $4eea: $3e $02
-    call CallSoundCommandDispatcher               ; $4eec: $cd $b3 $03
-    ld a, [rGS07_NameEntryCursorColumnOrConfirmIndex]; $4eef: $fa $3e $d8
-    ld c, a                                       ; $4ef2: $4f
-    ld b, $00                                     ; $4ef3: $06 $00
-    ld hl, rGS07_NameEntryCharacterIndexSlot0     ; $4ef5: $21 $3f $d8
-    add hl, bc                                    ; $4ef8: $09
-    ld a, [rInputButtonsPressedOrRepeated]        ; $4ef9: $fa $22 $c3
-    bit 6, a                                      ; $4efc: $cb $77
-    jr z, .HandleNameEntryCharacterIncrement      ; $4efe: $28 $0a
+    ld c, $0a
+    ld a, $02
+    call CallSoundCommandDispatcher
+    ld a, [rGS07_NameEntryCursorColumnOrConfirmIndex]
+    ld c, a
+    ld b, $00
+    ld hl, rGS07_NameEntryCharacterIndexSlot0
+    add hl, bc
+    ld a, [rInputButtonsPressedOrRepeated]
+    bit 6, a
+    jr z, .HandleNameEntryCharacterIncrement
 
-    ld a, [hl]                                    ; $4f00: $7e
-    dec a                                         ; $4f01: $3d
-    cp $ff                                        ; $4f02: $fe $ff
-    jr nz, .StoreDecrementedNameEntryCharacterIndex; $4f04: $20 $02
+    ld a, [hl]
+    dec a
+    cp $ff
+    jr nz, .StoreDecrementedNameEntryCharacterIndex
 
-    ld a, $29                                     ; $4f06: $3e $29
+    ld a, $29
 
 .StoreDecrementedNameEntryCharacterIndex:
-    ld [hl], a                                    ; $4f08: $77
-    ret                                           ; $4f09: $c9
+    ld [hl], a
+    ret
 
 
 .HandleNameEntryCharacterIncrement:
-    ld a, [hl]                                    ; $4f0a: $7e
-    inc a                                         ; $4f0b: $3c
-    cp $2a                                        ; $4f0c: $fe $2a
-    jr nz, .StoreIncrementedNameEntryCharacterIndex; $4f0e: $20 $01
+    ld a, [hl]
+    inc a
+    cp $2a
+    jr nz, .StoreIncrementedNameEntryCharacterIndex
 
-    xor a                                         ; $4f10: $af
+    xor a
 
 .StoreIncrementedNameEntryCharacterIndex:
-    ld [hl], a                                    ; $4f11: $77
-    ret                                           ; $4f12: $c9
+    ld [hl], a
+    ret
 
 
 .HandleNameEntryAdvanceWithA:
-    ld a, [rInputButtonsPressed]                  ; $4f13: $fa $1e $c3
-    bit 0, a                                      ; $4f16: $cb $47
-    jr z, .HandleNameEntryBackWithB               ; $4f18: $28 $12
+    ld a, [rInputButtonsPressed]
+    bit 0, a
+    jr z, .HandleNameEntryBackWithB
 
-    ld c, $03                                     ; $4f1a: $0e $03
-    ld a, $02                                     ; $4f1c: $3e $02
-    call CallSoundCommandDispatcher               ; $4f1e: $cd $b3 $03
-    ld a, [rGS07_NameEntryCursorColumnOrConfirmIndex]; $4f21: $fa $3e $d8
-    cp $03                                        ; $4f24: $fe $03
-    ret z                                         ; $4f26: $c8
+    ld c, $03
+    ld a, $02
+    call CallSoundCommandDispatcher
+    ld a, [rGS07_NameEntryCursorColumnOrConfirmIndex]
+    cp $03
+    ret z
 
-    inc a                                         ; $4f27: $3c
-    ld [rGS07_NameEntryCursorColumnOrConfirmIndex], a; $4f28: $ea $3e $d8
-    ret                                           ; $4f2b: $c9
+    inc a
+    ld [rGS07_NameEntryCursorColumnOrConfirmIndex], a
+    ret
 
 
 .HandleNameEntryBackWithB:
-    bit 1, a                                      ; $4f2c: $cb $4f
-    ret z                                         ; $4f2e: $c8
+    bit 1, a
+    ret z
 
-    ld c, $04                                     ; $4f2f: $0e $04
-    ld a, $02                                     ; $4f31: $3e $02
-    call CallSoundCommandDispatcher               ; $4f33: $cd $b3 $03
-    ld a, [rGS07_NameEntryCursorColumnOrConfirmIndex]; $4f36: $fa $3e $d8
-    and a                                         ; $4f39: $a7
-    ret z                                         ; $4f3a: $c8
+    ld c, $04
+    ld a, $02
+    call CallSoundCommandDispatcher
+    ld a, [rGS07_NameEntryCursorColumnOrConfirmIndex]
+    and a
+    ret z
 
-    dec a                                         ; $4f3b: $3d
-    ld [rGS07_NameEntryCursorColumnOrConfirmIndex], a; $4f3c: $ea $3e $d8
-    ret                                           ; $4f3f: $c9
+    dec a
+    ld [rGS07_NameEntryCursorColumnOrConfirmIndex], a
+    ret
 
 
 GS07_DrawNameEntryCharacterSlotSprite::
-    push hl                                       ; $4f40: $e5
-    ld c, a                                       ; $4f41: $4f
-    ld b, $00                                     ; $4f42: $06 $00
-    push bc                                       ; $4f44: $c5
-    ld hl, rGS07_NameEntryCharacterIndexSlot0     ; $4f45: $21 $3f $d8
-    add hl, bc                                    ; $4f48: $09
-    ld c, [hl]                                    ; $4f49: $4e
-    sla c                                         ; $4f4a: $cb $21
-    ld hl, $4e8e                                  ; $4f4c: $21 $8e $4e
-    add hl, bc                                    ; $4f4f: $09
-    pop bc                                        ; $4f50: $c1
-    sla c                                         ; $4f51: $cb $21
-    sla c                                         ; $4f53: $cb $21
-    sla c                                         ; $4f55: $cb $21
-    ld a, $68                                     ; $4f57: $3e $68
-    add c                                         ; $4f59: $81
-    ld b, a                                       ; $4f5a: $47
-    ld a, [rGS07_NewRecordRankingPositionOrZero]  ; $4f5b: $fa $38 $d8
-    swap a                                        ; $4f5e: $cb $37
-    add $10                                       ; $4f60: $c6 $10
-    ld c, a                                       ; $4f62: $4f
-    ld a, [hl]                                    ; $4f63: $7e
-    call CopyOAMSpriteById                        ; $4f64: $cd $cb $20
-    pop hl                                        ; $4f67: $e1
-    ret                                           ; $4f68: $c9
+    push hl
+    ld c, a
+    ld b, $00
+    push bc
+    ld hl, rGS07_NameEntryCharacterIndexSlot0
+    add hl, bc
+    ld c, [hl]
+    sla c
+    ld hl, $4e8e
+    add hl, bc
+    pop bc
+    sla c
+    sla c
+    sla c
+    ld a, $68
+    add c
+    ld b, a
+    ld a, [rGS07_NewRecordRankingPositionOrZero]
+    swap a
+    add $10
+    ld c, a
+    ld a, [hl]
+    call CopyOAMSpriteById
+    pop hl
+    ret
 
 
 GS07_StatePhase_02_TransitionToPuzzleStart::
-    ld bc, $003c                                  ; $4f69: $01 $3c $00
-    call DelayFramesByBC                          ; $4f6c: $cd $f7 $05
-    ld a, $05                                     ; $4f6f: $3e $05
-    call CallSoundCommandDispatcher               ; $4f71: $cd $b3 $03
-    ld c, $00                                     ; $4f74: $0e $00
-    ld a, $01                                     ; $4f76: $3e $01
-    call CallSoundCommandDispatcher               ; $4f78: $cd $b3 $03
-    call WaitForScanline40OrDelay                 ; $4f7b: $cd $96 $03
-    ld c, $00                                     ; $4f7e: $0e $00
-    ld a, $01                                     ; $4f80: $3e $01
-    call CallSoundCommandDispatcher               ; $4f82: $cd $b3 $03
-    ld b, $03                                     ; $4f85: $06 $03
-    ld hl, $4717                                  ; $4f87: $21 $17 $47
-    ld c, $0e                                     ; $4f8a: $0e $0e
-    ld de, $00b3                                  ; $4f8c: $11 $b3 $00
-    call PlayScreenTransitionFadeOut              ; $4f8f: $cd $4b $04
-    call DisableLCDAtVBlank                       ; $4f92: $cd $80 $04
+    ld bc, $003c
+    call DelayFramesByBC
+    ld a, $05
+    call CallSoundCommandDispatcher
+    ld c, $00
+    ld a, $01
+    call CallSoundCommandDispatcher
+    call WaitForScanline40OrDelay
+    ld c, $00
+    ld a, $01
+    call CallSoundCommandDispatcher
+    ld b, $03
+    ld hl, $4717
+    ld c, $0e
+    ld de, $00b3
+    call PlayScreenTransitionFadeOut
+    call DisableLCDAtVBlank
 
 .SelectNextPuzzleOrderEntryLoop:
-    ld a, [rPuzzleOrderTableCursor]               ; $4f95: $fa $01 $a0
-    ld c, a                                       ; $4f98: $4f
-    ld b, $00                                     ; $4f99: $06 $00
-    ld hl, rPuzzleOrderTableStart                 ; $4f9b: $21 $02 $a0
-    add hl, bc                                    ; $4f9e: $09
-    ld a, [hl]                                    ; $4f9f: $7e
-    cp $40                                        ; $4fa0: $fe $40
-    jr c, .LoadPuzzleDataIndexFromOrderEntry      ; $4fa2: $38 $22
+    ld a, [rPuzzleOrderTableCursor]
+    ld c, a
+    ld b, $00
+    ld hl, rPuzzleOrderTableStart
+    add hl, bc
+    ld a, [hl]
+    cp $40
+    jr c, .LoadPuzzleDataIndexFromOrderEntry
 
-    ld b, $02                                     ; $4fa4: $06 $02
-    ld hl, InitializePuzzleOrderTable             ; $4fa6: $21 $67 $52
-    call SwitchBankToBAndJumpToHL                 ; $4fa9: $cd $db $05
-    ld b, $02                                     ; $4fac: $06 $02
-    ld hl, ShufflePuzzleOrderTable                ; $4fae: $21 $74 $52
-    call SwitchBankToBAndJumpToHL                 ; $4fb1: $cd $db $05
-    ld b, $02                                     ; $4fb4: $06 $02
-    ld hl, ShufflePuzzleOrderTable                ; $4fb6: $21 $74 $52
-    call SwitchBankToBAndJumpToHL                 ; $4fb9: $cd $db $05
-    ld b, $02                                     ; $4fbc: $06 $02
-    ld hl, ShufflePuzzleOrderTable                ; $4fbe: $21 $74 $52
-    call SwitchBankToBAndJumpToHL                 ; $4fc1: $cd $db $05
-    jr .SelectNextPuzzleOrderEntryLoop            ; $4fc4: $18 $cf
+    ld b, $02
+    ld hl, InitializePuzzleOrderTable
+    call SwitchBankToBAndJumpToHL
+    ld b, $02
+    ld hl, ShufflePuzzleOrderTable
+    call SwitchBankToBAndJumpToHL
+    ld b, $02
+    ld hl, ShufflePuzzleOrderTable
+    call SwitchBankToBAndJumpToHL
+    ld b, $02
+    ld hl, ShufflePuzzleOrderTable
+    call SwitchBankToBAndJumpToHL
+    jr .SelectNextPuzzleOrderEntryLoop
 
 .LoadPuzzleDataIndexFromOrderEntry:
-    sla a                                         ; $4fc6: $cb $27
-    ld c, a                                       ; $4fc8: $4f
-    ld hl, GS07_PuzzleDataIndexTableByOrderEntry  ; $4fc9: $21 $f4 $4f
-    add hl, bc                                    ; $4fcc: $09
-    ld a, [hl+]                                   ; $4fcd: $2a
-    ld [rPuzzleDataIndexLow], a                   ; $4fce: $ea $07 $d8
-    ld a, [hl]                                    ; $4fd1: $7e
-    ld [rPuzzleDataIndexHigh], a                  ; $4fd2: $ea $08 $d8
-    ld a, [rPuzzleOrderTableCursor]               ; $4fd5: $fa $01 $a0
-    inc a                                         ; $4fd8: $3c
-    ld [rPuzzleOrderTableCursor], a               ; $4fd9: $ea $01 $a0
-    cp $40                                        ; $4fdc: $fe $40
-    jr nz, .CommitTransitionToPuzzleGameplay      ; $4fde: $20 $08
+    sla a
+    ld c, a
+    ld hl, GS07_PuzzleDataIndexTableByOrderEntry
+    add hl, bc
+    ld a, [hl+]
+    ld [rPuzzleDataIndexLow], a
+    ld a, [hl]
+    ld [rPuzzleDataIndexHigh], a
+    ld a, [rPuzzleOrderTableCursor]
+    inc a
+    ld [rPuzzleOrderTableCursor], a
+    cp $40
+    jr nz, .CommitTransitionToPuzzleGameplay
 
-    ld b, $02                                     ; $4fe0: $06 $02
-    ld hl, ShufflePuzzleOrderTable                ; $4fe2: $21 $74 $52
-    call SwitchBankToBAndJumpToHL                 ; $4fe5: $cd $db $05
+    ld b, $02
+    ld hl, ShufflePuzzleOrderTable
+    call SwitchBankToBAndJumpToHL
 
 .CommitTransitionToPuzzleGameplay:
-    xor a                                         ; $4fe8: $af
-    ld [rStatePhase_Current], a                   ; $4fe9: $ea $35 $d6
-    ld a, $09                                     ; $4fec: $3e $09
-    ld [rGameState_Current], a                    ; $4fee: $ea $34 $d6
-    jp RefreshSaveValidationChecksumsAndMirrors   ; $4ff1: $c3 $1c $1b
+    xor a
+    ld [rStatePhase_Current], a
+    ld a, $09
+    ld [rGameState_Current], a
+    jp RefreshSaveValidationChecksumsAndMirrors
 
 
 GS07_PuzzleDataIndexTableByOrderEntry::
@@ -2132,246 +2132,246 @@ GS07_PuzzleDataIndexTableByOrderEntry::
     db $f9, $00, $fa, $00, $fb, $00, $fc, $00, $fd, $00, $fe, $00, $ff, $00, $00, $01
 
 GS07_StatePhase_03_TransitionBackToMenu::
-    xor a                                         ; $5074: $af
-    ld [rSharedUIAnimationColumnAccumulator], a   ; $5075: $ea $3e $d6
-    call GS07_TickNewRecordIndicatorBlinkSprites  ; $5078: $cd $dc $4d
-    ld bc, $003c                                  ; $507b: $01 $3c $00
-    call DelayFramesByBC                          ; $507e: $cd $f7 $05
-    ld a, $05                                     ; $5081: $3e $05
-    call CallSoundCommandDispatcher               ; $5083: $cd $b3 $03
-    ld c, $00                                     ; $5086: $0e $00
-    ld a, $01                                     ; $5088: $3e $01
-    call CallSoundCommandDispatcher               ; $508a: $cd $b3 $03
-    call WaitForScanline40OrDelay                 ; $508d: $cd $96 $03
-    ld c, $00                                     ; $5090: $0e $00
-    ld a, $01                                     ; $5092: $3e $01
-    call CallSoundCommandDispatcher               ; $5094: $cd $b3 $03
-    ld b, $03                                     ; $5097: $06 $03
-    ld hl, $4717                                  ; $5099: $21 $17 $47
-    ld c, $0e                                     ; $509c: $0e $0e
-    ld de, $00b3                                  ; $509e: $11 $b3 $00
-    call PlayScreenTransitionFadeOut              ; $50a1: $cd $4b $04
-    call DisableLCDAtVBlank                       ; $50a4: $cd $80 $04
-    xor a                                         ; $50a7: $af
-    ld [rStatePhase_Current], a                   ; $50a8: $ea $35 $d6
-    ld a, $03                                     ; $50ab: $3e $03
-    ld [rGameState_Current], a                    ; $50ad: $ea $34 $d6
-    jp RefreshSaveValidationChecksumsAndMirrors   ; $50b0: $c3 $1c $1b
+    xor a
+    ld [rSharedUIAnimationColumnAccumulator], a
+    call GS07_TickNewRecordIndicatorBlinkSprites
+    ld bc, $003c
+    call DelayFramesByBC
+    ld a, $05
+    call CallSoundCommandDispatcher
+    ld c, $00
+    ld a, $01
+    call CallSoundCommandDispatcher
+    call WaitForScanline40OrDelay
+    ld c, $00
+    ld a, $01
+    call CallSoundCommandDispatcher
+    ld b, $03
+    ld hl, $4717
+    ld c, $0e
+    ld de, $00b3
+    call PlayScreenTransitionFadeOut
+    call DisableLCDAtVBlank
+    xor a
+    ld [rStatePhase_Current], a
+    ld a, $03
+    ld [rGameState_Current], a
+    jp RefreshSaveValidationChecksumsAndMirrors
 
 
 GS07_TryInsertCurrentClearTimeIntoRanking::
-    ld a, [rPuzzleTimerMinuteTens]                ; $50b3: $fa $0a $d8
-    ld b, a                                       ; $50b6: $47
-    ld a, [rPuzzleTimerMinuteOnes]                ; $50b7: $fa $09 $d8
-    ld c, a                                       ; $50ba: $4f
-    ld a, [rPuzzleTimerSecondTens]                ; $50bb: $fa $0c $d8
-    ld d, a                                       ; $50be: $57
-    ld a, [rPuzzleTimerSecondOnes]                ; $50bf: $fa $0b $d8
-    ld e, a                                       ; $50c2: $5f
-    ld hl, rSaveDataTimeTrialRankingEntries       ; $50c3: $21 $42 $a0
-    xor a                                         ; $50c6: $af
+    ld a, [rPuzzleTimerMinuteTens]
+    ld b, a
+    ld a, [rPuzzleTimerMinuteOnes]
+    ld c, a
+    ld a, [rPuzzleTimerSecondTens]
+    ld d, a
+    ld a, [rPuzzleTimerSecondOnes]
+    ld e, a
+    ld hl, rSaveDataTimeTrialRankingEntries
+    xor a
 
 .FindRankingInsertionIndexLoop:
-    push af                                       ; $50c7: $f5
-    push hl                                       ; $50c8: $e5
-    ld a, [hl+]                                   ; $50c9: $2a
-    cp b                                          ; $50ca: $b8
-    jr c, .AdvanceToNextRankingEntry              ; $50cb: $38 $14
+    push af
+    push hl
+    ld a, [hl+]
+    cp b
+    jr c, .AdvanceToNextRankingEntry
 
-    jr nz, .InsertAtFoundRankingPosition          ; $50cd: $20 $26
+    jr nz, .InsertAtFoundRankingPosition
 
-    ld a, [hl+]                                   ; $50cf: $2a
-    cp c                                          ; $50d0: $b9
-    jr c, .AdvanceToNextRankingEntry              ; $50d1: $38 $0e
+    ld a, [hl+]
+    cp c
+    jr c, .AdvanceToNextRankingEntry
 
-    jr nz, .InsertAtFoundRankingPosition          ; $50d3: $20 $20
+    jr nz, .InsertAtFoundRankingPosition
 
-    ld a, [hl+]                                   ; $50d5: $2a
-    cp d                                          ; $50d6: $ba
-    jr c, .AdvanceToNextRankingEntry              ; $50d7: $38 $08
+    ld a, [hl+]
+    cp d
+    jr c, .AdvanceToNextRankingEntry
 
-    jr nz, .InsertAtFoundRankingPosition          ; $50d9: $20 $1a
+    jr nz, .InsertAtFoundRankingPosition
 
-    ld a, [hl+]                                   ; $50db: $2a
-    cp e                                          ; $50dc: $bb
-    jr c, .AdvanceToNextRankingEntry              ; $50dd: $38 $02
+    ld a, [hl+]
+    cp e
+    jr c, .AdvanceToNextRankingEntry
 
-    jr nz, .InsertAtFoundRankingPosition          ; $50df: $20 $14
+    jr nz, .InsertAtFoundRankingPosition
 
 .AdvanceToNextRankingEntry:
-    pop hl                                        ; $50e1: $e1
-    ld a, $07                                     ; $50e2: $3e $07
-    add l                                         ; $50e4: $85
-    ld l, a                                       ; $50e5: $6f
-    ld a, $00                                     ; $50e6: $3e $00
-    adc h                                         ; $50e8: $8c
-    ld h, a                                       ; $50e9: $67
-    pop af                                        ; $50ea: $f1
-    inc a                                         ; $50eb: $3c
-    cp $05                                        ; $50ec: $fe $05
-    jr nz, .FindRankingInsertionIndexLoop         ; $50ee: $20 $d7
+    pop hl
+    ld a, $07
+    add l
+    ld l, a
+    ld a, $00
+    adc h
+    ld h, a
+    pop af
+    inc a
+    cp $05
+    jr nz, .FindRankingInsertionIndexLoop
 
-    xor a                                         ; $50f0: $af
-    ld [rGS07_NewRecordRankingPositionOrZero], a  ; $50f1: $ea $38 $d8
-    ret                                           ; $50f4: $c9
+    xor a
+    ld [rGS07_NewRecordRankingPositionOrZero], a
+    ret
 
 
 .InsertAtFoundRankingPosition:
-    pop hl                                        ; $50f5: $e1
-    pop af                                        ; $50f6: $f1
-    inc a                                         ; $50f7: $3c
-    ld [rGS07_NewRecordRankingPositionOrZero], a  ; $50f8: $ea $38 $d8
-    ld c, a                                       ; $50fb: $4f
-    ld a, $05                                     ; $50fc: $3e $05
-    sub c                                         ; $50fe: $91
-    ld c, a                                       ; $50ff: $4f
-    sla a                                         ; $5100: $cb $27
-    sla a                                         ; $5102: $cb $27
-    sla a                                         ; $5104: $cb $27
-    sub c                                         ; $5106: $91
-    jr z, .WriteCurrentClearTimeAndInitializeNameFields; $5107: $28 $13
+    pop hl
+    pop af
+    inc a
+    ld [rGS07_NewRecordRankingPositionOrZero], a
+    ld c, a
+    ld a, $05
+    sub c
+    ld c, a
+    sla a
+    sla a
+    sla a
+    sub c
+    jr z, .WriteCurrentClearTimeAndInitializeNameFields
 
-    ld c, a                                       ; $5109: $4f
-    ld b, $00                                     ; $510a: $06 $00
-    push hl                                       ; $510c: $e5
-    ld hl, rSaveDataTimeTrialRankingEntriesShiftSourceEnd; $510d: $21 $5d $a0
-    ld de, rSaveDataTimeTrialRankingEntriesShiftDestEnd; $5110: $11 $64 $a0
+    ld c, a
+    ld b, $00
+    push hl
+    ld hl, rSaveDataTimeTrialRankingEntriesShiftSourceEnd
+    ld de, rSaveDataTimeTrialRankingEntriesShiftDestEnd
 
 .ShiftLowerRankingEntriesDownLoop:
-    ld a, [hl-]                                   ; $5113: $3a
-    ld [de], a                                    ; $5114: $12
-    dec de                                        ; $5115: $1b
-    dec bc                                        ; $5116: $0b
-    ld a, c                                       ; $5117: $79
-    or b                                          ; $5118: $b0
-    jr nz, .ShiftLowerRankingEntriesDownLoop      ; $5119: $20 $f8
+    ld a, [hl-]
+    ld [de], a
+    dec de
+    dec bc
+    ld a, c
+    or b
+    jr nz, .ShiftLowerRankingEntriesDownLoop
 
-    pop hl                                        ; $511b: $e1
+    pop hl
 
 .WriteCurrentClearTimeAndInitializeNameFields:
-    ld a, [rPuzzleTimerMinuteTens]                ; $511c: $fa $0a $d8
-    ld [hl+], a                                   ; $511f: $22
-    ld a, [rPuzzleTimerMinuteOnes]                ; $5120: $fa $09 $d8
-    ld [hl+], a                                   ; $5123: $22
-    ld a, [rPuzzleTimerSecondTens]                ; $5124: $fa $0c $d8
-    ld [hl+], a                                   ; $5127: $22
-    ld a, [rPuzzleTimerSecondOnes]                ; $5128: $fa $0b $d8
-    ld [hl+], a                                   ; $512b: $22
-    ld a, $6f                                     ; $512c: $3e $6f
-    ld [hl+], a                                   ; $512e: $22
-    ld [hl+], a                                   ; $512f: $22
-    ld [hl], a                                    ; $5130: $77
-    ret                                           ; $5131: $c9
+    ld a, [rPuzzleTimerMinuteTens]
+    ld [hl+], a
+    ld a, [rPuzzleTimerMinuteOnes]
+    ld [hl+], a
+    ld a, [rPuzzleTimerSecondTens]
+    ld [hl+], a
+    ld a, [rPuzzleTimerSecondOnes]
+    ld [hl+], a
+    ld a, $6f
+    ld [hl+], a
+    ld [hl+], a
+    ld [hl], a
+    ret
 
 
 GS07_DrawTimeTrialRankingEntriesFromSaveData::
-    ld hl, rSaveDataTimeTrialRankingEntries       ; $5132: $21 $42 $a0
-    ld de, $9300                                  ; $5135: $11 $00 $93
-    ld a, $05                                     ; $5138: $3e $05
+    ld hl, rSaveDataTimeTrialRankingEntries
+    ld de, $9300
+    ld a, $05
 
 .DrawTimeTrialRankingEntryRowLoop:
-    push af                                       ; $513a: $f5
-    ld a, [hl+]                                   ; $513b: $2a
-    or $30                                        ; $513c: $f6 $30
-    call DrawUIFontGlyph                          ; $513e: $cd $c0 $51
-    ld a, [hl+]                                   ; $5141: $2a
-    or $30                                        ; $5142: $f6 $30
-    call DrawUIFontGlyph                          ; $5144: $cd $c0 $51
-    ld a, $10                                     ; $5147: $3e $10
-    add e                                         ; $5149: $83
-    ld e, a                                       ; $514a: $5f
-    ld a, $00                                     ; $514b: $3e $00
-    adc d                                         ; $514d: $8a
-    ld d, a                                       ; $514e: $57
-    ld a, [hl+]                                   ; $514f: $2a
-    or $30                                        ; $5150: $f6 $30
-    call DrawUIFontGlyph                          ; $5152: $cd $c0 $51
-    ld a, [hl+]                                   ; $5155: $2a
-    or $30                                        ; $5156: $f6 $30
-    call DrawUIFontGlyph                          ; $5158: $cd $c0 $51
-    ld a, [hl+]                                   ; $515b: $2a
-    call DrawUIFontGlyph                          ; $515c: $cd $c0 $51
-    ld a, [hl+]                                   ; $515f: $2a
-    call DrawUIFontGlyph                          ; $5160: $cd $c0 $51
-    ld a, [hl+]                                   ; $5163: $2a
-    call DrawUIFontGlyph                          ; $5164: $cd $c0 $51
-    ld a, $80                                     ; $5167: $3e $80
-    add e                                         ; $5169: $83
-    ld e, a                                       ; $516a: $5f
-    ld a, $00                                     ; $516b: $3e $00
-    adc d                                         ; $516d: $8a
-    ld d, a                                       ; $516e: $57
-    pop af                                        ; $516f: $f1
-    dec a                                         ; $5170: $3d
-    jr nz, .DrawTimeTrialRankingEntryRowLoop      ; $5171: $20 $c7
+    push af
+    ld a, [hl+]
+    or $30
+    call DrawUIFontGlyph
+    ld a, [hl+]
+    or $30
+    call DrawUIFontGlyph
+    ld a, $10
+    add e
+    ld e, a
+    ld a, $00
+    adc d
+    ld d, a
+    ld a, [hl+]
+    or $30
+    call DrawUIFontGlyph
+    ld a, [hl+]
+    or $30
+    call DrawUIFontGlyph
+    ld a, [hl+]
+    call DrawUIFontGlyph
+    ld a, [hl+]
+    call DrawUIFontGlyph
+    ld a, [hl+]
+    call DrawUIFontGlyph
+    ld a, $80
+    add e
+    ld e, a
+    ld a, $00
+    adc d
+    ld d, a
+    pop af
+    dec a
+    jr nz, .DrawTimeTrialRankingEntryRowLoop
 
-    ret                                           ; $5173: $c9
+    ret
 
 
 GS07_DrawCurrentClearTimeFromTimer::
-    ld de, $8800                                  ; $5174: $11 $00 $88
-    ld a, [rPuzzleTimerMinuteTens]                ; $5177: $fa $0a $d8
-    or $30                                        ; $517a: $f6 $30
-    call DrawUIFontGlyph                          ; $517c: $cd $c0 $51
-    ld a, [rPuzzleTimerMinuteOnes]                ; $517f: $fa $09 $d8
-    or $30                                        ; $5182: $f6 $30
-    call DrawUIFontGlyph                          ; $5184: $cd $c0 $51
-    ld a, $10                                     ; $5187: $3e $10
-    add e                                         ; $5189: $83
-    ld e, a                                       ; $518a: $5f
-    ld a, $00                                     ; $518b: $3e $00
-    adc d                                         ; $518d: $8a
-    ld d, a                                       ; $518e: $57
-    ld a, [rPuzzleTimerSecondTens]                ; $518f: $fa $0c $d8
-    or $30                                        ; $5192: $f6 $30
-    call DrawUIFontGlyph                          ; $5194: $cd $c0 $51
-    ld a, [rPuzzleTimerSecondOnes]                ; $5197: $fa $0b $d8
-    or $30                                        ; $519a: $f6 $30
-    call DrawUIFontGlyph                          ; $519c: $cd $c0 $51
-    ret                                           ; $519f: $c9
+    ld de, $8800
+    ld a, [rPuzzleTimerMinuteTens]
+    or $30
+    call DrawUIFontGlyph
+    ld a, [rPuzzleTimerMinuteOnes]
+    or $30
+    call DrawUIFontGlyph
+    ld a, $10
+    add e
+    ld e, a
+    ld a, $00
+    adc d
+    ld d, a
+    ld a, [rPuzzleTimerSecondTens]
+    or $30
+    call DrawUIFontGlyph
+    ld a, [rPuzzleTimerSecondOnes]
+    or $30
+    call DrawUIFontGlyph
+    ret
 
 
 GS07_DrawCurrentClearTimePlaceholderDashes::
-    ld de, $8800                                  ; $51a0: $11 $00 $88
-    ld a, $2d                                     ; $51a3: $3e $2d
-    call DrawUIFontGlyph                          ; $51a5: $cd $c0 $51
-    ld a, $2d                                     ; $51a8: $3e $2d
-    call DrawUIFontGlyph                          ; $51aa: $cd $c0 $51
-    ld a, $10                                     ; $51ad: $3e $10
-    add e                                         ; $51af: $83
-    ld e, a                                       ; $51b0: $5f
-    ld a, $00                                     ; $51b1: $3e $00
-    adc d                                         ; $51b3: $8a
-    ld d, a                                       ; $51b4: $57
-    ld a, $2d                                     ; $51b5: $3e $2d
-    call DrawUIFontGlyph                          ; $51b7: $cd $c0 $51
-    ld a, $2d                                     ; $51ba: $3e $2d
-    call DrawUIFontGlyph                          ; $51bc: $cd $c0 $51
-    ret                                           ; $51bf: $c9
+    ld de, $8800
+    ld a, $2d
+    call DrawUIFontGlyph
+    ld a, $2d
+    call DrawUIFontGlyph
+    ld a, $10
+    add e
+    ld e, a
+    ld a, $00
+    adc d
+    ld d, a
+    ld a, $2d
+    call DrawUIFontGlyph
+    ld a, $2d
+    call DrawUIFontGlyph
+    ret
 
 
 DrawUIFontGlyph::
-    push hl                                       ; $51c0: $e5
-    ld c, a                                       ; $51c1: $4f
-    ld b, $00                                     ; $51c2: $06 $00
-    ld hl, PromptFontLookup                       ; $51c4: $21 $e7 $51
-    add hl, bc                                    ; $51c7: $09
-    ld c, [hl]                                    ; $51c8: $4e
-    sla c                                         ; $51c9: $cb $21
-    rl b                                          ; $51cb: $cb $10
-    sla c                                         ; $51cd: $cb $21
-    rl b                                          ; $51cf: $cb $10
-    sla c                                         ; $51d1: $cb $21
-    rl b                                          ; $51d3: $cb $10
-    sla c                                         ; $51d5: $cb $21
-    rl b                                          ; $51d7: $cb $10
-    ld hl, $5000                                  ; $51d9: $21 $00 $50
-    add hl, bc                                    ; $51dc: $09
-    ld a, $0b                                     ; $51dd: $3e $0b
-    ld bc, $0010                                  ; $51df: $01 $10 $00
-    call BankedTransparentTileCopy                ; $51e2: $cd $01 $05
-    pop hl                                        ; $51e5: $e1
-    ret                                           ; $51e6: $c9
+    push hl
+    ld c, a
+    ld b, $00
+    ld hl, PromptFontLookup
+    add hl, bc
+    ld c, [hl]
+    sla c
+    rl b
+    sla c
+    rl b
+    sla c
+    rl b
+    sla c
+    rl b
+    ld hl, $5000
+    add hl, bc
+    ld a, $0b
+    ld bc, $0010
+    call BankedTransparentTileCopy
+    pop hl
+    ret
 
 
 SETCHARMAP prompt
@@ -2394,62 +2394,62 @@ PromptFontLookup::
     db "                "
 
 InitializePuzzleOrderTable::
-    ld hl, rPuzzleOrderTableStart                 ; $5267: $21 $02 $a0
-    xor a                                         ; $526a: $af
+    ld hl, rPuzzleOrderTableStart
+    xor a
 
 .InitializePuzzleOrderTableLoop:
-    ld [hl+], a                                   ; $526b: $22
-    inc a                                         ; $526c: $3c
-    cp $40                                        ; $526d: $fe $40
-    jr nz, .InitializePuzzleOrderTableLoop        ; $526f: $20 $fa
+    ld [hl+], a
+    inc a
+    cp $40
+    jr nz, .InitializePuzzleOrderTableLoop
 
-    jp ReturnFromBankedJumpRestoreBank            ; $5271: $c3 $e7 $05
+    jp ReturnFromBankedJumpRestoreBank
 
 
 ShufflePuzzleOrderTable::
-    ld a, $40                                     ; $5274: $3e $40
-    ld de, rPuzzleOrderTableStart                 ; $5276: $11 $02 $a0
+    ld a, $40
+    ld de, rPuzzleOrderTableStart
 
 .ShufflePuzzleOrderTableLoop:
-    push af                                       ; $5279: $f5
-    push de                                       ; $527a: $d5
-    call GetSubtractiveRNGStateByte               ; $527b: $cd $11 $06
-    and $3f                                       ; $527e: $e6 $3f
-    pop de                                        ; $5280: $d1
-    ld c, a                                       ; $5281: $4f
-    ld b, $00                                     ; $5282: $06 $00
-    ld hl, rPuzzleOrderTableStart                 ; $5284: $21 $02 $a0
-    add hl, bc                                    ; $5287: $09
-    ld c, [hl]                                    ; $5288: $4e
-    ld a, [de]                                    ; $5289: $1a
-    ld [hl], a                                    ; $528a: $77
-    ld a, c                                       ; $528b: $79
-    ld [de], a                                    ; $528c: $12
-    pop af                                        ; $528d: $f1
-    inc de                                        ; $528e: $13
-    dec a                                         ; $528f: $3d
-    jr nz, .ShufflePuzzleOrderTableLoop           ; $5290: $20 $e7
+    push af
+    push de
+    call GetSubtractiveRNGStateByte
+    and $3f
+    pop de
+    ld c, a
+    ld b, $00
+    ld hl, rPuzzleOrderTableStart
+    add hl, bc
+    ld c, [hl]
+    ld a, [de]
+    ld [hl], a
+    ld a, c
+    ld [de], a
+    pop af
+    inc de
+    dec a
+    jr nz, .ShufflePuzzleOrderTableLoop
 
-    ld [rPuzzleOrderTableCursor], a               ; $5292: $ea $01 $a0
-    jp ReturnFromBankedJumpRestoreBank            ; $5295: $c3 $e7 $05
+    ld [rPuzzleOrderTableCursor], a
+    jp ReturnFromBankedJumpRestoreBank
 
 
 GS07_DispatchBottomPromptBlinkVariant::
-    ld a, [rGS07_BottomPromptVariantFlag]         ; $5298: $fa $39 $d8
-    and a                                         ; $529b: $a7
-    jr nz, .DispatchBottomPromptBlink_TryAgain    ; $529c: $20 $09
+    ld a, [rGS07_BottomPromptVariantFlag]
+    and a
+    jr nz, .DispatchBottomPromptBlink_TryAgain
 
-    ld b, $03                                     ; $529e: $06 $03
-    ld hl, $4ee9                                  ; $52a0: $21 $e9 $4e
-    call SwitchBankToBAndJumpToHL                 ; $52a3: $cd $db $05
-    ret                                           ; $52a6: $c9
+    ld b, $03
+    ld hl, $4ee9
+    call SwitchBankToBAndJumpToHL
+    ret
 
 
 .DispatchBottomPromptBlink_TryAgain:
-    ld b, $03                                     ; $52a7: $06 $03
-    ld hl, $4f10                                  ; $52a9: $21 $10 $4f
-    call SwitchBankToBAndJumpToHL                 ; $52ac: $cd $db $05
-    ret                                           ; $52af: $c9
+    ld b, $03
+    ld hl, $4f10
+    call SwitchBankToBAndJumpToHL
+    ret
 
 
 Puzzle_HT00_LetterN_Data::
