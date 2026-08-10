@@ -190,17 +190,17 @@ SoundWavePatternPreset0d::
     db $11, $67, $77, $77, $77, $77, $77, $43, $34, $56, $78, $9a, $aa, $aa, $aa, $af
 
 SoundCommandDispatcher::
-    ld hl, $dd0e
+    ld hl, rSoundDispatchReentryGuardFlags
     push af
     ld a, [hl]
     bit 0, a
-    jr nz, jr_00f_427d
+    jr nz, ReturnBusyIfReentryGuardSet
 
     or $01
     ld [hl], a
     pop af
     push hl
-    ld hl, $4276
+    ld hl, ClearReentryGuardAndReturn
     push hl
     ld hl, SoundCommandDispatcher_Cmd00To07PointerTable
     push af
@@ -214,6 +214,7 @@ SoundCommandDispatcher::
     jp hl
 
 
+ClearReentryGuardAndReturn::
     pop hl
     ld a, [hl]
     and $fe
@@ -222,7 +223,7 @@ SoundCommandDispatcher::
     ret
 
 
-jr_00f_427d:
+ReturnBusyIfReentryGuardSet::
     pop af
     scf
     ret
@@ -245,7 +246,7 @@ SoundCommandDispatcher_Cmd00_ResetAPUDriverState::
     ld b, $0c
     ld hl, rSoundCurrentVoiceIndex
     xor a
-    ld [$dd0e], a
+    ld [rSoundDispatchReentryGuardFlags], a
 
 .ClearRuntimeStateBlockLoop:
     ld [hl+], a
@@ -484,10 +485,10 @@ SoundCommandDispatcher_Cmd07_ReadLowerVoiceGroupCommandIndex::
 
 
 SoundEngine_FrameTickRoutine::
-    ld hl, $dd0e
+    ld hl, rSoundDispatchReentryGuardFlags
     ld a, [hl]
     bit 1, a
-    jr nz, jr_00f_443f
+    jr nz, .ReturnBusyIfReentryGuardSet
 
     or $02
     ld [hl], a
@@ -509,7 +510,7 @@ SoundEngine_FrameTickRoutine::
     ld d, $01
     ld b, $08
 
-PerVoiceTickLoop::
+.PerVoiceTickLoop:
     push af
     xor a
     ld [rSoundCurrentVoiceUpdateFlags], a
@@ -521,8 +522,6 @@ PerVoiceTickLoop::
     ld [rSoundCurrentVoiceMuteMask], a
     rlc c
     rlc d
-
-SoundEngine_ProcessActiveVoiceIfSet::
     pop af
     rrca
     jr nc, .AdvanceVoiceIndexAndLoop
@@ -538,7 +537,7 @@ SoundEngine_ProcessActiveVoiceIfSet::
 .AdvanceVoiceIndexAndLoop:
     inc [hl]
     dec b
-    jr nz, PerVoiceTickLoop
+    jr nz, .PerVoiceTickLoop
 
     pop hl
     ld a, [hl]
@@ -548,7 +547,7 @@ SoundEngine_ProcessActiveVoiceIfSet::
     ret
 
 
-jr_00f_443f:
+.ReturnBusyIfReentryGuardSet:
     scf
     ret
 
@@ -1945,7 +1944,7 @@ SoundEngine_SendDeferredSGBPacketWithClearedPayloadTail::
     ld a, $41
     ld [rSoundDeferredSGBPacketHeader], a
     ld b, $0b
-    ld hl, $dd14
+    ld hl, rSoundDeferredSGBPacketPayloadClearStart
     xor a
 
 .ClearDeferredPacketPayloadLoop:

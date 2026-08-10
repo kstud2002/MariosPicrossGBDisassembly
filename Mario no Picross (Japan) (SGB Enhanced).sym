@@ -317,8 +317,9 @@
 00:dd08 rSoundHighVoiceUpdateFlagsTable
 00:dd0c rSoundVoiceGroupAttenuationTable
 00:dd0d rSoundEvent01FFOverrideState_Unsure
+00:dd0e rSoundDispatchReentryGuardFlags
 00:dd0f rSoundDeferredSGBPacketHeader
-00:dd13 rSoundDeferredSGBPacketPayloadClearStart
+00:dd14 rSoundDeferredSGBPacketPayloadClearStart
 00:dd20 rSoundVoiceScriptPointerTable
 00:dd28 rSoundVoiceScriptPointerRowBuffer
 00:dd30 rSoundVoiceControlTable
@@ -4901,7 +4902,7 @@
 03:66db .data:0009:4
 03:66e4 OAMSpriteData_Event01_MarioBlinking_Frame2
 03:66e4 .data:000d:4
-03:66f1 OAMSpriteData_Event02
+03:66f1 OAMSpriteData_Event02_Unused
 03:66f1 .data:0005:4
 03:66f6 OAMSpriteData_Event03_PositionCursorTop_Frame1
 03:66f6 .data:0009:4
@@ -4979,15 +4980,15 @@
 03:6bbe .data:0035:4
 03:6bf3 OAMSpriteData_Event28_PuzzleCursor_HammerSwingReverse_Frame7
 03:6bf3 .data:0029:4
-03:6c1c OAMSpriteData_Event29
+03:6c1c OAMSpriteData_Event29_Unused
 03:6c1c .data:0029:4
 03:6c45 OAMSpriteData_Event2a_PuzzleCursor_HammerSwing_Frame2
 03:6c45 .data:0021:4
-03:6c66 OAMSpriteData_Event2b
+03:6c66 OAMSpriteData_Event2b_Unused
 03:6c66 .data:0005:4
-03:6c6b OAMSpriteData_Event2c
+03:6c6b OAMSpriteData_Event2c_Unused
 03:6c6b .data:0005:4
-03:6c70 OAMSpriteData_Event2d
+03:6c70 OAMSpriteData_Event2d_Unused
 03:6c70 .data:0005:4
 03:6c75 OAMSpriteData_Event2e_HighlightNumbersColumn_Frame1
 03:6c75 .data:0019:4
@@ -5019,7 +5020,7 @@
 03:6e3e .data:0061:4
 03:6e9f OAMSpriteData_Event3c_PauseMenuRightSide
 03:6e9f .data:0079:4
-03:6f18 OAMSpriteData_Event3d
+03:6f18 OAMSpriteData_Event3d_Unused
 03:6f18 .data:0061:4
 03:6f79 OAMSpriteData_Event3e_BGMMenuRightSide
 03:6f79 .data:0061:4
@@ -5079,15 +5080,15 @@
 03:7330 .data:0005:4
 03:7335 OAMSpriteData_Event5a_PromptFont_9
 03:7335 .data:0005:4
-03:733a OAMSpriteData_Event5b
+03:733a OAMSpriteData_Event5b_Unused
 03:733a .data:0019:4
-03:7353 OAMSpriteData_Event5c
+03:7353 OAMSpriteData_Event5c_Unused
 03:7353 .data:0019:4
-03:736c OAMSpriteData_Event5d
+03:736c OAMSpriteData_Event5d_Unused
 03:736c .data:0019:4
-03:7385 OAMSpriteData_Event5e
+03:7385 OAMSpriteData_Event5e_Unused
 03:7385 .data:0019:4
-03:739e OAMSpriteData_Event5f
+03:739e OAMSpriteData_Event5f_Unused
 03:739e .data:0019:4
 03:73b7 OAMSpriteData_Event60_PuzzleSelectCursorPencil_Idle
 03:73b7 .data:0011:4
@@ -5664,6 +5665,9 @@
 0b:6c00 ContinueSavedGameScreenTileMap
 0b:6c00 .data:0400:20
 
+0b:7000 Unused_TileMap
+0b:7000 .data:0400:20
+
 0b:7400 GameSelectScreenTileMap
 0b:7400 .data:0400:20
 
@@ -5817,11 +5821,13 @@
 0f:4248 .data:0010
 
 0f:4258 SoundCommandDispatcher
+0f:4276 ClearReentryGuardAndReturn
+0f:427d ReturnBusyIfReentryGuardSet
 0f:43e9 SoundEngine_FrameTickRoutine
 0f:4403 .InitPerFrameVoiceIterationState
-0f:4411 PerVoiceTickLoop
-0f:4427 SoundEngine_ProcessActiveVoiceIfSet
+0f:4411 .PerVoiceTickLoop
 0f:4434 .AdvanceVoiceIndexAndLoop
+0f:443f .ReturnBusyIfReentryGuardSet
 0f:4441 SoundEngine_ProcessVoiceTick
 0f:445a SoundEngine_DispatchVoiceOpcode
 0f:446e .HandleE0OpcodeGroup

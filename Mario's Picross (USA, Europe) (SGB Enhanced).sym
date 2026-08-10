@@ -4938,7 +4938,7 @@
 03:6d6f .data:0009:4
 03:6d78 OAMSpriteData_Event01_MarioBlinking_Frame2
 03:6d78 .data:000d:4
-03:6d85 OAMSpriteData_Event02
+03:6d85 OAMSpriteData_Event02_Unused
 03:6d85 .data:0005:4
 03:6d8a OAMSpriteData_Event03_PositionCursorTop_Frame1
 03:6d8a .data:0009:4
@@ -5016,15 +5016,15 @@
 03:7252 .data:0035:4
 03:7287 OAMSpriteData_Event28_PuzzleCursor_HammerSwingReverse_Frame7
 03:7287 .data:0029:4
-03:72b0 OAMSpriteData_Event29
+03:72b0 OAMSpriteData_Event29_Unused
 03:72b0 .data:0029:4
 03:72d9 OAMSpriteData_Event2a_PuzzleCursor_HammerSwing_Frame2
 03:72d9 .data:0021:4
-03:72fa OAMSpriteData_Event2b
+03:72fa OAMSpriteData_Event2b_Unused
 03:72fa .data:0005:4
-03:72ff OAMSpriteData_Event2c
+03:72ff OAMSpriteData_Event2c_Unused
 03:72ff .data:0005:4
-03:7304 OAMSpriteData_Event2d
+03:7304 OAMSpriteData_Event2d_Unused
 03:7304 .data:0005:4
 03:7309 OAMSpriteData_Event2e_HighlightNumbersColumn_Frame1
 03:7309 .data:0019:4
@@ -5056,7 +5056,7 @@
 03:74d2 .data:0061:4
 03:7533 OAMSpriteData_Event3c_PauseMenuRightSide
 03:7533 .data:0079:4
-03:75ac OAMSpriteData_Event3d
+03:75ac OAMSpriteData_Event3d_Unused
 03:75ac .data:0061:4
 03:760d OAMSpriteData_Event3e_BGMMenuRightSide
 03:760d .data:0061:4
@@ -5116,15 +5116,15 @@
 03:79c4 .data:0005:4
 03:79c9 OAMSpriteData_Event5a_PromptFont_9
 03:79c9 .data:0005:4
-03:79ce OAMSpriteData_Event5b
+03:79ce OAMSpriteData_Event5b_Unused
 03:79ce .data:0019:4
-03:79e7 OAMSpriteData_Event5c
+03:79e7 OAMSpriteData_Event5c_Unused
 03:79e7 .data:0019:4
-03:7a00 OAMSpriteData_Event5d
+03:7a00 OAMSpriteData_Event5d_Unused
 03:7a00 .data:0019:4
-03:7a19 OAMSpriteData_Event5e
+03:7a19 OAMSpriteData_Event5e_Unused
 03:7a19 .data:0019:4
-03:7a32 OAMSpriteData_Event5f
+03:7a32 OAMSpriteData_Event5f_Unused
 03:7a32 .data:0019:4
 03:7a4b OAMSpriteData_Event60_PuzzleSelectCursorPencil_Idle
 03:7a4b .data:0011:4
@@ -5708,6 +5708,9 @@
 0b:6c00 ContinueSavedGameScreenTileMap
 0b:6c00 .data:0400:20
 
+0b:7000 Unused_TileMap
+0b:7000 .data:0400:20
+
 0b:7400 GameSelectScreenTileMap
 0b:7400 .data:0400:20
 
@@ -5863,8 +5866,7 @@
 0f:4258 SoundCommandDispatcher
 0f:43ca SoundEngine_FrameTickRoutine
 0f:43d8 .InitPerFrameVoiceIterationState
-0f:43e6 PerVoiceTickLoop
-0f:43fc SoundEngine_ProcessActiveVoiceIfSet
+0f:43e6 .PerVoiceTickLoop
 0f:4409 .AdvanceVoiceIndexAndLoop
 0f:440e SoundEngine_ProcessVoiceTick
 0f:4427 SoundEngine_DispatchVoiceOpcode
@@ -5985,7 +5987,6 @@
 0f:47cc .RecomputeFrequencyFromPitchBaseAndVoiceControl
 
 0f:47f4 SoundEngine_CheckPitchOffsetGateAndComputeOffset
-0f:47fc .CheckPitchOffsetGateThresholdAndReturnOffset
 0f:4807 .ReturnNoOffsetForPitchGate
 0f:480d .ComputePitchOffsetUsingStepPhase
 0f:481f .ScaleOffsetByLookupEntry

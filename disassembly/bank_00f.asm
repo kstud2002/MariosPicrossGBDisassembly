@@ -474,7 +474,7 @@ SoundEngine_FrameTickRoutine::
     ld d, $01
     ld b, $08
 
-PerVoiceTickLoop::
+.PerVoiceTickLoop:
     push af
     xor a
     ld [rSoundCurrentVoiceUpdateFlags], a
@@ -486,8 +486,6 @@ PerVoiceTickLoop::
     ld [rSoundCurrentVoiceMuteMask], a
     rlc c
     rlc d
-
-SoundEngine_ProcessActiveVoiceIfSet::
     pop af
     rrca
     jr nc, .AdvanceVoiceIndexAndLoop
@@ -503,7 +501,7 @@ SoundEngine_ProcessActiveVoiceIfSet::
 .AdvanceVoiceIndexAndLoop:
     inc [hl]
     dec b
-    jr nz, PerVoiceTickLoop
+    jr nz, .PerVoiceTickLoop
 
     ret
 
@@ -1365,8 +1363,6 @@ SoundEngine_CheckPitchOffsetGateAndComputeOffset::
     add a
     add l
     ld l, a
-
-.CheckPitchOffsetGateThresholdAndReturnOffset:
     ld a, [hl]
     or a
     jr z, .ReturnNoOffsetForPitchGate

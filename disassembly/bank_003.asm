@@ -3851,7 +3851,7 @@ OAMSpriteData_Event01_MarioBlinking_Frame2::
     db $10, $10, $84, $10
     db $ff
 
-OAMSpriteData_Event02::
+OAMSpriteData_Event02_Unused::
     db $10, $08, $7d, $10
     db $ff
 
@@ -4289,7 +4289,7 @@ OAMSpriteData_Event28_PuzzleCursor_HammerSwingReverse_Frame7::
     db $21, $08, $66, $10
     db $ff
 
-OAMSpriteData_Event29::
+OAMSpriteData_Event29_Unused::
     db $07, $08, $53, $10
     db $07, $10, $54, $10
     db $0f, $08, $63, $10
@@ -4313,15 +4313,15 @@ OAMSpriteData_Event2a_PuzzleCursor_HammerSwing_Frame2::
     db $0a, $1d, $6d, $10
     db $ff
 
-OAMSpriteData_Event2b::
+OAMSpriteData_Event2b_Unused::
     db $10, $08, $04, $10
     db $ff
 
-OAMSpriteData_Event2c::
+OAMSpriteData_Event2c_Unused::
     db $10, $08, $05, $10
     db $ff
 
-OAMSpriteData_Event2d::
+OAMSpriteData_Event2d_Unused::
     db $10, $08, $06, $10
     db $ff
 
@@ -4535,7 +4535,7 @@ OAMSpriteData_Event3c_PauseMenuRightSide::
     db $28, $30, $6c, $10
     db $ff
 
-OAMSpriteData_Event3d::
+OAMSpriteData_Event3d_Unused::
     db $10, $40, $5d, $10
     db $18, $40, $6d, $10
     db $20, $40, $6d, $10
@@ -4882,7 +4882,7 @@ OAMSpriteData_Event5a_PromptFont_9::
     db $10, $08, $29, $00
     db $ff
 
-OAMSpriteData_Event5b::
+OAMSpriteData_Event5b_Unused::
     db $10, $08, $34, $10
     db $10, $10, $35, $10
     db $18, $08, $44, $10
@@ -4891,7 +4891,7 @@ OAMSpriteData_Event5b::
     db $20, $10, $3d, $10
     db $ff
 
-OAMSpriteData_Event5c::
+OAMSpriteData_Event5c_Unused::
     db $10, $08, $36, $10
     db $10, $10, $37, $10
     db $18, $08, $46, $10
@@ -4900,7 +4900,7 @@ OAMSpriteData_Event5c::
     db $20, $10, $4d, $10
     db $ff
 
-OAMSpriteData_Event5d::
+OAMSpriteData_Event5d_Unused::
     db $10, $08, $38, $10
     db $18, $08, $48, $10
     db $18, $10, $49, $10
@@ -4909,7 +4909,7 @@ OAMSpriteData_Event5d::
     db $10, $10, $38, $30
     db $ff
 
-OAMSpriteData_Event5e::
+OAMSpriteData_Event5e_Unused::
     db $18, $08, $4a, $10
     db $18, $10, $4b, $10
     db $20, $08, $4e, $10
@@ -4918,7 +4918,7 @@ OAMSpriteData_Event5e::
     db $10, $10, $39, $30
     db $ff
 
-OAMSpriteData_Event5f::
+OAMSpriteData_Event5f_Unused::
     db $18, $08, $4a, $10
     db $20, $08, $4e, $10
     db $10, $08, $39, $10

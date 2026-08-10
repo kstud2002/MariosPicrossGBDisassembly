@@ -305,8 +305,9 @@ DEF rSoundCurrentVoiceUpdateFlags EQU $dd07
 DEF rSoundHighVoiceUpdateFlagsTable EQU $dd08
 DEF rSoundVoiceGroupAttenuationTable EQU $dd0c
 DEF rSoundEvent01FFOverrideState_Unsure EQU $dd0d
+DEF rSoundDispatchReentryGuardFlags EQU $dd0e
 DEF rSoundDeferredSGBPacketHeader EQU $dd0f
-DEF rSoundDeferredSGBPacketPayloadClearStart EQU $dd13
+DEF rSoundDeferredSGBPacketPayloadClearStart EQU $dd14
 DEF rSoundVoiceScriptPointerTable EQU $dd20
 DEF rSoundVoiceScriptPointerRowBuffer EQU $dd28
 DEF rSoundVoiceControlTable EQU $dd30
