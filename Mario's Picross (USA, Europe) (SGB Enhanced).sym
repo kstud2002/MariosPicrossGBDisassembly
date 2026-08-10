@@ -5863,7 +5863,7 @@
 0f:4258 SoundCommandDispatcher
 0f:43ca SoundEngine_FrameTickRoutine
 0f:43d8 .InitPerFrameVoiceIterationState
-0f:43e6 .PerVoiceTickLoop
+0f:43e6 PerVoiceTickLoop
 0f:43fc SoundEngine_ProcessActiveVoiceIfSet
 0f:4409 .AdvanceVoiceIndexAndLoop
 0f:440e SoundEngine_ProcessVoiceTick
@@ -5962,10 +5962,10 @@
 0f:4689 .AdvanceVoiceFrameCounterPath
 0f:46a0 .UpdateFrequencyFromPitchBasePath
 0f:46a3 .AccumulatePhaseAndHandleOverflow
-0f:46b4 .HandleAccumulationOverflowLoop
+0f:46b4 HandleAccumulationOverflowLoop
 
 0f:46fc SoundEngine_StoreRoutingLowBitsAndSetNR51UpdateFlag
-0f:4706 .ContinueOverflowWhileTickCountdownNonZero
+0f:4706 ContinueOverflowWhileTickCountdownNonZero
 0f:4715 .FinishOverflowLoop
 
 0f:4716 SoundEngine_ApplyPendingHardwareUpdates

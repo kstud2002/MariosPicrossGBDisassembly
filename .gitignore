@@ -8,3 +8,6 @@ __pycache__/
 disassembly/game.map
 disassembly/game.o
 disassembly/game.sym
+disassembly_jp/game.map
+disassembly_jp/game.o
+disassembly_jp/game.sym

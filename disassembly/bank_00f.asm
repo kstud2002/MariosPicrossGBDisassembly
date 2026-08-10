@@ -474,7 +474,7 @@ SoundEngine_FrameTickRoutine::
     ld d, $01                                     ; $43e2: $16 $01
     ld b, $08                                     ; $43e4: $06 $08
 
-.PerVoiceTickLoop:
+PerVoiceTickLoop::
     push af                                       ; $43e6: $f5
     xor a                                         ; $43e7: $af
     ld [rSoundCurrentVoiceUpdateFlags], a         ; $43e8: $ea $07 $dd
@@ -503,7 +503,7 @@ SoundEngine_ProcessActiveVoiceIfSet::
 .AdvanceVoiceIndexAndLoop:
     inc [hl]                                      ; $4409: $34
     dec b                                         ; $440a: $05
-    jr nz, .PerVoiceTickLoop                      ; $440b: $20 $d9
+    jr nz, PerVoiceTickLoop                       ; $440b: $20 $d9
 
     ret                                           ; $440d: $c9
 
@@ -1080,12 +1080,12 @@ SoundEngine_UpdateVoiceStateAndCommitAPURegisters::
     ld a, [hl+]                                   ; $46aa: $2a
     add [hl]                                      ; $46ab: $86
     push hl                                       ; $46ac: $e5
-    jr c, .HandleAccumulationOverflowLoop         ; $46ad: $38 $05
+    jr c, HandleAccumulationOverflowLoop          ; $46ad: $38 $05
 
     cp $90                                        ; $46af: $fe $90
     jp c, SoundEngine_ApplyPendingHardwareUpdates ; $46b1: $da $16 $47
 
-.HandleAccumulationOverflowLoop:
+HandleAccumulationOverflowLoop::
     sub $90                                       ; $46b4: $d6 $90
     ld hl, rSoundVoiceNoteTickCountdownTable      ; $46b6: $21 $40 $dd
     push af                                       ; $46b9: $f5
@@ -1112,7 +1112,7 @@ SoundEngine_UpdateVoiceStateAndCommitAPURegisters::
     ld l, a                                       ; $46d2: $6f
     ld a, b                                       ; $46d3: $78
     cp [hl]                                       ; $46d4: $be
-    jr nz, .ContinueOverflowWhileTickCountdownNonZero; $46d5: $20 $2f
+    jr nz, ContinueOverflowWhileTickCountdownNonZero; $46d5: $20 $2f
 
     ld hl, rSoundVoiceTickRateTable               ; $46d7: $21 $50 $dd
     ld a, c                                       ; $46da: $79
@@ -1150,7 +1150,7 @@ SoundEngine_StoreRoutingLowBitsAndSetNR51UpdateFlag::
     or [hl]                                       ; $4704: $b6
     ld [hl], a                                    ; $4705: $77
 
-.ContinueOverflowWhileTickCountdownNonZero:
+ContinueOverflowWhileTickCountdownNonZero::
     pop af                                        ; $4706: $f1
     pop bc                                        ; $4707: $c1
     push af                                       ; $4708: $f5
@@ -1162,7 +1162,7 @@ SoundEngine_StoreRoutingLowBitsAndSetNR51UpdateFlag::
     cp $90                                        ; $470e: $fe $90
     jr c, SoundEngine_ApplyPendingHardwareUpdates ; $4710: $38 $04
 
-    jp .HandleAccumulationOverflowLoop            ; $4712: $c3 $b4 $46
+    jp HandleAccumulationOverflowLoop             ; $4712: $c3 $b4 $46
 
 
 .FinishOverflowLoop:

@@ -1,12 +1,12 @@
-# Mario's Picross (USA, Europe) (SGB Enhanced) – GB Disassembly
+# Mario's Picross / Mario no Picross (SGB Enhanced) – GB Disassembly
 
-A complete, byte-accurate disassembly of the original Game Boy Mario's Picross ROM with human-readable, behaviour-first symbol names.
+A complete, byte-accurate disassembly workspace for the Game Boy SGB-enhanced releases of Mario's Picross (USA/Europe) and Mario no Picross (Japan), with human-readable, behaviour-first symbol names.
 
 ## What this is
 
-A comprehensive disassembly of Mario's Picross (released 1995), Nintendo's puzzle game for the Game Boy. This project provides a complete, byte-accurate disassembly suitable for study, documentation, and modification.
+A comprehensive disassembly of Nintendo's 1995 Game Boy puzzle title across both regional SGB-enhanced ROM variants in this repository. The project provides byte-accurate disassembly output suitable for study, documentation, and modification.
 
-The ROM is 256 KB with 16 banks:
+Each ROM is 256 KB with 16 banks:
 
 | Bank | Role |
 |------|------|
@@ -30,19 +30,27 @@ The ROM is 256 KB with 16 banks:
 ## Repository layout
 
 ```
-Mario's Picross (USA, Europe) (SGB Enhanced).gb   – original ROM (you must provide your own copy)
-Mario's Picross (USA, Europe) (SGB Enhanced).sym  – canonical symbol map (the main product of this work)
+Mario's Picross (USA, Europe) (SGB Enhanced).gb   – USA/Europe ROM input (you must provide your own copy)
+Mario's Picross (USA, Europe) (SGB Enhanced).sym  – USA/Europe symbol map
+Mario no Picross (Japan) (SGB Enhanced).gb        – Japan ROM input (you must provide your own copy)
+Mario no Picross (Japan) (SGB Enhanced).sym       – Japan symbol map
 mgbdis.py                   – mgbdis disassembler (modified with: ram.inc handling from https://github.com/H0smax/mgbdis + symbol exclusion support)
 instruction_set.py          – instruction set definitions for mgbdis (from https://github.com/mattcurrie/mgbdis)
 png.py                       – PNG graphics utilities (from https://github.com/mattcurrie/mgbdis)
 charmap.asm                 – Game Boy character-map for string rendering
 hardware.inc                – GB hardware register definitions
 disassembly/
-  game.asm                  – top-level include (entry point for assembler)
-  bank_000.asm through bank_00f.asm  – disassembly of all 16 ROM banks
+  game.asm                  – top-level include for USA/Europe output
+  bank_000.asm through bank_00f.asm  – USA/Europe disassembly (16 ROM banks)
   charmap.asm               – character map copy for assembler
   hardware.inc              – hardware register copy for assembler
-  Makefile                  – builds game.gb with rgbds
+  Makefile                  – reassembles USA/Europe output with rgbds
+disassembly_jp/
+  game.asm                  – top-level include for Japan output
+  bank_000.asm through bank_00f.asm  – Japan disassembly (16 ROM banks)
+  charmap.asm               – character map copy for assembler
+  hardware.inc              – hardware register copy for assembler
+  Makefile                  – reassembles Japan output with rgbds
 GAME_FLOW_REFERENCE.md      – detailed game-flow, state-machine, and internals reference
 ```
 
@@ -51,7 +59,11 @@ GAME_FLOW_REFERENCE.md      – detailed game-flow, state-machine, and internals
 After editing the symbol map, regenerate `bank_00X.asm` with:
 
 ```sh
-mgbdis --print-hex --character-map-path "charmap.asm" --exclude-default-symbols "RST_10,RST_20,RST_28,RST_30,RST_38" --overwrite "Mario's Picross (USA, Europe) (SGB Enhanced).gb"
+mgbdis --output "disassembly" --print-hex --character-map-path "charmap.asm" --exclude-default-symbols "RST_10,RST_20,RST_28,RST_30,RST_38" --overwrite "Mario's Picross (USA, Europe) (SGB Enhanced).gb"
+```
+
+```sh
+mgbdis --print-hex --output "disassembly_jp" --character-map-path "charmap.asm" --exclude-default-symbols "RST_10,RST_20,RST_28,RST_30,RST_38" --overwrite "Mario no Picross (Japan) (SGB Enhanced).gb"
 ```
 
 (Note: mgbdis.py is included in this repository with enhancements for:
@@ -70,7 +82,9 @@ mgbdis --print-hex --character-map-path "charmap.asm" --exclude-default-symbols 
 Run extraction with:
 
 ```sh
-python3 sgbborder_extract.py --overwrite --sym "sgbborder.sym" "Mario's Picross (USA, Europe) (SGB Enhanced).gb"
+python3 sgbborder_extract.py --output "disassembly/sgb" --overwrite --sym "sgbborder.sym" "Mario's Picross (USA, Europe) (SGB Enhanced).gb"
+
+python3 sgbborder_extract.py --output "disassembly_jp/sgb" --overwrite --sym "sgbborder.sym" "Mario no Picross (Japan) (SGB Enhanced).gb"
 ```
 
 Default output folder:
@@ -123,13 +137,14 @@ Example tags:
 
 ## Verifying the disassembly round-trips
 
-The `disassembly/Makefile` reassembles the output with [rgbds](https://rgbds.gbdev.io/) and confirms the resulting ROM matches the original via md5:
+The Makefiles in both output directories reassemble their respective versions with [rgbds](https://rgbds.gbdev.io/) and verify ROM equivalence:
 
 ```sh
 cd disassembly && make
+cd disassembly_jp && make
 ```
 
-A successful build means the disassembly is byte-accurate.
+A successful build in each directory means that version's disassembly is byte-accurate.
 
 ## Documentation
 
