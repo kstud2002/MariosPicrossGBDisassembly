@@ -59,16 +59,15 @@ GAME_FLOW_REFERENCE.md      – detailed game-flow, state-machine, and internals
 After editing the symbol map, regenerate `bank_00X.asm` with:
 
 ```sh
-python3 -m mgbdis --output "disassembly" --character-map-path "charmap.asm" --exclude-default-symbols "RST_10,RST_20,RST_28,RST_30,RST_38" --overwrite "Mario's Picross (USA, Europe) (SGB Enhanced).gb"
+python3 -m mgbdis --output "disassembly" --character-map-path "charmap.asm" --overwrite "Mario's Picross (USA, Europe) (SGB Enhanced).gb"
 ```
 
 ```sh
-python3 -m mgbdis --output "disassembly_jp" --character-map-path "charmap.asm" --exclude-default-symbols "RST_10,RST_20,RST_28,RST_30,RST_38" --overwrite "Mario no Picross (Japan) (SGB Enhanced).gb"
+python3 -m mgbdis --output "disassembly_jp" --character-map-path "charmap.asm" --overwrite "Mario no Picross (Japan) (SGB Enhanced).gb"
 ```
 
 (Note: mgbdis.py is included in this repository with enhancements for:
 - ram.inc handling: automatic symbol labeling for game-specific RAM addresses
-- symbol exclusion support: `--exclude-default-symbols` parameter filters out default interrupt vectors or other symbols
 - hardware register labels: automatic replacement of 16-bit addressing modes (`d16`, `a16`, `[a16]`) with hardware.inc register names when applicable)
 
 ## SGB border extraction
